@@ -1,6 +1,5 @@
 import { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
-import { SEO_DATA } from "@/constants/seo-data"
 
 import { getChangelogPostsByCategory } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
@@ -10,7 +9,7 @@ import PostsList from "@/components/pages/changelog/posts-list"
 export default async function CategoryPage({
   params,
 }: {
-  params: { category: string }
+  params: Promise<{ category: string }>
 }) {
   const { category } = await params
   const posts = await getChangelogPostsByCategory(category)
@@ -41,9 +40,9 @@ export default async function CategoryPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { category: string }
+  params: Promise<{ category: string }>
 }): Promise<Metadata> {
-  const { category } = params
+  const { category } = await params
   const posts = await getChangelogPostsByCategory(category)
   const categoryTitle =
     posts?.[0]?.categories.find((c) => c.slug.current === category)?.title ||

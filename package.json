@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
-    "build:next": "next build",
-    "build:registry": "pnpm dlx shadcn@2.6.0-canary.2 registry:build",
-    "build": "run build:next build:registry",
-    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
