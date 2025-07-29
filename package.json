@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3000",
-    "build:next": "next build --turbopack",
+    "dev": "next dev --port 3000",
+    "build:next": "next build",
     "build:registry": "pnpm dlx shadcn@2.6.0-canary.2 registry:build",
-    "build": "turbo run build:next build:registry",
+    "build": "run build:next build:registry",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "start": "next start",
     "lint": "next lint",

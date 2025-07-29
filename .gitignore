@@ -37,10 +37,6 @@ yarn-error.log*
 .env*.local
 .env
 
-# Turbo
-.turbo
-public/r
-
 # vercel
 .vercel
 
