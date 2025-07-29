@@ -84,7 +84,7 @@
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: white;
 
-  --color-border: hsl(var(--gray-5));
+  --color-border: hsl(var(--gray-2));
   --color-input: hsl(var(--gray-5));
   --color-ring: hsl(var(--ring));
 

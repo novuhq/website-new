@@ -90,16 +90,20 @@ export default async function ChangelogPostPage({
           <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl">
             {title}
           </h1>
-          <p
-            className="lg:m mt-4 text-lg leading-normal font-light tracking-tighter text-gray-9 md:mt-3.75 lg:mr-64 xl:max-w-176 xl:pt-px"
-            dangerouslySetInnerHTML={{
-              __html: caption.replace(/\n/g, "<br />"),
-            }}
-          />
+          {caption && (
+            <p
+              className="lg:m mt-4 text-lg leading-normal font-light tracking-tighter text-gray-9 md:mt-3.75 lg:mr-64 xl:max-w-176 xl:pt-px"
+              dangerouslySetInnerHTML={{
+                __html: caption.replace(/\n/g, "<br />"),
+              }}
+            />
+          )}
           <div className="mt-7.75 flex flex-col gap-10.5 md:gap-12 lg:flex-row lg:gap-8">
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image xl:max-w-176">
-              <Image className="" src={cover} alt="Cover" fill />
-            </div>
+            {cover && (
+              <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image xl:max-w-176">
+                <Image className="" src={cover} alt="Cover" fill />
+              </div>
+            )}
             <div className="flex flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:max-w-56 lg:shrink-0 lg:flex-col lg:justify-start lg:gap-5.5">
               <dl className="flex flex-col gap-5 md:flex-row md:gap-17.5 lg:flex-col lg:gap-6.5">
                 <div className="flex flex-col gap-4">
@@ -131,7 +135,9 @@ export default async function ChangelogPostPage({
                         size="sm"
                       />
                     </div>
-                    <Categories categories={categories} />
+                    {categories && categories.length > 0 && (
+                      <Categories categories={categories} />
+                    )}
                   </dd>
                 </div>
               </dl>

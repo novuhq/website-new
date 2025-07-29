@@ -23,11 +23,11 @@
 
   @apply prose-li:m-0 prose-li:leading-normal prose-li:text-foreground/90;
 
-  @apply prose-strong:font-medium prose-strong:text-foreground;
+  @apply prose-strong:font-medium prose-strong:text-inherit;
 
   @apply prose-figure:my-8;
 
-  @apply prose-hr:my-8 prose-hr:border-border;
+  @apply prose-hr:my-8 prose-hr:border-gray-2;
 
   @apply prose-blockquote:text-foreground;
 
@@ -45,7 +45,7 @@
   h5 a,
   h6 a {
     font-weight: inherit;
-    color: inherit;
+    @apply text-foreground hover:text-foreground/80;
   }
 
   .not-prose {
@@ -73,7 +73,7 @@
     @apply hover:decoration-primary;
 
     strong {
-      @apply text-primary-foreground transition-colors duration-300 hover:text-primary-foreground/80;
+      @apply text-inherit transition-colors duration-300 hover:text-inherit;
     }
   }
 

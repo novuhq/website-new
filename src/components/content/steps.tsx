@@ -12,7 +12,7 @@ function Step({ title, number, children, ...props }: StepProps) {
   return (
     <li className="flex flex-col pl-0" {...props}>
       <div className="flex items-start gap-x-5">
-        <span className="not-prose relative top-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-sm leading-snug font-medium tracking-tight text-foreground ring-4 ring-background">
+        <span className="not-prose relative top-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-gray-2 bg-background text-sm leading-snug font-medium tracking-tight text-foreground ring-4 ring-background">
           {number}
         </span>
         <h3 className="not-prose pt-2 text-lg leading-snug font-medium tracking-tighter text-foreground">
@@ -43,7 +43,7 @@ function Steps({ children, ...props }: StepsProps) {
     <ol
       className={cn(
         "steps relative my-6 flex flex-col gap-3 gap-y-7 pl-0 md:my-8",
-        "before:absolute before:inset-y-0 before:left-[1.125rem] before:w-px before:-translate-x-px before:bg-border"
+        "before:absolute before:inset-y-0 before:left-[1.125rem] before:w-px before:-translate-x-px before:bg-gray-2"
       )}
       {...props}
     >

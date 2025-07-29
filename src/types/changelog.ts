@@ -21,11 +21,11 @@ export interface IChangelogPostData {
   slug: ISlug
   pathname: string
   authors: IAuthorData[]
-  cover: string
-  categories: IChangelogCategoryData[]
+  cover?: string
+  categories?: IChangelogCategoryData[]
   isFeatured: boolean
   publishedAt: string
-  caption: string
+  caption?: string
   content: PortableTextBlock[]
   seo: ISeoFields
 }

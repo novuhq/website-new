@@ -38,14 +38,24 @@ function Picture({
   return (
     <figure className={cn("my-6 md:my-8", className)}>
       <div className={pictureVariants({ variant })}>
-        <Image
-          className="w-full rounded-lg"
-          src={src}
-          width={width}
-          height={height}
-          quality={100}
-          alt={alt}
-        />
+        {src.endsWith(".gif") ? (
+          <img
+            className="w-full rounded-lg"
+            src={src}
+            width={width}
+            height={height}
+            alt={alt}
+          />
+        ) : (
+          <Image
+            className="w-full rounded-lg"
+            src={src}
+            width={width}
+            height={height}
+            quality={100}
+            alt={alt}
+          />
+        )}
       </div>
       {caption && (
         <figcaption className="mx-auto mt-3 max-w-2xl text-center text-sm font-medium tracking-tight text-muted-foreground md:text-base">

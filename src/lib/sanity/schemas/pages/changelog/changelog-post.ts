@@ -65,8 +65,6 @@ export default defineType({
       title: "Caption",
       group: GROUP.content.name,
       rows: 3,
-      validation: (rule: StringRule) =>
-        rule.error("You have to fill in this field.").required(),
     }),
     defineField({
       name: "slug",
@@ -105,19 +103,12 @@ export default defineType({
       type: "array",
       of: [{ type: "reference", to: [{ type: "changelogCategory" }] }],
       group: GROUP.content.name,
-      validation: (rule: ArrayRule<IChangelogCategoryData>) =>
-        rule
-          .min(1)
-          .error("You have to select at least one category.")
-          .required(),
     }),
     defineField({
       name: "cover",
       type: "image",
       title: "Cover Image",
       group: GROUP.content.name,
-      validation: (rule: ImageRule) =>
-        rule.error("You have to fill in this field.").required(),
     }),
     defineField({
       name: "content",

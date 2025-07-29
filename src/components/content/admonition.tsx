@@ -13,14 +13,14 @@ function Admonition({
   return (
     <figure
       className={cn(
-        "not-prose admonition my-6 flex flex-col rounded-lg border border-border bg-background p-5",
+        "not-prose admonition my-6 flex flex-col rounded-lg border border-gray-2 bg-background p-5",
         className
       )}
     >
       <span className="not-prose flex text-base leading-none font-medium tracking-tight text-muted-foreground">
         {title}
       </span>
-      <div className="prose-inside-content prose mt-4 max-w-none border-t border-border pt-4">
+      <div className="prose-inside-content prose mt-4 max-w-none border-t border-gray-2 pt-4">
         {children}
       </div>
     </figure>
