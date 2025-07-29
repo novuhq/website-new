@@ -1,24 +1,37 @@
+# Novu Next.js
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Learn More](#learn-more)
+- [Deploy on Vercel](#deploy-on-vercel)
 
 ## Getting Started
 
-First, run the development server:
+1. Clone this repository or hit "Use this template" button
+
+    ```bash
+    git clone git@github.com:novuhq/website-new.git
+    ```
+
+2. Install dependencies
+
+    ```bash
+    pnpm install
+    ```
+
+## Usage
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 

@@ -1,0 +1,353 @@
+@import "tailwindcss";
+
+.prose {
+  @apply text-foreground;
+
+  @apply prose-headings:text-3xl prose-headings:font-medium prose-headings:text-foreground;
+
+  @apply prose-h2:mt-11 prose-h2:mb-3.5 prose-h2:scroll-mt-8 prose-h2:text-[32px] prose-h2:leading-tight prose-h2:font-medium prose-h2:tracking-tighter md:prose-h2:mt-14 md:prose-h2:text-3xl md:prose-h2:leading-tight;
+
+  @apply prose-h3:mt-5 prose-h3:mb-3.25 prose-h3:scroll-mt-6 prose-h3:text-2xl prose-h3:leading-snug prose-h3:font-medium prose-h3:tracking-tighter;
+
+  @apply prose-h4:mt-7 prose-h4:mb-2.5 prose-h4:text-lg prose-h4:font-medium prose-h4:tracking-tighter;
+
+  @apply prose-p:my-3.5 prose-p:overflow-x-auto prose-p:leading-normal prose-p:text-gray-9;
+
+  @apply prose-a:rounded-sm prose-a:font-normal prose-a:break-words prose-a:text-primary prose-a:underline prose-a:underline-offset-[3px] prose-a:transition-[colors,text-decoration] prose-a:duration-300 prose-a:hover:text-primary-muted prose-a:hover:no-underline;
+
+  @apply prose-ol:flex prose-ol:flex-col prose-ul:flex prose-ul:flex-col;
+
+  @apply prose-ul:my-3.5 prose-ul:gap-y-2.5 prose-ul:pl-10.5 md:prose-ul:pl-11;
+
+  @apply prose-ol:my-3 prose-ol:list-none prose-ol:gap-y-2.5 prose-ol:pl-6.5 md:prose-ol:pl-10;
+
+  @apply prose-li:m-0 prose-li:leading-normal prose-li:text-foreground/90;
+
+  @apply prose-strong:font-medium prose-strong:text-foreground;
+
+  @apply prose-figure:my-8;
+
+  @apply prose-hr:my-8 prose-hr:border-border;
+
+  @apply prose-blockquote:text-foreground;
+
+  @apply prose-img:my-0 prose-img:rounded-lg;
+
+  > * {
+    &:last-child {
+      @apply !mb-0;
+    }
+  }
+
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  .not-prose {
+    table a {
+      @apply rounded-sm font-normal break-words text-primary-foreground underline decoration-transparent underline-offset-[0.3em] transition-colors duration-300 hover:decoration-primary-foreground;
+    }
+  }
+
+  h2 + p,
+  h3 + p,
+  h4 + p {
+    @apply mt-0;
+  }
+
+  h2 + h3 {
+    @apply mt-6;
+  }
+
+  h2 + h4,
+  h3 + h4 {
+    @apply mt-0;
+  }
+
+  a {
+    @apply hover:decoration-primary;
+
+    strong {
+      @apply text-primary-foreground transition-colors duration-300 hover:text-primary-foreground/80;
+    }
+  }
+
+  > * {
+    &:last-child {
+      @apply mb-0;
+    }
+  }
+
+  ol ol,
+  ul ol {
+    @apply mt-2.5 mb-0 pl-5;
+  }
+  ol ul,
+  ul ul {
+    @apply mt-2.5 mb-0 pl-6;
+  }
+
+  ol strong,
+  ul strong {
+    @apply font-medium;
+  }
+
+  ul {
+    @apply prose-li:marker:text-[0px];
+
+    li {
+      @apply relative;
+
+      @apply before:absolute before:top-3 before:-left-6 before:h-px before:w-2 before:rounded-full before:bg-secondary-foreground md:before:top-3.5;
+    }
+  }
+
+  ol:not(.steps) {
+    @apply pl-9;
+    counter-reset: main-counter;
+
+    li {
+      @apply relative pl-2;
+      counter-increment: main-counter;
+    }
+    li::before {
+      content: counter(main-counter) ".";
+      @apply absolute -left-4 text-current;
+    }
+    ol {
+      @apply mt-2.5 pl-6;
+      counter-reset: sub-counter;
+
+      li {
+        counter-increment: sub-counter;
+        &::before {
+          content: counter(main-counter) "." counter(sub-counter) ". ";
+          @apply absolute -left-6 text-current;
+        }
+      }
+    }
+  }
+
+  li {
+    padding-inline-start: 0;
+
+    > * {
+      &:first-child:not(ol, ul) {
+        @apply mt-0;
+      }
+
+      &:last-child {
+        @apply mb-0;
+      }
+    }
+  }
+
+  details {
+    @apply my-8;
+
+    summary {
+      @apply cursor-pointer rounded text-base leading-snug font-medium tracking-tight text-foreground normal-case outline-offset-4 transition-colors duration-300 hover:text-secondary-foreground/85;
+    }
+
+    summary + * {
+      @apply !mt-4;
+    }
+  }
+
+  figure.admonition {
+    p {
+      @apply !leading-normal !tracking-normal;
+    }
+  }
+
+  figure.code-block {
+    @apply my-6;
+  }
+
+  figure.custom-table {
+    @apply my-8 flex;
+
+    table {
+      @apply mx-5 min-w-[46rem] border-separate border-spacing-0 md:mx-0 md:min-w-full;
+
+      & th {
+        @apply min-w-36 border-b border-border pb-1.5 text-left align-top text-sm leading-snug font-medium tracking-tight text-foreground;
+      }
+
+      & td {
+        @apply min-w-36 border-b border-border pt-3 pr-10 pb-3 text-left align-top text-sm leading-snug tracking-tight text-secondary-foreground;
+      }
+
+      & tr:last-child td {
+        @apply border-b-0;
+      }
+    }
+
+    &.theme-filled {
+      table {
+        @apply overflow-hidden rounded-lg border border-border bg-muted/50;
+
+        & th {
+          @apply border-r border-b border-foreground/10 bg-foreground/5 px-5 py-3;
+
+          &:first-child {
+            @apply pl-4;
+          }
+
+          &:last-child {
+            @apply pr-4;
+          }
+        }
+
+        & th:last-child,
+        & tr td:last-child {
+          @apply border-r-0;
+        }
+
+        & td {
+          @apply border-r border-border px-5;
+
+          &:first-child {
+            @apply pl-4;
+          }
+
+          &:last-child {
+            @apply pr-4;
+          }
+        }
+
+        & code {
+          @apply bg-background/30;
+        }
+      }
+    }
+
+    & code {
+      @apply w-max max-w-[30ch] rounded border-border bg-muted/50 px-1 pt-[1px] pb-[1px] text-sm leading-snug;
+    }
+  }
+
+  pre.shiki {
+    @apply my-0 overflow-x-auto rounded-sm p-0 leading-normal;
+
+    & code {
+      @apply border-none;
+
+      & span {
+        @apply text-sm;
+      }
+    }
+  }
+
+  :not(pre) {
+    > code {
+      @apply mx-0.75 inline-flex max-w-full -translate-y-0.5 overflow-x-auto rounded border border-border bg-gray-3 px-1 py-px text-sm leading-snug font-normal tracking-tight text-foreground before:hidden after:hidden;
+    }
+
+    table {
+      td code:first-child {
+        @apply ml-0;
+      }
+    }
+  }
+
+  a {
+    code {
+      @apply text-primary;
+    }
+  }
+
+  p:has(> img) {
+    @apply my-8;
+  }
+
+  .prose-inside-content {
+    & > *,
+    & .prose > * {
+      @apply my-2.5;
+    }
+
+    & > *,
+    & .prose > * {
+      &:first-child:not(h2) {
+        @apply mt-0;
+      }
+
+      &:last-child {
+        @apply mb-0;
+      }
+    }
+
+    & .code-block {
+      @apply my-4;
+    }
+
+    :not(pre) > code {
+      @apply border text-sm leading-snug;
+    }
+
+    p {
+      @apply my-2.5 text-base leading-snug tracking-tight;
+    }
+
+    ol,
+    ul {
+      @apply my-2.5 flex flex-col gap-y-2.5 pl-5;
+    }
+
+    ol,
+    ul {
+      li {
+        @apply text-base leading-snug tracking-tight before:top-2.5 before:-left-5;
+      }
+    }
+  }
+
+  .accordion {
+    & :not(.prose-inside-content) h3 {
+      @apply my-0;
+    }
+  }
+
+  ol.steps {
+    @apply my-8 pl-0;
+
+    li {
+      @apply pl-0;
+
+      ol {
+        @apply mt-3.5 pl-4;
+        counter-reset: main-counter;
+
+        li {
+          @apply relative pl-2;
+          counter-increment: main-counter;
+        }
+        li::before {
+          content: counter(main-counter) ".";
+          @apply absolute -left-4 text-current;
+        }
+      }
+    }
+
+    & .steps-content > *,
+    & .steps-content > * {
+      &:first-child:not(h2) {
+        @apply mt-0;
+      }
+
+      &:last-child {
+        @apply mb-0;
+      }
+    }
+  }
+}
+
+.prose-lg {
+  @apply text-base md:text-lg md:leading-normal;
+}

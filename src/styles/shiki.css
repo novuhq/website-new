@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+html .shiki {
+  --shiki-highlighted-line-background: hsla(240, 4%, 15%, 0.8);
+  --shiki-removed-line-background: hsla(1, 41%, 20%, 0.9);
+  --shiki-added-line-background: hsla(124, 24%, 23%, 0.9);
+
+  @apply !bg-background;
+  & span.line {
+    & > span {
+      color: var(--shiki-dark) !important;
+    }
+
+    @apply bg-background;
+  }
+}
+
+pre code {
+  @apply !flex flex-col text-sm;
+}
+
+code .line::after {
+  @apply invisible overflow-hidden content-["'"];
+}
+
+.show-linenumbers {
+  pre code {
+    counter-reset: line;
+  }
+
+  pre code > .line::before {
+    counter-increment: line;
+    content: counter(line);
+
+    @apply mr-5 inline-block w-4 text-right text-sm text-muted-foreground;
+  }
+}
+
+/* TODO: add styles for highlighted lines */
+.shiki span.line.highlighted {
+  @apply !bg-[var(--shiki-highlighted-line-background)];
+}
+.shiki span.line.diff.add {
+  @apply !bg-[var(--shiki-added-line-background)] before:ml-2 before:text-foreground/90 before:content-["+"];
+}
+.shiki span.line.diff.remove {
+  @apply !bg-[var(--shiki-removed-line-background)] before:ml-2 before:text-foreground/90 before:content-["-"];
+}
+
+.numbered-lines {
+  pre code.grid {
+    counter-reset: main-counter;
+  }
+
+  .line {
+    @apply relative pb-px pl-8.5;
+    counter-increment: main-counter;
+  }
+
+  .line::before {
+    content: counter(main-counter);
+    @apply absolute left-0 w-4.5 text-right text-gray-6;
+  }
+}

@@ -1,0 +1,247 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "../../tailwind.plugins.mjs";
+
+@import "tw-animate-css";
+
+@import "./typography.css";
+@import "./shiki.css";
+@import "./video.css";
+
+:root {
+  --color-primary-1: 190 100% 50%; /* primary-1 */
+  --color-primary-2: 190 100% 75%; /* primary-2 */
+
+  --color-secondary-1: 310 100% 60%; /* secondary-1 */
+  --color-secondary-2: 50 100% 65%; /* secondary-2 */
+  --color-secondary-3: 155 100% 45%; /* secondary-3 */
+
+  --color-yellow-1: 47 100% 72%; /* yellow-default */
+  --color-yellow-2: 47 100% 80%; /* yellow-2 */
+
+  --color-blue: 225, 100%, 75%; /* blue-2 */
+
+  --purple: 239, 100%, 78%; /* purple-default */
+  --purple-2: 290 80% 75%; /* purple-2 */
+  --purple-3: 290 60% 60%; /* purple-3 */
+
+  --gray-1: 0 0% 5%; /* #0D0D0D */
+  --gray-2: 0 0% 10%; /* #1A1A1A */
+  --gray-3: 0 0% 15%; /* #262626 */
+  --gray-4: 0 0% 20%; /* #333333 */
+  --gray-5: 0 0% 30%; /* #4D4D4D */
+  --gray-6: 0 0% 40%; /* #666666 */
+  --gray-7: 0 0% 50%; /* #808080 */
+  --gray-8: 0 0% 60%; /* #999999 */
+  --gray-9: 0 0% 80%; /* #CCCCCC */
+  --gray-10: 0 0% 90%; /* #E6E6E6 */
+  --gray-11: 0 0% 96%; /* #F5F5F5 */
+
+  --background: 240 37% 3%;
+  --foreground: 0 0% 100%;
+
+  --destructive: 0 62.8% 30.6%;
+  --ring: 215 90% 81%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 80% 50%; /* red-default */
+  --radius: 0.375rem;
+
+  /* Pricing Page NumberFlow */
+  --number-flow-mask-height: 0.25rem;
+  --number-flow-mask-width: 0.25rem;
+
+  /* Custom project variables */
+  --sticky-header-height: 3.25rem;
+  --footer-safe-area-spacing: 0rem;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--background));
+  --color-card-foreground: hsl(var(--foreground));
+
+  --color-popover: hsl(var(--background));
+  --color-popover-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--color-primary-1));
+  --color-primary-muted: hsl(var(--color-primary-2));
+  --color-primary-foreground: hsl(var(--background));
+
+  --color-secondary: hsl(var(--background));
+  --color-secondary-foreground: hsl(var(--gray-10));
+
+  --color-muted: hsl(var(--background));
+  --color-muted-foreground: hsl(var(--gray-8));
+
+  --color-accent: hsl(var(--gray-4));
+  --color-accent-foreground: white;
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: white;
+
+  --color-border: hsl(var(--gray-5));
+  --color-input: hsl(var(--gray-5));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-gray-1: hsl(var(--gray-1));
+  --color-gray-2: hsl(var(--gray-2));
+  --color-gray-3: hsl(var(--gray-3));
+  --color-gray-4: hsl(var(--gray-4));
+  --color-gray-5: hsl(var(--gray-5));
+  --color-gray-6: hsl(var(--gray-6));
+  --color-gray-7: hsl(var(--gray-7));
+  --color-gray-8: hsl(var(--gray-8));
+  --color-gray-9: hsl(var(--gray-9));
+  --color-gray-10: hsl(var(--gray-10));
+  --color-gray-11: hsl(var(--gray-11));
+
+  --color-purple: hsl(var(--purple));
+  --color-purple-2: hsl(var(--purple-2));
+  --color-purple-3: hsl(var(--purple-3));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans:
+    var(--font-brother-1816), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-logos: logos 60s linear infinite;
+
+  --tracking-tighter: -0.02em;
+  --tracking-tight: -0.025em;
+  --tracking-plus-tight: -0.04em;
+
+  --shadow-header-dropdown:
+    0px 20px 50px 0px hsla(0, 0%, 0%, 0.8),
+    0px 4px 12px 0px hsla(0, 0%, 0%, 0.3);
+  --shadow-changelog-image:
+    0 -1.449px 4.829px 0 rgba(15, 16, 21, 0.25),
+    -0.483px -0.483px 2.415px 0 rgba(15, 16, 21, 0.2),
+    2.415px 2.415px 4.829px 0 rgba(15, 16, 21, 0.1);
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes logos {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility border-gradient {
+  @apply border border-transparent bg-origin-border;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0) border-box;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* TODO: Prettier does not work in CSS */
+@utility border-grid {
+  @apply border-border;
+}
+
+@utility remove-autocomplete-styles {
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:hover {
+    -webkit-transition:
+      background-color 5000s,
+      color 5000s;
+    transition:
+      background-color 5000s,
+      color 5000s;
+  }
+}
+
+@layer utilities {
+  body {
+    font-family: var(--font-sans);
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  body:has([data-slot="documentation-menu-trigger"]) {
+    --footer-safe-area-spacing: 3.25rem;
+  }
+
+  :where(:focus-visible) {
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-hidden;
+  }
+  /*
+    Apply focus ring and rounded styles to all <a> elements without a class.
+    This ensures that links coming from raw content (e.g. Markdown, CMS) have accessible focus styles.
+
+    TODO: You may want to refine this selector to target only links inside specific content wrappers (e.g. .prose > a, .content a) to avoid unwanted styles on layout/navigation links.
+  */
+  a:not([class]) {
+    @apply rounded focus-visible:ring-offset-0;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
