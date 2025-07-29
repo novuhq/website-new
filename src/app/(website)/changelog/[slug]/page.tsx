@@ -157,7 +157,7 @@ export default async function ChangelogPostPage({
         <div className="mx-auto mt-22 grid max-w-248 grid-cols-2 gap-4 xl:max-w-176">
           <Button
             className={cn(
-              "!flex !h-auto w-full !p-0 normal-case",
+              "!flex !h-auto w-full border-[#1C1D22] !p-0 normal-case",
               !previousChangelog.slug && "pointer-events-none opacity-50"
             )}
             variant="outline"
@@ -183,7 +183,7 @@ export default async function ChangelogPostPage({
           </Button>
           <Button
             className={cn(
-              "!h-auto w-full !p-0 normal-case",
+              "!h-auto w-full border-[#1C1D22] !p-0 normal-case",
               !nextChangelog.slug && "pointer-events-none opacity-50"
             )}
             variant="outline"
