@@ -29,3 +29,15 @@ export interface IChangelogPostData {
   content: PortableTextBlock[]
   seo: ISeoFields
 }
+
+export interface IChangelogPostWithNeighbors {
+  post: IChangelogPostData
+  previousChangelog: {
+    title: string | null
+    slug: string | null
+  }
+  nextChangelog: {
+    title: string | null
+    slug: string | null
+  }
+}

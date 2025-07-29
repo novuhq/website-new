@@ -1,10 +1,13 @@
 import { Metadata } from "next"
 import Image from "next/image"
+import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
 import { getAllChangelogPosts, getChangelogPostBySlug } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 import Authors from "@/components/pages/changelog/authors"
@@ -23,18 +26,18 @@ export async function generateMetadata({
   params,
 }: ChangelogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await getChangelogPostBySlug(slug)
+  const postData = await getChangelogPostBySlug(slug)
 
-  if (!post) {
+  if (!postData) {
     return {}
   }
 
-  const { title, caption, cover, seo } = post
+  const { title, caption, cover, seo } = postData.post
 
   return getMetadata({
     title: seo?.title || title,
     description: seo?.description || caption,
-    pathname: `${ROUTE.changelog}/${post.slug}`,
+    pathname: `${ROUTE.changelog}/${postData.post.slug}`,
     imagePath: seo?.socialImage || cover,
   })
 }
@@ -51,11 +54,13 @@ export default async function ChangelogPostPage({
   params,
 }: ChangelogPostPageProps) {
   const { slug } = await params
-  const post = await getChangelogPostBySlug(slug)
+  const postData = await getChangelogPostBySlug(slug)
 
-  if (!post) {
+  if (!postData) {
     notFound()
   }
+
+  const { post, previousChangelog, nextChangelog } = postData
 
   const {
     title,
@@ -69,7 +74,7 @@ export default async function ChangelogPostPage({
   } = post
 
   return (
-    <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-8">
+    <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
           <div>
@@ -87,12 +92,12 @@ export default async function ChangelogPostPage({
             </span>
             <p className="-mt-px text-sm tracking-tighter md:inline">{title}</p>
           </div>
-          <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl">
+          <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
             {title}
           </h1>
           {caption && (
             <p
-              className="lg:m mt-4 text-lg leading-normal font-light tracking-tighter text-gray-9 md:mt-3.75 lg:mr-64 xl:max-w-176 xl:pt-px"
+              className="mt-4 text-lg leading-normal font-light tracking-tighter text-gray-9 md:mt-3.75 lg:mr-64 xl:max-w-176 xl:pt-px"
               dangerouslySetInnerHTML={{
                 __html: caption.replace(/\n/g, "<br />"),
               }}
@@ -145,10 +150,60 @@ export default async function ChangelogPostPage({
             </div>
           </div>
           <Content
-            className="prose mt-18 [&>*:first-child]:mt-0!"
+            className="prose mt-18 xl:max-w-176 [&>*:first-child]:mt-0!"
             content={content}
           />
         </article>
+        <div className="mx-auto mt-22 grid max-w-248 grid-cols-2 gap-4 xl:max-w-176">
+          <Button
+            className={cn(
+              "!flex !h-auto w-full !p-0 normal-case",
+              !previousChangelog.slug && "pointer-events-none opacity-50"
+            )}
+            variant="outline"
+            asChild
+          >
+            <NextLink
+              href={
+                previousChangelog.slug
+                  ? `/changelog/${previousChangelog.slug}`
+                  : "#"
+              }
+            >
+              <span className="flex w-full flex-col items-start gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5">
+                <span className="flex items-center gap-1 text-xs text-gray-9">
+                  <DynamicIcon icon="chevron-left" />
+                  Previous
+                </span>
+                <span className="mt-auto text-sm">
+                  {previousChangelog.title}
+                </span>
+              </span>
+            </NextLink>
+          </Button>
+          <Button
+            className={cn(
+              "!h-auto w-full !p-0 normal-case",
+              !nextChangelog.slug && "pointer-events-none opacity-50"
+            )}
+            variant="outline"
+            asChild
+          >
+            <NextLink
+              href={
+                nextChangelog.slug ? `/changelog/${nextChangelog.slug}` : "#"
+              }
+            >
+              <span className="flex w-full flex-col items-end gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5">
+                <span className="flex items-center gap-1 text-xs text-gray-9">
+                  Next
+                  <DynamicIcon icon="chevron-right" />
+                </span>
+                <span className="mt-auto text-sm">{nextChangelog.title}</span>
+              </span>
+            </NextLink>
+          </Button>
+        </div>
       </section>
     </main>
   )

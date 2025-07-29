@@ -1,4 +1,7 @@
-import { IChangelogCategoryData, IChangelogPostData } from "@/types/changelog"
+import {
+  IChangelogPostData,
+  IChangelogPostWithNeighbors,
+} from "@/types/changelog"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   changelogPostBySlugQuery,
@@ -36,7 +39,7 @@ export async function getAllChangelogPosts(
 export async function getChangelogPostBySlug(
   slug: string,
   preview = false
-): Promise<IChangelogPostData | null> {
+): Promise<IChangelogPostWithNeighbors | null> {
   const post = await sanityFetch<IChangelogPostData>({
     query: changelogPostBySlugQuery,
     qParams: { slug },
@@ -48,7 +51,20 @@ export async function getChangelogPostBySlug(
     return null
   }
 
-  return {
+  // Fetch all posts to determine prev/next slugs
+  const posts = await getAllChangelogPosts(preview)
+  const index = posts.findIndex((p) => p.slug.current === slug)
+
+  const previousChangelog =
+    index > 0
+      ? { slug: posts[index - 1].slug.current, title: posts[index - 1].title }
+      : { slug: null, title: null }
+  const nextChangelog =
+    index < posts.length - 1
+      ? { slug: posts[index + 1].slug.current, title: posts[index + 1].title }
+      : { slug: null, title: null }
+
+  const postWithSeo = {
     ...post,
     seo: {
       ...post.seo,
@@ -56,6 +72,12 @@ export async function getChangelogPostBySlug(
         post.seo.socialImage ??
         `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?template=changelog&title=${post.seo.title}`,
     },
+  }
+
+  return {
+    post: postWithSeo,
+    previousChangelog,
+    nextChangelog,
   }
 }
 
