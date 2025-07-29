@@ -13,8 +13,9 @@ export default async function CategoryPage({
 }) {
   const { category } = await params
   const posts = await getChangelogPostsByCategory(category)
+
   const categoryTitle =
-    posts?.[0]?.categories.find((c) => c.slug.current === category)?.title ||
+    posts?.[0]?.categories?.find((c) => c.slug.current === category)?.title ||
     category
 
   return (
@@ -45,7 +46,7 @@ export async function generateMetadata({
   const { category } = await params
   const posts = await getChangelogPostsByCategory(category)
   const categoryTitle =
-    posts?.[0]?.categories.find((c) => c.slug.current === category)?.title ||
+    posts?.[0]?.categories?.find((c) => c.slug.current === category)?.title ||
     category
 
   return getMetadata({
