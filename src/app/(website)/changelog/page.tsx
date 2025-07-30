@@ -16,7 +16,9 @@ export default async function ChangelogPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = Number(searchParams?.page ?? 1)
+  const pageParams = await searchParams
+  const page = Number(pageParams?.page ?? 1)
+
   if (isNaN(page) || page < 1) notFound()
 
   const allPosts = await getChangelogPosts()
