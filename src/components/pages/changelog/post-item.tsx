@@ -32,8 +32,11 @@ function PostsItem({
         <Date publishedAt={publishedAt} />
       </p>
       <div className="pt-px lg:max-w-160 xl:pt-0">
-        <Link href={`${ROUTE.changelog}/${slug.current}`} variant="foreground">
-          <h1 className="text-[28px] leading-[1.125] font-semibold tracking-tighter md:text-[30px]">
+        <Link
+          className="!text-foreground hover:!text-foreground/40"
+          href={`${ROUTE.changelog}/${slug.current}`}
+        >
+          <h1 className="text-[28px] leading-[1.125] font-semibold tracking-tighter text-current md:text-[30px]">
             {title}
           </h1>
         </Link>
