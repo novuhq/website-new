@@ -17,7 +17,7 @@ const REVALIDATE_CHANGELOG_TAG = ["changelog"]
  *
  * @returns Array of formatted post objects
  */
-export async function getAllChangelogPosts(
+export async function getChangelogPosts(
   preview = false
 ): Promise<IChangelogPostData[]> {
   const posts = await sanityFetch<IChangelogPostData[]>({
@@ -52,7 +52,7 @@ export async function getChangelogPostBySlug(
   }
 
   // Fetch all posts to determine prev/next slugs
-  const posts = await getAllChangelogPosts(preview)
+  const posts = await getChangelogPosts(preview)
   const index = posts.findIndex((p) => p.slug.current === slug)
 
   const nextChangelog =

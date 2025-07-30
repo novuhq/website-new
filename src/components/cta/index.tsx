@@ -13,7 +13,7 @@ function CTA({ className, title, description, actions }: ICTAProps) {
   return (
     <section
       className={cn(
-        "cta relative overflow-hidden pt-37 pb-36 md:pt-50 md:pb-46.5 lg:pb-50 xl:pt-62",
+        "cta relative overflow-hidden pt-37.5 pb-36 md:pt-50.5 md:pb-46.5 lg:pb-50 xl:pt-62.5",
         className
       )}
     >

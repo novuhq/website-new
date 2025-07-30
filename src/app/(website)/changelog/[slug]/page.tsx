@@ -4,7 +4,7 @@ import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
-import { getAllChangelogPosts, getChangelogPostBySlug } from "@/lib/changelog"
+import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -92,7 +92,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllChangelogPosts()
+  const posts = await getChangelogPosts()
 
   return posts.map(({ slug }) => ({
     slug: slug.current,
