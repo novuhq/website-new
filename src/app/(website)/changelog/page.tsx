@@ -4,6 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getAllChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
+import CTA from "@/components/cta"
 import ChangelogHero from "@/components/pages/changelog/hero"
 import PostsList from "@/components/pages/changelog/posts-list"
 
@@ -11,7 +12,7 @@ export default async function ChangelogPage() {
   const posts = await getAllChangelogPosts()
 
   return (
-    <main className="pb-12 md:pb-14 lg:pb-16 xl:pb-24">
+    <main>
       <ChangelogHero
         title="Changelog"
         description="Product updates, improvements, and fixes"
@@ -26,6 +27,28 @@ export default async function ChangelogPage() {
           </p>
         </section>
       )}
+
+      <CTA
+        title="Free to start, ready to scale"
+        description={
+          <>
+            <strong>10K events/month</strong> free forever. From weekend
+            projects to enterprise scale, we've got you covered.
+          </>
+        }
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Get started",
+            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+          },
+          {
+            kind: "secondary-button",
+            label: "See our plans",
+            href: ROUTE.pricing,
+          },
+        ]}
+      />
     </main>
   )
 }

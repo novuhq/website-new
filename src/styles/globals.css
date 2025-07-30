@@ -59,6 +59,9 @@
 }
 
 @theme inline {
+  --breakpoint-2xs: 20rem;
+  --breakpoint-xs: 28rem;
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
@@ -133,6 +136,9 @@
     0 -1.449px 4.829px 0 rgba(15, 16, 21, 0.25),
     -0.483px -0.483px 2.415px 0 rgba(15, 16, 21, 0.2),
     2.415px 2.415px 4.829px 0 rgba(15, 16, 21, 0.1);
+
+  --button-gradient:
+    258deg, hsla(265, 16%, 70%, 0.6) -8.62%, hsla(264, 16%, 70%, 0.3) 113.79%;
 
   @keyframes accordion-down {
     from {
@@ -243,5 +249,9 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+
+  .button-gradient {
+    @apply overflow-hidden before:absolute before:!-inset-px before:bg-linear-(--button-gradient) before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
   }
 }

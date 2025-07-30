@@ -106,3 +106,14 @@ export interface ISeoFields {
   socialImage: string
   noIndex: boolean
 }
+
+export type TSectionAction =
+  | { kind: "primary-button"; label: string; href: Route<string> | URL }
+  | { kind: "secondary-button"; label: string; href: Route<string> | URL }
+  | { kind: "link"; label: string; href: Route<string> | URL }
+
+export interface ICtaSection {
+  title: string
+  description: string | ReactNode
+  actions: TSectionAction[]
+}
