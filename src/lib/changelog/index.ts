@@ -55,11 +55,11 @@ export async function getChangelogPostBySlug(
   const posts = await getAllChangelogPosts(preview)
   const index = posts.findIndex((p) => p.slug.current === slug)
 
-  const previousChangelog =
+  const nextChangelog =
     index > 0
       ? { slug: posts[index - 1].slug.current, title: posts[index - 1].title }
       : { slug: null, title: null }
-  const nextChangelog =
+  const previousChangelog =
     index < posts.length - 1
       ? { slug: posts[index + 1].slug.current, title: posts[index + 1].title }
       : { slug: null, title: null }

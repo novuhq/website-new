@@ -22,6 +22,55 @@ interface ChangelogPostPageProps {
   }>
 }
 
+interface IPaginationControlProps {
+  slug?: string | null
+  title?: string | null
+  direction: "previous" | "next"
+}
+
+function PaginationControl({
+  slug = null,
+  title = null,
+  direction,
+}: IPaginationControlProps) {
+  return (
+    <div>
+      {slug && title && (
+        <Button
+          className="!flex !h-auto w-full border-[#1C1D22] !p-0 normal-case"
+          variant="outline"
+          asChild
+        >
+          <NextLink href={`/changelog/${slug}`}>
+            <span
+              className={cn(
+                "flex w-full flex-col gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5",
+                direction === "previous" ? "items-start" : "items-end"
+              )}
+            >
+              <span className="flex items-center gap-1 text-xs text-gray-9">
+                {direction === "previous" && (
+                  <>
+                    <DynamicIcon icon="chevron-left" />
+                    Previous
+                  </>
+                )}
+                {direction === "next" && (
+                  <>
+                    Next
+                    <DynamicIcon icon="chevron-right" />
+                  </>
+                )}
+              </span>
+              <span className="mt-auto text-sm">{title}</span>
+            </span>
+          </NextLink>
+        </Button>
+      )}
+    </div>
+  )
+}
+
 export async function generateMetadata({
   params,
 }: ChangelogPostPageProps): Promise<Metadata> {
@@ -155,54 +204,16 @@ export default async function ChangelogPostPage({
           />
         </article>
         <div className="mx-auto mt-22 grid max-w-248 grid-cols-2 gap-4 xl:max-w-176">
-          <Button
-            className={cn(
-              "!flex !h-auto w-full border-[#1C1D22] !p-0 normal-case",
-              !previousChangelog.slug && "pointer-events-none opacity-50"
-            )}
-            variant="outline"
-            asChild
-          >
-            <NextLink
-              href={
-                previousChangelog.slug
-                  ? `/changelog/${previousChangelog.slug}`
-                  : "#"
-              }
-            >
-              <span className="flex w-full flex-col items-start gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5">
-                <span className="flex items-center gap-1 text-xs text-gray-9">
-                  <DynamicIcon icon="chevron-left" />
-                  Previous
-                </span>
-                <span className="mt-auto text-sm">
-                  {previousChangelog.title}
-                </span>
-              </span>
-            </NextLink>
-          </Button>
-          <Button
-            className={cn(
-              "!h-auto w-full border-[#1C1D22] !p-0 normal-case",
-              !nextChangelog.slug && "pointer-events-none opacity-50"
-            )}
-            variant="outline"
-            asChild
-          >
-            <NextLink
-              href={
-                nextChangelog.slug ? `/changelog/${nextChangelog.slug}` : "#"
-              }
-            >
-              <span className="flex w-full flex-col items-end gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5">
-                <span className="flex items-center gap-1 text-xs text-gray-9">
-                  Next
-                  <DynamicIcon icon="chevron-right" />
-                </span>
-                <span className="mt-auto text-sm">{nextChangelog.title}</span>
-              </span>
-            </NextLink>
-          </Button>
+          <PaginationControl
+            slug={previousChangelog.slug}
+            title={previousChangelog.title}
+            direction="previous"
+          />
+          <PaginationControl
+            slug={nextChangelog.slug}
+            title={nextChangelog.title}
+            direction="next"
+          />
         </div>
       </section>
     </main>
