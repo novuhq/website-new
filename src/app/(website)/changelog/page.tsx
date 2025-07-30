@@ -14,7 +14,7 @@ const CHANGELOG_POSTS_PER_PAGE = 6
 export default async function ChangelogPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const pageParams = await searchParams
   const page = Number(pageParams?.page ?? 1)
