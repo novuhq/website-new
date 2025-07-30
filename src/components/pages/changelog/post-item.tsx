@@ -48,15 +48,15 @@ function PostsItem({
             }}
           />
         )}
-        <Content
-          className="prose mt-4.5 [&>*:first-child]:mt-0!"
-          content={content}
-        />
         {cover && (
           <div className="relative mt-7.75 aspect-video overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image">
             <Image className="" src={cover} alt="Cover" fill />
           </div>
         )}
+        <Content
+          className="prose mt-4.5 [&>*:first-child]:mt-0!"
+          content={content}
+        />
         <div className="md:mt-7.5 md:flex md:items-center md:gap-3 xl:mt-8">
           <Authors
             className="mt-7.75 md:mt-0 md:shrink-0"
