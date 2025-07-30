@@ -152,24 +152,20 @@ export default async function ChangelogPostPage({
               }}
             />
           )}
-          <div className="mt-7.75 flex flex-col gap-10.5 md:gap-12 lg:flex-row lg:gap-8">
+          <div className="mt-7.75 grid grid-cols-1 lg:grid-cols-[1fr_224px] lg:gap-x-8 xl:grid-cols-[1fr_256px]">
             {cover && (
-              <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image xl:max-w-176">
+              <div className="relative mb-10.5 aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image md:mb-12 lg:col-start-1 lg:mb-0">
                 <Image className="" src={cover} alt="Cover" fill />
               </div>
             )}
-            <div className="flex flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:max-w-56 lg:shrink-0 lg:flex-col lg:justify-start lg:gap-5.5">
+            <div className="flex w-full flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:ml-auto lg:flex-col lg:justify-start lg:gap-5.5 xl:pt-0.5">
               <dl className="flex flex-col gap-5 md:flex-row md:gap-17.5 lg:flex-col lg:gap-6.5">
                 <div className="flex flex-col gap-4">
                   <dt className="leading-tight font-medium tracking-tighter">
                     Contributors
                   </dt>
                   <dd>
-                    <Authors
-                      authors={[...authors, ...authors]}
-                      variant="expanded"
-                      size="xs"
-                    />
+                    <Authors authors={authors} variant="expanded" size="xs" />
                   </dd>
                 </div>
                 <div className="flex flex-col gap-4">
@@ -197,24 +193,27 @@ export default async function ChangelogPostPage({
               </dl>
               <SocialShare className="md:-mt-px" pathname={pathname} />
             </div>
+            <Content
+              className={cn(
+                "prose mt-18 lg:col-start-1 [&>*:first-child]:mt-0!",
+                !cover && "lg:mt-0"
+              )}
+              content={content}
+            />
+            <div className="mt-22 grid w-full grid-cols-2 gap-4 lg:col-start-1">
+              <PaginationControl
+                slug={previousChangelog.slug}
+                title={previousChangelog.title}
+                direction="previous"
+              />
+              <PaginationControl
+                slug={nextChangelog.slug}
+                title={nextChangelog.title}
+                direction="next"
+              />
+            </div>
           </div>
-          <Content
-            className="prose mt-18 xl:max-w-176 [&>*:first-child]:mt-0!"
-            content={content}
-          />
         </article>
-        <div className="mx-auto mt-22 grid max-w-248 grid-cols-2 gap-4 xl:max-w-176">
-          <PaginationControl
-            slug={previousChangelog.slug}
-            title={previousChangelog.title}
-            direction="previous"
-          />
-          <PaginationControl
-            slug={nextChangelog.slug}
-            title={nextChangelog.title}
-            direction="next"
-          />
-        </div>
       </section>
     </main>
   )
