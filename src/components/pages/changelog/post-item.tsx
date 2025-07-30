@@ -33,7 +33,7 @@ function PostsItem({
       </p>
       <div className="pt-px lg:max-w-160 xl:pt-0">
         <Link href={`${ROUTE.changelog}/${slug.current}`} variant="foreground">
-          <h1 className="text-[28px] leading-[1.125] font-semibold tracking-tighter md:text-[32px]">
+          <h1 className="text-[28px] leading-[1.125] font-semibold tracking-tighter md:text-[30px]">
             {title}
           </h1>
         </Link>
