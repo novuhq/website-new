@@ -2,6 +2,7 @@ import codeBlock from "./code-block"
 import codeTabs from "./code-tabs"
 import content from "./content"
 import detailsToggleBlock from "./details-toggle-block"
+import dividerBlock from "./divider"
 import iframeBlock from "./iframe-block"
 import noteBlock from "./note-block"
 import quoteBlock from "./quote-block"
@@ -15,6 +16,7 @@ const CONTENT_TYPES = [
   content,
   detailsToggleBlock,
   tableBlock,
+  dividerBlock,
   youtubeVideo,
   video,
   quoteBlock,

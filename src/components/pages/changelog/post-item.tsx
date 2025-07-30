@@ -54,8 +54,9 @@ function PostsItem({
           </div>
         )}
         <Content
-          className="prose mt-4.5 [&>*:first-child]:mt-0!"
+          className="prose-with-hidden-part prose mt-4.5 [&>*:first-child]:mt-0!"
           content={content}
+          readMoreSlug={`${ROUTE.changelog}/${slug.current}`}
         />
         <div className="md:mt-7.5 md:flex md:items-center md:gap-3 xl:mt-8">
           <Authors

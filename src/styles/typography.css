@@ -346,8 +346,18 @@
       }
     }
   }
+
+  &:not(.prose-with-hidden-part) .hidden-start {
+    @apply !hidden;
+  }
 }
 
 .prose-lg {
   @apply text-base md:text-lg md:leading-normal;
+}
+
+.prose-with-hidden-part {
+  .hidden-start ~ * {
+    display: none !important;
+  }
 }

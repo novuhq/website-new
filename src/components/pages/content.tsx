@@ -1,93 +1,3 @@
-// import {
-//   Children,
-//   cloneElement,
-//   ComponentProps,
-//   Fragment,
-//   HTMLAttributes,
-//   ImgHTMLAttributes,
-//   isValidElement,
-//   PropsWithChildren,
-//   ReactNode,
-// } from "react"
-// import Image from "next/image"
-// import config from "@/configs/website-config"
-// import {
-//   PortableText,
-//   PortableTextComponentProps,
-//   PortableTextReactComponents,
-// } from "@portabletext/react"
-// import { MDXRemote } from "next-mdx-remote/rsc"
-// import remarkGfm from "remark-gfm"
-// import { PortableTextBlock } from "sanity"
-
-// import { type IBlockquote, type TTableTheme } from "@/types/common"
-// import {
-//   type IContentCode,
-//   type IContentDetailsToggle,
-//   type IContentIframeBlock,
-//   type IContentNote,
-//   type IContentPicture,
-//   type IContentRelatedPosts,
-//   type IContentTable,
-//   type IContentVideo,
-//   type IContentYouTube,
-// } from "@/types/content"
-// import { getCodeProps } from "@/lib/rehype"
-// import { getProcessedImageUrl } from "@/lib/sanity/utils/get-url-for-image"
-// import {
-//   cn,
-//   extractTextFromChildren,
-//   extractYouTubeId,
-//   generateHeadingSlug,
-// } from "@/lib/utils"
-// import { Accordion, AccordionItem } from "@/components/content/accordion"
-// import Admonition from "@/components/content/admonition"
-// import Blockquote from "@/components/content/blockquote"
-// import Card from "@/components/content/card"
-// import CodeBlock from "@/components/content/code-block"
-// import CodeTabs from "@/components/content/code-tabs"
-// import Details from "@/components/content/details"
-// import FileSystem from "@/components/content/file-system"
-// import { Col, Grid } from "@/components/content/grid"
-// import Heading from "@/components/content/heading"
-// import Picture from "@/components/content/picture"
-// import { Step, Steps } from "@/components/content/steps"
-// import Table from "@/components/content/table"
-// import { Tab, Tabs, type TabsProps } from "@/components/content/tabs"
-// import Video from "@/components/content/video"
-// import YouTubeEmbed from "@/components/content/youtube-embed"
-
-// function getHeadingId(
-//   children: React.ReactNode,
-//   headingIdMap: Record<string, number>
-// ) {
-//   const text = extractTextFromChildren(children)
-//   const id = generateHeadingSlug(text, headingIdMap)
-//   headingIdMap[id] = headingIdMap[id] || 0
-//   return id
-// }
-
-// function getComponents(
-//   uniqueHeadingMap: Record<string, number>,
-//   allowMediaBreakout: boolean
-// ): Partial<PortableTextReactComponents> {
-//   return {
-//     types: {
-
-//       iframeBlock: ({
-//         value,
-//       }: PortableTextComponentProps<IContentIframeBlock>) => (
-//         <div
-//           className="my-8 sm:my-6 [&_iframe]:w-full"
-//           dangerouslySetInnerHTML={{ __html: value.content }}
-//         />
-//       ),
-
-//     },
-
-//   }
-// }
-
 import { ReactNode } from "react"
 import { Route } from "next"
 import Image from "next/image"
@@ -98,6 +8,7 @@ import {
   type PortableTextBlock,
   type PortableTextBlockComponent,
 } from "@portabletext/react"
+import { ChevronRight } from "lucide-react"
 import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
@@ -135,10 +46,25 @@ import YouTubeEmbed from "@/components/content/youtube-embed"
 
 function getComponents(
   uniqueHeadingMap: Record<string, number>,
-  allowMediaBreakout: boolean
+  allowMediaBreakout: boolean,
+  readMoreSlug: string
 ): Partial<PortableTextReactComponents> {
   return {
     types: {
+      dividerBlock: () => {
+        return (
+          <>
+            <Link
+              className="hidden-start !no-underline"
+              href={readMoreSlug}
+              animation="arrow-right"
+            >
+              Read more
+              <ChevronRight className="translate-y-0.5" size={16} />
+            </Link>
+          </>
+        )
+      },
       image: ({
         value: { asset, alt, caption, variant = "default" },
       }: PortableTextComponentProps<IContentPicture>) => {
@@ -394,15 +320,21 @@ interface IContentProps {
   className?: string
   content: PortableTextBlock[] | PortableTextBlock
   allowMediaBreakout?: boolean
+  readMoreSlug?: string
 }
 
 function Content({
   className,
   content,
   allowMediaBreakout = false,
+  readMoreSlug = "",
 }: IContentProps) {
   const uniqueHeadingMap = {}
-  const components = getComponents(uniqueHeadingMap, allowMediaBreakout)
+  const components = getComponents(
+    uniqueHeadingMap,
+    allowMediaBreakout,
+    readMoreSlug
+  )
 
   return (
     <div className={cn("prose max-w-none", className)}>
