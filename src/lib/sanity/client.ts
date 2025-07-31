@@ -8,11 +8,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  // TODO: remove after adding revalidate
-  // useCdn: process.env.NODE_ENV === "production",
-  useCdn: false,
+  useCdn: process.env.NODE_ENV === "production",
 })
-
 export const previewClient = createClient({
   projectId,
   dataset,
