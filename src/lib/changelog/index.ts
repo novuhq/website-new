@@ -96,6 +96,7 @@ export async function getChangelogPostsByCategory(
     query: changelogPostsByCategoryQuery,
     qParams: { slug },
     preview,
+    tags: REVALIDATE_CHANGELOG_TAG,
   })
 
   if (!posts || posts.length === 0) {
