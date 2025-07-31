@@ -4,11 +4,14 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"
+import { getGithubInfo } from "@/lib/get-github-info"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 
-export default function NotFound() {
+export default async function NotFound() {
+  const { stars } = await getGithubInfo()
+
   return (
     <>
       <head>
@@ -25,7 +28,7 @@ export default function NotFound() {
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
       >
         <Providers>
-          <Header />
+          <Header githubStars={stars} />
           <main className="flex grow">
             <section className="not-found flex grow items-center justify-center px-5 py-20 md:px-8">
               <div className="flex max-w-md flex-col items-center justify-center md:max-w-lg">
