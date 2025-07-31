@@ -2,8 +2,10 @@ import { revalidateTag } from "next/cache"
 import { NextResponse, type NextRequest } from "next/server"
 import { parseBody } from "next-sanity/webhook"
 
+const WEBHOOK_TYPES = ["changelogPost"] as const
+
 type WebhookPayload = {
-  _type: "changelog"
+  _type: (typeof WEBHOOK_TYPES)[number]
 }
 
 export async function POST(req: NextRequest) {
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify({ message, isValidSignature, body }), {
         status: 401,
       })
-    } else if (!body?._type || !["changelog"].includes(body._type)) {
+    } else if (!body?._type || !WEBHOOK_TYPES.includes(body._type)) {
       const message = "Bad Request"
 
       return new Response(JSON.stringify({ message, body }), { status: 400 })

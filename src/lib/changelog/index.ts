@@ -9,7 +9,7 @@ import {
   changelogPostsQuery,
 } from "@/lib/sanity/queries/changelog"
 
-const REVALIDATE_CHANGELOG_TAG = ["changelog"]
+const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
 
 /**
  * Fetches all blog posts from Sanity
