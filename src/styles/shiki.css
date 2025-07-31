@@ -11,7 +11,7 @@ html .shiki {
       color: var(--shiki-dark) !important;
     }
 
-    @apply bg-background;
+    @apply bg-[hsl(240,37%,3%)];
   }
 }
 
