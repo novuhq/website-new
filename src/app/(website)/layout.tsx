@@ -2,6 +2,7 @@ import { draftMode } from "next/headers"
 import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"
+import { getGithubInfo } from "@/lib/get-github-info"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import PreviewWarning from "@/components/preview-warning"
@@ -12,6 +13,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const { isEnabled: isDraftMode } = await draftMode()
+  const { stars } = await getGithubInfo()
 
   return (
     <>
@@ -24,7 +26,7 @@ export default async function RootLayout({
             className="flex grow flex-col rounded-none bg-background aria-hidden:[-webkit-mask-image:-webkit-radial-gradient(white,black)]"
             vaul-drawer-wrapper=""
           >
-            <Header />
+            <Header githubStars={stars} />
             {isDraftMode && <PreviewWarning />}
             <div className="grow">{children}</div>
             <Footer />

@@ -9,10 +9,16 @@ import { ROUTE } from "@/constants/routes"
 
 import { Button } from "@/components/ui/button"
 
-import MobileMenu from "./mobile-menu"
-import Nav from "./nav"
+import GithubStars from "../github-stars"
 
-function Header() {
+// import MobileMenu from "./mobile-menu"
+// import Nav from "./nav"
+
+interface IHeaderProps {
+  githubStars: number
+}
+
+function Header({ githubStars }: IHeaderProps) {
   const [isIntersecting, setIsIntersecting] = useState(false)
   const triggerRef = useRef<HTMLDivElement | null>(null)
 
@@ -55,9 +61,12 @@ function Header() {
         </NextLink>
         {/* <Nav className="hidden grow lg:flex" items={MENUS.header} /> */}
         <div className="ml-auto hidden items-center justify-end gap-x-5 lg:flex">
-          <Button variant="outline">Login</Button>
+          <GithubStars stars={githubStars} />
+          <Button variant="outline">
+            <NextLink href={ROUTE.dashboardV2SignIn}>Login</NextLink>
+          </Button>
           <Button asChild>
-            <NextLink href={ROUTE.contactUs}>Get Started</NextLink>
+            <NextLink href={ROUTE.dashboardV2SignUp}>Get Started</NextLink>
           </Button>
         </div>
         {/* <MobileMenu items={MENUS.header} /> */}
