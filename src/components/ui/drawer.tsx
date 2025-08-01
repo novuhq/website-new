@@ -52,23 +52,31 @@ function DrawerOverlay({
   )
 }
 
+interface IDrawerContentProps
+  extends React.ComponentProps<typeof DrawerPrimitive.Content> {
+  withTopLine?: boolean
+}
+
 function DrawerContent({
   className,
   children,
+  withTopLine = true,
   ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: IDrawerContentProps) {
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-popover",
+          "fixed inset-x-0 bottom-0 z-50 flex h-auto flex-col rounded-t-[10px] border bg-popover",
           className
         )}
         {...props}
       >
-        <div className="mx-auto mt-4 h-1 w-28 rounded-full bg-muted" />
+        {withTopLine && (
+          <div className="mx-auto mt-4 h-1 w-28 rounded-full bg-muted" />
+        )}
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>

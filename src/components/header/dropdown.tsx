@@ -58,7 +58,6 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
                     {items.map(({ label, href }, itemIndex) => (
                       <li key={itemIndex}>
                         <Link
-                          // className="relative z-10"
                           className="!leading-none font-light"
                           href={href}
                           variant="ghost-intense"

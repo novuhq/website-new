@@ -9,9 +9,9 @@ import { ROUTE } from "@/constants/routes"
 
 import { IMenuHeaderCard } from "@/types/common"
 import { Button } from "@/components/ui/button"
+import GithubStars from "@/components/github-stars"
 
-import GithubStars from "../github-stars"
-// import MobileMenu from "./mobile-menu"
+import MobileMenu from "./mobile-menu"
 import Nav from "./nav"
 
 interface IHeaderProps {
@@ -95,7 +95,7 @@ function Header({ githubStars, data }: IHeaderProps) {
             <NextLink href={ROUTE.dashboardV2SignUp}>Get Started</NextLink>
           </Button>
         </div>
-        {/* <MobileMenu items={MENUS.header} /> */}
+        <MobileMenu items={navigationItems} />
       </div>
       <div
         className="absolute top-0 h-0 w-full -translate-y-px"

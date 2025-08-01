@@ -11,7 +11,7 @@ export const MENUS = {
           subtitle: "Features",
           items: [
             { label: "Inbox Component", href: ROUTE.inbox },
-            { label: "User Preferences", href: ROUTE.docsUserPreferences },
+            { label: "User Preference", href: ROUTE.docsUserPreferences },
             { label: "Workflows", href: ROUTE.docsWorkflow },
             { label: "Framework", href: ROUTE.framework },
             { label: "Digest", href: ROUTE.digest },

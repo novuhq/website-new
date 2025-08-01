@@ -201,6 +201,10 @@
   body {
     font-family: var(--font-sans);
   }
+
+  body:has([data-disable-document-scroll="true"]) {
+    @apply overflow-hidden;
+  }
 }
 
 /*
