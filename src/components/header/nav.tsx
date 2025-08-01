@@ -101,14 +101,14 @@ function Nav({ className, items }: IHeaderNavProps) {
       ref={navRef}
     >
       <LazyMotion features={domAnimation}>
-        <ul className="flex items-center gap-x-[3px] xl:gap-x-[11px]">
+        <ul className="-ml-5.5 flex items-center xl:ml-44">
           {items.map(({ title, content, href }, index) => {
             const isActive = index === activeIndex
             const hasDropdown = !href && content && content.length > 0
 
             return (
               <li
-                className="relative"
+                className="relative px-px xl:px-1.25"
                 key={index}
                 onMouseEnter={hasDropdown ? handleMenuOpen(title) : undefined}
                 onMouseLeave={hasDropdown ? handleMenuOpen(null) : undefined}

@@ -7,20 +7,46 @@ import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
 
+import { IMenuHeaderCard } from "@/types/common"
 import { Button } from "@/components/ui/button"
 
 import GithubStars from "../github-stars"
-
 // import MobileMenu from "./mobile-menu"
-// import Nav from "./nav"
+import Nav from "./nav"
 
 interface IHeaderProps {
   githubStars: number
+  data: {
+    changelog: IMenuHeaderCard
+    blog: IMenuHeaderCard
+  }
 }
 
-function Header({ githubStars }: IHeaderProps) {
+function Header({ githubStars, data }: IHeaderProps) {
   const [isIntersecting, setIsIntersecting] = useState(false)
   const triggerRef = useRef<HTMLDivElement | null>(null)
+
+  const navigationItems = MENUS.header.map((item) => {
+    const content = item?.content?.map((contentItem) => {
+      if (contentItem.type === "changelog") {
+        return {
+          ...contentItem,
+          card: data.changelog,
+        }
+      } else if (contentItem.type === "blog") {
+        return {
+          ...contentItem,
+          card: data.blog,
+        }
+      }
+      return contentItem
+    })
+
+    return {
+      ...item,
+      content,
+    }
+  })
 
   useEffect(() => {
     if (!triggerRef.current) return
@@ -59,10 +85,10 @@ function Header({ githubStars }: IHeaderProps) {
           />
           <span className="sr-only">{config.projectName}</span>
         </NextLink>
-        {/* <Nav className="hidden grow lg:flex" items={MENUS.header} /> */}
+        <Nav className="hidden grow lg:flex" items={navigationItems} />
         <div className="ml-auto hidden items-center justify-end gap-x-5 lg:flex">
           <GithubStars stars={githubStars} />
-          <Button variant="outline">
+          <Button variant="outline" asChild>
             <NextLink href={ROUTE.dashboardV2SignIn}>Login</NextLink>
           </Button>
           <Button asChild>

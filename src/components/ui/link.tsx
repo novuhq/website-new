@@ -16,6 +16,7 @@ const linkVariants = cva(
         "muted-dark": "text-gray-6 hover:text-foreground",
         foreground: "text-foreground hover:text-foreground/80",
         ghost: "text-foreground opacity-50 hover:opacity-100",
+        "ghost-intense": "text-foreground/90 hover:text-primary",
       },
       size: {
         default: "text-base tracking-tighter [&_svg]:size-4",

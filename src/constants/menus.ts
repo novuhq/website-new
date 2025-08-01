@@ -40,7 +40,7 @@ export const MENUS = {
         },
         {
           subtitle: "Latest post",
-          type: "blogpost" as const,
+          type: "blog" as const,
         },
       ],
     },

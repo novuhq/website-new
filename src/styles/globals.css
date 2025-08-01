@@ -254,4 +254,29 @@
   .button-gradient {
     @apply overflow-hidden before:absolute before:!-inset-px before:bg-linear-(--button-gradient) before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
   }
+
+  .header-card-gradient {
+    background-image:
+      linear-gradient(
+        294deg,
+        rgba(0, 0, 0, 0) 45.36%,
+        rgba(0, 0, 0, 0.7) 126.53%
+      ),
+      linear-gradient(
+        120deg,
+        rgba(0, 0, 0, 0) 54.73%,
+        rgba(0, 0, 0, 0.8) 112.66%
+      ),
+      linear-gradient(
+        73deg,
+        rgba(0, 0, 0, 0) 17.56%,
+        rgba(27, 64, 79, 0.2) 79.95%
+      ),
+      linear-gradient(
+        252deg,
+        rgba(29, 23, 50, 0) -8.69%,
+        rgba(46, 37, 83, 0.2) 100%
+      ),
+      linear-gradient(180deg, #111427 0%, #0f122d 43.27%, #0f1223 100%);
+  }
 }

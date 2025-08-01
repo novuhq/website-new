@@ -15,16 +15,18 @@ export interface IMenuSocialItem extends IMenuItem {
   icon: TSocialIcons
 }
 
+export interface IMenuHeaderCard {
+  title: string
+  description: string
+  image: string
+  href: Route<string> | URL
+}
+
 export interface IMenuHeaderContent {
   subtitle: string
-  type?: "changelog" | "blogpost" | "link"
+  type?: "changelog" | "blog" | "link"
   items?: IMenuItem[]
-  card?: {
-    title: string
-    description: string
-    image: string
-    href: Route<string> | URL
-  }
+  card?: IMenuHeaderCard
 }
 
 export interface IMenuHeaderItem {
