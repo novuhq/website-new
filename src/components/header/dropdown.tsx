@@ -36,7 +36,7 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
           }}
         >
           <div className="relative z-10 flex gap-x-3.5 rounded-[14px] bg-gray-1 px-8 pt-6 pb-7">
-            {content.map(({ subtitle, items, card }, index) => (
+            {content.map(({ subtitle, items, card, type }, index) => (
               <div
                 className={cn(
                   "min-w-0",
@@ -69,7 +69,7 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
                     ))}
                   </ul>
                 )}
-                {card && <Card {...card} />}
+                {card && <Card type={type} {...card} />}
               </div>
             ))}
           </div>

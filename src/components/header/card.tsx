@@ -3,13 +3,18 @@ import Image from "next/image"
 import { IMenuHeaderCard } from "@/types/common"
 import { Link } from "@/components/ui/link"
 
-function Card({ title, description, href, image }: IMenuHeaderCard) {
+interface ICardProps extends IMenuHeaderCard {
+  type?: "changelog" | "blog" | "link"
+}
+
+function Card({ title, description, href, image, type }: ICardProps) {
   return (
     <Link
       className="-mr-px block pt-0.5 !text-foreground hover:!text-primary"
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(type === "link" || type === "blog"
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
     >
       <div className="header-card-gradient relative aspect-[220/124] overflow-hidden rounded-md border border-[#333347]/50">
         <Image
