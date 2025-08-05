@@ -4,16 +4,12 @@ import {
   DatetimeRule,
   defineField,
   defineType,
-  ImageRule,
   SlugRule,
   SortOrdering,
   StringRule,
 } from "sanity"
 
-import {
-  type IAuthorData,
-  type IChangelogCategoryData,
-} from "@/types/changelog"
+import { type IAuthorData } from "@/types/changelog"
 import { GROUP } from "@/lib/sanity/schemas/shared/group"
 import { SEO_FIELDS } from "@/lib/sanity/schemas/shared/seo"
 import {

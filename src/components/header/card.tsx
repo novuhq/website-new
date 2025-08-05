@@ -24,6 +24,7 @@ function Card({ title, description, href, image, type }: ICardProps) {
           loading="eager"
           fetchPriority="high"
           decoding="sync"
+          sizes="100vw"
           fill
         />
       </div>
