@@ -13,7 +13,7 @@ interface PostsListProps {
 function PostsList({ posts, className, hasMore }: PostsListProps) {
   return (
     <section
-      className={cn("posts-list -mt-0.5 pt-10 lg:pt-11 xl:pt-13", className)}
+      className={cn("posts-list -mt-0.5 pt-10 lg:pt-11 xl:pt-14", className)}
     >
       <div className="w-full px-5">
         <h2 className="sr-only">All changelog posts</h2>
