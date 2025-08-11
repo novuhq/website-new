@@ -1,6 +1,6 @@
 const config = {
   projectName: "Novu",
-  logo: "/logo.svg",
+  logo: "/images/logo.svg",
   metaThemeColor: "#00d5ff",
   defaultTitle: "Novu - The open-source notification infrastructure",
   defaultDescription:
