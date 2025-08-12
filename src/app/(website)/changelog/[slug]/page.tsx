@@ -37,14 +37,14 @@ function PaginationControl({
     <div>
       {slug && title && (
         <Button
-          className="!flex !h-auto w-full border-[#1C1D22] !p-0 normal-case"
+          className="!flex !h-full w-full border-[#1C1D22] !p-0 normal-case [&>span]:h-full"
           variant="outline"
           asChild
         >
           <NextLink href={`/changelog/${slug}`}>
             <span
               className={cn(
-                "flex w-full flex-col gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5",
+                "flex h-full w-full flex-col gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5",
                 direction === "previous" ? "items-start" : "items-end"
               )}
             >
@@ -62,7 +62,7 @@ function PaginationControl({
                   </>
                 )}
               </span>
-              <span className="mt-auto text-sm">{title}</span>
+              <span className="mt-auto line-clamp-2 text-sm">{title}</span>
             </span>
           </NextLink>
         </Button>
