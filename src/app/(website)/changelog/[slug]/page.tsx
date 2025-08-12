@@ -128,7 +128,7 @@ export default async function ChangelogPostPage({
         <article className="mx-auto max-w-248 xl:translate-x-36">
           <div>
             <Link
-              className="group -ml-px gap-x-1 leading-none tracking-tighter"
+              className="group -ml-px gap-x-1 leading-none tracking-tighter transition-colors duration-300"
               href={ROUTE.changelog}
               variant="muted-dark"
               size="sm"
