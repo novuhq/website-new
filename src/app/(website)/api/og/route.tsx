@@ -37,11 +37,15 @@ export async function GET(request: NextRequest) {
     const background = fetch(`${siteUrl}${imageUrl}`).then((res) =>
       res.arrayBuffer()
     )
-    const font = fetch(`${siteUrl}/fonts/inter/inter-regular.ttf`).then((res) =>
-      res.arrayBuffer()
-    )
+    const font = fetch(
+      `${siteUrl}/fonts/brother-1816/brother-1816-regular.ttf`
+    ).then((res) => res.arrayBuffer())
 
     const [fontRes, backgroundRes] = await Promise.all([font, background])
+
+    // Convert ArrayBuffer to base64 data URL
+    const backgroundBase64 = Buffer.from(backgroundRes).toString("base64")
+    const backgroundDataUrl = `data:image/jpeg;base64,${backgroundBase64}`
 
     return new ImageResponse(
       (
@@ -67,7 +71,7 @@ export async function GET(request: NextRequest) {
               zIndex: 1,
               objectFit: "cover",
             }}
-            src={backgroundRes as unknown as string}
+            src={backgroundDataUrl}
             alt=""
             width={width}
             height={height}
@@ -98,8 +102,7 @@ export async function GET(request: NextRequest) {
         width,
         height,
         fonts: [
-          { name: "Inter", data: fontRes, style: "normal", weight: 400 },
-          { name: "Inter", data: fontRes, style: "normal", weight: 600 },
+          { name: "Brother1816", data: fontRes, style: "normal", weight: 400 },
         ],
       }
     )
