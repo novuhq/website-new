@@ -3,13 +3,13 @@ import Image from "next/image"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
-import DynamicIcon from "@/components/dynamic-icon"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import SocialShare from "@/components/pages/changelog/social-share"
@@ -51,14 +51,14 @@ function PaginationControl({
               <span className="flex items-center gap-1 text-xs text-gray-9">
                 {direction === "previous" && (
                   <>
-                    <DynamicIcon icon="chevron-left" />
+                    <ChevronLeft />
                     Previous
                   </>
                 )}
                 {direction === "next" && (
                   <>
                     Next
-                    <DynamicIcon icon="chevron-right" />
+                    <ChevronRight />
                   </>
                 )}
               </span>
@@ -133,7 +133,7 @@ export default async function ChangelogPostPage({
               variant="muted-dark"
               size="sm"
             >
-              <DynamicIcon icon="chevron-left" />
+              <ChevronLeft />
               Back to all updates
             </Link>
             <span className="mx-2.5 text-sm leading-none font-medium tracking-tight text-gray-7 md:mx-2.75">
@@ -180,11 +180,7 @@ export default async function ChangelogPostPage({
                   </dt>
                   <dd className="gap flex flex-col gap-3">
                     <div className="-mt-px flex items-center gap-2 lg:-mt-px">
-                      <DynamicIcon
-                        className="text-muted-foreground"
-                        icon="calendar"
-                        size={14}
-                      />
+                      <Calendar className="text-muted-foreground" size={14} />
                       <Date
                         publishedAt={publishedAt}
                         variant="muted"
