@@ -9,7 +9,7 @@ const DEFAULT_WIDTH = 1200
 const DEFAULT_HEIGHT = 630
 
 const DEFAULT_TEMPLATES = {
-  default: "/og-images/default-cover.jpg",
+  default: "/og-images/default.jpg",
 } as const
 
 type TemplateKey = keyof typeof DEFAULT_TEMPLATES
