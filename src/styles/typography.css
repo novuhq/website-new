@@ -45,7 +45,7 @@
   h5 a,
   h6 a {
     font-weight: inherit;
-    @apply text-foreground hover:text-foreground/80;
+    @apply text-foreground transition-colors duration-300 hover:text-foreground/80;
   }
 
   .not-prose {
