@@ -18,36 +18,12 @@ const getTemplateImage = (key: string): string => {
   return DEFAULT_TEMPLATES[key as TemplateKey] || DEFAULT_TEMPLATES.default
 }
 
-function sanitizeTitle(str: string) {
-  return (
-    str
-      // Normalize quotes
-      .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
-      .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
-      // Normalize dashes
-      .replace(/[\u2013\u2014\u2212]/g, "-")
-      // Normalize ellipsis
-      .replace(/\u2026/g, "...")
-      // Remove non-breaking & soft hyphen
-      .replace(/\u00A0/g, " ")
-      .replace(/\u00AD/g, "")
-      // Escape HTML entities
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;")
-      // Remove control chars (except \n, \t)
-      .replace(/[\u0000-\u001F\u007F]/g, "")
-  )
-}
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl
 
     const templateKey = searchParams.get("template") || "default"
-    const title = sanitizeTitle(searchParams.get("title") || "")
+    const title = searchParams.get("title") || ""
     const width = parseInt(searchParams.get("width") || `${DEFAULT_WIDTH}`, 10)
     const height = parseInt(
       searchParams.get("height") || `${DEFAULT_HEIGHT}`,
@@ -61,9 +37,9 @@ export async function GET(request: NextRequest) {
     const background = fetch(`${siteUrl}${imageUrl}`).then((res) =>
       res.arrayBuffer()
     )
-    const font = fetch(
-      `${siteUrl}/fonts/brother-1816/brother-1816-regular.ttf`
-    ).then((res) => res.arrayBuffer())
+    const font = fetch(`${siteUrl}/fonts/inter/inter-regular.ttf`).then((res) =>
+      res.arrayBuffer()
+    )
 
     const [fontRes, backgroundRes] = await Promise.all([font, background])
 
@@ -126,7 +102,8 @@ export async function GET(request: NextRequest) {
         width,
         height,
         fonts: [
-          { name: "Brother1816", data: fontRes, style: "normal", weight: 400 },
+          { name: "Inter", data: fontRes, style: "normal", weight: 400 },
+          { name: "Inter", data: fontRes, style: "normal", weight: 600 },
         ],
       }
     )
