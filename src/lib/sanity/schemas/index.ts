@@ -1,9 +1,10 @@
 import { SchemaTypeDefinition } from "sanity"
 
 import changelog from "./pages/changelog"
+import customers from "./pages/customers"
 import shared from "./shared"
 
-const PAGE_TYPES = [...changelog]
+const PAGE_TYPES = [...changelog, ...customers]
 
 const SHARED_TYPES = [...shared]
 

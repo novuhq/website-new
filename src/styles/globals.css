@@ -7,6 +7,7 @@
 @import "./typography.css";
 @import "./shiki.css";
 @import "./video.css";
+@import "./reviews-slider.css";
 
 :root {
   --color-primary-1: 190 100% 50%; /* primary-1 */
@@ -36,6 +37,9 @@
   --gray-9: 0 0% 80%; /* #CCCCCC */
   --gray-10: 0 0% 90%; /* #E6E6E6 */
   --gray-11: 0 0% 96%; /* #F5F5F5 */
+
+  --lagune-3: 190, 100%, 50%; /* #00D5FF */
+  --lagune-2: 190, 100%, 75%; /* #80EAFF */
 
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
@@ -112,6 +116,9 @@
   --color-purple: hsl(var(--purple));
   --color-purple-2: hsl(var(--purple-2));
   --color-purple-3: hsl(var(--purple-3));
+
+  --color-lagune-3: hsl(var(--lagune-3));
+  --color-lagune-2: hsl(var(--lagune-2));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);

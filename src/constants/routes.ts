@@ -3,6 +3,7 @@ import type { Route } from "next"
 export const ROUTE: Record<string, Route<string> | URL> = {
   // CURRENT WEBSITE
   changelog: "/changelog",
+  customers: "/customers",
 
   // PREVIOUS WEBSITE
 
