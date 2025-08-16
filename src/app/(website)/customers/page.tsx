@@ -17,8 +17,6 @@ export default async function CustomersPage() {
     notFound()
   }
 
-  console.log(page, "PAGE")
-
   return (
     <main>
       <Hero

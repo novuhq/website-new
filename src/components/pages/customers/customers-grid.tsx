@@ -8,10 +8,18 @@ import { Link } from "@/components/ui/link"
 function ListBackground() {
   return (
     <>
-      <span className="absolute top-0 left-0 flex h-[374px] w-[491px] rotate-[14.23deg] opacity-8 [background:radial-gradient(50%_50%_at_50%_50%,#4474F2_0%,rgba(68,116,242,0)_100%)]" />
-      <span className="absolute top-1/2 left-1/2 flex h-[260px] w-full -translate-x-1/2 -translate-y-1/2 rounded-[491.581px] bg-[linear-gradient(73deg,#F575CA_19.98%,#7599F5_77.19%)] opacity-[0.05] blur-[25px]"></span>
-      <span className="absolute top-1/2 left-1/2 flex h-[296px] w-full -translate-x-1/2 -translate-y-1/2 rotate-[10deg] rounded-[1096.633px] bg-[linear-gradient(43deg,#F575CA_19.6%,#7599F5_80.06%)] opacity-[0.04] blur-[22.5px]"></span>
-      <span className="absolute top-16 left-0 flex h-[298px] w-[692px] rotate-[-15deg] rounded-[692.826px] bg-[linear-gradient(257deg,rgba(245,117,202,0.3)_0%,rgba(117,153,245,0.4)_100%)] opacity-[0.05] mix-blend-plus-lighter blur-[25px] lg:left-[150px]"></span>
+      <span className="absolute flex rotate-[14deg] rounded-[100%] bg-[radial-gradient(50%_50%_at_50%_50%,_#4474F2_0%,_rgba(68,116,242,0)_100%)] opacity-[0.08] md:top-[100px] md:left-[60px] md:h-[260px] md:w-[275px] lg:top-[50px] lg:left-20 lg:h-[375px] lg:w-[375px] 2xl:top-[50px] 2xl:left-[85px] 2xl:h-[374px] 2xl:w-[491px]" />
+      <span className="absolute flex rounded-[100%] bg-[linear-gradient(253deg,_#F575CA_19.98%,_#7599F5_77.19%)] opacity-[0.05] blur-[25px] md:top-[50px] md:left-[32px] md:h-[358px] md:w-[660px] lg:top-[34px] lg:left-6 lg:h-[358px] lg:w-[910px] 2xl:top-[42px] 2xl:-left-[140px] 2xl:h-[358px] 2xl:w-[1485px]" />
+      <span className="absolute flex rotate-[7deg] rounded-[100%] bg-[linear-gradient(186deg,_#F575CA_19.6%,_#7599F5_80.06%)] opacity-[0.04] blur-[22.5px] md:top-[105px] md:left-[38px] md:h-[296px] md:w-[597px] lg:top-[100px] lg:left-[35px] lg:h-[296px] lg:w-[903px] 2xl:top-[100px] 2xl:left-[100px] 2xl:h-[296px] 2xl:w-[1096px]" />
+      <span className="absolute flex rotate-[-13deg] rounded-[100%] bg-[linear-gradient(348deg,rgba(245,117,202,0.30)_0%,rgba(117,153,245,0.40)_100%)] opacity-5 mix-blend-plus-lighter blur-[25px] md:top-[85px] md:left-10 md:h-[298px] md:w-[629px] lg:top-[66px] lg:left-[74px] lg:h-[298px] lg:w-[692px] 2xl:top-[65px] 2xl:left-[170px]" />
+      {/* <Image
+        src={backgroundMob}
+        alt="background"
+        width={320}
+        height={664}
+        className="pointer-events-none absolute h-[664px] w-[320px] object-cover md:hidden"
+        quality={90}
+      /> */}
     </>
   )
 }
@@ -74,8 +82,8 @@ function CustomerCard({
 export default function CustomersGrid({ customers }: any) {
   return (
     <section className="trusted relative mt-[104px] md:mt-28 lg:mt-40">
-      <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] xl:max-w-[1216px]">
-        <h2 className="gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] xl:text-[44px]">
+      <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] 2xl:max-w-[1216px]">
+        <h2 className="gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
           Trusted by companies worldwide
         </h2>
         <ul className="relative mt-14 grid w-full flex-grow list-none grid-cols-2 md:grid-cols-4">

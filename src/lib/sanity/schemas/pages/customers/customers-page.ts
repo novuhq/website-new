@@ -148,7 +148,12 @@ export default defineType({
         },
       ],
       fieldset: "grid_customers",
+      validation: (rule: ArrayRule<any[]>) =>
+        rule
+          .length(12)
+          .error("Grid Customers must contain exactly 12 elements."),
     }),
+
     defineField({
       name: "tweets",
       title: "Tweets",
