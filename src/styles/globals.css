@@ -125,7 +125,7 @@
   --color-lagune-2: hsl(var(--lagune-2));
 
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius));
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-sans:

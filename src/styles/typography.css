@@ -5,7 +5,7 @@
 
   @apply prose-headings:text-3xl prose-headings:font-medium prose-headings:text-foreground;
 
-  @apply prose-h2:mt-11 prose-h2:mb-3.5 prose-h2:scroll-mt-8 prose-h2:text-[28px] prose-h2:leading-tight prose-h2:font-medium prose-h2:tracking-tighter md:prose-h2:mt-14 md:prose-h2:leading-tight;
+  @apply prose-h2:mt-14 prose-h2:mb-3.5 prose-h2:scroll-mt-8 prose-h2:text-[28px] prose-h2:leading-tight prose-h2:font-medium prose-h2:tracking-tighter md:prose-h2:leading-tight;
 
   @apply prose-h3:mt-5 prose-h3:mb-3.25 prose-h3:scroll-mt-6 prose-h3:text-2xl prose-h3:leading-snug prose-h3:font-medium prose-h3:tracking-tighter;
 

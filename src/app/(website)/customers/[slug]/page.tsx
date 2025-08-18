@@ -3,7 +3,11 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
-import { getAllCustomers, getCustomerBySlug } from "@/lib/customers"
+import {
+  getAllCustomers,
+  getCustomerBySlug,
+  getLatestCustomers,
+} from "@/lib/customers"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
@@ -60,7 +64,7 @@ export default async function CustomerStoryPage({
     notFound()
   }
 
-  const { customer, previousCustomer, nextCustomer } = postData
+  const { customer } = postData
 
   const {
     name,
@@ -83,17 +87,16 @@ export default async function CustomerStoryPage({
     related,
   } = customer
 
-  console.log(customer, "CUSTOMER")
-
-  console.log(bodyContent, "CONTENT")
+  const relatedCustomers =
+    related && related.length > 0 ? related : await getLatestCustomers(slug)
 
   return (
     <main>
-      <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
+      <section className="px-5 pt-9.5 md:px-8 md:pt-11.5 lg:px-0 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-232 xl:translate-x-30">
           <div>
             <Link
-              className="group -ml-px gap-x-1 leading-none tracking-tighter"
+              className="group -ml-px gap-x-1 leading-snug tracking-tighter"
               href={ROUTE.customers}
               variant="muted-dark"
               size="sm"
@@ -104,14 +107,16 @@ export default async function CustomerStoryPage({
             <span className="mx-2.5 text-sm leading-none font-medium tracking-tight text-gray-7 md:mx-2.75">
               /
             </span>
-            <p className="-mt-px text-sm tracking-tighter md:inline">{name}</p>
+            <p className="inline text-sm leading-none tracking-tighter">
+              {name}
+            </p>
           </div>
-          <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
+          <h1 className="mt-4 text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px] xl:max-w-176 xl:text-5xl">
             {title}
           </h1>
-          <div className="mt-7.75 grid grid-cols-1 lg:grid-cols-[704px_192px] lg:gap-x-8 xl:grid-cols-[704px_192px]">
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-[704px_192px] lg:gap-x-8 xl:grid-cols-[704px_192px]">
             {cover && (
-              <div className="relative mb-10.5 aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image md:mb-12 lg:col-start-1 lg:mb-0">
+              <div className="relative mb-10 aspect-video w-full overflow-hidden rounded-[5px] bg-[#1C1D22] shadow-changelog-image md:mb-12 md:rounded-xl lg:col-start-1 lg:mb-0">
                 <Image
                   className=""
                   src={cover.url}
@@ -121,8 +126,8 @@ export default async function CustomerStoryPage({
                 />
               </div>
             )}
-            <div className="sticky top-16 flex h-fit w-full flex-col gap-6">
-              <dl className="flex flex-col border-b border-gray-3 pb-6 md:flex-row lg:flex-col">
+            <div className="top-16 flex h-fit w-full flex-col gap-6 border-y border-gray-3 py-6 lg:sticky lg:border-0 lg:py-0">
+              <dl className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
                 <Image
                   className={cn("h-7 w-36 object-cover")}
                   src={logomark.url}
@@ -136,54 +141,56 @@ export default async function CustomerStoryPage({
                   <dt className="leading-tight font-medium tracking-tighter">
                     About
                   </dt>
-                  <dd className="mt-2 text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
+                  <dd className="text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
                     {about}
                   </dd>
                 </div>
-                <div className="mt-6 flex flex-col gap-2">
-                  <dt className="leading-tight font-medium tracking-tighter">
-                    Industry
-                  </dt>
-                  <dd className="mt-2 text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
-                    {industry}
-                  </dd>
-                </div>
-                <div className="mt-6 flex flex-col gap-2.5">
-                  <dt className="leading-tight font-medium tracking-tighter">
-                    Channels
-                  </dt>
-                  <dd className="flex items-center gap-2">
-                    <Link
-                      href={`mailto:${email}`}
-                      className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-2.5 pt-2 pb-1.5 text-sm leading-none tracking-tighter text-gray-9"
-                    >
-                      Email
-                    </Link>
-                    <Link
-                      href={`${inbox}`}
-                      className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-2.5 pt-2 pb-1.5 text-sm leading-none tracking-tighter text-gray-9"
-                    >
-                      Inbox
-                    </Link>
-                    <Link
-                      href={`sms:${sms}`}
-                      className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-2.5 pt-2 pb-1.5 text-sm leading-none tracking-tighter text-gray-9"
-                    >
-                      SMS
-                    </Link>
-                  </dd>
+                <div className="flex flex-col gap-5 md:flex-row md:gap-6 lg:flex-col">
+                  <div className="mt-5 flex flex-col gap-2 md:mt-6 md:w-1/2 lg:w-auto">
+                    <dt className="leading-tight font-medium tracking-tighter">
+                      Industry
+                    </dt>
+                    <dd className="text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
+                      {industry}
+                    </dd>
+                  </div>
+                  <div className="flex flex-col gap-2.5 md:w-1/2 lg:w-auto">
+                    <dt className="leading-tight font-medium tracking-tighter">
+                      Channels
+                    </dt>
+                    <dd className="flex items-center gap-2">
+                      <Link
+                        href={`mailto:${email}`}
+                        className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
+                      >
+                        Email
+                      </Link>
+                      <Link
+                        href={`${inbox}`}
+                        className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
+                      >
+                        Inbox
+                      </Link>
+                      <Link
+                        href={`sms:${sms}`}
+                        className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
+                      >
+                        SMS
+                      </Link>
+                    </dd>
+                  </div>
                 </div>
               </dl>
-              <SocialShare className="md:-mt-px" pathname={pathname} />
+              <SocialShare className="hidden lg:flex" pathname={pathname} />
             </div>
-            <div className="col-start-1 mt-10 border-l-2 border-gray-3 pl-6">
-              <h2 className="text-[28px] leading-normal font-normal tracking-tight">
+            <div className="col-start-1 mt-12 border-l-2 border-gray-3 pl-4 md:pl-6 lg:mt-14 xl:mt-[46px]">
+              <h2 className="text-[18px] leading-snug font-normal tracking-tight md:text-[28px] md:leading-normal">
                 {quoteTitle}
               </h2>
-              <div className="mt-4 flex gap-x-2.5">
+              <div className="mt-5 flex gap-x-2.5 tracking-tight md:mt-4">
                 {quoteAuthorLogo && (
                   <Image
-                    className="rounded-full"
+                    className="hidden rounded-full md:block"
                     src={quoteAuthorLogo.url}
                     alt={quoteAuthorName || ""}
                     width={28}
@@ -202,22 +209,22 @@ export default async function CustomerStoryPage({
                 </p>
               </div>
             </div>
-            <div className="col-start-1 mt-12 flex gap-4">
-              <ul className="flex w-1/2 flex-col gap-3">
-                <h2 className="mb-1 text-2xl leading-snug font-medium tracking-tight">
+            <div className="col-start-1 mt-14 flex flex-col gap-8 md:mt-12 md:flex-row md:gap-4">
+              <ul className="flex w-full flex-col gap-3 md:w-1/2">
+                <h2 className="mb-1 text-xl leading-snug font-medium tracking-tight md:text-2xl">
                   Key Challenges
                 </h2>
                 {keyChallenges?.map((challenge) => (
                   <li
                     key={challenge}
-                    className="relative pl-3.5 text-base font-normal text-gray-9 before:absolute before:top-1/2 before:left-0 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full before:bg-red-1 before:content-['']"
+                    className="relative pl-3.5 text-base font-normal text-gray-9 before:absolute before:top-[9px] before:left-0 before:h-1.5 before:w-1.5 before:rounded-full before:bg-red-1 before:content-['']"
                   >
                     {challenge}
                   </li>
                 ))}
               </ul>
-              <ul className="flex w-1/2 flex-col gap-3">
-                <h2 className="mb-1 text-2xl leading-snug font-medium tracking-tight">
+              <ul className="flex w-full flex-col gap-3 md:w-1/2">
+                <h2 className="mb-1 text-xl leading-snug font-medium tracking-tight md:text-2xl">
                   Novu Solution
                 </h2>
                 {novu_solution?.map((solution) => (
@@ -237,52 +244,57 @@ export default async function CustomerStoryPage({
               )}
               content={bodyContent}
             />
-            <section className="explore col-start-1 mt-24 flex flex-col gap-y-8">
-              <h2 className="text-[32px] leading-[1.125] font-normal tracking-tight">
+            <SocialShare
+              className="mt-14 flex border-t border-gray-3 pt-7 lg:hidden"
+              pathname={pathname}
+            />
+            <div className="explore col-start-1 mt-24 flex flex-col gap-y-8">
+              <h2 className="text-[28px] leading-[1.125] font-normal tracking-tight md:text-[32px]">
                 Explore
               </h2>
-              <ul className="flex flex-col rounded-[8px] border border-gray-3">
-                {related?.map((customer) => (
+              <ul className="flex flex-col rounded-lg border border-gray-3">
+                {relatedCustomers?.map((customer) => (
                   <li
                     key={customer._id}
-                    className="relative flex flex-col gap-y-2.5 border-b border-gray-3 p-4 pb-3.5 last:border-b-0"
+                    className="relative flex flex-col gap-y-2.5 border-b border-gray-3 p-4 pb-3.5 transition-colors duration-200 first:rounded-tl-lg first:rounded-tr-lg last:rounded-br-lg last:rounded-bl-lg last:border-b-0 hover:bg-gray-3"
                   >
                     <Link
                       className="absolute top-0 left-0 h-full w-full"
                       href={customer.slug.current}
                     />
-                    <p className="text-sm leading-none font-medium tracking-tight text-lagune-3">
+                    <p className="text-sm leading-none font-medium tracking-tighter text-lagune-3">
                       Customer Story
                     </p>
-                    <h3 className="truncate text-[20px] leading-snug font-medium tracking-tight">
+                    <h3 className="text-base leading-snug font-medium tracking-tighter md:text-[20px]">
                       {customer.title}
                     </h3>
                   </li>
                 ))}
               </ul>
-            </section>
+            </div>
           </div>
         </article>
-        <CTA
-          title="You’re five minutes away from your first Novu-backed notification"
-          description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
-          className="!pt-60 !pb-[202px]"
-          containerClassName="!max-w-192 !px-0"
-          descriptionClassName="!max-w-[722px] xs:!text-wrap !text-base"
-          actions={[
-            {
-              kind: "primary-button",
-              label: "Get started",
-              href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
-            },
-            {
-              kind: "secondary-button",
-              label: "Contact us",
-              href: ROUTE.pricing,
-            },
-          ]}
-        />
       </section>
+      <CTA
+        title="You’re five minutes away from your first Novu-backed notification"
+        description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
+        className="px-5 !pt-31 !pb-28 md:px-8 md:!pt-32 lg:px-0 lg:pt-53 lg:!pb-52 xl:pt-60 xl:pb-[202px]"
+        containerClassName="xl:!max-w-192 lg:!max-w-176 !px-0"
+        titleClassName="md:!text-[32px] lg:!text-[36px] xl:!text-[44px]"
+        descriptionClassName="!max-w-[722px] xs:!text-wrap !text-base"
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Get started",
+            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+          },
+          {
+            kind: "secondary-button",
+            label: "Contact us",
+            href: ROUTE.pricing,
+          },
+        ]}
+      />
     </main>
   )
 }

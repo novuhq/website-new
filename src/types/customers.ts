@@ -88,12 +88,4 @@ export interface ICustomersPageData {
 
 export interface ICustomerWithNeighbors {
   customer: ICustomerData
-  previousCustomer: {
-    title: string | null
-    slug: string | null
-  }
-  nextCustomer: {
-    title: string | null
-    slug: string | null
-  }
 }

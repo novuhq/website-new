@@ -8,6 +8,7 @@ import {
   allCustomersQuery,
   customerBySlugQuery,
   customersPageQuery,
+  latestCustomersQuery,
 } from "@/lib/sanity/queries/customers"
 
 const REVALIDATE_CUSTOMERS_TAG = ["customer", "customers"]
@@ -51,26 +52,6 @@ export async function getCustomerBySlug(
     return null
   }
 
-  const allCustomers = await getAllCustomers(preview)
-  const storyCustomers = allCustomers.filter((c) => c.link_type === "story")
-  const index = storyCustomers.findIndex((c) => c.slug.current === slug)
-
-  const nextCustomer =
-    index > 0
-      ? {
-          slug: storyCustomers[index - 1].slug.current,
-          title: storyCustomers[index - 1].title,
-        }
-      : { slug: null, title: null }
-
-  const previousCustomer =
-    index < storyCustomers.length - 1
-      ? {
-          slug: storyCustomers[index + 1].slug.current,
-          title: storyCustomers[index + 1].title,
-        }
-      : { slug: null, title: null }
-
   const customerWithSeo = {
     ...customer,
     seo: customer.seo
@@ -85,8 +66,6 @@ export async function getCustomerBySlug(
 
   return {
     customer: customerWithSeo,
-    previousCustomer,
-    nextCustomer,
   }
 }
 
@@ -103,4 +82,18 @@ export async function getCustomerStories(
 ): Promise<ICustomerData[]> {
   const customers = await getAllCustomers(preview)
   return customers.filter((customer) => customer.link_type === "story")
+}
+
+export async function getLatestCustomers(
+  currentSlug: string,
+  preview = false
+): Promise<ICustomerData[]> {
+  const customers = await sanityFetch<ICustomerData[]>({
+    query: latestCustomersQuery,
+    qParams: { currentSlug },
+    preview,
+    tags: REVALIDATE_CUSTOMERS_TAG,
+  })
+
+  return customers || []
 }

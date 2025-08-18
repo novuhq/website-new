@@ -9,11 +9,13 @@ interface ICTAProps extends ICtaSection {
   className?: string
   containerClassName?: string
   descriptionClassName?: string
+  titleClassName?: string
 }
 
 function CTA({
   className,
   containerClassName,
+  titleClassName,
   descriptionClassName,
   title,
   description,
@@ -32,7 +34,12 @@ function CTA({
           containerClassName
         )}
       >
-        <h2 className="text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px]">
+        <h2
+          className={cn(
+            "text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px]",
+            titleClassName
+          )}
+        >
           {title}
         </h2>
         <p

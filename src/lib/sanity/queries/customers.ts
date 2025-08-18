@@ -161,3 +161,11 @@ export const customerBySlugQuery = groq`
     ${customerFields}
   }
 `
+
+export const latestCustomersQuery = groq`
+  *[_type == "customer" && link_type == "story" && slug.current != $currentSlug] | order(_createdAt desc)[0...3] {
+    _id,
+    slug,
+    title,
+  }
+`
