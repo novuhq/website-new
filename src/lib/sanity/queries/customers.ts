@@ -1,3 +1,4 @@
+import { ROUTE } from "@/constants/routes"
 import { groq } from "next-sanity"
 
 const customersPageFields = `
@@ -23,6 +24,7 @@ const customerFields = `
   _id,
   name,
   slug,
+  "pathname": "${ROUTE.changelog}/" + slug.current,
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "asset": {
@@ -55,9 +57,6 @@ const customerFields = `
   email_channels,
   inbox_channels,
   sms_channels,
-  twitter_social,
-  linkedin_social,
-  link_social,
   quote_title,
   "quote_author_logo": {
     "url": quote_author_logo.asset->url + "?auto=format",
@@ -70,7 +69,16 @@ const customerFields = `
   quote_author_position,
   key_challenges,
   novu_solution,
-  body,
+  "body": body[] {
+    ...,
+    _type == "quoteBlock" => {
+      ...,
+      "authors": authors[]{
+        ...,
+        "photo": photo.asset->url + "?w=28&h=28&fit=crop&auto=format"
+      }
+    }
+  },
   related[]->{
     _id,
     name,

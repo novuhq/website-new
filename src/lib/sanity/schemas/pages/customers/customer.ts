@@ -290,31 +290,6 @@ export default defineType({
       fieldset: "customer_channels",
       hidden: ({ parent }) => parent?.link_type !== "story",
     }),
-    // Socials block
-    defineField({
-      name: "twitter_social",
-      type: "string",
-      title: "Twitter",
-      group: GROUP.content.name,
-      fieldset: "customer_socials",
-      hidden: ({ parent }) => parent?.link_type !== "story",
-    }),
-    defineField({
-      name: "linkedin_social",
-      type: "string",
-      title: "LinkedIn",
-      group: GROUP.content.name,
-      fieldset: "customer_socials",
-      hidden: ({ parent }) => parent?.link_type !== "story",
-    }),
-    defineField({
-      name: "link_social",
-      type: "string",
-      title: "Link",
-      group: GROUP.content.name,
-      fieldset: "customer_socials",
-      hidden: ({ parent }) => parent?.link_type !== "story",
-    }),
     // Quote block
     defineField({
       name: "quote_title",
@@ -374,6 +349,7 @@ export default defineType({
       title: "Body",
       group: GROUP.content.name,
       hidden: ({ parent }) => parent?.link_type !== "story",
+      validation: (rule) => rule.error("You have to fill in this field.").required(),
     }),
     defineField({
       name: "related",

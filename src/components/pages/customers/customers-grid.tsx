@@ -8,18 +8,10 @@ import { Link } from "@/components/ui/link"
 function ListBackground() {
   return (
     <>
-      <span className="absolute flex rotate-[14deg] rounded-[100%] bg-[radial-gradient(50%_50%_at_50%_50%,_#4474F2_0%,_rgba(68,116,242,0)_100%)] opacity-[0.08] md:top-[100px] md:left-[60px] md:h-[260px] md:w-[275px] lg:top-[50px] lg:left-20 lg:h-[375px] lg:w-[375px] 2xl:top-[50px] 2xl:left-[85px] 2xl:h-[374px] 2xl:w-[491px]" />
-      <span className="absolute flex rounded-[100%] bg-[linear-gradient(253deg,_#F575CA_19.98%,_#7599F5_77.19%)] opacity-[0.05] blur-[25px] md:top-[50px] md:left-[32px] md:h-[358px] md:w-[660px] lg:top-[34px] lg:left-6 lg:h-[358px] lg:w-[910px] 2xl:top-[42px] 2xl:-left-[140px] 2xl:h-[358px] 2xl:w-[1485px]" />
-      <span className="absolute flex rotate-[7deg] rounded-[100%] bg-[linear-gradient(186deg,_#F575CA_19.6%,_#7599F5_80.06%)] opacity-[0.04] blur-[22.5px] md:top-[105px] md:left-[38px] md:h-[296px] md:w-[597px] lg:top-[100px] lg:left-[35px] lg:h-[296px] lg:w-[903px] 2xl:top-[100px] 2xl:left-[100px] 2xl:h-[296px] 2xl:w-[1096px]" />
-      <span className="absolute flex rotate-[-13deg] rounded-[100%] bg-[linear-gradient(348deg,rgba(245,117,202,0.30)_0%,rgba(117,153,245,0.40)_100%)] opacity-5 mix-blend-plus-lighter blur-[25px] md:top-[85px] md:left-10 md:h-[298px] md:w-[629px] lg:top-[66px] lg:left-[74px] lg:h-[298px] lg:w-[692px] 2xl:top-[65px] 2xl:left-[170px]" />
-      {/* <Image
-        src={backgroundMob}
-        alt="background"
-        width={320}
-        height={664}
-        className="pointer-events-none absolute h-[664px] w-[320px] object-cover md:hidden"
-        quality={90}
-      /> */}
+      <span className="absolute bottom-16 left-0 flex h-[203px] w-[188px] rotate-[14deg] rounded-[100%] bg-[radial-gradient(50%_50%_at_50%_50%,_#4474F2_0%,_rgba(68,116,242,0)_100%)] opacity-5 md:top-[100px] md:left-[60px] md:h-[260px] md:w-[275px] md:opacity-8 lg:top-[50px] lg:left-20 lg:h-[375px] lg:w-[375px] 2xl:top-[50px] 2xl:left-[85px] 2xl:h-[374px] 2xl:w-[491px]" />
+      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] bg-[linear-gradient(163deg,#F575CA_19.98%,#7599F5_77.19%)] opacity-2 blur-[32px] md:top-[50px] md:left-[32px] md:h-[358px] md:w-[660px] md:translate-0 md:bg-[linear-gradient(253deg,_#F575CA_19.98%,_#7599F5_77.19%)] md:opacity-5 md:blur-[25px] lg:top-[34px] lg:left-6 lg:h-[358px] lg:w-[910px] 2xl:top-[42px] 2xl:-left-[140px] 2xl:h-[358px] 2xl:w-[1485px]" />
+      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] bg-[linear-gradient(133deg,#F575CA_19.6%,#7599F5_80.06%)] opacity-3 blur-[22.5px] md:top-[105px] md:left-[38px] md:h-[296px] md:w-[597px] md:translate-0 md:rotate-[7deg] md:bg-[linear-gradient(186deg,_#F575CA_19.6%,_#7599F5_80.06%)] md:opacity-4 lg:top-[100px] lg:left-[35px] lg:h-[296px] lg:w-[903px] 2xl:top-[100px] 2xl:left-[100px] 2xl:h-[296px] 2xl:w-[1096px]" />
+      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] mix-blend-plus-lighter blur-[25px] md:top-[85px] md:left-10 md:h-[298px] md:w-[629px] md:translate-0 md:rotate-[-13deg] md:bg-[linear-gradient(348deg,rgba(245,117,202,0.30)_0%,rgba(117,153,245,0.40)_100%)] md:opacity-5 lg:top-[66px] lg:left-[74px] lg:h-[298px] lg:w-[692px] 2xl:top-[65px] 2xl:left-[170px]" />
     </>
   )
 }

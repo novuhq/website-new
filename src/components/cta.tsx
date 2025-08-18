@@ -7,9 +7,18 @@ import ActionGroup from "@/components/ui/action-group"
 
 interface ICTAProps extends ICtaSection {
   className?: string
+  containerClassName?: string
+  descriptionClassName?: string
 }
 
-function CTA({ className, title, description, actions }: ICTAProps) {
+function CTA({
+  className,
+  containerClassName,
+  descriptionClassName,
+  title,
+  description,
+  actions,
+}: ICTAProps) {
   return (
     <section
       className={cn(
@@ -17,11 +26,21 @@ function CTA({ className, title, description, actions }: ICTAProps) {
         className
       )}
     >
-      <div className="relative z-10 mx-auto flex max-w-176 flex-col px-5 text-center md:px-8 lg:-translate-x-2.5 xl:-translate-x-3.5">
+      <div
+        className={cn(
+          "relative z-10 mx-auto flex max-w-176 flex-col px-5 text-center md:px-8 lg:-translate-x-2.5 xl:-translate-x-3.5",
+          containerClassName
+        )}
+      >
         <h2 className="text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px]">
           {title}
         </h2>
-        <p className="mt-3 text-base leading-normal font-light tracking-tighter text-muted-foreground xs:text-balance md:text-lg [&>strong]:font-light [&>strong]:text-foreground">
+        <p
+          className={cn(
+            "mt-3 text-base leading-normal font-light tracking-tighter text-muted-foreground xs:text-balance md:text-lg [&>strong]:font-light [&>strong]:text-foreground",
+            descriptionClassName
+          )}
+        >
           {description}
         </p>
         {actions && actions.length > 0 && (

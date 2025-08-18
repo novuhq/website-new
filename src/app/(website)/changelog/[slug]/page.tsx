@@ -12,9 +12,9 @@ import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
-import SocialShare from "@/components/pages/changelog/social-share"
 import Content from "@/components/pages/content"
 import Date from "@/components/pages/date"
+import SocialShare from "@/components/shared/social-share"
 
 interface ChangelogPostPageProps {
   params: Promise<{
@@ -121,6 +121,8 @@ export default async function ChangelogPostPage({
     pathname,
     content,
   } = post
+
+  console.log(content, "CONTENT")
 
   return (
     <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">

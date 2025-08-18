@@ -23,6 +23,7 @@ export interface ICustomerData {
   _type: "customer"
   name: string
   slug: ISlug
+  pathname: string;
   logo: ISanityImage
   logomark: ISanityImage
   title: string
@@ -42,14 +43,11 @@ export interface ICustomerData {
   inbox_channels?: string
   sms_channels?: string
 
-  // Social networks
-  twitter_social?: string
-  linkedin_social?: string
-  link_social?: string
-
   // Quote
   quote_title?: string
-  quote_author_logo?: ISanityImage
+  quote_author_logo?: {
+    url: string
+  }
   quote_author_name?: string
   quote_author_position?: string
 
@@ -58,7 +56,7 @@ export interface ICustomerData {
   novu_solution?: string[]
 
   // Content
-  body?: PortableTextBlock[]
+  body: PortableTextBlock[]
   related?: ICustomerData[]
 
   // SEO (only for stories)

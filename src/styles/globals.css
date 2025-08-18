@@ -26,6 +26,8 @@
   --purple-2: 290 80% 75%; /* purple-2 */
   --purple-3: 290 60% 60%; /* purple-3 */
 
+  --red-1: 340, 100%, 65%; /* red-1 */
+
   --gray-1: 0 0% 5%; /* #0D0D0D */
   --gray-2: 0 0% 10%; /* #1A1A1A */
   --gray-3: 0 0% 15%; /* #262626 */
@@ -112,6 +114,8 @@
   --color-gray-9: hsl(var(--gray-9));
   --color-gray-10: hsl(var(--gray-10));
   --color-gray-11: hsl(var(--gray-11));
+
+  --color-red-1: hsl(var(--red-1));
 
   --color-purple: hsl(var(--purple));
   --color-purple-2: hsl(var(--purple-2));
