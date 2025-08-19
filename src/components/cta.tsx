@@ -30,7 +30,7 @@ function CTA({
     >
       <div
         className={cn(
-          "relative z-10 mx-auto flex max-w-176 flex-col px-5 text-center md:px-8 lg:-translate-x-2.5 xl:-translate-x-3.5",
+          "relative z-10 mx-auto flex max-w-176 flex-col items-center px-5 text-center md:px-8 lg:-translate-x-2.5 xl:-translate-x-3.5",
           containerClassName
         )}
       >

@@ -31,6 +31,9 @@ export default async function CustomersPage() {
       <Reviews reviews={page.tweets} />
       <CTA
         title="Free to start, ready to scale"
+        className="pt-[162px] md:pt-36 lg:pt-[186px] xl:pt-[243px]"
+        containerClassName="px-5 md:px-0 max-w-192 lg:translate-x-0"
+        titleClassName="max-w-[246px] md:max-w-full"
         description={
           <>
             <strong>10K events/month</strong> free forever. From weekend

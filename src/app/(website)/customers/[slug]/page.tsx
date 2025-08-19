@@ -18,6 +18,7 @@ import Related from "@/components/pages/customers/related"
 import Socials from "@/components/pages/customers/socials"
 import Breadcrumbs from "@/components/shared/breadcrumbs"
 import ColoredList from "@/components/shared/colored-list"
+import ScrollToTop from "@/components/shared/scroll-to-top"
 import SocialShare from "@/components/shared/social-share"
 
 interface CustomerStoryPageProps {
@@ -116,6 +117,8 @@ export default async function CustomerStoryPage({
                 industry={industry}
                 channels={channels}
               />
+
+              <ScrollToTop buttonClassName="hidden lg:flex" />
               <Socials socials={socials} />
             </div>
 
@@ -165,7 +168,7 @@ export default async function CustomerStoryPage({
       <CTA
         title="You’re five minutes away from your first Novu-backed notification"
         description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
-        className="px-5 !pt-31 !pb-28 md:px-8 md:!pt-32 lg:px-0 lg:pt-53 lg:!pb-52 xl:pt-60 xl:pb-[202px]"
+        className="px-5 !pt-31 !pb-28 md:px-8 md:!pt-32 lg:px-0 lg:pt-53 lg:!pb-52 xl:!pt-60 xl:pb-[202px]"
         containerClassName="xl:!max-w-192 lg:!max-w-176 !px-0"
         titleClassName="md:!text-[32px] lg:!text-[36px] xl:!text-[44px]"
         descriptionClassName="!max-w-[722px] xs:!text-wrap !text-base"
