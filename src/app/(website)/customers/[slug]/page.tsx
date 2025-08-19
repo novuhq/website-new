@@ -15,12 +15,12 @@ import Content from "@/components/pages/content"
 import About from "@/components/pages/customers/about"
 import Quote from "@/components/pages/customers/quote"
 import Related from "@/components/pages/customers/related"
+import Socials from "@/components/pages/customers/socials"
 import Breadcrumbs from "@/components/shared/breadcrumbs"
 import ColoredList from "@/components/shared/colored-list"
 import SocialShare from "@/components/shared/social-share"
-import Socials from "@/components/pages/customers/socials"
 
-interface ChangelogPostPageProps {
+interface CustomerStoryPageProps {
   params: Promise<{
     slug: string
   }>
@@ -28,7 +28,7 @@ interface ChangelogPostPageProps {
 
 export async function generateMetadata({
   params,
-}: ChangelogPostPageProps): Promise<Metadata> {
+}: CustomerStoryPageProps): Promise<Metadata> {
   const { slug } = await params
   const customerData = await getCustomerBySlug(slug)
 
@@ -49,18 +49,14 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const customers = await getAllCustomers()
 
-  return customers
-    .filter(
-      (customer) => customer.link.type === "story" && customer.slug.current
-    )
-    .map(({ slug }) => ({
-      slug: slug.current,
-    }))
+  return customers.map(({ slug }) => ({
+    slug: slug.current,
+  }))
 }
 
 export default async function CustomerStoryPage({
   params,
-}: ChangelogPostPageProps) {
+}: CustomerStoryPageProps) {
   const { slug } = await params
   const postData = await getCustomerBySlug(slug)
 
