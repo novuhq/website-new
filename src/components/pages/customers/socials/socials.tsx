@@ -24,6 +24,10 @@ export default function Socials({
 }) {
   const order = ["x", "linkedin", "website"] as const
 
+  if (!socials) {
+    return null
+  }
+
   const socialsData = order
     .filter((key) => socials[key] && key in SOCIALS_COLLECTION)
     .map((key) => {

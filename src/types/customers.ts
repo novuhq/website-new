@@ -83,20 +83,18 @@ export interface ICustomerTweetData {
   tweet_link: string
 }
 
-export type TCustomerCard = {
-  customer: Pick<
-    ICustomerData,
-    | "_id"
-    | "name"
-    | "logo"
-    | "link"
-    | "author"
-    | "author_position"
-    | "card_type"
-    | "slug"
-    | "title"
-  >
-}
+export type TCustomerCard = Pick<
+ICustomerData,
+| "_id"
+| "name"
+| "logo"
+| "link"
+| "author"
+| "author_position"
+| "card_type"
+| "slug"
+| "title"
+>
 
 export interface ICustomersPageData {
   _id: string

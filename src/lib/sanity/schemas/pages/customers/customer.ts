@@ -371,7 +371,7 @@ export default defineType({
       hidden: ({ parent }) => parent?.link?.type !== "story",
       options: { collapsible: true, collapsed: false },
       validation: (rule) =>
-        rule.custom((value: any) => {
+        rule.custom((value: { challenges?: string[]; solution?: string[] } | undefined) => {
           if (!value) return true
 
           const challenges = value.challenges || []

@@ -18,10 +18,6 @@ type CardConfig = {
   glowClassName?: string
 }
 
-export type THeroProps = {
-  customer: TCustomerCard["customer"]
-}
-
 const BACKGROUNDS = {
   purple: {
     desk: purpleBg,
@@ -77,7 +73,7 @@ function CustomerCard({
   index,
   link,
   slug,
-}: TCustomerCard["customer"] & { index: number }) {
+}: TCustomerCard & { index: number }) {
   const config = CARD_CONFIG[index]
 
   const glowClasses = cn("absolute flex", config.glowClassName)
@@ -177,7 +173,7 @@ function CustomerCard({
   )
 }
 
-function Hero({ customers }: { customers: THeroProps[] }) {
+function Hero({ customers }: { customers: { customer: TCustomerCard }[] }) {
   return (
     <section className="hero relative [overflow-x:clip] pt-12.5 md:pt-16 lg:pt-18.5 xl:pt-22.5 2xl:overflow-x-visible">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 md:max-w-[704px] md:px-0 lg:max-w-[960px] xl:max-w-[969px] xl:px-0">

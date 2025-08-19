@@ -26,7 +26,7 @@ function CustomerCard({
   name,
   customersLength,
   index,
-}: TCustomerCard["customer"] & { index: number; customersLength: number }) {
+}: TCustomerCard & { index: number; customersLength: number }) {
   const cardClassName = clsx("border-[#534B5D] border-r", {
     "border-b": index < customersLength - 2, // mobile: last 2 elements in the last row
     "md:border-b-0": index >= 4 * 2, // tablet+: last 4 elements in the last row
@@ -84,7 +84,7 @@ export default function CustomersGrid({
         </h2>
         <ul className="relative mt-14 grid w-full flex-grow list-none grid-cols-2 md:grid-cols-4">
           <ListBackground />
-          {customers.map(({ customer }: any, index: number) => (
+          {customers.map(({ customer }, index: number) => (
             <CustomerCard
               {...customer}
               index={index}

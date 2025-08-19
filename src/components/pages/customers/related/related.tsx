@@ -1,7 +1,13 @@
-import { Link } from "@/components/ui/link"
 import { ROUTE } from "@/constants/routes"
 
-export default function Related({ customers }: { customers: any }) {
+import { ICustomerData } from "@/types/customers"
+import { Link } from "@/components/ui/link"
+
+export default function Related({
+  customers,
+}: {
+  customers: Pick<ICustomerData, "title" | "slug" | "_id">[]
+}) {
   return (
     <>
       <h2 className="text-[28px] leading-[1.125] font-normal tracking-tight md:text-[32px]">
