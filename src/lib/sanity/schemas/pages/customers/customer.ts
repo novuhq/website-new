@@ -168,7 +168,7 @@ export default defineType({
 
             if (!value) return true
 
-            if (cardType === "Big" && value.length > 128) {
+            if (cardType === "big" && value.length > 128) {
               return "Title for Big card must be 128 characters or less"
             }
 
@@ -371,22 +371,26 @@ export default defineType({
       hidden: ({ parent }) => parent?.link?.type !== "story",
       options: { collapsible: true, collapsed: false },
       validation: (rule) =>
-        rule.custom((value: { challenges?: string[]; solution?: string[] } | undefined) => {
-          if (!value) return true
+        rule.custom(
+          (
+            value: { challenges?: string[]; solution?: string[] } | undefined
+          ) => {
+            if (!value) return true
 
-          const challenges = value.challenges || []
-          const solution = value.solution || []
+            const challenges = value.challenges || []
+            const solution = value.solution || []
 
-          if (challenges.length > 0 && solution.length === 0) {
-            return "If you add challenges, you must also add at least one solution"
+            if (challenges.length > 0 && solution.length === 0) {
+              return "If you add challenges, you must also add at least one solution"
+            }
+
+            if (solution.length > 0 && challenges.length === 0) {
+              return "If you add solutions, you must also add at least one challenge"
+            }
+
+            return true
           }
-
-          if (solution.length > 0 && challenges.length === 0) {
-            return "If you add solutions, you must also add at least one challenge"
-          }
-
-          return true
-        }),
+        ),
       fields: [
         defineField({
           name: "challenges",

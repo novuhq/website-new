@@ -13,11 +13,9 @@ interface IBreadcrumbItem {
 }
 
 export default function Breadcrumbs({
-  prevPathLabel,
-  currentPathClassName,
+  firstPathLabel,
 }: {
-  prevPathLabel?: string
-  currentPathClassName?: string
+  firstPathLabel?: string
 }) {
   const pathname = usePathname()
 
@@ -75,7 +73,7 @@ export default function Breadcrumbs({
               size="sm"
             >
               <DynamicIcon icon="chevron-left" />
-              {prevPathLabel || item.label}
+              {(index === 0 && firstPathLabel) ? firstPathLabel : item.label}
             </Link>
           )}
         </React.Fragment>

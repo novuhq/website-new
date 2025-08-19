@@ -26,7 +26,7 @@ const customerFields = `
   _id,
   name,
   slug,
-  "pathname": "${ROUTE.changelog}/" + slug.current,
+  "pathname": "${ROUTE.customers}/" + slug.current,
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "asset": {
@@ -103,7 +103,7 @@ const customerFields = `
   "seo": {
     "title": coalesce(seo.title, title, ""),
     "description": coalesce(seo.description, about, ""),
-    "socialImage": coalesce(seo.socialImage->url + "?w=1200&h=630&fit=crop&auto=format"),
+    "socialImage": coalesce(seo.socialImage.asset->url + "?w=1200&h=630&fit=crop&auto=format", ""),
     "noIndex": seo.noIndex == true
   }
 `

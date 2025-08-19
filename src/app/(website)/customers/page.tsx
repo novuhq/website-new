@@ -57,7 +57,7 @@ export default async function CustomersPage() {
 export const metadata: Metadata = getMetadata(
   SEO_DATA.customers || {
     title: "Customers",
-    description: "Customers uses Novu",
+    description: "Customers use Novu",
     pathname: ROUTE.customers,
   }
 )

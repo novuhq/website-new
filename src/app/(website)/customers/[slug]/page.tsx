@@ -71,6 +71,7 @@ export default async function CustomerStoryPage({
     title,
     story_photo: cover,
     logomark,
+    logo,
     about,
     industry,
     channels,
@@ -109,7 +110,7 @@ export default async function CustomerStoryPage({
 
             <div className="top-16 flex h-fit w-full flex-col gap-6 border-y border-gray-3 py-6 lg:sticky lg:col-start-2 lg:border-0 lg:py-0">
               <About
-                logo={logomark!.url}
+                logo={logomark?.url || logo.url}
                 name={name}
                 about={about}
                 industry={industry}
@@ -138,7 +139,7 @@ export default async function CustomerStoryPage({
                       ),
                     ]}
                     redGroupTitle="Key Challenges"
-                    blueGroupTitle="Novu Solution"
+                    laguneGroupTitle="Novu Solution"
                   />
                 </div>
               )}

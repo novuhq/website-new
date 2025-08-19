@@ -18,7 +18,7 @@ export default function About({
       <Image
         className={cn("h-7 w-36 object-cover")}
         src={logo}
-        alt={name || ""}
+        alt={`${name} logo`}
         width={144}
         height={28}
         priority

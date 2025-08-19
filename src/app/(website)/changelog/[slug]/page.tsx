@@ -126,7 +126,7 @@ export default async function ChangelogPostPage({
     <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
-          <Breadcrumbs prevPathLabel="Back to all updates" />
+          <Breadcrumbs firstPathLabel="Back to all updates" />
           <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
             {title}
           </h1>
