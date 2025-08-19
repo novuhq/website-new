@@ -53,7 +53,7 @@ export default defineType({
           preview: {
             select: {
               title: "customer.name",
-              subtitle: "customer.link_type",
+              subtitle: "customer.link.type",
               media: "customer.logo",
             },
             prepare({ title, subtitle, media }) {
@@ -97,7 +97,7 @@ export default defineType({
           preview: {
             select: {
               title: "customer.name",
-              subtitle: "customer.link_type",
+              subtitle: "customer.link.type",
               media: "customer.logo",
             },
             prepare({ title, subtitle, media }) {
@@ -117,7 +117,7 @@ export default defineType({
     }),
     defineField({
       name: "grid_customers",
-      title: "-",
+      title: "Customers",
       type: "array",
       of: [
         {
@@ -135,7 +135,7 @@ export default defineType({
           preview: {
             select: {
               title: "customer.name",
-              subtitle: "customer.link_type",
+              subtitle: "customer.link.type",
             },
             prepare({ title, subtitle }) {
               return {
@@ -150,6 +150,8 @@ export default defineType({
       fieldset: "grid_customers",
       validation: (rule: ArrayRule<any[]>) =>
         rule
+          .required()
+          .error("Grid Customers is required")
           .length(12)
           .error("Grid Customers must contain exactly 12 elements."),
     }),
@@ -208,6 +210,12 @@ export default defineType({
         },
       ],
       fieldset: "customers_tweets",
+      validation: (rule: ArrayRule<any[]>) =>
+        rule
+          .required()
+          .error("Tweets is required")
+          .min(4)
+          .error("Tweets must contain at least 4 elements."),
     }),
   ],
 })

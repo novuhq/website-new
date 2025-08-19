@@ -7,6 +7,7 @@ import purpleBg from "@/images/pages/customers/hero/purple-bg.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
 import shineCorner from "@/svgs/pages/customers/hero/shine.svg"
 
+import { TCustomerCard } from "@/types/customers"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
@@ -15,6 +16,10 @@ type CardConfig = {
   background?: "purple" | "blue"
   backgroundAlt?: string
   glowClassName?: string
+}
+
+export type THeroProps = {
+  customer: TCustomerCard["customer"]
 }
 
 const BACKGROUNDS = {
@@ -70,10 +75,9 @@ function CustomerCard({
   author,
   author_position,
   index,
-  link_type: linkType,
-  external_link: externalLink,
+  link,
   slug,
-}: any) {
+}: TCustomerCard["customer"] & { index: number }) {
   const config = CARD_CONFIG[index]
 
   const glowClasses = cn("absolute flex", config.glowClassName)
@@ -111,8 +115,8 @@ function CustomerCard({
       <article className={cardClasses}>
         <Link
           href={
-            linkType === "external"
-              ? externalLink
+            link.type === "external"
+              ? link.url!
               : `${ROUTE.customers}/${slug.current}`
           }
           className="group absolute top-0 left-0 z-10 h-full w-full"
@@ -156,7 +160,7 @@ function CustomerCard({
         </h3>
         <p className="relative mt-2 text-sm leading-snug font-[350] tracking-tight text-gray-8 md:text-base">{`${author} — ${author_position}`}</p>
         <span className="hidden-start relative mt-4 flex items-center gap-x-1.5 text-lagune-3 transition-colors duration-200 group-hover:text-lagune-2">
-          {linkType === "story" ? "Read story" : "Visit site"}
+          {link.type === "story" ? "Read story" : "Visit site"}
           <span className="relative mt-0.5 w-1 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
             <Image
               src={chevronRight}
@@ -173,7 +177,7 @@ function CustomerCard({
   )
 }
 
-function Hero({ customers }: { customers: any[] }) {
+function Hero({ customers }: { customers: THeroProps[] }) {
   return (
     <section className="hero relative [overflow-x:clip] pt-12.5 md:pt-16 lg:pt-18.5 xl:pt-22.5 2xl:overflow-x-visible">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 md:max-w-[704px] md:px-0 lg:max-w-[960px] xl:max-w-[969px] xl:px-0">

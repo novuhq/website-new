@@ -3,6 +3,7 @@ import { ROUTE } from "@/constants/routes"
 import arrowRight from "@/svgs/icons/arrow-right.svg"
 import clsx from "clsx"
 
+import { TCustomerCard } from "@/types/customers"
 import { Link } from "@/components/ui/link"
 
 function ListBackground() {
@@ -17,8 +18,7 @@ function ListBackground() {
 }
 
 function CustomerCard({
-  link_type: linkType,
-  external_link: externalLink,
+  link,
   slug,
   logo: {
     asset: { url: logo },
@@ -26,7 +26,7 @@ function CustomerCard({
   name,
   customersLength,
   index,
-}: any) {
+}: TCustomerCard["customer"] & { index: number; customersLength: number }) {
   const cardClassName = clsx("border-[#534B5D] border-r", {
     "border-b": index < customersLength - 2, // mobile: last 2 elements in the last row
     "md:border-b-0": index >= 4 * 2, // tablet+: last 4 elements in the last row
@@ -42,8 +42,8 @@ function CustomerCard({
       >
         <Link
           href={
-            linkType === "external"
-              ? externalLink
+            link.type === "external"
+              ? link.url!
               : `${ROUTE.customers}/${slug.current}`
           }
           className="absolute top-0 left-0 z-10 h-full w-full"
@@ -57,7 +57,7 @@ function CustomerCard({
           priority
         />
         <span className="hidden-start absolute bottom-8 flex items-center gap-x-[7px] text-white opacity-0 transition-all duration-200 group-hover:opacity-100">
-          {linkType === "story" ? "Read story" : "Visit site"}
+          {link.type === "story" ? "Read story" : "Visit site"}
           <Image
             src={arrowRight}
             width={12}
@@ -71,7 +71,11 @@ function CustomerCard({
   )
 }
 
-export default function CustomersGrid({ customers }: any) {
+export default function CustomersGrid({
+  customers,
+}: {
+  customers: { customer: TCustomerCard }[]
+}) {
   return (
     <section className="trusted relative mt-[104px] md:mt-28 lg:mt-40">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] 2xl:max-w-[1216px]">

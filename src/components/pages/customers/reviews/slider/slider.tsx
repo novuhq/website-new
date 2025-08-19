@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 
+import { ICustomerTweetData } from "@/types/customers"
 import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 
@@ -11,7 +12,7 @@ import "slick-carousel/slick/slick.css"
 
 const SlickSlider = dynamic(() => import("react-slick"), { ssr: false })
 
-const NextArrow = (props: any) => {
+const NextArrow = (props: { onClick?: () => void }) => {
   const { onClick } = props
   return (
     <button
@@ -27,7 +28,7 @@ const NextArrow = (props: any) => {
   )
 }
 
-const PrevArrow = (props: any) => {
+const PrevArrow = (props: { onClick?: () => void }) => {
   const { onClick } = props
   return (
     <button
@@ -43,7 +44,7 @@ const PrevArrow = (props: any) => {
   )
 }
 
-const ReviewCard = ({ name, text, tweet_link: tweetLink, logo, tag }: any) => {
+const ReviewCard = ({ name, text, tweet_link: tweetLink, logo, tag }: ICustomerTweetData) => {
   return (
     <div className="relative h-full w-full md:max-w-[384px]">
       <Link
@@ -78,7 +79,7 @@ const ReviewCard = ({ name, text, tweet_link: tweetLink, logo, tag }: any) => {
   )
 }
 
-export default function Slider({ reviews }: { reviews: any[] }) {
+export default function Slider({ reviews }: { reviews: ICustomerTweetData[] }) {
   const [slidesToShow, setSlidesToShow] = useState<number | null>(null)
 
   useEffect(() => {

@@ -1,6 +1,9 @@
 import { ROUTE } from "@/constants/routes"
 import { groq } from "next-sanity"
 
+const COVER_WIDTH = 704
+const COVER_ASPECT_RATIO = 16 / 9
+
 const customersPageFields = `
   _id,
   name,
@@ -16,8 +19,7 @@ const customersPageFields = `
   author,
   author_position,
   card_type,
-  link_type,
-  external_link,
+  link,
 `
 
 const customerFields = `
@@ -43,32 +45,27 @@ const customerFields = `
   author,
   author_position,
   card_type,
-  link_type,
-  external_link,
-  "story_photo": {
-    "url": story_photo.asset->url + "?auto=format",
-    "asset": {
-      "url": story_photo.asset->url,
-      "metadata": story_photo.asset->metadata
-    }
-  },
+  link,
+  "story_photo": story_photo.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
+    (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
+  )}&q=100&fit=crop&auto=format",
   about,
   industry,
-  email_channels,
-  inbox_channels,
-  sms_channels,
-  quote_title,
-  "quote_author_logo": {
-    "url": quote_author_logo.asset->url + "?auto=format",
-    "asset": {
-      "url": quote_author_logo.asset->url,
-      "metadata": quote_author_logo.asset->metadata
-    }
+  channels,
+  socials,
+  "quote": quote {
+    title,
+    "author_logo": {
+      "url": author_logo.asset->url + "?auto=format",
+      "asset": {
+        "url": author_logo.asset->url,
+        "metadata": author_logo.asset->metadata
+      },
+    },
+    author_name,
+    author_position
   },
-  quote_author_name,
-  quote_author_position,
-  key_challenges,
-  novu_solution,
+  challenges_solution,
   "body": body[] {
     ...,
     _type == "quoteBlock" => {
@@ -101,12 +98,12 @@ const customerFields = `
     author,
     author_position,
     card_type,
-    link_type
+    link
   },
   "seo": {
     "title": coalesce(seo.title, title, ""),
     "description": coalesce(seo.description, about, ""),
-    "socialImage": coalesce(seo.socialImage.asset->url + "?w=1200&h=630&fit=crop&auto=format"),
+    "socialImage": coalesce(seo.socialImage->url + "?w=1200&h=630&fit=crop&auto=format"),
     "noIndex": seo.noIndex == true
   }
 `
@@ -151,7 +148,7 @@ export const customersPageQuery = groq`
 `
 
 export const allCustomersQuery = groq`
-  *[_type == "customer"] | order(name asc) {
+  *[_type == "customer" && link.type == "story"] | order(name asc) {
     ${customerFields}
   }
 `
@@ -163,7 +160,7 @@ export const customerBySlugQuery = groq`
 `
 
 export const latestCustomersQuery = groq`
-  *[_type == "customer" && link_type == "story" && slug.current != $currentSlug] | order(_createdAt desc)[0...3] {
+  *[_type == "customer" && link.type == "story" && slug.current != $currentSlug] | order(_createdAt desc)[0...4] {
     _id,
     slug,
     title,

@@ -1,6 +1,7 @@
+import { ICustomerTweetData } from "@/types/customers"
 import Slider from "./slider"
 
-const Reviews = ({ reviews }: { reviews: any[] }) => {
+const Reviews = ({ reviews }: { reviews: ICustomerTweetData[] }) => {
   return (
     <section className="reviews relative mt-[104px] [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-[180px]">
       <div className="relative mx-auto flex w-full max-w-[1216px] flex-col items-center px-5 text-center md:px-8 lg:px-0">

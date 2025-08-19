@@ -8,12 +8,12 @@ import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import Content from "@/components/pages/content"
 import Date from "@/components/pages/date"
+import Breadcrumbs from "@/components/shared/breadcrumbs"
 import SocialShare from "@/components/shared/social-share"
 
 interface ChangelogPostPageProps {
@@ -122,27 +122,11 @@ export default async function ChangelogPostPage({
     content,
   } = post
 
-  console.log(content, "CONTENT")
-
   return (
     <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
-          <div>
-            <Link
-              className="group -ml-px gap-x-1 leading-none tracking-tighter"
-              href={ROUTE.changelog}
-              variant="muted-dark"
-              size="sm"
-            >
-              <DynamicIcon icon="chevron-left" />
-              Back to all updates
-            </Link>
-            <span className="mx-2.5 text-sm leading-none font-medium tracking-tight text-gray-7 md:mx-2.75">
-              /
-            </span>
-            <p className="-mt-px text-sm tracking-tighter md:inline">{title}</p>
-          </div>
+          <Breadcrumbs prevPathLabel="Back to all updates" />
           <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
             {title}
           </h1>

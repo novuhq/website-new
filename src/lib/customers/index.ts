@@ -1,7 +1,6 @@
 import {
   ICustomerData,
   ICustomersPageData,
-  ICustomerWithNeighbors,
 } from "@/types/customers"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
@@ -40,7 +39,7 @@ export async function getAllCustomers(
 export async function getCustomerBySlug(
   slug: string,
   preview = false
-): Promise<ICustomerWithNeighbors | null> {
+): Promise<{ customer: ICustomerData } | null> {
   const customer = await sanityFetch<ICustomerData>({
     query: customerBySlugQuery,
     qParams: { slug },
@@ -67,21 +66,6 @@ export async function getCustomerBySlug(
   return {
     customer: customerWithSeo,
   }
-}
-
-export async function getCustomersByCardType(
-  cardType: "big" | "small",
-  preview = false
-): Promise<ICustomerData[]> {
-  const customers = await getAllCustomers(preview)
-  return customers.filter((customer) => customer.card_type === cardType)
-}
-
-export async function getCustomerStories(
-  preview = false
-): Promise<ICustomerData[]> {
-  const customers = await getAllCustomers(preview)
-  return customers.filter((customer) => customer.link_type === "story")
 }
 
 export async function getLatestCustomers(

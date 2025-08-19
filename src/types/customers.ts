@@ -4,8 +4,8 @@ import { type ISeoFields, type ISlug } from "@/types/common"
 
 export interface ISanityImageAsset {
   url: string
-  metadata?: {
-    dimensions?: {
+  metadata: {
+    dimensions: {
       width: number
       height: number
     }
@@ -23,37 +23,49 @@ export interface ICustomerData {
   _type: "customer"
   name: string
   slug: ISlug
-  pathname: string;
+  pathname: string
   logo: ISanityImage
-  logomark: ISanityImage
+  logomark?: ISanityImage
   title: string
   author: string
   author_position: string
-  card_type: "big" | "small"
-  link_type: "external" | "story"
-  external_link?: string
+  card_type?: "big" | "small"
+  link: {
+    type: "external" | "story"
+    url?: string
+  }
 
-  // Story-specific fields
-  story_photo?: ISanityImage
-  about?: string
-  industry?: string
+  // About
+  story_photo?: string
+  about: string
+  industry: string
+  channels: {
+    email?: string
+    inbox?: string
+    sms?: string
+  }
 
-  // Channels
-  email_channels?: string
-  inbox_channels?: string
-  sms_channels?: string
+  socials: {
+    x?: string
+    linkedin?: string
+    website?: string
+  }
 
   // Quote
-  quote_title?: string
-  quote_author_logo?: {
-    url: string
+  quote?: {
+    title: string
+    author_logo: {
+      url: string
+    }
+    author_name: string
+    author_position: string
   }
-  quote_author_name?: string
-  quote_author_position?: string
 
   // Challenges & Solution
-  key_challenges?: string[]
-  novu_solution?: string[]
+  challenges_solution?: {
+    challenges: string[]
+    solution: string[]
+  }
 
   // Content
   body: PortableTextBlock[]
@@ -71,6 +83,21 @@ export interface ICustomerTweetData {
   tweet_link: string
 }
 
+export type TCustomerCard = {
+  customer: Pick<
+    ICustomerData,
+    | "_id"
+    | "name"
+    | "logo"
+    | "link"
+    | "author"
+    | "author_position"
+    | "card_type"
+    | "slug"
+    | "title"
+  >
+}
+
 export interface ICustomersPageData {
   _id: string
   _type: "customers"
@@ -81,11 +108,7 @@ export interface ICustomersPageData {
     customer: ICustomerData
   }[]
   grid_customers: {
-    customer: ICustomerData
+    customer: TCustomerCard
   }[]
   tweets: ICustomerTweetData[]
-}
-
-export interface ICustomerWithNeighbors {
-  customer: ICustomerData
 }
