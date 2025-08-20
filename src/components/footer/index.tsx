@@ -30,7 +30,7 @@ const SocialLink = ({ href, icon, label }: IMenuSocialItem) => {
 
 function Footer() {
   return (
-    <footer className="relative border-t border-dashed border-t-accent px-5 pt-10 pb-6 md:px-8 md:pb-7 lg:pt-12 lg:pb-8">
+    <footer className="relative border-t border-dashed border-t-accent bg-black px-5 pt-10 pb-6 md:px-8 md:pb-7 lg:pt-12 lg:pb-8">
       <div className="mx-auto w-full max-w-336">
         <div className="flex flex-col xl:flex-row xl:items-start xl:gap-21.5">
           <NextLink className="mr-9 inline-flex rounded" href={ROUTE.index}>

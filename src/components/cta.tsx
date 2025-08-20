@@ -1,5 +1,5 @@
 import Image from "next/image"
-import background from "@/images/shared/cta/background.png"
+import bgSvg from "@/images/shared/cta/background.svg"
 
 import { ICtaSection } from "@/types/common"
 import { cn } from "@/lib/utils"
@@ -24,7 +24,7 @@ function CTA({
   return (
     <section
       className={cn(
-        "cta relative overflow-hidden pt-37.5 pb-36 md:pt-50.5 md:pb-46.5 lg:pb-50 xl:pt-62.5",
+        "cta relative [overflow-x:clip] pt-37.5 pb-36 md:pt-50.5 md:pb-46.5 lg:pb-50 xl:pt-62.5",
         className
       )}
     >
@@ -58,14 +58,16 @@ function CTA({
         )}
       </div>
       <Image
-        className="pointer-events-none absolute top-1/2 left-1/2 aspect-[1043/861] w-190 max-w-none -translate-1/2 md:w-261 xl:top-0 xl:-translate-y-14"
-        src={background}
-        width={1043}
-        height={861}
+        className="pointer-events-none absolute top-[60%] left-[40%] z-0 max-w-none -translate-1/2 md:top-1/2 xl:left-1/2"
+        src={bgSvg}
+        width={1722}
+        height={1193}
         alt=""
         loading="lazy"
         aria-hidden
+        quality={100}
       />
+      <span className="absolute -bottom-[65px] hidden h-[394px] w-[553px] rounded-[553px] bg-[radial-gradient(92.52%_89.86%_at_62.86%_11.06%,#6789FF_27.2%,#69B7FF_80.5%,#4786FF_100%)] opacity-12 blur-[175px] md:-left-[345px] md:flex xl:left-[133px]"></span>
     </section>
   )
 }
