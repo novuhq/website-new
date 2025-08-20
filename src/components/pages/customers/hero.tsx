@@ -37,12 +37,12 @@ const CARD_CONFIG: Record<number, CardConfig> = {
   1: {
     showShine: false,
     glowClassName:
-      "rotate-[-57.684deg] lg:bg-[#344387] lg:opacity-30 blur-[32px] lg:-bottom-[100px] lg:-left-[35px] lg:h-[187px] lg:w-[170px] md:w-[522px] md:h-[250px] md:-bottom-14 md:-left-22 md:opacity-60 md:rotate-0 md:bg-[radial-gradient(50%_50%_at_50%_50%,_#344387_0%,_rgba(52,67,135,0)_100%)]",
+      "rotate-[-56deg] lg:bg-[#344387] lg:opacity-30 blur-[32px] lg:-bottom-25 lg:-left-9 lg:h-47 lg:w-42 md:w-130 md:h-62 md:-bottom-14 md:-left-22 md:opacity-60 md:rotate-0 md:bg-[radial-gradient(50%_50%_at_50%_50%,_#344387_0%,_rgba(52,67,135,0)_100%)]",
   },
   2: {
     showShine: false,
     glowClassName:
-      "h-[250px] w-[290px] opacity-75 lg:rotate-[35deg] bg-[radial-gradient(50%_50%_at_50%_50%,_#344387_0%,_rgba(52,67,135,0)_100%)] -left-[90px] -bottom-[75px] rounded-[100%] lg:bg-[linear-gradient(180deg,#344387_0%,rgba(52,67,135,0)_100%)] lg:opacity-70 blur-[32px] lg:top-[-85px] lg:left-[180px] lg:h-[250px] lg:w-[290px] md:h-[187px] md:w-[170px] md:-rotate-[57.684deg] md:bg-[#344387] md:opacity-30 md:-left-[70px] md:-bottom-[96px]",
+      "h-62 w-72 opacity-75 lg:rotate-[36deg] bg-[radial-gradient(50%_50%_at_50%_50%,_#344387_0%,_rgba(52,67,135,0)_100%)] -left-22 -bottom-19 rounded-[100%] lg:bg-[linear-gradient(180deg,#344387_0%,rgba(52,67,135,0)_100%)] lg:opacity-70 blur-[32px] lg:-top-21 lg:left-45 lg:h-62 lg:w-72 md:h-47 md:w-42 md:-rotate-[56deg] md:bg-[#344387] md:opacity-30 md:-left-17 md:-bottom-24",
   },
   3: {
     showShine: true,
@@ -54,10 +54,10 @@ const CARD_CONFIG: Record<number, CardConfig> = {
 function ContainerEffects() {
   return (
     <>
-      <span className="absolute -top-10 -left-[30px] flex h-[278px] w-[379px] rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[15px] md:-top-[54px] md:-left-[172px] md:h-[315px] md:w-[1021px] md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-[0.02] md:blur-[32px] lg:-top-[123px] lg:-left-[252px] lg:h-[405px] lg:w-[1472px]" />
-      <span className="absolute -top-[31px] -left-[82px] hidden h-[331px] w-[848px] rounded-[100%] bg-[linear-gradient(81deg,#F575E0_21.93%,#7599F5_84.89%)] opacity-[0.04] blur-[32px] md:flex lg:-top-[82px] lg:-left-[84px] lg:h-[331px] lg:w-[1136px]" />
-      <span className="absolute -top-[66px] -left-[94px] flex h-[180px] w-[213px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.13] blur-[32px] md:-top-30 md:-left-[100px] md:h-[322px] md:w-[385px] md:bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,#FFB7E2_27.2%,#FF96FB_67.79%,#F047FF_88.46%,rgba(240,71,255,0)_99.52%)] md:opacity-5 xl:-top-[170px] xl:-left-[178px] xl:h-[410px] xl:w-[537px]" />
-      <span className="blur-[32px] absolute bottom-[100px] -left-[60px] flex h-[382px] w-[370px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-8 md:bottom-[112px] md:left-[78px] md:h-[433px] md:w-[584px] md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] xl:bottom-[40px] xl:left-[165px] xl:opacity-20" />
+      <span className="absolute -top-10 -left-[30px] flex h-70 w-95 rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[14px] md:-top-14 md:-left-43 md:h-79 md:w-255 md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-2 md:blur-[32px] lg:-top-31 lg:-left-63 lg:h-101 lg:w-368" />
+      <span className="absolute -top-8 -left-20 hidden h-83 w-212 rounded-[100%] bg-[linear-gradient(81deg,#F575E0_21.93%,#7599F5_84.89%)] opacity-4 blur-[32px] md:flex lg:-top-20 lg:-left-21 lg:h-83 lg:w-284" />
+      <span className="absolute -top-16 -left-23 flex h-45 w-53 rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-13 blur-[32px] md:-top-30 md:-left-25 md:h-80 md:w-96 md:bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,#FFB7E2_27.2%,#FF96FB_67.79%,#F047FF_88.46%,rgba(240,71,255,0)_99.52%)] md:opacity-5 xl:-top-42 xl:-left-44 xl:h-102 xl:w-134" />
+      <span className="absolute bottom-25 -left-15 flex h-95 w-92 rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-8 blur-[32px] md:bottom-28 md:left-19 md:h-108 md:w-146 md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] xl:bottom-10 xl:left-41 xl:opacity-20" />
     </>
   )
 }
