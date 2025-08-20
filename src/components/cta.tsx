@@ -67,7 +67,7 @@ function CTA({
         aria-hidden
         quality={100}
       />
-      <span className="absolute -bottom-[65px] hidden h-[394px] w-[553px] rounded-[553px] bg-[radial-gradient(92.52%_89.86%_at_62.86%_11.06%,#6789FF_27.2%,#69B7FF_80.5%,#4786FF_100%)] opacity-12 blur-[175px] md:-left-[345px] md:flex xl:left-[133px]"></span>
+      <span className="absolute -bottom-[65px] hidden h-[394px] w-[553px] rounded-[553px] bg-[radial-gradient(92.52%_89.86%_at_62.86%_11.06%,#6789FF_27.2%,#69B7FF_80.5%,#4786FF_100%)] opacity-2 blur-[32px] md:-left-[345px] md:flex xl:left-[133px]"></span>
     </section>
   )
 }

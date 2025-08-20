@@ -16,7 +16,7 @@ export default function About({
   return (
     <dl className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
       <Image
-        className={cn("h-7 w-36 object-cover")}
+        className={cn("h-7 w-36")}
         src={logo}
         alt={`${name} logo`}
         width={144}

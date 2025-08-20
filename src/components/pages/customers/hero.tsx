@@ -5,7 +5,6 @@ import blueBg from "@/images/pages/customers/hero/blue-bg.png"
 import purpleBgMob from "@/images/pages/customers/hero/purple-bg-mob.png"
 import purpleBg from "@/images/pages/customers/hero/purple-bg.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
-import shineCorner from "@/svgs/pages/customers/hero/shine.svg"
 
 import { TCustomerCard } from "@/types/customers"
 import { cn } from "@/lib/utils"
@@ -55,10 +54,10 @@ const CARD_CONFIG: Record<number, CardConfig> = {
 function ContainerEffects() {
   return (
     <>
-      <span className="absolute -top-10 -left-[30px] flex h-[278px] w-[379px] rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[150px] md:-top-[54px] md:-left-[172px] md:h-[315px] md:w-[1021px] md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-[0.02] md:blur-[32px] lg:-top-[123px] lg:-left-[252px] lg:h-[405px] lg:w-[1472px]" />
-      <span className="absolute -top-[30px] -left-1 flex h-[337px] w-[331px] rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_#7599F5_84.89%)] opacity-[0.01] blur-[100px] md:-top-[31px] md:-left-[82px] md:h-[331px] md:w-[848px] md:bg-[linear-gradient(81deg,#F575E0_21.93%,#7599F5_84.89%)] md:opacity-[0.04] md:blur-[32px] lg:-top-[82px] lg:-left-[84px] lg:h-[331px] lg:w-[1136px]" />
-      <span className="absolute -top-[66px] -left-[94px] flex h-[180px] w-[213px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.13] blur-[75px] md:-top-30 md:-left-[100px] md:h-[322px] md:w-[385px] md:bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,#FFB7E2_27.2%,#FF96FB_67.79%,#F047FF_88.46%,rgba(240,71,255,0)_99.52%)] md:opacity-5 md:blur-[32px] xl:-top-[170px] xl:-left-[178px] xl:h-[410px] xl:w-[537px]" />
-      <span className="md:blur-0 absolute bottom-[100px] -left-[60px] flex h-[382px] w-[370px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-15 blur-[160px] md:bottom-[112px] md:left-[78px] md:h-[433px] md:w-[584px] md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] md:opacity-[0.08] xl:bottom-[40px] xl:left-[165px] xl:opacity-20" />
+      <span className="absolute -top-10 -left-[30px] flex h-[278px] w-[379px] rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[15px] md:-top-[54px] md:-left-[172px] md:h-[315px] md:w-[1021px] md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-[0.02] md:blur-[32px] lg:-top-[123px] lg:-left-[252px] lg:h-[405px] lg:w-[1472px]" />
+      <span className="absolute -top-[31px] -left-[82px] hidden h-[331px] w-[848px] rounded-[100%] bg-[linear-gradient(81deg,#F575E0_21.93%,#7599F5_84.89%)] opacity-[0.04] blur-[32px] md:flex lg:-top-[82px] lg:-left-[84px] lg:h-[331px] lg:w-[1136px]" />
+      <span className="absolute -top-[66px] -left-[94px] flex h-[180px] w-[213px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.13] blur-[32px] md:-top-30 md:-left-[100px] md:h-[322px] md:w-[385px] md:bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,#FFB7E2_27.2%,#FF96FB_67.79%,#F047FF_88.46%,rgba(240,71,255,0)_99.52%)] md:opacity-5 xl:-top-[170px] xl:-left-[178px] xl:h-[410px] xl:w-[537px]" />
+      <span className="blur-[32px] absolute bottom-[100px] -left-[60px] flex h-[382px] w-[370px] rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-8 md:bottom-[112px] md:left-[78px] md:h-[433px] md:w-[584px] md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] xl:bottom-[40px] xl:left-[165px] xl:opacity-20" />
     </>
   )
 }
@@ -81,7 +80,7 @@ function CustomerCard({
   const listItemClasses = cn(
     "relative group cursor-pointer rounded-xl w-full list-none",
     {
-      "xl:max-w-[590px] lg:max-w-[576px] h-[350px] md:h-[320px]":
+      "xl:max-w-[590px] lg:max-w-[576px] h-[350px] md:h-[320px] isolate":
         cardType === "big",
       "lg:max-w-[347px] bg-[#14141F] h-[320px] md:max-w-[338px] border border-[rgba(43,43,59,0.5)]":
         cardType === "small",
@@ -98,15 +97,21 @@ function CustomerCard({
   return (
     <li className={listItemClasses}>
       {config.showShine && (
-        <Image
-          src={shineCorner}
-          alt=""
-          width={265}
-          height={77}
-          priority
-          className="pointer-events-none absolute -top-[10px] -left-[20px] h-[77px] w-[265px]"
-          quality={100}
-        />
+        <>
+          {/* <Image
+            src={shineCorner}
+            alt=""
+            width={265}
+            height={77}
+            priority
+            className="pointer-events-none absolute -top-[10px] -left-[10px]"
+            quality={100}
+          /> */}
+          {/* <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[265px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[2px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[28px] w-[217px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[1px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[203px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[2.5px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[1.5px]"></span> */}
+        </>
       )}
       <article className={cardClasses}>
         <Link
@@ -127,7 +132,7 @@ function CustomerCard({
               height={320}
               priority
               className="pointer-events-none absolute top-0 left-0 hidden h-full w-full rounded-xl sm:block"
-              quality={100}
+              quality={90}
             />
             <Image
               src={BACKGROUNDS[config.background].mob}
@@ -136,7 +141,7 @@ function CustomerCard({
               height={350}
               priority
               className="pointer-events-none absolute top-0 left-0 h-full w-full rounded-xl sm:hidden"
-              quality={100}
+              quality={90}
             />
           </>
         )}
