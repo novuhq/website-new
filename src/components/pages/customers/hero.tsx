@@ -5,6 +5,7 @@ import blueBg from "@/images/pages/customers/hero/blue-bg.png"
 import purpleBgMob from "@/images/pages/customers/hero/purple-bg-mob.png"
 import purpleBg from "@/images/pages/customers/hero/purple-bg.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
+import shineCorner from "@/svgs/pages/customers/hero/shine.svg"
 
 import { TCustomerCard } from "@/types/customers"
 import { cn } from "@/lib/utils"
@@ -80,7 +81,7 @@ function CustomerCard({
   const listItemClasses = cn(
     "relative group cursor-pointer rounded-xl w-full list-none",
     {
-      "xl:max-w-[590px] lg:max-w-[576px] h-[350px] md:h-[320px] isolate":
+      "xl:max-w-[590px] lg:max-w-[576px] h-[350px] md:h-[320px]":
         cardType === "big",
       "lg:max-w-[347px] bg-[#14141F] h-[320px] md:max-w-[338px] border border-[rgba(43,43,59,0.5)]":
         cardType === "small",
@@ -98,19 +99,19 @@ function CustomerCard({
     <li className={listItemClasses}>
       {config.showShine && (
         <>
-          {/* <Image
+          <Image
             src={shineCorner}
             alt=""
             width={265}
             height={77}
             priority
-            className="pointer-events-none absolute -top-[10px] -left-[10px]"
-            quality={100}
-          /> */}
-          {/* <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[265px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[2px]"></span>
-          <span className="absolute -top-0 left-0 z-10 flex h-[28px] w-[217px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[1px]"></span>
-          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[203px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[2.5px]"></span>
-          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[1.5px]"></span> */}
+            className="pointer-events-none absolute -top-[10px] -left-[10px] z-10"
+            quality={90}
+          />
+          <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[188px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[3px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[28px] w-[194px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[6px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[203px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[32px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[8px]"></span>
         </>
       )}
       <article className={cardClasses}>
