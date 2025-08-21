@@ -108,10 +108,14 @@ function CustomerCard({
             className="pointer-events-none absolute -top-[10px] -left-[10px] z-10"
             quality={90}
           />
-          <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[188px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[3px]"></span>
+          {/* <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[188px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[3px]"></span>
           <span className="absolute -top-0 left-0 z-10 flex h-[28px] w-[194px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[6px]"></span>
           <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[203px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[32px]"></span>
-          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[8px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,1)] mix-blend-plus-lighter blur-[8px]"></span> */}
+          <span className="absolute -top-0 left-0 z-10 flex h-[77px] w-[188px] rounded-tl-xl border-t border-[rgba(255,186,244,1)] mix-blend-plus-lighter blur-[6px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[28px] w-[194px] rounded-tl-xl border-t border-[rgba(255,186,244,0.6)] mix-blend-plus-lighter blur-[3px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[203px] rounded-tl-xl border-t border-[rgba(255,255,255,0.3)] mix-blend-plus-lighter blur-[6px]"></span>
+          <span className="absolute -top-0 left-0 z-10 flex h-[39px] w-[204px] rounded-tl-xl border-t border-[rgba(255,255,255,0.2)] mix-blend-plus-lighter blur-[6px]"></span>
         </>
       )}
       <article className={cardClasses}>
