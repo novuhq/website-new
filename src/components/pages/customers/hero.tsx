@@ -5,6 +5,9 @@ import blueBg from "@/images/pages/customers/hero/blue-bg.png"
 import purpleBgMob from "@/images/pages/customers/hero/purple-bg-mob.png"
 import purpleBg from "@/images/pages/customers/hero/purple-bg.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
+import heroBgMob from "@/svgs/pages/customers/hero/background-mob.svg"
+import heroBgTablet from "@/svgs/pages/customers/hero/background-tablet.svg"
+import heroBg from "@/svgs/pages/customers/hero/background.svg"
 import shineCorner from "@/svgs/pages/customers/hero/shine.svg"
 
 import { TCustomerCard } from "@/types/customers"
@@ -55,10 +58,38 @@ const CARD_CONFIG: Record<number, CardConfig> = {
 function ContainerEffects() {
   return (
     <>
-      <span className="absolute -top-10 -left-[30px] flex h-70 w-95 rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[14px] md:-top-14 md:-left-43 md:h-79 md:w-255 md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-2 md:blur-[32px] lg:-top-31 lg:-left-63 lg:h-101 lg:w-368" />
+      <Image
+        src={heroBg}
+        alt=""
+        width={1472}
+        height={812}
+        priority
+        className="pointer-events-none absolute hidden w-[1472px] max-w-none lg:-top-[151px] lg:-left-[208px] lg:flex lg:h-[797px] xl:-top-[170px] xl:-left-[252px] xl:h-[812px]"
+        quality={90}
+      />
+      <Image
+        src={heroBgTablet}
+        alt=""
+        width={1021}
+        height={1030}
+        priority
+        className="pointer-events-none absolute -top-[125px] -left-[172px] hidden h-[1030px] w-[1021px] max-w-none md:flex lg:hidden"
+        quality={90}
+      />
+      <Image
+        src={heroBgMob}
+        alt=""
+        width={517}
+        height={1377}
+        priority
+        className="pointer-events-none absolute -top-30 -left-25 h-[1377px] w-[517px] max-w-none md:hidden"
+        quality={90}
+      />
+      {/* Realisation by spans */}
+      {/* <span className="absolute -top-10 -left-[30px] flex h-70 w-95 rounded-[100%] bg-[linear-gradient(171deg,_#F575E0_21.93%,_rgba(117,153,245,0.70)_84.89%)] opacity-[0.01] blur-[14px] md:-top-14 md:-left-43 md:h-79 md:w-255 md:bg-[linear-gradient(81deg,#F575E0_21.93%,rgba(117,153,245,0.70)_84.89%)] md:opacity-2 md:blur-[32px] lg:-top-31 lg:-left-63 lg:h-101 lg:w-368" />
       <span className="absolute -top-8 -left-20 hidden h-83 w-212 rounded-[100%] bg-[linear-gradient(81deg,#F575E0_21.93%,#7599F5_84.89%)] opacity-4 blur-[32px] md:flex lg:-top-20 lg:-left-21 lg:h-83 lg:w-284" />
       <span className="absolute -top-16 -left-23 flex h-45 w-53 rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-13 blur-[32px] md:-top-30 md:-left-25 md:h-80 md:w-96 md:bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,#FFB7E2_27.2%,#FF96FB_67.79%,#F047FF_88.46%,rgba(240,71,255,0)_99.52%)] md:opacity-5 xl:-top-42 xl:-left-44 xl:h-102 xl:w-134" />
-      <span className="absolute bottom-25 -left-15 flex h-95 w-92 rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-8 blur-[32px] md:bottom-28 md:left-19 md:h-108 md:w-146 md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] xl:bottom-10 xl:left-41 xl:opacity-20" />
+      <span className="absolute bottom-25 -left-15 flex h-95 w-92 rounded-[100%] bg-[radial-gradient(130.45%_66.34%_at_74.29%_61.64%,_#B7C9FF_27.2%,_#4775FF_80.5%,_#4775FF_100%)] opacity-8 blur-[32px] md:bottom-28 md:left-19 md:h-108 md:w-146 md:rotate-[5deg] md:bg-[radial-gradient(50%_50%_at_50%_50%,#A1B6F8_0%,rgba(183,201,255,0)_100%)] xl:bottom-10 xl:left-41 xl:opacity-20" /> */}
     </>
   )
 }
