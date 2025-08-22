@@ -71,7 +71,7 @@ function CustomerCard({
   const isVisibleOnMobile = index < visibleOnMobile
 
   const cardClassName = clsx("border-[#534B5D] border-r", {
-    "hidden md:flex": !isVisibleOnMobile, // last 4 elements hidden on mobile
+    "hidden md:block": !isVisibleOnMobile, // last 4 elements hidden on mobile
     "border-b": isVisibleOnMobile && index < visibleOnMobile - 2, // mobile: last 2 elements in the last row
     "md:border-b": index < customersLength - 4, // tablet+: last 4 elements без нижнего бордера
     "border-r-0": isVisibleOnMobile && (index + 1) % 2 === 0, // mobile: last element in every row
