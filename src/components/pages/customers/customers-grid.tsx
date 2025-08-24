@@ -16,27 +16,27 @@ function ListBackground() {
       <Image
         src={bg}
         alt=""
-        width={1485}
+        width={1513}
         height={485}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 xl:flex xl:h-[485px] xl:w-[1485px]"
+        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 xl:flex"
         quality={90}
         loading="lazy"
       />
       <Image
         src={bgLg}
         alt=""
-        width={930}
-        height={455}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 lg:flex lg:h-[486px] lg:w-[1011px] xl:hidden"
+        width={953}
+        height={456}
+        className="pointer-events-none absolute top-1/2 left-1/2 hidden -translate-1/2 lg:flex xl:hidden"
         quality={90}
         loading="lazy"
       />
       <Image
         src={bgMd}
         alt=""
-        width={788}
-        height={486}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden h-[486px] w-[788px] max-w-none -translate-1/2 md:flex lg:hidden"
+        width={765}
+        height={440}
+        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 md:flex lg:hidden"
         quality={90}
         loading="lazy"
       />
@@ -123,7 +123,7 @@ export default function CustomersGrid({
   customers: { customer: TCustomerCard }[]
 }) {
   return (
-    <section className="trusted relative mt-[104px] md:mt-28 lg:mt-40">
+    <section className="trusted relative mt-[104px] md:mt-28 lg:mt-40 [overflow-x:clip]">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] 2xl:max-w-[1216px]">
         <h2 className="gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
           Trusted by companies worldwide

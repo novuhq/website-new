@@ -1,4 +1,6 @@
 import Image from "next/image"
+import bgLg from "@/images/shared/cta/background-lg.svg"
+import bgMob from "@/images/shared/cta/background-mob.svg"
 import bgSvg from "@/images/shared/cta/background.svg"
 
 import { ICtaSection } from "@/types/common"
@@ -58,16 +60,35 @@ function CTA({
         )}
       </div>
       <Image
-        className="pointer-events-none absolute top-[60%] left-[40%] z-0 max-w-none -translate-1/2 md:top-1/2 xl:left-1/2"
+        className="pointer-events-none absolute top-[53%] left-[44%] hidden h-[870px] w-[1385px] max-w-none -translate-1/2 xl:flex"
         src={bgSvg}
-        width={1722}
-        height={1193}
+        width={1385}
+        height={870}
         alt=""
         loading="lazy"
         aria-hidden
-        quality={100}
+        quality={90}
       />
-      <span className="absolute -bottom-16 hidden h-104 w-149 rounded-[100%] bg-[radial-gradient(65.84%_65.83%_at_50.05%_34.17%,_#6789FF_27.2%,_rgba(103,137,255,0)_100%)] opacity-5 blur-[30px] xl:left-33 xl:flex"></span>
+      <Image
+        className="pointer-events-none absolute top-[59%] left-[50%] hidden h-[844px] w-full max-w-none -translate-1/2 lg:flex xl:hidden"
+        src={bgLg}
+        width={1064}
+        height={844}
+        alt=""
+        loading="lazy"
+        aria-hidden
+        quality={90}
+      />
+      <Image
+        className="pointer-events-none absolute top-[68%] left-[50%] w-[768px] max-w-none -translate-1/2 md:top-[59%] md:flex md:h-[845px] md:w-[1043px] lg:hidden"
+        src={bgMob}
+        width={1043}
+        height={845}
+        alt=""
+        loading="lazy"
+        aria-hidden
+        quality={90}
+      />
     </section>
   )
 }

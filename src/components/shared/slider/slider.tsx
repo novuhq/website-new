@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 
-import { ICustomerTweetData } from "@/types/customers"
-import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 
 import "slick-carousel/slick/slick-theme.css"
@@ -44,42 +42,11 @@ const PrevArrow = (props: { onClick?: () => void }) => {
   )
 }
 
-const ReviewCard = ({ name, text, tweet_link: tweetLink, logo, tag }: ICustomerTweetData) => {
-  return (
-    <div className="relative h-full w-full md:max-w-[384px]">
-      <Link
-        className="relative z-10 flex h-full flex-col items-start rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start transition-colors duration-300 hover:bg-[#15141D] md:px-6 md:py-5"
-        href={tweetLink}
-        variant="white"
-      >
-        <p
-          className="[&>span]:text-primary-1 mb-5 line-clamp-5 text-[15px] leading-snug font-[350] xl:text-base"
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
-        <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
-          <img
-            className="h-9 w-9 rounded-full"
-            src={logo.asset.url}
-            alt={name}
-            width={36}
-            height={36}
-            loading="lazy"
-          />
-          <div>
-            <span className="block text-base leading-none text-gray-9 md:text-[15px]">
-              {name}
-            </span>
-            <span className="mt-[6px] block text-sm leading-none text-gray-8 md:text-sm">
-              {tag}
-            </span>
-          </div>
-        </div>
-      </Link>
-    </div>
-  )
-}
-
-export default function Slider({ reviews }: { reviews: ICustomerTweetData[] }) {
+export default function Slider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [slidesToShow, setSlidesToShow] = useState<number | null>(null)
 
   useEffect(() => {
@@ -109,9 +76,7 @@ export default function Slider({ reviews }: { reviews: ICustomerTweetData[] }) {
 
   return (
     <SlickSlider className="flex w-full" {...settings}>
-      {reviews.map((review, index) => (
-        <ReviewCard key={index} {...review} />
-      ))}
+      {children}
     </SlickSlider>
   )
 }

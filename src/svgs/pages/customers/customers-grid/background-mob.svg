@@ -20,10 +20,10 @@
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="32" result="effect1_foregroundBlur_31420_102519"/>
 </filter>
-<filter id="filter2_f_31420_102519" x="-15" y="19" width="386" height="559" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter2_f_31420_102519" x="-34" y="0" width="424" height="597" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="22.5" result="effect1_foregroundBlur_31420_102519"/>
+<feGaussianBlur stdDeviation="32" result="effect1_foregroundBlur_31420_102519"/>
 </filter>
 <radialGradient id="paint0_radial_31420_102519" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(118.878 418.65) rotate(90) scale(101.698 94.1082)">
 <stop stop-color="#4474F2"/>
