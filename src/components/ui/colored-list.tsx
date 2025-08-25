@@ -1,6 +1,11 @@
-export type TItems = {
+export enum ColorType {
+  RED = "red",
+  LAGUNE = "lagune",
+}
+
+export type TColoredListProps = {
   items: {
-    color: "red" | "lagune"
+    color: ColorType
     text: string
   }[]
   redGroupTitle?: string
@@ -11,7 +16,7 @@ export default function ColoredList({
   items,
   redGroupTitle,
   laguneGroupTitle,
-}: TItems) {
+}: TColoredListProps) {
   if (!items) return null
 
   return (
@@ -24,7 +29,7 @@ export default function ColoredList({
         )}
 
         {items
-          .filter(({ color }) => color === "red")
+          .filter(({ color }) => color === ColorType.RED)
           .map((item) => (
             <li
               key={item.text}
@@ -41,7 +46,7 @@ export default function ColoredList({
           </h2>
         )}
         {items
-          .filter(({ color }) => color === "lagune")
+          .filter(({ color }) => color === ColorType.LAGUNE)
           .map((item) => (
             <li
               key={item.text}

@@ -1,16 +1,12 @@
-import {
-  ICustomerData,
-  ICustomersPageData,
-} from "@/types/customers"
+import { ICustomerData, ICustomersPageData } from "@/types/customers"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   allCustomersQuery,
-  customerBySlugQuery,
   customersPageQuery,
   latestCustomersQuery,
 } from "@/lib/sanity/queries/customers"
 
-const REVALIDATE_CUSTOMERS_TAG = ["customer", "customers"]
+const REVALIDATE_CUSTOMERS_TAG = ["customers"]
 
 export async function getCustomersPage(
   preview = false
@@ -34,38 +30,6 @@ export async function getAllCustomers(
   })
 
   return customers || []
-}
-
-export async function getCustomerBySlug(
-  slug: string,
-  preview = false
-): Promise<{ customer: ICustomerData } | null> {
-  const customer = await sanityFetch<ICustomerData>({
-    query: customerBySlugQuery,
-    qParams: { slug },
-    preview,
-    tags: REVALIDATE_CUSTOMERS_TAG,
-  })
-
-  if (!customer) {
-    return null
-  }
-
-  const customerWithSeo = {
-    ...customer,
-    seo: customer.seo
-      ? {
-          ...customer.seo,
-          socialImage:
-            customer.seo.socialImage ??
-            `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?template=customer&title=${customer.seo.title}`,
-        }
-      : undefined,
-  }
-
-  return {
-    customer: customerWithSeo,
-  }
 }
 
 export async function getLatestCustomers(

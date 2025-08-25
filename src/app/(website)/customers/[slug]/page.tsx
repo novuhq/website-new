@@ -3,23 +3,20 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
-import {
-  getAllCustomers,
-  getCustomerBySlug,
-  getLatestCustomers,
-} from "@/lib/customers"
+import { getAllCustomers, getLatestCustomers } from "@/lib/customers"
+import { getCustomerBySlug } from "@/lib/customers/customer"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
+import ColoredList, { ColorType } from "@/components/ui/colored-list"
 import CTA from "@/components/cta"
 import Content from "@/components/pages/content"
-import About from "@/components/pages/customers/about"
-import Quote from "@/components/pages/customers/quote"
-import Related from "@/components/pages/customers/related"
-import Socials from "@/components/pages/customers/socials"
-import Breadcrumbs from "@/components/shared/breadcrumbs"
-import ColoredList from "@/components/shared/colored-list"
-import ScrollToTop from "@/components/shared/scroll-to-top"
-import SocialShare from "@/components/shared/social-share"
+import About from "@/components/pages/customers/story/about"
+import Quote from "@/components/pages/customers/story/quote"
+import Related from "@/components/pages/customers/story/related"
+import Socials from "@/components/pages/customers/story/socials"
+import ScrollToTop from "@/components/pages/scroll-to-top"
+import SocialShare from "@/components/pages/social-share"
 
 interface CustomerStoryPageProps {
   params: Promise<{
@@ -71,7 +68,6 @@ export default async function CustomerStoryPage({
     name,
     title,
     story_photo: cover,
-    logomark,
     logo,
     about,
     industry,
@@ -109,9 +105,9 @@ export default async function CustomerStoryPage({
               </div>
             )}
 
-            <div className="top-16 flex h-fit w-full flex-col gap-6 border-y border-gray-3 py-6 lg:sticky lg:col-start-2 lg:border-0 lg:py-0">
+            <div className="top-24 flex h-fit w-full flex-col gap-6 border-y border-gray-3 py-6 lg:sticky lg:col-start-2 lg:border-0 lg:py-0">
               <About
-                logo={logomark?.url || logo.url}
+                logo={logo.url}
                 name={name}
                 about={about}
                 industry={industry}
@@ -130,13 +126,13 @@ export default async function CustomerStoryPage({
                     items={[
                       ...(challengesSolution?.challenges || []).map(
                         (item: string) => ({
-                          color: "red" as const,
+                          color: ColorType.RED,
                           text: item,
                         })
                       ),
                       ...(challengesSolution?.solution || []).map(
                         (item: string) => ({
-                          color: "lagune" as const,
+                          color: ColorType.LAGUNE,
                           text: item,
                         })
                       ),

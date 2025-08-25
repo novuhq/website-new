@@ -34,13 +34,6 @@ const customerFields = `
       "metadata": logo.asset->metadata
     }
   },
-  "logomark": {
-    "url": logomark.asset->url + "?auto=format",
-    "asset": {
-      "url": logomark.asset->url,
-      "metadata": logomark.asset->metadata
-    }
-  },
   title,
   author,
   author_position,
@@ -85,13 +78,6 @@ const customerFields = `
       "asset": {
         "url": logo.asset->url,
         "metadata": logo.asset->metadata
-      }
-    },
-    "logomark": {
-      "url": logomark.asset->url + "?auto=format",
-      "asset": {
-        "url": logomark.asset->url,
-        "metadata": logomark.asset->metadata
       }
     },
     title,

@@ -13,8 +13,8 @@ import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import Content from "@/components/pages/content"
 import Date from "@/components/pages/date"
-import Breadcrumbs from "@/components/shared/breadcrumbs"
-import SocialShare from "@/components/shared/social-share"
+import SocialShare from "@/components/pages/social-share"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 
 interface ChangelogPostPageProps {
   params: Promise<{

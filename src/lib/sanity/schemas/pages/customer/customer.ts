@@ -16,13 +16,6 @@ export default defineType({
   title: "Customer",
   icon: UserIcon,
   groups: [GROUP.content, GROUP.seo],
-  fieldsets: [
-    {
-      name: "customer_logo",
-      title: "Customer logos",
-      options: { collapsible: false, columns: 2 },
-    },
-  ],
   fields: [
     defineField({
       name: "seo",
@@ -138,18 +131,8 @@ export default defineType({
       title: "Logo",
       description: "Full logo with text",
       group: GROUP.content.name,
-      fieldset: "customer_logo",
       validation: (rule: ImageRule) =>
         rule.error("You have to fill in this field.").required(),
-    }),
-    defineField({
-      name: "logomark",
-      type: "image",
-      title: "Logomark",
-      description: "Shown in About block",
-      group: GROUP.content.name,
-      fieldset: "customer_logo",
-      hidden: ({ parent }) => parent?.link?.type !== "story",
     }),
     defineField({
       name: "title",
@@ -459,7 +442,7 @@ export default defineType({
     select: {
       title: "name",
       subtitle: "card_type",
-      media: "logomark",
+      media: "logo",
     },
     prepare({ title, subtitle, media }) {
       let cardTypeLabel = ""

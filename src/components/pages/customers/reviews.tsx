@@ -1,6 +1,6 @@
 import { ICustomerTweetData } from "@/types/customers"
 import { Link } from "@/components/ui/link"
-import Slider from "@/components/shared/slider"
+import Slider from "@/components/ui/slider"
 
 const ReviewCard = ({
   name,

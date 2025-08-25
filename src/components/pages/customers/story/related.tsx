@@ -13,11 +13,11 @@ export default function Related({
       <h2 className="text-[28px] leading-[1.125] font-normal tracking-tight md:text-[32px]">
         Explore
       </h2>
-      <ul className="flex flex-col rounded-lg border border-gray-3">
+      <ul className="flex flex-col rounded-[8px] border border-gray-3 overflow-hidden">
         {customers?.map((customer) => (
           <li
             key={customer._id}
-            className="relative flex flex-col gap-y-2.5 border-b border-gray-3 p-4 pb-3.5 transition-colors duration-200 first:rounded-tl-lg first:rounded-tr-lg last:rounded-br-lg last:rounded-bl-lg last:border-b-0 hover:bg-gray-3"
+            className="relative flex flex-col gap-y-2.5 border-b border-gray-3 p-4 pb-3.5 transition-colors duration-200 last:border-b-0 hover:bg-gray-3"
           >
             <Link
               className="absolute top-0 left-0 h-full w-full"

@@ -14,6 +14,28 @@ interface ICTAProps extends ICtaSection {
   titleClassName?: string
 }
 
+const BACKGROUND_BREAKPOINTS = [
+  {
+    width: 1385,
+    height: 870,
+    src: bgSvg,
+    className: "top-[53%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
+  },
+  {
+    width: 1064,
+    height: 844,
+    src: bgLg,
+    className: "top-[59%] left-[50%] hidden h-[844px] w-full lg:flex xl:hidden",
+  },
+  {
+    width: 1043,
+    height: 845,
+    src: bgMob,
+    className:
+      "top-[68%] left-[50%] w-[768px] md:top-[59%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
+  },
+]
+
 function CTA({
   className,
   containerClassName,
@@ -59,36 +81,24 @@ function CTA({
           />
         )}
       </div>
-      <Image
-        className="pointer-events-none absolute top-[53%] left-[44%] hidden h-[870px] w-[1385px] max-w-none -translate-1/2 xl:flex"
-        src={bgSvg}
-        width={1385}
-        height={870}
-        alt=""
-        loading="lazy"
-        aria-hidden
-        quality={90}
-      />
-      <Image
-        className="pointer-events-none absolute top-[59%] left-[50%] hidden h-[844px] w-full max-w-none -translate-1/2 lg:flex xl:hidden"
-        src={bgLg}
-        width={1064}
-        height={844}
-        alt=""
-        loading="lazy"
-        aria-hidden
-        quality={90}
-      />
-      <Image
-        className="pointer-events-none absolute top-[68%] left-[50%] w-[768px] max-w-none -translate-1/2 md:top-[59%] md:flex md:h-[845px] md:w-[1043px] lg:hidden"
-        src={bgMob}
-        width={1043}
-        height={845}
-        alt=""
-        loading="lazy"
-        aria-hidden
-        quality={90}
-      />
+      {BACKGROUND_BREAKPOINTS.map(
+        ({ width, height, src, className }, index) => (
+          <Image
+            key={index}
+            className={cn(
+              "pointer-events-none absolute max-w-none -translate-1/2 select-none",
+              className
+            )}
+            src={src}
+            alt=""
+            width={width}
+            height={height}
+            quality={90}
+            loading="lazy"
+            aria-hidden
+          />
+        )
+      )}
     </section>
   )
 }

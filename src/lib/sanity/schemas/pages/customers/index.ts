@@ -1,6 +1,5 @@
-import customer from "./customer"
-import customersPage from "./customers-page"
+import customersPage from "./customers"
 
-const customersSchemas = [customer, customersPage]
+const customersPageSchema = [customersPage]
 
-export default customersSchemas
+export default customersPageSchema

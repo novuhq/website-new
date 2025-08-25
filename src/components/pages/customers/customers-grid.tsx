@@ -8,54 +8,35 @@ import bg from "@/svgs/pages/customers/customers-grid/background.svg"
 import clsx from "clsx"
 
 import { TCustomerCard } from "@/types/customers"
+import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
-function ListBackground() {
-  return (
-    <>
-      <Image
-        src={bg}
-        alt=""
-        width={1513}
-        height={485}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 xl:flex"
-        quality={90}
-        loading="lazy"
-      />
-      <Image
-        src={bgLg}
-        alt=""
-        width={953}
-        height={456}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden -translate-1/2 lg:flex xl:hidden"
-        quality={90}
-        loading="lazy"
-      />
-      <Image
-        src={bgMd}
-        alt=""
-        width={765}
-        height={440}
-        className="pointer-events-none absolute top-1/2 left-1/2 hidden max-w-none -translate-1/2 md:flex lg:hidden"
-        quality={90}
-        loading="lazy"
-      />
-      <Image
-        src={bgMob}
-        alt=""
-        width={360}
-        height={607}
-        className="pointer-events-none absolute top-1/2 left-1/2 flex h-[607px] w-[360px] max-w-none -translate-1/2 md:hidden"
-        quality={90}
-        loading="lazy"
-      />
-      {/* <span className="absolute bottom-16 left-0 flex h-51 w-47 rotate-14 rounded-[100%] bg-[radial-gradient(50%_50%_at_50%_50%,_#4474F2_0%,_rgba(68,116,242,0)_100%)] opacity-5 md:top-25 md:left-15 md:h-65 md:w-69 md:opacity-8 lg:top-12 lg:left-20 lg:h-94 lg:w-94 2xl:top-12 2xl:left-21 2xl:h-93 2xl:w-123" />
-      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] bg-[linear-gradient(163deg,#F575CA_19.98%,#7599F5_77.19%)] opacity-2 blur-[32px] md:top-12 md:left-8 md:h-89 md:w-165 md:translate-0 md:bg-[linear-gradient(253deg,_#F575CA_19.98%,_#7599F5_77.19%)] md:opacity-5 md:blur-[25px] lg:top-8 lg:left-6 lg:h-89 lg:w-227 2xl:top-11 2xl:-left-35 2xl:h-89 2xl:w-371" />
-      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] bg-[linear-gradient(133deg,#F575CA_19.6%,#7599F5_80.06%)] opacity-3 blur-[22px] md:top-26 md:left-9 md:h-74 md:w-149 md:translate-0 md:rotate-[7deg] md:bg-[linear-gradient(186deg,_#F575CA_19.6%,_#7599F5_80.06%)] md:opacity-4 lg:top-25 lg:left-9 lg:h-74 lg:w-226 2xl:left-25 2xl:h-74 2xl:w-274" />
-      <span className="absolute top-1/2 left-1/2 flex h-[90%] w-full -translate-1/2 rounded-[100%] mix-blend-plus-lighter blur-[25px] md:top-21 md:left-10 md:h-74 md:w-157 md:translate-0 md:rotate-[-13deg] md:bg-[linear-gradient(348deg,rgba(245,117,202,0.30)_0%,rgba(117,153,245,0.40)_100%)] md:opacity-5 lg:top-16 lg:left-18 lg:h-74 lg:w-173 2xl:top-16 2xl:left-42" /> */}
-    </>
-  )
-}
+const BACKGROUND_BREAKPOINTS = [
+  {
+    width: 360,
+    height: 607,
+    src: bgMob,
+    className: "md:hidden h-[607px] w-[360px] max-w-none",
+  },
+  {
+    width: 765,
+    height: 440,
+    src: bgMd,
+    className: "hidden md:flex lg:hidden max-w-none",
+  },
+  {
+    width: 953,
+    height: 456,
+    src: bgLg,
+    className: "hidden lg:flex xl:hidden",
+  },
+  {
+    width: 1513,
+    height: 485,
+    src: bg,
+    className: "hidden xl:flex max-w-none",
+  },
+]
 
 function CustomerCard({
   link,
@@ -98,7 +79,7 @@ function CustomerCard({
           alt={name}
           width={120}
           height={24}
-          className="h-6 w-30 transition-transform duration-200 group-hover:-translate-y-2 md:h-8 md:w-[140px] lg:h-10 lg:w-[190px]"
+          className="h-6 w-30 transition-transform duration-200 select-none group-hover:-translate-y-2 sm:h-8 sm:w-[140px] lg:h-10 lg:w-[190px]"
           loading="lazy"
         />
         <span className="hidden-start absolute bottom-8 flex items-center gap-x-[7px] text-white opacity-0 transition-all duration-200 group-hover:opacity-100">
@@ -123,13 +104,30 @@ export default function CustomersGrid({
   customers: { customer: TCustomerCard }[]
 }) {
   return (
-    <section className="trusted relative mt-[104px] md:mt-28 lg:mt-40 [overflow-x:clip]">
+    <section className="trusted relative mt-[104px] [overflow-x:clip] md:mt-28 lg:mt-40">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] 2xl:max-w-[1216px]">
         <h2 className="gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
           Trusted by companies worldwide
         </h2>
         <ul className="relative mt-14 grid w-full flex-grow list-none grid-cols-2 md:grid-cols-4">
-          <ListBackground />
+          {BACKGROUND_BREAKPOINTS.map(
+            ({ width, height, src, className }, index) => (
+              <Image
+                key={index}
+                className={cn(
+                  "pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 select-none",
+                  className
+                )}
+                src={src}
+                alt=""
+                width={width}
+                height={height}
+                quality={90}
+                loading="lazy"
+                aria-hidden
+              />
+            )
+          )}
           {customers.map(({ customer }, index: number) => (
             <CustomerCard
               {...customer}

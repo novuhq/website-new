@@ -4,8 +4,32 @@ import heroBgTablet from "@/svgs/pages/customers/hero/background-tablet.svg"
 import heroBg from "@/svgs/pages/customers/hero/background.svg"
 
 import { TCustomerCard } from "@/types/customers"
+import { cn } from "@/lib/utils"
 
 import HeroCard from "./hero-card"
+
+const BACKGROUND_BREAKPOINTS = [
+  {
+    width: 1472,
+    height: 812,
+    src: heroBg,
+    className:
+      "w-[1472px] lg:-top-[151px] lg:-left-[208px] lg:flex lg:h-[797px] xl:-top-[170px] xl:-left-[252px] xl:h-[812px]",
+  },
+  {
+    width: 1021,
+    height: 1030,
+    src: heroBgTablet,
+    className:
+      "-top-[125px] -left-[172px] hidden h-[1030px] w-[1021px] md:flex lg:hidden",
+  },
+  {
+    width: 517,
+    height: 1377,
+    src: heroBgMob,
+    className: "-top-30 -left-25 h-[1377px] w-[517px] md:hidden",
+  },
+]
 
 function Hero({ customers }: { customers: { customer: TCustomerCard }[] }) {
   return (
@@ -22,33 +46,24 @@ function Hero({ customers }: { customers: { customer: TCustomerCard }[] }) {
         </div>
 
         <div className="relative mt-10 flex w-full flex-row flex-wrap gap-4 md:mt-12 md:gap-7 lg:mt-14 lg:gap-8 xl:mt-16">
-          <Image
-            src={heroBg}
-            alt=""
-            width={1472}
-            height={812}
-            priority
-            className="pointer-events-none absolute hidden w-[1472px] max-w-none select-none lg:-top-[151px] lg:-left-[208px] lg:flex lg:h-[797px] xl:-top-[170px] xl:-left-[252px] xl:h-[812px]"
-            quality={90}
-          />
-          <Image
-            src={heroBgTablet}
-            alt=""
-            width={1021}
-            height={1030}
-            priority
-            className="pointer-events-none absolute -top-[125px] -left-[172px] hidden h-[1030px] w-[1021px] max-w-none select-none md:flex lg:hidden"
-            quality={90}
-          />
-          <Image
-            src={heroBgMob}
-            alt=""
-            width={517}
-            height={1377}
-            priority
-            className="pointer-events-none absolute -top-30 -left-25 h-[1377px] w-[517px] max-w-none select-none md:hidden"
-            quality={90}
-          />
+          {BACKGROUND_BREAKPOINTS.map(
+            ({ width, height, src, className }, index) => (
+              <Image
+                key={index}
+                className={cn(
+                  "pointer-events-none absolute max-w-none select-none",
+                  className
+                )}
+                src={src}
+                alt=""
+                width={width}
+                height={height}
+                priority
+                quality={90}
+                aria-hidden
+              />
+            )
+          )}
           {customers.map(({ customer }, index) => (
             <HeroCard key={customer._id} {...customer} index={index} />
           ))}

@@ -8,6 +8,8 @@
 @import "./shiki.css";
 @import "./video.css";
 
+@import "./slider.css";
+
 :root {
   --color-primary-1: 190 100% 50%; /* primary-1 */
   --color-primary-2: 190 100% 75%; /* primary-2 */

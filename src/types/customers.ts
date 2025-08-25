@@ -25,7 +25,6 @@ export interface ICustomerData {
   slug: ISlug
   pathname: string
   logo: ISanityImage
-  logomark?: ISanityImage
   title: string
   author: string
   author_position: string
