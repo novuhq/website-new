@@ -9,7 +9,7 @@ const DEFAULT_WIDTH = 1200
 const DEFAULT_HEIGHT = 630
 
 const DEFAULT_TEMPLATES = {
-  default: "/og-images/default-cover.jpg",
+  default: "/og-images/default.jpg",
 } as const
 
 type TemplateKey = keyof typeof DEFAULT_TEMPLATES
@@ -43,6 +43,10 @@ export async function GET(request: NextRequest) {
 
     const [fontRes, backgroundRes] = await Promise.all([font, background])
 
+    // Convert ArrayBuffer to base64 data URL
+    const backgroundBase64 = Buffer.from(backgroundRes).toString("base64")
+    const backgroundDataUrl = `data:image/jpeg;base64,${backgroundBase64}`
+
     return new ImageResponse(
       (
         <div
@@ -67,7 +71,7 @@ export async function GET(request: NextRequest) {
               zIndex: 1,
               objectFit: "cover",
             }}
-            src={backgroundRes as unknown as string}
+            src={backgroundDataUrl}
             alt=""
             width={width}
             height={height}

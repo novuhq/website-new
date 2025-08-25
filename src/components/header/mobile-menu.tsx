@@ -53,7 +53,7 @@ function MobileMenu({ items }: MobileMenuProps) {
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
-        className="absolute top-16 flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden"
+        className="top-16 flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden"
         withTopLine={false}
       >
         <DrawerTitle className="sr-only">Menu</DrawerTitle>

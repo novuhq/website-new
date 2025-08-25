@@ -33,7 +33,7 @@ function PostsItem({
       </p>
       <div className="pt-px lg:max-w-160 xl:pt-0">
         <Link
-          className="!text-foreground hover:!text-foreground/40"
+          className="!text-foreground transition-colors duration-300 hover:!text-foreground/40"
           href={`${ROUTE.changelog}/${slug.current}`}
         >
           <h1 className="text-[28px] leading-[1.125] font-semibold tracking-[0.014em] text-current md:text-[30px]">

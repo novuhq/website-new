@@ -53,6 +53,7 @@ function SocialShare({ className, pathname }: ISocialShareProps) {
                   window.open(href, "_blank", "noopener,noreferrer")
                 }
               }}
+              title={label}
             >
               <Icon className="!size-4" size={16} />
               <span className="sr-only">{label}</span>

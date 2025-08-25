@@ -3,6 +3,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
+import { ChevronDown } from "lucide-react"
 import { domAnimation, LazyMotion } from "motion/react"
 import * as m from "motion/react-m"
 
@@ -10,7 +11,6 @@ import { IMenuHeaderItem } from "@/types/common"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
-import DynamicIcon from "@/components/dynamic-icon"
 
 import Dropdown from "./dropdown"
 
@@ -142,12 +142,11 @@ function Nav({ className, items }: IHeaderNavProps) {
                       onMouseEnter={() => handleItemHover(index)}
                     >
                       {title}
-                      <DynamicIcon
+                      <ChevronDown
                         className={cn(
                           "mt-1 !size-3 transition-transform duration-200",
                           openMenu === title && "rotate-180"
                         )}
-                        icon="chevron-down"
                       />
                     </Button>
                     {content && content.length > 0 && (

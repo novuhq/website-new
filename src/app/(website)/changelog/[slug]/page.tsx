@@ -3,12 +3,12 @@ import Image from "next/image"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import DynamicIcon from "@/components/dynamic-icon"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import Content from "@/components/pages/content"
@@ -37,32 +37,32 @@ function PaginationControl({
     <div>
       {slug && title && (
         <Button
-          className="!flex !h-auto w-full border-[#1C1D22] !p-0 normal-case"
+          className="!flex !h-full w-full border-[#1C1D22] !p-0 normal-case [&>span]:h-full"
           variant="outline"
           asChild
         >
           <NextLink href={`/changelog/${slug}`}>
             <span
               className={cn(
-                "flex w-full flex-col gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5",
+                "flex h-full w-full flex-col gap-3.5 !p-3 whitespace-normal md:!px-4 md:!py-3.5",
                 direction === "previous" ? "items-start" : "items-end"
               )}
             >
               <span className="flex items-center gap-1 text-xs text-gray-9">
                 {direction === "previous" && (
                   <>
-                    <DynamicIcon icon="chevron-left" />
+                    <ChevronLeft />
                     Previous
                   </>
                 )}
                 {direction === "next" && (
                   <>
                     Next
-                    <DynamicIcon icon="chevron-right" />
+                    <ChevronRight />
                   </>
                 )}
               </span>
-              <span className="mt-auto text-sm">{title}</span>
+              <span className="mt-auto line-clamp-2 text-sm">{title}</span>
             </span>
           </NextLink>
         </Button>
@@ -166,11 +166,7 @@ export default async function ChangelogPostPage({
                   </dt>
                   <dd className="gap flex flex-col gap-3">
                     <div className="-mt-px flex items-center gap-2 lg:-mt-px">
-                      <DynamicIcon
-                        className="text-muted-foreground"
-                        icon="calendar"
-                        size={14}
-                      />
+                      <Calendar className="text-muted-foreground" size={14} />
                       <Date
                         publishedAt={publishedAt}
                         variant="muted"
