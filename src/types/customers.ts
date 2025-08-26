@@ -29,15 +29,9 @@ export interface ICustomerData {
   about: string
   industry: string
   channels: {
-    email?: string
-    inbox?: string
-    sms?: string
-  }
-
-  socials: {
-    x?: string
-    linkedin?: string
-    website?: string
+    email?: boolean
+    inbox?: boolean
+    sms?: boolean
   }
 
   // Quote

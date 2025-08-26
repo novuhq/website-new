@@ -42,11 +42,7 @@ const PrevArrow = (props: { onClick?: () => void }) => {
   )
 }
 
-export default function Slider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Slider({ children }: { children: React.ReactNode }) {
   const [slidesToShow, setSlidesToShow] = useState<number | null>(null)
 
   useEffect(() => {
@@ -72,6 +68,13 @@ export default function Slider({
     arrows: window.innerWidth >= 768,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    swipe: true,
+    swipeToSlide: true,
+    touchMove: true,
+    draggable: true,
+    accessibility: true,
+    pauseOnHover: false,
+    pauseOnFocus: false,
   }
 
   return (

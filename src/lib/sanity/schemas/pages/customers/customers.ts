@@ -46,7 +46,8 @@ export default defineType({
               type: "reference",
               to: [{ type: "customer" }],
               options: {
-                filter: 'cardType == "small"',
+                filter:
+                  'cardType == "small" && defined(author) && defined(authorPosition) && author != "" && authorPosition != ""',
               },
             },
           ],
@@ -90,7 +91,8 @@ export default defineType({
               type: "reference",
               to: [{ type: "customer" }],
               options: {
-                filter: 'cardType == "big"',
+                filter:
+                  'cardType == "big" && defined(author) && defined(authorPosition) && author != "" && authorPosition != ""',
               },
             },
           ],

@@ -14,7 +14,6 @@ import Content from "@/components/pages/content"
 import About from "@/components/pages/customers/story/about"
 import Quote from "@/components/pages/customers/story/quote"
 import Related from "@/components/pages/customers/story/related"
-import Socials from "@/components/pages/customers/story/socials"
 import ScrollToTop from "@/components/pages/scroll-to-top"
 import SocialShare from "@/components/pages/social-share"
 
@@ -72,7 +71,6 @@ export default async function CustomerStoryPage({
     about,
     industry,
     channels,
-    socials,
     pathname,
     quote,
     challengesSolution,
@@ -115,7 +113,7 @@ export default async function CustomerStoryPage({
               />
 
               <ScrollToTop buttonClassName="hidden lg:flex" />
-              <Socials socials={socials} />
+              <SocialShare className="md:-mt-px" pathname={pathname} />
             </div>
 
             <div className={cn("col-start-1", !cover && "lg:row-start-1")}>

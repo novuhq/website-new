@@ -41,7 +41,6 @@ const customerFields = `
   about,
   industry,
   channels,
-  socials,
   "quote": quote {
     title,
     "authorLogo": {

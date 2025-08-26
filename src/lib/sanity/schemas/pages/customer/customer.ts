@@ -168,7 +168,13 @@ export default defineType({
       title: "Author",
       group: GROUP.content.name,
       validation: (rule: StringRule) =>
-        rule.error("You have to fill in this field.").required(),
+        rule.custom((value, context) => {
+          const parent = context.parent as { cardType?: string }
+          if (parent?.cardType && (!value || value.trim() === "")) {
+            return "Author is required when card type is selected"
+          }
+          return true
+        }),
     }),
     defineField({
       name: "authorPosition",
@@ -176,7 +182,13 @@ export default defineType({
       title: "Author Position",
       group: GROUP.content.name,
       validation: (rule: StringRule) =>
-        rule.error("You have to fill in this field.").required(),
+        rule.custom((value, context) => {
+          const parent = context.parent as { cardType?: string }
+          if (parent?.cardType && (!value || value.trim() === "")) {
+            return "Author Position is required when card type is selected"
+          }
+          return true
+        }),
     }),
     defineField({
       name: "cardType",
@@ -185,6 +197,7 @@ export default defineType({
       description: "Choose the card size type",
       options: {
         list: [
+          { title: "None", value: "" },
           { title: "Big Card", value: "big" },
           { title: "Small Card", value: "small" },
         ],
@@ -250,7 +263,7 @@ export default defineType({
 
             const { email, inbox, sms } = value
             if (!email && !inbox && !sms) {
-              return "At least one channel (email, inbox, or sms) must be filled when link type is story"
+              return "At least one channel (email, inbox, or sms) must be enabled when link type is story"
             }
           }
           return true
@@ -258,58 +271,18 @@ export default defineType({
       fields: [
         defineField({
           name: "email",
-          type: "string",
+          type: "boolean",
           title: "Email",
         }),
         defineField({
           name: "inbox",
-          type: "string",
+          type: "boolean",
           title: "Inbox",
         }),
         defineField({
           name: "sms",
-          type: "string",
+          type: "boolean",
           title: "SMS",
-        }),
-      ],
-    }),
-    defineField({
-      name: "socials",
-      type: "object",
-      title: "Socials",
-      group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
-      options: { collapsible: true, collapsed: false },
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story") {
-            if (!value) {
-              return "Socials are required when link type is story"
-            }
-
-            const { x, linkedin, website } = value
-            if (!x && !linkedin && !website) {
-              return "At least one social (x, linkedin, website) must be filled when link type is story"
-            }
-          }
-          return true
-        }),
-      fields: [
-        defineField({
-          name: "x",
-          type: "string",
-          title: "X",
-        }),
-        defineField({
-          name: "linkedin",
-          type: "string",
-          title: "LinkedIn",
-        }),
-        defineField({
-          name: "website",
-          type: "string",
-          title: "Website",
         }),
       ],
     }),

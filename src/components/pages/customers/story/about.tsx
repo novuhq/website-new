@@ -1,8 +1,6 @@
 import Image from "next/image"
 
 import { ICustomerData } from "@/types/customers"
-import { cn } from "@/lib/utils"
-import { Link } from "@/components/ui/link"
 
 export default function About({
   logo,
@@ -42,30 +40,20 @@ export default function About({
             Channels
           </dt>
           <dd className="flex items-center gap-2">
-            {channels?.email && (
-              <Link
-                href={`mailto:${channels.email}`}
-                className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
-              >
-                Email
-              </Link>
-            )}
-            {channels?.inbox && (
-              <Link
-                href={`${channels.inbox}`}
-                className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
-              >
-                Inbox
-              </Link>
-            )}
-            {channels?.sms && (
-              <Link
-                href={`sms:${channels.sms}`}
-                className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
-              >
-                SMS
-              </Link>
-            )}
+            {channels &&
+              Object.entries(channels).map(
+                ([key, value]) =>
+                  value && (
+                    <span
+                      key={key}
+                      className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
+                    >
+                      {key === "sms"
+                        ? "SMS"
+                        : key.charAt(0).toUpperCase() + key.slice(1)}
+                    </span>
+                  )
+              )}
           </dd>
         </div>
       </div>

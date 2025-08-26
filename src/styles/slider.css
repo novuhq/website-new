@@ -19,6 +19,30 @@
     @apply px-2 md:px-0;
   }
 
+  & .slick-slide a,
+  & .slick-slide img,
+  & .slick-slide * {
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: auto;
+  }
+
+  & .slick-slide a {
+    pointer-events: auto;
+  }
+
+  & .slick-list {
+    cursor: grab;
+  }
+
+  & .slick-list:active {
+    cursor: grabbing;
+  }
+
   & .slick-dots {
     @apply -bottom-11 !flex items-center justify-center;
 
