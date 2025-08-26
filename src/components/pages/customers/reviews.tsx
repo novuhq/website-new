@@ -55,7 +55,7 @@ const Reviews = ({ reviews }: { reviews: ICustomerTweetData[] }) => {
           Explore what developers and non-technical users say about why they're
           fans of our open-source notifications framework.
         </p>
-        <div className="relative mt-9 w-full md:mt-10 md:max-w-[600px] lg:max-w-[856px] xl:mt-14 xl:max-w-[1216px]">
+        <div className="relative mt-9 w-[100vw] md:w-full md:mt-10 md:max-w-[600px] lg:max-w-[856px] xl:mt-14 xl:max-w-[1216px]">
           <Slider>
             {reviews.map((review, index) => (
               <ReviewCard key={index} {...review} />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 
+import { cn } from "@/lib/utils"
 import DynamicIcon from "@/components/dynamic-icon"
 
 import "slick-carousel/slick/slick-theme.css"
@@ -42,7 +43,13 @@ const PrevArrow = (props: { onClick?: () => void }) => {
   )
 }
 
-export default function Slider({ children }: { children: React.ReactNode }) {
+export default function Slider({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   const [slidesToShow, setSlidesToShow] = useState<number | null>(null)
 
   useEffect(() => {
@@ -78,7 +85,10 @@ export default function Slider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <SlickSlider className="flex w-full" {...settings}>
+    <SlickSlider
+      className={cn("flex w-full", className)}
+      {...settings}
+    >
       {children}
     </SlickSlider>
   )
