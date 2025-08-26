@@ -10,10 +10,8 @@ const customersPageFields = `
   slug,
   "logo": {
     "url": logo.asset->url + "?auto=format",
-    "asset": {
-      "url": logo.asset->url,
-      "metadata": logo.asset->metadata
-    }
+    "width": logo.asset->metadata.dimensions.width,
+    "height": logo.asset->metadata.dimensions.height
   },
   title,
   author,
@@ -29,10 +27,8 @@ const customerFields = `
   "pathname": "${ROUTE.customers}/" + slug.current,
   "logo": {
     "url": logo.asset->url + "?auto=format",
-    "asset": {
-      "url": logo.asset->url,
-      "metadata": logo.asset->metadata
-    }
+    "width": logo.asset->metadata.dimensions.width,
+    "height": logo.asset->metadata.dimensions.height
   },
   title,
   author,
@@ -50,10 +46,8 @@ const customerFields = `
     title,
     "authorLogo": {
       "url": authorLogo.asset->url + "?auto=format",
-      "asset": {
-        "url": authorLogo.asset->url,
-        "metadata": authorLogo.asset->metadata
-      },
+      "width": authorLogo.asset->metadata.dimensions.width,
+      "height": authorLogo.asset->metadata.dimensions.height
     },
     authorName,
     authorPosition
@@ -75,10 +69,8 @@ const customerFields = `
     slug,
     "logo": {
       "url": logo.asset->url + "?auto=format",
-      "asset": {
-        "url": logo.asset->url,
-        "metadata": logo.asset->metadata
-      }
+      "width": logo.asset->metadata.dimensions.width,
+      "height": logo.asset->metadata.dimensions.height
     },
     title,
     author,
@@ -112,10 +104,8 @@ const fullCustomersPageFields = `
     text,
     "logo": {
       "url": logo.asset->url + "?auto=format",
-      "asset": {
-        "url": logo.asset->url,
-        "metadata": logo.asset->metadata
-      }
+      "width": logo.asset->metadata.dimensions.width,
+      "height": logo.asset->metadata.dimensions.height
     },
     name,
     tag,

@@ -10,17 +10,15 @@ export default function About({
   about,
   industry,
   channels,
-}: Pick<ICustomerData, "name" | "about" | "industry" | "channels"> & {
-  logo: string
-}) {
+}: Pick<ICustomerData, "logo" | "name" | "about" | "industry" | "channels">) {
   return (
     <dl className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
       <Image
-        className={cn("h-7 w-36")}
-        src={logo}
+        className={cn("h-auto w-36")}
+        src={logo.url}
         alt={`${name} logo`}
-        width={144}
-        height={28}
+        width={logo.width}
+        height={logo.height}
         priority
         quality={100}
       />

@@ -17,8 +17,6 @@ export default async function CustomersPage() {
     notFound()
   }
 
-  console.log(page)
-
   return (
     <main>
       <Hero customers={page.cards} />
@@ -29,6 +27,7 @@ export default async function CustomersPage() {
         className="pt-[162px] md:pt-36 lg:pt-[186px] xl:pt-[243px]"
         containerClassName="px-5 md:px-0 max-w-192 lg:translate-x-0"
         titleClassName="max-w-[246px] md:max-w-full"
+        descriptionClassName="max-w-[320px] md:max-w-[448px] sm:max-w-[368px]"
         description={
           <>
             <strong>10K events/month</strong> free forever. From weekend

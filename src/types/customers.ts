@@ -2,20 +2,10 @@ import { type PortableTextBlock } from "next-sanity"
 
 import { type ISeoFields, type ISlug } from "@/types/common"
 
-export interface ISanityImageAsset {
-  url: string
-  metadata: {
-    dimensions: {
-      width: number
-      height: number
-    }
-    lqip?: string
-  }
-}
-
 export interface ISanityImage {
   url: string
-  asset: ISanityImageAsset
+  width: number
+  height: number
 }
 
 export interface ICustomerData {
@@ -55,6 +45,8 @@ export interface ICustomerData {
     title: string
     authorLogo: {
       url: string
+      width: number
+      height: number
     }
     authorName: string
     authorPosition: string

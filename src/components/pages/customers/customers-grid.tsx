@@ -41,9 +41,7 @@ const BACKGROUND_BREAKPOINTS = [
 function CustomerCard({
   link,
   slug,
-  logo: {
-    asset: { url: logo },
-  },
+  logo,
   name,
   customersLength,
   index,
@@ -75,10 +73,10 @@ function CustomerCard({
           className="absolute top-0 left-0 z-10 h-full w-full"
         />
         <Image
-          src={logo}
+          src={logo.url}
           alt={name}
-          width={120}
-          height={24}
+          width={logo.width}
+          height={logo.height}
           className="h-6 w-30 transition-transform duration-200 select-none group-hover:-translate-y-2 sm:h-8 sm:w-[140px] lg:h-10 lg:w-[190px]"
           loading="lazy"
         />

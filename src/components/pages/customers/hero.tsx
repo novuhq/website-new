@@ -14,7 +14,7 @@ const BACKGROUND_BREAKPOINTS = [
     height: 812,
     src: heroBg,
     className:
-      "w-[1472px] lg:-top-[151px] lg:-left-[208px] lg:flex lg:h-[797px] xl:-top-[170px] xl:-left-[252px] xl:h-[812px]",
+      "w-[1472px] lg:-top-[151px] hidden lg:-left-[208px] lg:flex lg:h-[797px] xl:-top-[170px] xl:-left-[252px] xl:h-[812px] xl:flex",
   },
   {
     width: 1021,

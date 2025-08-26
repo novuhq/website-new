@@ -22,11 +22,11 @@ const ReviewCard = ({
         />
         <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
           <img
-            className="h-9 w-9 rounded-full"
-            src={logo.asset.url}
+            className="h-auto w-9 rounded-full"
+            src={logo.url}
             alt={name}
-            width={36}
-            height={36}
+            width={logo.width}
+            height={logo.height}
             loading="lazy"
           />
           <div>

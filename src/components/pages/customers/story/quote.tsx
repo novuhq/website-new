@@ -24,13 +24,13 @@ export default function Quote({
       <div className="mt-5 flex gap-x-2.5 tracking-tight md:mt-4">
         {authorLogo && (
           <Image
-            className="hidden rounded-full md:block"
+            className="h-auto w-7 hidden rounded-full md:block"
             src={authorLogo.url}
             alt={authorName || ""}
-            width={28}
-            height={28}
+            width={authorLogo.width}
+            height={authorLogo.height}
             priority
-            quality={100}
+            quality={90}
           />
         )}
         <p className="flex items-center">

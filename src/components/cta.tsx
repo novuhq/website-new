@@ -1,7 +1,7 @@
 import Image from "next/image"
-import bgLg from "@/images/shared/cta/background-lg.svg"
-import bgMob from "@/images/shared/cta/background-mob.svg"
-import bgSvg from "@/images/shared/cta/background.svg"
+import bgLg from "@/svgs/shared/cta/background-lg.svg"
+import bgMob from "@/svgs/shared/cta/background-mob.svg"
+import bgSvg from "@/svgs/shared/cta/background.svg"
 
 import { ICtaSection } from "@/types/common"
 import { cn } from "@/lib/utils"

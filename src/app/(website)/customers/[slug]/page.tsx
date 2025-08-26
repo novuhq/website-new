@@ -107,7 +107,7 @@ export default async function CustomerStoryPage({
 
             <div className="top-24 flex h-fit w-full flex-col gap-6 border-y border-gray-3 py-6 lg:sticky lg:col-start-2 lg:border-0 lg:py-0">
               <About
-                logo={logo.url}
+                logo={logo}
                 name={name}
                 about={about}
                 industry={industry}
@@ -167,7 +167,7 @@ export default async function CustomerStoryPage({
         className="px-5 !pt-31 !pb-28 md:px-8 md:!pt-32 lg:px-0 lg:pt-53 lg:!pb-52 xl:!pt-60 xl:pb-[202px]"
         containerClassName="xl:!max-w-192 lg:!max-w-176 !px-0"
         titleClassName="md:!text-[32px] lg:!text-[36px] xl:!text-[44px]"
-        descriptionClassName="!max-w-[722px] xs:!text-wrap !text-base"
+        descriptionClassName="max-w-[320px] !text-base xs:!text-wrap sm:max-w-[368px] md:max-w-[704px] lg:max-w-[690px] xl:max-w-[722px]"
         actions={[
           {
             kind: "primary-button",

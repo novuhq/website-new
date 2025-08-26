@@ -2,7 +2,7 @@ import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
 import blueCardMob from "@/images/pages/customers/hero/blue-card-mob.png"
 import blueCard from "@/images/pages/customers/hero/blue-card.png"
-import purpleCardMob from '@/images/pages/customers/hero/purple-card-mob.png'
+import purpleCardMob from "@/images/pages/customers/hero/purple-card-mob.png"
 import purpleCardBg from "@/images/pages/customers/hero/purple-card.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
 
@@ -29,19 +29,23 @@ const CARDS_CONFIG = [
   },
   {
     backgroundClassName: "bg-[#14141F]",
-    borderClassName: "bg-[linear-gradient(232.32deg,rgba(43,43,59,0.5)_41.4%,rgba(51,51,71,0.9)_92.68%)]",
+    borderClassName:
+      "bg-[linear-gradient(232.32deg,rgba(43,43,59,0.5)_41.4%,rgba(51,51,71,0.9)_92.68%)]",
     glowClassName:
       "rotate-[-56deg] blur-[32px] lg:bg-[#344387] lg:opacity-30 lg:-bottom-25 lg:-left-9 lg:h-47 lg:w-42 md:w-130 md:h-62 md:-bottom-14 md:-left-22 md:opacity-60 md:rotate-0 md:bg-[radial-gradient(50%_50%_at_50%_50%,_#344387_0%,_rgba(52,67,135,0)_100%)]",
   },
   {
     backgroundClassName: "bg-[#14141F]",
-    borderClassName: "bg-[linear-gradient(224.97deg,rgba(255,255,255,0.15)_1.05%,rgba(43,43,59,0.4)_32.26%)]",
+    borderClassName:
+      "bg-[linear-gradient(224.97deg,rgba(255,255,255,0.15)_1.05%,rgba(43,43,59,0.4)_32.26%)]",
     glowClassName:
       "h-62 w-72 opacity-70 blur-[32px] bg-[linear-gradient(180deg,#344387_0%,rgba(52,67,135,0)_100%)] -left-22 -bottom-19 rounded-[100%] lg:rotate-[36deg] lg:bg-[linear-gradient(180deg,#344387_0%,rgba(52,67,135,0)_100%)] lg:opacity-20 lg:-top-21 lg:left-45 lg:h-62 lg:w-72 md:h-47 md:w-42 md:-rotate-[56deg] md:bg-[#344387] md:opacity-30 md:-left-17 md:-bottom-24",
   },
   {
-    backgroundClassName: "bg-[linear-gradient(152deg,#0B1122_0.45%,#10101E_70%,#14141F_104%)]",
-    borderClassName: "bg-[linear-gradient(116.22deg,#ECD1FA_-27.51%,#1B2549_18.82%,#161A32_69.8%)]",
+    backgroundClassName:
+      "bg-[linear-gradient(152deg,#0B1122_0.45%,#10101E_70%,#14141F_104%)]",
+    borderClassName:
+      "bg-[linear-gradient(116.22deg,#ECD1FA_-27.51%,#1B2549_18.82%,#161A32_69.8%)]",
     shine: [
       "w-51 bg-[linear-gradient(88deg,rgba(255,255,255,0)_0%,#FFFFFF_34%,rgba(255,255,255,0)_100%)] blur-[2px]",
       "w-51 bg-[linear-gradient(88deg,rgba(255,255,255,0)_0%,#FFFFFF_37%,rgba(255,255,255,0)_100%)] blur-[3px]",
@@ -162,10 +166,10 @@ function HeroCard({
 
         <Image
           className="pointer-events-none relative"
-          src={logo.asset.url}
+          src={logo.url}
           alt=""
-          width={logo.asset.metadata.dimensions.width || 180}
-          height={logo.asset.metadata.dimensions.height || 40}
+          width={logo.width || 180}
+          height={logo.height || 40}
           priority
         />
         <h1 className="relative mt-auto text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl">
