@@ -27,15 +27,15 @@ export interface ICustomerData {
   logo: ISanityImage
   title: string
   author: string
-  author_position: string
-  card_type?: "big" | "small"
+  authorPosition: string
+  cardType?: "big" | "small"
   link: {
     type: "external" | "story"
     url?: string
   }
 
   // About
-  story_photo?: string
+  storyPhoto?: string
   about: string
   industry: string
   channels: {
@@ -53,15 +53,15 @@ export interface ICustomerData {
   // Quote
   quote?: {
     title: string
-    author_logo: {
+    authorLogo: {
       url: string
     }
-    author_name: string
-    author_position: string
+    authorName: string
+    authorPosition: string
   }
 
   // Challenges & Solution
-  challenges_solution?: {
+  challengesSolution?: {
     challenges: string[]
     solution: string[]
   }
@@ -79,32 +79,27 @@ export interface ICustomerTweetData {
   logo: ISanityImage
   name: string
   tag: string
-  tweet_link: string
+  tweetLink: string
 }
 
 export type TCustomerCard = Pick<
-ICustomerData,
-| "_id"
-| "name"
-| "logo"
-| "link"
-| "author"
-| "author_position"
-| "card_type"
-| "slug"
-| "title"
+  ICustomerData,
+  | "_id"
+  | "name"
+  | "logo"
+  | "link"
+  | "author"
+  | "authorPosition"
+  | "cardType"
+  | "slug"
+  | "title"
 >
 
 export interface ICustomersPageData {
   _id: string
   _type: "customers"
-  small_cards: {
-    customer: ICustomerData
-  }[]
-  big_cards: {
-    customer: ICustomerData
-  }[]
-  grid_customers: {
+  cards: ICustomerData[]
+  gridCustomers: {
     customer: TCustomerCard
   }[]
   tweets: ICustomerTweetData[]

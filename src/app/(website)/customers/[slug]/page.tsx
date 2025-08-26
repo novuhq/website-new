@@ -67,7 +67,7 @@ export default async function CustomerStoryPage({
   const {
     name,
     title,
-    story_photo: cover,
+    storyPhoto: cover,
     logo,
     about,
     industry,
@@ -75,7 +75,7 @@ export default async function CustomerStoryPage({
     socials,
     pathname,
     quote,
-    challenges_solution: challengesSolution,
+    challengesSolution,
     body: bodyContent,
     related,
   } = customer

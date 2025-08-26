@@ -146,8 +146,8 @@ export default defineType({
           .required()
           .error("You have to fill in this field.")
           .custom((value, context) => {
-            const parent = context.parent as { card_type?: string }
-            const cardType = parent?.card_type
+            const parent = context.parent as { cardType?: string }
+            const cardType = parent?.cardType
 
             if (!value) return true
 
@@ -171,7 +171,7 @@ export default defineType({
         rule.error("You have to fill in this field.").required(),
     }),
     defineField({
-      name: "author_position",
+      name: "authorPosition",
       type: "string",
       title: "Author Position",
       group: GROUP.content.name,
@@ -179,7 +179,7 @@ export default defineType({
         rule.error("You have to fill in this field.").required(),
     }),
     defineField({
-      name: "card_type",
+      name: "cardType",
       type: "string",
       title: "Card Type",
       description: "Choose the card size type",
@@ -193,7 +193,7 @@ export default defineType({
       group: GROUP.content.name,
     }),
     defineField({
-      name: "story_photo",
+      name: "storyPhoto",
       type: "image",
       title: "Story Photo",
       description: "Optional main photo for the story",
@@ -329,17 +329,17 @@ export default defineType({
           rows: 3,
         }),
         defineField({
-          name: "author_logo",
+          name: "authorLogo",
           type: "image",
           title: "Author Logo",
         }),
         defineField({
-          name: "author_name",
+          name: "authorName",
           type: "string",
           title: "Author Name",
         }),
         defineField({
-          name: "author_position",
+          name: "authorPosition",
           type: "string",
           title: "Author Position",
         }),
@@ -347,7 +347,7 @@ export default defineType({
     }),
     // Challenges & Solution block
     defineField({
-      name: "challenges_solution",
+      name: "challengesSolution",
       type: "object",
       title: "Challenges & Solution",
       group: GROUP.content.name,
@@ -441,7 +441,7 @@ export default defineType({
   preview: {
     select: {
       title: "name",
-      subtitle: "card_type",
+      subtitle: "cardType",
       media: "logo",
     },
     prepare({ title, subtitle, media }) {

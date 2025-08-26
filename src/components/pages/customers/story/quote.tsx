@@ -11,9 +11,9 @@ export default function Quote({
 
   const {
     title,
-    author_logo: authorLogo,
-    author_name: authorName,
-    author_position: authorPosition,
+    authorLogo,
+    authorName,
+    authorPosition,
   } = quote
 
   return (

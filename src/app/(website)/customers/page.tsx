@@ -17,17 +17,12 @@ export default async function CustomersPage() {
     notFound()
   }
 
+  console.log(page)
+
   return (
     <main>
-      <Hero
-        customers={[
-          page.big_cards[0],
-          page.small_cards[0],
-          page.small_cards[1],
-          page.big_cards[1],
-        ]}
-      />
-      <CustomersGrid customers={page.grid_customers} />
+      <Hero customers={page.cards} />
+      <CustomersGrid customers={page.gridCustomers} />
       <Reviews reviews={page.tweets} />
       <CTA
         title="Free to start, ready to scale"

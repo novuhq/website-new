@@ -17,8 +17,8 @@ const customersPageFields = `
   },
   title,
   author,
-  author_position,
-  card_type,
+  authorPosition,
+  cardType,
   link,
 `
 
@@ -36,10 +36,10 @@ const customerFields = `
   },
   title,
   author,
-  author_position,
-  card_type,
+  authorPosition,
+  cardType,
   link,
-  "story_photo": story_photo.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
+  "storyPhoto": storyPhoto.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
     (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
   )}&q=100&fit=crop&auto=format",
   about,
@@ -48,17 +48,17 @@ const customerFields = `
   socials,
   "quote": quote {
     title,
-    "author_logo": {
-      "url": author_logo.asset->url + "?auto=format",
+    "authorLogo": {
+      "url": authorLogo.asset->url + "?auto=format",
       "asset": {
-        "url": author_logo.asset->url,
-        "metadata": author_logo.asset->metadata
+        "url": authorLogo.asset->url,
+        "metadata": authorLogo.asset->metadata
       },
     },
-    author_name,
-    author_position
+    authorName,
+    authorPosition
   },
-  challenges_solution,
+  challengesSolution,
   "body": body[] {
     ...,
     _type == "quoteBlock" => {
@@ -82,8 +82,8 @@ const customerFields = `
     },
     title,
     author,
-    author_position,
-    card_type,
+    authorPosition,
+    cardType,
     link
   },
   "seo": {
@@ -97,17 +97,13 @@ const customerFields = `
 const fullCustomersPageFields = `
   _id,
   _type,
-  small_cards[] {
-    customer->{
-      ${customersPageFields}
-    }
-  },
-  big_cards[] {
-    customer->{
-      ${customersPageFields}
-    }
-  },
-  grid_customers[] {
+  "cards": [
+    bigCards[0].customer->{${customersPageFields}},
+    smallCards[0].customer->{${customersPageFields}},
+    smallCards[1].customer->{${customersPageFields}},
+    bigCards[1].customer->{${customersPageFields}}
+  ],
+  gridCustomers[] {
     customer->{
       ${customersPageFields}
     }
@@ -123,7 +119,7 @@ const fullCustomersPageFields = `
     },
     name,
     tag,
-    tweet_link
+    tweetLink
   }
 `
 

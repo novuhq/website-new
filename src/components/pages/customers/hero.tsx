@@ -31,7 +31,7 @@ const BACKGROUND_BREAKPOINTS = [
   },
 ]
 
-function Hero({ customers }: { customers: { customer: TCustomerCard }[] }) {
+function Hero({ customers }: { customers: TCustomerCard[] }) {
   return (
     <section className="hero relative [overflow-x:clip] pt-12.5 md:pt-16 lg:pt-18.5 xl:pt-22.5 2xl:overflow-x-visible">
       <div className="relative mx-auto flex w-full flex-col items-center px-5 md:max-w-[704px] md:px-0 lg:max-w-[960px] xl:max-w-[969px] xl:px-0">
@@ -64,7 +64,7 @@ function Hero({ customers }: { customers: { customer: TCustomerCard }[] }) {
               />
             )
           )}
-          {customers.map(({ customer }, index) => (
+          {customers.map((customer, index) => (
             <HeroCard key={customer._id} {...customer} index={index} />
           ))}
         </div>

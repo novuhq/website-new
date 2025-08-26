@@ -30,14 +30,14 @@ export default defineType({
   ],
   fields: [
     defineField({
-      name: "small_cards",
+      name: "smallCards",
       title: "Small Cards",
       description: "2 small customer cards",
       type: "array",
       of: [
         {
           type: "object",
-          name: "small_card",
+          name: "smallCard",
           title: "Small Card",
           fields: [
             {
@@ -46,7 +46,7 @@ export default defineType({
               type: "reference",
               to: [{ type: "customer" }],
               options: {
-                filter: 'card_type == "small"',
+                filter: 'cardType == "small"',
               },
             },
           ],
@@ -74,14 +74,14 @@ export default defineType({
           .error("Hero Small Cards must contain exactly 2 elements."),
     }),
     defineField({
-      name: "big_cards",
+      name: "bigCards",
       title: "Big Cards",
       description: "2 big customer cards",
       type: "array",
       of: [
         {
           type: "object",
-          name: "big_card",
+          name: "bigCard",
           title: "Big Card",
           fields: [
             {
@@ -90,7 +90,7 @@ export default defineType({
               type: "reference",
               to: [{ type: "customer" }],
               options: {
-                filter: 'card_type == "big"',
+                filter: 'cardType == "big"',
               },
             },
           ],
@@ -116,13 +116,14 @@ export default defineType({
         rule.length(2).error("Hero Big Cards must contain exactly 2 elements."),
     }),
     defineField({
-      name: "grid_customers",
+      name: "gridCustomers",
       title: "Customers",
+      description: "Exactly 12 customers",
       type: "array",
       of: [
         {
           type: "object",
-          name: "grid_customer",
+          name: "gridCustomer",
           title: "Grid Customer",
           fields: [
             {
@@ -159,11 +160,12 @@ export default defineType({
     defineField({
       name: "tweets",
       title: "Tweets",
+      description: "At least 4 tweets",
       type: "array",
       of: [
         {
           type: "object",
-          name: "customer_tweet",
+          name: "customerTweet",
           title: "Customer Tweet",
           fields: [
             {
@@ -188,7 +190,7 @@ export default defineType({
               type: "string",
             },
             {
-              name: "tweet_link",
+              name: "tweetLink",
               type: "url",
               title: "Tweet Link",
             },

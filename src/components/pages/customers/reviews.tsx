@@ -5,7 +5,7 @@ import Slider from "@/components/ui/slider"
 const ReviewCard = ({
   name,
   text,
-  tweet_link: tweetLink,
+  tweetLink,
   logo,
   tag,
 }: ICustomerTweetData) => {

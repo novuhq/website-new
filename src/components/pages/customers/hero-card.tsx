@@ -60,10 +60,10 @@ type TCustomerCardProps = TCustomerCard & { index: number }
 function HeroCard({
   logo,
   name,
-  card_type: cardType,
+  cardType,
   title,
   author,
-  author_position,
+  authorPosition,
   index,
   link,
   slug,
@@ -171,7 +171,7 @@ function HeroCard({
         <h1 className="relative mt-auto text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl">
           “{title}”
         </h1>
-        <p className="relative mt-2 text-sm leading-snug font-[350] tracking-tight text-gray-8 md:text-base">{`${author} — ${author_position}`}</p>
+        <p className="relative mt-2 text-sm leading-snug font-[350] tracking-tight text-gray-8 md:text-base">{`${author} — ${authorPosition}`}</p>
         <span className="hidden-start relative mt-4 flex items-center gap-x-1.5 text-lagune-3 transition-colors duration-200 group-hover:text-lagune-2">
           {link.type === "story" ? "Read story" : "Visit site"}
           <span className="relative mt-0.5 w-1 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
