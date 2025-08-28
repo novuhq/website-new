@@ -9,6 +9,7 @@ import { getHeaderData } from "@/lib/get-header-data"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
+import Scripts, { GTM_ID } from "@/components/scripts"
 
 export default async function NotFound() {
   const { stars } = await getGithubInfo()
@@ -25,6 +26,7 @@ export default async function NotFound() {
         <meta name="description" content={SEO_DATA.notFound.description} />
         <meta name="pathname" content={SEO_DATA.notFound.pathname} />
         <title>{SEO_DATA.notFound.title}</title>
+        <Scripts />
       </head>
       <body
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
@@ -50,6 +52,14 @@ export default async function NotFound() {
           </main>
           <Footer />
         </Providers>
+        <noscript>
+          <iframe
+            className="invisible hidden"
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+          />
+        </noscript>
       </body>
     </>
   )
