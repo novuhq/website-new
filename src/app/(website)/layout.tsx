@@ -7,6 +7,7 @@ import { getHeaderData } from "@/lib/get-header-data"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import PreviewWarning from "@/components/preview-warning"
+import Scripts, { GTM_ID } from "@/components/scripts"
 
 export default async function RootLayout({
   children,
@@ -19,7 +20,9 @@ export default async function RootLayout({
 
   return (
     <>
-      <head></head>
+      <head>
+        <Scripts />
+      </head>
       <body
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
       >
@@ -34,6 +37,15 @@ export default async function RootLayout({
             <Footer />
           </div>
         </Providers>
+        {/* Google Tag Manager noscript */}
+        <noscript>
+          <iframe
+            className="invisible hidden"
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+          />
+        </noscript>
       </body>
     </>
   )
