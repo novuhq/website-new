@@ -8,10 +8,11 @@ const EMPTY_GITHUB_INFO: GithubInfo = {
 
 export async function getGithubInfo(): Promise<GithubInfo> {
   try {
-    const res = await fetch(`https://api.github.com/repos/novuhq/novu`)
+    const res = await fetch(`https://api.github.com/repos/novuhq/novu`, {
+      next: { revalidate: 60 },
+    })
     if (!res.ok) return EMPTY_GITHUB_INFO
     const data = await res.json()
-
     return {
       stars: data.stargazers_count ? data.stargazers_count : null,
     }
