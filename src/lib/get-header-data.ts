@@ -21,37 +21,42 @@ async function getLatestWpPost() {
     },
   })
 
-  const query = gql`
-    query GetLatestPost {
-      posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
-        nodes {
-          title
-          uri
-          pageBlogPost {
-            description
-            image {
-              link
+  try {
+    const query = gql`
+      query GetLatestPost {
+        posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
+          nodes {
+            title
+            uri
+            pageBlogPost {
+              description
+              image {
+                link
+              }
             }
           }
         }
       }
-    }
-  `
+    `
 
-  const data = (await client.request(query)) as {
-    posts: {
-      nodes: Array<{
-        title: string
-        uri: string
-        pageBlogPost?: {
-          description?: string
-          image?: { link: string }
-        }
-      }>
+    const data = (await client.request(query)) as {
+      posts: {
+        nodes: Array<{
+          title: string
+          uri: string
+          pageBlogPost?: {
+            description?: string
+            image?: { link: string }
+          }
+        }>
+      }
     }
+
+    return data.posts.nodes[0] ?? null
+  } catch (error) {
+    console.warn("getLatestWpPost failed, using defaults:", error)
+    return null
   }
-
-  return data.posts.nodes[0]
 }
 
 function getChangelogCaptionFromContent(content: unknown[]): string {
