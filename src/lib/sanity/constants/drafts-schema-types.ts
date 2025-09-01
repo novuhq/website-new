@@ -8,7 +8,7 @@ import { ROUTE } from "@/constants/routes"
 export enum DraftsSchemaTypes {
   CHANGELOG_POST = "changelogPost",
   CUSTOMERS = "customers",
-  CUSTOMER_STORY = "customerStory",
+  CUSTOMER = "customer",
 }
 
 /**
@@ -17,5 +17,5 @@ export enum DraftsSchemaTypes {
 export const PREVIEW_ROUTES: Record<DraftsSchemaTypes, URL | Route<string>> = {
   [DraftsSchemaTypes.CHANGELOG_POST]: ROUTE.changelog,
   [DraftsSchemaTypes.CUSTOMERS]: ROUTE.customers,
-  [DraftsSchemaTypes.CUSTOMER_STORY]: ROUTE.customers,
+  [DraftsSchemaTypes.CUSTOMER]: ROUTE.customers,
 }

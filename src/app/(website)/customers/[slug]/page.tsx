@@ -143,8 +143,7 @@ export default async function CustomerStoryPage({
 
               <Content
                 className={cn(
-                  "prose-customer prose mt-14 lg:col-start-1 [&>*:first-child]:mt-0!",
-                  !cover && "lg:mt-0"
+                  "prose-customer prose mt-14 lg:col-start-1 [&>*:first-child]:mt-0!"
                 )}
                 content={bodyContent}
               />

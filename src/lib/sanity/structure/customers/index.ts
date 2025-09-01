@@ -5,6 +5,7 @@ import type {
 } from "sanity/structure"
 
 import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
+import { getStructureDocumentViews } from "@/lib/sanity/utils/get-structure-document-views"
 
 const customersStructure = (
   S: StructureBuilder,
@@ -25,7 +26,9 @@ const customersStructure = (
                 .schemaType(DraftsSchemaTypes.CUSTOMERS)
                 .documentId("customers-page")
                 .title("Page Content")
-                .views([S.view.form().title("Edit")])
+                .views(
+                  getStructureDocumentViews(S, DraftsSchemaTypes.CUSTOMERS)
+                )
             ),
           S.divider(),
           S.listItem()
