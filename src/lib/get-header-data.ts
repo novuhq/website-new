@@ -1,7 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 import { gql, GraphQLClient } from "graphql-request"
 
-import { getChangelogPosts } from "@/lib/changelog"
+import { getLatestChangelogPost } from "@/lib/changelog"
 
 async function getLatestWpPost() {
   const { WP_GRAPHQL_URL, WP_HTACCESS_USERNAME, WP_HTACCESS_PASSWORD } =
@@ -76,9 +76,8 @@ function getChangelogCaptionFromContent(content: unknown[]): string {
 }
 
 export async function getHeaderData() {
-  const changelogs = await getChangelogPosts()
+  const latestChangelog = await getLatestChangelogPost()
 
-  const latestChangelog = changelogs[0]
   const latestChangelogText = getChangelogCaptionFromContent(
     latestChangelog.content
   )
