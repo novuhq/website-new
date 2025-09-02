@@ -5,15 +5,29 @@ import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getHeaderData } from "@/lib/get-header-data"
+import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import Scripts, { GTM_ID } from "@/components/scripts"
 
 export default async function NotFound() {
-  const { stars } = await getGithubInfo()
-  const headerData = await getHeaderData()
+  const [{ stars }, changelog, blog] = await Promise.all([
+    getGithubInfo(),
+    getLatestChangelogPost().catch(() => ({
+      title: "Check out our latest updates",
+      description: "Stay up to date with our latest changes and features",
+      href: ROUTE.changelog,
+      image: "/images/header/illustration-changelog.jpg",
+    })),
+    getLatestWpPost().catch(() => ({
+      title: "Check out our latest blog posts",
+      description:
+        "Discover new blog posts covering product updates, stories, and more",
+      href: ROUTE.blog,
+      image: "/images/header/illustration-blog.jpg",
+    })),
+  ])
 
   return (
     <>
@@ -32,7 +46,7 @@ export default async function NotFound() {
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
       >
         <Providers>
-          <Header githubStars={stars} data={headerData} />
+          <Header githubStars={stars} changelog={changelog} blog={blog} />
           <main className="flex grow">
             <section className="not-found flex grow items-center justify-center px-5 py-20 md:px-8">
               <div className="flex max-w-md flex-col items-center justify-center md:max-w-lg">

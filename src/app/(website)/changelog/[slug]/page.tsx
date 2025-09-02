@@ -152,7 +152,7 @@ export default async function ChangelogPostPage({
               }}
             />
           )}
-          <div className="mt-7.75 grid grid-cols-1 lg:grid-cols-[1fr_224px] lg:gap-x-8 xl:grid-cols-[1fr_256px]">
+          <div className="mt-7.75 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px] lg:gap-x-8 xl:grid-cols-[minmax(0,1fr)_256px]">
             {cover && (
               <div className="relative mb-10.5 aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image md:mb-12 lg:col-start-1 lg:mb-0">
                 <Image
