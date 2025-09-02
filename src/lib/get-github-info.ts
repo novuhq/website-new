@@ -14,7 +14,10 @@ export async function getGithubInfo(): Promise<GithubInfo> {
     if (!res.ok) return EMPTY_GITHUB_INFO
     const data = await res.json()
     return {
-      stars: data.stargazers_count ? data.stargazers_count : null,
+      stars:
+        typeof data.stargazers_count === "number"
+          ? data.stargazers_count
+          : EMPTY_GITHUB_INFO.stars,
     }
   } catch {
     return EMPTY_GITHUB_INFO

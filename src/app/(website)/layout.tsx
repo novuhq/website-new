@@ -1,4 +1,5 @@
 import { draftMode } from "next/headers"
+import { ROUTE } from "@/constants/routes"
 import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"
@@ -15,10 +16,21 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const { isEnabled: isDraftMode } = await draftMode()
-  const { stars } = await getGithubInfo()
-  const [changelog, blog] = await Promise.all([
-    getLatestChangelogPost(),
-    getLatestWpPost(),
+  const [{ stars }, changelog, blog] = await Promise.all([
+    getGithubInfo(),
+    getLatestChangelogPost().catch(() => ({
+      title: "Check out our latest updates",
+      description: "Stay up to date with our latest changes and features",
+      href: ROUTE.changelog,
+      image: "/images/header/illustration-changelog.jpg",
+    })),
+    getLatestWpPost().catch(() => ({
+      title: "Check out our latest blog posts",
+      description:
+        "Discover new blog posts covering product updates, stories, and more",
+      href: ROUTE.blog,
+      image: "/images/header/illustration-blog.jpg",
+    })),
   ])
 
   return (
