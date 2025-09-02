@@ -11,6 +11,9 @@ interface ExtendedSanityDocument extends SanityDocument {
   slug?: {
     current: string
   }
+  link?: {
+    type: string
+  }
 }
 
 const host = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
@@ -53,6 +56,29 @@ export const getStructureDocumentViews = (
   const draftsSchemaTypesArr = Object.values(DraftsSchemaTypes)
 
   if (draftsSchemaTypesArr.includes(schemaType as DraftsSchemaTypes)) {
+    // For customer schema, only show preview if link.type === "story"
+    if (schemaType === DraftsSchemaTypes.CUSTOMER) {
+      return [
+        S.view.form(),
+        S.view
+          .component(Iframe)
+          .options({
+            url: (doc: ExtendedSanityDocument) => {
+              // Only return preview URL if this is a customer story
+              if (doc?.link?.type === "story") {
+                return getPreviewUrl(doc, schemaType)
+              }
+              return ""
+            },
+            showDisplayUrl: false,
+            reload: {
+              button: true,
+            },
+          })
+          .title("Preview"),
+      ]
+    }
+
     return [
       S.view.form(),
       S.view

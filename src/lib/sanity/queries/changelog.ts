@@ -19,9 +19,9 @@ _type,
     name,
     "photo": photo.asset->url + "?w=56&h=56&fit=crop&auto=format"
   },
-    "cover": cover.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
-      (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
-    )}&q=100&fit=crop&auto=format",
+  "cover": cover.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
+    (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
+  )}&q=100&fit=crop&auto=format",
   "content": content[] {
     ...,
     _type == "quoteBlock" => {

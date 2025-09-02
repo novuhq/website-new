@@ -8,6 +8,8 @@
 @import "./shiki.css";
 @import "./video.css";
 
+@import "./slider.css";
+
 :root {
   --color-primary-1: 190 100% 50%; /* primary-1 */
   --color-primary-2: 190 100% 75%; /* primary-2 */
@@ -25,6 +27,8 @@
   --purple-2: 290 80% 75%; /* purple-2 */
   --purple-3: 290 60% 60%; /* purple-3 */
 
+  --red-1: 340, 100%, 65%; /* red-1 */
+
   --gray-1: 0 0% 5%; /* #0D0D0D */
   --gray-2: 0 0% 10%; /* #1A1A1A */
   --gray-3: 0 0% 15%; /* #262626 */
@@ -36,6 +40,9 @@
   --gray-9: 0 0% 80%; /* #CCCCCC */
   --gray-10: 0 0% 90%; /* #E6E6E6 */
   --gray-11: 0 0% 96%; /* #F5F5F5 */
+
+  --lagune-3: 190, 100%, 50%; /* #00D5FF */
+  --lagune-2: 190, 100%, 75%; /* #80EAFF */
 
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
@@ -109,12 +116,17 @@
   --color-gray-10: hsl(var(--gray-10));
   --color-gray-11: hsl(var(--gray-11));
 
+  --color-red-1: hsl(var(--red-1));
+
   --color-purple: hsl(var(--purple));
   --color-purple-2: hsl(var(--purple-2));
   --color-purple-3: hsl(var(--purple-3));
 
+  --color-lagune-3: hsl(var(--lagune-3));
+  --color-lagune-2: hsl(var(--lagune-2));
+
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius));
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-sans:
@@ -238,7 +250,7 @@
   }
 
   :where(:focus-visible) {
-    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-hidden;
+    @apply focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2;
   }
   /*
     Apply focus ring and rounded styles to all <a> elements without a class.
@@ -256,7 +268,7 @@
   }
 
   .button-gradient {
-    @apply overflow-hidden before:absolute before:!-inset-px before:bg-linear-(--button-gradient) before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
+    @apply before:bg-linear-(--button-gradient) overflow-hidden before:absolute before:!-inset-px before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
   }
 
   .header-card-gradient {

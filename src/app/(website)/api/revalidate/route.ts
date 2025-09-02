@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse, type NextRequest } from "next/server"
 import { parseBody } from "next-sanity/webhook"
 
-const WEBHOOK_TYPES = ["changelogPost"] as const
+const WEBHOOK_TYPES = ["changelogPost", "customers", "customerStory", ] as const
 
 type WebhookPayload = {
   _type: (typeof WEBHOOK_TYPES)[number]
