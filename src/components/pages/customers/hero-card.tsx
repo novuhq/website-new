@@ -165,7 +165,7 @@ function HeroCard({
         </div>
 
         <Image
-          className="pointer-events-none relative"
+          className="pointer-events-none relative max-w-45 max-h-10"
           src={logo.url}
           alt=""
           width={logo.width || 180}
