@@ -62,7 +62,7 @@ export interface ICustomerData {
 
 export interface ICustomerTweetData {
   text: string
-  logo: ISanityImage
+  logo?: ISanityImage
   name: string
   tag: string
   tweetLink: string

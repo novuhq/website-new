@@ -21,14 +21,17 @@ const ReviewCard = ({
           dangerouslySetInnerHTML={{ __html: text }}
         />
         <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
-          <img
-            className="h-auto w-9 rounded-full"
-            src={logo.url}
-            alt={name}
-            width={logo.width}
-            height={logo.height}
-            loading="lazy"
-          />
+          {logo && logo.url && (
+            <img
+              className="h-auto w-9 rounded-full"
+              src={logo.url}
+              alt={name}
+              width={logo.width || 36}
+              height={logo.height || 36}
+              loading="lazy"
+            />
+          )}
+
           <div>
             <span className="block text-base leading-none text-gray-9 md:text-[15px]">
               {name}
@@ -55,7 +58,7 @@ const Reviews = ({ reviews }: { reviews: ICustomerTweetData[] }) => {
           Explore what developers and non-technical users say about why they're
           fans of our open-source notifications framework.
         </p>
-        <div className="relative mt-9 w-[100vw] md:w-full md:mt-10 md:max-w-[600px] lg:max-w-[856px] xl:mt-14 xl:max-w-[1216px]">
+        <div className="relative mt-9 w-[100vw] md:mt-10 md:w-full md:max-w-[600px] lg:max-w-[856px] xl:mt-14 xl:max-w-[1216px]">
           <Slider>
             {reviews.map((review, index) => (
               <ReviewCard key={index} {...review} />
