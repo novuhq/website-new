@@ -2,7 +2,7 @@ import { ICustomerData } from "@/types/customers"
 import { sanityFetch } from "@/lib/sanity/client"
 import { customerBySlugQuery } from "@/lib/sanity/queries/customers"
 
-const REVALIDATE_CUSTOMER_TAG = ["customerStory"]
+const REVALIDATE_CUSTOMER_TAG = ["customer"]
 
 export async function getCustomerBySlug(
   slug: string,

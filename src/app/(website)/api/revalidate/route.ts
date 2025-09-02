@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache"
 import { NextResponse, type NextRequest } from "next/server"
 import { parseBody } from "next-sanity/webhook"
 
-const WEBHOOK_TYPES = ["changelogPost", "customers", "customerStory", ] as const
+const WEBHOOK_TYPES = ["changelogPost", "customers", "customer"] as const
 
 type WebhookPayload = {
   _type: (typeof WEBHOOK_TYPES)[number]
@@ -37,7 +37,13 @@ export async function POST(req: NextRequest) {
 
     const type = body._type
 
+    // Revalidate the main tag
     revalidateTag(type)
+
+    // When a customer changes, also revalidate the customers page
+    if (type === "customer") {
+      revalidateTag("customers")
+    }
 
     return NextResponse.json({ body })
   } catch (err) {
