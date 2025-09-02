@@ -68,6 +68,13 @@ function Scripts() {
         src="//script.crazyegg.com/pages/scripts/0123/1426.js"
         async
       />
+
+      {/* Plausible */}
+      <Script
+        defer
+        data-domain="novu.co"
+        src="https://plausible.io/js/script.js"
+      />
     </>
   )
 }
