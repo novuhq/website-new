@@ -99,19 +99,23 @@ export async function getLatestWpPost() {
 }
 
 export async function getLatestChangelogPost() {
-  const latestChangelog = await getLatestChangelogPostData()
-  const latestChangelogText = getChangelogCaptionFromContent(
-    latestChangelog.content
-  )
+  try {
+    const latestChangelog = await getLatestChangelogPostData()
+    const latestChangelogText = getChangelogCaptionFromContent(
+      latestChangelog?.content || []
+    )
 
-  return {
-    title: latestChangelog?.title || DEFAULT_CHANLOGE_POST.title,
-    description:
-      latestChangelog?.caption ||
-      latestChangelogText.slice(0, 300) ||
-      DEFAULT_CHANLOGE_POST.description,
-    href: latestChangelog?.pathname || DEFAULT_CHANLOGE_POST.href,
-    image:
-      latestChangelog?.cover || DEFAULT_CHANLOGE_POST.image,
+    return {
+      title: latestChangelog?.title || DEFAULT_CHANLOGE_POST.title,
+      description:
+        latestChangelog?.caption ||
+        latestChangelogText.slice(0, 300) ||
+        DEFAULT_CHANLOGE_POST.description,
+      href: latestChangelog?.pathname || DEFAULT_CHANLOGE_POST.href,
+      image: latestChangelog?.cover || DEFAULT_CHANLOGE_POST.image,
+    }
+  } catch (error) {
+    console.warn("getLatestChangelogPost failed, using defaults:", error)
+    return DEFAULT_CHANLOGE_POST
   }
 }
