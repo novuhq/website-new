@@ -13,7 +13,7 @@ import {
 const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
 
 
-export async function getLatestChangelogPost(
+export async function getLatestChangelogPostData(
   preview = false
 ): Promise<IChangelogPostData> {
   const post = await sanityFetch<IChangelogPostData>({

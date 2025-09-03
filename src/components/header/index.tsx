@@ -16,13 +16,11 @@ import Nav from "./nav"
 
 interface IHeaderProps {
   githubStars: number
-  data: {
-    changelog: IMenuHeaderCard
-    blog: IMenuHeaderCard
-  }
+  changelog: IMenuHeaderCard
+  blog: IMenuHeaderCard
 }
 
-function Header({ githubStars, data }: IHeaderProps) {
+function Header({ githubStars, changelog, blog }: IHeaderProps) {
   const [isIntersecting, setIsIntersecting] = useState(false)
   const triggerRef = useRef<HTMLDivElement | null>(null)
 
@@ -31,12 +29,12 @@ function Header({ githubStars, data }: IHeaderProps) {
       if (contentItem.type === "changelog") {
         return {
           ...contentItem,
-          card: data.changelog,
+          card: changelog,
         }
       } else if (contentItem.type === "blog") {
         return {
           ...contentItem,
-          card: data.blog,
+          card: blog,
         }
       }
       return contentItem

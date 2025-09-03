@@ -1,12 +1,14 @@
 import { draftMode } from "next/headers"
+import { ROUTE } from "@/constants/routes"
 import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getHeaderData } from "@/lib/get-header-data"
+import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import PreviewWarning from "@/components/preview-warning"
+import Scripts, { GTM_ID } from "@/components/scripts"
 
 export default async function RootLayout({
   children,
@@ -14,12 +16,28 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const { isEnabled: isDraftMode } = await draftMode()
-  const { stars } = await getGithubInfo()
-  const headerData = await getHeaderData()
+  const [{ stars }, changelog, blog] = await Promise.all([
+    getGithubInfo(),
+    getLatestChangelogPost().catch(() => ({
+      title: "Check out our latest updates",
+      description: "Stay up to date with our latest changes and features",
+      href: ROUTE.changelog,
+      image: "/images/header/illustration-changelog.jpg",
+    })),
+    getLatestWpPost().catch(() => ({
+      title: "Check out our latest blog posts",
+      description:
+        "Discover new blog posts covering product updates, stories, and more",
+      href: ROUTE.blog,
+      image: "/images/header/illustration-blog.jpg",
+    })),
+  ])
 
   return (
     <>
-      <head></head>
+      <head>
+        <Scripts />
+      </head>
       <body
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
       >
@@ -28,12 +46,21 @@ export default async function RootLayout({
             className="flex grow flex-col rounded-none bg-background aria-hidden:[-webkit-mask-image:-webkit-radial-gradient(white,black)]"
             vaul-drawer-wrapper=""
           >
-            <Header githubStars={stars} data={headerData} />
+            <Header githubStars={stars} changelog={changelog} blog={blog} />
             {isDraftMode && <PreviewWarning />}
             <div className="grow">{children}</div>
             <Footer />
           </div>
         </Providers>
+        {/* Google Tag Manager noscript */}
+        <noscript>
+          <iframe
+            className="invisible hidden"
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+          />
+        </noscript>
       </body>
     </>
   )
