@@ -1,7 +1,22 @@
 import { ROUTE } from "@/constants/routes"
 import { gql, GraphQLClient } from "graphql-request"
 
-import { getChangelogPosts } from "@/lib/changelog"
+import { getLatestChangelogPostData } from "@/lib/changelog"
+
+const DEFAULT_CHANLOGE_POST = {
+  title: "Check out our latest updates",
+  description: "Stay up to date with our latest changes and features",
+  href: ROUTE.changelog,
+  image: "/images/header/illustration-changelog.jpg",
+}
+
+const DEFAULT_BLOG_POST = {
+  title: "Check out our latest blog posts",
+  description:
+    "Discover new blog posts covering product updates, stories, and more",
+  href: ROUTE.blog,
+  image: "/images/header/illustration-blog.jpg",
+}
 
 function getChangelogCaptionFromContent(content: unknown[]): string {
   if (!Array.isArray(content)) return ""
@@ -37,63 +52,70 @@ export async function getLatestWpPost() {
     },
   })
 
-  const query = gql`
-    query GetLatestPost {
-      posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
-        nodes {
-          title
-          uri
-          pageBlogPost {
-            description
-            image {
-              link
+  try {
+    const query = gql`
+      query GetLatestPost {
+        posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
+          nodes {
+            title
+            uri
+            pageBlogPost {
+              description
+              image {
+                link
+              }
             }
           }
         }
       }
-    }
-  `
+    `
 
-  const data = (await client.request(query)) as {
-    posts: {
-      nodes: Array<{
-        title: string
-        uri: string
-        pageBlogPost?: {
-          description?: string
-          image?: { link: string }
-        }
-      }>
+    const data = (await client.request(query)) as {
+      posts: {
+        nodes: Array<{
+          title: string
+          uri: string
+          pageBlogPost?: {
+            description?: string
+            image?: { link: string }
+          }
+        }>
+      }
     }
-  }
 
-  return {
-    title: data.posts.nodes[0]?.title || "Check out our latest blog posts",
-    description:
-      data.posts.nodes[0]?.pageBlogPost?.description ||
-      "Discover new blog posts covering product updates, stories, and more",
-    href: data.posts.nodes[0]?.uri || ROUTE.blog,
-    image:
-      data.posts.nodes[0]?.pageBlogPost?.image?.link ||
-      "/images/header/illustration-blog.jpg",
+    const latestPost = data?.posts?.nodes[0]
+
+    return {
+      title: latestPost?.title || DEFAULT_BLOG_POST.title,
+      description:
+        latestPost?.pageBlogPost?.description || DEFAULT_BLOG_POST.description,
+      href: latestPost?.uri || DEFAULT_BLOG_POST.href,
+      image: latestPost?.pageBlogPost?.image?.link || DEFAULT_BLOG_POST.image,
+    }
+  } catch (error) {
+    console.warn("getLatestWpPost failed, using defaults:", error)
+    return DEFAULT_BLOG_POST
   }
 }
 
 export async function getLatestChangelogPost() {
-  const changelogs = await getChangelogPosts()
-  const latestChangelog = changelogs[0]
-  const latestChangelogText = getChangelogCaptionFromContent(
-    latestChangelog.content
-  )
+  try {
+    const latestChangelog = await getLatestChangelogPostData()
+    const latestChangelogText = getChangelogCaptionFromContent(
+      latestChangelog?.content || []
+    )
 
-  return {
-    title: latestChangelog?.title || "Check out our latest updates",
-    description:
-      latestChangelog?.caption ||
-      latestChangelogText.slice(0, 300) ||
-      "Stay up to date with our latest changes and features",
-    href: latestChangelog?.pathname || ROUTE.changelog,
-    image:
-      latestChangelog?.cover || "/images/header/illustration-changelog.jpg",
+    return {
+      title: latestChangelog?.title || DEFAULT_CHANLOGE_POST.title,
+      description:
+        latestChangelog?.caption ||
+        latestChangelogText.slice(0, 300) ||
+        DEFAULT_CHANLOGE_POST.description,
+      href: latestChangelog?.pathname || DEFAULT_CHANLOGE_POST.href,
+      image: latestChangelog?.cover || DEFAULT_CHANLOGE_POST.image,
+    }
+  } catch (error) {
+    console.warn("getLatestChangelogPost failed, using defaults:", error)
+    return DEFAULT_CHANLOGE_POST
   }
 }

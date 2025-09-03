@@ -14,19 +14,8 @@ import Scripts, { GTM_ID } from "@/components/scripts"
 export default async function NotFound() {
   const [{ stars }, changelog, blog] = await Promise.all([
     getGithubInfo(),
-    getLatestChangelogPost().catch(() => ({
-      title: "Check out our latest updates",
-      description: "Stay up to date with our latest changes and features",
-      href: ROUTE.changelog,
-      image: "/images/header/illustration-changelog.jpg",
-    })),
-    getLatestWpPost().catch(() => ({
-      title: "Check out our latest blog posts",
-      description:
-        "Discover new blog posts covering product updates, stories, and more",
-      href: ROUTE.blog,
-      image: "/images/header/illustration-blog.jpg",
-    })),
+    getLatestChangelogPost(),
+    getLatestWpPost(),
   ])
 
   return (
