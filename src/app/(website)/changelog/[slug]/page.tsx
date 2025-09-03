@@ -8,13 +8,13 @@ import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import Content from "@/components/pages/content"
 import Date from "@/components/pages/date"
 import SocialShare from "@/components/pages/social-share"
-import Breadcrumbs from "@/components/ui/breadcrumbs"
 
 interface ChangelogPostPageProps {
   params: Promise<{

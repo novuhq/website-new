@@ -73,7 +73,7 @@ export default function Breadcrumbs({
               size="sm"
             >
               <DynamicIcon icon="chevron-left" />
-              {(index === 0 && firstPathLabel) ? firstPathLabel : item.label}
+              {index === 0 && firstPathLabel ? firstPathLabel : item.label}
             </Link>
           )}
         </React.Fragment>

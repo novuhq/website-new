@@ -13,7 +13,7 @@ export default function Related({
       <h2 className="text-[28px] leading-[1.125] font-normal tracking-tight md:text-[32px]">
         Explore
       </h2>
-      <ul className="flex flex-col rounded-[8px] border border-gray-3 overflow-hidden">
+      <ul className="flex flex-col overflow-hidden rounded-[8px] border border-gray-3">
         {customers?.map((customer) => (
           <li
             key={customer._id}

@@ -85,10 +85,7 @@ export default function Slider({
   }
 
   return (
-    <SlickSlider
-      className={cn("flex w-full", className)}
-      {...settings}
-    >
+    <SlickSlider className={cn("flex w-full", className)} {...settings}>
       {children}
     </SlickSlider>
   )

@@ -363,7 +363,7 @@
 }
 
 .prose-customer {
-  @apply prose-h2:!mt-14 prose-h2:!mb-4 md:prose-h2:text-[32px] prose-h2:!leading-[1.125] md:prose-p:mb-6 md:prose-ul:!gap-y-4;
+  @apply prose-h2:!mt-14 prose-h2:!mb-4 prose-h2:!leading-[1.125] md:prose-h2:text-[32px] md:prose-p:mb-6 md:prose-ul:!gap-y-4;
 
   figure {
     @apply mt-8 py-0;
