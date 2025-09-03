@@ -3,6 +3,21 @@ import { gql, GraphQLClient } from "graphql-request"
 
 import { getLatestChangelogPostData } from "@/lib/changelog"
 
+const DEFAULT_CHANLOGE_POST = {
+  title: "Check out our latest updates",
+  description: "Stay up to date with our latest changes and features",
+  href: ROUTE.changelog,
+  image: "/images/header/illustration-changelog.jpg",
+}
+
+const DEFAULT_BLOG_POST = {
+  title: "Check out our latest blog posts",
+  description:
+    "Discover new blog posts covering product updates, stories, and more",
+  href: ROUTE.blog,
+  image: "/images/header/illustration-blog.jpg",
+}
+
 function getChangelogCaptionFromContent(content: unknown[]): string {
   if (!Array.isArray(content)) return ""
   return content
@@ -68,21 +83,18 @@ export async function getLatestWpPost() {
       }
     }
 
-    const latestPost = data.posts.nodes[0] ?? null
+    const latestPost = data?.posts?.nodes[0]
 
     return {
-      title: latestPost?.title || "Check out our latest blog posts",
+      title: latestPost?.title || DEFAULT_BLOG_POST.title,
       description:
-        latestPost?.pageBlogPost?.description ||
-        "Discover new blog posts covering product updates, stories, and more",
-      href: latestPost?.uri || ROUTE.blog,
-      image:
-        latestPost?.pageBlogPost?.image?.link ||
-        "/images/header/illustration-blog.jpg",
+        latestPost?.pageBlogPost?.description || DEFAULT_BLOG_POST.description,
+      href: latestPost?.uri || DEFAULT_BLOG_POST.href,
+      image: latestPost?.pageBlogPost?.image?.link || DEFAULT_BLOG_POST.image,
     }
   } catch (error) {
     console.warn("getLatestWpPost failed, using defaults:", error)
-    return null
+    return DEFAULT_BLOG_POST
   }
 }
 
@@ -93,13 +105,13 @@ export async function getLatestChangelogPost() {
   )
 
   return {
-    title: latestChangelog?.title || "Check out our latest updates",
+    title: latestChangelog?.title || DEFAULT_CHANLOGE_POST.title,
     description:
       latestChangelog?.caption ||
       latestChangelogText.slice(0, 300) ||
-      "Stay up to date with our latest changes and features",
-    href: latestChangelog?.pathname || ROUTE.changelog,
+      DEFAULT_CHANLOGE_POST.description,
+    href: latestChangelog?.pathname || DEFAULT_CHANLOGE_POST.href,
     image:
-      latestChangelog?.cover || "/images/header/illustration-changelog.jpg",
+      latestChangelog?.cover || DEFAULT_CHANLOGE_POST.image,
   }
 }
