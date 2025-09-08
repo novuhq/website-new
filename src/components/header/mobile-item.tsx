@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ChevronRight } from "lucide-react"
-import { AnimatePresence, domAnimation, LazyMotion, m } from "motion/react"
+import { domAnimation, LazyMotion, m } from "motion/react"
 
 import { IMenuHeaderContent } from "@/types/common"
 import { cn } from "@/lib/utils"

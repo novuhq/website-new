@@ -1,5 +1,4 @@
 import { draftMode } from "next/headers"
-import { ROUTE } from "@/constants/routes"
 import { Providers } from "@/contexts"
 
 import { brother1816 } from "@/lib/fonts"

@@ -1,0 +1,13 @@
+@import "react-medium-image-zoom/dist/styles.css";
+
+[data-rmiz-modal-overlay="visible"] {
+  @apply bg-background/80;
+}
+
+[data-rmiz-btn-unzoom] {
+  @apply opacity-0;
+}
+
+[data-rmiz-modal-img] {
+  @apply rounded-lg;
+}

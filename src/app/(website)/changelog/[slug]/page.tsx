@@ -125,7 +125,7 @@ export default async function ChangelogPostPage({
   return (
     <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
-        <article className="mx-auto max-w-248 xl:translate-x-36">
+        <article className="relative mx-auto max-w-248 xl:left-36">
           <div>
             <Link
               className="group -ml-px translate-y-px gap-x-1 leading-none tracking-tighter transition-colors duration-300"
