@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { draftMode } from "next/headers"
 import Image from "next/image"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
@@ -75,7 +76,8 @@ export async function generateMetadata({
   params,
 }: ChangelogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const postData = await getChangelogPostBySlug(slug)
+  const { isEnabled: isDraftMode } = await draftMode()
+  const postData = await getChangelogPostBySlug(slug, isDraftMode)
 
   if (!postData) {
     return {}
@@ -103,7 +105,8 @@ export default async function ChangelogPostPage({
   params,
 }: ChangelogPostPageProps) {
   const { slug } = await params
-  const postData = await getChangelogPostBySlug(slug)
+  const { isEnabled: isDraftMode } = await draftMode()
+  const postData = await getChangelogPostBySlug(slug, isDraftMode)
 
   if (!postData) {
     notFound()
