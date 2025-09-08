@@ -1,5 +1,6 @@
 import { type IAdmonition } from "@/types/common"
 import { cn } from "@/lib/utils"
+import { Icons } from "@/components/icons"
 
 interface IAdmonitionProps extends IAdmonition {
   className?: string
@@ -13,16 +14,22 @@ function Admonition({
   return (
     <figure
       className={cn(
-        "not-prose admonition my-6 flex flex-col rounded-lg border border-gray-2 bg-background p-5",
+        "not-prose admonition relative my-6 flex flex-col rounded-lg bg-[#111018] p-4",
         className
       )}
     >
-      <span className="not-prose flex text-base leading-none font-medium tracking-tight text-muted-foreground">
-        {title}
+      <span className="not-prose flex gap-1.5 text-base leading-none font-medium tracking-tight text-gray-13">
+        <Icons.lightbulb
+          className="!size-4 shrink-0 text-purple-2"
+          size={16}
+          viewBox="0 0 16 16"
+        />
+        <span>{title}</span>
       </span>
-      <div className="prose-inside-content prose mt-4 max-w-none border-t border-gray-2 pt-4">
+      <div className="prose-inside-content prose mt-5 max-w-none border-t border-[#333347]/40 pt-5">
         {children}
       </div>
+      <div className="pointer-events-none absolute inset-0 rounded-lg border-gradient bg-[image:var(--admonition-gradient)]" />
     </figure>
   )
 }
