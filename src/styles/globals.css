@@ -241,7 +241,7 @@
   }
 
   :where(:focus-visible) {
-    @apply focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-hidden;
   }
   /*
     Apply focus ring and rounded styles to all <a> elements without a class.
@@ -259,7 +259,7 @@
   }
 
   .button-gradient {
-    @apply before:bg-linear-(--button-gradient) overflow-hidden before:absolute before:!-inset-px before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
+    @apply overflow-hidden before:absolute before:!-inset-px before:bg-linear-(--button-gradient) before:!opacity-20 before:transition-opacity before:duration-300 hover:before:!opacity-100;
   }
 
   .header-card-gradient {
