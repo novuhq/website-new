@@ -152,7 +152,7 @@ export default async function ChangelogPostPage({
               }}
             />
           )}
-          <div className="mt-7.75 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px] lg:gap-x-8 xl:grid-cols-[minmax(0,1fr)_256px]">
+          <div className="relative mt-7.75 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px] lg:gap-x-8 xl:grid-cols-[minmax(0,1fr)_256px]">
             {cover && (
               <div className="relative mb-10.5 aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image md:mb-12 lg:col-start-1 lg:mb-0">
                 <Image
@@ -164,7 +164,7 @@ export default async function ChangelogPostPage({
                 />
               </div>
             )}
-            <div className="flex w-full flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:ml-auto lg:flex-col lg:justify-start lg:gap-5.5 xl:pt-0.5">
+            <div className="top-20 flex w-full flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:sticky lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:ml-auto lg:flex-col lg:justify-start lg:gap-5.5 lg:self-start xl:pt-0.5">
               <dl className="flex flex-col gap-5 md:flex-row md:gap-17.5 lg:flex-col lg:gap-6.5">
                 <div className="flex flex-col gap-4">
                   <dt className="leading-tight font-medium tracking-tighter">
