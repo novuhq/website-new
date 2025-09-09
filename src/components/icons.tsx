@@ -1,5 +1,3 @@
-import { svg } from "motion/react-m"
-
 type IconProps = React.SVGProps<SVGSVGElement> & {
   size?: number
   width?: number

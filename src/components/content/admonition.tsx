@@ -20,7 +20,7 @@ function Admonition({
     >
       <span className="not-prose flex gap-1.5 text-base leading-none font-medium tracking-tight text-gray-13">
         <Icons.lightbulb
-          className="!size-4 shrink-0 text-purple-2"
+          className="shrink-0 text-purple-2"
           size={16}
           viewBox="0 0 16 16"
         />
