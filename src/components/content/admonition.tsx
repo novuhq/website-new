@@ -18,14 +18,14 @@ function Admonition({
         className
       )}
     >
-      <span className="not-prose flex gap-1.5 text-base leading-none font-medium tracking-tight text-gray-13">
+      <figcaption className="not-prose flex gap-1.5 text-base leading-none font-medium tracking-tight text-gray-13">
         <Icons.lightbulb
           className="shrink-0 text-purple-2"
           size={16}
           viewBox="0 0 16 16"
         />
         <span>{title}</span>
-      </span>
+      </figcaption>
       <div className="prose-inside-content prose mt-5 max-w-none border-t border-[#333347]/40 pt-5">
         {children}
       </div>
