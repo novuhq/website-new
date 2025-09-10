@@ -18,8 +18,9 @@ function PostsList({ posts, className, hasMore }: PostsListProps) {
       <div
         className={cn(
           "relative w-full px-5",
-          "before:absolute before:-top-32 before:left-3/12 before:z-50 before:h-40 before:w-10 before:-translate-x-11 before:bg-gradient-to-b before:from-background before:to-transparent",
-          "after:absolute after:-bottom-12 after:left-3/12 after:h-40 after:w-10 after:-translate-x-11 after:bg-gradient-to-t after:from-background after:to-transparent"
+          "before:absolute before:-top-32 before:left-1/2 before:z-10 before:hidden before:h-40 before:w-10 before:-translate-x-85 before:bg-gradient-to-b before:from-background before:to-transparent lg:before:block xl:before:-translate-x-101",
+          "after:absolute after:left-1/2 after:hidden after:h-40 after:w-10 after:-translate-x-85 after:bg-gradient-to-t after:from-background after:to-transparent lg:after:block xl:after:-translate-x-101",
+          hasMore ? "after:-bottom-12" : "after:-bottom-32"
         )}
       >
         <h2 className="sr-only">All changelog posts</h2>

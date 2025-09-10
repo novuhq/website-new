@@ -1,57 +1,21 @@
 import { ROUTE } from "@/constants/routes"
 import { gql, GraphQLClient } from "graphql-request"
 
-import { getChangelogPosts } from "@/lib/changelog"
+import { getLatestChangelogPostData } from "@/lib/changelog"
 
-async function getLatestWpPost() {
-  const { WP_GRAPHQL_URL, WP_HTACCESS_USERNAME, WP_HTACCESS_PASSWORD } =
-    process.env
+const DEFAULT_CHANLOGE_POST = {
+  title: "Check out our latest updates",
+  description: "Stay up to date with our latest changes and features",
+  href: ROUTE.changelog,
+  image: "/images/header/illustration-changelog.jpg",
+}
 
-  if (!WP_GRAPHQL_URL || !WP_HTACCESS_USERNAME || !WP_HTACCESS_PASSWORD) {
-    throw new Error("Missing required WP GraphQL environment variables.")
-  }
-
-  const client = new GraphQLClient(WP_GRAPHQL_URL, {
-    headers: {
-      Authorization:
-        "Basic " +
-        Buffer.from(`${WP_HTACCESS_USERNAME}:${WP_HTACCESS_PASSWORD}`).toString(
-          "base64"
-        ),
-    },
-  })
-
-  const query = gql`
-    query GetLatestPost {
-      posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
-        nodes {
-          title
-          uri
-          pageBlogPost {
-            description
-            image {
-              link
-            }
-          }
-        }
-      }
-    }
-  `
-
-  const data = (await client.request(query)) as {
-    posts: {
-      nodes: Array<{
-        title: string
-        uri: string
-        pageBlogPost?: {
-          description?: string
-          image?: { link: string }
-        }
-      }>
-    }
-  }
-
-  return data.posts.nodes[0]
+const DEFAULT_BLOG_POST = {
+  title: "Check out our latest blog posts",
+  description:
+    "Discover new blog posts covering product updates, stories, and more",
+  href: ROUTE.blog,
+  image: "/images/header/illustration-blog.jpg",
 }
 
 function getChangelogCaptionFromContent(content: unknown[]): string {
@@ -70,36 +34,88 @@ function getChangelogCaptionFromContent(content: unknown[]): string {
     .join("\n")
 }
 
-export async function getHeaderData() {
-  const changelogs = await getChangelogPosts()
+export async function getLatestWpPost() {
+  const { WP_GRAPHQL_URL, WP_HTACCESS_USERNAME, WP_HTACCESS_PASSWORD } =
+    process.env
 
-  const latestChangelog = changelogs[0]
-  const latestChangelogText = getChangelogCaptionFromContent(
-    latestChangelog.content
-  )
+  if (!WP_GRAPHQL_URL || !WP_HTACCESS_USERNAME || !WP_HTACCESS_PASSWORD) {
+    throw new Error("Missing required WP GraphQL environment variables.")
+  }
 
-  const latestWpPost = await getLatestWpPost()
+  const client = new GraphQLClient(WP_GRAPHQL_URL, {
+    headers: {
+      Authorization:
+        "Basic " +
+        Buffer.from(`${WP_HTACCESS_USERNAME}:${WP_HTACCESS_PASSWORD}`).toString(
+          "base64"
+        ),
+    },
+  })
 
-  return {
-    changelog: {
-      title: latestChangelog?.title || "Check out our latest updates",
+  try {
+    const query = gql`
+      query GetLatestPost {
+        posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
+          nodes {
+            title
+            uri
+            pageBlogPost {
+              description
+              image {
+                link
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const data = (await client.request(query)) as {
+      posts: {
+        nodes: Array<{
+          title: string
+          uri: string
+          pageBlogPost?: {
+            description?: string
+            image?: { link: string }
+          }
+        }>
+      }
+    }
+
+    const latestPost = data?.posts?.nodes[0]
+
+    return {
+      title: latestPost?.title || DEFAULT_BLOG_POST.title,
+      description:
+        latestPost?.pageBlogPost?.description || DEFAULT_BLOG_POST.description,
+      href: latestPost?.uri || DEFAULT_BLOG_POST.href,
+      image: latestPost?.pageBlogPost?.image?.link || DEFAULT_BLOG_POST.image,
+    }
+  } catch (error) {
+    console.warn("getLatestWpPost failed, using defaults:", error)
+    return DEFAULT_BLOG_POST
+  }
+}
+
+export async function getLatestChangelogPost() {
+  try {
+    const latestChangelog = await getLatestChangelogPostData()
+    const latestChangelogText = getChangelogCaptionFromContent(
+      latestChangelog?.content || []
+    )
+
+    return {
+      title: latestChangelog?.title || DEFAULT_CHANLOGE_POST.title,
       description:
         latestChangelog?.caption ||
         latestChangelogText.slice(0, 300) ||
-        "Stay up to date with our latest changes and features",
-      href: latestChangelog?.pathname || ROUTE.changelog,
-      image:
-        latestChangelog?.cover || "/images/header/illustration-changelog.jpg",
-    },
-    blog: {
-      title: latestWpPost?.title || "Check out our latest blog posts",
-      description:
-        latestWpPost?.pageBlogPost?.description ||
-        "Discover new blog posts covering product updates, stories, and more",
-      href: latestWpPost?.uri || ROUTE.blog,
-      image:
-        latestWpPost?.pageBlogPost?.image?.link ||
-        "/images/header/illustration-blog.jpg",
-    },
+        DEFAULT_CHANLOGE_POST.description,
+      href: latestChangelog?.pathname || DEFAULT_CHANLOGE_POST.href,
+      image: latestChangelog?.cover || DEFAULT_CHANLOGE_POST.image,
+    }
+  } catch (error) {
+    console.warn("getLatestChangelogPost failed, using defaults:", error)
+    return DEFAULT_CHANLOGE_POST
   }
 }

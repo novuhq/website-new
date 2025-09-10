@@ -7,9 +7,23 @@ import {
   changelogPostBySlugQuery,
   changelogPostsByCategoryQuery,
   changelogPostsQuery,
+  changelogLatestPostQuery,
 } from "@/lib/sanity/queries/changelog"
 
 const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
+
+
+export async function getLatestChangelogPostData(
+  preview = false
+): Promise<IChangelogPostData> {
+  const post = await sanityFetch<IChangelogPostData>({
+    query: changelogLatestPostQuery,
+    preview,
+    tags: REVALIDATE_CHANGELOG_TAG,
+  })
+
+  return post
+}
 
 /**
  * Fetches all blog posts from Sanity

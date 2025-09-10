@@ -40,6 +40,7 @@
   --gray-9: 0 0% 80%; /* #CCCCCC */
   --gray-10: 0 0% 90%; /* #E6E6E6 */
   --gray-11: 0 0% 96%; /* #F5F5F5 */
+  --gray-13: 0 0% 99%; /* #FCFCFC */
 
   --lagune-3: 190, 100%, 50%; /* #00D5FF */
   --lagune-2: 190, 100%, 75%; /* #80EAFF */
@@ -115,6 +116,7 @@
   --color-gray-9: hsl(var(--gray-9));
   --color-gray-10: hsl(var(--gray-10));
   --color-gray-11: hsl(var(--gray-11));
+  --color-gray-13: hsl(var(--gray-13));
 
   --color-red-1: hsl(var(--red-1));
 
@@ -148,9 +150,22 @@
     0 -1.449px 4.829px 0 rgba(15, 16, 21, 0.25),
     -0.483px -0.483px 2.415px 0 rgba(15, 16, 21, 0.2),
     2.415px 2.415px 4.829px 0 rgba(15, 16, 21, 0.1);
+  --shadow-tooltip:
+    0 12px 24px 0 hsla(0, 0%, 0%, 0.06), 0 1px 2px 0 hsla(0, 0%, 0%, 0.03);
 
   --button-gradient:
     258deg, hsla(265, 16%, 70%, 0.6) -8.62%, hsla(264, 16%, 70%, 0.3) 113.79%;
+  --admonition-gradient:
+    linear-gradient(
+      215.33deg,
+      rgba(51, 51, 71, 0.9) 20.1%,
+      rgba(43, 43, 59, 0.5) 75.75%
+    ),
+    linear-gradient(
+      246.73deg,
+      rgba(51, 51, 71, 0.6) 15.63%,
+      rgba(43, 43, 59, 0.4) 84.63%
+    );
 
   @keyframes accordion-down {
     from {

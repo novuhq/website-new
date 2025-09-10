@@ -161,7 +161,7 @@
 
   figure.admonition {
     p {
-      @apply !leading-normal !tracking-normal;
+      @apply !leading-normal !tracking-normal !text-secondary-foreground;
     }
   }
 

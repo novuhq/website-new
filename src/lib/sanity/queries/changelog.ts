@@ -48,6 +48,13 @@ export const changelogPostsQuery = groq`
   }
 `
 
+// Query for the latest post
+export const changelogLatestPostQuery = groq`
+  *[_type == "changelogPost"] | order(publishedAt desc)[0] {
+    ${fullPostFields}
+  }
+`
+
 // Query for a single post by slug
 export const changelogPostBySlugQuery = groq`
   *[_type == "changelogPost" && slug.current == $slug][0] {
