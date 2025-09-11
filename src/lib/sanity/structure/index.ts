@@ -9,7 +9,7 @@ const structure: StructureResolver = (S, context) =>
     .title("Base")
     .items([
       changelogStructure(S, context),
-      customersStructure(S, context),
+      customersStructure(S),
       S.divider(),
       S.listItem()
         .title("Authors")

@@ -6,7 +6,7 @@ import { Link } from "@/components/ui/link"
 export default function Related({
   customers,
 }: {
-  customers: Pick<ICustomerData, "title" | "slug" | "_id">[]
+  customers: Pick<ICustomerData, "title" | "slug" | "url" | "_id">[]
 }) {
   return (
     <>
@@ -19,10 +19,16 @@ export default function Related({
             key={customer._id}
             className="relative flex flex-col gap-y-2.5 border-b border-gray-3 p-4 pb-3.5 transition-colors duration-200 last:border-b-0 hover:bg-gray-3"
           >
-            <Link
-              className="absolute top-0 left-0 h-full w-full"
-              href={`${ROUTE.customers}/${customer.slug.current}`}
-            />
+            {(customer.slug || customer.url) && (
+              <Link
+                className="absolute top-0 left-0 h-full w-full"
+                href={
+                  customer.slug
+                    ? `${ROUTE.customers}/${customer.slug.current}`
+                    : customer.url!
+                }
+              />
+            )}
             <p className="text-sm leading-none font-medium tracking-tighter text-lagune-3">
               Customer Story
             </p>
