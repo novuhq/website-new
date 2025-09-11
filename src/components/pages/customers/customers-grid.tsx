@@ -121,9 +121,11 @@ export default function CustomersGrid({
                 height={logo.height}
                 loading="lazy"
               />
-              <p className="absolute top-3.5 z-10 truncate px-8 text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
-                <ChannelsList list={channelsList} />
-              </p>
+              {channelsList && channelsList.length > 0 && (
+                <p className="absolute top-3.5 z-10 truncate px-8 text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
+                  <ChannelsList list={channelsList} />
+                </p>
+              )}
               <p className="absolute bottom-3.5 z-10 line-clamp-2 px-8 text-center text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
                 {title}
               </p>
