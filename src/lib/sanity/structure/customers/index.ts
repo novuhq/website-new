@@ -1,19 +1,13 @@
-import { DocumentTextIcon, TimelineIcon, UserIcon } from "@sanity/icons"
-import type {
-  StructureBuilder,
-  StructureResolverContext,
-} from "sanity/structure"
+import { DocumentTextIcon, TagIcon, UserIcon } from "@sanity/icons"
+import type { StructureBuilder } from "sanity/structure"
 
 import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
 import { getStructureDocumentViews } from "@/lib/sanity/utils/get-structure-document-views"
 
-const customersStructure = (
-  S: StructureBuilder,
-  context: StructureResolverContext
-) =>
+const customersStructure = (S: StructureBuilder) =>
   S.listItem()
     .title("Customers")
-    .icon(TimelineIcon)
+    .icon(UserIcon)
     .child(
       S.list()
         .title("Customers")
@@ -35,6 +29,10 @@ const customersStructure = (
             .title("Customers")
             .icon(UserIcon)
             .child(S.documentTypeList("customer").title("Customers")),
+          S.listItem()
+            .title("Categories")
+            .icon(TagIcon)
+            .child(S.documentTypeList("customer_category").title("Category")),
         ])
     )
 

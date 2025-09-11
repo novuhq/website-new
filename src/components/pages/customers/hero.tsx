@@ -3,7 +3,7 @@ import heroBgMob from "@/svgs/pages/customers/hero/background-mob.svg"
 import heroBgTablet from "@/svgs/pages/customers/hero/background-tablet.svg"
 import heroBg from "@/svgs/pages/customers/hero/background.svg"
 
-import { TCustomerCard } from "@/types/customers"
+import { ICustomerCardData } from "@/types/customers"
 import { cn } from "@/lib/utils"
 
 import HeroCard from "./hero-card"
@@ -31,21 +31,24 @@ const BACKGROUND_BREAKPOINTS = [
   },
 ]
 
-function Hero({ customers }: { customers: TCustomerCard[] }) {
+function Hero({ customers }: { customers: ICustomerCardData[] }) {
   return (
-    <section className="hero relative [overflow-x:clip] pt-12.5 md:pt-16 lg:pt-18.5 xl:pt-22.5 2xl:overflow-x-visible">
-      <div className="relative mx-auto flex w-full flex-col items-center px-5 md:max-w-[704px] md:px-0 lg:max-w-[960px] xl:max-w-[969px] xl:px-0">
-        <div className="flex flex-col items-center gap-y-4 xl:px-[130px]">
+    <section className="hero relative [overflow-x:clip] pt-10.5 md:pt-12.5 lg:pt-16.5 xl:pt-19.5 2xl:overflow-x-visible">
+      <div className="relative mx-auto flex w-full flex-col items-center px-5 md:max-w-176 md:px-0 lg:max-w-240 xl:max-w-242 xl:px-0">
+        <div className="flex flex-col items-center gap-y-4 xl:gap-y-6 xl:px-32.5">
           <h1 className="gap-y-4 text-center text-[32px] leading-[1.125] font-medium tracking-tighter text-balance text-foreground md:text-[44px] lg:text-5xl xl:text-[52px]">
             The notification infrastructure behind the fastest teams
           </h1>
-          <p className="text-center text-base leading-normal font-[350] tracking-tighter text-pretty text-muted-foreground md:text-lg lg:max-w-[640px]">
+          <p className="text-center text-base leading-normal font-[350] tracking-tighter text-pretty text-muted-foreground md:text-lg lg:max-w-160">
             Discover how engineering teams use Novu to ship faster and simplify
             their communication workflows.
           </p>
         </div>
 
         <div className="relative mt-10 flex w-full flex-row flex-wrap gap-4 md:mt-12 md:gap-7 lg:mt-14 lg:gap-8 xl:mt-16">
+          {customers.map((customer, index) => (
+            <HeroCard key={customer._id} {...customer} index={index} />
+          ))}
           {BACKGROUND_BREAKPOINTS.map(
             ({ width, height, src, className }, index) => (
               <Image
@@ -64,9 +67,6 @@ function Hero({ customers }: { customers: TCustomerCard[] }) {
               />
             )
           )}
-          {customers.map((customer, index) => (
-            <HeroCard key={customer._id} {...customer} index={index} />
-          ))}
         </div>
       </div>
     </section>

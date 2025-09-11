@@ -232,6 +232,15 @@
   body:has([data-disable-document-scroll="true"]) {
     @apply overflow-hidden;
   }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 /*

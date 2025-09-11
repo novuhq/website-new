@@ -1,14 +1,18 @@
 import Image from "next/image"
 
 import { ICustomerData } from "@/types/customers"
+import ChannelsList from "@/components/pages/customers/channels-list"
 
 export default function About({
   logo,
   name,
   about,
   industry,
-  channels,
-}: Pick<ICustomerData, "logo" | "name" | "about" | "industry" | "channels">) {
+  channelsList,
+}: Pick<
+  ICustomerData,
+  "logo" | "name" | "about" | "industry" | "channelsList"
+>) {
   return (
     <dl className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
       <Image
@@ -35,27 +39,16 @@ export default function About({
             {industry}
           </dd>
         </div>
-        <div className="flex flex-col gap-2.5 md:w-1/2 lg:w-auto">
-          <dt className="leading-tight font-medium tracking-tighter">
-            Channels
-          </dt>
-          <dd className="flex items-center gap-2">
-            {channels &&
-              Object.entries(channels).map(
-                ([key, value]) =>
-                  value && (
-                    <span
-                      key={key}
-                      className="rounded-[116px] border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.06)] px-[9px] pt-[3px] pb-[5px] text-xs leading-none tracking-tighter text-gray-9"
-                    >
-                      {key === "sms"
-                        ? "SMS"
-                        : key.charAt(0).toUpperCase() + key.slice(1)}
-                    </span>
-                  )
-              )}
-          </dd>
-        </div>
+        {channelsList && channelsList.length > 0 && (
+          <div className="flex flex-col gap-2.5 md:w-1/2 lg:w-auto">
+            <dt className="leading-tight font-medium tracking-tighter">
+              Channels
+            </dt>
+            <dd className="flex items-center gap-2">
+              <ChannelsList list={channelsList} />
+            </dd>
+          </div>
+        )}
       </div>
     </dl>
   )

@@ -33,12 +33,12 @@ export async function generateMetadata({
     return {}
   }
 
-  const { title, seo } = customerData.customer
+  const { title, about, seo } = customerData.customer
 
   return getMetadata({
     title: seo?.title || title,
-    description: seo?.description,
-    pathname: `${ROUTE.customers}/${customerData.customer.slug.current}`,
+    description: seo?.description || about,
+    pathname: `${ROUTE.customers}/${slug}`,
     imagePath: seo?.socialImage,
   })
 }
@@ -46,9 +46,12 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const customers = await getAllCustomers()
 
-  return customers.map(({ slug }) => ({
-    slug: slug.current,
-  }))
+  return customers.map(
+    ({ slug }) =>
+      slug && {
+        slug: slug?.current,
+      }
+  )
 }
 
 export default async function CustomerStoryPage({
@@ -70,7 +73,7 @@ export default async function CustomerStoryPage({
     logo,
     about,
     industry,
-    channels,
+    channelsList,
     pathname,
     quote,
     challengesSolution,
@@ -80,6 +83,8 @@ export default async function CustomerStoryPage({
 
   const relatedCustomers =
     related && related.length > 0 ? related : await getLatestCustomers(slug)
+
+  const customerPathname = pathname || `${ROUTE.customers}/${slug}`
 
   return (
     <main>
@@ -109,15 +114,15 @@ export default async function CustomerStoryPage({
                 name={name}
                 about={about}
                 industry={industry}
-                channels={channels}
+                channelsList={channelsList}
               />
 
               <ScrollToTop buttonClassName="hidden lg:flex" />
-              <SocialShare className="md:-mt-px" pathname={pathname} />
+              <SocialShare className="md:-mt-px" pathname={customerPathname} />
             </div>
 
             <div className={cn("col-start-1", !cover && "lg:row-start-1")}>
-              {quote && <Quote quote={quote} />}
+              {quote && quote.text && <Quote quote={quote} />}
               {challengesSolution && (
                 <div className="col-start-1 mt-14 flex flex-col gap-8 md:mt-12 md:flex-row md:gap-4">
                   <ColoredList
@@ -140,16 +145,17 @@ export default async function CustomerStoryPage({
                   />
                 </div>
               )}
-
-              <Content
-                className={cn(
-                  "prose-customer prose mt-14 lg:col-start-1 [&>*:first-child]:mt-0!"
-                )}
-                content={bodyContent}
-              />
+              {bodyContent && (
+                <Content
+                  className={cn(
+                    "prose-customer prose mt-14 lg:col-start-1 [&>*:first-child]:mt-0!"
+                  )}
+                  content={bodyContent}
+                />
+              )}
               <SocialShare
                 className="mt-14 flex border-t border-gray-3 pt-7 lg:hidden"
-                pathname={pathname}
+                pathname={customerPathname}
               />
               <div className="explore col-start-1 mt-24 flex flex-col gap-y-8">
                 <Related customers={relatedCustomers} />

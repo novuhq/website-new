@@ -8,55 +8,62 @@ export interface ISanityImage {
   height: number
 }
 
+export interface ICustomerCardData {
+  _id: string
+  name: string
+  slug: ISlug
+  logo: ISanityImage
+  quoteText: string
+  quoteAuthorName: string
+  quoteAuthorPosition: string
+}
+
+export interface ICustomersGridData {
+  _id: string
+  name: string
+  slug?: ISlug
+  url?: string
+  logo: ISanityImage
+  title: string
+  isFeatured: boolean
+  category: {
+    _id: string
+    name: string
+  }
+  channelsList: string[]
+}
+
 export interface ICustomerData {
   _id: string
   _type: "customer"
   name: string
-  slug: ISlug
-  pathname: string
+  type: "external" | "story"
+  url?: string
+  slug?: ISlug
+  pathname?: string
   logo: ISanityImage
   title: string
-  author: string
-  authorPosition: string
-  cardType?: "big" | "small"
-  link: {
-    type: "external" | "story"
-    url?: string
+  category?: {
+    _id: string
+    name: string
   }
-
-  // About
+  isFeatured?: boolean
+  channelsList?: string[]
   storyPhoto?: string
-  about: string
-  industry: string
-  channels: {
-    email?: boolean
-    inbox?: boolean
-    sms?: boolean
-  }
-
-  // Quote
+  about?: string
+  industry?: string
   quote?: {
-    title: string
-    authorLogo: {
-      url: string
-      width: number
-      height: number
-    }
-    authorName: string
-    authorPosition: string
+    text?: string
+    photo?: ISanityImage
+    authorName?: string
+    authorPosition?: string
   }
-
-  // Challenges & Solution
   challengesSolution?: {
     challenges: string[]
     solution: string[]
   }
-
-  // Content
-  body: PortableTextBlock[]
+  body?: PortableTextBlock[]
   related?: ICustomerData[]
-
-  // SEO (only for stories)
   seo?: ISeoFields
 }
 
@@ -70,23 +77,13 @@ export interface ICustomerTweetData {
 
 export type TCustomerCard = Pick<
   ICustomerData,
-  | "_id"
-  | "name"
-  | "logo"
-  | "link"
-  | "author"
-  | "authorPosition"
-  | "cardType"
-  | "slug"
-  | "title"
+  "_id" | "name" | "logo" | "type" | "url" | "slug" | "title"
 >
 
 export interface ICustomersPageData {
   _id: string
   _type: "customers"
-  cards: ICustomerData[]
-  gridCustomers: {
-    customer: TCustomerCard
-  }[]
+  cards: ICustomerCardData[]
+  customersGrid: ICustomersGridData[]
   tweets: ICustomerTweetData[]
 }

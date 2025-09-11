@@ -8,7 +8,8 @@ import {
   UrlRule,
 } from "sanity"
 
-import { GROUP } from "../../shared/group"
+import { GROUP } from "@/lib/sanity/schemas/shared/group"
+import { SEO_FIELDS } from "@/lib/sanity/schemas/shared/seo"
 
 export default defineType({
   name: "customer",
@@ -16,107 +17,14 @@ export default defineType({
   title: "Customer",
   icon: UserIcon,
   groups: [GROUP.content, GROUP.seo],
+  fieldsets: [
+    {
+      name: "quote",
+      title: "Quote",
+      options: { collapsible: true },
+    },
+  ],
   fields: [
-    defineField({
-      name: "seo",
-      title: "SEO",
-      type: "object",
-      group: GROUP.seo.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
-      fields: [
-        defineField({
-          name: "title",
-          title: "Title",
-          type: "string",
-          validation: (rule: StringRule) =>
-            rule.max(60).error("Title must be less than 60 characters"),
-        }),
-        defineField({
-          name: "description",
-          title: "Description",
-          type: "string",
-          validation: (rule: StringRule) =>
-            rule.max(160).error("Description must be less than 160 characters"),
-        }),
-        defineField({
-          name: "socialImage",
-          title: "Social Image",
-          type: "image",
-        }),
-        defineField({
-          name: "noIndex",
-          title: "No Index",
-          type: "boolean",
-          initialValue: false,
-        }),
-      ],
-    }),
-    defineField({
-      name: "link",
-      type: "object",
-      title: "Link",
-      group: GROUP.content.name,
-      fields: [
-        defineField({
-          name: "type",
-          type: "string",
-          title: "Link Type",
-          options: {
-            list: [
-              { title: "External Link", value: "external" },
-              { title: "Story", value: "story" },
-            ],
-            layout: "radio",
-          },
-          validation: (rule: StringRule) =>
-            rule.error("You have to choose a link type.").required(),
-        }),
-        defineField({
-          name: "url",
-          type: "url",
-          title: "External URL",
-          description:
-            "External URL (only used when Link Type is External Link)",
-          hidden: ({ parent }) => parent?.type !== "external",
-          validation: (rule: UrlRule) =>
-            rule.custom((value, context) => {
-              const parent = context.parent as { type?: string }
-              if (parent?.type === "external" && !value) {
-                return "External link is required when link type is external"
-              }
-              return true
-            }),
-        }),
-      ],
-      validation: (rule) =>
-        rule.custom((value) => {
-          if (!value?.type) {
-            return "Link type is required"
-          }
-          if (value.type === "external" && !value.url) {
-            return "External URL is required when link type is external"
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: "slug",
-      type: "slug",
-      title: "Slug",
-      group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
-      validation: (rule: SlugRule) =>
-        rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story" && !value) {
-            return "Slug is required when link type is story"
-          }
-          return true
-        }),
-      options: {
-        source: "name",
-      },
-    }),
     defineField({
       name: "name",
       type: "string",
@@ -126,10 +34,60 @@ export default defineType({
         rule.error("You have to fill in this field.").required(),
     }),
     defineField({
+      name: "type",
+      type: "string",
+      title: "Link Type",
+      description:
+        "Choose whether this is an external link to customer or a story on Novu's site",
+      options: {
+        list: [
+          { title: "External Link", value: "external" },
+          { title: "Story", value: "story" },
+        ],
+        layout: "radio",
+      },
+      group: GROUP.content.name,
+      validation: (rule: StringRule) =>
+        rule.error("You have to fill in this field.").required(),
+    }),
+    defineField({
+      name: "url",
+      type: "url",
+      title: "External URL",
+      group: GROUP.content.name,
+      hidden: ({ document }) => document?.type !== "external",
+      validation: (rule: UrlRule) =>
+        rule.custom((value, context) => {
+          const document = context.document as { type?: string }
+          if (document?.type === "external" && !value) {
+            return "External link is required when link type is external"
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "Slug",
+      group: GROUP.content.name,
+      hidden: ({ document }) => document?.type !== "story",
+      validation: (rule: SlugRule) =>
+        rule.custom((value, context) => {
+          const document = context.document as { type?: string }
+          if (document?.type === "story" && !value) {
+            return "Slug is required when link type is story"
+          }
+          return true
+        }),
+      options: {
+        source: "name",
+      },
+    }),
+    defineField({
       name: "logo",
       type: "image",
       title: "Logo",
-      description: "Full logo with text",
+      description: "Should be white with slight transparency",
       group: GROUP.content.name,
       validation: (rule: ImageRule) =>
         rule.error("You have to fill in this field.").required(),
@@ -139,92 +97,72 @@ export default defineType({
       type: "string",
       title: "Title",
       description:
-        "Title length depends on card type: max 128 characters for Big cards, max 72 characters for small cards",
+        "Will be used as title for story and description in card on /customers page",
       group: GROUP.content.name,
       validation: (rule: StringRule) =>
+        rule.required().error("You have to fill in this field."),
+    }),
+    defineField({
+      name: "category",
+      type: "array",
+      title: "Category",
+      group: GROUP.content.name,
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "customer_category" }],
+        },
+      ],
+      validation: (rule) =>
         rule
           .required()
           .error("You have to fill in this field.")
-          .custom((value, context) => {
-            const parent = context.parent as { cardType?: string }
-            const cardType = parent?.cardType
-
-            if (!value) return true
-
-            if (cardType === "big" && value.length > 128) {
-              return "Title for Big card must be 128 characters or less"
-            }
-
-            if (cardType === "small" && value.length > 72) {
-              return "Title for small card must be 72 characters or less"
-            }
-
-            return true
-          }),
+          .max(1)
+          .error("You can select only 1 category."),
     }),
     defineField({
-      name: "author",
-      type: "string",
-      title: "Author",
+      name: "is_featured",
+      title: "Is Featured",
+      type: "boolean",
+      description: "Check if this customer should be in the featured category",
+      initialValue: false,
       group: GROUP.content.name,
-      validation: (rule: StringRule) =>
-        rule.custom((value, context) => {
-          const parent = context.parent as { cardType?: string }
-          if (parent?.cardType && (!value || value.trim() === "")) {
-            return "Author is required when card type is selected"
-          }
-          return true
-        }),
     }),
     defineField({
-      name: "authorPosition",
-      type: "string",
-      title: "Author Position",
-      group: GROUP.content.name,
-      validation: (rule: StringRule) =>
-        rule.custom((value, context) => {
-          const parent = context.parent as { cardType?: string }
-          if (parent?.cardType && (!value || value.trim() === "")) {
-            return "Author Position is required when card type is selected"
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: "cardType",
-      type: "string",
-      title: "Card Type",
-      description: "Choose the card size type",
+      name: "channels_list",
+      title: "Channels",
+      type: "array",
+      of: [{ type: "string" }],
       options: {
         list: [
-          { title: "None", value: "" },
-          { title: "Big Card", value: "big" },
-          { title: "Small Card", value: "small" },
+          { title: "Email", value: "Email" },
+          { title: "Inbox", value: "Inbox" },
+          { title: "SMS", value: "SMS" },
         ],
-        layout: "radio",
       },
       group: GROUP.content.name,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "storyPhoto",
       type: "image",
-      title: "Story Photo",
-      description: "Optional main photo for the story",
+      title: "Illustration",
+      description: "Main illustrations for the story (optional)",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
     }),
     defineField({
       name: "about",
       type: "text",
       title: "About",
-      description: "Text about the customer/company",
+      description: "Short description of the customer",
       rows: 4,
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story" && !value) {
+          const parent = context.parent as { type?: string }
+          if (parent?.type === "story" && !value) {
             return "About field is required when link type is story"
           }
           return true
@@ -235,96 +173,72 @@ export default defineType({
       type: "string",
       title: "Industry",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story" && !value) {
+          const parent = context.parent as { type?: string }
+          if (parent?.type === "story" && !value) {
             return "Industry is required when link type is story"
           }
           return true
         }),
     }),
-    // Channels block
     defineField({
-      name: "channels",
-      type: "object",
-      title: "Channels",
+      name: "quote_text",
+      type: "text",
+      title: "Text",
+      rows: 3,
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
-      options: { collapsible: true, collapsed: false },
-      validation: (rule) =>
+      fieldset: "quote",
+      hidden: ({ parent }) => parent?.type !== "story",
+    }),
+    defineField({
+      name: "quote_photo",
+      type: "image",
+      title: "Author Photo",
+      group: GROUP.content.name,
+      fieldset: "quote",
+      hidden: ({ parent }) => parent?.type !== "story",
+    }),
+    defineField({
+      name: "quote_name",
+      type: "string",
+      title: "Author Name",
+      group: GROUP.content.name,
+      fieldset: "quote",
+      hidden: ({ parent }) => parent?.type !== "story",
+      validation: (rule: StringRule) =>
         rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story") {
-            if (!value) {
-              return "Channels are required when link type is story"
-            }
-
-            const { email, inbox, sms } = value
-            if (!email && !inbox && !sms) {
-              return "At least one channel (email, inbox, or sms) must be enabled when link type is story"
-            }
+          const parent = context.parent as { type?: string }
+          if (parent?.type === "story" && !value) {
+            return "Industry is required when link type is story"
           }
           return true
         }),
-      fields: [
-        defineField({
-          name: "email",
-          type: "boolean",
-          title: "Email",
-        }),
-        defineField({
-          name: "inbox",
-          type: "boolean",
-          title: "Inbox",
-        }),
-        defineField({
-          name: "sms",
-          type: "boolean",
-          title: "SMS",
-        }),
-      ],
     }),
-    // Quote block
     defineField({
-      name: "quote",
-      type: "object",
-      title: "Quote",
+      name: "quote_position",
+      type: "string",
+      title: "Author Position",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
-      options: { collapsible: true, collapsed: false },
-      fields: [
-        defineField({
-          name: "title",
-          type: "text",
-          title: "Title",
-          rows: 3,
+      fieldset: "quote",
+      hidden: ({ parent }) => parent?.type !== "story",
+      validation: (rule: StringRule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { type?: string }
+          console.log(parent)
+          if (parent?.type === "story" && !value) {
+            return "Industry is required when link type is story"
+          }
+          return true
         }),
-        defineField({
-          name: "authorLogo",
-          type: "image",
-          title: "Author Logo",
-        }),
-        defineField({
-          name: "authorName",
-          type: "string",
-          title: "Author Name",
-        }),
-        defineField({
-          name: "authorPosition",
-          type: "string",
-          title: "Author Position",
-        }),
-      ],
     }),
-    // Challenges & Solution block
     defineField({
       name: "challengesSolution",
       type: "object",
       title: "Challenges & Solution",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
       options: { collapsible: true, collapsed: false },
       validation: (rule) =>
         rule.custom(
@@ -367,11 +281,11 @@ export default defineType({
       type: "content",
       title: "Body",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
       validation: (rule) =>
         rule.custom((value, context) => {
-          const parent = context.parent as { link?: { type?: string } }
-          if (parent?.link?.type === "story" && !value) {
+          const parent = context.parent as { type?: string }
+          if (parent?.type === "story" && !value) {
             return "Body is required when link type is story"
           }
           return true
@@ -381,7 +295,7 @@ export default defineType({
       name: "related",
       type: "array",
       title: "Related Stories",
-      hidden: ({ parent }) => parent?.link?.type !== "story",
+      hidden: ({ parent }) => parent?.type !== "story",
       validation: (rule) =>
         rule.custom((value) => {
           if (value && value.length > 0 && value.length < 4) {
@@ -399,7 +313,7 @@ export default defineType({
 
               return {
                 filter:
-                  'link.type == "story" && !(_id in [$documentId, "drafts." + $documentId])',
+                  'type == "story" && !(_id in [$documentId, "drafts." + $documentId])',
                 params: {
                   documentId: baseId,
                 },
@@ -410,24 +324,18 @@ export default defineType({
       ],
       group: GROUP.content.name,
     }),
+    SEO_FIELDS,
   ],
   preview: {
     select: {
       title: "name",
-      subtitle: "cardType",
+      subtitle: "type",
       media: "logo",
     },
     prepare({ title, subtitle, media }) {
-      let cardTypeLabel = ""
-      if (subtitle === "big") {
-        cardTypeLabel = "Big Card"
-      } else if (subtitle === "small") {
-        cardTypeLabel = "Small Card"
-      }
-
       return {
         title: title,
-        subtitle: `${cardTypeLabel || "-"}`,
+        subtitle: `${subtitle === "external" ? "External Link" : "Story"}`,
         media: media,
       }
     },

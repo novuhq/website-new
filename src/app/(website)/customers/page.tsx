@@ -17,10 +17,22 @@ export default async function CustomersPage() {
     notFound()
   }
 
+  const categories = Array.from(
+    new Set(
+      page.customersGrid.map((item) => item?.category?.name).filter(Boolean)
+    )
+  )
+
+  const isFeaturedExist = page.customersGrid.some((item) => item.isFeatured)
+
   return (
     <main>
       <Hero customers={page.cards} />
-      <CustomersGrid customers={page.gridCustomers} />
+      <CustomersGrid
+        isFeaturedExist={isFeaturedExist}
+        categories={categories}
+        customers={page.customersGrid}
+      />
       <Reviews reviews={page.tweets} />
       <CTA
         title="Free to start, ready to scale"

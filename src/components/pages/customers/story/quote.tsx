@@ -9,26 +9,26 @@ export default function Quote({
 }: Pick<ICustomerData, "quote"> & { className?: string }) {
   if (!quote) return null
 
-  const { title, authorLogo, authorName, authorPosition } = quote
+  const { text, photo, authorName, authorPosition } = quote
 
   return (
-    <div
+    <blockquote
       className={cn(
         "col-start-1 mt-12 border-l-2 border-gray-3 pl-4 md:pl-6 lg:mt-12 xl:mt-[46px]",
         className
       )}
     >
-      <h2 className="text-[18px] leading-snug font-normal tracking-tight md:text-[28px] md:leading-normal">
-        {title}
-      </h2>
+      <p className="text-[18px] leading-snug font-normal tracking-tight md:text-[28px] md:leading-normal">
+        {text}
+      </p>
       <div className="mt-5 flex gap-x-2.5 tracking-tight md:mt-4">
-        {authorLogo.url && (
+        {photo?.url && (
           <Image
             className="hidden h-auto w-7 rounded-full md:block"
-            src={authorLogo.url}
+            src={photo.url}
             alt={authorName || ""}
-            width={authorLogo.width || 28}
-            height={authorLogo.height || 28}
+            width={photo.width || 28}
+            height={photo.height || 28}
             priority
             quality={90}
           />
@@ -42,6 +42,6 @@ export default function Quote({
           </span>
         </p>
       </div>
-    </div>
+    </blockquote>
   )
 }

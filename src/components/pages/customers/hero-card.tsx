@@ -6,7 +6,7 @@ import purpleCardMob from "@/images/pages/customers/hero/purple-card-mob.png"
 import purpleCardBg from "@/images/pages/customers/hero/purple-card.png"
 import chevronRight from "@/svgs/icons/chevron-right.svg"
 
-import { TCustomerCard } from "@/types/customers"
+import { ICustomerCardData } from "@/types/customers"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
@@ -59,52 +59,76 @@ const CARDS_CONFIG = [
   },
 ]
 
-type TCustomerCardProps = TCustomerCard & { index: number }
+type TCustomerCardProps = ICustomerCardData & { index: number }
 
 function HeroCard({
-  logo,
   name,
-  cardType,
-  title,
-  author,
-  authorPosition,
-  index,
-  link,
   slug,
+  logo,
+  quoteText,
+  quoteAuthorName,
+  quoteAuthorPosition,
+  index,
 }: TCustomerCardProps) {
   const config = CARDS_CONFIG[index]
 
   return (
     <li
       className={cn(
-        "group relative w-full cursor-pointer list-none rounded-xl",
-        {
-          "h-[350px] md:h-[320px] lg:max-w-[576px] xl:max-w-[590px]":
-            cardType === "big",
-          "h-[320px] bg-[#14141F] md:max-w-[338px] lg:max-w-[347px]":
-            cardType === "small",
-        }
+        "group relative z-10 w-full cursor-pointer list-none rounded-xl",
+        index === 0 || index === 3
+          ? "h-87.5 md:h-80 lg:max-w-144 xl:max-w-147 xl:grow"
+          : "h-80 bg-[#14141F] md:max-w-84.5 lg:max-w-87"
       )}
     >
-      <article
-        className={cn(
-          "relative flex h-full w-full flex-grow flex-col items-start rounded-xl p-6 md:p-[27px]",
-          {
-            "md:pr-[14px] xl:pr-7": cardType === "big",
-          }
-        )}
-      >
+      <article className="relative flex h-full w-full flex-grow flex-col items-start rounded-xl p-6 md:p-8 md:pb-7">
         <Link
-          href={
-            link.type === "external"
-              ? link.url!
-              : `${ROUTE.customers}/${slug.current}`
-          }
-          className="group absolute top-0 left-0 z-10 h-full w-full"
+          href={`${ROUTE.customers}/${slug.current}`}
+          className="group absolute top-0 left-0 z-20 h-full w-full"
         >
-          <span className="sr-only">Read story</span>
+          <span className="sr-only">Read the story of ${name}</span>
         </Link>
-
+        <Image
+          className="pointer-events-none relative z-10 h-10 w-auto"
+          src={logo.url}
+          alt=""
+          width={logo.width || 180}
+          height={logo.height || 40}
+          priority
+        />
+        <blockquote className="relative z-10 mt-auto max-w-full">
+          <p
+            className={cn(
+              "relative text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl",
+              "before:absolute before:top-0 before:-left-3 before:content-[open-quote]",
+              "after:absolute after:-right-2 after:bottom-0 after:content-[close-quote]"
+            )}
+          >
+            <span
+              className={cn(
+                "md:line-clamp-3",
+                index === 0 || index === 3 ? "line-clamp-4" : "line-clamp-3"
+              )}
+            >
+              {quoteText}
+            </span>
+          </p>
+          <cite className="relative mt-2 block max-w-full truncate text-sm leading-snug font-light tracking-tight text-gray-8 md:text-base">{`${quoteAuthorName} — ${quoteAuthorPosition}`}</cite>
+        </blockquote>
+        <span className="hidden-start relative z-10 mt-4 flex items-center gap-x-1.5 text-lagune-3 transition-colors duration-200 group-hover:text-lagune-2">
+          Read the story
+          <span className="relative mt-0.5 w-1 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
+            <Image
+              src={chevronRight}
+              width={4}
+              height={8}
+              alt=""
+              className="pointer-events-none ml-auto h-2 w-1"
+              aria-hidden
+            />
+            <span className="absolute top-1/2 right-px h-px w-full -translate-y-1/2 bg-lagune-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+          </span>
+        </span>
         <div
           className={cn(
             "pointer-events-none absolute inset-0 rounded-xl",
@@ -163,33 +187,6 @@ function HeroCard({
               />
             ))}
         </div>
-
-        <Image
-          className="pointer-events-none relative h-10 w-auto max-w-45"
-          src={logo.url}
-          alt=""
-          width={logo.width || 180}
-          height={logo.height || 40}
-          priority
-        />
-        <h1 className="relative mt-auto text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl">
-          “{title}”
-        </h1>
-        <p className="relative mt-2 text-sm leading-snug font-[350] tracking-tight text-gray-8 md:text-base">{`${author} — ${authorPosition}`}</p>
-        <span className="hidden-start relative mt-4 flex items-center gap-x-1.5 text-lagune-3 transition-colors duration-200 group-hover:text-lagune-2">
-          {link.type === "story" ? "Read story" : "Visit site"}
-          <span className="relative mt-0.5 w-1 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
-            <Image
-              src={chevronRight}
-              width={4}
-              height={8}
-              alt=""
-              className="pointer-events-none ml-auto h-2 w-1"
-              aria-hidden
-            />
-            <span className="absolute top-1/2 right-px h-px w-full -translate-y-1/2 bg-lagune-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-          </span>
-        </span>
       </article>
     </li>
   )

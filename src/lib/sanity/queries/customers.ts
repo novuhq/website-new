@@ -4,7 +4,7 @@ import { groq } from "next-sanity"
 const COVER_WIDTH = 704
 const COVER_ASPECT_RATIO = 16 / 9
 
-const customersPageFields = `
+const customersCardsFields = `
   _id,
   name,
   slug,
@@ -13,16 +13,35 @@ const customersPageFields = `
     "width": logo.asset->metadata.dimensions.width,
     "height": logo.asset->metadata.dimensions.height
   },
+  "quoteText": quote_text,
+  "quoteAuthorName": quote_name,
+  "quoteAuthorPosition": quote_position,
+`
+
+const customersGridFields = `
+  _id,
+  name,
+  slug,
+  url,
+  "logo": {
+    "url": logo.asset->url + "?auto=format",
+    "width": logo.asset->metadata.dimensions.width,
+    "height": logo.asset->metadata.dimensions.height
+  },
   title,
-  author,
-  authorPosition,
-  cardType,
-  link,
+  "isFeatured": is_featured,
+  category[0]->{
+    _id,
+    name
+  },
+  "channelsList": channels_list,
 `
 
 const customerFields = `
   _id,
   name,
+  type,
+  url,
   slug,
   "pathname": "${ROUTE.customers}/" + slug.current,
   "logo": {
@@ -31,25 +50,26 @@ const customerFields = `
     "height": logo.asset->metadata.dimensions.height
   },
   title,
-  author,
-  authorPosition,
-  cardType,
-  link,
+  category[0]->{
+    _id,
+    name
+  },
+  "isFeatured": is_featured,
+  "channelsList": channels_list,
   "storyPhoto": storyPhoto.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
     (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
   )}&q=100&fit=crop&auto=format",
   about,
   industry,
-  channels,
-  "quote": quote {
-    title,
-    "authorLogo": {
-      "url": authorLogo.asset->url + "?auto=format",
-      "width": authorLogo.asset->metadata.dimensions.width,
-      "height": authorLogo.asset->metadata.dimensions.height
+  "quote": {
+    "text": quote_text,
+    "photo": {
+      "url": quote_photo.asset->url + "?auto=format",
+      "width": quote_photo.asset->metadata.dimensions.width,
+      "height": quote_photo.asset->metadata.dimensions.height
     },
-    authorName,
-    authorPosition
+    "authorName": quote_name,
+    "authorPosition": quote_position
   },
   challengesSolution,
   "body": body[] {
@@ -65,17 +85,15 @@ const customerFields = `
   related[]->{
     _id,
     name,
+    type,
+    url,
     slug,
     "logo": {
       "url": logo.asset->url + "?auto=format",
       "width": logo.asset->metadata.dimensions.width,
       "height": logo.asset->metadata.dimensions.height
     },
-    title,
-    author,
-    authorPosition,
-    cardType,
-    link
+    title
   },
   "seo": {
     "title": coalesce(seo.title, title, ""),
@@ -89,16 +107,11 @@ const fullCustomersPageFields = `
   _id,
   _type,
   "cards": [
-    bigCards[0].customer->{${customersPageFields}},
-    smallCards[0].customer->{${customersPageFields}},
-    smallCards[1].customer->{${customersPageFields}},
-    bigCards[1].customer->{${customersPageFields}}
+    cardsBig[0]->{${customersCardsFields}},
+    cardsSmall[0]->{${customersCardsFields}},
+    cardsSmall[1]->{${customersCardsFields}},
+    cardsBig[1]->{${customersCardsFields}}
   ],
-  gridCustomers[] {
-    customer->{
-      ${customersPageFields}
-    }
-  },
   tweets[] {
     text,
     "logo": {
@@ -118,8 +131,14 @@ export const customersPageQuery = groq`
   }
 `
 
+export const customersGridQuery = groq`
+*[_type == "customer"] {
+  ${customersGridFields}
+}
+`
+
 export const allCustomersQuery = groq`
-  *[_type == "customer" && link.type == "story"] | order(name asc) {
+  *[_type == "customer" && type == "story"] | order(name asc) {
     ${customerFields}
   }
 `
@@ -131,7 +150,7 @@ export const customerBySlugQuery = groq`
 `
 
 export const latestCustomersQuery = groq`
-  *[_type == "customer" && link.type == "story" && slug.current != $currentSlug] | order(_createdAt desc)[0...4] {
+  *[_type == "customer" && type == "story" && slug.current != $currentSlug] | order(_createdAt desc)[0...4] {
     _id,
     slug,
     title,

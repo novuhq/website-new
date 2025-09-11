@@ -1,141 +1,140 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
-import arrowRight from "@/svgs/icons/arrow-right.svg"
-import bgLg from "@/svgs/pages/customers/customers-grid/background-lg.svg"
-import bgMd from "@/svgs/pages/customers/customers-grid/background-md.svg"
-import bgMob from "@/svgs/pages/customers/customers-grid/background-mob.svg"
-import bg from "@/svgs/pages/customers/customers-grid/background.svg"
-import clsx from "clsx"
 
-import { TCustomerCard } from "@/types/customers"
+import { ICustomersGridData } from "@/types/customers"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
+import ChannelsList from "@/components/pages/customers/channels-list"
 
-const BACKGROUND_BREAKPOINTS = [
-  {
-    width: 360,
-    height: 607,
-    src: bgMob,
-    className: "md:hidden h-[607px] w-[360px] max-w-none",
-  },
-  {
-    width: 765,
-    height: 440,
-    src: bgMd,
-    className: "hidden md:flex lg:hidden max-w-none",
-  },
-  {
-    width: 953,
-    height: 456,
-    src: bgLg,
-    className: "hidden lg:flex xl:hidden",
-  },
-  {
-    width: 1513,
-    height: 485,
-    src: bg,
-    className: "hidden xl:flex max-w-none",
-  },
-]
-
-function CustomerCard({
-  link,
-  slug,
-  logo,
-  name,
-  customersLength,
-  index,
-}: TCustomerCard & { index: number; customersLength: number }) {
-  const visibleOnMobile = customersLength - 4
-  const isVisibleOnMobile = index < visibleOnMobile
-
-  const cardClassName = clsx("border-[#534B5D] border-r", {
-    "hidden md:block": !isVisibleOnMobile, // last 4 elements hidden on mobile
-    "border-b": isVisibleOnMobile && index < visibleOnMobile - 2, // mobile: last 2 elements in the last row
-    "md:border-b": index < customersLength - 4, // tablet+: last 4 elements без нижнего бордера
-    "border-r-0": isVisibleOnMobile && (index + 1) % 2 === 0, // mobile: last element in every row
-    "md:border-r-0": index === customersLength - 1,
-    "md:border-r": (index + 1) % 4 !== 0, // tablet+: last element in every row
-  })
-
-  return (
-    <li className={cardClassName}>
-      <article
-        key={index}
-        className="group relative flex h-35 flex-col items-center justify-center transition-all duration-200 md:h-40"
-      >
-        <Link
-          href={
-            link.type === "external"
-              ? link.url!
-              : `${ROUTE.customers}/${slug.current}`
-          }
-          className="absolute top-0 left-0 z-10 h-full w-full"
-        />
-        <Image
-          src={logo.url}
-          alt={name}
-          width={logo.width}
-          height={logo.height}
-          className="h-6 w-30 transition-transform duration-200 select-none group-hover:-translate-y-2 sm:h-8 sm:w-[140px] lg:h-10 lg:w-[190px]"
-          loading="lazy"
-        />
-        <span className="hidden-start absolute bottom-8 flex items-center gap-x-[7px] text-white opacity-0 transition-all duration-200 group-hover:opacity-100">
-          {link.type === "story" ? "Read story" : "Visit site"}
-          <Image
-            src={arrowRight}
-            width={12}
-            height={8}
-            alt=""
-            className="h-2 w-3"
-            loading="lazy"
-          />
-        </span>
-      </article>
-    </li>
-  )
+interface ICustomersGridProps {
+  isFeaturedExist: boolean
+  categories: string[]
+  customers: ICustomersGridData[]
 }
 
 export default function CustomersGrid({
+  isFeaturedExist,
+  categories,
   customers,
-}: {
-  customers: { customer: TCustomerCard }[]
-}) {
+}: ICustomersGridProps) {
+  const fullCategories = [
+    ...(isFeaturedExist ? ["Featured"] : []),
+    ...categories,
+  ]
+  const [activeCategory, setActiveCategory] = useState<string>("Featured")
+  const [shownCount, setShownCount] = useState<number>(6)
+  const [shownAmount, setShownAmount] = useState<number>(6)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+
+      if (width >= 1280) {
+        setShownCount(12)
+        setShownAmount(12)
+      } else if (width >= 1024) {
+        setShownCount(9)
+        setShownAmount(9)
+      } else if (width >= 768) {
+        setShownCount(10)
+        setShownAmount(10)
+      } else {
+        setShownCount(6)
+        setShownAmount(6)
+      }
+    }
+
+    handleResize()
+
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const allFilteredCustomers = customers.filter((item) => {
+    if (activeCategory === "Featured") {
+      return item.isFeatured
+    }
+    return item.category?.name === activeCategory
+  })
+
+  const filteredCustomers = allFilteredCustomers.slice(0, shownAmount)
+
   return (
-    <section className="trusted relative mt-[104px] [overflow-x:clip] md:mt-28 lg:mt-40">
-      <div className="relative mx-auto flex w-full flex-col items-center px-5 text-center md:max-w-[704px] md:px-0 lg:max-w-[960px] 2xl:max-w-[1216px]">
-        <h2 className="gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
-          Trusted by companies worldwide
-        </h2>
-        <ul className="relative mt-14 grid w-full flex-grow list-none grid-cols-2 md:grid-cols-4">
-          {BACKGROUND_BREAKPOINTS.map(
-            ({ width, height, src, className }, index) => (
-              <Image
-                key={index}
-                className={cn(
-                  "pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 select-none",
-                  className
-                )}
-                src={src}
-                alt=""
-                width={width}
-                height={height}
-                quality={90}
-                loading="lazy"
-                aria-hidden
-              />
-            )
-          )}
-          {customers.map(({ customer }, index: number) => (
-            <CustomerCard
-              {...customer}
-              index={index}
+    <section className="trusted relative mt-26 md:mt-28 lg:mt-40">
+      <h2 className="text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
+        Trusted by companies worldwide
+      </h2>
+      <ul className="scrollbar-hidden mt-7 flex items-center overflow-auto px-5 pb-0.5 md:justify-center">
+        {fullCategories.map((category, index) => (
+          <li key={index}>
+            <button
+              className={cn(
+                "h-7 rounded-full border px-3 text-sm leading-none tracking-tighter whitespace-nowrap transition-colors duration-300 hover:text-foreground",
+                activeCategory === category
+                  ? "border-[#2E3038] text-foreground"
+                  : "border-transparent text-muted-foreground"
+              )}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </button>
+          </li>
+        ))}
+      </ul>
+      <ul className="mx-auto mt-10 grid max-w-186 grid-cols-1 gap-3 px-5 md:grid-cols-2 lg:max-w-250 lg:grid-cols-3 xl:mt-14 xl:max-w-314 xl:grid-cols-4">
+        {filteredCustomers.map(
+          ({ name, logo, channelsList, title, slug, url }, index) => (
+            <article
+              className="relative flex min-h-45 items-center justify-center overflow-hidden rounded-xl border border-[#333347]/50 bg-[#0F0F15]/50 opacity-80 md:min-h-55 lg:min-h-65"
               key={index}
-              customersLength={customers.length}
-            />
-          ))}
-        </ul>
-      </div>
+            >
+              <h2 className="sr-only">{name}</h2>
+              <Link
+                href={url ? url : `${ROUTE.customers}/${slug?.current}`}
+                className="peer absolute inset-0 z-20"
+              >
+                <span className="sr-only">
+                  {url
+                    ? "Go to the customers website"
+                    : "Read the customers story"}
+                </span>
+              </Link>
+              <Image
+                className="relative z-10 h-8 w-auto"
+                src={logo.url}
+                alt=""
+                width={logo.width}
+                height={logo.height}
+                loading="lazy"
+              />
+              <p className="absolute top-3.5 z-10 truncate px-8 text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
+                <ChannelsList list={channelsList} />
+              </p>
+              <p className="absolute bottom-3.5 z-10 line-clamp-2 px-8 text-center text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
+                {title}
+              </p>
+              <div className="absolute top-0 right-0 h-59 w-80 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#344387]/50 opacity-0 blur-3xl transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100" />
+            </article>
+          )
+        )}
+      </ul>
+      {allFilteredCustomers.length > shownAmount && (
+        <Button
+          className={cn(
+            "mx-auto mt-8 flex !h-10 w-max !px-8 !text-xs xl:mt-10"
+          )}
+          variant="outline"
+          size="lg"
+          onClick={() => setShownAmount((prev) => prev + shownCount)}
+        >
+          Show more
+        </Button>
+      )}
     </section>
   )
 }
