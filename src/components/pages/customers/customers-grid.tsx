@@ -25,7 +25,9 @@ export default function CustomersGrid({
     ...(isFeaturedExist ? ["Featured"] : []),
     ...categories,
   ]
-  const [activeCategory, setActiveCategory] = useState<string>("Featured")
+  const [activeCategory, setActiveCategory] = useState<string>(
+    isFeaturedExist ? "Featured" : categories[0]
+  )
   const [shownCount, setShownCount] = useState<number>(6)
   const [shownAmount, setShownAmount] = useState<number>(6)
 
