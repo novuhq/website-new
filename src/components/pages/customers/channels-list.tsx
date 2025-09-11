@@ -9,7 +9,7 @@ const mapChannelToFullName: Record<string, string> = {
 function ChannelsList({ list }: { list: string[] }) {
   return (
     <>
-      {list.map((channel, idx) => (
+      {list?.map((channel, idx) => (
         <Fragment key={idx}>
           {mapChannelToFullName[channel] || channel}
           {idx < list.length - 1 && ", "}
