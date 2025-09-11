@@ -32,6 +32,10 @@ export default function CustomersGrid({
   const [shownAmount, setShownAmount] = useState<number>(6)
 
   useEffect(() => {
+    setShownAmount(shownCount)
+  }, [activeCategory, shownCount])
+
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth
 
@@ -81,7 +85,10 @@ export default function CustomersGrid({
                   ? "border-[#2E3038] text-foreground"
                   : "border-transparent text-muted-foreground"
               )}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => {
+                setActiveCategory(category)
+                setShownAmount(shownCount)
+              }}
             >
               {category}
             </button>
@@ -90,10 +97,10 @@ export default function CustomersGrid({
       </ul>
       <ul className="mx-auto mt-10 grid max-w-186 grid-cols-1 gap-3 px-5 md:grid-cols-2 lg:max-w-250 lg:grid-cols-3 xl:mt-14 xl:max-w-314 xl:grid-cols-4">
         {filteredCustomers.map(
-          ({ name, logo, channelsList, title, slug, url }, index) => (
+          ({ _id, name, logo, channelsList, title, slug, url }, index) => (
             <article
               className="relative flex min-h-45 items-center justify-center overflow-hidden rounded-xl border border-[#333347]/50 bg-[#0F0F15]/50 opacity-80 md:min-h-55 lg:min-h-65"
-              key={index}
+              key={_id}
             >
               <h2 className="sr-only">{name}</h2>
               <Link
