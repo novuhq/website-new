@@ -113,7 +113,7 @@ function HeroCard({
               {quoteText}
             </span>
           </p>
-          <cite className="relative mt-2 block max-w-full truncate text-sm leading-snug font-light tracking-tight text-gray-8 md:text-base">{`${quoteAuthorName} — ${quoteAuthorPosition}`}</cite>
+          <cite className="relative mt-2 block max-w-full truncate text-sm leading-snug font-light tracking-tight text-gray-8 not-italic md:text-base">{`${quoteAuthorName} — ${quoteAuthorPosition}`}</cite>
         </blockquote>
         <span className="hidden-start relative z-10 mt-4 flex items-center gap-x-1.5 text-lagune-3 transition-colors duration-200 group-hover:text-lagune-2">
           Read the story

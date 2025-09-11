@@ -2,6 +2,38 @@ import { ICustomerTweetData } from "@/types/customers"
 import { Link } from "@/components/ui/link"
 import Slider from "@/components/ui/slider"
 
+function TweetContent({ name, text, logo, tag }: ICustomerTweetData) {
+  return (
+    <>
+      <p
+        className="[&>span]:text-primary-1 mb-5 line-clamp-5 text-[15px] leading-snug font-[350] xl:text-base"
+        dangerouslySetInnerHTML={{ __html: text }}
+      />
+      <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
+        {logo && logo.url && (
+          <img
+            className="h-auto w-9 rounded-full"
+            src={logo.url}
+            alt={name}
+            width={logo.width || 36}
+            height={logo.height || 36}
+            loading="lazy"
+          />
+        )}
+
+        <div>
+          <span className="block text-base leading-none text-gray-9 md:text-[15px]">
+            {name}
+          </span>
+          <span className="mt-[6px] block text-sm leading-none text-gray-8 md:text-sm">
+            {tag}
+          </span>
+        </div>
+      </div>
+    </>
+  )
+}
+
 const ReviewCard = ({
   name,
   text,
@@ -11,37 +43,31 @@ const ReviewCard = ({
 }: ICustomerTweetData) => {
   return (
     <div className="relative h-full w-full md:max-w-[384px]">
-      <Link
-        className="relative z-10 flex h-full flex-col items-start rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start transition-colors duration-300 hover:bg-[#15141D] md:px-6 md:py-5"
-        href={tweetLink}
-        variant="white"
-      >
-        <p
-          className="[&>span]:text-primary-1 mb-5 line-clamp-5 text-[15px] leading-snug font-[350] xl:text-base"
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
-        <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
-          {logo && logo.url && (
-            <img
-              className="h-auto w-9 rounded-full"
-              src={logo.url}
-              alt={name}
-              width={logo.width || 36}
-              height={logo.height || 36}
-              loading="lazy"
-            />
-          )}
-
-          <div>
-            <span className="block text-base leading-none text-gray-9 md:text-[15px]">
-              {name}
-            </span>
-            <span className="mt-[6px] block text-sm leading-none text-gray-8 md:text-sm">
-              {tag}
-            </span>
-          </div>
+      {tweetLink ? (
+        <Link
+          className="relative z-10 flex h-full flex-col items-start rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start duration-300 hover:bg-[#15141D] md:px-6 md:py-5"
+          href={tweetLink}
+          variant="white"
+        >
+          <TweetContent
+            name={name}
+            text={text}
+            logo={logo}
+            tag={tag}
+            tweetLink={tweetLink}
+          />
+        </Link>
+      ) : (
+        <div className="relative z-10 flex h-full flex-col items-start gap-x-1.5 rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start text-white transition-colors duration-300 hover:bg-[#15141D] md:px-6 md:py-5 [&_svg]:shrink-0">
+          <TweetContent
+            name={name}
+            text={text}
+            logo={logo}
+            tag={tag}
+            tweetLink={tweetLink}
+          />
         </div>
-      </Link>
+      )}
     </div>
   )
 }

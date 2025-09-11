@@ -141,7 +141,6 @@ export default defineType({
         ],
       },
       group: GROUP.content.name,
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "storyPhoto",
