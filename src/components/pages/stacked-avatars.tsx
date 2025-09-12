@@ -56,7 +56,7 @@ function StackedAvatars({
           className={cn(
             "relative shrink-0 rounded-full bg-muted",
             {
-              "-ml-2.5": index > 0 && size === "xs",
+              "-ml-2.5": index > 0 && (size === "xs" || size === "s"),
               "-ml-3": index > 0 && size === "sm",
               "-ml-3 md:-ml-3.5": index > 0 && ["md", "lg"].includes(size),
             },
