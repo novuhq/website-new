@@ -148,7 +148,7 @@ export default defineType({
       title: "Illustration",
       description: "Main illustrations for the story (optional)",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
     }),
     defineField({
       name: "about",
@@ -157,7 +157,7 @@ export default defineType({
       description: "Short description of the customer",
       rows: 4,
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
@@ -172,7 +172,7 @@ export default defineType({
       type: "string",
       title: "Industry",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
@@ -189,7 +189,7 @@ export default defineType({
       rows: 3,
       group: GROUP.content.name,
       fieldset: "quote",
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
     }),
     defineField({
       name: "quote_photo",
@@ -197,7 +197,7 @@ export default defineType({
       title: "Author Photo",
       group: GROUP.content.name,
       fieldset: "quote",
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
     }),
     defineField({
       name: "quote_name",
@@ -205,7 +205,7 @@ export default defineType({
       title: "Author Name",
       group: GROUP.content.name,
       fieldset: "quote",
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
@@ -221,11 +221,10 @@ export default defineType({
       title: "Author Position",
       group: GROUP.content.name,
       fieldset: "quote",
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule: StringRule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
-          console.log(parent)
           if (parent?.type === "story" && !value) {
             return "Industry is required when link type is story"
           }
@@ -237,7 +236,7 @@ export default defineType({
       type: "object",
       title: "Challenges & Solution",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       options: { collapsible: true, collapsed: false },
       validation: (rule) =>
         rule.custom(
@@ -280,7 +279,7 @@ export default defineType({
       type: "content",
       title: "Body",
       group: GROUP.content.name,
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
@@ -294,7 +293,7 @@ export default defineType({
       name: "related",
       type: "array",
       title: "Related Stories",
-      hidden: ({ parent }) => parent?.type !== "story",
+      hidden: ({ document }) => document?.type !== "story",
       validation: (rule) =>
         rule.custom((value) => {
           if (value && value.length > 0 && value.length < 4) {
