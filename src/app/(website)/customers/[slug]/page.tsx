@@ -45,13 +45,9 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const customers = await getAllCustomers()
-
-  return customers.map(
-    ({ slug }) =>
-      slug && {
-        slug: slug?.current,
-      }
-  )
+  return customers
+    .filter((customer) => customer.slug?.current)
+    .map((customer) => ({ slug: customer.slug!.current as string }))
 }
 
 export default async function CustomerStoryPage({
