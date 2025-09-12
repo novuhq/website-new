@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
 import blueCardMob from "@/images/pages/customers/hero/blue-card-mob.png"
@@ -71,7 +74,14 @@ function HeroCard({
   index,
 }: TCustomerCardProps) {
   const config = CARDS_CONFIG[index]
-  const quoteLengthLg = index === 0 || index === 3 ? 142 : 64
+  const [isClamped, setIsClamped] = useState(false)
+  const ref = useRef<HTMLParagraphElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      setIsClamped(ref.current.scrollHeight > ref.current.clientHeight + 1)
+    }
+  }, [])
 
   return (
     <li
@@ -98,14 +108,16 @@ function HeroCard({
           priority
         />
         <blockquote className="relative z-10 mt-auto max-w-full">
-          <p className="relative text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl">
-            <span className="hidden lg:inline">
-              “{quoteText.slice(0, quoteLengthLg)}
-              {quoteText.length > quoteLengthLg && "..."}“
-            </span>
-            <span className="line-clamp-4 inline before:content-[open-quote] after:content-[close-quote] md:line-clamp-3 lg:hidden">
-              {quoteText}
-            </span>
+          <p
+            className={cn(
+              "relative line-clamp-4 text-xl leading-snug font-normal tracking-tighter md:line-clamp-3 md:max-w-[530px] md:text-2xl",
+              isClamped &&
+                "after:absolute after:right-0 after:bottom-0 after:content-['”']"
+            )}
+            ref={ref}
+          >
+            ”{quoteText}
+            {!isClamped && "”"}
           </p>
           <cite className="relative mt-2 block max-w-full truncate text-sm leading-snug font-light tracking-tight text-gray-8 not-italic md:text-base">{`${quoteAuthorName} — ${quoteAuthorPosition}`}</cite>
         </blockquote>
