@@ -81,7 +81,7 @@ const customerFields = `
       ...,
       "authors": authors[]{
         ...,
-        "photo": photo.asset->url + "?w=28&h=28&fit=crop&auto=format"
+        "photo": coalesce(photo.asset->url + "?w=28&h=28&fit=crop&auto=format", "")
       }
     }
   },
