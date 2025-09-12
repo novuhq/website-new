@@ -210,7 +210,7 @@ export default defineType({
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
           if (parent?.type === "story" && !value) {
-            return "Industry is required when link type is story"
+            return "Author name is required when link type is story"
           }
           return true
         }),
@@ -226,7 +226,7 @@ export default defineType({
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string }
           if (parent?.type === "story" && !value) {
-            return "Industry is required when link type is story"
+            return "Author position is required when link type is story"
           }
           return true
         }),
