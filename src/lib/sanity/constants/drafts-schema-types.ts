@@ -7,6 +7,8 @@ import { ROUTE } from "@/constants/routes"
 // eslint-disable-next-line no-shadow
 export enum DraftsSchemaTypes {
   CHANGELOG_POST = "changelogPost",
+  CUSTOMERS = "customers",
+  CUSTOMER = "customer",
 }
 
 /**
@@ -14,4 +16,6 @@ export enum DraftsSchemaTypes {
  */
 export const PREVIEW_ROUTES: Record<DraftsSchemaTypes, URL | Route<string>> = {
   [DraftsSchemaTypes.CHANGELOG_POST]: ROUTE.changelog,
+  [DraftsSchemaTypes.CUSTOMERS]: ROUTE.customers,
+  [DraftsSchemaTypes.CUSTOMER]: ROUTE.customers,
 }

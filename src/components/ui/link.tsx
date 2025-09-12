@@ -11,6 +11,7 @@ const linkVariants = cva(
   {
     variants: {
       variant: {
+        white: "text-white",
         default: "text-primary hover:text-primary-muted",
         muted: "text-gray-9 hover:text-foreground",
         "muted-dark": "text-gray-6 hover:text-foreground",
@@ -71,6 +72,8 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps<string>>(
         className={cn(linkVariants({ variant, size, animation, className }))}
         href={href.toString()}
         ref={ref}
+        target="_blank"
+        rel="noopener noreferrer"
         {...props}
       />
     )

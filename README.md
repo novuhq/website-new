@@ -13,15 +13,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 1. Clone this repository or hit "Use this template" button
 
-    ```bash
-    git clone git@github.com:novuhq/website-new.git
-    ```
+   ```bash
+   git clone git@github.com:novuhq/website-new.git
+   ```
 
 2. Install dependencies
 
-    ```bash
-    pnpm install
-    ```
+   ```bash
+   pnpm install
+   ```
 
 ## Usage
 
