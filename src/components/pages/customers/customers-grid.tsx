@@ -114,7 +114,7 @@ export default function CustomersGrid({
                 </span>
               </Link>
               <Image
-                className="relative z-10 h-8 w-auto max-w-4/5"
+                className="relative z-10 h-10 w-auto max-w-4/5"
                 src={logo.url}
                 alt=""
                 width={logo.width}
