@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
 import Content from "@/components/pages/content"
-import Date from "@/components/pages/date"
+import ChangelogDate from "@/components/pages/date"
 import SocialShare from "@/components/pages/social-share"
 
 interface ChangelogPostPageProps {
@@ -167,7 +167,7 @@ export default async function ChangelogPostPage({
                   <dd className="gap flex flex-col gap-3">
                     <div className="-mt-px flex items-center gap-2 lg:-mt-px">
                       <Calendar className="text-muted-foreground" size={14} />
-                      <Date
+                      <ChangelogDate
                         publishedAt={publishedAt}
                         variant="muted"
                         size="sm"
