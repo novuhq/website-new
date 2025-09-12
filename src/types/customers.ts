@@ -75,11 +75,6 @@ export interface ICustomerTweetData {
   tweetLink: string
 }
 
-export type TCustomerCard = Pick<
-  ICustomerData,
-  "_id" | "name" | "logo" | "type" | "url" | "slug" | "title"
->
-
 export interface ICustomersPageData {
   _id: string
   _type: "customers"
