@@ -166,6 +166,11 @@
       rgba(51, 51, 71, 0.6) 15.63%,
       rgba(43, 43, 59, 0.4) 84.63%
     );
+  --customers-category-gradient: radial-gradient(
+    265.68% 330.77% at 50% -84.62%,
+    #2e3038 21.52%,
+    #81869e 74.56%
+  );
 
   @keyframes accordion-down {
     from {

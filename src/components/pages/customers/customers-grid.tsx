@@ -80,10 +80,10 @@ export default function CustomersGrid({
           <li key={index}>
             <button
               className={cn(
-                "h-7 rounded-full border px-3 text-sm leading-none tracking-tighter whitespace-nowrap transition-colors duration-300 hover:text-foreground",
+                "relative h-7 px-3 text-sm leading-none tracking-tighter whitespace-nowrap transition-colors duration-300 hover:text-foreground",
                 activeCategory === category
-                  ? "border-[#2E3038] text-foreground"
-                  : "border-transparent text-muted-foreground"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               )}
               onClick={() => {
                 setActiveCategory(category)
@@ -91,6 +91,12 @@ export default function CustomersGrid({
               }}
             >
               {category}
+              <span
+                className={cn(
+                  "pointer-events-none absolute inset-0 rounded-full border-gradient bg-[image:var(--admonition-gradient)] opacity-0 transition-opacity duration-300",
+                  activeCategory === category && "opacity-100"
+                )}
+              />
             </button>
           </li>
         ))}
