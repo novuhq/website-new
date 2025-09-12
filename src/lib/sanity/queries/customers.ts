@@ -56,9 +56,12 @@ const customerFields = `
   },
   "isFeatured": is_featured,
   "channelsList": channels_list,
-  "storyPhoto": storyPhoto.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
-    (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
-  )}&q=100&fit=crop&auto=format",
+  "storyPhoto": coalesce(
+    storyPhoto.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
+      (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
+    )}&q=100&fit=crop&auto=format",
+    ""
+  ),
   about,
   industry,
   "quote": {
