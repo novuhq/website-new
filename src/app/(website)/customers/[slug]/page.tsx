@@ -124,26 +124,21 @@ export default async function CustomerStoryPage({
             <div className={cn("col-start-1", !cover && "lg:row-start-1")}>
               {quote && quote.text && <Quote quote={quote} />}
               {challengesSolution && (
-                <div className="col-start-1 mt-14 flex flex-col gap-8 md:mt-12 md:flex-row md:gap-4">
-                  <ColoredList
-                    items={[
-                      ...(challengesSolution?.challenges || []).map(
-                        (item: string) => ({
-                          color: ColorType.RED,
-                          text: item,
-                        })
-                      ),
-                      ...(challengesSolution?.solution || []).map(
-                        (item: string) => ({
-                          color: ColorType.LAGUNE,
-                          text: item,
-                        })
-                      ),
-                    ]}
-                    redGroupTitle="Key Challenges"
-                    laguneGroupTitle="Novu Solution"
-                  />
-                </div>
+                <ColoredList
+                  className="mt-14 md:mt-12"
+                  items={[
+                    {
+                      title: "Key Challenges",
+                      color: ColorType.RED,
+                      items: challengesSolution?.challenges || [],
+                    },
+                    {
+                      title: "Novu Solution",
+                      color: ColorType.LAGUNE,
+                      items: challengesSolution?.solution || [],
+                    },
+                  ]}
+                />
               )}
               {bodyContent && (
                 <Content
