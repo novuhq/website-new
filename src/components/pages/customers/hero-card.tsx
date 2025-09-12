@@ -83,12 +83,12 @@ function HeroCard({
       )}
     >
       <article className="relative flex h-full w-full flex-grow flex-col items-start rounded-xl p-6 md:p-8 md:pb-7">
-        {/* <Link
+        <Link
           href={`${ROUTE.customers}/${slug.current}`}
           className="group absolute top-0 left-0 z-20 h-full w-full rounded-[inherit]"
         >
           <span className="sr-only">Read the story of ${name}</span>
-        </Link> */}
+        </Link>
         <Image
           className="pointer-events-none relative z-10 h-10 w-auto"
           src={logo.url}
