@@ -103,12 +103,7 @@ function HeroCard({
               “{quoteText.slice(0, quoteLengthLg)}
               {quoteText.length > quoteLengthLg && "..."}“
             </span>
-            <span
-              className={cn(
-                "inline lg:hidden",
-                "line-clamp-4 before:content-[open-quote] after:content-[close-quote] md:line-clamp-3"
-              )}
-            >
+            <span className="line-clamp-4 inline before:content-[open-quote] after:content-[close-quote] md:line-clamp-3 lg:hidden">
               {quoteText}
             </span>
           </p>
