@@ -83,6 +83,10 @@ function HeroCard({
     }
   }, [])
 
+  if (!slug?.current) {
+    return null
+  }
+
   return (
     <li
       className={cn(
