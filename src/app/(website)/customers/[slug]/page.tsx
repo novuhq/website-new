@@ -90,7 +90,7 @@ export default async function CustomerStoryPage({
     <main>
       <section className="px-5 pt-9.5 md:px-8 md:pt-11.5 lg:px-0 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-232 xl:translate-x-30">
-          <Breadcrumbs />
+          <Breadcrumbs firstLabel="Customers" />
           <h1 className="mt-4 text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px] xl:max-w-176 xl:text-5xl">
             {title}
           </h1>

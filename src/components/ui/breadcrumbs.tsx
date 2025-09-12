@@ -12,11 +12,7 @@ interface IBreadcrumbItem {
   isLast: boolean
 }
 
-export default function Breadcrumbs({
-  firstPathLabel,
-}: {
-  firstPathLabel?: string
-}) {
+export default function Breadcrumbs({ firstLabel }: { firstLabel?: string }) {
   const pathname = usePathname()
 
   const generateBreadcrumbs = (): IBreadcrumbItem[] => {
@@ -53,31 +49,36 @@ export default function Breadcrumbs({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-x-2.5">
-      {breadcrumbs.map((item, index) => (
-        <React.Fragment key={item.href}>
-          {index > 0 && (
-            <span className="text-sm leading-none font-medium tracking-tight text-gray-7">
-              /
-            </span>
-          )}
-          {item.isLast ? (
-            <p className="inline text-sm leading-none tracking-tighter">
-              {item.label}
-            </p>
-          ) : (
-            <Link
-              className="text-sm leading-none tracking-tighter"
-              href={item.href}
-              variant="muted-dark"
-              size="sm"
-            >
-              <DynamicIcon icon="chevron-left" />
-              {index === 0 && firstPathLabel ? firstPathLabel : item.label}
-            </Link>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center gap-x-2.5">
+        {breadcrumbs.map((item, index) => (
+          <li key={item.href} className="flex items-center gap-x-2.5">
+            {index > 0 && (
+              <span className="text-sm leading-none font-medium tracking-tight text-gray-7">
+                /
+              </span>
+            )}
+            {item.isLast ? (
+              <span
+                aria-current="page"
+                className="text-sm leading-none tracking-tighter"
+              >
+                {item.label}
+              </span>
+            ) : (
+              <Link
+                className="text-sm leading-none tracking-tighter"
+                href={item.href}
+                variant="muted-dark"
+                size="sm"
+              >
+                {index === 0 && <DynamicIcon icon="chevron-left" />}
+                {index === 0 ? firstLabel : item.label}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
   )
 }
