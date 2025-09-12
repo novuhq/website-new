@@ -48,13 +48,14 @@ export async function getAllCustomers(
 export async function getLatestCustomers(
   currentSlug: string,
   preview = false
-): Promise<ICustomerData[]> {
-  const customers = await sanityFetch<ICustomerData[]>({
+): Promise<Array<Pick<ICustomerData, "_id" | "slug" | "title">>> {
+  const customers = await sanityFetch<
+    Array<Pick<ICustomerData, "_id" | "slug" | "title">>
+  >({
     query: latestCustomersQuery,
     qParams: { currentSlug },
     preview,
     tags: REVALIDATE_CUSTOMERS_TAG,
   })
-
   return customers || []
 }
