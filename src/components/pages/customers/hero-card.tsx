@@ -71,6 +71,7 @@ function HeroCard({
   index,
 }: TCustomerCardProps) {
   const config = CARDS_CONFIG[index]
+  const quoteLengthLg = index === 0 || index === 3 ? 142 : 64
 
   return (
     <li
@@ -82,12 +83,12 @@ function HeroCard({
       )}
     >
       <article className="relative flex h-full w-full flex-grow flex-col items-start rounded-xl p-6 md:p-8 md:pb-7">
-        <Link
+        {/* <Link
           href={`${ROUTE.customers}/${slug.current}`}
-          className="group absolute top-0 left-0 z-20 h-full w-full"
+          className="group absolute top-0 left-0 z-20 h-full w-full rounded-[inherit]"
         >
           <span className="sr-only">Read the story of ${name}</span>
-        </Link>
+        </Link> */}
         <Image
           className="pointer-events-none relative z-10 h-10 w-auto"
           src={logo.url}
@@ -97,17 +98,15 @@ function HeroCard({
           priority
         />
         <blockquote className="relative z-10 mt-auto max-w-full">
-          <p
-            className={cn(
-              "relative text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl",
-              "before:absolute before:top-0 before:-left-3 before:content-[open-quote]",
-              "after:absolute after:-right-2 after:bottom-0 after:content-[close-quote]"
-            )}
-          >
+          <p className="relative text-xl leading-snug font-normal tracking-tighter md:max-w-[530px] md:text-2xl">
+            <span className="hidden lg:inline">
+              “{quoteText.slice(0, quoteLengthLg)}
+              {quoteText.length > quoteLengthLg && "..."}“
+            </span>
             <span
               className={cn(
-                "md:line-clamp-3",
-                index === 0 || index === 3 ? "line-clamp-4" : "line-clamp-3"
+                "inline lg:hidden",
+                "line-clamp-4 before:content-[open-quote] after:content-[close-quote] md:line-clamp-3"
               )}
             >
               {quoteText}

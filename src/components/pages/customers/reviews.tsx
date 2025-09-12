@@ -42,7 +42,7 @@ const ReviewCard = ({
   tag,
 }: ICustomerTweetData) => {
   return (
-    <div className="relative h-full w-full md:max-w-[384px]">
+    <div className="relative h-full w-full py-1 md:max-w-[384px]">
       {tweetLink ? (
         <Link
           className="relative z-10 flex h-full flex-col items-start rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start duration-300 hover:bg-[#15141D] md:px-6 md:py-5"

@@ -75,7 +75,7 @@ export default function CustomersGrid({
       <h2 className="text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[40px] 2xl:text-[44px]">
         Trusted by companies worldwide
       </h2>
-      <ul className="scrollbar-hidden mt-7 flex items-center overflow-auto px-5 pb-0.5 md:justify-center">
+      <ul className="scrollbar-hidden mt-7 flex items-center overflow-auto px-5 py-1 md:justify-center">
         {fullCategories.map((category, index) => (
           <li key={index}>
             <button
@@ -114,7 +114,7 @@ export default function CustomersGrid({
                 </span>
               </Link>
               <Image
-                className="relative z-10 h-8 w-auto"
+                className="relative z-10 h-8 w-auto max-w-4/5"
                 src={logo.url}
                 alt=""
                 width={logo.width}
