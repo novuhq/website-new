@@ -90,7 +90,7 @@ function getComponents(
         }
 
         return (
-          <ZoomIllustration src={imageUrl}>
+          <ZoomIllustration src={imageUrl} originalAsset={asset}>
             <Picture
               className={allowMediaBreakout ? "lg:-mx-16" : ""}
               src={imageUrl}

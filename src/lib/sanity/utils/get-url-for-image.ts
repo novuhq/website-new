@@ -18,6 +18,7 @@ export const getProcessedImageUrl = (
     isSVG?: boolean
     fit?: "crop" | "clip" | "fill" | "fillmax" | "max" | "scale" | "min"
     noUpscale?: boolean
+    original?: boolean
   } = {}
 ) => {
   if (!image) {
@@ -31,7 +32,12 @@ export const getProcessedImageUrl = (
     isSVG = false,
     fit = "crop",
     noUpscale = false,
+    original = false,
   } = options
+
+  if (original) {
+    return imageBuilder?.image(image).quality(100).url()
+  }
 
   if (isSVG) {
     return getUrlForImage(image)?.url()
