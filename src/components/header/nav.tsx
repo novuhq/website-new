@@ -101,7 +101,7 @@ function Nav({ className, items }: IHeaderNavProps) {
       ref={navRef}
     >
       <LazyMotion features={domAnimation}>
-        <ul className="-ml-5.5 flex items-center xl:ml-44">
+        <ul className="-ml-5.5 flex items-center xl:ml-[15%]">
           {items.map(({ title, content, href }, index) => {
             const isActive = index === activeIndex
             const hasDropdown = !href && content && content.length > 0
@@ -117,7 +117,7 @@ function Nav({ className, items }: IHeaderNavProps) {
               >
                 {href ? (
                   <Link
-                    className="relative z-10"
+                    className="relative z-10 lg:!px-3.5"
                     href={href}
                     size="md"
                     variant="muted"
