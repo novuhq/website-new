@@ -31,6 +31,7 @@ export interface ICustomersGridData {
     name: string
   }
   channelsList: string[]
+  about?: string
 }
 
 export interface ICustomerData {

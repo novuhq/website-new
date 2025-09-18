@@ -35,6 +35,7 @@ const customersGridFields = `
     name
   },
   "channelsList": channels_list,
+  about,
 `
 
 const customerFields = `

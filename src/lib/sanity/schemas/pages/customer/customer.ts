@@ -97,7 +97,7 @@ export default defineType({
       type: "string",
       title: "Title",
       description:
-        "Will be used as title for story and description in card on /customers page",
+        "Main title for stories OR description text for external customer cards",
       group: GROUP.content.name,
       validation: (rule: StringRule) =>
         rule.required().error("You have to fill in this field."),
@@ -154,7 +154,7 @@ export default defineType({
       name: "about",
       type: "text",
       title: "About",
-      description: "Short description of the customer",
+      description: "Short description for stories (both card and story page)",
       rows: 4,
       group: GROUP.content.name,
       hidden: ({ document }) => document?.type !== "story",
