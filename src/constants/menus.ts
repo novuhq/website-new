@@ -71,6 +71,10 @@ export const MENUS = {
       ],
     },
     {
+      title: "Customers",
+      href: ROUTE.customers,
+    },
+    {
       title: "Pricing",
       href: ROUTE.pricing,
     },

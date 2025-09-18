@@ -93,7 +93,7 @@ function Blockquote({
           isThemeQuote && !centered && "md:pl-8"
         )}
       >
-        <p className="text-lg leading-snug font-medium tracking-tighter text-pretty md:text-2xl md:leading-normal">
+        <p className="text-lg leading-snug font-medium tracking-tight text-pretty md:text-[28px] md:leading-normal">
           {quote}
         </p>
       </blockquote>
@@ -139,7 +139,7 @@ function Blockquote({
           )}
           {role && (
             <>
-              <span className="-ml-0.5 inline leading-tight tracking-[0.04em] text-gray-7 md:line-clamp-1">
+              <span className="-ml-0.5 inline text-sm leading-tight tracking-[0.04em] text-gray-7 md:line-clamp-1">
                 {names?.length > 0 && <span className="mr-2">—</span>}
                 {role}
               </span>
