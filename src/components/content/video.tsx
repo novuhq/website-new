@@ -136,6 +136,7 @@ function Video({
           loop={loop}
           poster={poster}
           autoPlay={autoplay}
+          suppressHydrationWarning
         />
         {alt && <figcaption className="sr-only">{alt}</figcaption>}
         {controls && (
