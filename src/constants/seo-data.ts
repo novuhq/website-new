@@ -18,4 +18,9 @@ export const SEO_DATA = {
     description: `Stay up-to-date with ${config.projectName}`,
     pathname: ROUTE.changelog as string,
   },
+  customers: {
+    title: `Customers | ${config.projectName}`,
+    description: `Discover how engineering teams use ${config.projectName} to ship faster and simplify their communication workflows.`,
+    pathname: ROUTE.customers as string,
+  },
 }

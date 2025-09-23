@@ -85,7 +85,7 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
         </NextLink>
         <Nav className="hidden grow lg:flex" items={navigationItems} />
         <div className="ml-auto hidden items-center justify-end gap-x-5 lg:flex">
-          <GithubStars stars={githubStars} />
+          <GithubStars className="hidden xl:flex" stars={githubStars} />
           <Button variant="outline" asChild>
             <NextLink href={ROUTE.dashboardV2SignIn}>Login</NextLink>
           </Button>

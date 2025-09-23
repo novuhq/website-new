@@ -9,13 +9,13 @@ import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { Button } from "@/components/ui/button"
-import { Link } from "@/components/ui/link"
 import Authors from "@/components/pages/changelog/authors"
 import Categories from "@/components/pages/changelog/categories"
-import SocialShare from "@/components/pages/changelog/social-share"
 import Content from "@/components/pages/content"
-import Date from "@/components/pages/date"
+import ChangelogDate from "@/components/pages/date"
+import SocialShare from "@/components/pages/social-share"
 
 interface ChangelogPostPageProps {
   params: Promise<{
@@ -128,22 +128,8 @@ export default async function ChangelogPostPage({
   return (
     <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
-        <article className="relative mx-auto max-w-248 xl:left-36">
-          <div>
-            <Link
-              className="group -ml-px translate-y-px gap-x-1 leading-none tracking-tighter transition-colors duration-300"
-              href={ROUTE.changelog}
-              variant="muted-dark"
-              size="sm"
-            >
-              <ChevronLeft />
-              Back to all updates
-            </Link>
-            <span className="mx-2.5 text-sm leading-none font-medium tracking-tight text-gray-7 md:mx-2.75">
-              /
-            </span>
-            <p className="-mt-px text-sm tracking-tighter md:inline">{title}</p>
-          </div>
+        <article className="mx-auto max-w-248 xl:translate-x-36">
+          <Breadcrumbs firstLabel="Back to all updates" />
           <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
             {title}
           </h1>
@@ -178,7 +164,7 @@ export default async function ChangelogPostPage({
                   <dd className="gap flex flex-col gap-3">
                     <div className="-mt-px flex items-center gap-2 lg:-mt-px">
                       <Calendar className="text-muted-foreground" size={14} />
-                      <Date
+                      <ChangelogDate
                         publishedAt={publishedAt}
                         variant="muted"
                         size="sm"
