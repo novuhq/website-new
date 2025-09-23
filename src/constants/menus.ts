@@ -96,7 +96,7 @@ export const MENUS = {
           },
           { label: "Workflows", href: ROUTE.docsWorkflow, isNew: false },
           { label: "Framework", href: ROUTE.framework, isNew: false },
-          { label: "Digest", href: ROUTE.digest, isNew: true },
+          { label: "Digest", href: ROUTE.digest, isNew: false },
           {
             label: "Content Management",
             href: ROUTE.docsContentManagement,
@@ -112,7 +112,7 @@ export const MENUS = {
       {
         title: "Resources",
         items: [
-          { label: "Documentation", href: ROUTE.docs, isNew: true },
+          { label: "Documentation", href: ROUTE.docs, isNew: false },
           { label: "Blog", href: ROUTE.blog, isNew: false },
           { label: "Use Cases", href: ROUTE.useCases, isNew: false },
           { label: "Changelog", href: ROUTE.changelog, isNew: false },
@@ -124,6 +124,7 @@ export const MENUS = {
             isNew: false,
           },
           { label: "Pricing", href: ROUTE.pricing, isNew: false },
+          { label: "Customers", href: ROUTE.customers, isNew: false },
         ],
       },
       {
