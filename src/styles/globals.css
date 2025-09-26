@@ -246,6 +246,14 @@
       display: none;
     }
   }
+
+  .summary-mark-hidden > summary {
+    @apply cursor-pointer list-none marker:hidden;
+  }
+
+  .summary-mark-hidden > summary::-webkit-details-marker {
+    @apply hidden;
+  }
 }
 
 /*
