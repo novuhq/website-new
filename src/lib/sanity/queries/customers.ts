@@ -160,3 +160,14 @@ export const latestCustomersQuery = groq`
     title,
   }
 `
+
+export const allCustomersLogosQuery = groq`
+  *[_type == "customer"] | order(name asc) {
+    name,
+    "logo": {
+      "url": logo.asset->url + "?auto=format",
+      "width": logo.asset->metadata.dimensions.width,
+      "height": logo.asset->metadata.dimensions.height
+    },
+  }
+`
