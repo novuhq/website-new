@@ -1,6 +1,7 @@
 import { ICustomerData, ICustomersPageData } from "@/types/customers"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
+  allCustomersLogosQuery,
   allCustomersQuery,
   customersGridQuery,
   customersPageQuery,
@@ -57,5 +58,17 @@ export async function getLatestCustomers(
     preview,
     tags: REVALIDATE_CUSTOMERS_TAG,
   })
+  return customers || []
+}
+
+export async function getAllCustomersLogos(
+  preview = false
+): Promise<ICustomerData[]> {
+  const customers = await sanityFetch<ICustomerData[]>({
+    query: allCustomersLogosQuery,
+    preview,
+    tags: REVALIDATE_CUSTOMERS_TAG,
+  })
+
   return customers || []
 }
