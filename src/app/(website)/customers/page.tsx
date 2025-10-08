@@ -67,6 +67,7 @@ export const metadata: Metadata = getMetadata(
   SEO_DATA.customers || {
     title: "Customers",
     description: "Customers use Novu",
+    imagePath: "/social-previews/customers.jpg",
     pathname: ROUTE.customers,
   }
 )

@@ -21,6 +21,7 @@ export const SEO_DATA = {
   customers: {
     title: `Customers | ${config.projectName}`,
     description: `Discover how engineering teams use ${config.projectName} to ship faster and simplify their communication workflows.`,
+    imagePath: "/social-previews/customers.jpg",
     pathname: ROUTE.customers as string,
   },
 }

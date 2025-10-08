@@ -39,7 +39,7 @@ export async function generateMetadata({
     title: seo?.title || title,
     description: seo?.description || about,
     pathname: `${ROUTE.customers}/${slug}`,
-    imagePath: seo?.socialImage,
+    imagePath: seo?.socialImage || "/social-previews/customers.jpg",
   })
 }
 
