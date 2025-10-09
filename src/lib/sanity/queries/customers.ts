@@ -136,13 +136,13 @@ export const customersPageQuery = groq`
 `
 
 export const customersGridQuery = groq`
-*[_type == "customer"] {
+*[_type == "customer"] | order(orderRank) {
   ${customersGridFields}
 }
 `
 
 export const allCustomersQuery = groq`
-  *[_type == "customer" && type == "story"] | order(name asc) {
+  *[_type == "customer" && type == "story"] | order(orderRank) {
     ${customerFields}
   }
 `
@@ -162,7 +162,7 @@ export const latestCustomersQuery = groq`
 `
 
 export const allCustomersLogosQuery = groq`
-  *[_type == "customer"] | order(name asc) {
+  *[_type == "customer"] | order(orderRank) {
     name,
     "logo": {
       "url": logo.asset->url + "?auto=format",
