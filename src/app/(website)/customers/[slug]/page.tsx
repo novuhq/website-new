@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
+import { SEO_DATA } from "@/constants/seo-data"
 
 import { getAllCustomers, getLatestCustomers } from "@/lib/customers"
 import { getCustomerBySlug } from "@/lib/customers/customer"
@@ -39,7 +40,7 @@ export async function generateMetadata({
     title: seo?.title || title,
     description: seo?.description || about,
     pathname: `${ROUTE.customers}/${slug}`,
-    imagePath: seo?.socialImage || "/social-previews/customers.jpg",
+    imagePath: seo?.socialImage || SEO_DATA.customers.imagePath,
   })
 }
 
