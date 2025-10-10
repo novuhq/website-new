@@ -1,4 +1,5 @@
 import { UserIcon } from "@sanity/icons"
+import { orderRankField } from "@sanity/orderable-document-list"
 import {
   defineField,
   defineType,
@@ -25,6 +26,7 @@ export default defineType({
     },
   ],
   fields: [
+    orderRankField({ type: "customer" }),
     defineField({
       name: "name",
       type: "string",
