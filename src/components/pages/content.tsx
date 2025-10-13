@@ -77,11 +77,13 @@ function getComponents(
         const imageSize = asset._ref.split("-")[2]
         const [width, height] = imageSize.split("x").map(Number)
         const imageHeight = Math.ceil((renderWidth * height) / width)
+        const isGif = asset._ref.endsWith("-gif")
         const imageUrl = getProcessedImageUrl(asset, {
           width: renderWidth,
           height: imageHeight,
           quality: 95,
           isSVG: false,
+          isGif,
         })
 
         if (!imageUrl) {
