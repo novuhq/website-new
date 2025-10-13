@@ -33,8 +33,7 @@ export async function sanityFetch<QueryResponse>({
   tags?: string[]
 }): Promise<QueryResponse> {
   // For queries with tags (that can be revalidated), bypass Sanity CDN to ensure fresh data
-  const shouldUseCdn =
-    tags.length === 0 && process.env.NODE_ENV === "production"
+  const shouldUseCdn = tags.length === 0
 
   const fetchClient = preview
     ? previewClient
