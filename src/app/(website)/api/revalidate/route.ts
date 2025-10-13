@@ -7,7 +7,6 @@ const WEBHOOK_TYPES = ["changelogPost", "customers", "customer"] as const
 type WebhookPayload = {
   _type: (typeof WEBHOOK_TYPES)[number]
   orderRank?: string
-  [key: string]: unknown
 }
 
 export async function POST(req: NextRequest) {
