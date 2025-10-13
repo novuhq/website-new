@@ -9,6 +9,10 @@ type WebhookPayload = {
   orderRank?: string
 }
 
+// Debounce for customer order changes
+let customersRevalidateTimer: NodeJS.Timeout | null = null
+const DEBOUNCE_DELAY = 2000
+
 export async function POST(req: NextRequest) {
   try {
     if (!process.env.SANITY_REVALIDATE_SECRET) {
@@ -39,16 +43,47 @@ export async function POST(req: NextRequest) {
     const type = body._type
     const orderRank = body.orderRank
 
-    // Revalidate the main tag
     revalidateTag(type)
 
-    // When a customer changes, also revalidate the customers page
-    if (type === "customer" || orderRank) {
+    if (type === "customer") {
       revalidateTag("customers")
-      revalidatePath("/customers")
+
+      if (orderRank) {
+        if (customersRevalidateTimer) {
+          clearTimeout(customersRevalidateTimer)
+        }
+
+        customersRevalidateTimer = setTimeout(() => {
+          revalidatePath("/customers")
+          customersRevalidateTimer = null
+        }, DEBOUNCE_DELAY)
+
+        return NextResponse.json({
+          revalidated: "debounced",
+          type,
+          orderRank: true,
+          timestamp: Date.now(),
+        })
+      } else {
+        revalidatePath("/customers")
+      }
     }
 
-    return NextResponse.json({ body })
+    return NextResponse.json(
+      {
+        revalidated: true,
+        type,
+        timestamp: Date.now(),
+      },
+      {
+        headers: {
+          // Prevent CDN caching of this endpoint
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "CDN-Cache-Control": "no-store",
+          "Vercel-CDN-Cache-Control": "no-store",
+        },
+      }
+    )
   } catch (err) {
     return new Response((err as Error).message, { status: 500 })
   }
