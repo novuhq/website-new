@@ -70,9 +70,13 @@ export interface IContentIframeBlock {
   content: string
 }
 
+export interface ITag {
+  text: string
+  color: keyof typeof COLORS
+}
+
 export interface IContentChangeItem {
-  tag?: string
-  color?: keyof typeof COLORS
+  tag?: ITag
   text: PortableTextBlock[]
 }
 

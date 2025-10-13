@@ -42,23 +42,9 @@ const changeBlock = defineType({
           fields: [
             defineField({
               name: "tag",
-              type: "string",
+              type: "reference",
+              to: [{ type: "tag" }],
               title: "Tag",
-            }),
-            defineField({
-              name: "color",
-              type: "string",
-              title: "Color",
-              options: {
-                list: Object.keys(COLORS).map((key) => ({
-                  title: key,
-                  value: key,
-                })),
-                layout: "radio",
-              },
-              components: {
-                input: ColorPicker,
-              },
             }),
             defineField({
               name: "text",
@@ -85,14 +71,18 @@ const changeBlock = defineType({
             }),
           ],
           preview: {
-            select: { tag: "tag", color: "color", text: "text" },
+            select: {
+              tagText: "tag.text",
+              tagColor: "tag.color",
+              text: "text",
+            },
             prepare({
-              tag,
-              color,
+              tagText,
+              tagColor,
               text,
             }: {
-              tag?: string
-              color?: string
+              tagText?: string
+              tagColor?: keyof typeof COLORS
               text?: PortableTextBlock[]
             }) {
               const textContent =
@@ -112,8 +102,8 @@ const changeBlock = defineType({
 
               return {
                 title: textContent,
-                subtitle: tag ? `Tag: ${tag}` : "",
-                media: () => ChangeItemPreview({ color }),
+                subtitle: tagText ? `Tag: ${tagText}` : "",
+                media: () => ChangeItemPreview({ color: tagColor }),
               }
             },
           },

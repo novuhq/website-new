@@ -26,14 +26,18 @@ function ColorPicker(props: StringInputProps) {
           <Button
             key={colorKey}
             value={colorKey}
-            mode={value === colorKey ? `default` : `ghost`}
-            tone={value === colorKey ? `primary` : `default`}
+            mode="ghost"
+            tone="default"
             radius={2}
             padding={2}
             style={{
               minHeight: 24,
               minWidth: 24,
               aspectRatio: "1/1",
+              border:
+                value === colorKey
+                  ? "2px solid #2563eb"
+                  : "1px solid transparent",
             }}
             onClick={handleClick}
           >

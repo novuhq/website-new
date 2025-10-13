@@ -1,4 +1,4 @@
-import { UsersIcon } from "@sanity/icons"
+import { TagsIcon, UsersIcon } from "@sanity/icons"
 import type { StructureResolver } from "sanity/structure"
 
 import changelogStructure from "./changelog"
@@ -15,6 +15,10 @@ const structure: StructureResolver = (S, context) =>
         .title("Authors")
         .icon(UsersIcon)
         .child(S.documentTypeList("author").title("All Authors")),
+      S.listItem()
+        .title("Tags")
+        .icon(TagsIcon)
+        .child(S.documentTypeList("tag").title("All Tags")),
     ])
 
 export default structure

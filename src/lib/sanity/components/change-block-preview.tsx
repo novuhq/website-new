@@ -3,7 +3,7 @@ import { COLORS } from "@/constants/colors"
 import { Box } from "@sanity/ui"
 
 interface ChangeItemPreviewProps {
-  color?: string
+  color?: keyof typeof COLORS
 }
 
 export const ChangeItemPreview = ({ color }: ChangeItemPreviewProps) => {

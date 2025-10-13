@@ -11,7 +11,7 @@ function ChangeBlock({ type, items }: IContentChangeBlock) {
     <details
       className={cn(
         "change-list group summary-mark-hidden not-prose !my-0 py-5",
-        "[&+_.change-list]:gray-3 [&+_.change-list]:border-t"
+        "[&+_.change-list]:border-t [&+_.change-list]:border-gray-3"
       )}
     >
       <summary className="flex justify-between gap-8 text-lg leading-snug font-medium tracking-tighter">
@@ -23,23 +23,24 @@ function ChangeBlock({ type, items }: IContentChangeBlock) {
           size={24}
         />
       </summary>
-      <ul className="">
-        {items.map(({ tag, color, text }, index) => (
+      <ul>
+        {items.map(({ tag, text }, index) => (
           <li
             className="relative !pl-5 before:!top-3.5 before:!left-1.75 before:!size-1 before:bg-[#D9D9D9]"
             key={index}
           >
-            {tag && color && (
+            {tag && (
               <Badge
-                className="mr-2 gap-1.5 tracking-tighter"
+                className="relative -top-0.5 mr-2 gap-1.5 tracking-tighter"
                 variant="outline-muted"
                 size="xs"
               >
                 <span
-                  className="size-2 rounded-full"
-                  style={{ backgroundColor: COLORS[color] }}
+                  className="pointer-events-none size-2 rounded-full"
+                  style={{ backgroundColor: COLORS[tag.color] }}
+                  aria-hidden
                 />
-                {tag}
+                {tag.text}
               </Badge>
             )}
             <Content className="inline [&>*]:inline" content={text} />
