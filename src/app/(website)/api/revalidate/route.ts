@@ -6,6 +6,8 @@ const WEBHOOK_TYPES = ["changelogPost", "customers", "customer"] as const
 
 type WebhookPayload = {
   _type: (typeof WEBHOOK_TYPES)[number]
+  orderRank?: string
+  [key: string]: unknown
 }
 
 export async function POST(req: NextRequest) {
@@ -36,14 +38,14 @@ export async function POST(req: NextRequest) {
     }
 
     const type = body._type
+    const orderRank = body.orderRank
 
     // Revalidate the main tag
     revalidateTag(type)
 
     // When a customer changes, also revalidate the customers page
-    if (type === "customer") {
+    if (type === "customer" || orderRank) {
       revalidateTag("customers")
-      // Revalidate the entire customers page to ensure order changes are reflected
       revalidatePath("/customers")
     }
 
