@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache"
 import { NextResponse, type NextRequest } from "next/server"
 import { parseBody } from "next-sanity/webhook"
 
@@ -43,8 +43,6 @@ export async function POST(req: NextRequest) {
     // When a customer changes, also revalidate the customers page
     if (type === "customer") {
       revalidateTag("customers")
-      // Revalidate the entire customers page to ensure order changes are reflected
-      revalidatePath("/customers")
     }
 
     return NextResponse.json({ body })
