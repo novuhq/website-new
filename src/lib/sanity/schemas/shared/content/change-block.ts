@@ -124,7 +124,7 @@ const changeBlock = defineType({
       items?: Array<{ tag?: string }>
     }) {
       const title = name
-        ? `${name?.at(0)?.toUpperCase() + name?.slice(1)}`
+        ? `${name.charAt(0).toUpperCase() + name.slice(1)}`
         : "List of changes"
       const icon = name
         ? name === "improvements"

@@ -18,4 +18,4 @@ export const COLORS = {
   brightLilac: "#E18CF2",
   shampoo: "#F5CFFC",
   lightSilver: "#D9D9D9",
-}
+} as const

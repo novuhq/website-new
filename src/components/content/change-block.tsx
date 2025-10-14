@@ -19,7 +19,8 @@ function ChangeBlock({ type, items }: IContentChangeBlock) {
           {type.charAt(0).toUpperCase() + type.slice(1)} ({items.length})
         </span>
         <ChevronDown
-          className="text-muted-foreground transition-transform duration-300 group-open:rotate-180"
+          className="pointer-events-none text-muted-foreground transition-transform duration-300 group-open:rotate-180"
+          aria-hidden="true"
           size={24}
         />
       </summary>
@@ -37,7 +38,9 @@ function ChangeBlock({ type, items }: IContentChangeBlock) {
               >
                 <span
                   className="pointer-events-none size-2 rounded-full"
-                  style={{ backgroundColor: COLORS[tag.color] }}
+                  style={{
+                    backgroundColor: COLORS[tag.color] ?? COLORS.lightSilver,
+                  }}
                   aria-hidden
                 />
                 {tag.text}

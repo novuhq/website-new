@@ -1,5 +1,4 @@
 import { type ReactNode } from "react"
-import { COLORS } from "@/constants/colors"
 import { type PortableTextBlock } from "@portabletext/react"
 import { type TableValue } from "@sanity/table"
 
@@ -70,9 +69,11 @@ export interface IContentIframeBlock {
   content: string
 }
 
+type TagColor = keyof typeof import("@/constants/colors").COLORS
+
 export interface ITag {
   text: string
-  color: keyof typeof COLORS
+  color: TagColor
 }
 
 export interface IContentChangeItem {

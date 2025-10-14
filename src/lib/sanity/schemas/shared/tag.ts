@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/colors"
-import { defineField, defineType, ImageRule, StringRule } from "sanity"
+import { defineField, defineType, StringRule } from "sanity"
 
 import { ChangeItemPreview } from "@/lib/sanity/components/change-block-preview"
 import ColorPicker from "@/lib/sanity/components/color-picker"
@@ -8,11 +8,14 @@ export default defineType({
   name: "tag",
   type: "document",
   title: "Tag",
+  initialValue: { color: "lightSilver" },
   fields: [
     defineField({
       name: "text",
       type: "string",
       title: "Text",
+      validation: (rule: StringRule) =>
+        rule.required().error("Please enter tag text"),
     }),
     defineField({
       name: "color",
@@ -28,6 +31,7 @@ export default defineType({
       components: {
         input: ColorPicker,
       },
+      validation: (rule) => rule.required().error("Please select a color"),
     }),
   ],
   preview: {

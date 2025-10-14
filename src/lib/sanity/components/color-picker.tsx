@@ -21,9 +21,12 @@ function ColorPicker(props: StringInputProps) {
 
   return (
     <Box>
-      <Grid columns={12} gap={2}>
+      <Grid columns={12} gap={2} role="radiogroup" aria-label="Tag color">
         {Object.entries(COLORS).map(([colorKey, colorData]) => (
           <Button
+            type="button"
+            aria-label={colorKey}
+            aria-pressed={value === colorKey}
             key={colorKey}
             value={colorKey}
             mode="ghost"
