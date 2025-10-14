@@ -93,7 +93,7 @@ const changeBlock = defineType({
                       Array.isArray(block.children)
                     ) {
                       return block.children
-                        .map((child: any) => child.text || "")
+                        .map((child: { text?: string }) => child.text || "")
                         .join("")
                     }
                     return ""

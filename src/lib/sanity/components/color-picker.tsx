@@ -21,7 +21,7 @@ function ColorPicker(props: StringInputProps) {
 
   return (
     <Box>
-      <Grid columns={12} gap={2} role="radiogroup" aria-label="Tag color">
+      <Grid columns={12} gap={2} aria-label="Tag color">
         {Object.entries(COLORS).map(([colorKey, colorData]) => (
           <Button
             type="button"
@@ -39,7 +39,7 @@ function ColorPicker(props: StringInputProps) {
               aspectRatio: "1/1",
               border:
                 value === colorKey
-                  ? "2px solid #2563eb"
+                  ? "2px solid var(--studio-blue-500, #2563eb)"
                   : "1px solid transparent",
             }}
             onClick={handleClick}
