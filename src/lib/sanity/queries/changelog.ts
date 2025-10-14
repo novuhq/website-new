@@ -30,6 +30,16 @@ _type,
         ...,
         "photo": photo.asset->url + "?w=56&h=56&fit=crop&auto=format"
       }
+    },
+    _type == "changeBlock" => {
+      ...,
+      items[] {
+        ...,
+        "tag": tag->{
+          text,
+          color
+        }
+      }
     }
   },
   "seo": {

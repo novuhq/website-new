@@ -13,6 +13,7 @@ import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
 import {
+  IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
   IContentDetailsToggle,
@@ -34,6 +35,7 @@ import {
 import { Link } from "@/components/ui/link"
 import Admonition from "@/components/content/admonition"
 import Blockquote from "@/components/content/blockquote"
+import ChangeBlock from "@/components/content/change-block"
 import CodeBlock from "@/components/content/code-block"
 import CodeTabs from "@/components/content/code-tabs"
 import Details from "@/components/content/details"
@@ -277,6 +279,11 @@ function getComponents(
           dangerouslySetInnerHTML={{ __html: value.content }}
         />
       ),
+      changeBlock: ({
+        value: { type, items },
+      }: PortableTextComponentProps<IContentChangeBlock>) => {
+        return <ChangeBlock type={type} items={items} />
+      },
     },
     block: {
       h2: ({ children }: { children: ReactNode }) => {
