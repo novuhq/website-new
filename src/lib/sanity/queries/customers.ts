@@ -28,14 +28,13 @@ const customersGridFields = `
     "width": logo.asset->metadata.dimensions.width,
     "height": logo.asset->metadata.dimensions.height
   },
-  title,
+  about,
   "isFeatured": is_featured,
   category[0]->{
     _id,
     name
   },
   "channelsList": channels_list,
-  about,
 `
 
 const customerFields = `
