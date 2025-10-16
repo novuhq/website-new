@@ -98,8 +98,22 @@ export default defineType({
       name: "title",
       type: "string",
       title: "Title",
-      description:
-        "Main title for stories OR description text for external customer cards",
+      group: GROUP.content.name,
+      hidden: ({ document }) => document?.type !== "story",
+      validation: (rule: StringRule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { type?: string }
+          if (parent?.type === "story" && !value) {
+            return "About field is required when link type is story"
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: "about",
+      type: "text",
+      title: "About",
+      rows: 2,
       group: GROUP.content.name,
       validation: (rule: StringRule) =>
         rule.required().error("You have to fill in this field."),
@@ -151,23 +165,6 @@ export default defineType({
       description: "Main illustrations for the story (optional)",
       group: GROUP.content.name,
       hidden: ({ document }) => document?.type !== "story",
-    }),
-    defineField({
-      name: "about",
-      type: "text",
-      title: "About",
-      description: "Short description for stories (both card and story page)",
-      rows: 4,
-      group: GROUP.content.name,
-      hidden: ({ document }) => document?.type !== "story",
-      validation: (rule: StringRule) =>
-        rule.custom((value, context) => {
-          const parent = context.parent as { type?: string }
-          if (parent?.type === "story" && !value) {
-            return "About field is required when link type is story"
-          }
-          return true
-        }),
     }),
     defineField({
       name: "industry",
