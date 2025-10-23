@@ -138,7 +138,6 @@ function Video({
           autoPlay={autoplay}
           suppressHydrationWarning
         />
-        {alt && <figcaption className="sr-only">{alt}</figcaption>}
         {controls && (
           <div
             className={cn(
@@ -152,6 +151,7 @@ function Video({
           </div>
         )}
       </MediaController>
+      {alt && <figcaption className="sr-only">{alt}</figcaption>}
     </figure>
   )
 }
