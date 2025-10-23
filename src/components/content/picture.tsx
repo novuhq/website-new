@@ -56,6 +56,7 @@ function Picture({
             width={width}
             height={height}
             quality={100}
+            sizes="(max-width: 768px) 100vw, 640px"
             alt={alt}
           />
         )}
