@@ -16,6 +16,7 @@ export const getProcessedImageUrl = (
     height?: number
     quality?: number
     isSVG?: boolean
+    isGif?: boolean
     fit?: "crop" | "clip" | "fill" | "fillmax" | "max" | "scale" | "min"
     noUpscale?: boolean
     original?: boolean
@@ -30,6 +31,7 @@ export const getProcessedImageUrl = (
     height,
     quality = 100,
     isSVG = false,
+    isGif = false,
     fit = "crop",
     noUpscale = false,
     original = false,
@@ -39,6 +41,12 @@ export const getProcessedImageUrl = (
     return imageBuilder?.image(image).quality(100).url()
   }
 
+  // For GIF, return the raw URL without any transformations
+  if (isGif) {
+    return imageBuilder?.image(image).url()
+  }
+
+  // For SVG, return URL without transformations
   if (isSVG) {
     return getUrlForImage(image)?.url()
   }

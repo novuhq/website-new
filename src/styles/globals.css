@@ -139,6 +139,8 @@
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-logos: logos 60s linear infinite;
+  --animate-logos-backward: backward 160s linear infinite;
+  --animate-logos-forward: forward 160s linear infinite;
 
   --tracking-tighter: -0.02em;
   --tracking-tight: -0.025em;
@@ -197,6 +199,22 @@
       transform: translateX(-50%);
     }
   }
+  @keyframes backward {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes forward {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 }
 
 @utility text-balance {
@@ -246,6 +264,14 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  .summary-mark-hidden > summary {
+    @apply cursor-pointer list-none marker:hidden;
+  }
+
+  .summary-mark-hidden > summary::-webkit-details-marker {
+    @apply hidden;
   }
 }
 

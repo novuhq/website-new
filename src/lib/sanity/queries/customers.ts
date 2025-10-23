@@ -28,14 +28,13 @@ const customersGridFields = `
     "width": logo.asset->metadata.dimensions.width,
     "height": logo.asset->metadata.dimensions.height
   },
-  title,
+  about,
   "isFeatured": is_featured,
   category[0]->{
     _id,
     name
   },
   "channelsList": channels_list,
-  about,
 `
 
 const customerFields = `
@@ -136,13 +135,13 @@ export const customersPageQuery = groq`
 `
 
 export const customersGridQuery = groq`
-*[_type == "customer"] {
+*[_type == "customer"] | order(orderRank) {
   ${customersGridFields}
 }
 `
 
 export const allCustomersQuery = groq`
-  *[_type == "customer" && type == "story"] | order(name asc) {
+  *[_type == "customer" && type == "story"] | order(orderRank) {
     ${customerFields}
   }
 `
@@ -158,5 +157,16 @@ export const latestCustomersQuery = groq`
     _id,
     slug,
     title,
+  }
+`
+
+export const allCustomersLogosQuery = groq`
+  *[_type == "customer"] | order(orderRank) {
+    name,
+    "logo": {
+      "url": logo.asset->url + "?auto=format",
+      "width": logo.asset->metadata.dimensions.width,
+      "height": logo.asset->metadata.dimensions.height
+    },
   }
 `

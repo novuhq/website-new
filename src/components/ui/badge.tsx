@@ -11,8 +11,11 @@ const badgeVariants = cva("inline-flex w-fit items-center", {
       filled: "rounded-full bg-primary text-accent",
       outline:
         "rounded-full border border-muted-foreground font-semibold text-foreground",
+      "outline-muted":
+        "rounded-full border border-white/10 bg-[#16161C] text-gray-9",
     },
     size: {
+      xs: "text-xs leading-none",
       sm: "text-sm leading-none",
       md: "text-sm leading-none",
       lg: "text-sm leading-none lg:text-base lg:leading-none",
@@ -38,7 +41,8 @@ function Badge({
     <span
       className={cn(
         badgeVariants({ size, variant }),
-        ["outline", "filled"].includes(variant ?? "") && {
+        ["outline", "filled", "outline-muted"].includes(variant ?? "") && {
+          "h-5.5 pr-2.5 pl-2": size === "xs",
           "h-5 px-1.25": size === "sm",
           "h-5 px-2 lg:h-6 lg:px-3": size === "md",
           "h-6 px-3 lg:h-7 lg:px-3.5 lg:text-sm lg:leading-none": size === "lg",

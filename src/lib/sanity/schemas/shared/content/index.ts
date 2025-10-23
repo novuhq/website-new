@@ -1,3 +1,4 @@
+import changeBlock from "./change-block"
 import codeBlock from "./code-block"
 import codeTabs from "./code-tabs"
 import content from "./content"
@@ -16,6 +17,7 @@ const CONTENT_TYPES = [
   content,
   detailsToggleBlock,
   tableBlock,
+  changeBlock,
   dividerBlock,
   youtubeVideo,
   video,

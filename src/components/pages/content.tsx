@@ -13,6 +13,7 @@ import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
 import {
+  IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
   IContentDetailsToggle,
@@ -35,6 +36,7 @@ import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
 import Blockquote from "@/components/content/blockquote"
+import ChangeBlock from "@/components/content/change-block"
 import CodeBlock from "@/components/content/code-block"
 import CodeTabs from "@/components/content/code-tabs"
 import Details from "@/components/content/details"
@@ -78,11 +80,13 @@ function getComponents(
         const imageSize = asset._ref.split("-")[2]
         const [width, height] = imageSize.split("x").map(Number)
         const imageHeight = Math.ceil((renderWidth * height) / width)
+        const isGif = asset._ref.endsWith("-gif")
         const imageUrl = getProcessedImageUrl(asset, {
           width: renderWidth,
           height: imageHeight,
           quality: 95,
           isSVG: false,
+          isGif,
         })
 
         if (!imageUrl) {
@@ -278,6 +282,11 @@ function getComponents(
           dangerouslySetInnerHTML={{ __html: value.content }}
         />
       ),
+      changeBlock: ({
+        value: { type, items },
+      }: PortableTextComponentProps<IContentChangeBlock>) => {
+        return <ChangeBlock type={type} items={items} />
+      },
     },
     block: {
       h2: ({ children }: { children: ReactNode }) => {

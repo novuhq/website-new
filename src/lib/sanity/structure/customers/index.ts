@@ -1,10 +1,17 @@
 import { DocumentTextIcon, TagIcon, UserIcon } from "@sanity/icons"
-import type { StructureBuilder } from "sanity/structure"
+import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list"
+import type {
+  StructureBuilder,
+  StructureResolverContext,
+} from "sanity/structure"
 
 import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
 import { getStructureDocumentViews } from "@/lib/sanity/utils/get-structure-document-views"
 
-const customersStructure = (S: StructureBuilder) =>
+const customersStructure = (
+  S: StructureBuilder,
+  context: StructureResolverContext
+) =>
   S.listItem()
     .title("Customers")
     .icon(UserIcon)
@@ -25,10 +32,13 @@ const customersStructure = (S: StructureBuilder) =>
                 )
             ),
           S.divider(),
-          S.listItem()
-            .title("Customers")
-            .icon(UserIcon)
-            .child(S.documentTypeList("customer").title("Customers")),
+          orderableDocumentListDeskItem({
+            type: "customer",
+            title: "Customers",
+            icon: UserIcon,
+            S,
+            context,
+          }),
           S.listItem()
             .title("Categories")
             .icon(TagIcon)

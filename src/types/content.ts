@@ -1,4 +1,5 @@
 import { type ReactNode } from "react"
+import { COLORS } from "@/constants/colors"
 import { type PortableTextBlock } from "@portabletext/react"
 import { type TableValue } from "@sanity/table"
 
@@ -67,4 +68,21 @@ export interface IContentDetailsToggle
 
 export interface IContentIframeBlock {
   content: string
+}
+
+type TagColor = keyof typeof COLORS
+
+export interface ITag {
+  text: string
+  color: TagColor
+}
+
+export interface IContentChangeItem {
+  tag?: ITag
+  text: PortableTextBlock[]
+}
+
+export interface IContentChangeBlock {
+  type: "improvements" | "fixes"
+  items: IContentChangeItem[]
 }

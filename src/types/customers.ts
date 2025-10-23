@@ -24,14 +24,13 @@ export interface ICustomersGridData {
   slug?: ISlug
   url?: string
   logo: ISanityImage
-  title: string
+  about: string
   isFeatured: boolean
   category: {
     _id: string
     name: string
   }
   channelsList: string[]
-  about?: string
 }
 
 export interface ICustomerData {
