@@ -35,8 +35,8 @@ function Picture({
   width = 704,
   height,
 }: IPictureProps) {
-  const isGif = src.includes(".gif")
-  const cleanSrc = isGif ? `${src.split(".gif")[0]}.gif` : src
+  const isGif = /\.gif(\?|$)/i.test(src)
+  const cleanSrc = isGif ? src.replace(/(\.[^.]+)(\?.*)?$/, "$1") : src
 
   return (
     <figure className={cn("my-6 md:my-8", className)}>

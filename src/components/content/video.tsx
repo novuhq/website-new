@@ -129,10 +129,10 @@ function Video({
           slot="media"
           src={src}
           width={width}
-          height={height || "auto"}
-          preload="auto"
+          {...(typeof height === "number" ? { height } : {})}
+          preload={autoplay ? "auto" : "metadata"}
           muted={autoplay ? true : muted}
-          crossOrigin=""
+          crossOrigin="anonymous"
           loop={loop}
           poster={poster}
           autoPlay={autoplay}
