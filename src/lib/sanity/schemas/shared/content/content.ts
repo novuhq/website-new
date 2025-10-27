@@ -68,6 +68,7 @@ const content = defineField({
     { type: "codeBlock" },
     { type: "codeTabs" },
     { type: "quoteBlock" },
+    { type: "ctaBlock" },
     { type: "noteBlock" },
     { type: "tableBlock" },
     { type: "detailsToggleBlock" },

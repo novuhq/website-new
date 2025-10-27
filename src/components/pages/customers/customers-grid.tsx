@@ -135,6 +135,9 @@ export default function CustomersGrid({
               <p className="absolute bottom-3.5 z-10 line-clamp-2 px-8 text-center text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
                 {about}
               </p>
+              {!url && <span className="absolute bottom-5 z-10 px-2.5 py-[5px] border border-[#333347] rounded-[12px] bg-[rgb(38,38,52,0.80)] text-center text-[12px] leading-none tracking-tighter text-gray-9 opacity-100 transition-opacity duration-300 peer-hover:opacity-0 peer-focus-visible:opacity-0">
+                Read Story
+              </span>}
               <div className="absolute top-0 right-0 h-59 w-80 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#344387]/50 opacity-0 blur-3xl transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100" />
             </article>
           )
