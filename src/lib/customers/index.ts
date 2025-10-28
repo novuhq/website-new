@@ -49,9 +49,9 @@ export async function getAllCustomers(
 export async function getLatestCustomers(
   currentSlug: string,
   preview = false
-): Promise<Array<Pick<ICustomerData, "_id" | "slug" | "title">>> {
+): Promise<Array<Pick<ICustomerData, "_id" | "slug" | "title" | "logo">>> {
   const customers = await sanityFetch<
-    Array<Pick<ICustomerData, "_id" | "slug" | "title">>
+    Array<Pick<ICustomerData, "_id" | "slug" | "title" | "logo">>
   >({
     query: latestCustomersQuery,
     qParams: { currentSlug },

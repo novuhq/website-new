@@ -86,3 +86,9 @@ export interface IContentChangeBlock {
   type: "improvements" | "fixes"
   items: IContentChangeItem[]
 }
+
+export interface IContentCtaBlock {
+  text: string
+  buttonText: string
+  buttonUrl: string
+}

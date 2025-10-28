@@ -157,6 +157,11 @@ export const latestCustomersQuery = groq`
     _id,
     slug,
     title,
+    "logo": {
+      "url": logo.asset->url + "?auto=format",
+      "width": logo.asset->metadata.dimensions.width,
+      "height": logo.asset->metadata.dimensions.height
+    },
   }
 `
 

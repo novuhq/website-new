@@ -16,6 +16,7 @@ import {
   IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
+  IContentCtaBlock,
   IContentDetailsToggle,
   IContentIframeBlock,
   IContentNote,
@@ -39,6 +40,7 @@ import Blockquote from "@/components/content/blockquote"
 import ChangeBlock from "@/components/content/change-block"
 import CodeBlock from "@/components/content/code-block"
 import CodeTabs from "@/components/content/code-tabs"
+import Cta from "@/components/content/cta"
 import Details from "@/components/content/details"
 import Heading from "@/components/content/heading"
 import Picture from "@/components/content/picture"
@@ -107,6 +109,9 @@ function getComponents(
           </ZoomIllustration>
         )
       },
+      ctaBlock: ({ value }: PortableTextComponentProps<IContentCtaBlock>) => (
+        <Cta {...value} />
+      ),
       quoteBlock: ({
         value: { quote, role, authors },
       }: PortableTextComponentProps<IBlockquote>) => (
