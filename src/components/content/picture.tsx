@@ -35,13 +35,16 @@ function Picture({
   width = 704,
   height,
 }: IPictureProps) {
+  const isGif = /\.gif(\?|$)/i.test(src)
+  const cleanSrc = isGif ? src.replace(/(\.[^.]+)(\?.*)?$/, "$1") : src
+
   return (
     <figure className={cn("my-6 md:my-8", className)}>
       <div className={pictureVariants({ variant })}>
-        {src.endsWith(".gif") ? (
+        {isGif ? (
           <img
             className="w-full rounded-lg"
-            src={src}
+            src={cleanSrc}
             width={width}
             height={height}
             alt={alt}
@@ -49,10 +52,11 @@ function Picture({
         ) : (
           <Image
             className="w-full rounded-lg"
-            src={src}
+            src={cleanSrc}
             width={width}
             height={height}
             quality={100}
+            sizes="(max-width: 768px) 100vw, 640px"
             alt={alt}
           />
         )}

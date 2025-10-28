@@ -69,7 +69,12 @@ function PostsItem({
         </div>
         {cover && (
           <div className="relative mt-7.75 aspect-video overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image">
-            <Image className="" src={cover} alt="Cover" sizes="100vw" fill />
+            <Image
+              src={cover}
+              alt="Cover"
+              fill
+              sizes="(max-width: 1023px) 100vw, 640px"
+            />
           </div>
         )}
         <Content

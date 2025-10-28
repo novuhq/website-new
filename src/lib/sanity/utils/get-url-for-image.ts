@@ -19,6 +19,7 @@ export const getProcessedImageUrl = (
     isGif?: boolean
     fit?: "crop" | "clip" | "fill" | "fillmax" | "max" | "scale" | "min"
     noUpscale?: boolean
+    original?: boolean
   } = {}
 ) => {
   if (!image) {
@@ -33,7 +34,12 @@ export const getProcessedImageUrl = (
     isGif = false,
     fit = "crop",
     noUpscale = false,
+    original = false,
   } = options
+
+  if (original) {
+    return imageBuilder?.image(image).quality(100).url()
+  }
 
   // For GIF, return the raw URL without any transformations
   if (isGif) {

@@ -1,8 +1,7 @@
 media-controller {
-  /* --media-font: "Inter", sans-serif; */
   --media-font-size: 13px;
   --media-font-weight: 500;
-  --media-font-family: var(--font-inter), sans-serif;
+  --media-font-family: var(--font-brother-1816), sans-serif;
   --media-text-content-height: 1.375;
   --media-primary-color: var(--foreground);
   --media-secondary-color: hsla(var(--foreground) / 0.85);

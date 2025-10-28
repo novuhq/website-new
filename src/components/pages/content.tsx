@@ -33,6 +33,7 @@ import {
   generateHeadingSlug,
 } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
+import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
 import Blockquote from "@/components/content/blockquote"
 import ChangeBlock from "@/components/content/change-block"
@@ -93,15 +94,17 @@ function getComponents(
         }
 
         return (
-          <Picture
-            className={allowMediaBreakout ? "lg:-mx-16" : ""}
-            src={imageUrl}
-            alt={alt ?? ""}
-            width={renderWidth}
-            height={imageHeight}
-            caption={caption}
-            variant={variant}
-          />
+          <ZoomIllustration src={imageUrl} originalAsset={asset}>
+            <Picture
+              className={allowMediaBreakout ? "lg:-mx-16" : ""}
+              src={imageUrl}
+              alt={alt ?? ""}
+              width={renderWidth}
+              height={imageHeight}
+              caption={caption}
+              variant={variant}
+            />
+          </ZoomIllustration>
         )
       },
       quoteBlock: ({

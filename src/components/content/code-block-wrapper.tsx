@@ -1,6 +1,13 @@
 "use client"
 
-import { isValidElement, ReactElement, ReactNode } from "react"
+import {
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { Check, Copy } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -99,6 +106,14 @@ function CodeBlockWrapper({
   fileName,
 }: ICodeBlockWrapperProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
+  const blockRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState(0)
+
+  useEffect(() => {
+    if (blockRef.current) {
+      setHeight(blockRef.current.offsetHeight)
+    }
+  }, [children])
 
   const code = extractTextFromNode(children)
   const Tag = as
@@ -115,13 +130,14 @@ function CodeBlockWrapper({
           {fileName}
         </div>
       )}
-      <div className="relative">
+      <div className="relative pr-8" ref={blockRef}>
         {children}
         <button
           className={cn(
             "absolute top-4 right-4 flex size-7 items-center justify-center rounded border border-gray-2 bg-popover text-muted-foreground",
             "opacity-100 transition-[color,opacity] duration-300 hover:text-foreground/80 md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100",
-            isCopied && "text-foreground/80"
+            isCopied && "text-foreground/80",
+            height < 50 && "!top-2.5"
           )}
           disabled={isCopied}
           aria-label={cn(isCopied ? "Copied" : "Copy")}

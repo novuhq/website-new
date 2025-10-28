@@ -41,7 +41,7 @@ export function TableWrapper({
 }: PropsWithChildren<ITableWrapperProps>) {
   return (
     <figure className={cn("not-prose -mx-5 my-8 md:mx-0", className)}>
-      <ScrollArea className="">
+      <ScrollArea>
         {children}
         <ScrollBar className="invisible" orientation="horizontal" />
       </ScrollArea>
