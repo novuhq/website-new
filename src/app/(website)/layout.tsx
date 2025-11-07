@@ -6,6 +6,7 @@ import { getGithubInfo } from "@/lib/get-github-info"
 import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
+import MixpanelTracking from "@/components/mixpanel-tracking"
 import PreviewWarning from "@/components/preview-warning"
 import Scripts, { GTM_ID } from "@/components/scripts"
 
@@ -29,6 +30,7 @@ export default async function RootLayout({
       <body
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
       >
+        <MixpanelTracking />
         <Providers>
           <div
             className="flex grow flex-col rounded-none bg-background aria-hidden:[-webkit-mask-image:-webkit-radial-gradient(white,black)]"
