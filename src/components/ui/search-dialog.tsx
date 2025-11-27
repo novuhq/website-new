@@ -17,8 +17,6 @@ import { Button } from "@/components/ui/button"
 import { DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-import DynamicIcon from "../dynamic-icon"
-
 type ContentCategory =
   | "documentation"
   | "api"
@@ -123,7 +121,6 @@ function SearchHint({
   url,
   title,
   description,
-  icon,
   isSelected,
   dataIndex,
   isLast,

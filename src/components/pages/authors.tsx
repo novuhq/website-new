@@ -112,7 +112,6 @@ function CompactAuthors({
 function ExpandedAuthors({
   authors,
   isPriorityLoad = false,
-  isMultipleAuthors = false,
   size = "sm",
 }: IAuthorsVariantsProps & { size?: keyof typeof sizes }) {
   const styles = sizes[size]

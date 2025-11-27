@@ -1,6 +1,5 @@
 import { type ReactNode } from "react"
 
-import { type IContentDetailsToggle } from "@/types/content"
 import { cn } from "@/lib/utils"
 
 interface IDetailsProps {

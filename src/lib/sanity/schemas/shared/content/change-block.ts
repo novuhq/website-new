@@ -9,7 +9,6 @@ import {
 } from "sanity"
 
 import { ChangeItemPreview } from "@/lib/sanity/components/change-block-preview"
-import ColorPicker from "@/lib/sanity/components/color-picker"
 
 const changeBlock = defineType({
   name: "changeBlock",

@@ -22,7 +22,7 @@ interface IHeaderProps {
 }
 
 function Header({ githubStars, changelog, blog }: IHeaderProps) {
-  const [isIntersecting, setIsIntersecting] = useState(false)
+  const [, setIsIntersecting] = useState(false)
   const triggerRef = useRef<HTMLDivElement | null>(null)
 
   const navigationItems = MENUS.header.map((item) => {

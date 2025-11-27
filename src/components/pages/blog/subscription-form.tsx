@@ -51,7 +51,7 @@ function SubscriptionForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
 
-    let utmParams: Record<string, string> = {}
+    const utmParams: Record<string, string> = {}
 
     UTM_PARAMS.forEach((param) => {
       try {
@@ -60,7 +60,7 @@ function SubscriptionForm({
         if (paramValue) {
           utmParams[param] = paramValue
         }
-      } catch (err) {
+      } catch (_err) {
         // Do nothing
       }
     })
