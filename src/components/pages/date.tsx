@@ -7,9 +7,10 @@ const authorsVariants = cva("flex", {
     variant: {
       default: "text-[#F5CFFC]/60",
       muted: "text-muted-foreground",
+      blog: "uppercase text-gray-7",
     },
     size: {
-      sm: "text-sm",
+      sm: "text-sm leading-none",
       md: "text-sm lg:text-base",
     },
   },
@@ -22,7 +23,7 @@ const authorsVariants = cva("flex", {
 interface IDateProps {
   className?: string
   publishedAt: string
-  variant?: "default" | "muted"
+  variant?: "default" | "muted" | "blog"
   size?: "sm" | "md"
 }
 

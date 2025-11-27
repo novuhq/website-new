@@ -134,7 +134,6 @@ function getComponents(
       detailsToggleBlock: ({
         value: { title, content },
       }: PortableTextComponentProps<IContentDetailsToggle>) => (
-        // @ts-expect-error
         <Details title={title}>
           <Content content={content} />
         </Details>

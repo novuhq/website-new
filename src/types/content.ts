@@ -8,6 +8,7 @@ import {
   type IAdmonition,
   type ICodeBlock,
   type IDetailsToggle,
+  type ITabsBlock,
   type IVideo,
   type TTableTheme,
 } from "@/types/common"
@@ -91,4 +92,8 @@ export interface IContentCtaBlock {
   text: string
   buttonText: string
   buttonUrl: string
+}
+
+export interface IContentTabs {
+  tabs: ITabsBlock[]
 }

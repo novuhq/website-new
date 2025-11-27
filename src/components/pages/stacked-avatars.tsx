@@ -12,8 +12,7 @@ interface IAuthorsVariantsProps {
 
 const sizes = {
   xs: { className: "size-6", width: 24, height: 24 },
-  s: { className: "size-7", width: 28, height: 28 },
-  sm: { className: "size-8", width: 32, height: 32 },
+  sm: { className: "size-7", width: 28, height: 28 },
   md: { className: "size-8 md:size-9", width: 36, height: 36 },
   lg: { className: "size-8 md:size-10", width: 40, height: 40 },
 } as const
@@ -56,7 +55,7 @@ function StackedAvatars({
           className={cn(
             "relative shrink-0 rounded-full bg-muted",
             {
-              "-ml-2.5": index > 0 && (size === "xs" || size === "s"),
+              "-ml-2.5": index > 0 && size === "xs",
               "-ml-3": index > 0 && size === "sm",
               "-ml-3 md:-ml-3.5": index > 0 && ["md", "lg"].includes(size),
             },

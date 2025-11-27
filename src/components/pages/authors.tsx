@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority"
 import { type IAuthorData } from "@/types/changelog"
 import { cn, getFormattedAuthorsName } from "@/lib/utils"
 
-import StackedAvatars from "../stacked-avatars"
+import StackedAvatars from "./stacked-avatars"
 
 const defaultAuthorImage = "/images/placeholder-author.svg"
 
@@ -27,9 +27,9 @@ const sizes = {
     height: 24,
   },
   sm: {
-    imageClassName: "size-8",
-    width: 32,
-    height: 32,
+    imageClassName: "size-7",
+    width: 28,
+    height: 28,
   },
   md: {
     imageClassName: "size-9",
@@ -96,7 +96,7 @@ function CompactAuthors({
         >
           {authors.map(({ name }, index) => (
             <span
-              className="text-sm leading-none tracking-tighter text-muted-foreground"
+              className="text-[0.8125rem] leading-none tracking-tighter"
               key={name + index}
             >
               {isMultipleAuthors ? getFormattedAuthorsName(name) : name}

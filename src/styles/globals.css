@@ -136,11 +136,15 @@
     var(--font-brother-1816), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
+  --font-weight-book: 350;
+
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-logos: logos 60s linear infinite;
   --animate-logos-backward: backward 160s linear infinite;
   --animate-logos-forward: forward 160s linear infinite;
+
+  --leading-dense: 1.125;
 
   --tracking-tighter: -0.02em;
   --tracking-tight: -0.025em;

@@ -9,6 +9,7 @@ import { ROUTE } from "@/constants/routes"
 
 import { IMenuHeaderCard } from "@/types/common"
 import { Button } from "@/components/ui/button"
+import SearchBar from "@/components/ui/search-bar"
 import GithubStars from "@/components/github-stars"
 
 import MobileMenu from "./mobile-menu"
@@ -93,6 +94,12 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
             <NextLink href={ROUTE.dashboardV2SignUp}>Get Started</NextLink>
           </Button>
         </div>
+        <SearchBar
+          className="ml-auto lg:hidden"
+          theme="icon"
+          showOnRoute={[ROUTE.blog]}
+          enableCmdK={false}
+        />
         <MobileMenu items={navigationItems} />
       </div>
       <div
