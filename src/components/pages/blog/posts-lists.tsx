@@ -1,7 +1,7 @@
 import { type IPost } from "@/types/blog"
 import { cn } from "@/lib/utils"
 
-import PostCard from "./post-card--row"
+import PostCard from "./post-card"
 
 interface IPostsListProps {
   className?: string

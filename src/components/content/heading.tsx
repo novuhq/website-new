@@ -19,7 +19,7 @@ function Heading({
   return (
     <Tag
       id={id}
-      className={cn("w-fit !scroll-mt-10 text-pretty", className)}
+      className={cn("w-fit !scroll-mt-20 text-pretty", className)}
       {...rest}
     >
       <a className="!no-underline" href={`#${id}`}>

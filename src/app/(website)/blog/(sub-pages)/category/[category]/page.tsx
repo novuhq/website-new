@@ -14,7 +14,7 @@ import {
 } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
 import Pagination from "@/components/pages/blog/pagination"
-import PostsList from "@/components/pages/blog/posts-lists--column"
+import PostsList from "@/components/pages/blog/posts-lists"
 
 interface CategoryPageProps {
   params: Promise<{

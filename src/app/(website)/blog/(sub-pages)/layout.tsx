@@ -22,7 +22,7 @@ export default async function BlogPagesLayout({
 
   return (
     <div className="relative">
-      <main className="relative mx-auto flex max-w-4xl flex-col px-5 pt-10 md:px-8 md:pt-16 lg:pt-24">
+      <main className="relative z-10 mx-auto flex max-w-4xl flex-col px-5 pt-12 md:px-8 md:pt-16 lg:pt-20 xl:pt-24">
         <p className="max-w-xl text-4xl leading-tight font-medium tracking-tighter text-balance md:text-[3rem] lg:leading-dense">
           Built with Novu
         </p>
@@ -55,7 +55,7 @@ export default async function BlogPagesLayout({
             placeholder="Search..."
           />
         </div>
-        <Separator className="mt-6 mb-8 hidden md:block" />
+        <Separator className="mt-6 bg-transparent md:mb-8 md:bg-border" />
         {children}
       </main>
       <CTA

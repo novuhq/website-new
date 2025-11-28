@@ -4,7 +4,7 @@ import { IPostWithTableOfContents } from "@/types/blog"
 import { cn } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
 import BackToTop from "@/components/pages/back-to-top"
-import PortableContent from "@/components/pages/portable-content"
+import Content from "@/components/pages/content"
 import SocialShare from "@/components/pages/social-share"
 import TableOfContents from "@/components/pages/table-of-contents"
 
@@ -25,13 +25,13 @@ function Post({ className, post, backLink }: IPostProps) {
       <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
         <article className="grid w-full grid-cols-1 gap-y-10 md:gap-y-16 lg:grid-cols-[auto_16rem] lg:gap-y-20 xl:grid-cols-[16rem_auto_16rem]">
           <PostHeader
-            className="col-start-1 row-start-1 w-full xl:col-start-2"
+            className="col-start-1 row-start-1 w-full max-w-176 xl:col-start-2"
             post={post}
             backLink={backLink}
           />
-          <div className="col-start-1 row-start-2 xl:col-start-2">
+          <div className="col-start-1 row-start-2 max-w-176 xl:col-start-2">
             {/* TODO: Think about how to make mt-0 without the ! */}
-            <PortableContent
+            <Content
               className="[&>*:first-child]:mt-0!"
               content={post.content}
             />

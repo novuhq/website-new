@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
@@ -15,6 +16,41 @@ interface ICategoriesListProps {
 
 function CategoriesList({ className, categories }: ICategoriesListProps) {
   const pathname = usePathname()
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const viewport = scrollAreaRef.current.querySelector(
+        '[data-slot="scroll-area-viewport"]'
+      ) as HTMLElement
+      const activeElement = scrollAreaRef.current.querySelector(
+        '[data-active="true"]'
+      ) as HTMLElement
+
+      if (viewport && activeElement) {
+        const viewportRect = viewport.getBoundingClientRect()
+        const elementRect = activeElement.getBoundingClientRect()
+
+        const isFullyVisible =
+          elementRect.left >= viewportRect.left &&
+          elementRect.right <= viewportRect.right
+
+        if (!isFullyVisible) {
+          const elementOffsetLeft = activeElement.offsetLeft
+          const elementWidth = activeElement.offsetWidth
+          const viewportWidth = viewport.offsetWidth
+
+          const scrollLeft =
+            elementOffsetLeft - viewportWidth / 2 + elementWidth / 2
+
+          viewport.scrollTo({
+            left: Math.max(0, scrollLeft),
+            behavior: "smooth",
+          })
+        }
+      }
+    }
+  }, [pathname])
 
   return (
     <section
@@ -22,7 +58,7 @@ function CategoriesList({ className, categories }: ICategoriesListProps) {
     >
       <h2 className="sr-only">Categories</h2>
       <nav className="relative -mx-5 md:mx-0">
-        <ScrollArea className="w-full">
+        <ScrollArea className="w-full" ref={scrollAreaRef}>
           <ul className="flex h-7.5 w-full items-center px-5 md:pl-0">
             {categories.map(({ title, url }, index) => {
               const isActive =
@@ -32,13 +68,13 @@ function CategoriesList({ className, categories }: ICategoriesListProps) {
                   : pathname === url || pathname.startsWith(`${url}/page`)
 
               return (
-                <li key={index}>
+                <li key={index} data-active={isActive}>
                   <Link
                     className={cn(
-                      "relative h-7.5 justify-center rounded-full px-3 leading-none tracking-tight whitespace-nowrap transition-colors ring-inset",
+                      "relative h-7.5 justify-center rounded-full border px-3 leading-none tracking-tight whitespace-nowrap transition-colors",
                       isActive
-                        ? "border border-[#81869E] text-white"
-                        : "text-gray-8 hover:text-white"
+                        ? "border-[#81869E] text-white"
+                        : "border-background text-gray-8 hover:text-white"
                     )}
                     size="sm"
                     variant="clean"

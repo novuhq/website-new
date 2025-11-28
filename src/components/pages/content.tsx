@@ -180,7 +180,7 @@ function getComponents(
             height: Math.ceil(renderWidth / 1.777),
             quality: 95,
             isSVG: false,
-          }) || `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
+          }) || `https://img.youtube.com/vi/${id}/hqdefault.jpg`
 
         return (
           <YouTubeEmbed
