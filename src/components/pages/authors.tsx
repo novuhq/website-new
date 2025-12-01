@@ -96,7 +96,7 @@ function CompactAuthors({
         >
           {authors.map(({ name }, index) => (
             <span
-              className="text-[0.8125rem] leading-none tracking-tighter"
+              className="text-[0.8125rem] leading-tight tracking-tighter"
               key={name + index}
             >
               {isMultipleAuthors ? getFormattedAuthorsName(name) : name}
@@ -130,10 +130,10 @@ function ExpandedAuthors({
             quality={100}
           />
           <p className="flex flex-col gap-y-0.5">
-            <span className="text-sm leading-snug tracking-tight text-secondary-foreground">
+            <span className="text-sm leading-tight tracking-tight text-secondary-foreground">
               {name}
             </span>
-            <span className="text-sm leading-none tracking-tight text-foreground">
+            <span className="text-sm leading-tight tracking-tight text-foreground">
               {position}
             </span>
           </p>

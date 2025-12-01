@@ -51,7 +51,7 @@ function PostCard({
       <div className="flex grow flex-col">
         <h1>
           <Link
-            className="line-clamp-2 text-2xl/dense font-medium tracking-tighter text-pretty hover:text-gray-9 md:text-[1.75rem]/dense"
+            className="line-clamp-2 text-2xl/tight font-medium tracking-tighter text-pretty hover:text-gray-9 md:text-[1.75rem]/tight"
             href={url}
             variant="clean"
           >
