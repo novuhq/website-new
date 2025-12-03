@@ -194,7 +194,7 @@ function getComponents(
             variant={variant}
           >
             <Image
-              className="w-full rounded-lg"
+              className="aspect-video h-auto w-full rounded-lg object-cover"
               src={previewCover}
               alt=""
               width={renderWidth}
