@@ -3,10 +3,10 @@ import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 import { Providers } from "@/contexts"
 
-import { brother1816 } from "@/lib/fonts"
 import { getGithubInfo } from "@/lib/get-github-info"
 import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
 import { Button } from "@/components/ui/button"
+import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import Scripts, { GTM_ID } from "@/components/scripts"
@@ -30,9 +30,10 @@ export default async function NotFound() {
         <meta name="pathname" content={SEO_DATA.notFound.pathname} />
         <title>{SEO_DATA.notFound.title}</title>
         <Scripts />
+        <Fonts />
       </head>
       <body
-        className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
+        className={`flex min-h-svh flex-col bg-background font-sans antialiased`}
       >
         <Providers>
           <Header githubStars={stars} changelog={changelog} blog={blog} />
