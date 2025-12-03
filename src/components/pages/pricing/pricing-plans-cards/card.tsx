@@ -6,9 +6,11 @@ import stars from "@/images/pages/pricing/stars.png"
 import { PortableText } from "@portabletext/react"
 import clsx from "clsx"
 
+import { IPricingHeroCard } from "@/types/pricing"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 
-const Card = ({ plan }) => {
+const Card = ({ plan }: { plan: IPricingHeroCard }) => {
   const {
     title,
     isFeatured,
@@ -70,12 +72,17 @@ const Card = ({ plan }) => {
             <Button
               className="z-20 h-[46px] w-full text-[14px] uppercase"
               size="sm"
-              variant={link.variant === "filled" ? "default" : "outline"}
-              href={link.href}
-              rel={link.isExternal ? "noopener noreferrer" : undefined}
-              target={link.isExternal ? "_blank" : undefined}
+              variant={isFeatured ? "default" : "outline"}
+              asChild
             >
-              {link.text}
+              <Link
+                variant="white"
+                href={link.href}
+                rel={link.isExternal ? "noopener noreferrer" : undefined}
+                target={link.isExternal ? "_blank" : undefined}
+              >
+                {link.text}
+              </Link>
             </Button>
             {extraInfo && (
               <p className="font-book absolute inset-x-0 top-[calc(100%+8px)] truncate text-center text-[13px] leading-snug tracking-tighter text-gray-9">

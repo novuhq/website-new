@@ -1,4 +1,4 @@
-import { PricingPageData as IPricingPageData } from "@/types/pricing"
+import { IPricingPageData } from "@/types/pricing"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   pricingPageQuery,

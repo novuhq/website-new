@@ -22,17 +22,10 @@ const FAQ = ({
     return null
   }
 
+  // TODO: add analytics
   const handleOpenScheduling = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, source: string, faqQuestion: string) => {
       e.preventDefault()
-      // // Track FAQ schedule link click analytics with granular question identifier
-      // window?.analytics?.track("Pricing Event: Click Schedule a Call in FAQ", {
-      //   source,
-      //   question: faqQuestion,
-      // })
-      // if (onOpenScheduling) {
-      //   onOpenScheduling(source, faqQuestion)
-      // }
     },
     [onOpenScheduling]
   )
@@ -60,7 +53,6 @@ const FAQ = ({
     [handleOpenScheduling]
   )
 
-  // // Process FAQ data from Sanity
   const processedFaqData = useMemo(() => {
     return accordion.items.map((item) => ({
       question: item.question,

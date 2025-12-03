@@ -116,7 +116,7 @@ export type Logos = {
   rows?: number
 }
 
-export type PricingPageData = {
+export type IPricingPageData = {
   _type: "pricing"
   _createdAt: string
   _updatedAt: string

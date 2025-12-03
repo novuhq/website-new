@@ -77,7 +77,7 @@ function TableHeader({ plan, planId, plansCount }: TableHeaderProps) {
     >
       {isFeatured && (
         <div
-          className="absolute top-3 right-4 bottom-0 -left-4 hidden rounded-t-xl bg-[#14141FBF] md:block xl:top-0 xl:right-5"
+          className="pointer-events-none absolute top-3 right-4 bottom-0 -left-4 hidden rounded-t-xl bg-[#14141FBF] md:block xl:top-0 xl:right-5"
           aria-hidden
         />
       )}
@@ -138,7 +138,7 @@ function TableCell({ feature, featureName, planId }: ITableCellProps) {
           <span className="mt-1 text-gray-9">—</span>
         ))}
       {isText && (
-        <div className="text-gray-9">
+        <div className="text-[14px] text-gray-9">
           <PortableText
             value={value}
             components={
@@ -179,7 +179,7 @@ function TableColumn({
     >
       {isFeatured && (
         <div
-          className="absolute top-3 right-4 -bottom-4 -left-4 z-0 hidden rounded-xl bg-[#14141FBF] md:block xl:top-0 xl:right-5"
+          className="pointer-events-none absolute top-3 right-4 -bottom-4 -left-4 z-0 hidden rounded-xl bg-[#14141FBF] md:block xl:top-0 xl:right-5"
           aria-hidden
         />
       )}
@@ -198,7 +198,7 @@ function TableColumn({
         if (isGroupTitle) {
           return (
             <div
-              className={cn("", index > 0 && "pt-10 md:pt-11", "pb-6")}
+              className={cn("pb-3", index > 0 && "pt-10 md:pt-11")}
               key={`category-${row.title}-${planId}`}
             />
           )
@@ -247,7 +247,7 @@ function FeaturesColumn({
     >
       <div
         className={cn(
-          "sticky top-(--sticky-header-height) z-30 flex min-h-32 flex-col justify-end bg-background pb-6 md:pb-5 lg:top-[calc(var(--sticky-header-height)+3rem)] xl:min-h-36",
+          "sticky top-(--sticky-header-height) z-30 flex min-h-32 flex-col justify-end bg-background pb-6 md:pb-5 lg:top-[calc(var(--sticky-header-height)+3rem)]",
           "before:absolute before:-top-4 before:left-0 before:z-10 before:h-4 before:w-full before:bg-background lg:before:-top-12 lg:before:h-12"
         )}
       >
@@ -286,7 +286,7 @@ function FeaturesColumn({
         if (isGroupTitle) {
           return (
             <div
-              className={cn("", index > 0 && "pt-10 md:pt-[43px]", "pb-6")}
+              className={cn("pb-3", index > 0 && "pt-10 md:pt-11")}
               key={`category-${row.title}`}
             >
               <span className="inline-block text-xl leading-snug font-semibold tracking-tight whitespace-nowrap text-foreground">
@@ -318,7 +318,7 @@ function FeaturesColumn({
                           <Info className="size-3.5 text-gray-10" />
                         </span>
                       </TooltipTrigger>
-                      <TooltipContent className="max-w-[320px] bg-black p-4 text-white/80">
+                      <TooltipContent className="max-w-80 p-4 text-white/80">
                         <PortableText
                           value={row.tooltip as PortableTextBlock[]}
                         />
@@ -361,7 +361,7 @@ function TableDividerColumn({
       {/* Empty cell at the top */}
       <div
         className={cn(
-          "sticky top-(--sticky-header-height) z-30 min-h-32 bg-background lg:top-[calc(var(--sticky-header-height)+3rem)] xl:min-h-36",
+          "sticky top-(--sticky-header-height) z-30 min-h-32 bg-background lg:top-[calc(var(--sticky-header-height)+3rem)]",
           "before:absolute before:-top-4 before:left-0 before:z-10 before:h-4 before:w-full before:bg-background lg:before:-top-12 lg:before:h-12"
         )}
       />
@@ -372,7 +372,7 @@ function TableDividerColumn({
         if (isGroupTitle) {
           return (
             <div
-              className={cn("", index > 0 && "pt-10 md:pt-11", "pb-6")}
+              className={cn("pb-3", index > 0 && "pt-10 md:pt-11")}
               key={`category-${row.title}`}
             />
           )

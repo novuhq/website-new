@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { ChevronDown } from "lucide-react"
 
 const ANIMATION_DURATION = 0.3
@@ -10,18 +10,12 @@ const variantsAnimation = {
   visible: { height: "auto" },
 }
 
-const Question = ({ question, answer }) => {
+const Question = ({ question, answer }: { question: string, answer: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const handleButtonClick = () => {
     setIsOpen((currentState) => !currentState)
-    // buttonClick("faq_read", { type: "faq_read" })
-    // window?.analytics?.track(
-    //   "Pricing Event: Click on an item in the FAQ section",
-    //   {
-    //     item: question,
-    //   }
-    // )
   }
+  
   return (
     <li>
       <button
