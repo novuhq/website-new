@@ -25,7 +25,7 @@ export default async function RootLayout({
   return (
     <>
       <head>
-        {/* <Scripts /> */}
+        <Scripts />
       </head>
       <body
         className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
