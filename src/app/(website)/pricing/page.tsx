@@ -9,8 +9,8 @@ import { getPricingPage } from "@/lib/pricing"
 import Cta from "@/components/cta"
 import ComparisonTable from "@/components/pages/pricing/comparison-table"
 import CtaCard from "@/components/pages/pricing/cta-card"
-import FAQ from "@/components/pages/pricing/faq/faq"
-import PricingPlansCards from "@/components/pages/pricing/pricing-plans-cards/pricing-plan-cards"
+import FAQ from "@/components/pages/pricing/faq"
+import PricingPlansCards from "@/components/pages/pricing/pricing-plans-cards"
 import SectionWithLogosAnimated from "@/components/pages/pricing/section-with-logos-animated"
 
 async function PricingPage() {
