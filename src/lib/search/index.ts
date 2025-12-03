@@ -2,7 +2,7 @@ import { ROUTE } from "@/constants/routes"
 
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
 
-import { getAllPostsWithExcerpt } from "../blog"
+import { getAllPostsWithExcerpt, getLatestPostsWithExcerpt } from "../blog"
 
 export interface BlogSearchResult {
   id: string
@@ -118,9 +118,9 @@ function getExcerpt(content: string, searchTerm: string): string | undefined {
 export async function getRecentBlogPosts(
   limit: number = 5
 ): Promise<BlogSearchResult[]> {
-  const posts = await getAllPostsWithExcerpt(false)
+  const posts = await getLatestPostsWithExcerpt(limit, false)
 
-  return posts.slice(0, limit).map((post) => ({
+  return posts.map((post) => ({
     id: post.slug.current,
     title: post.title,
     description: post.caption,

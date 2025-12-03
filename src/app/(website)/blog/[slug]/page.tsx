@@ -4,11 +4,12 @@ import { notFound } from "next/navigation"
 import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 
-import { getAllPosts, getPostBySlug } from "@/lib/blog"
+import { getAllPosts, getLatestPosts, getPostBySlug } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
 import { getExcerpt } from "@/lib/utils"
 import Post from "@/components/pages/blog/post/post"
+import CTA from "@/components/pages/cta"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -17,7 +18,10 @@ interface BlogPostPageProps {
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
-  const post = await getPostBySlug(slug, isDraftMode)
+  const [post, relatedPosts] = await Promise.all([
+    getPostBySlug(slug, isDraftMode),
+    getLatestPosts(4, isDraftMode),
+  ])
 
   if (!post) {
     notFound()
@@ -48,11 +52,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="pt-8 pb-24 md:pt-11 lg:pt-16 lg:pb-48">
+    <main className="pt-8 md:pt-11 lg:pt-16">
       <Post
         className="relative z-10"
         post={post}
+        relatedPosts={relatedPosts}
         backLink={{ label: "Blog", href: ROUTE.blog }}
+      />
+      <CTA
+        title="You’re five minutes away from your first Novu-backed notification"
+        description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
+        containerClassName="lg:max-w-196.5"
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Get started",
+            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+          },
+          {
+            kind: "secondary-button",
+            label: "Contact us",
+            href: ROUTE.contactUs,
+          },
+        ]}
       />
       <script
         type="application/ld+json"

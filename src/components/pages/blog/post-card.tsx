@@ -22,7 +22,7 @@ function PostCard({
   return (
     <article
       className={cn(
-        "post-card--row flex flex-col justify-between gap-x-8 gap-y-3 md:flex-row",
+        "post-card flex flex-col justify-between gap-x-8 gap-y-3 md:flex-row",
         className
       )}
     >

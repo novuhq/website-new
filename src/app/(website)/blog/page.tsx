@@ -99,6 +99,7 @@ export default async function BlogPage() {
       <CTA
         title="You’re five minutes away from your first Novu-backed notification"
         description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
+        containerClassName="lg:max-w-196.5"
         actions={[
           {
             kind: "primary-button",

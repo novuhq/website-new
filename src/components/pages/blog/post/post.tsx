@@ -1,6 +1,6 @@
 import { ROUTE } from "@/constants/routes"
 
-import { IPostWithTableOfContents } from "@/types/blog"
+import { IPost, IPostWithTableOfContents } from "@/types/blog"
 import { cn } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
 import BackToTop from "@/components/pages/back-to-top"
@@ -9,17 +9,19 @@ import SocialShare from "@/components/pages/social-share"
 import TableOfContents from "@/components/pages/table-of-contents"
 
 import PostHeader from "./post-header"
+import RelatedPosts from "./related-posts"
 
 interface IPostProps {
   className?: string
   post: IPostWithTableOfContents
+  relatedPosts: IPost[]
   backLink: {
     label: string
     href: string | URL
   }
 }
 
-function Post({ className, post, backLink }: IPostProps) {
+function Post({ className, post, backLink, relatedPosts }: IPostProps) {
   return (
     <section className={cn("post", className)}>
       <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
@@ -35,6 +37,7 @@ function Post({ className, post, backLink }: IPostProps) {
               className="[&>*:first-child]:mt-0!"
               content={post.content}
             />
+            <RelatedPosts articles={relatedPosts} />
           </div>
 
           <Aside

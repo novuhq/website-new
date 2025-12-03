@@ -156,7 +156,6 @@ function SubscriptionForm({
           )}
         </Button>
 
-        {/* TODO: add success state */}
         {isSuccess && (
           <div className="absolute top-12 text-sm font-book text-gray-8">
             Thank you for subscribing!

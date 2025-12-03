@@ -128,9 +128,16 @@ export const latestPostsQuery = groq`
   }
 `
 
-// Query for all posts with pagination
+// Query for all posts with excerpt
 export const postsWithExcerptQuery = groq`
   *[_type == "blogPost"] | order(publishedAt desc) {
+    ${postExcerptFields}
+  }
+`
+
+// Query for latest N posts with excerpt
+export const latestPostsWithExcerptQuery = groq`
+  *[_type == "blogPost"] | order(publishedAt desc)[0...$limit] {
     ${postExcerptFields}
   }
 `

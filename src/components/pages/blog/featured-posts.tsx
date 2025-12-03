@@ -19,7 +19,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
   const [featuredPost, ...restPosts] = posts.slice(0, 4)
 
   return (
-    <section className={cn("featured-posts--grid", className)}>
+    <section className={cn("featured-posts", className)}>
       <h2 className="sr-only">Featured posts</h2>
       <div className="lg grid grid-cols-1 gap-x-16 gap-y-0 md:grid-cols-[22rem_auto] md:gap-y-12 lg:grid-cols-[26rem_auto] xl:grid-cols-[30rem_auto]">
         <article className="flex flex-col border-b border-border pb-6 md:border-b-0 md:pb-0">

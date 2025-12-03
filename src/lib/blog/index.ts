@@ -14,6 +14,7 @@ import {
   categoryBySlugQuery,
   featuredPostQuery,
   latestPostsQuery,
+  latestPostsWithExcerptQuery,
   paginatedNonFeaturedPostsByCategoryQuery,
   paginatedNonFeaturedPostsQuery,
   paginatedPostsByCategoryQuery,
@@ -108,7 +109,7 @@ export async function getAllPosts(preview = false): Promise<IPost[]> {
 }
 
 /**
- * Fetches all blog posts from Sanity
+ * Fetches all blog posts with excerpt from Sanity
  * @param preview - Whether to use preview mode
  *
  * @returns Array of formatted post objects
@@ -118,6 +119,26 @@ export async function getAllPostsWithExcerpt(
 ): Promise<IPost[]> {
   const posts = await sanityFetch<IPostData[]>({
     query: postsWithExcerptQuery,
+    preview,
+    tags: [REVALIDATE_BLOG_TAG],
+  })
+  return posts.map((post) => transformPost(post))
+}
+
+/**
+ * Fetches latest N posts with excerpt from Sanity
+ * @param limit - Number of posts to fetch
+ * @param preview - Whether to use preview mode
+ *
+ * @returns Array of formatted post objects
+ */
+export async function getLatestPostsWithExcerpt(
+  limit: number,
+  preview = false
+): Promise<IPost[]> {
+  const posts = await sanityFetch<IPostData[]>({
+    query: latestPostsWithExcerptQuery,
+    qParams: { limit },
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
