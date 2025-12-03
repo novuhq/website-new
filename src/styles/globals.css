@@ -146,6 +146,8 @@
   --tracking-tight: -0.025em;
   --tracking-plus-tight: -0.04em;
 
+  --leading-1.125: 1.125;
+
   --shadow-header-dropdown:
     0px 20px 50px 0px hsla(0, 0%, 0%, 0.8),
     0px 4px 12px 0px hsla(0, 0%, 0%, 0.3);

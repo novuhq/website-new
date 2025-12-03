@@ -9,6 +9,7 @@ export enum DraftsSchemaTypes {
   CHANGELOG_POST = "changelogPost",
   CUSTOMERS = "customers",
   CUSTOMER = "customer",
+  PRICING = "pricing",
 }
 
 /**
@@ -18,4 +19,5 @@ export const PREVIEW_ROUTES: Record<DraftsSchemaTypes, URL | Route<string>> = {
   [DraftsSchemaTypes.CHANGELOG_POST]: ROUTE.changelog,
   [DraftsSchemaTypes.CUSTOMERS]: ROUTE.customers,
   [DraftsSchemaTypes.CUSTOMER]: ROUTE.customers,
+  [DraftsSchemaTypes.PRICING]: ROUTE.pricing,
 }
