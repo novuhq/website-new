@@ -16,7 +16,7 @@ const pricingStructure = (
     .icon(UserIcon)
     .child(
       S.list()
-        .title("Pricing")
+        .title("Pricing Page Content")
         .items([
           S.listItem()
             .title("Page Content")

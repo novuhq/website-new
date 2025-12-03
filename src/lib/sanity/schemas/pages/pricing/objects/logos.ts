@@ -1,6 +1,6 @@
-import { defineField, defineType, NumberRule, StringRule, TextRule } from "sanity"
+import { defineField, defineType, NumberRule, StringRule } from "sanity"
 
-export const logos = defineType({
+const logos = defineType({
   name: "logos",
   title: "Logos Section",
   type: "object",
@@ -64,3 +64,5 @@ export const logos = defineType({
     }),
   ],
 })
+
+export default logos

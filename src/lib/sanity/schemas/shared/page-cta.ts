@@ -58,10 +58,9 @@ const pageCta = defineType({
       ],
       validation: (rule) =>
         rule
-          .error("You have to fill in this field.")
           .required()
           .length(2)
-          .error("You have to add exactly 2 actions."),
+          .error("You have to add exactly 2 actions.")
     }),
   ],
   preview: {

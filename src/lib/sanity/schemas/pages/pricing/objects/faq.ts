@@ -2,7 +2,7 @@ import { StringRule, defineField, defineType } from 'sanity';
 
 import { GROUP } from '@/lib/sanity/schemas/shared/group';
 
-export const faq = defineType({
+const faq = defineType({
   name: 'faq',
   title: 'FAQ',
   type: 'object',
@@ -11,15 +11,17 @@ export const faq = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Title *',
+      title: 'Title',
       type: 'string',
       validation: (rule: StringRule) => rule.required().max(40),
     }),
     defineField({
       name: 'accordion',
-      title: 'Accordion *',
+      title: 'Accordion',
       type: 'accordion',
       validation: (rule) => rule.required(),
     }),
   ],
 });
+
+export default faq

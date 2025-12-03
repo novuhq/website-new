@@ -4,7 +4,6 @@ import {
   defineType,
   NumberRule,
   StringRule,
-  TextRule,
 } from "sanity"
 
 import { GROUP } from "@/lib/sanity/schemas/shared/group"
@@ -50,7 +49,6 @@ export const pricingHeroCard = defineType({
                   .required()
                   .min(0)
                   .max(100000)
-                  .positive()
                   .integer()
                   .error(
                     "Price must be a positive integer between 0 and 100000"
@@ -124,7 +122,7 @@ export const pricingHeroCard = defineType({
       name: "description",
       title: "Description",
       type: "string",
-      validation: (rule: TextRule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField({
       name: "details",
@@ -164,7 +162,6 @@ export const pricingHero = defineType({
   title: "Pricing Hero",
   type: "object",
   groups: [{ name: GROUP.content.name }],
-  validation: (rule) => rule.required(),
   fields: [
     defineField({
       name: "title",

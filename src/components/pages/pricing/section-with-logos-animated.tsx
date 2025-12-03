@@ -25,7 +25,7 @@ function splitIntoRows(items: LogoItem[], rows: number) {
         : index % rows
 
     if (targetRow >= 0 && targetRow < rows) {
-      (result[targetRow] as LogoItem[]).push(item)
+      ;(result[targetRow] as LogoItem[]).push(item)
     }
   })
 
@@ -79,12 +79,12 @@ const SectionWithLogosAnimated = ({
   items,
   rows = 1,
 }: Logos & { className?: string }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef(null)
+
   if (!items || items.length === 0 || !title || !rows) {
     return null
   }
-
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef(null)
   const logosLists = splitIntoRows(items, rows)
 
   useEffect(() => {
