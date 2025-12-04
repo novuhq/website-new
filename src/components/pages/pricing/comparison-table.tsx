@@ -8,8 +8,8 @@ import {
 } from "@portabletext/react"
 import { Check, ChevronLeft, ChevronRight, Info } from "lucide-react"
 
-import { Headings, PlanHeading, Plans, Row } from "@/types/pricing"
-import { cn } from "@/lib/utils"
+import { Headings, Plans, Row } from "@/types/pricing"
+import { cn, getText, normalizeString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 import {
@@ -19,24 +19,66 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const portableTextComponents = {
-  marks: {
-    link: ({
-      value,
-      children,
-    }: {
-      value: { href: string; isExternal: boolean }
-      children: React.ReactNode
-    }) => (
-      <Link
-        href={value.href}
-        target={value.isExternal ? "_blank" : undefined}
-        rel={value.isExternal ? "noopener noreferrer" : undefined}
-      >
-        {children}
-      </Link>
-    ),
-  },
+function portableTextComponentsWithCTA(
+  onContactUsClick: (source: string) => void,
+  contactSource: string
+) {
+  const hasHandler = typeof onContactUsClick === "function"
+
+  // Warn developers if contact CTA is rendered without a handler
+  if (!hasHandler && process.env.NODE_ENV === "development") {
+    console.warn(
+      "FeatureList: Contact CTA feature rendered without onContactUsClick handler. " +
+        "Button will be disabled."
+    )
+  }
+
+  return {
+    marks: {
+      link: ({
+        value,
+        children,
+      }: {
+        value: { href: string; isExternal: boolean }
+        children: React.ReactNode
+      }) => {
+        const isContactCTA = getText(children).toLowerCase().includes("contact")
+
+        if (!isContactCTA) {
+          return (
+            <Link
+              href={value.href}
+              target={value.isExternal ? "_blank" : undefined}
+              rel={value.isExternal ? "noopener noreferrer" : undefined}
+            >
+              {children}
+            </Link>
+          )
+        }
+
+        return (
+          <button
+            type="button"
+            disabled={!hasHandler}
+            className={cn(
+              "text-primary",
+              hasHandler
+                ? "cursor-pointer hover:text-primary-muted"
+                : "cursor-not-allowed opacity-50"
+            )}
+            onClick={(e) => {
+              e.preventDefault()
+              if (hasHandler) {
+                onContactUsClick(contactSource || "pricing_table")
+              }
+            }}
+          >
+            {children}
+          </button>
+        )
+      },
+    },
+  }
 }
 
 const getFeaturedPlanId = (headings: Headings) => {
@@ -63,10 +105,32 @@ interface TableHeaderProps {
   planId: string
   isFeatured: boolean
   plansCount: number
+  onContactUsClick: (source: string) => void
 }
 
-function TableHeader({ plan, planId, plansCount }: TableHeaderProps) {
+function TableHeader({
+  plan,
+  planId,
+  plansCount,
+  onContactUsClick,
+}: TableHeaderProps) {
   const { label, isFeatured, buttonUrl, buttonText } = plan || {}
+  const isContactCta = buttonText.trim().toLowerCase().includes("contact")
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isContactCta) {
+      e.preventDefault()
+      // @ts-ignore
+      window?.analytics?.track("Pricing Event: Click Contact Us in the table", {
+        packageType: planId,
+        source: `pricing_table_${normalizeString(planId)}`,
+      })
+      if (onContactUsClick) {
+        onContactUsClick(`pricing_table_${normalizeString(planId)}`)
+      }
+    }
+  }
+
   return (
     <div
       className={cn(
@@ -94,6 +158,18 @@ function TableHeader({ plan, planId, plansCount }: TableHeaderProps) {
             })}
             size="default"
             variant={isFeatured ? "default" : "outline"}
+            onClick={(e) => {
+              handleButtonClick(e)
+              if (!isContactCta) {
+                // @ts-ignore
+                window?.analytics?.track(
+                  "Pricing Event: Click the CTA Button in the table",
+                  {
+                    packageType: planId,
+                  }
+                )
+              }
+            }}
             asChild
           >
             <Link variant="white" className="rounded-sm" href={buttonUrl}>
@@ -114,16 +190,48 @@ interface ITableCellProps {
   feature: Feature
   featureName: string
   planId: string
+  onContactUsClick: (source: string) => void
 }
 
-function TableCell({ feature, featureName, planId }: ITableCellProps) {
-  const value =
-    feature?.value && feature?.value?.length > 0
-      ? feature.value
-      : feature?.booleanValue
+function TableCell({
+  feature,
+  featureName,
+  planId,
+  onContactUsClick,
+}: ITableCellProps) {
+  const value = feature?.value?.length ? feature.value : feature?.booleanValue
+  const contactSource = `pricing_table_${normalizeString(planId)}`
 
   const isBoolean = typeof value === "boolean"
-  const isText = !isBoolean && value !== undefined && value !== null
+  const isText = !isBoolean && value != null
+
+  const renderBoolean = () =>
+    value ? (
+      <Check className="mt-1 text-gray-9" size={14} />
+    ) : (
+      <span className="mt-1 text-gray-9">—</span>
+    )
+
+  const renderContent = () => {
+    if (isBoolean) return renderBoolean()
+
+    if (isText)
+      return (
+        <div className="text-gray-9">
+          <PortableText
+            value={value}
+            components={
+              portableTextComponentsWithCTA(
+                onContactUsClick,
+                contactSource
+              ) as Partial<PortableTextReactComponents>
+            }
+          />
+        </div>
+      )
+
+    return null
+  }
 
   return (
     <div
@@ -131,27 +239,13 @@ function TableCell({ feature, featureName, planId }: ITableCellProps) {
       role="cell"
       aria-label={`${featureName} for ${planId} plan`}
     >
-      {isBoolean &&
-        (value ? (
-          <Check className="mt-1 text-gray-9" size={14} />
-        ) : (
-          <span className="mt-1 text-gray-9">—</span>
-        ))}
-      {isText && (
-        <div className="text-[14px] text-gray-9">
-          <PortableText
-            value={value}
-            components={
-              portableTextComponents as Partial<PortableTextReactComponents>
-            }
-          />
-        </div>
-      )}
+      {renderContent()}
     </div>
   )
 }
 
 interface TableColumnProps {
+  onContactUsClick: (source: string) => void
   planId: string
   totalRows: number
   headings: Headings
@@ -167,6 +261,7 @@ function TableColumn({
   rows,
   isFeatured,
   className,
+  onContactUsClick,
 }: TableColumnProps) {
   return (
     <div
@@ -189,6 +284,7 @@ function TableColumn({
         planId={planId}
         isFeatured={isFeatured}
         plansCount={headings.length}
+        onContactUsClick={onContactUsClick}
       />
 
       {/* All feature rows in correct order - mirror the structure of FeaturesColumn */}
@@ -213,9 +309,10 @@ function TableColumn({
         return (
           <TableCell
             key={`feature-${row.title}-${planId}`}
+            planId={planId}
             feature={feature}
             featureName={row.title}
-            planId={planId}
+            onContactUsClick={onContactUsClick}
           />
         )
       })}
@@ -399,6 +496,7 @@ function ComparisonTable({
   className,
   headings,
   rows,
+  onContactUsClick,
 }: IComparisonTableProps) {
   const planIds = headings.map((h) => h.id)
   const featuredPlanId = getFeaturedPlanId(headings)
@@ -516,6 +614,7 @@ function ComparisonTable({
                   isFeatured={planId === featuredPlanId}
                   rows={rows}
                   headings={headings}
+                  onContactUsClick={onContactUsClick}
                 />
               )
             })}
