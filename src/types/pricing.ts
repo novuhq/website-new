@@ -4,6 +4,7 @@ import { ICtaSection } from "./common"
 export type IPricingHero = {
   title: string
   plans: IPricingHeroCard[]
+  onContactUsClick: (source: string) => void
 }
 
 export type Link = {
@@ -66,6 +67,7 @@ export type Plans = {
   title: string
   headings: Headings
   rows: Row[]
+  onContactUsClick: (source: string) => void
 }
 
 export type Accordion = {
@@ -85,6 +87,7 @@ export type ICtaCard = {
   description?: string
   buttonText: string
   buttonUrl: string | URL
+  onScheduleClick: (source: string) => void
 }
 
 export type LogoItem = {
