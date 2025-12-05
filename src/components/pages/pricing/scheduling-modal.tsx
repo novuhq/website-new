@@ -47,7 +47,7 @@ const SchedulingModal = ({
         const cal = await getCalApi({ namespace: NAMESPACE })
         if (isCancelled) return
 
-        calApiRef.current = cal
+        calApiRef.current = Promise.resolve(cal);
 
         // Configure UI once
         cal("ui", { hideEventTypeDetails: false, layout: "month_view" })
@@ -55,6 +55,7 @@ const SchedulingModal = ({
 
         // Set up event listeners once - they persist across open/close cycles
         cal("on", {
+          // @ts-ignore
           action: "__windowClose",
           callback: () => {
             isCalModalOpenRef.current = false
@@ -160,4 +161,3 @@ const SchedulingModal = ({
 }
 
 export default SchedulingModal
-
