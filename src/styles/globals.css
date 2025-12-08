@@ -133,8 +133,9 @@
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-sans:
-    var(--font-brother-1816), ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "brother-1816", "brother-1816-fallback", ui-sans-serif, system-ui,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -350,5 +351,17 @@
         rgba(46, 37, 83, 0.2) 100%
       ),
       linear-gradient(180deg, #111427 0%, #0f122d 43.27%, #0f1223 100%);
+  }
+
+  /* brother-1816 fallback font */
+  @font-face {
+    font-family: "brother-1816-fallback";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Arial");
+    ascent-override: 106.63%;
+    descent-override: 33.29%;
+    line-gap-override: 0%;
+    size-adjust: 106.35%;
   }
 }
