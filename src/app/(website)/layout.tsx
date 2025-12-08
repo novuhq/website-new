@@ -1,9 +1,9 @@
 import { draftMode } from "next/headers"
 import { Providers } from "@/contexts"
 
-import { brother1816 } from "@/lib/fonts"
 import { getGithubInfo } from "@/lib/get-github-info"
 import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
+import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import MixpanelTracking from "@/components/mixpanel-tracking"
@@ -26,9 +26,10 @@ export default async function RootLayout({
     <>
       <head>
         <Scripts />
+        <Fonts />
       </head>
       <body
-        className={`flex min-h-svh flex-col bg-background ${brother1816.variable} font-sans antialiased`}
+        className={`flex min-h-svh flex-col bg-background font-sans antialiased`}
       >
         <MixpanelTracking />
         <Providers>
