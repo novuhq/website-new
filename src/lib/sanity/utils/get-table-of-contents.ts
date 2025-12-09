@@ -37,6 +37,24 @@ export function getTableOfContents(
       return [...acc, newNavItem]
     }
 
+    if (
+      item.children &&
+      item.children[0]._type === "span" &&
+      ["h2", "h3"].includes(item.children[0].marks[0])
+    ) {
+      const element = item.children[0]
+      const text = element.text
+      const anchor = generateHeadingSlug(text, idCount)
+
+      const newNavItem: ITableOfContentsItem = {
+        title: text,
+        anchor,
+        level: Number(element.marks[0].replace("h", "")),
+      }
+
+      return [...acc, newNavItem]
+    }
+
     return acc
   }, [] as ITableOfContentsItem[])
 }

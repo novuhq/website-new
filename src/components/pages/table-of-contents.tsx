@@ -91,8 +91,8 @@ function TableOfContents({
       </h2>
 
       <ol className="mt-3.5 flex flex-col gap-y-3.5">
-        {items.map(({ title, anchor }) => (
-          <li className="flex" key={anchor}>
+        {items.map(({ title, anchor, level }) => (
+          <li className={cn("flex", level === 3 && "pl-2.5")} key={anchor}>
             <Link
               className={cn(
                 "line-clamp-2 w-fit leading-snug font-normal",

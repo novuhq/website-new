@@ -328,6 +328,42 @@ function getComponents(
           {children}
         </Link>
       ),
+      h2: ({ children }: { children: ReactNode }) => {
+        const id = generateHeadingSlug(
+          extractTextFromChildren(children),
+          uniqueHeadingMap
+        )
+
+        return (
+          <>
+            <Heading tag="h2" id={id}>
+              {children}
+            </Heading>
+            <span
+              className="break pointer-events-none mb-8 block h-0"
+              aria-hidden
+            />
+          </>
+        )
+      },
+      h3: ({ children }: { children: ReactNode }) => {
+        const id = generateHeadingSlug(
+          extractTextFromChildren(children),
+          uniqueHeadingMap
+        )
+
+        return (
+          <>
+            <Heading tag="h3" id={id}>
+              {children}
+            </Heading>
+            <span
+              className="break pointer-events-none mb-4 block h-0"
+              aria-hidden
+            />
+          </>
+        )
+      },
     },
   }
 }
