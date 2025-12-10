@@ -1,6 +1,5 @@
 import NextLink from "next/link"
 import { ChevronRight } from "lucide-react"
-import { div } from "motion/react-m"
 
 import { type TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
