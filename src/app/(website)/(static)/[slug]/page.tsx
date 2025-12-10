@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import config from "@/configs/website-config"
+import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
@@ -10,6 +11,7 @@ import { getExcerpt } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
 import BackToTop from "@/components/pages/back-to-top"
 import Content from "@/components/pages/content"
+import CTA from "@/components/pages/cta"
 import SocialShare from "@/components/pages/social-share"
 import TableOfContents from "@/components/pages/table-of-contents"
 
@@ -74,6 +76,18 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
           </article>
         </div>
       </section>
+      <CTA
+        title="Subscribe to the blog updates"
+        description="Novu's latest articles, right in your inbox. Keep in touch with our news and updates."
+        descriptionClassName="max-w-130 xs:text-wrap"
+        actions={[
+          {
+            kind: "subscription-form",
+            placeholder: "Your email...",
+            buttonText: "Subscribe",
+          },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -340,6 +340,7 @@ function getComponents(
 
         return (
           <Table
+            className="!mb-4"
             table={parsedTable.table}
             type={parsedTable.type}
             theme={parsedTable.theme}
