@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { ThListIcon } from "@sanity/icons"
 import { defineField } from "sanity"
 
 const staticContent = defineField({
@@ -53,6 +54,16 @@ const staticContent = defineField({
               </h3>
             ),
           },
+          {
+            title: "MDX Table",
+            value: "mdxTable",
+            icon: ThListIcon,
+            component: (props: { children: ReactNode }) => (
+              <p style={{ textDecoration: "underline", fontWeight: "medium" }}>
+                {props.children}
+              </p>
+            ),
+          },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
@@ -84,7 +95,6 @@ const staticContent = defineField({
         ],
       },
     },
-    { type: "tableBlock" },
   ],
 })
 

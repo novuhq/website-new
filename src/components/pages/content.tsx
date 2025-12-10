@@ -29,9 +29,11 @@ import {
 import { getProcessedImageUrl } from "@/lib/sanity/utils/get-url-for-image"
 import {
   cn,
+  extractHtmlFromChildren,
   extractTextFromChildren,
   extractYouTubeId,
   generateHeadingSlug,
+  parseMdxTable,
 } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
@@ -328,6 +330,22 @@ function getComponents(
           {children}
         </Link>
       ),
+      mdxTable: ({ children }: { children: ReactNode }) => {
+        const html = extractHtmlFromChildren(children)
+        const parsedTable = parseMdxTable(html)
+
+        if (!parsedTable) {
+          return <div>{children}</div>
+        }
+
+        return (
+          <Table
+            table={parsedTable.table}
+            type={parsedTable.type}
+            theme={parsedTable.theme}
+          />
+        )
+      },
       h2: ({ children }: { children: ReactNode }) => {
         const id = generateHeadingSlug(
           extractTextFromChildren(children),

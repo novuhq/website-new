@@ -180,3 +180,135 @@ export function extractYouTubeId(url: string): string | null {
   )
   return match ? match[1] : null
 }
+
+/**
+ * Extracts HTML string from React children, preserving newlines
+ * @param children - React children to extract HTML from
+ *
+ * @returns HTML string representation of children
+ */
+export function extractHtmlFromChildren(children: React.ReactNode): string {
+  const parts: string[] = []
+
+  Children.toArray(children).forEach((child) => {
+    if (typeof child === "string" || typeof child === "number") {
+      parts.push(child.toString())
+    } else if (isValidElement<React.PropsWithChildren>(child)) {
+      // Check if it has dangerouslySetInnerHTML
+      if (
+        child.props &&
+        "dangerouslySetInnerHTML" in child.props &&
+        typeof child.props.dangerouslySetInnerHTML === "object" &&
+        child.props.dangerouslySetInnerHTML !== null &&
+        "__html" in child.props.dangerouslySetInnerHTML
+      ) {
+        parts.push(
+          String(
+            (child.props.dangerouslySetInnerHTML as { __html: string }).__html
+          )
+        )
+      } else {
+        const childContent = extractHtmlFromChildren(child.props.children)
+        if (childContent) {
+          parts.push(childContent)
+        }
+      }
+    }
+  })
+
+  // Join parts - if we have multiple parts, they might be separate lines
+  // So we join with newline to preserve table structure
+  return parts.join("\n")
+}
+
+/**
+ * Parses an <mdx-table> tag from HTML string and extracts MDX table data
+ * @param html - HTML string containing <mdx-table> tag with MDX/markdown table syntax inside
+ *
+ * @returns Object with type, theme, and parsed table data, or null if not found
+ */
+export function parseMdxTable(html: string): {
+  type: "withTopHeader" | "withoutHeader"
+  theme: "filled" | "outline"
+  table: {
+    rows: {
+      cells: string[]
+    }[]
+  }
+} | null {
+  // Match <mdx-table> tag with attributes
+  const mdxTableMatch = html.match(
+    /<mdx-table\s+([^>]*)>([\s\S]*?)<\/mdx-table>/i
+  )
+
+  if (!mdxTableMatch) {
+    return null
+  }
+
+  const attributes = mdxTableMatch[1]
+  const tableContent = mdxTableMatch[2]
+
+  // Extract type and theme attributes
+  const typeMatch = attributes.match(/type=["']([^"']+)["']/i)
+  const themeMatch = attributes.match(/theme=["']([^"']+)["']/i)
+
+  const type =
+    (typeMatch?.[1] as "withTopHeader" | "withoutHeader") || "withTopHeader"
+  const theme = (themeMatch?.[1] as "filled" | "outline") || "filled"
+
+  // Parse MDX/markdown table syntax
+  // MDX tables look like:
+  // | Header 1 | Header 2 |
+  // |----------|----------|
+  // | Cell 1   | Cell 2   |
+  const rows: { cells: string[] }[] = []
+
+  // Normalize line breaks and split by newlines
+  // Handle various line break formats: \n, \r\n, \r
+  const normalizedContent = tableContent
+    .replace(/\r\n/g, "\n") // Convert \r\n to \n
+    .replace(/\r/g, "\n") // Convert \r to \n
+    .trim()
+
+  const lines = normalizedContent.split("\n")
+
+  for (const line of lines) {
+    const trimmedLine = line.trim()
+
+    // Skip empty lines
+    if (!trimmedLine) {
+      continue
+    }
+
+    // Skip separator rows (lines with dashes like |---|---|)
+    // Match lines that start with |, contain only dashes, colons, spaces, and optionally end with |
+    if (/^\|[\s\-:]+\|?\s*$/.test(trimmedLine)) {
+      continue
+    }
+
+    // Parse row: split by | and filter out empty strings from leading/trailing pipes
+    const cells = trimmedLine
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell.length > 0) // Remove empty cells from leading/trailing |
+
+    if (cells.length === 0) {
+      continue
+    }
+
+    // Skip rows where all cells are just dashes, spaces, or colons (separator rows)
+    // Check if all cells match the pattern of only dashes, spaces, and colons
+    const isSeparatorRow = cells.every((cell) => /^[\s\-:]+$/.test(cell))
+    if (isSeparatorRow) {
+      continue
+    }
+
+    rows.push({ cells })
+  }
+
+  if (rows.length === 0) {
+    return null
+  }
+
+  return { type, theme, table: { rows } }
+}
