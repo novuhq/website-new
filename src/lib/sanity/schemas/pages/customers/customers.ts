@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DocumentIcon } from "@sanity/icons"
 import { ArrayRule, defineField, defineType } from "sanity"
 

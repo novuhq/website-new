@@ -62,7 +62,7 @@ function Picture({
         )}
       </div>
       {caption && (
-        <figcaption className="mx-auto mt-3 max-w-2xl text-center text-sm font-medium tracking-tight text-muted-foreground md:text-base">
+        <figcaption className="mx-auto mt-3 max-w-2xl overflow-hidden text-center text-sm font-medium tracking-tight text-ellipsis text-muted-foreground md:text-base">
           {caption}
         </figcaption>
       )}

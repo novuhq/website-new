@@ -8,6 +8,15 @@ const config = {
   defaultSocialImage: "/social-previews/index.jpg",
   githubOrg: "novuhq",
   githubRepo: "website-new",
+  blog: {
+    postsPerPage: 10,
+    postContentWidth: 704,
+    postCardCoverWidth: 480,
+    featuredPostCount: 4,
+    coverAspectRatio: 16 / 9,
+    contentDir: "src/content/blog",
+    relatedPostsLimit: 3,
+  },
 }
 
 export default config

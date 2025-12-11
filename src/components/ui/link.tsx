@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const linkVariants = cva(
-  "inline-flex items-center gap-x-1.5 rounded transition-[colors,opacity] duration-300 [&_svg]:shrink-0",
+  "inline-flex items-center gap-x-1.5 rounded transition-[color,opacity] duration-300 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -18,6 +18,7 @@ const linkVariants = cva(
         foreground: "text-foreground hover:text-foreground/80",
         ghost: "text-foreground opacity-50 hover:opacity-100",
         "ghost-intense": "text-foreground/90 hover:text-primary",
+        clean: "",
       },
       size: {
         default: "text-base tracking-tighter [&_svg]:size-4",

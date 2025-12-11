@@ -49,7 +49,7 @@
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
 
-  --destructive: 0 62.8% 30.6%;
+  --destructive: 0 60% 50%;
   --ring: 215 90% 81%;
   --chart-1: 220 70% 50%;
   --chart-2: 160 60% 45%;
@@ -137,11 +137,15 @@
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 
+  --font-weight-book: 350;
+
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-logos: logos 60s linear infinite;
   --animate-logos-backward: backward 160s linear infinite;
   --animate-logos-forward: forward 160s linear infinite;
+
+  --leading-dense: 1.125;
 
   --tracking-tighter: -0.02em;
   --tracking-tight: -0.025em;

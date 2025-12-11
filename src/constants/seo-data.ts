@@ -24,4 +24,9 @@ export const SEO_DATA = {
     imagePath: "/social-previews/customers.jpg",
     pathname: ROUTE.customers as string,
   },
+  blog: {
+    title: `Blog`,
+    description: "Stay up to date with the latest updates from Novu",
+    pathname: ROUTE.blog as string,
+  },
 }
