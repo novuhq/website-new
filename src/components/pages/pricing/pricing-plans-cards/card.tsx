@@ -10,7 +10,13 @@ import { IPricingHeroCard } from "@/types/pricing"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 
-const Card = ({ plan }: { plan: IPricingHeroCard }) => {
+const Card = ({
+  plan,
+  onContactUsClick,
+}: {
+  plan: IPricingHeroCard
+  onContactUsClick: (source: string) => void
+}) => {
   const {
     title,
     isFeatured,
@@ -21,6 +27,25 @@ const Card = ({ plan }: { plan: IPricingHeroCard }) => {
     description,
     details,
   } = plan
+  const id = title.toLowerCase()
+  const isContactButton = link.text.toLowerCase().includes("contact")
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isContactButton) {
+      e.preventDefault()
+      // @ts-ignore
+      window?.analytics?.track(
+        "Pricing Event: Click Contact Us on pricing card",
+        {
+          packageType: title,
+          source: `pricing_card_${id}`,
+        }
+      )
+      if (onContactUsClick) {
+        onContactUsClick(`pricing_card_${id}`)
+      }
+    }
+  }
 
   const priceData = price && price.length > 0 ? price[0] : null
   const isNumericPrice = priceData?._type === "numericPrice"
@@ -73,6 +98,7 @@ const Card = ({ plan }: { plan: IPricingHeroCard }) => {
               className="z-20 h-[46px] w-full text-[14px] uppercase"
               size="sm"
               variant={isFeatured ? "default" : "outline"}
+              onClick={handleButtonClick}
               asChild
             >
               <Link
@@ -100,7 +126,7 @@ const Card = ({ plan }: { plan: IPricingHeroCard }) => {
           {details && (
             <div
               className={clsx(
-                'font-book mt-[18px] text-[16px] leading-snug tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[url("/images/check-icon.svg")]',
+                'font-book mt-4.5 text-[16px] leading-snug tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[url("/images/check-icon.svg")]',
                 "[&_li]:text-[15px] [&_li]:before:relative [&_li]:before:top-0.5 [&_li]:before:size-4 [&_ul]:mt-5 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-y-3 [&_ul]:md:mt-3.5 [&_ul]:md:gap-y-[13px] [&_ul]:xl:mt-[18px]",
                 isFeatured
                   ? "text-white [&_li]:before:content-[url('/images/check-icon.svg')]"

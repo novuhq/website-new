@@ -8,7 +8,23 @@ import { ICtaCard } from "@/types/pricing"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-function CtaCard({ text, description, buttonText, buttonUrl }: ICtaCard) {
+function CtaCard({
+  text,
+  description,
+  buttonText,
+  buttonUrl,
+  onScheduleClick,
+}: ICtaCard) {
+  const handleClick = () => {
+    // @ts-ignore
+    window?.analytics?.track("Pricing Event: Click Schedule a Call card", {
+      source: "pricing_table_schedule_card",
+    })
+    onScheduleClick("pricing_table_schedule_card")
+  }
+
+  const isScheduleButton = buttonText.toLowerCase().includes("schedule")
+
   return (
     <section className="mx-auto mt-22 w-full max-w-4xl px-5 md:mt-27.5 md:px-8 lg:mt-32 xl:mt-33.5">
       <div className="relative flex flex-col items-center justify-between gap-x-4 gap-y-6 rounded-xl bg-[linear-gradient(152.16deg,#1C0F1F_0.45%,#141221_98.47%)] p-5 md:flex-row md:px-8 md:py-6">
@@ -49,9 +65,14 @@ function CtaCard({ text, description, buttonText, buttonUrl }: ICtaCard) {
         </div>
         <Button
           className={cn("relative z-20 h-9 w-full rounded md:w-auto")}
+          onClick={handleClick}
           asChild
         >
-          <NextLink href={buttonUrl}>{buttonText}</NextLink>
+          {isScheduleButton ? (
+            buttonText
+          ) : (
+            <NextLink href={buttonUrl}>{buttonText}</NextLink>
+          )}
         </Button>
         <span
           className="absolute inset-0 z-11 rounded-[inherit] border-gradient bg-[radial-gradient(circle_at_top_right,rgba(236,209,250,0.3)_11%,rgba(95,82,122,0.3)_50%,rgba(168,148,209,0.1)_100%)]"
