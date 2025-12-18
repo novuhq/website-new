@@ -5,7 +5,7 @@ import { type TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
-import SubscriptionForm from "@/components/pages/blog/subscription-form"
+import SubscriptionForm from "@/components/ui/subscription-form"
 
 interface IActionGroupProps {
   className?: string

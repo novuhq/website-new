@@ -1,11 +1,10 @@
 import { IStaticPage, IStaticPageWithTableOfContents } from "@/types/static"
 import { sanityFetch } from "@/lib/sanity/client"
-import { getTableOfContents } from "@/lib/sanity/utils/get-table-of-contents"
-
 import {
   staticPageBySlugQuery,
   staticPagesQuery,
-} from "../sanity/queries/static"
+} from "@/lib/sanity/queries/static"
+import { getTableOfContents } from "@/lib/sanity/utils/get-table-of-contents"
 
 const REVALIDATE_STATIC_TAG = "staticPage"
 

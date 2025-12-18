@@ -27,17 +27,26 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
     notFound()
   }
 
+  const {
+    title,
+    content,
+    tableOfContents,
+    publishedAt,
+    seo,
+    slug: staticPageSlug,
+  } = staticPage
+
   // Google Structured Data for Blog Post @see {@link https://developers.google.com/search/docs/appearance/structured-data/article#json-ld}
   // Next.js JSON-LD @see {@link https://nextjs.org/docs/app/guides/json-ld}
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const staticPageUrl = `${siteUrl}/${staticPage.slug.current}`
+  const staticPageUrl = `${siteUrl}/${staticPageSlug.current}`
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: staticPage.seo?.title || staticPage.title,
-    description: staticPage.seo?.description || "",
-    datePublished: staticPage.publishedAt,
+    headline: seo?.title || title,
+    description: seo?.description || "",
+    datePublished: publishedAt,
     url: staticPageUrl,
   }
 
@@ -46,15 +55,15 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
       <section className="content relative z-10">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <article className="grid w-full grid-cols-1 gap-y-8 md:gap-y-10 lg:grid-cols-[auto_16rem] lg:gap-y-14 xl:grid-cols-[16rem_auto_16rem]">
-            <header className="col-start-1 row-start-1 w-full max-w-176 xl:col-start-2">
+            <header className="col-start-1 row-start-1 w-full xl:col-start-2">
               <h1 className="mt-5 text-3xl leading-tight font-semibold tracking-tight text-balance md:text-4xl md:leading-tight lg:text-5xl lg:leading-tight lg:font-medium">
-                {staticPage.title}
+                {title}
               </h1>
             </header>
-            <div className="col-start-1 row-start-2 max-w-176 xl:col-start-2">
+            <div className="col-start-1 row-start-2 xl:col-start-2">
               <Content
                 className="prose-static [&>*:first-child]:mt-0!"
-                content={staticPage.content}
+                content={content}
               />
             </div>
             <Aside
@@ -64,12 +73,12 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
               <TableOfContents
                 className="mt-1.5"
                 title="On this page"
-                items={staticPage.tableOfContents}
+                items={tableOfContents}
               />
               <BackToTop withSeparator />
               <SocialShare
                 className="mt-7"
-                pathname={`/${staticPage.slug.current}`}
+                pathname={`/${staticPageSlug.current}`}
               />
             </Aside>
           </article>
