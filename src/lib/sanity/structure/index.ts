@@ -13,7 +13,7 @@ const structure: StructureResolver = (S, context) =>
       blogStructure(S, context),
       changelogStructure(S, context),
       customersStructure(S, context),
-      pricingStructure(S, context),
+      pricingStructure(S),
       S.divider(),
       S.listItem()
         .title("Authors")
