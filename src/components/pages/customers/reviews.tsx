@@ -11,6 +11,7 @@ function TweetContent({ name, text, logo, tag }: ICustomerTweetData) {
       />
       <div className="mt-auto flex w-full gap-x-3 border-t border-t-[#333347] pt-5 text-start">
         {logo && logo.url && (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             className="h-auto w-9 rounded-full"
             src={logo.url}

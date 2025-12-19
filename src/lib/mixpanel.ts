@@ -26,7 +26,7 @@ export const initMixpanel = (): Promise<void> => {
         track_pageview: false,
       })
       isInitialized = true
-      console.log("Mixpanel initialized successfully")
+      console.info("Mixpanel initialized successfully")
     } catch (error) {
       initPromise = null
       console.error("Failed to initialize Mixpanel:", error)

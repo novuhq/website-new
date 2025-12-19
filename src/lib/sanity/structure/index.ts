@@ -4,6 +4,7 @@ import type { StructureResolver } from "sanity/structure"
 import blogStructure from "./blog"
 import changelogStructure from "./changelog"
 import customersStructure from "./customers"
+import pricingStructure from "./pricing"
 
 const structure: StructureResolver = (S, context) =>
   S.list()
@@ -12,6 +13,7 @@ const structure: StructureResolver = (S, context) =>
       blogStructure(S, context),
       changelogStructure(S, context),
       customersStructure(S, context),
+      pricingStructure(S),
       S.divider(),
       S.listItem()
         .title("Static pages")
