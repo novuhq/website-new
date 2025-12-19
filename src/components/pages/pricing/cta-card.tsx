@@ -16,7 +16,7 @@ function CtaCard({
   onScheduleClick,
 }: ICtaCard) {
   const handleClick = () => {
-    // @ts-ignore
+    // @ts-expect-error analytics is not defined in the global scope
     window?.analytics?.track("Pricing Event: Click Schedule a Call card", {
       source: "pricing_table_schedule_card",
     })

@@ -104,7 +104,7 @@ export const pricingHeroCard = defineType({
           },
         },
       ],
-      validation: (rule: ArrayRule<any>) =>
+      validation: (rule: ArrayRule<{ type: "numericPrice" | "customPrice" }>) =>
         rule.required().max(1).error("Please select only one price type"),
     }),
     defineField({

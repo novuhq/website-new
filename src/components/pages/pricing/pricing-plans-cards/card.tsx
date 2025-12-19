@@ -33,7 +33,7 @@ const Card = ({
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isContactButton) {
       e.preventDefault()
-      // @ts-ignore
+      // @ts-expect-error analytics is not defined in the global scope
       window?.analytics?.track(
         "Pricing Event: Click Contact Us on pricing card",
         {

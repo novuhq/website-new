@@ -1,16 +1,10 @@
 import { DocumentTextIcon, UserIcon } from "@sanity/icons"
-import type {
-  StructureBuilder,
-  StructureResolverContext,
-} from "sanity/structure"
+import type { StructureBuilder } from "sanity/structure"
 
 import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
 import { getStructureDocumentViews } from "@/lib/sanity/utils/get-structure-document-views"
 
-const pricingStructure = (
-  S: StructureBuilder,
-  context: StructureResolverContext
-) =>
+const pricingStructure = (S: StructureBuilder) =>
   S.listItem()
     .title("Pricing")
     .icon(UserIcon)

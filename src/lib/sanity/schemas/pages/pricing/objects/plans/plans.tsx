@@ -122,16 +122,19 @@ export const tableCell = defineType({
                     title: "URL",
                     type: "url",
                     validation: (rule) =>
-                      rule.uri({
-                        allowRelative: true,
-                        scheme: ["http", "https", "mailto", "tel"],
-                      }).required(),
+                      rule
+                        .uri({
+                          allowRelative: true,
+                          scheme: ["http", "https", "mailto", "tel"],
+                        })
+                        .required(),
                   },
                   {
                     name: "isExternal",
                     title: "External Link",
                     type: "boolean",
-                    description: "Check if the link leads to an external resource and should open in a new tab",
+                    description:
+                      "Check if the link leads to an external resource and should open in a new tab",
                     initialValue: false,
                   },
                 ],
@@ -252,7 +255,8 @@ export const plans = defineType({
       title: "Table Headings",
       type: "array",
       of: [{ type: "planHeadingItem" }],
-      description: "Order is important. Add plans in the order they should appear in the table.",
+      description:
+        "Order is important. Add plans in the order they should appear in the table.",
       validation: (rule) =>
         rule
           .required()
@@ -264,7 +268,9 @@ export const plans = defineType({
             }
 
             const requiredIds = ["free", "pro", "team", "enterprise"]
-            const ids = headings.map((h: any) => h?.id).filter(Boolean)
+            const ids = headings
+              .map((h: unknown) => (h as { id?: string })?.id)
+              .filter((id): id is string => Boolean(id))
 
             const uniqueIds = new Set(ids)
             if (ids.length !== uniqueIds.size) {

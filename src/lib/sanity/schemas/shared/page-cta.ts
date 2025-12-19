@@ -1,5 +1,5 @@
 import { BoltIcon } from "@sanity/icons"
-import { ArrayRule, defineField, defineType, StringRule, UrlRule } from "sanity"
+import { defineField, defineType, StringRule } from "sanity"
 
 const pageCta = defineType({
   name: "pageCta",
@@ -57,10 +57,7 @@ const pageCta = defineType({
         },
       ],
       validation: (rule) =>
-        rule
-          .required()
-          .length(2)
-          .error("You have to add exactly 2 actions.")
+        rule.required().length(2).error("You have to add exactly 2 actions."),
     }),
   ],
   preview: {

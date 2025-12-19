@@ -33,8 +33,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     getCategoryBySlug(category, isDraftMode),
   ])
 
-  console.log(categoryData)
-
   if (totalPages === 0 || !categoryData) {
     notFound()
   }

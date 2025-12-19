@@ -60,6 +60,7 @@ const List = ({
           className="flex h-6 w-[106px] shrink-0 items-center justify-center md:h-8 md:w-[140px] lg:h-10 lg:w-[180px]"
           key={item._key || index}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="block h-auto w-max max-w-full"
             src={src}

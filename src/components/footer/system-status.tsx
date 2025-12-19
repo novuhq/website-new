@@ -33,7 +33,7 @@ async function SystemStatus() {
   try {
     allStatuses = await getSystemsStatus()
   } catch (err) {
-    // eslint-disable-next-line no-console
+     
     console.error("Failed to load system status", err)
   }
 

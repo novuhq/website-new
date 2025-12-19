@@ -44,7 +44,7 @@ function portableTextComponentsWithCTA(
             )}
             onClick={(e) => {
               e.preventDefault()
-              // @ts-ignore
+              // @ts-expect-error analytics is not defined in the global scope
               window?.analytics?.track(
                 "Pricing Event: Click Schedule a Call in FAQ",
                 {

@@ -30,9 +30,7 @@ const accordion = defineType({
                   styles: [{ title: "Normal", value: "normal" }],
                   lists: [],
                   marks: {
-                    decorators: [
-                      { title: "Strong", value: "strong" },
-                    ],
+                    decorators: [{ title: "Strong", value: "strong" }],
                     annotations: [
                       {
                         name: "link",
@@ -44,16 +42,19 @@ const accordion = defineType({
                             title: "URL",
                             type: "url",
                             validation: (rule) =>
-                              rule.uri({
-                                allowRelative: true,
-                                scheme: ["http", "https", "mailto", "tel"],
-                              }).required(),
+                              rule
+                                .uri({
+                                  allowRelative: true,
+                                  scheme: ["http", "https", "mailto", "tel"],
+                                })
+                                .required(),
                           },
                           {
                             name: "isExternal",
                             title: "External Link",
                             type: "boolean",
-                            description: "Check if the link leads to an external resource and should open in a new tab",
+                            description:
+                              "Check if the link leads to an external resource and should open in a new tab",
                             initialValue: false,
                           },
                         ],
@@ -74,14 +75,20 @@ const accordion = defineType({
               // Extract text from rich text blocks for preview
               const answerText = answer
                 ? answer
-                    .map((block: any) => 
-                      block._type === 'block' && block.children
-                        ? block.children.map((child: any) => child.text).join('')
-                        : ''
+                    .map(
+                      (block: {
+                        _type: string
+                        children: { text: string }[]
+                      }) =>
+                        block._type === "block" && block.children
+                          ? block.children
+                              .map((child: { text: string }) => child.text)
+                              .join("")
+                          : ""
                     )
-                    .join(' ')
-                : '';
-              
+                    .join(" ")
+                : ""
+
               return {
                 title: question,
                 subtitle: answerText ? `${answerText.substring(0, 60)}...` : "",

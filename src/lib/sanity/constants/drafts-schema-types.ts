@@ -4,7 +4,7 @@ import { ROUTE } from "@/constants/routes"
 /**
  * Enum for SchemaTypes that should display a preview button in the view form
  */
-// eslint-disable-next-line no-shadow
+ 
 export enum DraftsSchemaTypes {
   CHANGELOG_POST = "changelogPost",
   CUSTOMERS = "customers",

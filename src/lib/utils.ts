@@ -190,8 +190,13 @@ export function extractYouTubeId(url: string): string | null {
 export function getText(node: React.ReactNode): string {
   if (typeof node === "string") return node
   if (Array.isArray(node)) return node.map(getText).join("")
-  if (typeof node === "object" && "props" in (node as any)) {
-    return getText((node as any).props.children)
+  if (
+    typeof node === "object" &&
+    "props" in (node as { props: { children: React.ReactNode } })
+  ) {
+    return getText(
+      (node as { props: { children: React.ReactNode } }).props.children
+    )
   }
   return ""
 }
