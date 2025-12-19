@@ -23,6 +23,7 @@ export interface ICustomersGridData {
   name: string
   slug?: ISlug
   url?: string
+  type: "external" | "story"
   logo: ISanityImage
   about: string
   isFeatured: boolean

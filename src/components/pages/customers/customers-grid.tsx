@@ -103,44 +103,50 @@ export default function CustomersGrid({
       </ul>
       <ul className="mx-auto mt-10 grid max-w-186 grid-cols-1 gap-3 px-5 md:grid-cols-2 lg:max-w-250 lg:grid-cols-3 xl:mt-14 xl:max-w-314 xl:grid-cols-4">
         {filteredCustomers.map(
-          ({ _id, name, logo, channelsList, slug, url, about }) => (
-            <article
-              className="relative flex min-h-45 items-center justify-center overflow-hidden rounded-xl border border-[#333347]/50 bg-[#0F0F15]/50 opacity-80 md:min-h-55 lg:min-h-65"
-              key={_id}
-            >
-              <h2 className="sr-only">{name}</h2>
-              <Link
-                href={url ? url : `${ROUTE.customers}/${slug?.current}`}
-                className="peer absolute inset-0 z-20"
+          ({ _id, name, logo, channelsList, type, slug, url, about }) => {
+            const isExternalLink = type === "external"
+            const link = isExternalLink
+              ? url || "#"
+              : `${ROUTE.customers}/${slug?.current || ""}`
+
+            return (
+              <article
+                className="relative flex min-h-45 items-center justify-center overflow-hidden rounded-xl border border-[#333347]/50 bg-[#0F0F15]/50 opacity-80 md:min-h-55 lg:min-h-65"
+                key={_id}
               >
-                <span className="sr-only">
-                  {url
-                    ? "Go to the customers website"
-                    : "Read the customers story"}
-                </span>
-              </Link>
-              <Image
-                className="relative z-10 h-10 w-auto max-w-4/5"
-                src={logo.url}
-                alt=""
-                width={logo.width}
-                height={logo.height}
-                loading="lazy"
-              />
-              {channelsList && channelsList.length > 0 && (
-                <p className="absolute top-3.5 z-10 truncate px-8 text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
-                  <ChannelsList list={channelsList} />
+                <h2 className="sr-only">{name}</h2>
+                <Link href={link} className="peer absolute inset-0 z-20">
+                  <span className="sr-only">
+                    {isExternalLink
+                      ? "Go to the customer's website"
+                      : "Read the customer's story"}
+                  </span>
+                </Link>
+                <Image
+                  className="relative z-10 h-10 w-auto max-w-4/5"
+                  src={logo.url}
+                  alt=""
+                  width={logo.width}
+                  height={logo.height}
+                  loading="lazy"
+                />
+                {channelsList && channelsList.length > 0 && (
+                  <p className="absolute top-3.5 z-10 truncate px-8 text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
+                    <ChannelsList list={channelsList} />
+                  </p>
+                )}
+                <p className="absolute bottom-3.5 z-10 line-clamp-2 px-8 text-center text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
+                  {about}
                 </p>
-              )}
-              <p className="absolute bottom-3.5 z-10 line-clamp-2 px-8 text-center text-sm leading-normal font-light tracking-tighter text-muted-foreground opacity-0 transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100">
-                {about}
-              </p>
-              {!url && <span className="absolute bottom-5 z-10 px-2.5 py-[5px] border border-[#333347] rounded-[12px] bg-[rgb(38,38,52,0.80)] text-center text-[12px] leading-none tracking-tighter text-gray-9 opacity-100 transition-opacity duration-300 peer-hover:opacity-0 peer-focus-visible:opacity-0">
-                Read Story
-              </span>}
-              <div className="absolute top-0 right-0 h-59 w-80 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#344387]/50 opacity-0 blur-3xl transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100" />
-            </article>
-          )
+                {!isExternalLink && (
+                  <span className="absolute bottom-5 z-10 rounded-xl border border-[#333347] bg-[rgb(38,38,52,0.80)] px-2.5 py-[5px] text-center text-[12px] leading-none tracking-tighter text-gray-9 opacity-100 transition-opacity duration-300 peer-hover:opacity-0 peer-focus-visible:opacity-0">
+                    Read Story
+                  </span>
+                )}
+                <div className="absolute top-0 right-0 h-59 w-80 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#344387]/50 opacity-0 blur-3xl transition-opacity duration-300 peer-hover:opacity-100 peer-focus-visible:opacity-100" />
+              </article>
+            )
+          }
         )}
       </ul>
       {allFilteredCustomers.length > shownAmount && (

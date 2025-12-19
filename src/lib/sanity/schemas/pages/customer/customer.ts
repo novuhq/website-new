@@ -79,6 +79,15 @@ export default defineType({
           if (document?.type === "story" && !value) {
             return "Slug is required when link type is story"
           }
+          if (value?.current) {
+            const slugValue = value.current
+            if (
+              slugValue.startsWith("http://") ||
+              slugValue.startsWith("https://")
+            ) {
+              return "Slug cannot be a URL. Please use a slug format like 'my-customer-story'"
+            }
+          }
           return true
         }),
       options: {
