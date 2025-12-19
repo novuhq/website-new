@@ -11,8 +11,15 @@ const ctaBlock = defineType({
       name: "text",
       type: "text",
       title: "Text",
+      rows: 3,
       validation: (rule: StringRule) =>
         rule.error("You have to fill in this field.").required(),
+    }),
+    defineField({
+      name: "description",
+      type: "text",
+      rows: 3,
+      title: "Description",
     }),
     defineField({
       name: "buttonText",

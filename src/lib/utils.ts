@@ -180,3 +180,27 @@ export function extractYouTubeId(url: string): string | null {
   )
   return match ? match[1] : null
 }
+
+/**
+ * Recursively extracts text content from a React node
+ * @param node - React node to extract text from (can be string, array, or React element)
+ *
+ * @returns Plain text string extracted from the node and all its nested children
+ */
+export function getText(node: React.ReactNode): string {
+  if (typeof node === "string") return node
+  if (Array.isArray(node)) return node.map(getText).join("")
+  if (
+    typeof node === "object" &&
+    "props" in (node as { props: { children: React.ReactNode } })
+  ) {
+    return getText(
+      (node as { props: { children: React.ReactNode } }).props.children
+    )
+  }
+  return ""
+}
+
+export function normalizeString(str: string): string {
+  return str.trim().toLowerCase().replace(/\s+/g, "_")
+}

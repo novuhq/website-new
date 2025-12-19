@@ -3,7 +3,7 @@ import bgLg from "@/svgs/shared/cta/background-lg.svg"
 import bgMob from "@/svgs/shared/cta/background-mob.svg"
 import bgSvg from "@/svgs/shared/cta/background.svg"
 
-import { ICtaSection } from "@/types/common"
+import { ICtaSection, TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
 import ActionGroup from "@/components/ui/action-group"
 
@@ -45,10 +45,15 @@ function CTA({
   description,
   actions,
 }: ICTAProps) {
+  const updatedActions = actions.map((action, index) => ({
+    ...action,
+    kind: index === 0 ? "primary-button" : "secondary-button",
+  }))
+
   return (
     <section
       className={cn(
-        "cta relative [overflow-x:clip] pt-37.5 pb-36 md:pt-50.5 md:pb-46.5 lg:pb-50 xl:pt-62.5",
+        "cta relative overflow-x-clip pt-37.5 pb-36 md:pt-50.5 md:pb-46.5 lg:pb-50 xl:pt-62.5",
         className
       )}
     >
@@ -60,7 +65,7 @@ function CTA({
       >
         <h2
           className={cn(
-            "text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px]",
+            "text-[32px] leading-dense font-medium tracking-tighter text-foreground md:text-[44px]",
             titleClassName
           )}
         >
@@ -77,7 +82,7 @@ function CTA({
         {actions && actions.length > 0 && (
           <ActionGroup
             className="mt-6.5 2xs:justify-center md:mt-7.75"
-            actions={actions}
+            actions={updatedActions as TSectionAction[]}
           />
         )}
       </div>
