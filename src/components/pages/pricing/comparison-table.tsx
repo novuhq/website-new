@@ -101,6 +101,7 @@ const getColumnStartClass = (columnIndex: number) => {
   }
 }
 interface TableHeaderProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plan?: any
   planId: string
   isFeatured: boolean
@@ -115,12 +116,14 @@ function TableHeader({
   onContactUsClick,
 }: TableHeaderProps) {
   const { label, isFeatured, buttonUrl, buttonText } = plan || {}
-  const isContactCta = buttonText.trim().toLowerCase().includes("contact")
+  const isContactCta =
+    buttonText?.trim().toLowerCase().includes("contact") ?? false
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isContactCta) {
       e.preventDefault()
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       window?.analytics?.track("Pricing Event: Click Contact Us in the table", {
         packageType: planId,
         source: `pricing_table_${normalizeString(planId)}`,
@@ -161,6 +164,7 @@ function TableHeader({
             onClick={(e) => {
               handleButtonClick(e)
               if (!isContactCta) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 window?.analytics?.track(
                   "Pricing Event: Click the CTA Button in the table",
@@ -235,7 +239,7 @@ function TableCell({
 
   return (
     <div
-      className="relative z-10 flex min-h-11 flex-col items-start gap-y-0.5 border-b border-dashed border-gray-4 py-3 pr-5 pl-4 md:pl-0"
+      className="relative z-10 flex min-h-11 flex-col items-start gap-y-0.5 border-b border-dashed border-gray-4 py-3 pr-5 pl-4 text-sm/normal font-book md:pl-0 [&_a]:text-sm/normal [&_button]:text-sm/normal"
       role="cell"
       aria-label={`${featureName} for ${planId} plan`}
     >
@@ -300,6 +304,7 @@ function TableColumn({
           )
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const planData = row[planId as keyof Row] as any
         const feature = {
           value: planData?.value,
@@ -403,7 +408,7 @@ function FeaturesColumn({
             >
               <span
                 className={cn(
-                  "flex max-w-64 items-center text-base leading-snug font-medium tracking-tight text-gray-10"
+                  "flex max-w-64 items-center text-base leading-normal font-book tracking-tight text-gray-10"
                 )}
               >
                 {row.title}
@@ -548,7 +553,7 @@ function ComparisonTable({
           "max-w-7xl": plansCount > 3,
         })}
       >
-        <h2 className="mb-[52px] text-center text-[32px] leading-tight font-medium tracking-tighter lg:text-[40px] lg:leading-1.125 xl:text-[44px]">
+        <h2 className="mb-[52px] text-center text-[32px] leading-tight font-medium tracking-tighter lg:text-[40px] lg:leading-dense xl:text-[44px]">
           {title}
         </h2>
         <div className="relative overflow-clip pb-[26px]">

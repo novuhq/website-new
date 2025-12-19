@@ -65,7 +65,7 @@ function CTA({
       >
         <h2
           className={cn(
-            "text-[32px] leading-1.125 font-medium tracking-tighter text-foreground md:text-[44px]",
+            "text-[32px] leading-dense font-medium tracking-tighter text-foreground md:text-[44px]",
             titleClassName
           )}
         >

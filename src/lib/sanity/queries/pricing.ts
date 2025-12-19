@@ -1,4 +1,3 @@
-import { ROUTE } from "@/constants/routes"
 import { groq } from "next-sanity"
 
 const linkFields = `

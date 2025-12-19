@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 import { IPricingPageData } from "@/types/pricing"
-import Cta from "@/components/cta"
+import CTA from "@/components/pages/cta"
 import ComparisonTable from "@/components/pages/pricing/comparison-table"
 import CtaCard from "@/components/pages/pricing/cta-card"
 import FAQ from "@/components/pages/pricing/faq"
@@ -38,7 +38,12 @@ function PricingPageContent({ page }: { page: IPricingPageData }) {
         className="mt-13.5 md:mt-22 lg:mt-34 xl:mt-28"
         onScheduleClick={openSchedulingModal}
       />
-      <Cta {...pageCta} className="text-center" />
+      <CTA
+        {...pageCta}
+        className="text-center"
+        containerClassName="max-w-192"
+        descriptionClassName="max-w-176"
+      />
       <SchedulingModal
         key={utmSource}
         isOpen={isSchedulingModalOpen}

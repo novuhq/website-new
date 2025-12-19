@@ -75,18 +75,18 @@ const Card = ({
               <div className="mt-auto flex items-end">
                 {isNumericPrice && (
                   <>
-                    <p className="text-[40px] leading-1.125 tracking-tighter">
+                    <p className="text-[40px] leading-dense tracking-tighter">
                       ${priceData.value}
                     </p>
                     {priceData.paymentPeriod && (
-                      <p className="font-book relative bottom-0.5 ml-1 text-[15px] leading-snug tracking-tighter text-gray-8">
+                      <p className="relative bottom-0.5 ml-1 text-[15px] leading-snug font-book tracking-tighter text-gray-8">
                         / {priceData.paymentPeriod}
                       </p>
                     )}
                   </>
                 )}
                 {isCustomPrice && (
-                  <p className="text-[40px] leading-1.125 tracking-tighter">
+                  <p className="text-[40px] leading-dense tracking-tighter">
                     {priceData.value}
                   </p>
                 )}
@@ -111,12 +111,12 @@ const Card = ({
               </Link>
             </Button>
             {extraInfo && (
-              <p className="font-book absolute inset-x-0 top-[calc(100%+8px)] truncate text-center text-[13px] leading-snug tracking-tighter text-gray-9">
+              <p className="absolute inset-x-0 top-[calc(100%+8px)] truncate text-center text-[13px] leading-snug font-book tracking-tighter text-gray-9">
                 {extraInfo}
               </p>
             )}
           </div>
-          <p className="font-book mt-[46px] text-[16px] leading-snug tracking-tighter text-gray-9 md:min-h-[66px] lg:min-h-[initial] xl:min-h-[66px]">
+          <p className="mt-[46px] text-[16px] leading-snug font-book tracking-tighter text-gray-9 md:min-h-[66px] lg:min-h-[initial] xl:min-h-[66px]">
             {description}
           </p>
           <span
@@ -126,7 +126,7 @@ const Card = ({
           {details && (
             <div
               className={clsx(
-                'font-book mt-4.5 text-[16px] leading-snug tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[url("/images/check-icon.svg")]',
+                'mt-4.5 text-[16px] leading-snug font-book tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[url("/images/check-icon.svg")]',
                 "[&_li]:text-[15px] [&_li]:before:relative [&_li]:before:top-0.5 [&_li]:before:size-4 [&_ul]:mt-5 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-y-3 [&_ul]:md:mt-3.5 [&_ul]:md:gap-y-[13px] [&_ul]:xl:mt-[18px]",
                 isFeatured
                   ? "text-white [&_li]:before:content-[url('/images/check-icon.svg')]"

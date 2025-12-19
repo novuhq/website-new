@@ -86,7 +86,7 @@ const FAQ = ({
       )}
     >
       <div className="container mx-auto max-w-[832px] px-5 md:px-8 lg:max-w-[896px]">
-        <h2 className="text-[32px] leading-1.125 font-medium tracking-tighter text-white md:text-[40px]">
+        <h2 className="text-[32px] leading-dense font-medium tracking-tighter text-white md:text-[40px]">
           {title}
         </h2>
         <ul className="mt-6 divide-y divide-gray-3 border-b border-gray-3 md:mt-[22px]">

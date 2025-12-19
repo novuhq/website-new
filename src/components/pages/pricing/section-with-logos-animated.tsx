@@ -82,11 +82,6 @@ const SectionWithLogosAnimated = ({
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef(null)
 
-  if (!items || items.length === 0 || !title || !rows) {
-    return null
-  }
-  const logosLists = splitIntoRows(items, rows)
-
   useEffect(() => {
     const currentSection = sectionRef.current
     const observer = new IntersectionObserver(
@@ -109,6 +104,11 @@ const SectionWithLogosAnimated = ({
     }
   }, [])
 
+  if (!items || items.length === 0 || !title || !rows) {
+    return null
+  }
+  const logosLists = splitIntoRows(items, rows)
+
   return (
     <section
       ref={sectionRef}
@@ -118,7 +118,7 @@ const SectionWithLogosAnimated = ({
       )}
     >
       <div className="mx-auto flex max-w-6xl flex-col items-center">
-        <h2 className="mx-auto text-center text-[28px] leading-1.125 font-medium tracking-tighter text-balance lg:text-[32px] xl:text-[40px]">
+        <h2 className="mx-auto text-center text-[28px] leading-dense font-medium tracking-tighter text-balance lg:text-[32px] xl:text-[40px]">
           {title}
         </h2>
         {description && (
