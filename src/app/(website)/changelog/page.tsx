@@ -5,9 +5,9 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
-import CTA from "@/components/cta"
 import ChangelogHero from "@/components/pages/changelog/hero"
 import PostsList from "@/components/pages/changelog/posts-list"
+import CTA from "@/components/pages/cta"
 
 const CHANGELOG_POSTS_PER_PAGE = 6
 

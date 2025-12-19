@@ -7,8 +7,8 @@ import { Link } from "@/components/ui/link"
 import { Separator } from "@/components/ui/separator"
 import Content from "@/components/pages/content"
 
+import Authors from "../authors"
 import Date from "../date"
-import Authors from "./authors"
 import Categories from "./categories"
 
 function PostsItem({

@@ -134,7 +134,6 @@ function getComponents(
       detailsToggleBlock: ({
         value: { title, content },
       }: PortableTextComponentProps<IContentDetailsToggle>) => (
-        // @ts-expect-error
         <Details title={title}>
           <Content content={content} />
         </Details>
@@ -181,7 +180,7 @@ function getComponents(
             height: Math.ceil(renderWidth / 1.777),
             quality: 95,
             isSVG: false,
-          }) || `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
+          }) || `https://img.youtube.com/vi/${id}/hqdefault.jpg`
 
         return (
           <YouTubeEmbed
@@ -195,7 +194,7 @@ function getComponents(
             variant={variant}
           >
             <Image
-              className="w-full rounded-lg"
+              className="aspect-video h-auto w-full rounded-lg object-cover"
               src={previewCover}
               alt=""
               width={renderWidth}

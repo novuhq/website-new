@@ -51,7 +51,7 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
 }
 
 function ActionGroup({ actions, className }: IActionGroupProps) {
-  let renderedActions: TSectionAction[] = actions.slice(0, 2)
+  const renderedActions: TSectionAction[] = actions.slice(0, 2)
 
   if (!renderedActions || renderedActions.length === 0) {
     return null

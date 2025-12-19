@@ -1,6 +1,9 @@
 import type { Route } from "next"
 
 export const ROUTE: Record<string, Route<string> | URL> = {
+  // API
+  apiHubspot: "/api/hubspot",
+
   // CURRENT WEBSITE
   changelog: "/changelog",
   customers: "/customers",
@@ -10,6 +13,8 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   // Pages
   index: "/",
   blog: "/blog",
+  blogCategory: "/blog/category",
+  blogRss: "/blog/rss.xml",
   community: "/community",
   contactUs: "/contact-us",
   contributors: "/contributors",

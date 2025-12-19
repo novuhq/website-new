@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 import { type Route } from "next"
+import { PortableTextBlock } from "@portabletext/react"
 import { type BundledLanguage } from "shiki/langs"
 
 import { type TSocialIcons } from "@/components/icons"
@@ -118,4 +119,9 @@ export interface ICtaSection {
   title: string
   description: string | ReactNode
   actions: TSectionAction[]
+}
+
+export interface ITabsBlock {
+  label: string
+  content: PortableTextBlock
 }

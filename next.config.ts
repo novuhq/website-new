@@ -1,7 +1,5 @@
 import type { NextConfig } from "next"
 
-import config from "./src/configs/website-config"
-
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "date-fns"],

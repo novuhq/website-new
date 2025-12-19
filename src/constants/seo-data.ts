@@ -29,4 +29,9 @@ export const SEO_DATA = {
     description: `Flexible pricing for companies and developers`,
     pathname: ROUTE.pricing as string,
   },
+  blog: {
+    title: `Blog`,
+    description: "Stay up to date with the latest updates from Novu",
+    pathname: ROUTE.blog as string,
+  },
 }

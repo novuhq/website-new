@@ -49,7 +49,7 @@ function MobileMenu({ items }: MobileMenuProps) {
       preventScrollRestoration
       modal={false}
     >
-      <DrawerTrigger className="relative ml-4 flex size-6 text-foreground outline-hidden lg:hidden">
+      <DrawerTrigger className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden">
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent

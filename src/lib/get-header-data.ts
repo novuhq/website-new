@@ -1,4 +1,5 @@
 import { ROUTE } from "@/constants/routes"
+import { PortableTextBlock } from "@portabletext/react"
 import { gql, GraphQLClient } from "graphql-request"
 
 import { getLatestChangelogPostData } from "@/lib/changelog"
@@ -18,14 +19,14 @@ const DEFAULT_BLOG_POST = {
   image: "/images/header/illustration-blog.jpg",
 }
 
-function getChangelogCaptionFromContent(content: unknown[]): string {
+function getChangelogCaptionFromContent(content: PortableTextBlock[]): string {
   if (!Array.isArray(content)) return ""
   return content
-    .map((block: any) => {
+    .map((block) => {
       if (block._type === "block" && Array.isArray(block.children)) {
         return block.children
-          .filter((child: any) => typeof child.text === "string")
-          .map((child: any) => child.text)
+          .filter((child) => typeof child.text === "string")
+          .map((child) => child.text)
           .join("")
       }
       return ""

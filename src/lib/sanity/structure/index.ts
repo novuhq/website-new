@@ -1,6 +1,7 @@
 import { TagsIcon, UsersIcon } from "@sanity/icons"
 import type { StructureResolver } from "sanity/structure"
 
+import blogStructure from "./blog"
 import changelogStructure from "./changelog"
 import customersStructure from "./customers"
 import pricingStructure from "./pricing"
@@ -9,6 +10,7 @@ const structure: StructureResolver = (S, context) =>
   S.list()
     .title("Base")
     .items([
+      blogStructure(S, context),
       changelogStructure(S, context),
       customersStructure(S, context),
       pricingStructure(S, context),
