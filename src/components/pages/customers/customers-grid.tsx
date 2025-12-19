@@ -104,23 +104,22 @@ export default function CustomersGrid({
       <ul className="mx-auto mt-10 grid max-w-186 grid-cols-1 gap-3 px-5 md:grid-cols-2 lg:max-w-250 lg:grid-cols-3 xl:mt-14 xl:max-w-314 xl:grid-cols-4">
         {filteredCustomers.map(
           ({ _id, name, logo, channelsList, type, slug, url, about }) => {
-            const isExternalLink = type === "external" && url
+            const isExternalLink = type === "external"
+            const link = isExternalLink
+              ? url || "#"
+              : `${ROUTE.customers}/${slug?.current || ""}`
+
             return (
               <article
                 className="relative flex min-h-45 items-center justify-center overflow-hidden rounded-xl border border-[#333347]/50 bg-[#0F0F15]/50 opacity-80 md:min-h-55 lg:min-h-65"
                 key={_id}
               >
                 <h2 className="sr-only">{name}</h2>
-                <Link
-                  href={
-                    isExternalLink ? url : `${ROUTE.customers}/${slug?.current}`
-                  }
-                  className="peer absolute inset-0 z-20"
-                >
+                <Link href={link} className="peer absolute inset-0 z-20">
                   <span className="sr-only">
                     {isExternalLink
-                      ? "Go to the customers website"
-                      : "Read the customers story"}
+                      ? "Go to the customer's website"
+                      : "Read the customer's story"}
                   </span>
                 </Link>
                 <Image
