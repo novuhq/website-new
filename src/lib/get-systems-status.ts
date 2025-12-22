@@ -95,7 +95,6 @@ export async function getSystemsStatus(): Promise<SystemStatusType[]> {
   )
 
   if (!response.ok) {
-     
     console.error("Failed to fetch systems status")
 
     return []

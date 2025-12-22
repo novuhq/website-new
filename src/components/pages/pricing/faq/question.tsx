@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import clsx from "clsx"
-import { AnimatePresence, motion } from "motion/react"
 import { ChevronDown } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
 
 const ANIMATION_DURATION = 0.3
 
@@ -10,12 +10,18 @@ const variantsAnimation = {
   visible: { height: "auto" },
 }
 
-const Question = ({ question, answer }: { question: string, answer: React.ReactNode }) => {
+const Question = ({
+  question,
+  answer,
+}: {
+  question: string
+  answer: React.ReactNode
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const handleButtonClick = () => {
     setIsOpen((currentState) => !currentState)
   }
-  
+
   return (
     <li>
       <button
@@ -43,7 +49,7 @@ const Question = ({ question, answer }: { question: string, answer: React.ReactN
             exit="hidden"
             transition={{ duration: ANIMATION_DURATION }}
           >
-            <div className="font-book tracking-snug max-w-[752px] pt-2 pb-8 text-[18px] leading-relaxed text-gray-8 sm:mr-7 sm:pb-6 sm:text-[16px] sm:leading-normal md:mr-14 [&_br]:mb-3 [&_br]:block">
+            <div className="tracking-snug max-w-[752px] pt-2 pb-8 text-[18px] leading-relaxed font-book text-gray-8 sm:mr-7 sm:pb-6 sm:text-[16px] sm:leading-normal md:mr-14 [&_br]:mb-3 [&_br]:block">
               {answer}
             </div>
           </motion.div>

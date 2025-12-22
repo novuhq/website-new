@@ -1,3 +1,3 @@
-import { pricingHero, pricingHeroCard } from './hero';
+import { pricingHero, pricingHeroCard } from "./hero"
 
-export default [pricingHero, pricingHeroCard];
+export default [pricingHero, pricingHeroCard]

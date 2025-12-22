@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
     }
 
     if (type === "staticPage") {
-      revalidatePath("/app/(website)/(static)/[slug]")
+      revalidateTag("staticPage")
+      revalidatePath("/(website)/(static)/[slug]")
     }
 
     return NextResponse.json({ body })

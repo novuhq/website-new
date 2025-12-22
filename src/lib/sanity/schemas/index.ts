@@ -10,14 +10,11 @@ import shared from "./shared"
 
 const PAGE_TYPES = [
   ...changelog,
-
   ...customersPage,
-
   ...customer,
   ...blog,
   ...staticPage,
   ...pricing,
-  ...blog,
 ]
 
 const SHARED_TYPES = [...shared]

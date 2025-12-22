@@ -60,7 +60,8 @@ const logos = defineType({
       name: "rows",
       title: "Rows",
       type: "number",
-      validation: (rule: NumberRule) => rule.min(1).max(2).error("Rows must be between 1 and 2"),
+      validation: (rule: NumberRule) =>
+        rule.min(1).max(2).error("Rows must be between 1 and 2"),
     }),
   ],
 })

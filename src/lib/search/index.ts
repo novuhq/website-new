@@ -46,7 +46,8 @@ export async function searchBlogPosts(
       }
 
       // Search in content (first 500 characters for performance)
-      if (portableToPlain(post.content).toLowerCase().includes(searchTerm)) {
+      const contentText = portableToPlain(post.content)
+      if (contentText.substring(0, 500).toLowerCase().includes(searchTerm)) {
         return true
       }
 

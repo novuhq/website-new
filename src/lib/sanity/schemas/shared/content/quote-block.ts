@@ -66,7 +66,7 @@ const quoteBlock = defineType({
       role?: string
     }) {
       const renderedAuthors = authors?.map(({ name }) => name).join(", ")
-       
+
       const truncatedQuote = quote
         ? quote.length > 64
           ? quote.substring(0, 64) + "..."

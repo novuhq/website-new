@@ -158,7 +158,8 @@ export const postBySlugQuery = groq`
 
 export const categoryBySlugQuery = groq`
   *[_type == "blogCategory" && slug.current == $slug][0] {
-    ${postCardFields}
+    title,
+    slug
   }
 `
 

@@ -127,7 +127,7 @@ export async function generateMetadata({
   const { seo } = staticPage
 
   const description =
-    seo.description?.length > 0
+    seo?.description?.length > 0
       ? seo.description
       : getExcerpt({
           content: portableToPlain(staticPage.content),
@@ -135,11 +135,11 @@ export async function generateMetadata({
         })
 
   const metadata = getMetadata({
-    title: `${seo.title} | ${config.projectName}`,
+    title: `${seo.title || staticPage.title} | ${config.projectName}`,
     description: description,
     pathname: `/${staticPage.slug.current}`,
-    imagePath: seo.socialImage,
-    noIndex: seo.noIndex,
+    imagePath: seo?.socialImage,
+    noIndex: seo?.noIndex,
   })
 
   return metadata

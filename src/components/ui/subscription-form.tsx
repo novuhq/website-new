@@ -82,47 +82,56 @@ function SubscriptionForm({
       }
     })
 
-    const response = await fetch(ROUTE.apiHubspot, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        formId: SUBSCRIPTION_FORM_ID,
-        data: {
-          context: {
-            pageUri: window.location.href,
-          },
-          fields: [
-            {
-              objectTypeId: "0-1",
-              name: "email",
-              value: values.email,
-            },
-            ...Object.entries(utmParams).map(([name, value]) => ({
-              objectTypeId: "0-1",
-              name,
-              value,
-            })),
-          ],
+    try {
+      const response = await fetch(ROUTE.apiHubspot, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
+        body: JSON.stringify({
+          formId: SUBSCRIPTION_FORM_ID,
+          data: {
+            context: {
+              pageUri: window.location.href,
+            },
+            fields: [
+              {
+                objectTypeId: "0-1",
+                name: "email",
+                value: values.email,
+              },
+              ...Object.entries(utmParams).map(([name, value]) => ({
+                objectTypeId: "0-1",
+                name,
+                value,
+              })),
+            ],
+          },
+        }),
+      })
 
-    const data = await response.json()
+      if (!response.ok) {
+        throw new Error("Subscription failed")
+      }
 
-    if (data.error) {
-      form.setError("email", { message: data.message })
-      setIsSubmitting(false)
-      return
-    } else {
+      const data = await response.json()
+
+      if (data.error) {
+        form.setError("email", { message: data.message })
+        return
+      }
+
       setIsSuccess(true)
-      setIsSubmitting(false)
-
       setTimeout(() => {
         setIsSuccess(false)
         form.reset()
       }, 3000)
+    } catch (_error) {
+      form.setError("email", {
+        message: "Something went wrong. Please try again.",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 

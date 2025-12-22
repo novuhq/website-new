@@ -16,16 +16,19 @@ const link = defineType({
       title: "URL",
       type: "url",
       validation: (rule) =>
-        rule.uri({
-          allowRelative: true,
-          scheme: ["http", "https", "mailto", "tel"],
-        }).required(),
+        rule
+          .uri({
+            allowRelative: true,
+            scheme: ["http", "https", "mailto", "tel"],
+          })
+          .required(),
     }),
     defineField({
       name: "isExternal",
       title: "External Link",
       type: "boolean",
-      description: "Check if the link leads to an external resource and should open in a new tab",
+      description:
+        "Check if the link leads to an external resource and should open in a new tab",
       initialValue: false,
     }),
     defineField({

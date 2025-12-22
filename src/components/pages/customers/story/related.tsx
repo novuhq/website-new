@@ -1,8 +1,8 @@
+import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
 
 import { ICustomerData } from "@/types/customers"
 import { Link } from "@/components/ui/link"
-import Image from "next/image"
 
 export default function Related({
   customers,
@@ -11,7 +11,7 @@ export default function Related({
 }) {
   return (
     <>
-      <h2 className="text-[28px] font-medium leading-[1.125] tracking-tight md:text-[32px]">
+      <h2 className="text-[28px] leading-[1.125] font-medium tracking-tight md:text-[32px]">
         Read More
       </h2>
       <ul className="flex flex-col overflow-hidden rounded-[8px] border border-gray-3">
@@ -19,7 +19,10 @@ export default function Related({
           if (!customer.slug && !customer.url) return null
 
           return (
-            <li className="border-b border-gray-3 last:border-0" key={customer._id}>
+            <li
+              className="border-b border-gray-3 last:border-0"
+              key={customer._id}
+            >
               <Link
                 className="flex flex-col items-start gap-y-3 p-5 transition-colors duration-200 hover:bg-gray-2"
                 href={

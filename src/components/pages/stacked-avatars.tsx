@@ -63,7 +63,7 @@ function StackedAvatars({
               "mask-[radial-gradient(circle_at_calc(100%+6px)_50%,transparent_50%,black_50%)]",
             {
               "md:mask-[radial-gradient(circle_at_calc(100%+8px)_50%,transparent_50%,black_50%)]":
-                index < avatars.length - 1 && ["lg", "xl"].includes(size),
+                index < avatars.length - 1 && size === "lg",
             },
             imageClassName
           )}
