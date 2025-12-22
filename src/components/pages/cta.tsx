@@ -45,10 +45,16 @@ function CTA({
   description,
   actions,
 }: ICTAProps) {
-  const updatedActions = actions.map((action, index) => ({
-    ...action,
-    kind: index === 0 ? "primary-button" : "secondary-button",
-  }))
+  const updatedActions = actions.map((action, index) => {
+    if (action.kind === "subscription-form") {
+      return action
+    }
+
+    return {
+      ...action,
+      kind: index === 0 ? "primary-button" : "secondary-button",
+    }
+  })
 
   return (
     <section

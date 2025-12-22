@@ -15,11 +15,11 @@ import { getMetadata } from "@/lib/get-metadata"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
+import SubscriptionForm from "@/components/ui/subscription-form"
 import CategoriesList from "@/components/pages/blog/categories-list"
 import FeaturedPost from "@/components/pages/blog/featured-posts"
 import Pagination from "@/components/pages/blog/pagination"
 import PostsList from "@/components/pages/blog/posts-lists"
-import SubscriptionForm from "@/components/pages/blog/subscription-form"
 import CTA from "@/components/pages/cta"
 
 export default async function BlogPage() {

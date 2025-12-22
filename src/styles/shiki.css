@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 html .shiki {
   --shiki-highlighted-line-background: hsla(240, 4%, 15%, 0.8);
   --shiki-removed-line-background: hsla(1, 41%, 20%, 0.9);

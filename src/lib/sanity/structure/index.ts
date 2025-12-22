@@ -1,4 +1,4 @@
-import { TagsIcon, UsersIcon } from "@sanity/icons"
+import { DocumentsIcon, TagsIcon, UsersIcon } from "@sanity/icons"
 import type { StructureResolver } from "sanity/structure"
 
 import blogStructure from "./blog"
@@ -14,6 +14,11 @@ const structure: StructureResolver = (S, context) =>
       changelogStructure(S, context),
       customersStructure(S, context),
       pricingStructure(S),
+      S.divider(),
+      S.listItem()
+        .title("Static pages")
+        .icon(DocumentsIcon)
+        .child(S.documentTypeList("staticPage").title("All Pages")),
       S.divider(),
       S.listItem()
         .title("Authors")

@@ -1,3 +1,3 @@
-import { planHeading, planHeadingItem, plans, row, tableCell } from './plans';
+import { planHeading, planHeadingItem, plans, row, tableCell } from "./plans"
 
-export default [plans, planHeadingItem, row, tableCell, planHeading];
+export default [plans, planHeadingItem, row, tableCell, planHeading]

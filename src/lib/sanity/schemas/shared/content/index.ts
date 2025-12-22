@@ -7,6 +7,7 @@ import dividerBlock from "./divider"
 import iframeBlock from "./iframe-block"
 import noteBlock from "./note-block"
 import quoteBlock from "./quote-block"
+import staticContent from "./static-content"
 import stepBlock from "./steps-block"
 import tableBlock from "./table-block"
 import twitterEmbed from "./twitter-embed"
@@ -26,6 +27,7 @@ const CONTENT_TYPES = [
   noteBlock,
   iframeBlock,
   twitterEmbed,
+  staticContent,
   ...codeTabs,
   ...stepBlock,
 ]

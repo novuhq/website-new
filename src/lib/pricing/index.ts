@@ -1,8 +1,6 @@
 import { IPricingPageData } from "@/types/pricing"
 import { sanityFetch } from "@/lib/sanity/client"
-import {
-  pricingPageQuery,
-} from "@/lib/sanity/queries/pricing"
+import { pricingPageQuery } from "@/lib/sanity/queries/pricing"
 
 const REVALIDATE_PRICING_TAG = ["pricing"]
 

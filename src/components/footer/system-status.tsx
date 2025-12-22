@@ -33,7 +33,6 @@ async function SystemStatus() {
   try {
     allStatuses = await getSystemsStatus()
   } catch (err) {
-     
     console.error("Failed to load system status", err)
   }
 

@@ -4,14 +4,13 @@ import {
 } from "@/types/changelog"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
+  changelogLatestPostQuery,
   changelogPostBySlugQuery,
   changelogPostsByCategoryQuery,
   changelogPostsQuery,
-  changelogLatestPostQuery,
 } from "@/lib/sanity/queries/changelog"
 
 const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
-
 
 export async function getLatestChangelogPostData(
   preview = false

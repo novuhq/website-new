@@ -114,6 +114,7 @@ export type TSectionAction =
   | { kind: "primary-button"; label: string; href: Route<string> | URL }
   | { kind: "secondary-button"; label: string; href: Route<string> | URL }
   | { kind: "link"; label: string; href: Route<string> | URL }
+  | { kind: "subscription-form"; placeholder: string; buttonText: string }
 
 export interface ICtaSection {
   title: string

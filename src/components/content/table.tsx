@@ -66,8 +66,7 @@ function Table({ table, type, theme = "filled", className }: ITableProps) {
       <table
         className={cn(
           "mx-5 w-184 border-separate border-spacing-0 md:mx-0 md:w-full",
-          isFilled &&
-            "overflow-hidden rounded-lg border border-border bg-primary-foreground"
+          isFilled && "overflow-hidden rounded-[0.5rem] border border-gray-2"
         )}
       >
         {type === "withTopHeader" && (
@@ -78,9 +77,9 @@ function Table({ table, type, theme = "filled", className }: ITableProps) {
                   className={cn(
                     defaultCellStyles,
                     "min-w-36 pb-3 leading-snug font-medium",
-                    !isFilled && "border-b border-border pt-0",
+                    !isFilled && "border-b border-gray-2 pt-0",
                     isFilled &&
-                      "border-r border-foreground/10 bg-secondary px-5 pt-3",
+                      "border-r border-b border-gray-2 bg-gray-1 px-5 pt-3",
                     isFilled && index === 0 && "pl-4",
                     isFilled &&
                       index === tableHead[0].cells.length - 1 &&
@@ -102,11 +101,11 @@ function Table({ table, type, theme = "filled", className }: ITableProps) {
                     className={cn(
                       defaultCellStyles,
                       "min-w-36 pr-10",
-                      isFilled && "border-r border-border px-4",
+                      isFilled && "border-r border-gray-2 px-4",
                       cells.length - 1 === collIndex && "pr-0",
-                      index < tableBoby.length - 1 && "border-b border-border",
+                      index < tableBoby.length - 1 && "border-b border-gray-2",
                       index === tableBoby.length - 1 && "border-b-0",
-                      isFilled && collIndex === 0 && "pl-4",
+                      isFilled && collIndex === 0 && "bg-gray-1 font-medium",
                       isFilled &&
                         collIndex === cells.length - 1 &&
                         "border-r-0 pr-4",
