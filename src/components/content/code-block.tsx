@@ -64,6 +64,7 @@ async function CodeBlock({
             `language-${resolvedLanguage}`,
             countLines > 1 ? "py-4" : "py-3.5"
           )}
+          data-1p-ignore
         >
           {parse(html)}
         </div>

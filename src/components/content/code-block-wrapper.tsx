@@ -121,9 +121,10 @@ function CodeBlockWrapper({
   return (
     <Tag
       className={cn(
-        "code-block group h-fit w-full rounded-lg border border-gray-2 bg-background",
+        "code-block group h-fit w-full rounded-lg border border-gray-2 bg-background ",
         className
       )}
+      data-1p-ignore
     >
       {fileName && (
         <div className="border-b border-gray-2 px-4 py-3.5 text-[0.8125rem] leading-none font-medium tracking-tight text-muted-foreground">
