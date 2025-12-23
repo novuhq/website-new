@@ -9,9 +9,9 @@ import {
   changelogPostsQuery,
   changelogLatestPostQuery,
 } from "@/lib/sanity/queries/changelog"
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 
-const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
-
+const REVALIDATE_CHANGELOG_TAG = [REVALIDATION_CONFIG.changelogPost.type]
 
 export async function getLatestChangelogPostData(
   preview = false

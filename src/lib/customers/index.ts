@@ -7,8 +7,9 @@ import {
   customersPageQuery,
   latestCustomersQuery,
 } from "@/lib/sanity/queries/customers"
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 
-const REVALIDATE_CUSTOMERS_TAG = ["customers"]
+const REVALIDATE_CUSTOMERS_TAG = [REVALIDATION_CONFIG.customers.type]
 
 export async function getCustomersPage(
   preview = false

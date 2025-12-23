@@ -9,11 +9,14 @@ import {
   UrlRule,
 } from "sanity"
 
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 import { GROUP } from "@/lib/sanity/schemas/shared/group"
 import { SEO_FIELDS } from "@/lib/sanity/schemas/shared/seo"
 
+const DOC_TYPE_NAME = REVALIDATION_CONFIG.customer.type
+
 export default defineType({
-  name: "customer",
+  name: DOC_TYPE_NAME,
   type: "document",
   title: "Customer",
   icon: UserIcon,

@@ -1,11 +1,15 @@
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { NextResponse, type NextRequest } from "next/server"
 import { parseBody } from "next-sanity/webhook"
 
-const WEBHOOK_TYPES = ["changelogPost", "customers", "customer"] as const
+import {
+  REVALIDATION_CONFIG,
+  WEBHOOK_TYPES,
+  type WebhookType,
+} from "@/lib/revalidation/config"
 
 type WebhookPayload = {
-  _type: (typeof WEBHOOK_TYPES)[number]
+  _type: WebhookType
 }
 
 export async function POST(req: NextRequest) {
@@ -37,13 +41,10 @@ export async function POST(req: NextRequest) {
 
     const type = body._type
 
-    // Revalidate the main tag
-    revalidateTag(type)
+    const config = REVALIDATION_CONFIG[type]
 
-    // When a customer changes, also revalidate the customers page
-    if (type === "customer") {
-      revalidateTag("customers")
-    }
+    config.tags.forEach((tag) => revalidateTag(tag))
+    config.paths?.forEach((path) => revalidatePath(path, "page"))
 
     return NextResponse.json({ body })
   } catch (err) {
