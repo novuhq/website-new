@@ -73,7 +73,16 @@ export async function highlight(
           node.properties["data-language"] = lang
         },
         code(node) {
-          node.properties.class = "grid"
+          // temporary patch until fixing the issue with 1Password Chrome extension
+          // https://www.1password.community/discussions/developers/1password-chrome-extension-is-incorrectly-manipulating--blocks/165639
+          node.tagName = "div"
+          node.properties = {
+            ...node.properties,
+            class: "grid",
+            role: "textbox",
+            "aria-readonly": "true",
+            "aria-label": "Code block",
+          }
         },
         line(node, line) {
           node.properties["data-line"] = line
