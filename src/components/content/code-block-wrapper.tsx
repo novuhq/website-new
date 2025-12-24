@@ -121,7 +121,7 @@ function CodeBlockWrapper({
   return (
     <Tag
       className={cn(
-        "code-block group h-fit w-full rounded-lg border border-gray-2 bg-background ",
+        "code-block group h-fit w-full rounded-lg border border-gray-2 bg-background",
         className
       )}
     >
