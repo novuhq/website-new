@@ -32,7 +32,7 @@ const extractCodeBlocks = (childrenArray: ReactNode[]): ICodeBlock[] => {
       ) {
         const langClass = child.props.children.props.className
         const code = child.props.children.props.children
-        const lang = langClass.replace("language-", "")
+        const lang = langClass.replace("code-block-", "")
         const fileName = child.props.children.props.fileName
         return { language: lang, code, fileName }
       }
