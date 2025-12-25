@@ -38,7 +38,7 @@ async function CodeBlock({
     : null
 
   const resolvedLanguage =
-    childrenElement?.props?.className?.replace("language-", "") ||
+    childrenElement?.props?.className?.replace("code-block-", "") ||
     language ||
     "bash"
 
@@ -61,7 +61,7 @@ async function CodeBlock({
         <div
           className={clsx(
             "px-4 text-left font-mono text-sm",
-            `language-${resolvedLanguage}`,
+            `code-block-${resolvedLanguage}`,
             countLines > 1 ? "py-4" : "py-3.5"
           )}
         >
