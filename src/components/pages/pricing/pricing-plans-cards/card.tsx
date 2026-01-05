@@ -3,12 +3,23 @@ import borderShine from "@/images/pages/pricing/border-shine.svg"
 import dotsPattern from "@/images/pages/pricing/dots-pattern.png"
 import pinkShineInsideCard from "@/images/pages/pricing/pink-shine-inside.svg"
 import stars from "@/images/pages/pricing/stars.png"
-import { PortableText } from "@portabletext/react"
+import { PortableText, PortableTextBlock } from "@portabletext/react"
 import clsx from "clsx"
 
 import { IPricingHeroCard } from "@/types/pricing"
+import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
+
+function filterOutSoc2Details(
+  details: PortableTextBlock[]
+): PortableTextBlock[] {
+  return details.filter((block) => {
+    const plainText = portableToPlain(block).toLowerCase()
+
+    return !plainText.includes("soc2") && !plainText.includes("soc 2")
+  })
+}
 
 const Card = ({
   plan,
@@ -133,7 +144,7 @@ const Card = ({
                   : "text-gray-10 [&_li]:before:content-[url('/images/check-icon-gray.svg')]"
               )}
             >
-              <PortableText value={details} />
+              <PortableText value={filterOutSoc2Details(details)} />
             </div>
           )}
         </div>
