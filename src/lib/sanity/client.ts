@@ -32,7 +32,19 @@ export async function sanityFetch<QueryResponse>({
   preview?: boolean
   tags?: string[]
 }): Promise<QueryResponse> {
-  return getClient(preview).fetch<QueryResponse>(query, qParams, {
+  // For queries with tags (that can be revalidated), bypass Sanity CDN to ensure fresh data
+  const shouldUseCdn = tags.length === 0
+
+  const fetchClient = preview
+    ? previewClient
+    : createClient({
+        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+        apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION,
+        useCdn: shouldUseCdn,
+      })
+
+  return fetchClient.fetch<QueryResponse>(query, qParams, {
     cache: "force-cache",
     next: { tags },
   })
