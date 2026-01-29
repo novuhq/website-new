@@ -2,8 +2,12 @@
 import { DocumentIcon } from "@sanity/icons"
 import { ArrayRule, defineField, defineType } from "sanity"
 
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
+
+const DOC_TYPE_NAME = REVALIDATION_CONFIG.customers.type
+
 export default defineType({
-  name: "customers",
+  name: DOC_TYPE_NAME,
   title: "Customers Page Content",
   type: "document",
   icon: DocumentIcon,

@@ -2,6 +2,7 @@ import {
   IChangelogPostData,
   IChangelogPostWithNeighbors,
 } from "@/types/changelog"
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   changelogLatestPostQuery,
@@ -10,7 +11,7 @@ import {
   changelogPostsQuery,
 } from "@/lib/sanity/queries/changelog"
 
-const REVALIDATE_CHANGELOG_TAG = ["changelogPost"]
+const REVALIDATE_CHANGELOG_TAG = [REVALIDATION_CONFIG.changelogPost.type]
 
 export async function getLatestChangelogPostData(
   preview = false
