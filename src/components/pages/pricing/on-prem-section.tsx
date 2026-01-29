@@ -14,7 +14,7 @@ const INCLUDED_FEATURES = [
 ]
 
 function OnPremSection() {
-  const ctaUrl = "https://go.novu.co/contact?utm_campaign=pricing-widget"
+  const ctaUrl = "https://go.novu.co/intro-call?utm_campaign=pricing-widget-self-host"
 
   return (
     <section className="mx-auto mt-22 w-full max-w-4xl px-5 md:mt-27.5 md:px-8 lg:mt-32 xl:mt-33.5">
