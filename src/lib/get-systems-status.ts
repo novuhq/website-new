@@ -95,7 +95,6 @@ export async function getSystemsStatus(): Promise<SystemStatusType[]> {
   )
 
   if (!response.ok) {
-    // eslint-disable-next-line no-console
     console.error("Failed to fetch systems status")
 
     return []

@@ -8,10 +8,11 @@ interface IAsideProps {
   sticky?: boolean
 }
 
-// TODO: hide scrollbar or add scrollAria
 function Aside({ className, sticky = false, children }: IAsideProps) {
   return (
     <aside
+      role="complementary"
+      aria-label="Page sidebar"
       className={cn(
         "aside -my-10 h-fit max-h-svh overflow-auto py-10",
         !!sticky && "sticky top-[var(--sticky-header-height)]",

@@ -24,6 +24,11 @@ export const SEO_DATA = {
     imagePath: "/social-previews/customers.jpg",
     pathname: ROUTE.customers as string,
   },
+  pricing: {
+    title: `Pricing | ${config.projectName}`,
+    description: `Flexible pricing for companies and developers`,
+    pathname: ROUTE.pricing as string,
+  },
   blog: {
     title: `Blog`,
     description: "Stay up to date with the latest updates from Novu",

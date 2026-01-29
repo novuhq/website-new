@@ -25,13 +25,46 @@ export function getTableOfContents(
       headingLevels.includes(item.style) &&
       (item._type === "block" || !!item.children)
     ) {
+      const children = item.children as { text: string }[]
+      if (!children || children.length === 0) {
+        return acc
+      }
+
       const text = portableToPlain(item)
       const anchor = generateHeadingSlug(text, idCount)
 
       const newNavItem: ITableOfContentsItem = {
-        title: (item.children as { text: string }[])[0].text,
+        title: children[0].text,
         anchor,
         level: Number(item.style.replace("h", "")),
+      }
+
+      return [...acc, newNavItem]
+    }
+
+    if (
+      item.children &&
+      Array.isArray(item.children) &&
+      item.children.length > 0 &&
+      item.children[0]._type === "span" &&
+      item.children[0].marks &&
+      Array.isArray(item.children[0].marks) &&
+      item.children[0].marks.length > 0 &&
+      ["h2", "h3"].includes(item.children[0].marks[0])
+    ) {
+      const element = item.children[0]
+      const text = element.text
+
+      if (!text) {
+        return acc
+      }
+
+      const anchor = generateHeadingSlug(text, idCount)
+
+      const newNavItem: ITableOfContentsItem = {
+        title: text,
+        anchor,
+        level: Number(element.marks[0].replace("h", "")),
       }
 
       return [...acc, newNavItem]

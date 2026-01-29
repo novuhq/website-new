@@ -42,6 +42,7 @@ function Picture({
     <figure className={cn("my-6 md:my-8", className)}>
       <div className={pictureVariants({ variant })}>
         {isGif ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             className="w-full rounded-lg"
             src={cleanSrc}

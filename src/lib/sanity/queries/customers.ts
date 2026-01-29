@@ -21,8 +21,9 @@ const customersCardsFields = `
 const customersGridFields = `
   _id,
   name,
-  slug,
-  url,
+  type,
+  "url": select(type == "external" => url),
+  "slug": select(type == "story" => slug),
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "width": logo.asset->metadata.dimensions.width,

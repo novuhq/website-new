@@ -29,9 +29,11 @@ import {
 import { getProcessedImageUrl } from "@/lib/sanity/utils/get-url-for-image"
 import {
   cn,
+  extractHtmlFromChildren,
   extractTextFromChildren,
   extractYouTubeId,
   generateHeadingSlug,
+  parseMdxTable,
 } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
@@ -328,6 +330,59 @@ function getComponents(
           {children}
         </Link>
       ),
+      mdxTable: ({ children }: { children: ReactNode }) => {
+        const html = extractHtmlFromChildren(children)
+        const parsedTable = parseMdxTable(html)
+
+        if (!parsedTable) {
+          return <div>{children}</div>
+        }
+
+        return (
+          <Table
+            className="!mb-4"
+            table={parsedTable.table}
+            type={parsedTable.type}
+            theme={parsedTable.theme}
+          />
+        )
+      },
+      h2: ({ children }: { children: ReactNode }) => {
+        const id = generateHeadingSlug(
+          extractTextFromChildren(children),
+          uniqueHeadingMap
+        )
+
+        return (
+          <>
+            <Heading tag="h2" id={id}>
+              {children}
+            </Heading>
+            <span
+              className="break pointer-events-none mb-8 block h-0"
+              aria-hidden
+            />
+          </>
+        )
+      },
+      h3: ({ children }: { children: ReactNode }) => {
+        const id = generateHeadingSlug(
+          extractTextFromChildren(children),
+          uniqueHeadingMap
+        )
+
+        return (
+          <>
+            <Heading tag="h3" id={id}>
+              {children}
+            </Heading>
+            <span
+              className="break pointer-events-none mb-4 block h-0"
+              aria-hidden
+            />
+          </>
+        )
+      },
     },
   }
 }

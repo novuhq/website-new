@@ -8,8 +8,8 @@ import { getCategories } from "@/lib/blog"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
+import SubscriptionForm from "@/components/ui/subscription-form"
 import CategoriesList from "@/components/pages/blog/categories-list"
-import SubscriptionForm from "@/components/pages/blog/subscription-form"
 import CTA from "@/components/pages/cta"
 
 export default async function BlogPagesLayout({
