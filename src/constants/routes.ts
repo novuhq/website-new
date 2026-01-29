@@ -32,9 +32,9 @@ export const ROUTE: Record<string, Route<string> | URL> = {
 
   // Dashboard
   dashboard: "https://dashboard.novu.co",
-  dashboardV2: "https://dashboard-v2.novu.co",
-  dashboardV2SignIn: "https://dashboard-v2.novu.co/auth/sign-in",
-  dashboardV2SignUp: "https://dashboard-v2.novu.co/auth/sign-up",
+  dashboardV2: "https://dashboard.novu.co",
+  dashboardV2SignIn: "https://dashboard.novu.co/auth/sign-in",
+  dashboardV2SignUp: "https://dashboard.novu.co/auth/sign-up",
 
   // Other services
   bookMeeting:
