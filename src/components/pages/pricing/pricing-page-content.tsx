@@ -7,6 +7,7 @@ import CTA from "@/components/pages/cta"
 import ComparisonTable from "@/components/pages/pricing/comparison-table"
 import CtaCard from "@/components/pages/pricing/cta-card"
 import FAQ from "@/components/pages/pricing/faq"
+import OnPremSection from "@/components/pages/pricing/on-prem-section"
 import PricingPlansCards from "@/components/pages/pricing/pricing-plans-cards"
 import SchedulingModal from "@/components/pages/pricing/scheduling-modal"
 import SectionWithLogosAnimated from "@/components/pages/pricing/section-with-logos-animated"
@@ -32,6 +33,7 @@ function PricingPageContent({ page }: { page: IPricingPageData }) {
       <PricingPlansCards {...hero} onContactUsClick={openSchedulingModal} />
       <SectionWithLogosAnimated {...logos} />
       <ComparisonTable {...plans} onContactUsClick={openSchedulingModal} />
+      <OnPremSection />
       <CtaCard {...cta} onScheduleClick={openSchedulingModal} />
       <FAQ
         {...faq}
