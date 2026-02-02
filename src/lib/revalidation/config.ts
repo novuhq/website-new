@@ -11,7 +11,7 @@ export const REVALIDATION_TYPES = {
   changelog: {
     types: ["changelogPost"],
     tags: ["changelog"],
-    paths: ["/app/(website)/changelog/[slug]"],
+    paths: ["/app/(website)/changelog", "/app/(website)/changelog/[slug]"],
   },
   customer: {
     types: ["customer"],
