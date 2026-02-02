@@ -11,7 +11,7 @@ import {
   changelogPostsQuery,
 } from "@/lib/sanity/queries/changelog"
 
-const REVALIDATE_CHANGELOG_TAG = [REVALIDATION_CONFIG.changelogPost.type]
+const REVALIDATE_CHANGELOG_TAG = [...REVALIDATION_CONFIG.changelogPost.tags]
 
 export async function getLatestChangelogPostData(
   preview = false
@@ -26,7 +26,7 @@ export async function getLatestChangelogPostData(
 }
 
 /**
- * Fetches all blog posts from Sanity
+ * Fetches all changelog posts from Sanity
  * @param preview - Whether to use preview mode
  *
  * @returns Array of formatted post objects
@@ -44,7 +44,7 @@ export async function getChangelogPosts(
 }
 
 /**
- * Fetches a single post by its slug
+ * Fetches a single changelog post by its slug
  * @param slug - The post slug
  * @param preview - Whether to use preview mode
  *
