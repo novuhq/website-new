@@ -63,12 +63,6 @@ function Scripts() {
         }}
       />
 
-      <Script
-        type="text/javascript"
-        src="//script.crazyegg.com/pages/scripts/0123/1426.js"
-        async
-      />
-
       {/* Plausible */}
       <Script
         defer
