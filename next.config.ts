@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: [
     "eslint",
-    "next-mdx-remote",
     "postcss",
     "prettier",
     "shiki",
