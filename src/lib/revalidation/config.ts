@@ -11,7 +11,7 @@ export const REVALIDATION_TYPES = {
   changelog: {
     types: ["changelogPost"],
     tags: ["changelog"],
-    paths: ["/app/(website)/changelog/[slug]"],
+    paths: ["/app/(website)/changelog", "/app/(website)/changelog/[slug]"],
   },
   customer: {
     types: ["customer"],
@@ -28,12 +28,6 @@ export const REVALIDATION_TYPES = {
     tags: ["staticPage"],
     paths: ["/app/(website)/(static)/[slug]"],
   },
-  //   TODO: remove example with multiple types
-  //   blog: {
-  //     types: ["author", "blogPost", "category"],
-  //     tags: ["blog", "blogPage"],
-  //     paths: ["/app/(website)/blog/[slug]", "/app/(website)/blog"],
-  //   },
 } as const
 
 export const WEBHOOK_TYPES = Object.values(REVALIDATION_TYPES).flatMap(

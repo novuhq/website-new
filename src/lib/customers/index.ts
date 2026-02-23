@@ -9,7 +9,7 @@ import {
 } from "@/lib/sanity/queries/customers"
 import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 
-const REVALIDATE_CUSTOMERS_TAG = [REVALIDATION_CONFIG.customers.type]
+const REVALIDATE_CUSTOMERS_TAG = [...REVALIDATION_CONFIG.customers.tags]
 
 export async function getCustomersPage(
   preview = false
