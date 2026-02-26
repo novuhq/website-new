@@ -83,12 +83,12 @@ export async function generateMetadata({
     return {}
   }
 
-  const { title, caption, cover, seo } = postData.post
+  const { title, caption, cover, seo, pathname } = postData.post
 
   return getMetadata({
     title: seo?.title || title,
     description: seo?.description || caption,
-    pathname: `${ROUTE.changelog}/${postData.post.slug}`,
+    pathname: pathname,
     imagePath: seo?.socialImage || cover,
   })
 }
