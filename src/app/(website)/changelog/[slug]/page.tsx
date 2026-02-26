@@ -3,7 +3,6 @@ import { draftMode } from "next/headers"
 import Image from "next/image"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
-import { ROUTE } from "@/constants/routes"
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
