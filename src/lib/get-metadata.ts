@@ -20,6 +20,14 @@ type Metadata = {
   noIndex?: boolean
 }
 
+function withTrailingSlash(pathname: string) {
+  if (!pathname || pathname === "/") {
+    return "/"
+  }
+
+  return pathname.endsWith("/") ? pathname : `${pathname}/`
+}
+
 /**
  * Generates metadata for Next.js pages including OpenGraph and Twitter card data
  *
@@ -42,7 +50,7 @@ export function getMetadata({
   noIndex = false,
 }: Metadata) {
   const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
-  const canonicalUrl = SITE_URL + pathname
+  const canonicalUrl = SITE_URL + withTrailingSlash(pathname)
   const imageUrl = imagePath.startsWith("http")
     ? imagePath
     : SITE_URL + imagePath
