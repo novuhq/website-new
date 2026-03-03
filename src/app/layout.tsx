@@ -20,7 +20,9 @@ export default function RootLayout({
                 Plain.init({
                   appId: 'liveChatApp_01KJAVQQ5YRKY7NNZDEZV6KHED',
                   hideBranding: true,
-                  threadDetails: { externalId: 'marketing_page' }, 
+                  threadDetails: {
+                    tierIdentifier: { externalId: "marketing_page" },
+                  },
                 });
               };
               script.src = 'https://chat.cdn-plain.com/index.js';
