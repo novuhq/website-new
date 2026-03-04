@@ -101,11 +101,11 @@ export type ICtaCard = {
 
 export type LogoItem = {
   _key: string
-  _type: "logoItem"
+  _type?: "logoItem"
   title?: string
   logo?: {
     asset?: {
-      _id: string
+      _id?: string
       url: string
       metadata?: {
         dimensions?: {
@@ -121,7 +121,7 @@ export type LogoItem = {
 }
 
 export type Logos = {
-  _type: "logos"
+  _type?: "logos"
   title?: string
   description?: string
   items?: LogoItem[]
