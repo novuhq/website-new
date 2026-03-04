@@ -1,19 +1,13 @@
 import { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { SEO_DATA } from "@/constants/seo-data"
+import pricingContent from "@root/content/pricing.json"
 
+import { IPricingPageData } from "@/types/pricing"
 import { getMetadata } from "@/lib/get-metadata"
-import { getPricingPage } from "@/lib/pricing"
 import PricingPageContent from "@/components/pages/pricing/pricing-page-content"
 
 async function PricingPage() {
-  const page = await getPricingPage()
-
-  if (!page) {
-    return notFound()
-  }
-
-  return <PricingPageContent page={page} />
+  return <PricingPageContent page={pricingContent as IPricingPageData} />
 }
 
 export default PricingPage

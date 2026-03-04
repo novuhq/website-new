@@ -3,13 +3,15 @@ import { PortableTextBlock } from "@portabletext/react"
 import { ICtaSection } from "./common"
 
 export type IPricingHero = {
+  _type?: string
   title: string
+  description?: string
   plans: IPricingHeroCard[]
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 export type Link = {
-  _type: "link"
+  _type?: "link"
   text: string
   href: string
   isExternal?: boolean
@@ -17,17 +19,20 @@ export type Link = {
 }
 
 export type NumericPrice = {
+  _key?: string
   _type: "numericPrice"
   value: number
   paymentPeriod: string
 }
 
 export type CustomPrice = {
+  _key?: string
   _type: "customPrice"
   value: string
 }
 
 export type IPricingHeroCard = {
+  _type?: string
   title: string
   textBeforePrice?: string
   description: string
@@ -39,11 +44,13 @@ export type IPricingHeroCard = {
 }
 
 export type TableCell = {
+  _type?: string
   value?: PortableTextBlock[]
   booleanValue?: boolean
 }
 
 export type Row = {
+  _type?: string
   isGroupTitle?: boolean
   tooltip?: PortableTextBlock[]
   title: string
@@ -55,6 +62,7 @@ export type Row = {
 }
 
 export type PlanHeading = {
+  _key?: string
   id: string
   label: string
   isFeatured: boolean
@@ -68,7 +76,7 @@ export type Plans = {
   title: string
   headings: Headings
   rows: Row[]
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 export type Accordion = {
@@ -88,7 +96,7 @@ export type ICtaCard = {
   description?: string
   buttonText: string
   buttonUrl: string | URL
-  onScheduleClick: (source: string) => void
+  onScheduleClick?: (source: string) => void
 }
 
 export type LogoItem = {
@@ -124,7 +132,7 @@ export type IPricingPageData = {
   _type: "pricing"
   _createdAt: string
   _updatedAt: string
-  title: string
+  title: string | null
   hero: IPricingHero
   logos: Logos
   plans: Plans

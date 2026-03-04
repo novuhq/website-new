@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import clsx from "clsx"
 
+import { pricingLogoSrcMap } from "@/images/pages/pricing/logos"
 import { LogoItem, Logos } from "@/types/pricing"
 
 function splitIntoRows(items: LogoItem[], rows: number) {
@@ -50,7 +51,8 @@ const List = ({
     aria-hidden={ariaHidden}
   >
     {items.map((item, index) => {
-      const src = item.logo?.asset?.url
+      const rawSrc = item.logo?.asset?.url
+      const src = rawSrc ? pricingLogoSrcMap[rawSrc] ?? rawSrc : undefined
       const title = item.title
 
       if (!src || !title) return null

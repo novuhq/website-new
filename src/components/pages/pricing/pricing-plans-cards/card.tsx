@@ -15,7 +15,7 @@ const Card = ({
   onContactUsClick,
 }: {
   plan: IPricingHeroCard
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }) => {
   const {
     title,

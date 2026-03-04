@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tooltip"
 
 function portableTextComponentsWithCTA(
-  onContactUsClick: (source: string) => void,
+  onContactUsClick: ((source: string) => void) | undefined,
   contactSource: string
 ) {
   const hasHandler = typeof onContactUsClick === "function"
@@ -106,7 +106,7 @@ interface TableHeaderProps {
   planId: string
   isFeatured: boolean
   plansCount: number
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 function TableHeader({
@@ -194,7 +194,7 @@ interface ITableCellProps {
   feature: Feature
   featureName: string
   planId: string
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 function TableCell({
@@ -249,7 +249,7 @@ function TableCell({
 }
 
 interface TableColumnProps {
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
   planId: string
   totalRows: number
   headings: Headings
