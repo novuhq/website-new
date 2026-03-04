@@ -28,9 +28,7 @@
                 {
                   "_key": "9094f512299d",
                   "_type": "span",
-                  "marks": [
-                    "a2c9ca1ccc45"
-                  ],
+                  "marks": ["a2c9ca1ccc45"],
                   "text": "topic"
                 },
                 {
@@ -87,9 +85,7 @@
                 {
                   "_key": "e119cc8e458c",
                   "_type": "span",
-                  "marks": [
-                    "2594b6832e3a"
-                  ],
+                  "marks": ["2594b6832e3a"],
                   "text": "Schedule a call"
                 }
               ],
@@ -154,7 +150,7 @@
                   "_key": "781901f8bc28",
                   "_type": "span",
                   "marks": [],
-                  "text": "Yes. We offer reduced annual pricing and volume‑based tiers. Enterprise// customers receive custom bundle pricing. Schedule a call"
+                  "text": "Yes. We offer reduced annual pricing and volume‑based tiers. Enterprise customers receive custom bundle pricing. Schedule a call"
                 }
               ],
               "markDefs": [],
@@ -235,9 +231,7 @@
                 {
                   "_key": "a5b847475611",
                   "_type": "span",
-                  "marks": [
-                    "8a51f31be5fc"
-                  ],
+                  "marks": ["8a51f31be5fc"],
                   "text": "Discord"
                 }
               ],
@@ -264,7 +258,7 @@
                   "_key": "3a6fb48ca7b0",
                   "_type": "span",
                   "marks": [],
-                  "text": "Enterprise adds SLAs, advanced compliance and controls, and// deployment options. Schedule a call"
+                  "text": "Enterprise adds SLAs, advanced compliance and controls, and deployment options. Schedule a call"
                 }
               ],
               "markDefs": [],
@@ -282,9 +276,7 @@
                 {
                   "_key": "8df0c5a97957",
                   "_type": "span",
-                  "marks": [
-                    "1838a1c67755"
-                  ],
+                  "marks": ["1838a1c67755"],
                   "text": "The Novu Project"
                 },
                 {
@@ -551,7 +543,7 @@
                 "_key": "2f23a4b1ece7",
                 "_type": "span",
                 "marks": [],
-                "text": "Everything in Free, plus::"
+                "text": "Everything in Free, plus:"
               }
             ],
             "markDefs": [],
@@ -1719,7 +1711,7 @@
                 "_key": "a152f9c723c1",
                 "_type": "span",
                 "marks": [],
-                "text": "For Business tier the the limit can be expanded based on request"
+                "text": "For Business tier the limit can be expanded based on request"
               }
             ],
             "markDefs": [],
@@ -1814,9 +1806,7 @@
               {
                 "_key": "4ea6bc71e57b",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Environments"
               },
               {
@@ -1828,9 +1818,7 @@
               {
                 "_key": "b5c64bcb5809",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Development"
               },
               {
@@ -1842,9 +1830,7 @@
               {
                 "_key": "1c6cdea49e76",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Staging"
               },
               {
@@ -1856,9 +1842,7 @@
               {
                 "_key": "9548d25b0f63",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Production"
               },
               {
@@ -1960,9 +1944,7 @@
               {
                 "_key": "24ce1a320427",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "End-users or recipients"
               },
               {
@@ -2064,9 +2046,7 @@
               {
                 "_key": "8ed53177c39c",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Throughput"
               },
               {
@@ -2078,9 +2058,7 @@
               {
                 "_key": "18befa5d1d32",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "per second"
               },
               {
@@ -2092,9 +2070,7 @@
               {
                 "_key": "bab476c77c1b",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "high-volume applications"
               },
               {
@@ -2106,9 +2082,7 @@
               {
                 "_key": "50bcf29a0600",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "time-sensitive alerts"
               },
               {
@@ -2210,9 +2184,7 @@
               {
                 "_key": "02fb7f05dedf",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Activity feed retention"
               },
               {
@@ -2224,9 +2196,7 @@
               {
                 "_key": "e3aa6a6aaafc",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "review historical notifications"
               },
               {
@@ -2238,9 +2208,7 @@
               {
                 "_key": "fa4812ec6f46",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "debug issues"
               },
               {
@@ -2252,9 +2220,7 @@
               {
                 "_key": "12727ee57c79",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "audit trails"
               },
               {
@@ -2468,9 +2434,7 @@
               {
                 "_key": "0f31888eb1b3",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Aggregates multiple trigger events"
               },
               {
@@ -2482,9 +2446,7 @@
               {
                 "_key": "e5d55b659fb7",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "regular digest"
               },
               {
@@ -2496,9 +2458,7 @@
               {
                 "_key": "ccf960154c38",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "scheduled digest"
               },
               {
@@ -2510,9 +2470,7 @@
               {
                 "_key": "7e9d0adceabd",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "digestKey"
               },
               {
@@ -2630,9 +2588,7 @@
               {
                 "_key": "fd55f58924f2",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "TypeScript SDK"
               },
               {
@@ -2644,9 +2600,7 @@
               {
                 "_key": "6a20b3c0c997",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Type safety"
               },
               {
@@ -2658,9 +2612,7 @@
               {
                 "_key": "dcd79059e3d6",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "version control"
               },
               {
@@ -2672,9 +2624,7 @@
               {
                 "_key": "d6fb47d5a9b6",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "unit testing"
               },
               {
@@ -2686,9 +2636,7 @@
               {
                 "_key": "8eea223e9b8c",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "collaboration"
               },
               {
@@ -2726,9 +2674,7 @@
               {
                 "_key": "ea9f2692bfb4",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Grouping mechanism"
               },
               {
@@ -2740,9 +2686,7 @@
               {
                 "_key": "d2f8a5a6c574",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "announcements"
               },
               {
@@ -2754,9 +2698,7 @@
               {
                 "_key": "b1131fa1c915",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "region-based notifications"
               },
               {
@@ -2768,9 +2710,7 @@
               {
                 "_key": "645ec6e06d16",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "role-based messaging"
               },
               {
@@ -2808,9 +2748,7 @@
               {
                 "_key": "243cda8f4cab",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Multi-tenancy"
               },
               {
@@ -2822,9 +2760,7 @@
               {
                 "_key": "7c6b7586f4b5",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "multiple organizations or teams"
               },
               {
@@ -2836,9 +2772,7 @@
               {
                 "_key": "0e03e0f594a3",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "centralized management"
               },
               {
@@ -2850,9 +2784,7 @@
               {
                 "_key": "02a75cb01565",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "shared infrastructure"
               },
               {
@@ -2896,9 +2828,7 @@
               {
                 "_key": "0e2a8aaf8fff",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Throttle step"
               },
               {
@@ -2910,9 +2840,7 @@
               {
                 "_key": "13d93139ef82",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "duplicate"
               },
               {
@@ -2924,9 +2852,7 @@
               {
                 "_key": "3fe72d9b6296",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "excessive notifications"
               },
               {
@@ -2938,9 +2864,7 @@
               {
                 "_key": "f4d349f24033",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "fixed"
               },
               {
@@ -2952,9 +2876,7 @@
               {
                 "_key": "b2be26ecb660",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "dynamic time windows"
               },
               {
@@ -3014,9 +2936,7 @@
               {
                 "_key": "841dfc7d0fe5",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "pre-built, customizable in-app notification inbox"
               },
               {
@@ -3028,9 +2948,7 @@
               {
                 "_key": "dbcf58504640",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "drop-in UI component"
               },
               {
@@ -3074,9 +2992,7 @@
               {
                 "_key": "1602f157d2dd",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "pre-built UI component"
               },
               {
@@ -3088,9 +3004,7 @@
               {
                 "_key": "1d77d9363d27",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "global preferences"
               },
               {
@@ -3102,9 +3016,7 @@
               {
                 "_key": "c92e4a21787b",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "workflow preferences"
               },
               {
@@ -3142,9 +3054,7 @@
               {
                 "_key": "e303ae3916fa",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "\"Bring your own\" UI components"
               },
               {
@@ -3156,9 +3066,7 @@
               {
                 "_key": "e14c89f484b1",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "custom render props"
               },
               {
@@ -3170,9 +3078,7 @@
               {
                 "_key": "05040854bf33",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "hooks-only access"
               },
               {
@@ -3280,9 +3186,7 @@
               {
                 "_key": "ada7a230a5a7",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "notification data is stored and accessible"
               },
               {
@@ -3294,9 +3198,7 @@
               {
                 "_key": "c12b07955aa2",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "review past notifications"
               },
               {
@@ -3340,9 +3242,7 @@
               {
                 "_key": "d970a7007216",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "WYSIWYG visual editor"
               },
               {
@@ -3354,9 +3254,7 @@
               {
                 "_key": "f50662e9ca70",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "quick prototyping and collaboration with non-technical stakeholders"
               },
               {
@@ -3458,9 +3356,7 @@
               {
                 "_key": "8ef61303775f",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Reusable components"
               },
               {
@@ -3472,9 +3368,7 @@
               {
                 "_key": "3752b7b66533",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "headers, footers, and branding elements"
               },
               {
@@ -3518,9 +3412,7 @@
               {
                 "_key": "ac1146e607e3",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "\"Powered by Novu\""
               },
               {
@@ -3532,9 +3424,7 @@
               {
                 "_key": "56eb0cd8c66b",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "white-labeled experience"
               },
               {
@@ -3796,9 +3686,7 @@
               {
                 "_key": "7438bbf8ac44",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Role-Based Access Control"
               },
               {
@@ -3810,9 +3698,7 @@
               {
                 "_key": "f690d0067221",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Admin"
               },
               {
@@ -3824,9 +3710,7 @@
               {
                 "_key": "5e13eb9d0e3f",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Member"
               },
               {
@@ -3864,9 +3748,7 @@
               {
                 "_key": "8c61328ffe8c",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Enterprise authentication"
               },
               {
@@ -3878,9 +3760,7 @@
               {
                 "_key": "598d4dd44c61",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "SAML SSO and OIDC"
               },
               {
@@ -3934,9 +3814,7 @@
               {
                 "_key": "aa41197cf394",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "General Data Protection Regulation"
               },
               {
@@ -3990,9 +3868,7 @@
               {
                 "_key": "16c4a95cc209",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Business Associate Agreement"
               },
               {
@@ -4110,9 +3986,7 @@
               {
                 "_key": "b1f25655fc04",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Data Processing Agreement (DPA)"
               },
               {
@@ -4346,9 +4220,7 @@
                 {
                   "_key": "9a1613189323",
                   "_type": "span",
-                  "marks": [
-                    "86f8840282ab"
-                  ],
+                  "marks": ["86f8840282ab"],
                   "text": "Contact us"
                 }
               ],
@@ -4415,9 +4287,7 @@
               {
                 "_key": "27da776f9c58",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Cloud-managed SaaS service"
               },
               {
@@ -4429,9 +4299,7 @@
               {
                 "_key": "adfa1813075f",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "advanced security"
               },
               {
@@ -4443,9 +4311,7 @@
               {
                 "_key": "86c928fde32a",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "compliance"
               },
               {
@@ -4483,9 +4349,7 @@
               {
                 "_key": "81b8a4571e52",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Open-source, self-deployable version"
               },
               {
@@ -4497,9 +4361,7 @@
               {
                 "_key": "ca67ff44235f",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Docker Compose, Kubernetes/Helm, or manual installation"
               },
               {
@@ -4537,9 +4399,7 @@
               {
                 "_key": "6320cf7c7475",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Enterprise-grade self-hosted solution"
               },
               {
@@ -4551,9 +4411,7 @@
               {
                 "_key": "7fb052bbbf59",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "auto-translations"
               },
               {
@@ -4565,9 +4423,7 @@
               {
                 "_key": "e921bc004ce1",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "unlimited service levels"
               },
               {
@@ -4579,9 +4435,7 @@
               {
                 "_key": "50832f27a2d3",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "advanced Redis architecture"
               },
               {
@@ -4620,9 +4474,7 @@
               {
                 "_key": "32452c16fe4a",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "Fully managed on-premises deployment"
               },
               {
@@ -4634,9 +4486,7 @@
               {
                 "_key": "ce99b4a35db6",
                 "_type": "span",
-                "marks": [
-                  "strong"
-                ],
+                "marks": ["strong"],
                 "text": "enhanced security, compliance guarantees, and performance SLAs"
               },
               {
