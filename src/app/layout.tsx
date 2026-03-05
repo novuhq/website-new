@@ -20,6 +20,7 @@ export default function RootLayout({
                 Plain.init({
                   appId: 'liveChatApp_01KJAVQQ5YRKY7NNZDEZV6KHED',
                   hideBranding: true,
+                  requireAuthentication: true,
                   threadDetails: {
                     tierIdentifier: { externalId: "marketing_page" },
                   },
