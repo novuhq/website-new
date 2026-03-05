@@ -1,4 +1,4 @@
-import { PortableTextBlock } from "@portabletext/react"
+import { ReactNode } from "react"
 
 import { ICtaSection } from "./common"
 
@@ -40,19 +40,19 @@ export type IPricingHeroCard = {
   price: (NumericPrice | CustomPrice)[]
   link: Link
   extraInfo?: string
-  details: PortableTextBlock[]
+  details: ReactNode
 }
 
 export type TableCell = {
   _type?: string
-  value?: PortableTextBlock[]
+  value?: ReactNode | ((onContactUsClick: (source: string) => void) => ReactNode)
   booleanValue?: boolean
 }
 
 export type Row = {
   _type?: string
   isGroupTitle?: boolean
-  tooltip?: PortableTextBlock[]
+  tooltip?: ReactNode
   title: string
   subtitle?: string
   free?: TableCell
@@ -79,10 +79,14 @@ export type Plans = {
   onContactUsClick?: (source: string) => void
 }
 
+export type FaqAnswer =
+  | ReactNode
+  | ((onScheduleClick: (source: string) => void) => ReactNode)
+
 export type Accordion = {
   items: Array<{
     question: string
-    answer: PortableTextBlock[]
+    answer: FaqAnswer
   }>
 }
 
@@ -128,6 +132,15 @@ export type Logos = {
   rows?: number
 }
 
+export type OnPrem = {
+  badge: string
+  title: string
+  description: string
+  features: string[]
+  buttonText: string
+  buttonUrl: string
+}
+
 export type IPricingPageData = {
   _type: "pricing"
   _createdAt: string
@@ -136,6 +149,7 @@ export type IPricingPageData = {
   hero: IPricingHero
   logos: Logos
   plans: Plans
+  onPrem: OnPrem
   faq: Faq
   cta: ICtaCard
   pageCta: ICtaSection

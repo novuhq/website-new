@@ -3,7 +3,6 @@ import borderShine from "@/images/pages/pricing/border-shine.svg"
 import dotsPattern from "@/images/pages/pricing/dots-pattern.png"
 import pinkShineInsideCard from "@/images/pages/pricing/pink-shine-inside.svg"
 import stars from "@/images/pages/pricing/stars.png"
-import { PortableText } from "@portabletext/react"
 import clsx from "clsx"
 
 import { IPricingHeroCard } from "@/types/pricing"
@@ -133,7 +132,7 @@ const Card = ({
                   : "text-gray-10 [&_li]:before:content-[url('/images/check-icon-gray.svg')]"
               )}
             >
-              <PortableText value={details} />
+              {details}
             </div>
           )}
         </div>

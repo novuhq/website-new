@@ -1,69 +1,9 @@
 "use client"
 
-import { PortableText, PortableTextReactComponents } from "@portabletext/react"
-
 import { Faq } from "@/types/pricing"
-import { cn, getText } from "@/lib/utils"
-import { Link } from "@/components/ui/link"
+import { cn } from "@/lib/utils"
 
 import Question from "./question"
-
-function portableTextComponentsWithCTA(
-  onOpenScheduling: (source: string) => void,
-  faqQuestion: string
-) {
-  return {
-    marks: {
-      link: ({
-        value,
-        children,
-      }: {
-        value: { href: string; isExternal: boolean }
-        children: React.ReactNode
-      }) => {
-        const text = getText(children).toLowerCase()
-        const isSchedule = text.includes("schedule")
-
-        if (!isSchedule) {
-          return (
-            <Link
-              href={value.href}
-              target={value.isExternal ? "_blank" : undefined}
-              rel={value.isExternal ? "noopener noreferrer" : undefined}
-            >
-              {children}
-            </Link>
-          )
-        }
-
-        return (
-          <button
-            type="button"
-            className={cn(
-              "cursor-pointer text-primary hover:text-primary-muted"
-            )}
-            onClick={(e) => {
-              e.preventDefault()
-              // @ts-expect-error analytics is not defined in the global scope
-              window?.analytics?.track(
-                "Pricing Event: Click Schedule a Call in FAQ",
-                {
-                  source: "pricing_faq",
-                  question: faqQuestion,
-                }
-              )
-              if (onOpenScheduling) {
-                onOpenScheduling("pricing_faq")
-              }
-            }}
-          >
-            {children}
-          </button>
-        )
-      },
-    },
-  }
-}
 
 const FAQ = ({
   title,
@@ -95,15 +35,9 @@ const FAQ = ({
               key={question}
               question={question}
               answer={
-                <PortableText
-                  value={answer}
-                  components={
-                    portableTextComponentsWithCTA(
-                      onScheduleClick,
-                      question
-                    ) as Partial<PortableTextReactComponents>
-                  }
-                />
+                typeof answer === "function"
+                  ? answer(onScheduleClick)
+                  : answer
               }
             />
           ))}
