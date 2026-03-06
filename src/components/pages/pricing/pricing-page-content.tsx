@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { IPricingPageData } from "@/types/pricing"
+import { pricingPageData } from "@/data/pages/pricing"
 import CTA from "@/components/pages/cta"
 import ComparisonTable from "@/components/pages/pricing/comparison-table"
 import FAQ from "@/components/pages/pricing/faq"
@@ -11,8 +11,8 @@ import PricingPlansCards from "@/components/pages/pricing/pricing-plans-cards"
 import SchedulingModal from "@/components/pages/pricing/scheduling-modal"
 import SectionWithLogosAnimated from "@/components/pages/pricing/section-with-logos-animated"
 
-function PricingPageContent({ page }: { page: IPricingPageData }) {
-  const { hero, logos, plans, faq, pageCta } = page
+function PricingPageContent() {
+  const { hero, logos, plans, onPrem, faq, pageCta } = pricingPageData
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false)
   const [utmSource, setUtmSource] = useState<string | null>(null)
 
@@ -32,7 +32,7 @@ function PricingPageContent({ page }: { page: IPricingPageData }) {
       <PricingPlansCards {...hero} onContactUsClick={openSchedulingModal} />
       <SectionWithLogosAnimated {...logos} />
       <ComparisonTable {...plans} onContactUsClick={openSchedulingModal} />
-      <OnPremSection />
+      <OnPremSection {...onPrem} />
       <FAQ
         {...faq}
         className="mt-13.5 md:mt-22 lg:mt-34 xl:mt-28"

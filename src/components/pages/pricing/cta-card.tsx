@@ -20,7 +20,7 @@ function CtaCard({
     window?.analytics?.track("Pricing Event: Click Schedule a Call card", {
       source: "pricing_table_schedule_card",
     })
-    onScheduleClick("pricing_table_schedule_card")
+    onScheduleClick?.("pricing_table_schedule_card")
   }
 
   const isScheduleButton = buttonText.toLowerCase().includes("schedule")

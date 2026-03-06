@@ -1,15 +1,10 @@
 "use client"
 
-import React, { useState } from "react"
-import {
-  PortableText,
-  PortableTextBlock,
-  PortableTextReactComponents,
-} from "@portabletext/react"
+import React, { ReactNode, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Info } from "lucide-react"
 
 import { Headings, Plans, Row } from "@/types/pricing"
-import { cn, getText, normalizeString } from "@/lib/utils"
+import { cn, normalizeString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 import {
@@ -18,68 +13,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
-function portableTextComponentsWithCTA(
-  onContactUsClick: (source: string) => void,
-  contactSource: string
-) {
-  const hasHandler = typeof onContactUsClick === "function"
-
-  // Warn developers if contact CTA is rendered without a handler
-  if (!hasHandler && process.env.NODE_ENV === "development") {
-    console.warn(
-      "FeatureList: Contact CTA feature rendered without onContactUsClick handler. " +
-        "Button will be disabled."
-    )
-  }
-
-  return {
-    marks: {
-      link: ({
-        value,
-        children,
-      }: {
-        value: { href: string; isExternal: boolean }
-        children: React.ReactNode
-      }) => {
-        const isContactCTA = getText(children).toLowerCase().includes("contact")
-
-        if (!isContactCTA) {
-          return (
-            <Link
-              href={value.href}
-              target={value.isExternal ? "_blank" : undefined}
-              rel={value.isExternal ? "noopener noreferrer" : undefined}
-            >
-              {children}
-            </Link>
-          )
-        }
-
-        return (
-          <button
-            type="button"
-            disabled={!hasHandler}
-            className={cn(
-              "text-primary",
-              hasHandler
-                ? "cursor-pointer hover:text-primary-muted"
-                : "cursor-not-allowed opacity-50"
-            )}
-            onClick={(e) => {
-              e.preventDefault()
-              if (hasHandler) {
-                onContactUsClick(contactSource || "pricing_table")
-              }
-            }}
-          >
-            {children}
-          </button>
-        )
-      },
-    },
-  }
-}
 
 const getFeaturedPlanId = (headings: Headings) => {
   const featured = headings.find((heading) => heading.isFeatured)
@@ -106,7 +39,7 @@ interface TableHeaderProps {
   planId: string
   isFeatured: boolean
   plansCount: number
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 function TableHeader({
@@ -187,14 +120,14 @@ function TableHeader({
 }
 
 interface Feature {
-  value?: PortableTextBlock[]
+  value?: ReactNode | ((onContactUsClick: (source: string) => void) => ReactNode)
   booleanValue?: boolean
 }
 interface ITableCellProps {
   feature: Feature
   featureName: string
   planId: string
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 function TableCell({
@@ -203,38 +136,29 @@ function TableCell({
   planId,
   onContactUsClick,
 }: ITableCellProps) {
-  const value = feature?.value?.length ? feature.value : feature?.booleanValue
-  const contactSource = `pricing_table_${normalizeString(planId)}`
-
-  const isBoolean = typeof value === "boolean"
-  const isText = !isBoolean && value != null
-
-  const renderBoolean = () =>
-    value ? (
-      <Check className="mt-1 text-gray-9" size={14} />
-    ) : (
-      <span className="mt-1 text-gray-9">—</span>
-    )
+  const rawValue = feature?.value
+  const hasRenderableValue =
+    typeof rawValue === "function" ||
+    (Array.isArray(rawValue) ? rawValue.length > 0 : !!rawValue)
+  const hasBooleanOnly = !hasRenderableValue
+  const booleanValue = feature?.booleanValue
 
   const renderContent = () => {
-    if (isBoolean) return renderBoolean()
-
-    if (isText)
-      return (
-        <div className="text-gray-9">
-          <PortableText
-            value={value}
-            components={
-              portableTextComponentsWithCTA(
-                onContactUsClick,
-                contactSource
-              ) as Partial<PortableTextReactComponents>
-            }
-          />
-        </div>
+    if (hasBooleanOnly) {
+      if (booleanValue == null) return null
+      return booleanValue ? (
+        <Check className="mt-1 text-gray-9" size={14} />
+      ) : (
+        <span className="mt-1 text-gray-9">—</span>
       )
+    }
 
-    return null
+    const resolved =
+      typeof rawValue === "function"
+        ? rawValue(onContactUsClick ?? (() => {}))
+        : rawValue
+
+    return <div className="text-gray-9">{resolved}</div>
   }
 
   return (
@@ -249,7 +173,7 @@ function TableCell({
 }
 
 interface TableColumnProps {
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
   planId: string
   totalRows: number
   headings: Headings
@@ -421,9 +345,7 @@ function FeaturesColumn({
                         </span>
                       </TooltipTrigger>
                       <TooltipContent className="max-w-80 p-4 text-white/80">
-                        <PortableText
-                          value={row.tooltip as PortableTextBlock[]}
-                        />
+                        {row.tooltip}
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

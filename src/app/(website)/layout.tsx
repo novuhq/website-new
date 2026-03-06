@@ -43,6 +43,26 @@ export default async function RootLayout({
             <Footer />
           </div>
         </Providers>
+        <script
+          key="plain-live-chat"
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(d, script) {
+              script = d.createElement('script');
+              script.async = false;
+              script.onload = function(){
+                Plain.init({
+                  appId: 'liveChatApp_01KJAVQQ5YRKY7NNZDEZV6KHED',
+                  hideBranding: true,
+                  threadDetails: { externalId: 'marketing_page' }, 
+                });
+              };
+              script.src = 'https://chat.cdn-plain.com/index.js';
+              d.getElementsByTagName('head')[0].appendChild(script);
+            }(document));
+          `,
+          }}
+        />
         {/* Google Tag Manager noscript */}
         <noscript>
           <iframe
