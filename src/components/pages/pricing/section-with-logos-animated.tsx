@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import clsx from "clsx"
 
-import { pricingLogoSrcMap } from "@/images/pages/pricing/logos"
 import { LogoItem, Logos } from "@/types/pricing"
 
 function splitIntoRows(items: LogoItem[], rows: number) {
@@ -50,28 +49,20 @@ const List = ({
     )}
     aria-hidden={ariaHidden}
   >
-    {items.map((item, index) => {
-      const rawSrc = item.logo?.asset?.url
-      const src = rawSrc ? pricingLogoSrcMap[rawSrc] ?? rawSrc : undefined
-      const title = item.title
-
-      if (!src || !title) return null
-
-      return (
-        <li
-          className="flex h-6 w-[106px] shrink-0 items-center justify-center md:h-8 md:w-[140px] lg:h-10 lg:w-[180px]"
-          key={item._key || index}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="block h-auto w-max max-w-full"
-            src={src}
-            alt={title}
-            loading="lazy"
-          />
-        </li>
-      )
-    })}
+    {items.map((item, index) => (
+      <li
+        className="flex h-6 w-[106px] shrink-0 items-center justify-center md:h-8 md:w-[140px] lg:h-10 lg:w-[180px]"
+        key={item.title || index}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="block h-auto w-max max-w-full"
+          src={typeof item.image === "string" ? item.image : item.image.src}
+          alt={item.title}
+          loading="lazy"
+        />
+      </li>
+    ))}
   </ul>
 )
 
@@ -107,7 +98,7 @@ const SectionWithLogosAnimated = ({
     }
   }, [])
 
-  if (!items || items.length === 0 || !title || !rows) {
+  if (items.length === 0 || !title || !rows) {
     return null
   }
   const logosLists = splitIntoRows(items, rows)

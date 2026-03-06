@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { StaticImageData } from "next/image"
 
 import { ICtaSection } from "./common"
 
@@ -45,7 +46,9 @@ export type IPricingHeroCard = {
 
 export type TableCell = {
   _type?: string
-  value?: ReactNode | ((onContactUsClick: (source: string) => void) => ReactNode)
+  value?:
+    | ReactNode
+    | ((onContactUsClick: (source: string) => void) => ReactNode)
   booleanValue?: boolean
 }
 
@@ -104,31 +107,16 @@ export type ICtaCard = {
 }
 
 export type LogoItem = {
-  _key: string
-  _type?: "logoItem"
-  title?: string
-  logo?: {
-    asset?: {
-      _id?: string
-      url: string
-      metadata?: {
-        dimensions?: {
-          width: number
-          height: number
-        }
-      }
-    }
-    alt?: string
-  }
+  title: string
+  image: string | StaticImageData
   priority?: number
   rowIndex?: number
 }
 
 export type Logos = {
-  _type?: "logos"
-  title?: string
+  title: string
   description?: string
-  items?: LogoItem[]
+  items: LogoItem[]
   rows?: number
 }
 

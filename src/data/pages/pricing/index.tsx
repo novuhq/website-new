@@ -1,4 +1,39 @@
 import React from "react"
+import logoBitmex from "@/images/pages/pricing/logos/bitmex.svg"
+import logoBpp from "@/images/pages/pricing/logos/bpp.svg"
+import logoCheckpoint from "@/images/pages/pricing/logos/checkpoint.svg"
+import logoCloudSoftwareGroup from "@/images/pages/pricing/logos/cloud-software-group.svg"
+import logoDeriv from "@/images/pages/pricing/logos/deriv.svg"
+import logoDocplannerGroup from "@/images/pages/pricing/logos/docplanner-group.svg"
+import logoEbury from "@/images/pages/pricing/logos/ebury.svg"
+import logoElProffen from "@/images/pages/pricing/logos/el-proffen.svg"
+import logoGuesty from "@/images/pages/pricing/logos/guesty.svg"
+import logoHemnet from "@/images/pages/pricing/logos/hemnet.svg"
+import logoInfluencer from "@/images/pages/pricing/logos/influencer.svg"
+import logoJoyride from "@/images/pages/pricing/logos/joyride.svg"
+import logoKantAkademi from "@/images/pages/pricing/logos/kant-akademi.svg"
+import logoKarmacheck from "@/images/pages/pricing/logos/karmacheck.svg"
+import logoKornFerry from "@/images/pages/pricing/logos/korn-ferry.svg"
+import logoLottiefiles from "@/images/pages/pricing/logos/lottiefiles.svg"
+import logoMedvol from "@/images/pages/pricing/logos/medvol.svg"
+import logoMoises from "@/images/pages/pricing/logos/moises.svg"
+import logoMongodb from "@/images/pages/pricing/logos/mongodb.svg"
+import logoNamirial from "@/images/pages/pricing/logos/namirial.svg"
+import logoNep from "@/images/pages/pricing/logos/nep.svg"
+import logoNormative from "@/images/pages/pricing/logos/normative.svg"
+import logoNovacy from "@/images/pages/pricing/logos/novacy.svg"
+import logoQuorumCyber from "@/images/pages/pricing/logos/quorum-cyber.svg"
+import logoRoche from "@/images/pages/pricing/logos/roche.svg"
+import logoSherweb from "@/images/pages/pricing/logos/sherweb.svg"
+import logoSinch from "@/images/pages/pricing/logos/sinch.svg"
+import logoTatilbudur from "@/images/pages/pricing/logos/tatilbudur.svg"
+import logoTenderd from "@/images/pages/pricing/logos/tenderd.svg"
+import logoTrustflight from "@/images/pages/pricing/logos/trustflight.svg"
+import logoUnified from "@/images/pages/pricing/logos/unified.svg"
+import logoUnity from "@/images/pages/pricing/logos/unity.svg"
+import logoUnops from "@/images/pages/pricing/logos/unops.svg"
+import logoWaltonEnterprises from "@/images/pages/pricing/logos/walton-enterprises.svg"
+import logoWhoppah from "@/images/pages/pricing/logos/whoppah.svg"
 
 import type { IPricingPageData } from "@/types/pricing"
 
@@ -229,7 +264,7 @@ export const pricingPageData: IPricingPageData = {
   },
   hero: {
     _type: "pricingHero",
-    description: "Made optional",
+    title: "Flexible pricing for companies and developers",
     plans: [
       {
         _type: "pricingHeroCard",
@@ -372,339 +407,46 @@ export const pricingPageData: IPricingPageData = {
         title: "Enterprise",
       },
     ],
-    title: "Flexible pricing for companies and developers",
   },
   logos: {
     description:
       "Ensuring seamless notifications from business to users, with zero hassle.",
     items: [
-      {
-        _key: "d6ec8d7b1db0",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/guesty.svg",
-          },
-        },
-        priority: 10,
-        rowIndex: 0,
-        title: "Guesty",
-      },
-      {
-        _key: "a33a62b25ec9",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/sinch.svg",
-          },
-        },
-        priority: 10,
-        rowIndex: 0,
-        title: "Sinch",
-      },
-      {
-        _key: "70647d56047b",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/mongodb.svg",
-          },
-        },
-        priority: 10,
-        rowIndex: 1,
-        title: "MongoDB",
-      },
-      {
-        _key: "06c16013b48e",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/bitmex.svg",
-          },
-        },
-        title: "Bitmex",
-      },
-      {
-        _key: "b7e08f1e91eb",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/bpp.svg",
-          },
-        },
-        title: "BPP",
-      },
-      {
-        _key: "25890b6b2a0b",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/checkpoint.svg",
-          },
-        },
-        priority: 9,
-        rowIndex: 1,
-        title: "Checkpoint",
-      },
-      {
-        _key: "30fd9f85f18d",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/cloud-software-group.svg",
-          },
-        },
-        title: "Cloud Software Group",
-      },
-      {
-        _key: "8c767ffb74a0",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/deriv.svg",
-          },
-        },
-        title: "Deriv",
-      },
-      {
-        _key: "ebef3e3684c3",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/docplanner-group.svg",
-          },
-        },
-        title: "Docplanner Group",
-      },
-      {
-        _key: "79e60170dddd",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/ebury.svg",
-          },
-        },
-        title: "Ebury",
-      },
-      {
-        _key: "1b18227b6009",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/el-proffen.svg",
-          },
-        },
-        title: "El Proffen",
-      },
-      {
-        _key: "741523d09635",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/hemnet.svg",
-          },
-        },
-        title: "Hemnet",
-      },
-      {
-        _key: "d69c14d229a8",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/influencer.svg",
-          },
-        },
-        title: "Influencer",
-      },
-      {
-        _key: "6d3059d4810f",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/joyride.svg",
-          },
-        },
-        title: "Joyride",
-      },
-      {
-        _key: "49aea2f48b37",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/kant-akademi.svg",
-          },
-        },
-        title: "Kant Akademi",
-      },
-      {
-        _key: "0678c88c0759",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/karmacheck.svg",
-          },
-        },
-        title: "KarmaCheck",
-      },
-      {
-        _key: "fdfdf2690045",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/korn-ferry.svg",
-          },
-        },
-        priority: 3,
-        rowIndex: 1,
-        title: "Korn Ferry",
-      },
-      {
-        _key: "17489be0036d",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/lottiefiles.svg",
-          },
-        },
-        title: "LottieFiles",
-      },
-      {
-        _key: "6bed4ec00f44",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/medvol.svg",
-          },
-        },
-        title: "MedVol",
-      },
-      {
-        _key: "5a9ba29749b5",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/moises.svg",
-          },
-        },
-        title: "Moises",
-      },
-      {
-        _key: "3c0e4027f98b",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/namirial.svg",
-          },
-        },
-        title: "Namirial",
-      },
-      {
-        _key: "fa4780accfb8",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/nep.svg",
-          },
-        },
-        title: "NEP",
-      },
-      {
-        _key: "5cf7bee22a16",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/normative.svg",
-          },
-        },
-        title: "Normative",
-      },
-      {
-        _key: "50c6a31364d4",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/novacy.svg",
-          },
-        },
-        title: "Novacy",
-      },
-      {
-        _key: "0b36c32bf7e6",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/quorum-cyber.svg",
-          },
-        },
-        title: "Quorum Cyber",
-      },
-      {
-        _key: "c1ad48bdf84b",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/roche.svg",
-          },
-        },
-        priority: 7,
-        rowIndex: 1,
-        title: "Roche",
-      },
-      {
-        _key: "f6b98a36ab00",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/sherweb.svg",
-          },
-        },
-        title: "Sherweb",
-      },
-      {
-        _key: "da4540b57084",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/tatilbudur.svg",
-          },
-        },
-        title: "Tatilbudur",
-      },
-      {
-        _key: "dec6db6fc1d4",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/tenderd.svg",
-          },
-        },
-        title: "Tenderd",
-      },
-      {
-        _key: "56df314f823b",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/trustflight.svg",
-          },
-        },
-        title: "Trustflight",
-      },
-      {
-        _key: "a3b95c1b2191",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/unified.svg",
-          },
-        },
-        title: "Unified",
-      },
-      {
-        _key: "45b866d2d05e",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/unity.svg",
-          },
-        },
-        title: "Unity",
-      },
-      {
-        _key: "218f40e6c324",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/unops.svg",
-          },
-        },
-        title: "UNOPS",
-      },
-      {
-        _key: "55ed4464c870",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/walton-enterprises.svg",
-          },
-        },
-        title: "Walton Enterprises",
-      },
-      {
-        _key: "3be00ec9462d",
-        logo: {
-          asset: {
-            url: "@/images/pages/pricing/logos/whoppah.svg",
-          },
-        },
-        title: "Whoppah",
-      },
+      { title: "Guesty", image: logoGuesty, priority: 10, rowIndex: 0 },
+      { title: "Sinch", image: logoSinch, priority: 10, rowIndex: 0 },
+      { title: "MongoDB", image: logoMongodb, priority: 10, rowIndex: 1 },
+      { title: "Bitmex", image: logoBitmex },
+      { title: "BPP", image: logoBpp },
+      { title: "Checkpoint", image: logoCheckpoint, priority: 9, rowIndex: 1 },
+      { title: "Cloud Software Group", image: logoCloudSoftwareGroup },
+      { title: "Deriv", image: logoDeriv },
+      { title: "Docplanner Group", image: logoDocplannerGroup },
+      { title: "Ebury", image: logoEbury },
+      { title: "El Proffen", image: logoElProffen },
+      { title: "Hemnet", image: logoHemnet },
+      { title: "Influencer", image: logoInfluencer },
+      { title: "Joyride", image: logoJoyride },
+      { title: "Kant Akademi", image: logoKantAkademi },
+      { title: "KarmaCheck", image: logoKarmacheck },
+      { title: "Korn Ferry", image: logoKornFerry, priority: 3, rowIndex: 1 },
+      { title: "LottieFiles", image: logoLottiefiles },
+      { title: "MedVol", image: logoMedvol },
+      { title: "Moises", image: logoMoises },
+      { title: "Namirial", image: logoNamirial },
+      { title: "NEP", image: logoNep },
+      { title: "Normative", image: logoNormative },
+      { title: "Novacy", image: logoNovacy },
+      { title: "Quorum Cyber", image: logoQuorumCyber },
+      { title: "Roche", image: logoRoche, priority: 7, rowIndex: 1 },
+      { title: "Sherweb", image: logoSherweb },
+      { title: "Tatilbudur", image: logoTatilbudur },
+      { title: "Tenderd", image: logoTenderd },
+      { title: "Trustflight", image: logoTrustflight },
+      { title: "Unified", image: logoUnified },
+      { title: "Unity", image: logoUnity },
+      { title: "UNOPS", image: logoUnops },
+      { title: "Walton Enterprises", image: logoWaltonEnterprises },
+      { title: "Whoppah", image: logoWhoppah },
     ],
     rows: 2,
     title: "Notifications brands count on",
