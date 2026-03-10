@@ -20,7 +20,7 @@ function Card({ title, description, href, image, type }: ICardProps) {
         <Image
           className="object-cover"
           src={image}
-          alt=""
+          alt={title}
           loading="eager"
           fetchPriority="high"
           decoding="sync"

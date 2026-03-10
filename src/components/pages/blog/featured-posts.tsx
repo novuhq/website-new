@@ -36,17 +36,16 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
               height={270}
               quality={100}
               sizes="(max-width: 768px) 100vw, 960px"
-              alt=""
+              alt={featuredPost.title}
               priority
             />
-            <span className="sr-only">Read post {featuredPost.title}</span>
           </Link>
           <CategoryAndDate
             className="mt-6 md:hidden"
             category={featuredPost.category}
             publishedAt={featuredPost.publishedAt}
           />
-          <h1 className="mt-3 md:mt-4">
+          <h3 className="mt-3 md:mt-4">
             <Link
               className="line-clamp-3 text-2xl/dense font-medium text-pretty hover:text-gray-9 md:text-[1.75rem] lg:line-clamp-2 lg:text-[2rem]"
               variant="white"
@@ -54,7 +53,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
             >
               {featuredPost.title}
             </Link>
-          </h1>
+          </h3>
           <Authors
             className="mt-4 shrink-0 md:hidden"
             authors={featuredPost.authors}
@@ -78,7 +77,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
                   category={category}
                   publishedAt={publishedAt}
                 />
-                <h1 className="mt-3">
+                <h3 className="mt-3">
                   <Link
                     className="tracking-dense line-clamp-2 text-2xl/dense font-medium text-pretty hover:text-gray-9 md:text-xl/snug"
                     variant="white"
@@ -86,7 +85,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
                   >
                     {title}
                   </Link>
-                </h1>
+                </h3>
                 <Authors
                   className="mt-4 shrink-0 md:mt-3 md:hidden"
                   authors={authors}

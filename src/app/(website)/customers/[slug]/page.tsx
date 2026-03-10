@@ -97,7 +97,7 @@ export default async function CustomerStoryPage({
                 <Image
                   className=""
                   src={cover}
-                  alt="Cover"
+                  alt={`${name} customer story`}
                   sizes="100vw"
                   priority
                   fill

@@ -32,14 +32,14 @@ function PostsItem({
         <Date publishedAt={publishedAt} />
       </p>
       <div className="pt-px lg:max-w-160 xl:pt-0">
-        <h1>
+        <h2>
           <Link
             className="text-[28px] leading-[1.125] font-semibold tracking-[0.014em] !text-foreground transition-colors duration-300 select-text hover:!text-foreground/40 md:text-[30px]"
             href={`${ROUTE.changelog}/${slug.current}`}
           >
             {title}
           </Link>
-        </h1>
+        </h2>
         {caption && (
           <p
             className="mt-3 text-gray-9 xl:pt-px"
@@ -71,7 +71,7 @@ function PostsItem({
           <div className="relative mt-7.75 aspect-video overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image">
             <Image
               src={cover}
-              alt="Cover"
+              alt={`Cover image for ${title}`}
               fill
               sizes="(max-width: 1023px) 100vw, 640px"
             />

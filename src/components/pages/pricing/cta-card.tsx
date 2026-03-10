@@ -38,11 +38,13 @@ function CtaCard({
             src={pinkShine}
             alt=""
             className="absolute top-0 right-0 h-full"
+            aria-hidden
           />
           <Image
             src={dotSurface}
             alt=""
             className="absolute top-0 right-0 max-w-[832px] object-contain"
+            aria-hidden
           />
         </div>
         <div
@@ -84,6 +86,7 @@ function CtaCard({
           width={276}
           height={87}
           alt=""
+          aria-hidden
         />
       </div>
     </section>

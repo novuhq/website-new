@@ -106,7 +106,7 @@ function HeroCard({
         <Image
           className="pointer-events-none relative z-10 h-10 w-auto"
           src={logo.url}
-          alt=""
+          alt={`${name} logo`}
           width={logo.width || 180}
           height={logo.height || 40}
           priority
@@ -171,6 +171,7 @@ function HeroCard({
                 className="pointer-events-none absolute inset-0 hidden h-full w-full rounded-xl select-none sm:block"
                 quality={100}
                 sizes="(max-width: 768px) 100vw, 1180px"
+                aria-hidden
               />
               <Image
                 src={config.glowImage.mobile}
@@ -181,6 +182,7 @@ function HeroCard({
                 className="pointer-events-none absolute inset-0 h-full w-full rounded-xl select-none sm:hidden"
                 quality={100}
                 sizes="(max-width: 768px) 100vw, 640px"
+                aria-hidden
               />
             </>
           )}
