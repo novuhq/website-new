@@ -39,7 +39,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <main>
-      <h1 className="sr-only">Blog - {categoryData.title}</h1>
+      <h2 className="sr-only">Blog - {categoryData.title}</h2>
       <PostsList title={`Posts in ${categoryData.title}`} posts={posts} />
       {totalPages > 1 && (
         <Pagination

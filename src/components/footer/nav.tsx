@@ -10,7 +10,7 @@ interface IFooterNavProps {
 
 function Nav({ className, groups }: IFooterNavProps) {
   return (
-    <nav className={cn("flex flex-wrap gap-5 text-sm", className)}>
+    <nav className={cn("flex flex-wrap gap-5 text-sm", className)} aria-label="Footer navigation">
       <ul className="flex flex-col gap-9.75 md:flex-row md:gap-23 lg:gap-15 xl:gap-39">
         {groups.map(({ title, items }, index) => (
           <li key={index}>

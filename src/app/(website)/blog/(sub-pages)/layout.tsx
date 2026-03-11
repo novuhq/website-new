@@ -23,9 +23,9 @@ export default async function BlogPagesLayout({
   return (
     <div className="relative">
       <main className="relative z-10 mx-auto flex max-w-4xl flex-col px-5 pt-12 md:px-8 md:pt-16 lg:pt-20 xl:pt-24">
-        <p className="max-w-xl text-4xl leading-tight font-medium tracking-tighter text-balance md:text-[3rem] lg:leading-dense">
+        <h1 className="max-w-xl text-4xl leading-tight font-medium tracking-tighter text-balance md:text-[3rem] lg:leading-dense">
           Built with Novu
-        </p>
+        </h1>
         <p className="mt-3 max-w-lg leading-normal font-book tracking-tighter text-pretty text-gray-8">
           Discover ideas, updates, and breakthroughs from the Novu team.
         </p>

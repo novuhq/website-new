@@ -34,7 +34,7 @@ export default function Related({
                 <Image
                   className="relative z-10 h-6 w-auto"
                   src={customer.logo.url}
-                  alt=""
+                  alt={`${customer.title} logo`}
                   width={customer.logo.width}
                   height={customer.logo.height}
                 />

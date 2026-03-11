@@ -25,6 +25,7 @@ function Cta({ text, buttonText, buttonUrl }: IContentCtaBlock) {
           quality={100}
           sizes="(max-width: 768px) 100vw, 704px"
           alt=""
+          aria-hidden
         />
       </div>
       <span
@@ -37,6 +38,7 @@ function Cta({ text, buttonText, buttonUrl }: IContentCtaBlock) {
         width={276}
         height={87}
         alt=""
+        aria-hidden
       />
     </div>
   )

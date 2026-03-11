@@ -146,14 +146,19 @@ function SubscriptionForm({
           name="email"
           render={({ field }) => (
             <FormItem className="static w-full">
+              <label className="sr-only" htmlFor="subscription-email">
+                Email address
+              </label>
               <FormControl>
                 <Input
+                  id="subscription-email"
                   className={cn(
                     "w-full rounded border-none bg-transparent pr-0 pl-3 focus-visible:ring-[none] focus-visible:outline-none",
                     variant === "default" && "h-9.5",
                     variant === "cta" && "h-11.5 placeholder:text-white"
                   )}
                   placeholder={placeholder}
+                  aria-label="Email address"
                   {...field}
                 />
               </FormControl>

@@ -96,6 +96,7 @@ function Nav({ className, items }: IHeaderNavProps) {
   return (
     <nav
       className={cn("relative flex justify-center px-4 xl:mt-1", className)}
+      aria-label="Main navigation"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={handleMouseLeave}
       ref={navRef}
