@@ -69,7 +69,7 @@ function PostHeader({ className, post, backLink }: IPostHeaderProps) {
       <Image
         className="mt-7 h-auto w-full rounded-xl"
         src={cover}
-        alt={title}
+        alt={post.coverAlt || title}
         width={704}
         height={396}
         quality={100}

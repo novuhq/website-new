@@ -31,6 +31,7 @@ export interface IPostData {
   url: Route<string>
   authors: IAuthorData[]
   cover: string
+  coverAlt?: string
   category: ICategoryData
   isFeatured: boolean
   publishedAt: string

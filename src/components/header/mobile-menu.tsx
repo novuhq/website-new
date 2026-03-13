@@ -49,7 +49,7 @@ function MobileMenu({ items }: MobileMenuProps) {
       preventScrollRestoration
       modal={false}
     >
-      <DrawerTrigger className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden">
+      <DrawerTrigger className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden" aria-label="Toggle menu">
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
@@ -64,6 +64,7 @@ function MobileMenu({ items }: MobileMenuProps) {
           <nav
             className="max-h-[calc(100vh-208px)] overflow-x-auto px-5 2xs:max-h-[calc(100vh-162px)] md:px-8"
             ref={scrollRef}
+            aria-label="Mobile navigation"
           >
             <ul>
               {items.map(({ title, content, href }, index) => (
