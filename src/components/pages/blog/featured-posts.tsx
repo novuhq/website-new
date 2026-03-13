@@ -36,7 +36,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
               height={270}
               quality={100}
               sizes="(max-width: 768px) 100vw, 960px"
-              alt={featuredPost.title}
+              alt={featuredPost.coverAlt || featuredPost.title}
               priority
             />
           </Link>

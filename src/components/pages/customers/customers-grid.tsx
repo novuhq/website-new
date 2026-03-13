@@ -125,7 +125,7 @@ export default function CustomersGrid({
                 <Image
                   className="relative z-10 h-10 w-auto max-w-4/5"
                   src={logo.url}
-                  alt={`${name} logo`}
+                  alt={logo.alt || `${name} logo`}
                   width={logo.width}
                   height={logo.height}
                   loading="lazy"

@@ -22,6 +22,7 @@ export interface IChangelogPostData {
   pathname: string
   authors: IAuthorData[]
   cover?: string
+  coverAlt?: string
   categories?: IChangelogCategoryData[]
   isFeatured: boolean
   publishedAt: string

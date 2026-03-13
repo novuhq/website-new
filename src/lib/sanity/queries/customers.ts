@@ -11,7 +11,8 @@ const customersCardsFields = `
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "width": logo.asset->metadata.dimensions.width,
-    "height": logo.asset->metadata.dimensions.height
+    "height": logo.asset->metadata.dimensions.height,
+    "alt": logo.alt
   },
   "quoteText": quote_text,
   "quoteAuthorName": quote_name,
@@ -27,7 +28,8 @@ const customersGridFields = `
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "width": logo.asset->metadata.dimensions.width,
-    "height": logo.asset->metadata.dimensions.height
+    "height": logo.asset->metadata.dimensions.height,
+    "alt": logo.alt
   },
   about,
   "isFeatured": is_featured,
@@ -48,7 +50,8 @@ const customerFields = `
   "logo": {
     "url": logo.asset->url + "?auto=format",
     "width": logo.asset->metadata.dimensions.width,
-    "height": logo.asset->metadata.dimensions.height
+    "height": logo.asset->metadata.dimensions.height,
+    "alt": logo.alt
   },
   title,
   category[0]->{
@@ -63,6 +66,7 @@ const customerFields = `
     )}&q=100&fit=crop&auto=format",
     ""
   ),
+  "storyPhotoAlt": storyPhoto.alt,
   about,
   industry,
   "quote": {
@@ -70,7 +74,8 @@ const customerFields = `
     "photo": {
       "url": quote_photo.asset->url + "?auto=format",
       "width": quote_photo.asset->metadata.dimensions.width,
-      "height": quote_photo.asset->metadata.dimensions.height
+      "height": quote_photo.asset->metadata.dimensions.height,
+      "alt": quote_photo.alt
     },
     "authorName": quote_name,
     "authorPosition": quote_position
@@ -95,7 +100,8 @@ const customerFields = `
     "logo": {
       "url": logo.asset->url + "?auto=format",
       "width": logo.asset->metadata.dimensions.width,
-      "height": logo.asset->metadata.dimensions.height
+      "height": logo.asset->metadata.dimensions.height,
+      "alt": logo.alt
     },
     title
   },
@@ -161,7 +167,8 @@ export const latestCustomersQuery = groq`
     "logo": {
       "url": logo.asset->url + "?auto=format",
       "width": logo.asset->metadata.dimensions.width,
-      "height": logo.asset->metadata.dimensions.height
+      "height": logo.asset->metadata.dimensions.height,
+      "alt": logo.alt
     },
   }
 `
@@ -172,7 +179,8 @@ export const allCustomersLogosQuery = groq`
     "logo": {
       "url": logo.asset->url + "?auto=format",
       "width": logo.asset->metadata.dimensions.width,
-      "height": logo.asset->metadata.dimensions.height
+      "height": logo.asset->metadata.dimensions.height,
+      "alt": logo.alt
     },
   }
 `
