@@ -9,6 +9,9 @@ import { IPricingHeroCard } from "@/types/pricing"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 
+const CHECK_ICON_PURPLE = `url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.68421L5.07068 9.85186C5.14926 9.93292 5.27931 9.93292 5.35789 9.85186L12 3' stroke='%23C25CD6' stroke-width='1.4' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E")`
+const CHECK_ICON_GRAY = `url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.68421L5.07068 9.85186C5.14926 9.93292 5.27931 9.93292 5.35789 9.85186L12 3' stroke='%23999999' stroke-width='1.4' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E")`
+
 const Card = ({
   plan,
   onContactUsClick,
@@ -125,12 +128,17 @@ const Card = ({
           {details && (
             <div
               className={clsx(
-                "mt-4.5 text-[16px] leading-snug font-book tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[url(\"data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.68421L5.07068 9.85186C5.14926 9.93292 5.27931 9.93292 5.35789 9.85186L12 3' stroke='%23C25CD6' stroke-width='1.4' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E\")]",
+                "mt-4.5 text-[16px] leading-snug font-book tracking-tighter [&_li]:flex [&_li]:gap-x-2 [&_li]:before:content-[var(--check-icon)]",
                 "[&_li]:text-[15px] [&_li]:before:relative [&_li]:before:top-0.5 [&_li]:before:size-4 [&_ul]:mt-5 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-y-3 [&_ul]:md:mt-3.5 [&_ul]:md:gap-y-[13px] [&_ul]:xl:mt-[18px]",
-                isFeatured
-                  ? "text-white [&_li]:before:content-[url(\"data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.68421L5.07068 9.85186C5.14926 9.93292 5.27931 9.93292 5.35789 9.85186L12 3' stroke='%23C25CD6' stroke-width='1.4' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E\")]"
-                  : "text-gray-10 [&_li]:before:content-[url(\"data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6.68421L5.07068 9.85186C5.14926 9.93292 5.27931 9.93292 5.35789 9.85186L12 3' stroke='%23999999' stroke-width='1.4' stroke-miterlimit='10' stroke-linecap='round'/%3E%3C/svg%3E\")]"
+                isFeatured ? "text-white" : "text-gray-10"
               )}
+              style={
+                {
+                  "--check-icon": isFeatured
+                    ? CHECK_ICON_PURPLE
+                    : CHECK_ICON_GRAY,
+                } as React.CSSProperties
+              }
             >
               {details}
             </div>
