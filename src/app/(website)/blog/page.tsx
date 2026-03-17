@@ -37,17 +37,17 @@ export default async function BlogPage() {
 
   if (totalPages === 0) {
     return (
-      <main className="pb-20 md:pb-24 xl:pb-32">
+      <div className="pb-20 md:pb-24 xl:pb-32">
         <p className="text-lg tracking-tight text-muted-foreground">
           No posts yet
         </p>
-      </main>
+      </div>
     )
   }
 
   return (
     <div className="relative">
-      <main className="relative z-10 mx-auto flex max-w-4xl flex-col px-5 pt-12 md:px-8 md:pt-16 lg:pt-20 xl:pt-24">
+      <div className="relative z-10 mx-auto flex max-w-4xl flex-col px-5 pt-12 md:px-8 md:pt-16 lg:pt-20 xl:pt-24">
         <h1 className="max-w-xl text-4xl leading-tight font-medium tracking-tighter text-balance md:text-[3rem] lg:leading-dense">
           Built with Novu
         </h1>
@@ -95,7 +95,7 @@ export default async function BlogPage() {
             pageCount={totalPages}
           />
         )}
-      </main>
+      </div>
       <CTA
         title="You’re five minutes away from your first Novu-backed notification"
         description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."

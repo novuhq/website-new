@@ -166,6 +166,7 @@ function Nav({ className, items }: IHeaderNavProps) {
 
         {isHovering && hoveredIndex !== null && motionData && (
           <m.span
+            aria-hidden="true"
             className="absolute inset-0 rounded-full bg-[#17171f]/85 will-change-transform"
             initial={{ opacity: 0, x: motionData.x, width: motionData.width }}
             animate={{ opacity: 1, x: motionData.x, width: motionData.width }}

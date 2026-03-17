@@ -15,6 +15,7 @@ interface IItem {
 interface IListProps {
   items: IItem[]
   ariaHidden?: boolean
+  eager?: boolean
 }
 
 interface ISectionWithLogosAnimatedProps {
@@ -33,7 +34,7 @@ function splitIntoRows(items: IItem[], rows: number): IItem[][] {
   return result
 }
 
-const List = ({ items, ariaHidden = false }: IListProps) => (
+const List = ({ items, ariaHidden = false, eager = false }: IListProps) => (
   <ul
     className="flex gap-6 group-odd:animate-logos-backward group-even:animate-logos-forward md:gap-9"
     aria-hidden={ariaHidden}
@@ -49,7 +50,8 @@ const List = ({ items, ariaHidden = false }: IListProps) => (
           width={logo.width}
           height={logo.height}
           alt={name}
-          loading="lazy"
+          loading={eager ? "eager" : "lazy"}
+          sizes="180px"
         />
       </li>
     ))}
@@ -90,7 +92,7 @@ const SectionWithLogosAnimated = async ({
             )}
             key={index}
           >
-            <List items={list} />
+            <List items={list} eager={index === 0} />
             <List items={list} ariaHidden />
           </div>
         ))}

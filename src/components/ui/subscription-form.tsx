@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import { SUBSCRIPTION_FORM_ID, UTM_PARAMS } from "@/constants/forms"
 import { ROUTE } from "@/constants/routes"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -55,6 +55,7 @@ function SubscriptionForm({
   variant = "default",
   useIcon = false,
 }: ISubscriptionFormProps) {
+  const emailId = useId()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
@@ -146,12 +147,12 @@ function SubscriptionForm({
           name="email"
           render={({ field }) => (
             <FormItem className="static w-full">
-              <label className="sr-only" htmlFor="subscription-email">
+              <label className="sr-only" htmlFor={emailId}>
                 Email address
               </label>
               <FormControl>
                 <Input
-                  id="subscription-email"
+                  id={emailId}
                   className={cn(
                     "w-full rounded border-none bg-transparent pr-0 pl-3 focus-visible:ring-[none] focus-visible:outline-none",
                     variant === "default" && "h-9.5",

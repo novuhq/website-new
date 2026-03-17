@@ -124,8 +124,25 @@ export default async function ChangelogPostPage({
     content,
   } = post
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const postUrl = `${siteUrl}${pathname}`
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: caption || "",
+    datePublished: publishedAt,
+    url: postUrl,
+    image: cover || undefined,
+    author: (authors || []).map((author) => ({
+      "@type": "Person",
+      name: author.name,
+      ...(author.photo ? { image: author.photo } : {}),
+    })),
+  }
+
   return (
-    <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
+    <div className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
           <Breadcrumbs firstLabel="Back to all updates" />
@@ -199,6 +216,12 @@ export default async function ChangelogPostPage({
           </div>
         </article>
       </section>
-    </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+    </div>
   )
 }
