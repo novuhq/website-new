@@ -37,12 +37,38 @@ export default async function RootLayout({
             className="flex grow flex-col rounded-none bg-background aria-hidden:[-webkit-mask-image:-webkit-radial-gradient(white,black)]"
             vaul-drawer-wrapper=""
           >
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-lg focus:ring-2 focus:ring-ring"
+            >
+              Skip to content
+            </a>
             <Header githubStars={stars} changelog={changelog} blog={blog} />
             {isDraftMode && <PreviewWarning />}
-            <div className="grow">{children}</div>
+            <main id="main-content" className="grow">{children}</main>
             <Footer />
           </div>
         </Providers>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Novu",
+              url: "https://novu.co",
+              logo: "https://novu.co/logo.svg",
+              sameAs: [
+                "https://github.com/novuhq/novu",
+                "https://twitter.com/novaborhq",
+                "https://www.linkedin.com/company/novuhq",
+                "https://discord.gg/novu",
+              ],
+              description:
+                "Open-source notification infrastructure for developers and product teams.",
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
         <script
           key="plain-live-chat"
           dangerouslySetInnerHTML={{

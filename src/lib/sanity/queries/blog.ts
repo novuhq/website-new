@@ -21,6 +21,7 @@ const commonPostFields = `
 const postCardFields = `
   ${commonPostFields},
   "cover": cover.asset->url + "?w=${config.blog.postCardCoverWidth * 2}&h=${Math.ceil((config.blog.postCardCoverWidth / COVER_ASPECT_RATIO) * 2)}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "authors": authors[]->{
     name,
     position,
@@ -54,6 +55,7 @@ const postExcerptFields = groq`
 const fullPostFields = groq`
   ${commonPostFields},
   "cover": cover.asset->url + "?w=${config.blog.postCardCoverWidth * 2}&h=${Math.ceil((config.blog.postCardCoverWidth / COVER_ASPECT_RATIO) * 2)}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "content": content[] {
     ...,
     _type == "relatedPostsBlock" => {

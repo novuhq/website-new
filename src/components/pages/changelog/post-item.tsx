@@ -19,6 +19,7 @@ function PostsItem({
   authors,
   categories,
   cover,
+  coverAlt,
   content,
 }: IChangelogPostData) {
   return (
@@ -71,7 +72,7 @@ function PostsItem({
           <div className="relative mt-7.75 aspect-video overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image">
             <Image
               src={cover}
-              alt={`Cover image for ${title}`}
+              alt={coverAlt || `Cover image for ${title}`}
               fill
               sizes="(max-width: 1023px) 100vw, 640px"
             />

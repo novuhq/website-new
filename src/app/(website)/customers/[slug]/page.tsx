@@ -83,8 +83,24 @@ export default async function CustomerStoryPage({
 
   const customerPathname = pathname || `${ROUTE.customers}/${slug}`
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: about || "",
+    url: `${siteUrl}${customerPathname}`,
+    image: cover || undefined,
+    about: {
+      "@type": "Organization",
+      name,
+      logo: logo?.url || undefined,
+      ...(industry ? { industry } : {}),
+    },
+  }
+
   return (
-    <main>
+    <div>
       <section className="px-5 pt-9.5 md:px-8 md:pt-11.5 lg:px-0 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-232 xl:translate-x-30">
           <Breadcrumbs firstLabel="Customers" />
@@ -156,6 +172,12 @@ export default async function CustomerStoryPage({
           </div>
         </article>
       </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <CTA
         title="You’re five minutes away from your first Novu-backed notification"
         description="Create a free account, send your first notification, all before your coffee gets cold... no credit card required."
@@ -176,6 +198,6 @@ export default async function CustomerStoryPage({
           },
         ]}
       />
-    </main>
+    </div>
   )
 }

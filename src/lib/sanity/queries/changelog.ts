@@ -22,6 +22,7 @@ _type,
   "cover": cover.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
     (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
   )}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "content": content[] {
     ...,
     _type == "quoteBlock" => {

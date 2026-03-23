@@ -32,5 +32,5 @@
     ".next/dev/types/**/*.ts",
     "src/data/pages/comparison/courier.tsx"
   ],
-  "exclude": ["node_modules", "next-sitemap.config.js"]
+  "exclude": ["node_modules", "next-sitemap.config.js", "scripts"]
 }

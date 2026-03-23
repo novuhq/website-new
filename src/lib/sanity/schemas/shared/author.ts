@@ -16,6 +16,14 @@ export default defineType({
       name: "photo",
       type: "image",
       title: "Photo",
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        }),
+      ],
       validation: (rule: ImageRule) =>
         rule.error("You have to fill in this field.").required(),
     }),

@@ -25,9 +25,36 @@ export default async function CustomersPage() {
 
   const isFeaturedExist = page.customersGrid.some((item) => item.isFeatured)
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+
+  const reviewJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Novu",
+    url: `${siteUrl}/customers/`,
+    brand: { "@type": "Brand", name: "Novu" },
+    review: page.tweets
+      .filter((tweet) => tweet.name && tweet.text)
+      .slice(0, 10)
+      .map((tweet) => ({
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: tweet.name,
+        },
+        reviewBody: tweet.text.replace(/<[^>]*>/g, ""),
+      })),
+  }
+
   return (
-    <main>
+    <div>
       <Hero customers={page.cards} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <CustomersGrid
         isFeaturedExist={isFeaturedExist}
         categories={categories}
@@ -59,7 +86,7 @@ export default async function CustomersPage() {
           },
         ]}
       />
-    </main>
+    </div>
   )
 }
 
