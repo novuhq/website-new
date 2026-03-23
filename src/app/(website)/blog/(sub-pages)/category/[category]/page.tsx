@@ -38,7 +38,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <main>
+    <div>
       <h2 className="sr-only">Blog - {categoryData.title}</h2>
       <PostsList title={`Posts in ${categoryData.title}`} posts={posts} />
       {totalPages > 1 && (
@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           path={category}
         />
       )}
-    </main>
+    </div>
   )
 }
 

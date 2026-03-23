@@ -18,6 +18,7 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
       {isOpen && (
         <motion.div
           layoutId="navigation-dropdown"
+          aria-label={`${title} submenu`}
           className={cn(
             "absolute top-10.5 -left-5 rounded-[14px] border-gray-2 bg-gray-1 shadow-header-dropdown transition-[left,min-width] ease-in-out will-change-transform",
             "before:absolute before:-top-1.5 before:z-10 before:h-3.5 before:w-3.5 before:rotate-45 before:rounded-[1px] before:border before:border-gray-2 before:bg-gray-1",

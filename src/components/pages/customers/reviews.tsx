@@ -15,7 +15,7 @@ function TweetContent({ name, text, logo, tag }: ICustomerTweetData) {
           <img
             className="h-auto w-9 rounded-full"
             src={logo.url}
-            alt={name}
+            alt=""
             width={logo.width || 36}
             height={logo.height || 36}
             loading="lazy"

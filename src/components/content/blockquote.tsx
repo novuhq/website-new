@@ -1,3 +1,4 @@
+import { useId } from "react"
 import { cva } from "class-variance-authority"
 
 import { type IAuthor, type IBlockquote } from "@/types/common"
@@ -24,6 +25,7 @@ const blockquoteVariants = cva("blockquote not-prose flex flex-col", {
 })
 
 function QuoteIcon({ className }: { className?: string }) {
+  const clipId = useId()
   return (
     <svg
       className={cn("size-8", className)}
@@ -33,7 +35,7 @@ function QuoteIcon({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clipPath="url(#clip0_9031_187)">
+      <g clipPath={`url(#${clipId})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -42,7 +44,7 @@ function QuoteIcon({ className }: { className?: string }) {
         />
       </g>
       <defs>
-        <clipPath id="clip0_9031_187">
+        <clipPath id={clipId}>
           <rect width="32" height="32" fill="currentColor" />
         </clipPath>
       </defs>

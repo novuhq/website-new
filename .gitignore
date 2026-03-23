@@ -18,6 +18,8 @@
 # ignore local sitemap
 public/sitemap.xml
 public/sitemap-0.xml
+public/next-sitemap.xml
+public/next-sitemap-0.xml
 public/robots.txt
 
 # production

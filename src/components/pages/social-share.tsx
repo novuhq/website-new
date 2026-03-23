@@ -52,6 +52,7 @@ function SocialShare({ className, pathname }: ISocialShareProps) {
           <li key={index}>
             <Button
               className="size-8 rounded-full bg-gray-9 !p-0 hover:bg-foreground"
+              aria-label={label}
               onClick={() => {
                 if (onClick) {
                   onClick()
@@ -65,7 +66,6 @@ function SocialShare({ className, pathname }: ISocialShareProps) {
                   <TooltipTrigger asChild>
                     <span
                       className="flex min-h-8 w-full items-center justify-center"
-                      aria-label={label}
                     >
                       <Icon className="!size-4" size={16} />
                     </span>

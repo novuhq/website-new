@@ -51,7 +51,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
   }
 
   return (
-    <main className="pt-8 md:pt-11 lg:pt-16">
+    <div className="pt-8 md:pt-11 lg:pt-16">
       <section className="content relative z-10">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <article className="grid w-full grid-cols-1 gap-y-8 md:gap-y-10 lg:grid-cols-[auto_16rem] lg:gap-y-14 xl:grid-cols-[16rem_auto_16rem]">
@@ -102,7 +102,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-    </main>
+    </div>
   )
 }
 

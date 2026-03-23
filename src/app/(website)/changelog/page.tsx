@@ -27,7 +27,7 @@ export default async function ChangelogPage({
   const hasMore = end < allPosts.length
 
   return (
-    <main>
+    <div>
       <ChangelogHero
         title="Changelog"
         description="Product updates, improvements, and fixes"
@@ -64,7 +64,7 @@ export default async function ChangelogPage({
           },
         ]}
       />
-    </main>
+    </div>
   )
 }
 

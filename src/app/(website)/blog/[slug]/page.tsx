@@ -52,7 +52,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="pt-8 md:pt-11 lg:pt-16">
+    <div className="pt-8 md:pt-11 lg:pt-16">
       <Post
         className="relative z-10"
         post={post}
@@ -82,7 +82,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-    </main>
+    </div>
   )
 }
 
