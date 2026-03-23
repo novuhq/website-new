@@ -29,14 +29,15 @@ function ComparisonTableSection({
             <div className="relative min-w-[960px] lg:min-w-0">
               <div className="relative z-10 overflow-hidden rounded-[1.25rem]">
                 {/* Header */}
-                <div className="grid grid-cols-4 border-b border-white/12">
+                <div className="grid grid-cols-4">
                   {comparisonTable.columnHeaders.map((header, index) => (
                     <div
                       key={index}
                       className={cn(
-                        "px-4 py-2 lg:px-6 lg:py-2.5",
+                        "px-4 py-2 lg:px-6 lg:py-2.5 border-b",
                         index % 2 === 1 && "bg-white/6",
-                        index > 0 && "border-l border-white/12"
+                        "border-white/6",
+                        index > 0 && "border-l"
                       )}
                     >
                       <span className="text-[0.9375rem] leading-snug font-medium tracking-tighter text-white">
@@ -51,18 +52,17 @@ function ComparisonTableSection({
                   return (
                     <div
                       key={index}
-                      className={cn(
-                        "grid grid-cols-4",
-                        index !== 0 && "border-t border-white/12"
-                      )}
+                      className="grid grid-cols-4"
                     >
                       {row.map((cell, celIndex) => (
                         <div
                           key={celIndex}
                           className={cn(
                             "flex items-center p-4 lg:p-6",
+                            index !== 0 && "border-t",
                             celIndex % 2 === 1 && "bg-white/6",
-                            celIndex > 0 && "border-l border-white/12"
+                            "border-white/6",
+                            celIndex > 0 && "border-l"
                           )}
                         >
                           <span

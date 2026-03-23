@@ -78,7 +78,7 @@ async function ComparisonPage({ params }: PageProps) {
         className="mt-13.5 md:mt-22 lg:mt-34 xl:mt-28"
         {...data.faqSection}
       />
-      <CTA className="lg:-mt-32" {...data.ctaSection} />
+      <CTA className="lg:-mt-32 [&_a]:max-sm:h-10 [&_a]:max-sm:px-5 [&_a]:max-sm:text-xs [&_a]:max-2xs:w-full" {...data.ctaSection} />
     </div>
   )
 }

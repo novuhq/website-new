@@ -20,20 +20,20 @@ const BACKGROUND_BREAKPOINTS = [
     width: 1385,
     height: 870,
     src: bgSvg,
-    className: "top-[53%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
+    className: "top-[68%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
   },
   {
     width: 1064,
     height: 844,
     src: bgLg,
-    className: "top-[59%] left-[50%] hidden h-[844px] w-full lg:flex xl:hidden",
+    className: "top-[63%] left-[62%] hidden h-[844px] w-full lg:flex xl:hidden",
   },
   {
     width: 1043,
     height: 845,
     src: bgMob,
     className:
-      "top-[68%] left-[50%] w-[768px] md:top-[59%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
+      "top-[68%] left-[50%] w-[768px] md:top-[65%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
   },
 ]
 

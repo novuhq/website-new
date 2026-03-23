@@ -22,7 +22,7 @@ function Frustrations({
         </div>
 
         <div className="flex w-full flex-col gap-10 lg:gap-14">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-15">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
             {frustrations.items.map((item) => (
               <div key={item.title} className="flex flex-col gap-5">
                 <Image
@@ -49,7 +49,7 @@ function Frustrations({
             <Button
               size="lg"
               variant="outline"
-              className="w-full sm:w-fit"
+              className="w-full max-sm:h-10 max-sm:px-5 max-sm:text-xs sm:w-fit"
               asChild
             >
               <NextLink href={frustrations.cta.href}>

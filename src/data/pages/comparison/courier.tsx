@@ -28,7 +28,7 @@ export const courierComparisonData: IComparisonPageData = {
     heading: {
       prefix: "Novu",
       highlight:
-        "vs Courier: The best Courier alternative for end-to-end notifications",
+        "vs Courier: The best Courier alternative for end-to-end notifications",
     },
     subheading:
       "All your notification infrastructure needs, workflows, routing, preferences, and <Inbox /> in one platform, open source and built for builders and teams.",
@@ -42,7 +42,7 @@ export const courierComparisonData: IComparisonPageData = {
     },
     note: (
       <>
-        Free up to 10k events / month <span>No credit card required</span>
+        Free up to 10k events / month. <span>No credit card required</span>
       </>
     ),
     illustration: {
