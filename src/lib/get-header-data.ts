@@ -1,7 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 import { PortableTextBlock } from "@portabletext/react"
-import { gql, GraphQLClient } from "graphql-request"
 
+import { getLatestPosts } from "@/lib/blog"
 import { getLatestChangelogPostData } from "@/lib/changelog"
 
 const DEFAULT_CHANLOGE_POST = {
@@ -35,66 +35,19 @@ function getChangelogCaptionFromContent(content: PortableTextBlock[]): string {
     .join("\n")
 }
 
-export async function getLatestWpPost() {
-  const { WP_GRAPHQL_URL, WP_HTACCESS_USERNAME, WP_HTACCESS_PASSWORD } =
-    process.env
-
-  if (!WP_GRAPHQL_URL || !WP_HTACCESS_USERNAME || !WP_HTACCESS_PASSWORD) {
-    throw new Error("Missing required WP GraphQL environment variables.")
-  }
-
-  const client = new GraphQLClient(WP_GRAPHQL_URL, {
-    headers: {
-      Authorization:
-        "Basic " +
-        Buffer.from(`${WP_HTACCESS_USERNAME}:${WP_HTACCESS_PASSWORD}`).toString(
-          "base64"
-        ),
-    },
-  })
-
+export async function getLatestBlogPost() {
   try {
-    const query = gql`
-      query GetLatestPost {
-        posts(first: 1, where: { orderby: { field: DATE, order: DESC } }) {
-          nodes {
-            title
-            uri
-            pageBlogPost {
-              description
-              image {
-                link
-              }
-            }
-          }
-        }
-      }
-    `
-
-    const data = (await client.request(query)) as {
-      posts: {
-        nodes: Array<{
-          title: string
-          uri: string
-          pageBlogPost?: {
-            description?: string
-            image?: { link: string }
-          }
-        }>
-      }
-    }
-
-    const latestPost = data?.posts?.nodes[0]
+    const posts = await getLatestPosts(1)
+    const latestPost = posts[0]
 
     return {
       title: latestPost?.title || DEFAULT_BLOG_POST.title,
-      description:
-        latestPost?.pageBlogPost?.description || DEFAULT_BLOG_POST.description,
-      href: latestPost?.uri || DEFAULT_BLOG_POST.href,
-      image: latestPost?.pageBlogPost?.image?.link || DEFAULT_BLOG_POST.image,
+      description: latestPost?.caption || DEFAULT_BLOG_POST.description,
+      href: latestPost?.url || DEFAULT_BLOG_POST.href,
+      image: latestPost?.cover || DEFAULT_BLOG_POST.image,
     }
   } catch (error) {
-    console.warn("getLatestWpPost failed, using defaults:", error)
+    console.warn("getLatestBlogPost failed, using defaults:", error)
     return DEFAULT_BLOG_POST
   }
 }

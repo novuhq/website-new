@@ -4,7 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
+import { getLatestBlogPost, getLatestChangelogPost } from "@/lib/get-header-data"
 import { Button } from "@/components/ui/button"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
@@ -15,7 +15,7 @@ export default async function NotFound() {
   const [{ stars }, changelog, blog] = await Promise.all([
     getGithubInfo(),
     getLatestChangelogPost(),
-    getLatestWpPost(),
+    getLatestBlogPost(),
   ])
 
   return (

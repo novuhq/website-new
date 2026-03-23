@@ -8,7 +8,7 @@ import { getMetadata } from "@/lib/get-metadata"
 import CTA from "@/components/pages/cta"
 import CustomersGrid from "@/components/pages/customers/customers-grid"
 import Hero from "@/components/pages/customers/hero"
-import Reviews from "@/components/pages/customers/reviews"
+import Reviews from "@/components/pages/reviews"
 
 export default async function CustomersPage() {
   const page = await getCustomersPage()

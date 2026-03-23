@@ -1,4 +1,5 @@
 import Image from "next/image"
+import CheckboxIcon from "@/svgs/icons/checkbox-yellow.svg"
 import bgLg from "@/svgs/shared/cta/background-lg.svg"
 import bgMob from "@/svgs/shared/cta/background-mob.svg"
 import bgSvg from "@/svgs/shared/cta/background.svg"
@@ -41,6 +42,7 @@ function CTA({
   containerClassName,
   titleClassName,
   descriptionClassName,
+  hint,
   title,
   description,
   actions,
@@ -85,6 +87,21 @@ function CTA({
         >
           {description}
         </p>
+        {hint && (
+          <div className="mt-8 flex items-center gap-x-2.5">
+            <Image
+              src={CheckboxIcon}
+              alt=""
+              width={20}
+              height={20}
+              aria-hidden
+              unoptimized
+            />
+            <p className="leading-dense font-medium tracking-tighter text-white">
+              {hint}
+            </p>
+          </div>
+        )}
         {actions && actions.length > 0 && (
           <ActionGroup
             className="mt-6.5 2xs:justify-center md:mt-7.75"

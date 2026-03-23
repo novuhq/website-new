@@ -19,8 +19,11 @@ interface IListProps {
 
 interface ISectionWithLogosAnimatedProps {
   title: string
+  titleHighlight?: string
+  titleSize?: "default" | "sm"
   description?: string
   rows?: number
+  className?: string
 }
 
 function splitIntoRows(items: IItem[], rows: number): IItem[][] {
@@ -58,8 +61,11 @@ const List = ({ items, ariaHidden = false }: IListProps) => (
 
 const SectionWithLogosAnimated = async ({
   title,
+  titleHighlight,
+  titleSize = "default",
   description,
   rows = 1,
+  className,
 }: ISectionWithLogosAnimatedProps) => {
   const allLogos = await getAllCustomersLogos()
 
@@ -70,11 +76,26 @@ const SectionWithLogosAnimated = async ({
   const logosLists = splitIntoRows(allLogos, rows)
 
   return (
-    <section className="section-with-logos-animated mt-26 mb-21 px-8 md:my-24 lg:mt-28 lg:mb-36 xl:mt-38 xl:mb-50">
+    <section
+      className={cn(
+        "section-with-logos-animated mt-26 mb-21 px-8 md:my-24 lg:mt-28 lg:mb-36 xl:mt-38 xl:mb-50",
+        className
+      )}
+    >
       <div className="mx-auto flex max-w-6xl flex-col items-center">
-        <h2 className="leading-denser mx-auto max-w-60 text-center text-3xl font-medium tracking-tighter md:max-w-max lg:text-[32px]">
+        <p
+          className={cn(
+            "mx-auto text-center tracking-tighter",
+            titleSize === "sm"
+              ? "text-base text-gray-8 lg:text-lg"
+              : "leading-denser max-w-60 text-3xl font-medium md:max-w-max lg:text-[32px]"
+          )}
+        >
+          {titleHighlight && (
+            <span className="text-foreground">{titleHighlight} </span>
+          )}
           {title}
-        </h2>
+        </p>
         {description && (
           <p className="mt-3 text-center text-base leading-normal font-light tracking-tighter text-pretty text-gray-8 lg:text-lg">
             {description}
@@ -86,7 +107,8 @@ const SectionWithLogosAnimated = async ({
               "group flex w-full items-center gap-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent_3%,rgba(0,0,0,.5)_20%,#000_30%,#000_70%,rgba(0,0,0,.5)_80%,transparent_97%)] md:gap-9",
               index === 0
                 ? "mt-8 md:mt-11 lg:mt-14 xl:mt-16"
-                : "mt-7 md:mt-8 lg:mt-10 xl:mt-11"
+                : "mt-7 md:mt-8 lg:mt-10 xl:mt-11",
+              index === 0 && titleSize === "sm" && "xl:mt-12"
             )}
             key={index}
           >

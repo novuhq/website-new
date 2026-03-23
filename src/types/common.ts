@@ -119,10 +119,42 @@ export type TSectionAction =
 export interface ICtaSection {
   title: string
   description: string | ReactNode
+  hint?: string
   actions: TSectionAction[]
 }
 
 export interface ITabsBlock {
   label: string
   content: PortableTextBlock
+}
+
+export type FaqAnswer =
+  | ReactNode
+  | ((onScheduleClick: (source: string) => void) => ReactNode)
+
+export interface IAccordionItem {
+  question: string
+  answer: FaqAnswer
+}
+
+export interface IAccordion {
+  items: Array<{
+    question: string
+    answer: FaqAnswer
+  }>
+}
+
+export interface IFaqSection {
+  title: string
+  accordion: IAccordion
+}
+
+export interface IBanner {
+  className?: string
+  title: string
+  description: string
+  cta: {
+    label: string
+    href: string
+  }
 }
