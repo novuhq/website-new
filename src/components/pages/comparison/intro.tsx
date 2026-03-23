@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button"
 
 function Intro({ intro }: { intro: IComparisonIntro }) {
   return (
-    <section className="relative xl:pt-50">
+    <section className="relative pt-16 md:pt-24 lg:pt-36 xl:pt-50">
       <div className="relative mx-auto max-w-5xl px-5 md:px-8">
-        <div className="relative z-10 flex flex-col gap-12">
+        <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
           <div className="flex flex-col gap-5">
             <h2 className="text-[28px] leading-[1.25] font-medium tracking-tighter text-white md:text-[32px] lg:text-[36px]">
               {intro.title}
@@ -43,12 +43,12 @@ function Intro({ intro }: { intro: IComparisonIntro }) {
             </ul>
           </div>
 
-          <Button size="lg" variant="outline" className="w-fit" asChild>
+          <Button size="lg" variant="outline" className="w-full sm:w-fit" asChild>
             <NextLink href={intro.cta.href}>{intro.cta.label}</NextLink>
           </Button>
         </div>
         <Image
-          className="pointer-events-none absolute -top-95 -right-40 select-none"
+          className="pointer-events-none absolute -top-95 -right-40 hidden select-none lg:block"
           src={backgroundImage}
           alt=""
           width={739}

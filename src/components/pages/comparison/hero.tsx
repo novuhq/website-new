@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 function Hero({ hero }: { hero: IComparisonHero }) {
   return (
-    <section className="relative pt-10.5 pb-10 md:pt-12.5 md:pb-16 lg:pt-16.5 xl:pt-45">
+    <section className="relative pt-16 pb-10 md:pt-24 md:pb-16 lg:pt-36 xl:pt-45">
       <div className="relative mx-auto flex max-w-400 flex-col items-center gap-20 px-5 md:px-8 lg:flex-row lg:gap-16 2xl:gap-32">
         <div className="relative z-10 flex flex-col 2xl:mt-2.5 2xl:ml-24">
           <h1 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-pretty md:text-[2rem] lg:text-[2.75rem] xl:text-[3.25rem]">

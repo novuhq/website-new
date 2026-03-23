@@ -67,9 +67,9 @@ async function ComparisonPage({ params }: PageProps) {
       <Difference difference={data.difference} />
       <CodeSection codeSection={data.codeSection} />
       <ComparisonTableSection comparisonTable={data.comparisonTable} />
-      <Banner className="lg:mt-50" {...data.banner} />
+      <Banner className="pt-16 md:pt-24 lg:pt-36 xl:pt-50" {...data.banner} />
       <Reviews
-        className="lg:mt-50"
+        className="mt-16 md:mt-24 lg:mt-36 xl:mt-50"
         reviews={comparisonReviews}
         title={data.reviewsSection.title}
         subtitle={data.reviewsSection.subtitle}

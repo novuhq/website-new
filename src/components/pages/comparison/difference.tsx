@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 function Difference({ difference }: { difference: IComparisonDifference }) {
   return (
-    <section className="relative pt-50">
+    <section className="difference relative z-10 pt-16 md:pt-24 lg:pt-36 xl:pt-50">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col items-center gap-3 text-center">
           <h2 className="text-[28px] leading-[1.25] font-medium tracking-tighter text-white md:text-[32px] lg:text-[40px]">
@@ -17,7 +17,7 @@ function Difference({ difference }: { difference: IComparisonDifference }) {
           </p>
         </div>
 
-        <ul className="mt-14 grid gap-8 lg:grid-cols-3">
+        <ul className="mx-auto mt-14 grid max-w-96 gap-4 md:max-w-198 md:grid-cols-2 md:gap-6 lg:max-w-200 lg:gap-8 xl:max-w-none xl:grid-cols-3">
           {difference.cards.map((card) => (
             <li
               key={card.title}
@@ -31,7 +31,7 @@ function Difference({ difference }: { difference: IComparisonDifference }) {
                 aria-hidden
                 quality={100}
               />
-              <div className="absolute inset-x-0 bottom-0 p-7">
+              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 xl:p-7">
                 <div className="flex items-center gap-2.5">
                   <Image
                     src={card.icon}
@@ -41,7 +41,7 @@ function Difference({ difference }: { difference: IComparisonDifference }) {
                     aria-hidden
                     quality={100}
                   />
-                  <h3 className="font-medium tracking-tighter text-white lg:text-base/dense">
+                  <h3 className="text-[0.9375rem]/dense font-medium tracking-tighter text-white lg:text-base/dense">
                     {card.title}
                   </h3>
                 </div>

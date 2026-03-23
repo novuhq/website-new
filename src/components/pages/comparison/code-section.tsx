@@ -13,7 +13,7 @@ import {
 
 function CodeSection({ codeSection }: { codeSection: IComparisonCodeSection }) {
   return (
-    <section className="relative xl:pt-50">
+    <section className="relative pt-16 md:pt-24 lg:pt-36 xl:pt-50">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="relative z-10 flex flex-col items-center gap-3 text-center">
           <h2 className="max-w-176 text-[1.75rem] leading-dense font-medium tracking-tighter text-pretty text-white md:text-[2.25rem] lg:text-[2.75rem]">
@@ -24,8 +24,8 @@ function CodeSection({ codeSection }: { codeSection: IComparisonCodeSection }) {
           </p>
         </div>
 
-        <div className="flex flex-col gap-10 lg:mt-18 lg:flex-row lg:items-start lg:gap-24">
-          <div className="pointer-events-none relative z-0 aspect-16/10 h-auto w-160 shrink-0 select-none">
+        <div className="mt-10 flex flex-col items-center gap-10 md:flex-row md:items-start lg:mt-18 lg:gap-16 xl:gap-24">
+          <div className="pointer-events-none relative z-0 aspect-16/10 h-auto w-full max-w-160 shrink-0 select-none md:w-1/2 lg:w-120 xl:w-160">
             <Image
               className={cn("absolute max-w-none", codeSection.image.className)}
               src={codeSection.image.src}
@@ -39,7 +39,7 @@ function CodeSection({ codeSection }: { codeSection: IComparisonCodeSection }) {
           </div>
 
           <Accordion
-            className="relative z-10 mt-7 grow"
+            className="relative z-10 w-full grow md:-mt-5 md:w-auto lg:mt-7"
             type="single"
             defaultValue="item-0"
             collapsible

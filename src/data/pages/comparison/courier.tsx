@@ -164,7 +164,7 @@ export const courierComparisonData: IComparisonPageData = {
       src: codeSectionIllustration,
       width: 870,
       height: 789,
-      className: "top-[-80.8%] left-[-36%]",
+      className: "top-[-80.8%] left-[-36%] w-[135.9375%] h-auto",
     },
     items: [
       {
