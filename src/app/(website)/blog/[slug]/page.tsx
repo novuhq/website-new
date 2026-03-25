@@ -41,16 +41,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     post.seo?.description ||
     getExcerpt({ content: portableToPlain(post.content), length: 160 })
 
+  const postImage =
+    post.seo?.socialImage ||
+    `${siteUrl}/api/og?title=${encodeURIComponent(post.title)}`
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.seo?.title || post.title,
     description,
-    datePublished: post.publishedAt,
+    datePublished: post.publishedAt || post._createdAt,
     url: postUrl,
-    image:
-      post.seo?.socialImage ||
-      `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`,
+    image: postImage,
     author:
       authors.length > 0 ? authors : [{ "@type": "Person", name: "Unknown" }],
     publisher: {

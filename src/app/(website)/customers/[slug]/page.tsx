@@ -89,6 +89,7 @@ export default async function CustomerStoryPage({
     "@type": "Article",
     headline: title,
     description: about || title,
+    datePublished: customer._createdAt,
     url: `${siteUrl}${customerPathname}`,
     image: cover || `${siteUrl}/social-previews/customers.jpg`,
     author: {
@@ -98,7 +99,7 @@ export default async function CustomerStoryPage({
     about: {
       "@type": "Organization",
       name,
-      logo: logo?.url || undefined,
+      ...(logo?.url ? { logo: logo.url } : {}),
       ...(industry ? { industry } : {}),
     },
     publisher: {
