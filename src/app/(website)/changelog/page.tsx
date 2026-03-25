@@ -26,8 +26,37 @@ export default async function ChangelogPage({
   const posts = allPosts.slice(0, end)
   const hasMore = end < allPosts.length
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const changelogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Changelog | Novu",
+    description: "Product updates, improvements, and fixes",
+    url: `${siteUrl}/changelog/`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Novu",
+      url: "https://novu.co",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
+    },
+  }
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(changelogJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <ChangelogHero
         title="Changelog"
         description="Product updates, improvements, and fixes"
