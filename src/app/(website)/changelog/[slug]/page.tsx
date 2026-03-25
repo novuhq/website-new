@@ -156,7 +156,9 @@ export default async function ChangelogPostPage({
     "@type": "Article",
     headline: title,
     description: caption || title,
-    datePublished: publishedAt,
+    ...(publishedAt || post._createdAt
+      ? { datePublished: publishedAt || post._createdAt }
+      : {}),
     url: postUrl,
     image: cover || undefined,
     author: (authors || []).map((author) => ({

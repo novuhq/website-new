@@ -17,6 +17,7 @@ export interface IChangelogCategoryData {
 
 export interface IChangelogPostData {
   _type: "changelogPost"
+  _createdAt?: string
   title: string
   slug: ISlug
   pathname: string
