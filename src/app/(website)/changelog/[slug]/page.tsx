@@ -156,16 +156,19 @@ export default async function ChangelogPostPage({
     "@type": "Article",
     headline: title,
     description: caption || title,
-    ...(publishedAt || post._createdAt
-      ? { datePublished: publishedAt || post._createdAt }
-      : {}),
+    datePublished: publishedAt || post._createdAt,
     url: postUrl,
-    image: cover || undefined,
-    author: (authors || []).map((author) => ({
-      "@type": "Person",
-      name: author.name,
-      ...(author.photo ? { image: author.photo } : {}),
-    })),
+    image:
+      cover ||
+      `${siteUrl}/api/og?title=${encodeURIComponent(title)}`,
+    author:
+      authors && authors.length > 0
+        ? authors.map((author) => ({
+            "@type": "Person",
+            name: author.name,
+            ...(author.photo ? { image: author.photo } : {}),
+          }))
+        : [{ "@type": "Organization", name: "Novu" }],
     publisher: {
       "@type": "Organization",
       name: "Novu",

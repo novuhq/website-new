@@ -52,6 +52,7 @@ export default async function CustomersPage() {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
       description: "Free up to 10,000 workflow runs per month",
       url: `${siteUrl}/pricing/`,
     },

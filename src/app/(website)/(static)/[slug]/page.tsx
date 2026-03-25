@@ -51,9 +51,10 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
     "@type": "Article",
     headline: seo?.title || title,
     description: jsonLdDescription,
-    datePublished: publishedAt,
+    datePublished: publishedAt || staticPage._createdAt,
     url: staticPageUrl,
-    image: `${siteUrl}/social-previews/index.jpg`,
+    image:
+      seo?.socialImage || `${siteUrl}/social-previews/index.jpg`,
     author: {
       "@type": "Organization",
       name: "Novu",
