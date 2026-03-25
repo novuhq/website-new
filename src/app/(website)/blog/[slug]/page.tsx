@@ -37,11 +37,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ...(author.photo ? { image: author.photo } : {}),
   }))
 
+  const description =
+    post.seo?.description ||
+    getExcerpt({ content: portableToPlain(post.content), length: 160 })
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.seo?.title || post.title,
-    description: post.seo?.description || "",
+    description,
     datePublished: post.publishedAt,
     url: postUrl,
     image:
@@ -49,6 +53,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`,
     author:
       authors.length > 0 ? authors : [{ "@type": "Person", name: "Unknown" }],
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
+    },
   }
 
   return (

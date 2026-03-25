@@ -37,8 +37,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   dashboardV2SignUp: "https://dashboard.novu.co/auth/sign-up",
 
   // Other services
-  bookMeeting:
-    "https://notify.novu.co/meetings/novuhq/novu-discovery-session-rr",
+  bookMeeting: "https://novu.co/contact-us/",
   careers: "https://careers.novu.co",
   handbook: "https://handbook.novu.co",
   roadmap: "https://roadmap.novu.co",
@@ -56,20 +55,20 @@ export const ROUTE: Record<string, Route<string> | URL> = {
 
   // Docs
   docs: "https://docs.novu.co/",
-  docsApis: "https://docs.novu.co/api-reference/overview",
-  docsContentManagement: "https://docs.novu.co/workflow/template-editor",
-  docsFramework: "https://docs.novu.co/framework/overview",
-  docsGuides: "https://docs.novu.co/guides/overview",
-  docsInApp: "https://docs.novu.co/inbox/introduction",
-  docsNotifications:
-    "https://docs.novu.co/platform/inbox/react/components/notifications",
-  docsOverview: "https://docs.novu.co/platform/overview",
+  docsApis: "https://docs.novu.co/api-reference",
+  docsContentManagement:
+    "https://docs.novu.co/platform/workflow/add-notification-content/channels-template-editors",
+  docsFramework: "https://docs.novu.co/framework/introduction",
+  docsGuides: "https://docs.novu.co/guides",
+  docsInApp: "https://docs.novu.co/platform/inbox",
+  docsNotifications: "https://docs.novu.co/platform/sdks/react",
+  docsOverview: "https://docs.novu.co/platform",
   docsProviders:
-    "https://docs.novu.co/channels-and-providers/introduction?utm_campaign=website",
+    "https://docs.novu.co/platform/integrations?utm_campaign=website",
   docsQuickStart:
-    "https://docs.novu.co/quickstarts/01-introduction?utm_campaign=website",
-  docsSdks: "https://docs.novu.co/sdks/overview",
+    "https://docs.novu.co/platform/quickstart/nextjs?utm_campaign=website",
+  docsSdks: "https://docs.novu.co/platform/sdks",
   docsUserPreferences:
-    "https://docs.novu.co/inbox/react/components/preferences",
-  docsWorkflow: "https://docs.novu.co/workflows/notification-workflows",
+    "https://docs.novu.co/platform/sdks/react/hooks/use-preferences",
+  docsWorkflow: "https://docs.novu.co/platform/workflow",
 }
