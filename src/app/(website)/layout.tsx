@@ -2,7 +2,7 @@ import { draftMode } from "next/headers"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getLatestChangelogPost, getLatestWpPost } from "@/lib/get-header-data"
+import { getLatestChangelogPost, getLatestBlogPost } from "@/lib/get-header-data"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
@@ -19,7 +19,7 @@ export default async function RootLayout({
   const [{ stars }, changelog, blog] = await Promise.all([
     getGithubInfo(),
     getLatestChangelogPost(),
-    getLatestWpPost(),
+    getLatestBlogPost(),
   ])
 
   return (
