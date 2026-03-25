@@ -126,11 +126,36 @@ export default async function ChangelogPostPage({
 
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const postUrl = `${siteUrl}${pathname}`
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
+
+  // Extract video data from portable text content for VideoObject schema
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const videoBlocks = ((content || []) as any[]).filter(
+    (block) => block._type === "video"
+  )
+  const videoJsonLd = videoBlocks.map((block) => {
+    const ref = (block.videoFile?.asset?._ref as string) || ""
+    const videoUrl = `https://cdn.sanity.io/files/${projectId}/${dataset}/${ref
+      .replace("file-", "")
+      .replace("-mp4", ".mp4")
+      .replace("-webm", ".webm")}`
+    return {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: (block.alt as string) || title,
+      description: caption || title,
+      thumbnailUrl: cover || undefined,
+      uploadDate: publishedAt,
+      contentUrl: videoUrl,
+    }
+  })
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,
-    description: caption || "",
+    description: caption || title,
     datePublished: publishedAt,
     url: postUrl,
     image: cover || undefined,
@@ -139,6 +164,15 @@ export default async function ChangelogPostPage({
       name: author.name,
       ...(author.photo ? { image: author.photo } : {}),
     })),
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
+    },
   }
 
   return (
@@ -222,6 +256,15 @@ export default async function ChangelogPostPage({
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      {videoJsonLd.map((videoLd, index) => (
+        <script
+          key={`video-ld-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(videoLd).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
     </div>
   )
 }

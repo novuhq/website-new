@@ -70,6 +70,17 @@ export default async function RootLayout({
           }}
         />
         <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Novu",
+              url: "https://novu.co",
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
           key="plain-live-chat"
           dangerouslySetInnerHTML={{
             __html: `
