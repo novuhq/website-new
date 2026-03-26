@@ -39,20 +39,6 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
-  async redirects() {
-    return [
-      {
-        source: "/customers/Deriv/",
-        destination: "/customers/deriv/",
-        permanent: true,
-      },
-      {
-        source: "/customers/Deriv",
-        destination: "/customers/deriv/",
-        permanent: true,
-      },
-    ]
-  },
   async headers() {
     return [
       {
