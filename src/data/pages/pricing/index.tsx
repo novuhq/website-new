@@ -38,8 +38,6 @@ import logoWhoppah from "@/images/pages/pricing/logos/whoppah.svg"
 import { ROUTE } from "@/constants/routes"
 import type { IPricingPageData } from "@/types/pricing"
 
-const dashboardSignUpWithUtm = `${ROUTE.dashboardV2SignUp}?utm_campaign=gs-website-inbox`
-
 const renderScheduleCallButton = (
   onScheduleClick: (source: string) => void
 ) => (
@@ -290,7 +288,7 @@ export const pricingPageData: IPricingPageData = {
         extraInfo: "No credit card required",
         isFeatured: false,
         link: {
-          href: dashboardSignUpWithUtm,
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -322,7 +320,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: true,
         link: {
-          href: dashboardSignUpWithUtm,
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -357,7 +355,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: dashboardSignUpWithUtm,
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -457,7 +455,7 @@ export const pricingPageData: IPricingPageData = {
   pageCta: {
     actions: [
       {
-        href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+        href: ROUTE.dashboard,
         label: "Get started",
         kind: "primary-button",
       },
@@ -475,21 +473,21 @@ export const pricingPageData: IPricingPageData = {
     headings: [
       {
         buttonText: "Get started",
-        buttonUrl: dashboardSignUpWithUtm,
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "free",
         label: "Free",
         isFeatured: false,
       },
       {
         buttonText: "Get started",
-        buttonUrl: dashboardSignUpWithUtm,
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "pro",
         isFeatured: true,
         label: "Pro",
       },
       {
         buttonText: "Get started",
-        buttonUrl: dashboardSignUpWithUtm,
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "team",
         label: "Team",
         isFeatured: false,
