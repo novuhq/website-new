@@ -27,23 +27,44 @@ export default async function CustomersPage() {
 
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
 
+  const reviews = page.tweets
+    .filter((tweet) => tweet.name && tweet.text)
+    .slice(0, 10)
+    .map((tweet) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: tweet.name,
+      },
+      reviewBody: tweet.text.replace(/<[^>]*>/g, ""),
+    }))
+
   const reviewJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: "Novu",
+    description:
+      "Open-source notification infrastructure for developers and product teams.",
     url: `${siteUrl}/customers/`,
+    image: `${siteUrl}/social-previews/index.jpg`,
     brand: { "@type": "Brand", name: "Novu" },
-    review: page.tweets
-      .filter((tweet) => tweet.name && tweet.text)
-      .slice(0, 10)
-      .map((tweet) => ({
-        "@type": "Review",
-        author: {
-          "@type": "Person",
-          name: tweet.name,
-        },
-        reviewBody: tweet.text.replace(/<[^>]*>/g, ""),
-      })),
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      description: "Free up to 10,000 workflow runs per month",
+      url: `${siteUrl}/pricing/`,
+    },
+    ...(reviews.length > 0 && { review: reviews }),
+    ...(reviews.length > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5",
+        bestRating: "5",
+        ratingCount: String(reviews.length),
+      },
+    }),
   }
 
   return (

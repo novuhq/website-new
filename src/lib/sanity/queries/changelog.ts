@@ -9,6 +9,7 @@ _type,
   title,
   slug,
   publishedAt,
+  _createdAt,
   caption,
   "categories": categories[]->{
     title,

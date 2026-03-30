@@ -72,7 +72,7 @@ export const pricingPageData: IPricingPageData = {
               A workflow run is one execution of a workflow. Triggering a
               workflow to a single subscriber counts as 1 run; triggering to a{" "}
               <a
-                href="https://docs.novu.co/concepts/topics"
+                href="https://docs.novu.co/platform/concepts/topics"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -623,6 +623,22 @@ export const pricingPageData: IPricingPageData = {
             and manage your notifications safely before deploying to users.
           </p>
         ),
+      },
+      {
+        enterprise: {
+          booleanValue: true,
+        },
+        free: {
+          booleanValue: false,
+        },
+        isGroupTitle: false,
+        pro: {
+          booleanValue: true,
+        },
+        team: {
+          booleanValue: true,
+        },
+        title: "Environment Variables",
       },
       {
         enterprise: {

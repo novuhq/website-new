@@ -37,6 +37,7 @@ export interface ICustomersGridData {
 
 export interface ICustomerData {
   _id: string
+  _createdAt: string
   _type: "customer"
   name: string
   type: "external" | "story"

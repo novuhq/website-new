@@ -4,7 +4,10 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getLatestBlogPost, getLatestChangelogPost } from "@/lib/get-header-data"
+import {
+  getLatestBlogPost,
+  getLatestChangelogPost,
+} from "@/lib/get-header-data"
 import { Button } from "@/components/ui/button"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"

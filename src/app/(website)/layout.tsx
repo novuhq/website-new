@@ -2,7 +2,10 @@ import { draftMode } from "next/headers"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getLatestBlogPost, getLatestChangelogPost } from "@/lib/get-header-data"
+import {
+  getLatestBlogPost,
+  getLatestChangelogPost,
+} from "@/lib/get-header-data"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
@@ -45,7 +48,9 @@ export default async function RootLayout({
             </a>
             <Header githubStars={stars} changelog={changelog} blog={blog} />
             {isDraftMode && <PreviewWarning />}
-            <main id="main-content" className="grow">{children}</main>
+            <main id="main-content" className="grow">
+              {children}
+            </main>
             <Footer />
           </div>
         </Providers>
@@ -66,6 +71,17 @@ export default async function RootLayout({
               ],
               description:
                 "Open-source notification infrastructure for developers and product teams.",
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Novu",
+              url: "https://novu.co",
             }).replace(/</g, "\\u003c"),
           }}
         />

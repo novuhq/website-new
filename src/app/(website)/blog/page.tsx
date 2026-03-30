@@ -45,8 +45,37 @@ export default async function BlogPage() {
     )
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${SEO_DATA.blog.title} | ${config.projectName}`,
+    description: SEO_DATA.blog.description,
+    url: `${siteUrl}/blog/`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Novu",
+      url: "https://novu.co",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
+    },
+  }
+
   return (
     <div className="relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(blogJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col px-5 pt-12 md:px-8 md:pt-16 lg:pt-20 xl:pt-24">
         <h1 className="max-w-xl text-4xl leading-tight font-medium tracking-tighter text-balance md:text-[3rem] lg:leading-dense">
           Built with Novu

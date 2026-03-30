@@ -8,6 +8,7 @@ import {
 
 export interface IStaticPage {
   _type: "staticPage"
+  _createdAt: string
   title: string
   slug: ISlug
   publishedAt: string

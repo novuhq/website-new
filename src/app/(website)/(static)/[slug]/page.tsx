@@ -41,13 +41,33 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const staticPageUrl = `${siteUrl}/${staticPageSlug.current}`
 
+  const jsonLdDescription =
+    seo?.description?.length > 0
+      ? seo.description
+      : getExcerpt({ content: portableToPlain(content), length: 160 })
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: seo?.title || title,
-    description: seo?.description || "",
-    datePublished: publishedAt,
+    description: jsonLdDescription,
+    datePublished: publishedAt || staticPage._createdAt,
     url: staticPageUrl,
+    image:
+      seo?.socialImage || `${siteUrl}/social-previews/index.jpg`,
+    author: {
+      "@type": "Organization",
+      name: "Novu",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
+    },
   }
 
   return (

@@ -6,6 +6,7 @@ const COVER_ASPECT_RATIO = config.blog.coverAspectRatio
 
 const commonPostFields = `
   _type,
+  _createdAt,
   title,
   slug,
   caption,

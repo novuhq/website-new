@@ -42,6 +42,7 @@ const customersGridFields = `
 
 const customerFields = `
   _id,
+  _createdAt,
   name,
   type,
   url,

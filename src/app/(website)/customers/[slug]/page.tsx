@@ -88,14 +88,28 @@ export default async function CustomerStoryPage({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,
-    description: about || "",
+    description: about || title,
+    datePublished: customer._createdAt,
     url: `${siteUrl}${customerPathname}`,
-    image: cover || undefined,
+    image: cover || `${siteUrl}/social-previews/customers.jpg`,
+    author: {
+      "@type": "Organization",
+      name: "Novu",
+    },
     about: {
       "@type": "Organization",
       name,
-      logo: logo?.url || undefined,
+      ...(logo?.url ? { logo: logo.url } : {}),
       ...(industry ? { industry } : {}),
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/logo.svg",
+      },
     },
   }
 
