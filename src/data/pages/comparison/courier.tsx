@@ -270,7 +270,7 @@ export const courierComparisonData: IComparisonPageData = {
       "Bring your workflows, templates, and notification logic to Novu with a more flexible, open infrastructure. Reduce vendor lock-in and gain full control with self-hosting and developer-first workflows.",
     cta: {
       label: "Migration Guide",
-      href: "https://docs.novu.co/",
+      href: "https://docs.novu.co/guides/migrate-from-courier-to-novu",
     },
   },
   reviewsSection: {
