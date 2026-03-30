@@ -8,7 +8,7 @@ import { comparisonReviews } from "@/data/pages/comparison/reviews"
 
 import { getMetadata } from "@/lib/get-metadata"
 import Banner from "@/components/pages/banner"
-import CodeSection from "@/components/pages/comparison/code-section"
+import CodeWithInbox from "@/components/pages/home/code-with-inbox/code-with-inbox"
 import ComparisonTableSection from "@/components/pages/comparison/comparison-table"
 import Difference from "@/components/pages/comparison/difference"
 import Frustrations from "@/components/pages/comparison/frustrations"
@@ -38,8 +38,8 @@ export async function generateMetadata({
   }
 
   return getMetadata({
-    title: `${data.title} | Novu`,
-    description: data.description,
+    title: `Best ${data.competitor} Alternatives | Novu`,
+    description: `Exploring alternatives to ${data.competitor}? See why developers choose Novu for multi-channel notifications: open-source, fully customizable, and built for scale.`,
     pathname: `/comparison/${slug}`,
   })
 }
@@ -65,7 +65,7 @@ async function ComparisonPage({ params }: PageProps) {
       <Intro intro={data.intro} />
       <Frustrations frustrations={data.frustrations} />
       <Difference difference={data.difference} />
-      <CodeSection codeSection={data.codeSection} />
+      <CodeWithInbox />
       <ComparisonTableSection comparisonTable={data.comparisonTable} />
       <Banner className="pt-16 md:pt-24 lg:pt-36 xl:pt-50" {...data.banner} />
       <Reviews

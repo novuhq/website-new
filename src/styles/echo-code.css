@@ -1,0 +1,12 @@
+/* Echo-code theme for the code-with-inbox section code block */
+.echo-code.shiki {
+  @apply !bg-transparent;
+
+  & span.line {
+    @apply !bg-transparent pl-10;
+
+    &::before {
+      @apply text-white/60;
+    }
+  }
+}

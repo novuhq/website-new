@@ -95,6 +95,87 @@ export async function highlight(
   return html
 }
 
+const ECHO_CODE_THEME = {
+  name: "echo-code",
+  type: "dark" as const,
+  colors: { "editor.background": "#131725" },
+  tokenColors: [
+    {
+      scope: [
+        "keyword",
+        "storage.type",
+        "keyword.control",
+        "variable.language",
+      ],
+      settings: { foreground: "#FFE14D" },
+    },
+    {
+      scope: [
+        "entity.name.function",
+        "support.function",
+        "entity.name.tag",
+        "support.class.component",
+      ],
+      settings: { foreground: "#DD99FF" },
+    },
+    {
+      scope: ["string", "string.quoted", "meta.jsx.children"],
+      settings: { foreground: "#00D5FF" },
+    },
+    {
+      scope: [
+        "punctuation",
+        "meta.brace",
+        "keyword.operator",
+        "meta.tag.attributes",
+      ],
+      settings: { foreground: "#FFFFFF" },
+    },
+    {
+      scope: [
+        "comment",
+        "comment.line",
+        "comment.block",
+        "punctuation.definition.comment",
+      ],
+      settings: { foreground: "#666666" },
+    },
+    {
+      scope: ["variable", "variable.other", "variable.parameter"],
+      settings: { foreground: "#FFFFFF" },
+    },
+    {
+      scope: ["entity.name.type", "support.type"],
+      settings: { foreground: "#DD99FF" },
+    },
+  ],
+}
+
+export async function highlightEchoCode(code: string): Promise<string> {
+  if (!highlighter) {
+    highlighter = await getSingletonHighlighter({
+      langs: ["javascript"],
+    })
+  }
+
+  await highlighter.loadLanguage("javascript")
+
+  return codeToHtml(code, {
+    lang: "javascript",
+    theme: ECHO_CODE_THEME,
+    transformers: [
+      {
+        code(node) {
+          node.properties.class = "grid"
+        },
+        line(node, line) {
+          node.properties["data-line"] = line
+        },
+      },
+    ],
+  })
+}
+
 export async function getHighlightedCodeArray(items: ICodeBlock[]) {
   let highlightedItems: string[] = []
 
