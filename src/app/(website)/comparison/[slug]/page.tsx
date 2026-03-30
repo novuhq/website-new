@@ -53,7 +53,7 @@ async function ComparisonPage({ params }: PageProps) {
   }
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-clip">
       <Hero hero={data.hero} />
       <SectionWithLogosAnimated
         className="mt-16 mb-0 md:mt-20 md:mb-0 lg:mt-24 lg:mb-0 xl:mt-32 xl:mb-0"
