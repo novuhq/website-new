@@ -85,14 +85,15 @@ function IntegrationDetail({
         </Link>
 
         <header className="flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8 md:pt-9 md:pb-10 lg:max-w-xl xl:max-w-176 2xl:max-w-none">
-          <div className="relative size-18 shrink-0 overflow-hidden rounded-xl border border-gray-4 bg-card">
-            <Image
-              src={integration.icon}
-              alt=""
-              width={72}
-              height={72}
-              className="object-contain p-2"
-            />
+          <div className="relative size-18 shrink-0 overflow-hidden rounded-xl border border-[var(--integration-icon-wrapper-border)] [background:var(--integration-icon-wrapper-bg)]">
+            <div className="absolute top-[0.9375rem] left-[0.9375rem] size-10">
+              <Image
+                src={integration.icon}
+                alt=""
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
@@ -101,7 +102,7 @@ function IntegrationDetail({
                 <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
                   {integration.title}
                 </h1>
-                <span className="rounded-xl border border-gray-4 bg-card/80 px-2.5 py-1 text-xs leading-none tracking-tight text-gray-9">
+                <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
                   {integration.badge}
                 </span>
               </div>

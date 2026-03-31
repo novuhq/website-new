@@ -1,10 +1,10 @@
 import { ROUTE } from "@/constants/routes"
 
+import type { IntegrationTabType } from "@/types/integration"
 import {
   getIntegrationCategories,
   getIntegrationsByTab,
 } from "@/lib/integrations"
-import type { IntegrationTabType } from "@/types/integration"
 import CTA from "@/components/pages/cta"
 import IntegrationsHero from "@/components/pages/integrations/integrations-hero"
 import IntegrationsSections from "@/components/pages/integrations/integrations-sections"
@@ -36,7 +36,7 @@ async function IntegrationsTabPageContent({
         integrations={integrations}
       />
       <CTA
-        title={`Send notifications\r\nwith your providers`}
+        title={`Send notifications with\r\nthe providers you already use`}
         titleClassName="whitespace-pre-line"
         className="!pt-27 !pb-45"
         description={

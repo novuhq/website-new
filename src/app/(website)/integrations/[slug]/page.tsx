@@ -81,7 +81,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
         relatedIntegrations={relatedIntegrations}
       />
       <CTA
-        title={`Send notifications\r\nwith your providers`}
+        title={`Send notifications with\r\nthe providers you already use`}
         titleClassName="whitespace-pre-line"
         className="!pt-24 md:!pt-46"
         description={
