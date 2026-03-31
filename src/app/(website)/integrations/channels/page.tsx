@@ -7,7 +7,7 @@ import IntegrationsTabPageContent from "@/app/(website)/integrations/_components
 
 const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
 
-export const revalidate = 3600
+export const revalidate = false
 export const dynamic = "force-static"
 
 export async function generateMetadata(): Promise<Metadata> {
