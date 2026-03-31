@@ -158,11 +158,7 @@ function IntegrationDetail({
         </div>
 
         <aside className="flex h-fit w-full flex-col gap-5 self-start pt-10 sm:w-64 sm:shrink-0 lg:sticky lg:top-24 lg:w-64 lg:pt-0">
-          <div className="relative overflow-hidden rounded-xl border border-foreground/20 bg-foreground/6 p-5">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-9 left-1/2 h-20 w-72 -translate-x-1/2 rounded-full bg-radial from-foreground/8 to-transparent"
-            />
+          <div className="relative overflow-hidden rounded-[10px] border border-solid border-gray-3 p-5 [background:radial-gradient(70.44%_126%_at_50%_-26%,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0)_100%),rgba(255,255,255,0.06)]">
             <h3 className="font-display relative text-base leading-tight tracking-tight text-foreground">
               Need help?
             </h3>
@@ -206,15 +202,13 @@ function IntegrationDetail({
                       href={rel.pathname}
                       className="flex items-center gap-2 text-sm whitespace-nowrap text-gray-8 no-underline transition-colors hover:text-white"
                     >
-                      <span className="relative size-6 shrink-0 overflow-hidden rounded border border-gray-4 bg-card">
-                        <Image
-                          src={rel.icon}
-                          alt=""
-                          width={24}
-                          height={24}
-                          className="object-contain p-0.5"
-                        />
-                      </span>
+                      <Image
+                        src={rel.icon}
+                        alt=""
+                        width={20}
+                        height={20}
+                        className="size-5 shrink-0 object-contain"
+                      />
                       <span>{rel.title}</span>
                     </Link>
                   </li>
