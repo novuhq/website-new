@@ -17,6 +17,9 @@ const config = {
     contentDir: "src/content/blog",
     relatedPostsLimit: 3,
   },
+  integrations: {
+    contentDir: "src/content/integrations",
+  },
 }
 
 export default config

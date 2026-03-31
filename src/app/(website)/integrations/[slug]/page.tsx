@@ -1,0 +1,109 @@
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import config from "@/configs/website-config"
+import { ROUTE } from "@/constants/routes"
+
+import { getMetadata } from "@/lib/get-metadata"
+import {
+  getAllIntegrations,
+  getIntegrationBySlug,
+  getRelatedIntegrations,
+} from "@/lib/integrations"
+import CTA from "@/components/pages/cta"
+import IntegrationDetail from "@/components/pages/integrations/integration-detail"
+
+interface PageProps {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateStaticParams() {
+  const items = await getAllIntegrations()
+  return items.map((i) => ({ slug: i.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params
+  const integration = await getIntegrationBySlug(slug)
+
+  if (!integration) {
+    return {}
+  }
+
+  const title = integration.seo?.title ?? `${integration.title} | Integrations`
+  const description = integration.seo?.description ?? integration.tagline
+
+  return getMetadata({
+    title: `${title} | ${config.projectName}`,
+    description,
+    pathname: `${ROUTE.integrations}/${integration.slug}`,
+    noIndex: integration.seo?.noIndex,
+  })
+}
+
+export default async function IntegrationDetailPage({ params }: PageProps) {
+  const { slug } = await params
+  const integration = await getIntegrationBySlug(slug)
+
+  if (!integration) {
+    notFound()
+  }
+
+  const relatedIntegrations = await getRelatedIntegrations(slug)
+
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: integration.title,
+    description: integration.seo?.description ?? integration.tagline,
+    url: pageUrl,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Novu",
+      url: "https://novu.co",
+    },
+  }
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <IntegrationDetail
+        integration={integration}
+        relatedIntegrations={relatedIntegrations}
+      />
+      <CTA
+        title={`Send notifications\r\nwith your providers`}
+        titleClassName="whitespace-pre-line"
+        className="!pt-24 md:!pt-46"
+        description={
+          <>
+            Start with one provider or connect multiple channels, and
+            <br />
+            manage them in one place with Novu.
+          </>
+        }
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Start building",
+            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+          },
+          {
+            kind: "secondary-button",
+            label: "TALK TO us",
+            href: ROUTE.contactUs,
+          },
+        ]}
+      />
+    </div>
+  )
+}

@@ -16,6 +16,7 @@ export const MENUS = {
             { label: "Framework", href: ROUTE.framework },
             { label: "Digest", href: ROUTE.digest },
             { label: "Content Management", href: ROUTE.docsContentManagement },
+            { label: "Integrations", href: ROUTE.integrations },
           ],
         },
         {
@@ -102,6 +103,7 @@ export const MENUS = {
             href: ROUTE.docsContentManagement,
             isNew: false,
           },
+          { label: "Integrations", href: ROUTE.integrations, isNew: false },
           {
             label: "Notifications Directory",
             href: ROUTE.docsNotifications,

@@ -1,0 +1,31 @@
+---
+slug: "mailjet"
+title: "Mailjet"
+tab: "channels"
+category: "email"
+badge: "Email"
+tagline: "Integrate Mailjet with Novu for transactional and marketing emails."
+shortDescription: "Mailjet is an email platform for transactional and marketing messages."
+icon: "/images/integration-icons/email/mailjet-icon.svg"
+order: 7
+docsUrl: "https://docs.novu.co/platform/integrations/email/mailjet"
+primaryCtaLabel: "Integrate Mailjet"
+relatedProviders:
+  - "sendgrid"
+  - "ses"
+  - "postmark"
+  - "resend"
+relatedArticles: []
+---
+
+## Overview
+
+Mailjet is an email platform for transactional and marketing messages.
+
+## How it works
+
+Novu integrates with Mailjet's Send API for email delivery.
+
+## Configure
+
+Provide your Mailjet API key, API secret key, sender email address and name.

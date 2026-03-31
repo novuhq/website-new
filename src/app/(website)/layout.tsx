@@ -57,7 +57,7 @@ export default async function RootLayout({
               "@type": "Organization",
               name: "Novu",
               url: "https://novu.co",
-              logo: "https://novu.co/logo.svg",
+              logo: "https://novu.co/images/logo.svg",
               sameAs: [
                 "https://github.com/novuhq/novu",
                 "https://twitter.com/novaborhq",

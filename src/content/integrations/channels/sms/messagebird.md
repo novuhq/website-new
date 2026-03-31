@@ -1,0 +1,31 @@
+---
+slug: "messagebird"
+title: "MessageBird"
+tab: "channels"
+category: "sms"
+badge: "SMS"
+tagline: "Integrate MessageBird SMS with Novu."
+shortDescription: "MessageBird is a communications platform with SMS, voice, and chat APIs."
+icon: "/images/integration-icons/sms/messagebird-icon.svg"
+order: 39
+docsUrl: "https://docs.novu.co/platform/integrations/sms/messagebird"
+primaryCtaLabel: "Integrate MessageBird"
+relatedProviders:
+  - "twilio"
+  - "plivo"
+  - "aws-sns"
+  - "vonage"
+relatedArticles: []
+---
+
+## Overview
+
+MessageBird is a communications platform with SMS, voice, and chat APIs.
+
+## How it works
+
+Novu sends SMS through MessageBird's API.
+
+## Configure
+
+Add your MessageBird API key.

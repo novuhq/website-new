@@ -66,7 +66,10 @@
     "react-paginate": "^8.2.0",
     "react-slick": "^0.31.0",
     "react-tweet": "^3.2.2",
+    "rehype-stringify": "^10.0.1",
     "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
     "rss": "^1.2.2",
     "sanity": "^3.98.0",
     "sanity-plugin-iframe-pane": "^3.2.1",
@@ -75,6 +78,7 @@
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.6",
     "tailwind-merge": "^3.3.0",
+    "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "vaul": "^1.1.2",
     "zod": "^3.24.2"
