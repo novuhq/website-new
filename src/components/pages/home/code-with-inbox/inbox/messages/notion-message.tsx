@@ -30,6 +30,17 @@ function NotionMessage({
     readMessage(index, true)
   }
 
+  const handleCardKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) {
+      return
+    }
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      handleReadMessage()
+    }
+  }
+
   const handleReadMessageWithPropagation = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -45,14 +56,16 @@ function NotionMessage({
   }
 
   return (
-    <button
+    <div
       className={cn(
         currentTheme.background,
         currentTheme.text,
         "group relative block cursor-pointer px-3 text-left font-inter transition-none"
       )}
-      type="button"
+      role="button"
+      tabIndex={0}
       onClick={handleReadMessage}
+      onKeyDown={handleCardKeyDown}
     >
       <div
         className={cn(
@@ -139,15 +152,14 @@ function NotionMessage({
             </p>
             <p className="mt-1.5 line-clamp-2 text-ellipsis">{text}</p>
           </div>
-          <button
+          <span
             className={cn(
               "col-start-2 mt-[18px] flex h-[30px] w-[58px] items-center justify-center rounded border text-sm font-semibold leading-none",
               currentTheme.buttonBorder
             )}
-            type="button"
           >
             Reply
-          </button>
+          </span>
           <span className="col-start-3 row-start-1 flex translate-x-0.5 translate-y-0.5 items-center justify-center text-sm leading-none text-[#6F727B] group-focus-within:opacity-0 group-hover:opacity-0">
             {date}
           </span>
@@ -182,7 +194,7 @@ function NotionMessage({
           </div>
         </div>
       </div>
-    </button>
+    </div>
   )
 }
 

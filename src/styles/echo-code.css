@@ -2,6 +2,14 @@
 .echo-code.shiki {
   @apply !bg-transparent;
 
+  & code,
+  & code span,
+  & .line,
+  & .line::before {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
   & span.line {
     @apply !bg-transparent pl-10;
 
