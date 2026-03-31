@@ -137,14 +137,14 @@ export const courierComparisonData: IComparisonPageData = {
         icon: regionsIcon,
       },
       {
-        title: "Everything you need — open source",
+        title: "Everything you need and also open source",
         description:
           "In-app inbox, real-time delivery, and user preferences. Digest logic, multi-tenant support, and localization. All included with Novu.",
         image: digestIllustration,
         icon: digestIcon,
       },
       {
-        title: "What users see — in minutes",
+        title: "What users see in minutes",
         description:
           "Real-time delivery, unread counts, snooze controls, and preferences. Styled out of the box and customizable with the appearance prop.",
         image: notificationsIllustration,
