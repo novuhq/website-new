@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 
+import { unstable_cache } from "next/cache"
 import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 import { CHANNEL_CATEGORY_TAXONOMY } from "@/content/integrations/taxonomy/channels"
@@ -28,8 +29,6 @@ const INTEGRATIONS_DIR = path.join(
   process.cwd(),
   config.integrations.contentDir
 )
-
-let cache: IIntegration[] | null = null
 
 function defaultBadge(tab: IntegrationTabType, category: string): string {
   const list =
@@ -116,11 +115,7 @@ async function fileToIntegration(
   }
 }
 
-export async function getAllIntegrations(): Promise<IIntegration[]> {
-  if (cache) {
-    return cache
-  }
-
+async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
   const files = globSync("**/*.md", {
     cwd: INTEGRATIONS_DIR,
     absolute: true,
@@ -143,8 +138,20 @@ export async function getAllIntegrations(): Promise<IIntegration[]> {
     return a.title.localeCompare(b.title)
   })
 
-  cache = results
-  return cache
+  return results
+}
+
+// Cache integrations in Vercel Data Cache so ISR re-renders don't
+// need to re-read .md files from disk (which may not be available
+// in the serverless function filesystem).
+const getCachedIntegrations = unstable_cache(
+  loadIntegrationsFromDisk,
+  ["integrations-all"],
+  { revalidate: false }
+)
+
+export async function getAllIntegrations(): Promise<IIntegration[]> {
+  return getCachedIntegrations()
 }
 
 export async function getIntegrationBySlug(
