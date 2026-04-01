@@ -57,6 +57,9 @@ const nextConfig: NextConfig = {
     "shiki",
     "typescript",
   ],
+  outputFileTracingIncludes: {
+    "/**": ["src/content/integrations/**/*.md"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

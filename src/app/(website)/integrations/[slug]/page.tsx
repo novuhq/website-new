@@ -12,6 +12,9 @@ import {
 import CTA from "@/components/pages/cta"
 import IntegrationDetail from "@/components/pages/integrations/integration-detail"
 
+export const revalidate = false
+export const dynamic = "force-static"
+
 interface PageProps {
   params: Promise<{ slug: string }>
 }
