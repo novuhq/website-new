@@ -5,6 +5,7 @@ import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
+import { compileIntegrationMdx } from "@/lib/markdown/compile-mdx"
 import {
   getAllIntegrations,
   getIntegrationBySlug,
@@ -60,7 +61,10 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  const relatedIntegrations = await getRelatedIntegrations(slug)
+  const [relatedIntegrations, { content }] = await Promise.all([
+    getRelatedIntegrations(slug),
+    compileIntegrationMdx(integration.rawBody),
+  ])
 
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
@@ -92,6 +96,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
       <IntegrationDetail
         integration={integration}
         relatedIntegrations={relatedIntegrations}
+        content={content}
       />
       <CTA
         title={`Send notifications with\nthe providers you already use`}

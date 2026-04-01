@@ -1,9 +1,9 @@
+import type { ReactNode } from "react"
 import type { Route } from "next"
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
-import parse from "html-react-parser"
-import { ArrowLeft, ChevronRight, Eye, RefreshCw, Settings } from "lucide-react"
+import { ArrowLeft, ChevronRight } from "lucide-react"
 
 import type { IIntegration } from "@/types/integration"
 import { cn } from "@/lib/utils"
@@ -14,43 +14,14 @@ import RelatedArticles from "@/components/pages/integrations/related-articles"
 interface IntegrationDetailProps {
   integration: IIntegration
   relatedIntegrations: IIntegration[]
+  content: ReactNode
   className?: string
-}
-
-interface IIntegrationInfoBlockProps {
-  title: string
-  Icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>
-  html?: string
-  className?: string
-}
-
-function IntegrationInfoBlock({
-  title,
-  Icon,
-  html,
-  className,
-}: IIntegrationInfoBlockProps) {
-  return (
-    <section className={cn("flex flex-col gap-2.5", className)}>
-      <h2 className="font-display flex items-center gap-2.5 text-lg leading-snug tracking-tight text-foreground">
-        <Icon className="size-[1.375rem] text-foreground" aria-hidden />
-        {title}
-      </h2>
-      <div
-        className={cn(
-          "text-sm leading-snug font-book tracking-tight text-gray-9",
-          "[&_p]:text-sm [&_p]:leading-snug [&_p]:tracking-tight"
-        )}
-      >
-        {html ? parse(html) : null}
-      </div>
-    </section>
-  )
 }
 
 function IntegrationDetail({
   integration,
   relatedIntegrations,
+  content,
   className,
 }: IntegrationDetailProps) {
   const primaryLabel =
@@ -132,24 +103,7 @@ function IntegrationDetail({
       <div className="relative flex flex-col sm:flex-row sm:gap-10 md:gap-12 lg:gap-16 2xl:grid 2xl:grid-cols-[44rem_16rem]">
         <div className="flex w-full min-w-0 flex-col gap-10">
           <div className="flex flex-col gap-10 border-b border-gray-2 py-10">
-            <div className="grid gap-10 lg:grid-cols-2">
-              <IntegrationInfoBlock
-                title="Overview"
-                Icon={Eye}
-                html={integration.overviewHtml}
-              />
-              <IntegrationInfoBlock
-                title="How it works"
-                Icon={RefreshCw}
-                html={integration.howItWorksHtml}
-              />
-              <IntegrationInfoBlock
-                title="Configure"
-                Icon={Settings}
-                html={integration.configureHtml}
-                className="lg:max-w-[20.75rem]"
-              />
-            </div>
+            <div className="grid gap-10 lg:grid-cols-2">{content}</div>
           </div>
           <RelatedArticles
             articles={relatedArticles}

@@ -35,9 +35,6 @@ export interface IIntegration {
   secondaryCtaHref?: string
   rawBody: string
   pathname: Route<string>
-  overviewHtml: string
-  howItWorksHtml: string
-  configureHtml: string
 }
 
 export interface IIntegrationCategoryMeta {

@@ -15,9 +15,6 @@ import type {
   IIntegrationRelatedArticle,
   IntegrationTabType,
 } from "@/types/integration"
-import { markdownToHtml } from "@/lib/markdown/to-html"
-
-import { splitIntegrationSections } from "./parse-body"
 import {
   integrationFrontmatterSchema,
   type IntegrationFrontmatter,
@@ -78,13 +75,6 @@ async function fileToIntegration(
   }
 
   const fm: IntegrationFrontmatter = parsed.data
-  const sections = splitIntegrationSections(content)
-
-  const [overviewHtml, howItWorksHtml, configureHtml] = await Promise.all([
-    markdownToHtml(sections.overview),
-    markdownToHtml(sections.howItWorks),
-    markdownToHtml(sections.configure),
-  ])
 
   const badge = fm.badge?.trim() || defaultBadge(fm.tab, fm.category)
 
@@ -109,14 +99,11 @@ async function fileToIntegration(
     secondaryCtaHref: fm.secondaryCtaHref,
     rawBody: content.trim(),
     pathname: `${ROUTE.integrations}/${fm.slug}` as IIntegration["pathname"],
-    overviewHtml,
-    howItWorksHtml,
-    configureHtml,
   }
 }
 
 async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
-  const files = globSync("**/*.md", {
+  const files = globSync("**/*.mdx", {
     cwd: INTEGRATIONS_DIR,
     absolute: true,
     ignore: ["**/taxonomy/**"],
