@@ -144,7 +144,7 @@ function IntegrationsTabs({
   return (
     <section
       id="integrations-explore"
-      className="mt-7 scroll-mt-28 bg-black pb-12 md:px-8 lg:mt-28.5"
+      className="scroll-mt-28 bg-black pt-7 pb-12 md:px-8 lg:pt-28.5"
     >
       <Tabs
         value={activeTab}
@@ -254,7 +254,7 @@ function IntegrationsTabs({
                 placeholder="Search..."
                 aria-label="Search integrations by title or category"
                 className={cn(
-                  "h-full w-full appearance-none border-0 bg-transparent text-base leading-normal font-normal tracking-tight text-gray-8 outline-none md:text-[0.8125rem]",
+                  "h-[88%] w-full appearance-none border-0 bg-transparent text-base leading-normal font-normal tracking-tight text-gray-8 outline-none md:text-[0.8125rem]",
                   "focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none",
                   "[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden",
                   "placeholder:text-gray-8"

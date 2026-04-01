@@ -17,11 +17,11 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
   return (
     <section
       className={cn(
-        "integrations-hero safe-paddings bg-black pt-14 pb-16 text-white md:pt-16 md:pb-12 lg:pt-18.5 lg:pb-14 xl:pt-22.5",
+        "integrations-hero safe-paddings overflow-x-clip bg-black pt-14 pb-16 text-white md:pt-16 md:pb-12 lg:pt-18.5 lg:pb-14 xl:pt-22.5",
         className
       )}
     >
-      <div className="mx-auto w-full max-w-336 overflow-clip px-8 sm:px-4 md:px-7 2xl:px-0">
+      <div className="mx-auto w-full max-w-336 px-8 sm:px-4 md:px-7 2xl:px-0">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-24">
           <div className="relative z-10 flex w-full flex-col md:pt-3">
             <div className="flex flex-col gap-12 lg:gap-[11.25rem]">
