@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Kudosity with Novu."
-shortDescription: "Kudosity is an SMS provider based in Australia."
+shortDescription: "Send SMS notifications through your Kudosity account using Novu."
 icon: "/images/integration-icons/sms/kudosity-icon.svg"
 order: 34
 docsUrl: "https://docs.novu.co/platform/integrations/sms/kudosity"

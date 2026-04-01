@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate AWS SNS SMS delivery with Novu."
-shortDescription: "AWS SNS is a managed messaging service from Amazon that supports SMS."
+shortDescription: "Send SMS notifications through your AWS SNS account using Novu."
 icon: "/images/integration-icons/sms/aws-sns-icon.svg"
 order: 22
 docsUrl: "https://docs.novu.co/platform/integrations/sms/aws-sns"

@@ -107,7 +107,7 @@ function IntegrationDetail({
                 </span>
               </div>
               <p className="mt-3 max-w-[22.6875rem] text-lg leading-normal font-book tracking-tight text-gray-8">
-                {integration.tagline}
+                {integration.description}
               </p>
             </div>
 

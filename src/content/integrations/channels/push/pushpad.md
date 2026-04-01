@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate Pushpad web push with Novu."
-shortDescription: "Pushpad is a web push notification service."
+shortDescription: "Send web push notifications through your Pushpad account from Novu."
 icon: "/images/integration-icons/push/pushpad-icon.svg"
 order: 47
 docsUrl: "https://docs.novu.co/platform/integrations/push/pushpad"

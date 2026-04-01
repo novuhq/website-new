@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate SendGrid with Novu for reliable email delivery."
-shortDescription: "SendGrid is an email delivery platform that provides APIs for transactional and marketing email."
+shortDescription: "Deliver email notifications to your users through SendGrid using Novu."
 icon: "/images/integration-icons/email/sendgrid-icon.svg"
 order: 1
 docsUrl: "https://docs.novu.co/platform/integrations/email/sendgrid"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Africa's Talking SMS with Novu."
-shortDescription: "Africa's Talking provides communication APIs for SMS, voice, and USSD."
+shortDescription: "Deliver SMS notifications to your users through Africa's Talking from Novu."
 icon: "/images/integration-icons/sms/africas-talking-icon.svg"
 order: 36
 docsUrl: "https://docs.novu.co/platform/integrations/sms/africas-talking"

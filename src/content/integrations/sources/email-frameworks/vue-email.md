@@ -4,7 +4,7 @@ title: "Vue Email"
 tab: "sources"
 category: "email-frameworks"
 tagline: "Use Vue Email in Novu code steps to generate email content."
-shortDescription: "Use Vue Email in Novu code steps to generate email content."
+shortDescription: "Use Vue Email in Novu to generate email content."
 icon: "/images/integration-icons/workflow/vue-icon.svg"
 order: 1
 docsUrl: "https://docs.novu.co/framework/content/vue-email"

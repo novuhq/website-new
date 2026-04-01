@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Gupshup SMS with Novu."
-shortDescription: "Gupshup is a messaging platform with SMS and conversational messaging capabilities."
+shortDescription: "Send SMS notifications to your users through Gupshup from Novu."
 icon: "/images/integration-icons/sms/gupshup-icon.svg"
 order: 27
 docsUrl: "https://docs.novu.co/platform/integrations/sms/gupshup"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Infobip email APIs into Novu."
-shortDescription: "Infobip is a communication platform offering email, SMS, voice, and messaging services."
+shortDescription: "Send email notifications to your users through Infobip using Novu."
 icon: "/images/integration-icons/email/infobip-icon.svg"
 order: 9
 docsUrl: "https://docs.novu.co/platform/integrations/email/infobip"

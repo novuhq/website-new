@@ -1,12 +1,18 @@
-import Image from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
-import BannerBg from "@/images/pages/integrations/banner-bg.jpg"
-import DotSurface from "@/images/pages/integrations/dot-surface.png"
-import Shine from "@/images/pages/integrations/shine.svg"
+import Image from "next/image";
+import NextLink from "next/link";
+import { ROUTE } from "@/constants/routes";
+import BannerBg from "@/images/pages/integrations/banner-bg.jpg";
+import DotSurface from "@/images/pages/integrations/dot-surface.png";
+import Shine from "@/images/pages/integrations/shine.svg";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+
+
+
 
 interface ICustomIntegrationsBannerProps {
   className?: string
@@ -33,7 +39,7 @@ function CustomIntegrationsBanner({
           <div className="relative z-20 flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-8">
             <div className="max-w-xl">
               <h2 className="text-2xl leading-tight font-medium tracking-tight text-balance text-foreground">
-                Build Custom Integrations Easily
+                Build custom integrations easily
               </h2>
               <p className="mt-2.5 max-w-[27rem] text-base leading-snug font-book tracking-tight text-gray-9">
                 Connect your tools with flexible APIs and create integrations

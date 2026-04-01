@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate BulkSMS with Novu."
-shortDescription: "BulkSMS is an SMS gateway for bulk and transactional messaging."
+shortDescription: "Deliver SMS notifications to your users through BulkSMS using Novu."
 icon: "/images/integration-icons/sms/bulksms-icon.svg"
 order: 38
 docsUrl: "https://docs.novu.co/platform/integrations/sms/bulk-sms"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Termii SMS through Novu."
-shortDescription: "Termii is a messaging platform with SMS, voice, and token verification services."
+shortDescription: "Send SMS notifications through your Termii account using Novu."
 icon: "/images/integration-icons/sms/termii-icon.svg"
 order: 26
 docsUrl: "https://docs.novu.co/platform/integrations/sms/termii"

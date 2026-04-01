@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Braze email messaging with Novu workflows."
-shortDescription: "Braze is a customer engagement platform that includes email, push, and in-app messaging."
+shortDescription: "Deliver email notifications through your Braze account using Novu."
 icon: "/images/integration-icons/email/braze-icon.svg"
 order: 8
 docsUrl: "https://docs.novu.co/platform/integrations/email/braze"

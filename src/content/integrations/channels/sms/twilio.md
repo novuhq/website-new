@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Twilio with Novu for global SMS notifications."
-shortDescription: "Twilio is a cloud communications platform with SMS, voice, and messaging APIs."
+shortDescription: "Send SMS notifications through Twilio using Novu."
 icon: "/images/integration-icons/sms/twilio-icon.svg"
 order: 20
 docsUrl: "https://docs.novu.co/platform/integrations/sms/twilio"

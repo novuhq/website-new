@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate self-hosted Kannel gateways with Novu."
-shortDescription: "Kannel is an open-source SMS and WAP gateway."
+shortDescription: "Send SMS notifications through your self-hosted Kannel gateway using Novu."
 icon: "/images/integration-icons/sms/kannel-icon.svg"
 order: 35
 docsUrl: "https://docs.novu.co/platform/integrations/sms/kannel"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Plivo SMS with Novu."
-shortDescription: "Plivo is a cloud communications platform with SMS and voice APIs."
+shortDescription: "Deliver SMS notifications through your Plivo account from Novu."
 icon: "/images/integration-icons/sms/plivo-icon.svg"
 order: 21
 docsUrl: "https://docs.novu.co/platform/integrations/sms/plivo"

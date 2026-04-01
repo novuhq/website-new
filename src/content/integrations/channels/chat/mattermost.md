@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate Mattermost messaging with Novu."
-shortDescription: "Mattermost is an open-source, self-hosted messaging platform."
+shortDescription: "Send notifications to your users in Mattermost through Novu."
 icon: "/images/integration-icons/chat/mattermost-icon.svg"
 order: 54
 docsUrl: "https://docs.novu.co/platform/integrations/chat/mattermost"

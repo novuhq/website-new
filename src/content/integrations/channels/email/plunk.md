@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Plunk with Novu for open-source transactional email."
-shortDescription: "Plunk is an open-source email platform for transactional email."
+shortDescription: "Send email notifications through your Plunk account using Novu."
 icon: "/images/integration-icons/email/plunk-icon.svg"
 order: 16
 docsUrl: "https://docs.novu.co/platform/integrations/email/plunk"

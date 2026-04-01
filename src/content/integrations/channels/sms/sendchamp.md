@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Sendchamp with Novu for SMS delivery."
-shortDescription: "Sendchamp is a communication platform with SMS and WhatsApp APIs."
+shortDescription: "Send SMS notifications through your Sendchamp account using Novu."
 icon: "/images/integration-icons/sms/sendchamp-icon.svg"
 order: 41
 docsUrl: "https://docs.novu.co/platform/integrations/sms/sendchamp"

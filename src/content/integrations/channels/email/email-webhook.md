@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Email Webhook with custom HTTP endpoints."
-shortDescription: "Email Webhook forwards email notification payloads to a custom HTTP endpoint."
+shortDescription: "Route email events to a custom endpoint with Novu."
 icon: "/images/integration-icons/email/email-webhook-icon.svg"
 order: 17
 docsUrl: "https://docs.novu.co/platform/integrations/email/webhook"

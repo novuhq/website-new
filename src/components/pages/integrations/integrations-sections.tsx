@@ -112,9 +112,14 @@ function IntegrationsSections({
         </h2>
         <div className="flex flex-col gap-17">
           {categories.map((cat) => {
-            const items = filteredIntegrations.filter(
-              (i) => i.category === cat.slug
-            )
+            const items = filteredIntegrations
+              .filter((i) => i.category === cat.slug)
+              .sort((a, b) => {
+                if (a.order !== b.order) {
+                  return a.order - b.order
+                }
+                return a.title.localeCompare(b.title)
+              })
             if (items.length === 0) {
               return null
             }

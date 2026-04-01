@@ -4,7 +4,7 @@ title: "React Email"
 tab: "sources"
 category: "email-frameworks"
 tagline: "Use React Email in Novu code steps to generate email content."
-shortDescription: "Use React Email in Novu code steps to generate email content."
+shortDescription: "Use React Email in Novu to generate email content."
 icon: "/images/integration-icons/workflow/react-icon.svg"
 order: 0
 docsUrl: "https://docs.novu.co/framework/content/react-email"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate SMS77 with Novu."
-shortDescription: "SMS77 is an SMS gateway based in Germany."
+shortDescription: "Send SMS notifications through your seven.io account from Novu."
 icon: "/images/integration-icons/sms/sms77-icon.svg"
 order: 24
 docsUrl: "https://docs.novu.co/platform/integrations/sms/sms77"

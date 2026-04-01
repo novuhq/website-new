@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Firetext with Novu."
-shortDescription: "Firetext is a UK-based SMS platform."
+shortDescription: "Send SMS notifications through your Firetext account using Novu."
 icon: "/images/integration-icons/sms/firetext-icon.svg"
 order: 32
 docsUrl: "https://docs.novu.co/platform/integrations/sms/firetext"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Mandrill transactional email with Novu."
-shortDescription: "Mandrill is a transactional email service from Mailchimp."
+shortDescription: "Deliver email notifications through your Mandrill account using Novu."
 icon: "/images/integration-icons/email/mandrill-icon.svg"
 order: 12
 docsUrl: "https://docs.novu.co/platform/integrations/email/mandrill"

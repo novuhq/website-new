@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Netcore email APIs with Novu."
-shortDescription: "Netcore is a transactional email API provider with send-time optimization features."
+shortDescription: "Deliver email notifications through your Netcore account using Novu."
 icon: "/images/integration-icons/email/netcore-icon.svg"
 order: 13
 docsUrl: "https://docs.novu.co/platform/integrations/email/netcore"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Amazon SES with Novu for AWS-based transactional and bulk email."
-shortDescription: "Amazon Simple Email Service (SES) is an email sending service from AWS for transactional and bulk email."
+shortDescription: "Send email notifications through your Amazon SES account from Novu."
 icon: "/images/integration-icons/email/amazon-ses.svg"
 order: 2
 primaryCtaLabel: "Integrate Amazon SES"

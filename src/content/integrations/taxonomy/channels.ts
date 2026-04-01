@@ -11,11 +11,20 @@ export interface IChannelCategoryTaxonomy {
 
 export const CHANNEL_CATEGORY_TAXONOMY: IChannelCategoryTaxonomy[] = [
   {
+    slug: "in-app",
+    title: "In-app",
+    description:
+      "Power your in-app notification center with Novu's built-in Inbox component.",
+    order: 0,
+    tab: "channels",
+    defaultBadge: "In-app",
+  },
+  {
     slug: "email",
     title: "Email",
     description:
       "Send transactional and marketing emails through your preferred provider.",
-    order: 0,
+    order: 1,
     tab: "channels",
     defaultBadge: "Email",
   },
@@ -24,7 +33,7 @@ export const CHANNEL_CATEGORY_TAXONOMY: IChannelCategoryTaxonomy[] = [
     title: "SMS",
     description:
       "Deliver text messages and OTP codes globally via SMS providers.",
-    order: 1,
+    order: 2,
     tab: "channels",
     defaultBadge: "SMS",
   },
@@ -33,19 +42,11 @@ export const CHANNEL_CATEGORY_TAXONOMY: IChannelCategoryTaxonomy[] = [
     title: "Push",
     description:
       "Send push notifications to mobile and web apps through supported push services.",
-    order: 2,
+    order: 3,
     tab: "channels",
     defaultBadge: "Push",
   },
-  {
-    slug: "in-app",
-    title: "In-app",
-    description:
-      "Power your in-app notification center with Novu's built-in Inbox component.",
-    order: 3,
-    tab: "channels",
-    defaultBadge: "In-app",
-  },
+
   {
     slug: "chat",
     title: "Chat",

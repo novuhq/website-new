@@ -1,19 +1,19 @@
 "use client"
 
 import {
-  type ComponentType,
   Suspense,
   useEffect,
   useMemo,
-  type SVGProps,
   useRef,
   useState,
   type ChangeEvent,
+  type ComponentType,
+  type SVGProps,
 } from "react"
 import type { Route } from "next"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Search } from "lucide-react"
 import { ROUTE } from "@/constants/routes"
+import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -26,7 +26,12 @@ export type IntegrationTabType = "sources" | "channels"
 
 function ChannelsIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M7.21094 14.7266C7.34055 15.0986 7.58273 15.4211 7.90389 15.6493C8.22504 15.8775 8.60925 16.0001 9.00322 16.0001C9.3972 16.0001 9.78141 15.8775 10.1026 15.6493C10.4237 15.4211 10.6659 15.0986 10.7955 14.7266"
         stroke="currentColor"
@@ -54,7 +59,12 @@ function ChannelsIcon(props: SVGProps<SVGSVGElement>) {
 
 function SourcesIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M14.75 8.25C15.122 8.25 15.466 8.368 15.75 8.567V6.25C15.75 5.146 14.855 4.25 13.75 4.25H11.433C11.631 3.966 11.75 3.623 11.75 3.25C11.75 2.283 10.966 1.5 10 1.5C9.034 1.5 8.25 2.283 8.25 3.25C8.25 3.623 8.368 3.966 8.567 4.25H6.25C5.145 4.25 4.25 5.146 4.25 6.25V8.567C3.966 8.369 3.622 8.25 3.25 8.25C2.284 8.25 1.5 9.033 1.5 10C1.5 10.967 2.284 11.75 3.25 11.75C3.622 11.75 3.966 11.632 4.25 11.433V13.75C4.25 14.854 5.145 15.75 6.25 15.75H8.567C8.369 15.466 8.25 15.123 8.25 14.75C8.25 13.783 9.034 13 10 13C10.966 13 11.75 13.783 11.75 14.75C11.75 15.123 11.632 15.466 11.433 15.75H13.75C14.855 15.75 15.75 14.854 15.75 13.75V11.433C15.466 11.631 15.122 11.75 14.75 11.75C13.784 11.75 13 10.967 13 10C13 9.033 13.784 8.25 14.75 8.25Z"
         stroke="currentColor"
@@ -168,10 +178,15 @@ function IntegrationsTabs({
           </h2>
           <div className="max-w-2xl text-base leading-normal font-book tracking-tight text-gray-8">
             <p className="mb-0">
-              Connect 50+ providers across email, SMS, push, chat, and in-app.
-              Use one API
-              <br className="hidden md:block" /> to send notifications and
-              switch providers without rebuilding.
+              Novu integrates with 50+ providers and tools across email, in-app,
+              SMS, push, chat, and workflow use cases. Connect the services your
+              system already uses, orchestrate them from a single workflow
+              engine, and manage notification delivery through one API.
+            </p>
+            <p className="mt-4 mb-0">
+              Use Novu to unify delivery providers, in-app experiences, and
+              workflow integrations without rebuilding your notification logic
+              every time your stack evolves.
             </p>
           </div>
         </div>

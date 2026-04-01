@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate MailerSend with Novu for transactional email."
-shortDescription: "MailerSend is a transactional email service with template building and API access."
+shortDescription: "Deliver email notifications through your MailerSend account from Novu."
 icon: "/images/integration-icons/email/mailersend-icon.svg"
 order: 10
 docsUrl: "https://docs.novu.co/platform/integrations/email/mailersend"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate push webhooks with custom endpoints in Novu."
-shortDescription: "Push Webhook forwards push notification payloads to a custom HTTP endpoint."
+shortDescription: "Send push notifications directly to a webhook URL that you control using Novu."
 icon: "/images/integration-icons/push/push-webhook-icon.svg"
 order: 49
 docsUrl: "https://docs.novu.co/platform/integrations/push/push-webhook"

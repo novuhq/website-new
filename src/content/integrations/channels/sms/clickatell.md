@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Clickatell with Novu."
-shortDescription: "Clickatell is a communication platform with SMS and chat capabilities."
+shortDescription: "Deliver SMS notifications to your users through Clickatell using Novu."
 icon: "/images/integration-icons/sms/clickatell-icon.svg"
 order: 31
 docsUrl: "https://docs.novu.co/platform/integrations/sms/clickatell"

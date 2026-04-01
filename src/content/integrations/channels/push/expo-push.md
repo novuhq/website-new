@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate Expo Push with Novu for React Native apps."
-shortDescription: "Expo Push is a push notification service for React Native apps built with Expo."
+shortDescription: "Configure and use Expo to send push notifications with Novu."
 icon: "/images/integration-icons/push/expo-push-icon.svg"
 order: 45
 docsUrl: "https://docs.novu.co/platform/integrations/push/expo-push"

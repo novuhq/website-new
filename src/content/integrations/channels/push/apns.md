@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate APNS push delivery with Novu."
-shortDescription: "APNS is Apple's service for delivering push notifications to iOS, macOS, and Safari."
+shortDescription: "Deliver push notifications through APNS using Novu."
 icon: "/images/integration-icons/push/apns-icon.svg"
 order: 44
 docsUrl: "https://docs.novu.co/platform/integrations/push/apns"

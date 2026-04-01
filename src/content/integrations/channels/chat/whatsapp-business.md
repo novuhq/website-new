@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate WhatsApp Business messaging with Novu."
-shortDescription: "WhatsApp Business API allows sending transactional messages on WhatsApp."
+shortDescription: "Send WhatsApp notifications to your users through Novu."
 icon: "/images/integration-icons/chat/whatsapp-business-icon.svg"
 order: 55
 docsUrl: "https://docs.novu.co/platform/integrations/chat/whats-app"

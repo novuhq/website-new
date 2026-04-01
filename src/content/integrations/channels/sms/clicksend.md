@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Clicksend SMS with Novu."
-shortDescription: "Clicksend is a communication platform with SMS, email, and voice services."
+shortDescription: "Deliver SMS notifications to your users through Clicksend from Novu."
 icon: "/images/integration-icons/sms/clicksend-icon.svg"
 order: 42
 docsUrl: "https://docs.novu.co/platform/integrations/sms/clicksend"

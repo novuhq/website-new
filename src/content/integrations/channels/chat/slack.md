@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate Slack notifications with Novu."
-shortDescription: "Slack is a messaging platform for workplace communication."
+shortDescription: "Send notifications to Slack channels and users through Novu."
 icon: "/images/integration-icons/chat/slack-icon.svg"
 order: 51
 docsUrl: "https://docs.novu.co/platform/integrations/chat/slack"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate OneSignal push with Novu."
-shortDescription: "OneSignal is a push notification platform for mobile and web applications."
+shortDescription: "Deliver push notifications to your users through OneSignal using Novu."
 icon: "/images/integration-icons/push/onesignal-icon.svg"
 order: 46
 docsUrl: "https://docs.novu.co/platform/integrations/push/onesignal"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate Discord channels with Novu notifications."
-shortDescription: "Discord is a communication platform for communities and teams."
+shortDescription: "Deliver notifications to Discord servers and channels using Novu."
 icon: "/images/integration-icons/chat/discord-icon.svg"
 order: 52
 docsUrl: "https://docs.novu.co/platform/integrations/chat/discord"

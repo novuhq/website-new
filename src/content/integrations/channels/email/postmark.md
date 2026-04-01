@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Postmark with Novu for fast transactional email."
-shortDescription: "Postmark is an email delivery service focused on transactional email."
+shortDescription: "Deliver transactional emails to your users through Postmark using Novu."
 icon: "/images/integration-icons/email/postmark-icon.svg"
 order: 3
 docsUrl: "https://docs.novu.co/platform/integrations/email/postmark"

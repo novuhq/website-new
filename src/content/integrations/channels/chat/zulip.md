@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate Zulip streams and topics with Novu."
-shortDescription: "Zulip is an open-source team chat platform with threaded conversations."
+shortDescription: "Deliver notifications to your Zulip channels using Novu."
 icon: "/images/integration-icons/chat/zulip-icon.svg"
 order: 56
 docsUrl: "https://docs.novu.co/platform/integrations/chat/zulip"

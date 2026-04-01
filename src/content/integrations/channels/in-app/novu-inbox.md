@@ -5,7 +5,7 @@ tab: "channels"
 category: "in-app"
 badge: "In-App"
 tagline: "Integrate Novu Inbox as a drop-in in-app notification center."
-shortDescription: "Novu Inbox is a drop-in notification center component for your application."
+shortDescription: "A beautiful, drop-in notification center for your application."
 icon: "/images/integration-icons/in-app/novu-icon.svg"
 order: 50
 primaryCtaLabel: "Integrate Novu Inbox"

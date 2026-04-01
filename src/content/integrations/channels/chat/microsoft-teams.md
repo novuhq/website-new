@@ -5,7 +5,7 @@ tab: "channels"
 category: "chat"
 badge: "Chat"
 tagline: "Integrate Microsoft Teams notifications with Novu."
-shortDescription: "Microsoft Teams is a collaboration platform from Microsoft."
+shortDescription: "Send notifications to Microsoft Teams channels and chats using Novu."
 icon: "/images/integration-icons/chat/microsoft-teams-icon.svg"
 order: 53
 docsUrl: "https://docs.novu.co/platform/integrations/chat/ms-teams"

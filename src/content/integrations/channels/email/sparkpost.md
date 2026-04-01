@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate SparkPost with Novu for high-volume delivery."
-shortDescription: "SparkPost is an email delivery service for transactional and marketing email."
+shortDescription: "Deliver email notifications to your users through SparkPost using Novu."
 icon: "/images/integration-icons/email/sparkpost-icon.svg"
 order: 15
 docsUrl: "https://docs.novu.co/platform/integrations/email/sparkpost"

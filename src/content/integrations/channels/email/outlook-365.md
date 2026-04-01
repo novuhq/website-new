@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Outlook 365 sending with Novu."
-shortDescription: "Outlook 365 allows sending email through Microsoft 365 infrastructure."
+shortDescription: "Send email notifications through your Microsoft 365 account from Novu."
 icon: "/images/integration-icons/email/outlook-365-icon.svg"
 order: 14
 docsUrl: "https://docs.novu.co/platform/integrations/email/outlook365"

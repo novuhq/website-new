@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Azure Communication Services SMS with Novu."
-shortDescription: "Azure SMS provides SMS capabilities through Microsoft Azure Communication Services."
+shortDescription: "Send SMS notifications through Azure Communication Services using Novu."
 icon: "/images/integration-icons/sms/azure-icon.svg"
 order: 37
 docsUrl: "https://docs.novu.co/platform/integrations/sms/azure"

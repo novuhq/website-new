@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Resend with Novu and ship modern transactional email."
-shortDescription: "Resend is an email API platform with support for React Email templates."
+shortDescription: "Send your email notifications through your Resend account from Novu."
 icon: "/images/integration-icons/email/resend-icon.svg"
 order: 4
 docsUrl: "https://docs.novu.co/platform/integrations/email/resend"

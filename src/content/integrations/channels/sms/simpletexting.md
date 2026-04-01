@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate SimpleTexting with Novu."
-shortDescription: "SimpleTexting is an SMS marketing and messaging platform."
+shortDescription: "Deliver SMS notifications to your users through SimpleTexting using Novu."
 icon: "/images/integration-icons/sms/simpletexting-icon.svg"
 order: 40
 docsUrl: "https://docs.novu.co/platform/integrations/sms/simpletexting"

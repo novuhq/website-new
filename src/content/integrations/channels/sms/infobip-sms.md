@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Infobip SMS with Novu."
-shortDescription: "Infobip is a communication platform offering SMS, voice, and messaging."
+shortDescription: "Deliver SMS notifications to your users through Infobip from Novu."
 icon: "/images/integration-icons/sms/infobip-icon.svg"
 order: 33
 docsUrl: "https://docs.novu.co/platform/integrations/sms/infobip"

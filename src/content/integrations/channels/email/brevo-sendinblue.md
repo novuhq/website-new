@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Brevo with Novu for transactional email delivery."
-shortDescription: "Brevo is a communication platform offering transactional email, SMS, and marketing automation."
+shortDescription: "Send email notifications to your users through Brevo using Novu."
 icon: "/images/integration-icons/email/brevo-icon.svg"
 order: 5
 docsUrl: "https://docs.novu.co/platform/integrations/email/brevo"

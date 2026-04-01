@@ -35,7 +35,7 @@ export async function generateMetadata({
   }
 
   const title = integration.seo?.title ?? `${integration.title} | Integrations`
-  const description = integration.seo?.description ?? integration.tagline
+  const description = integration.seo?.description ?? integration.description
 
   return getMetadata({
     title: `${title} | ${config.projectName}`,
@@ -62,7 +62,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: integration.title,
-    description: integration.seo?.description ?? integration.tagline,
+    description: integration.seo?.description ?? integration.description,
     url: pageUrl,
     isPartOf: {
       "@type": "WebSite",

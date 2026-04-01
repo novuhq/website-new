@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate SMS Central with Novu."
-shortDescription: "SMS Central is an SMS gateway based in Australia."
+shortDescription: "Send SMS notifications to your customer through your SMS Central account using Novu."
 icon: "/images/integration-icons/sms/sms-central-icon.svg"
 order: 28
 docsUrl: "https://docs.novu.co/platform/integrations/sms/sms-central"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate 46elks with Novu."
-shortDescription: "46elks is an SMS and voice API provider based in Sweden."
+shortDescription: "Send SMS notifications through your 46elks account from Novu."
 icon: "/images/integration-icons/sms/46elks-icon.svg"
 order: 30
 docsUrl: "https://docs.novu.co/platform/integrations/sms/46elks"

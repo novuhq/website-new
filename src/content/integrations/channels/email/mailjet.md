@@ -5,7 +5,7 @@ tab: "channels"
 category: "email"
 badge: "Email"
 tagline: "Integrate Mailjet with Novu for transactional and marketing emails."
-shortDescription: "Mailjet is an email platform for transactional and marketing messages."
+shortDescription: "Send email notifications to your users through Mailjet using Novu."
 icon: "/images/integration-icons/email/mailjet-icon.svg"
 order: 7
 docsUrl: "https://docs.novu.co/platform/integrations/email/mailjet"

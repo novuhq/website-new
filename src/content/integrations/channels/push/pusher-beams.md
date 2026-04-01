@@ -5,7 +5,7 @@ tab: "channels"
 category: "push"
 badge: "Push"
 tagline: "Integrate Pusher Beams with Novu."
-shortDescription: "Pusher Beams is a hosted push notification API."
+shortDescription: "Deliver push notifications through your Pusher Beams account using Novu."
 icon: "/images/integration-icons/push/pusher-beams-icon.svg"
 order: 48
 docsUrl: "https://docs.novu.co/platform/integrations/push/pusher-beams"

@@ -5,7 +5,7 @@ tab: "channels"
 category: "sms"
 badge: "SMS"
 tagline: "Integrate Maqsam SMS with Novu."
-shortDescription: "Maqsam is a communication platform with SMS and voice services."
+shortDescription: "Send SMS notifications to your users through Maqsam using Novu."
 icon: "/images/integration-icons/sms/maqsam-icon.svg"
 order: 29
 docsUrl: "https://docs.novu.co/platform/integrations/sms"
