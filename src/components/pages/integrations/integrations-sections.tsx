@@ -153,7 +153,6 @@ function IntegrationsSections({
                 )}
                 description={cat.description}
                 cards={integrationToCards(items)}
-                showMore={{ href: ROUTE.docsProviders }}
                 className="mt-0"
               />
             )

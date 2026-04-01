@@ -15,14 +15,13 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 import { Search } from "lucide-react"
 
+import type { IntegrationTabType } from "@/types/integration"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import IntegrationCategoriesNav, {
   type IIntegrationCategoryNavItem,
 } from "./integration-categories-nav"
-
-export type IntegrationTabType = "sources" | "channels"
 
 function ChannelsIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -264,6 +263,7 @@ function IntegrationsTabs({
             </div>
           </div>
         </div>
+        {/* Empty TabsContent required by Radix Tabs — actual content is rendered outside via IntegrationsSections */}
         <TabsContent value="sources" className="mt-0 hidden" />
         <TabsContent value="channels" className="mt-0 hidden" />
       </Tabs>

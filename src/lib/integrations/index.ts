@@ -1,5 +1,4 @@
 export {
-  countIntegrationsInCategory,
   getAllIntegrations,
   getIntegrationBySlug,
   getIntegrationCategories,

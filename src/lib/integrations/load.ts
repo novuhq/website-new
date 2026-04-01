@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "fs/promises"
 import path from "path"
 
 import { unstable_cache } from "next/cache"
@@ -65,7 +65,7 @@ function categoryMetaFor(
 async function fileToIntegration(
   filePath: string
 ): Promise<IIntegration | null> {
-  const raw = fs.readFileSync(filePath, "utf-8")
+  const raw = await fs.readFile(filePath, "utf-8")
   const { data, content } = matter(raw)
   const parsed = integrationFrontmatterSchema.safeParse(data)
 
@@ -122,14 +122,10 @@ async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
     ignore: ["**/taxonomy/**"],
   })
 
-  const results: IIntegration[] = []
-
-  for (const filePath of files) {
-    const entry = await fileToIntegration(filePath)
-    if (entry) {
-      results.push(entry)
-    }
-  }
+  const entries = await Promise.all(files.map(fileToIntegration))
+  const results = entries.filter(
+    (entry): entry is IIntegration => entry !== null
+  )
 
   results.sort((a, b) => {
     if (a.order !== b.order) {
@@ -213,13 +209,6 @@ export async function getRelatedIntegrations(
   }
 
   return out
-}
-
-export function countIntegrationsInCategory(
-  integrations: IIntegration[],
-  categorySlug: string
-): number {
-  return integrations.filter((i) => i.category === categorySlug).length
 }
 
 export function getRelatedArticles(

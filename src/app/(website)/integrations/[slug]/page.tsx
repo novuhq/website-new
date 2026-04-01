@@ -4,6 +4,7 @@ import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
+import { safeJsonLdStringify } from "@/lib/json-ld"
 import {
   getAllIntegrations,
   getIntegrationBySlug,
@@ -85,7 +86,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          __html: safeJsonLdStringify(jsonLd),
         }}
       />
       <IntegrationDetail
@@ -93,7 +94,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
         relatedIntegrations={relatedIntegrations}
       />
       <CTA
-        title={`Send notifications with\r\nthe providers you already use`}
+        title={`Send notifications with\nthe providers you already use`}
         titleClassName="whitespace-pre-line"
         className="!pt-24 md:!pt-46"
         description={
@@ -111,7 +112,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
           },
           {
             kind: "secondary-button",
-            label: "TALK TO us",
+            label: "TALK TO US",
             href: ROUTE.contactUs,
           },
         ]}

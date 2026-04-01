@@ -4,7 +4,7 @@ import type { MouseEvent } from "react"
 
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import type { IntegrationTabType } from "@/components/pages/integrations/integrations-tabs"
+import type { IntegrationTabType } from "@/types/integration"
 
 export interface IIntegrationCategoryNavItem {
   slug: string

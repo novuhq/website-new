@@ -41,7 +41,7 @@ async function IntegrationsTabPageContent({
         />
       </Suspense>
       <CTA
-        title={`Send notifications with\r\nthe providers you already use`}
+        title={`Send notifications with\nthe providers you already use`}
         titleClassName="whitespace-pre-line"
         className="!pt-27 !pb-45"
         description={
@@ -60,7 +60,7 @@ async function IntegrationsTabPageContent({
           },
           {
             kind: "secondary-button",
-            label: "TALK TO us",
+            label: "TALK TO US",
             href: ROUTE.contactUs,
           },
         ]}

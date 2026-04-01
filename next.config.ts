@@ -39,6 +39,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/integrations",
+        destination: "/integrations/channels",
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

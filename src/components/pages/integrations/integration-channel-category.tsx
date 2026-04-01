@@ -1,7 +1,6 @@
 "use client"
 
 import { useId, useState } from "react"
-import type { Route } from "next"
 import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -20,10 +19,7 @@ export interface IIntegrationChannelCategoryProps {
   count?: number
   description: string
   cards: IIntegrationCardProps[]
-  showMore?: {
-    label?: string
-    href?: string | Route | URL
-  }
+  showMoreLabel?: string
   sectionId?: string
   className?: string
 }
@@ -33,13 +29,13 @@ function IntegrationChannelCategory({
   count,
   description,
   cards,
-  showMore,
+  showMoreLabel: showMoreLabelProp,
   sectionId,
   className,
 }: IIntegrationChannelCategoryProps) {
   const headingId = useId()
   const [expanded, setExpanded] = useState(false)
-  const showMoreLabel = showMore?.label ?? "Show more"
+  const showMoreLabel = showMoreLabelProp ?? "Show more"
   const showLessLabel = "Show less"
 
   const hasOverflow = cards.length > VISIBLE_CARD_COUNT

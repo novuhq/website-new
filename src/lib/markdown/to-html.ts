@@ -1,3 +1,4 @@
+import rehypeSanitize from "rehype-sanitize"
 import rehypeStringify from "rehype-stringify"
 import remarkGfm from "remark-gfm"
 import remarkParse from "remark-parse"
@@ -18,6 +19,7 @@ export async function markdownToHtml(markdown: string): Promise<string> {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkRehype)
+    .use(rehypeSanitize)
     .use(rehypeStringify)
     .process(trimmed)
 
