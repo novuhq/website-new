@@ -17,20 +17,20 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
   return (
     <section
       className={cn(
-        "integrations-hero safe-paddings bg-black pt-12.5 pb-10 text-white md:pt-16 md:pb-12 lg:pt-18.5 lg:pb-14 xl:pt-22.5",
+        "integrations-hero safe-paddings bg-black pt-14 pb-16 text-white md:pt-16 md:pb-12 lg:pt-18.5 lg:pb-14 xl:pt-22.5",
         className
       )}
     >
       <div className="mx-auto w-full max-w-336 overflow-clip px-8 sm:px-4 md:px-7 2xl:px-0">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-24">
-          <div className="relative z-10 flex w-full flex-col pt-11">
+          <div className="relative z-10 flex w-full flex-col md:pt-3">
             <div className="flex flex-col gap-12 lg:gap-[11.25rem]">
               <div className="flex flex-col gap-3">
                 <h1
                   className={cn(
                     "text-left font-medium text-balance text-white",
                     "text-[2rem] leading-[1.125] tracking-tight sm:text-[2.5rem] sm:tracking-tight",
-                    "md:text-5xl md:tracking-tight"
+                    "md:text-[2.5rem] md:tracking-tight lg:text-[2.75rem]"
                   )}
                 >
                   <span className="block">Novu Integrations for</span>
@@ -38,7 +38,7 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                 </h1>
 
                 <div className="flex flex-col gap-7">
-                  <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8">
+                  <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base">
                     Connect the providers and tools you use with Novu across{" "}
                     <span className="font-normal text-white">email</span>,{" "}
                     <span className="font-normal text-white">SMS</span>,{" "}
@@ -81,14 +81,14 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                 </div>
               </div>
 
-              <div className="w-full">
+              <div className="hidden w-full lg:block">
                 <IntegrationsHeroTrustedBy />
               </div>
             </div>
           </div>
 
           <div
-            className="pointer-events-none relative flex h-152 w-full justify-center overflow-visible lg:max-w-[min(100%,38rem)]"
+            className="pointer-events-none relative flex h-108 w-full justify-center overflow-visible md:h-152 lg:max-w-[min(100%,38rem)]"
             aria-hidden
           >
             <div className="absolute top-1/2 left-1/2 h-250 w-250 -translate-x-[50%] -translate-y-1/2 md:h-304 md:w-304 lg:-translate-x-[49%]">
@@ -101,6 +101,10 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                 priority
               />
             </div>
+          </div>
+
+          <div className="w-full lg:hidden">
+            <IntegrationsHeroTrustedBy />
           </div>
         </div>
       </div>

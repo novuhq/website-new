@@ -145,7 +145,7 @@ function IntegrationsTabs({
   return (
     <section
       id="integrations-explore"
-      className="mt-7 scroll-mt-28 bg-black pb-10 md:px-8 lg:mt-28.5"
+      className="mt-7 scroll-mt-28 bg-black pb-12 md:px-8 lg:mt-28.5"
     >
       <Tabs
         value={activeTab}
@@ -170,7 +170,8 @@ function IntegrationsTabs({
           <h2
             className={cn(
               "w-full font-sans text-[2.75rem] leading-tight font-medium tracking-tight text-balance text-white",
-              "max-sm:text-[2rem] max-sm:leading-tight"
+              "max-sm:text-[2rem] max-sm:leading-tight",
+              "md:text-[2rem]"
             )}
           >
             <span className="block">Connect your</span>
@@ -220,7 +221,7 @@ function IntegrationsTabs({
             ))}
           </TabsList>
         </nav>
-        <div className="flex w-full flex-col gap-8 md:flex-row md:items-center md:justify-between lg:mt-4">
+        <div className="flex w-full flex-col gap-8 border-b border-gray-2 pb-6 md:-mx-8 md:w-[calc(100%+4rem)] md:flex-row md:items-center md:justify-between lg:mt-4 lg:max-w-[960px]">
           <Suspense
             fallback={
               <div

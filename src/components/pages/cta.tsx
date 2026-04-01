@@ -25,7 +25,7 @@ const BACKGROUND_BREAKPOINTS = [
     width: 1064,
     height: 844,
     src: bgLg,
-    className: "top-[59%] left-[50%] hidden h-[844px] w-full lg:flex xl:hidden",
+    className: "top-[60%] left-[60%] hidden h-[844px] w-full lg:flex xl:hidden",
   },
   {
     width: 1043,
@@ -71,7 +71,7 @@ function CTA({
       >
         <h2
           className={cn(
-            "text-[32px] leading-dense font-medium tracking-tighter text-foreground md:text-[44px]",
+            "text-[32px] leading-dense font-medium tracking-tighter text-foreground md:text-[32px] lg:text-[36px]",
             titleClassName
           )}
         >

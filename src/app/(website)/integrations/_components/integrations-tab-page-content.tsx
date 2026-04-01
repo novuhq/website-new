@@ -47,7 +47,7 @@ async function IntegrationsTabPageContent({
         description={
           <>
             Start with one provider or connect multiple channels, and
-            <br />
+            <br className="hidden md:block" />
             manage them in one place with Novu.
           </>
         }

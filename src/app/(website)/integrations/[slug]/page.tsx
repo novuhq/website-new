@@ -99,7 +99,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
         description={
           <>
             Start with one provider or connect multiple channels, and
-            <br />
+            <br className="hidden md:block" />
             manage them in one place with Novu.
           </>
         }
