@@ -116,31 +116,11 @@ async function fileToIntegration(
 }
 
 async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
-  /* eslint-disable no-console */
-  const dirExists = fs.existsSync(INTEGRATIONS_DIR)
   const files = globSync("**/*.md", {
     cwd: INTEGRATIONS_DIR,
     absolute: true,
     ignore: ["**/taxonomy/**"],
   })
-
-  console.log(
-    `[integrations] cwd=${process.cwd()}, dir=${INTEGRATIONS_DIR}, dirExists=${dirExists}, files=${files.length}`
-  )
-
-  if (files.length === 0 && dirExists) {
-    try {
-      const contents = fs.readdirSync(INTEGRATIONS_DIR, { recursive: true })
-      console.log(`[integrations] dir contents (first 20):`, contents.slice(0, 20))
-    } catch (e) {
-      console.error(`[integrations] readdirSync failed:`, e)
-    }
-  }
-
-  if (files.length === 0 && !dirExists) {
-    console.error(`[integrations] directory does not exist: ${INTEGRATIONS_DIR}`)
-  }
-  /* eslint-enable no-console */
 
   const results: IIntegration[] = []
 
@@ -162,8 +142,7 @@ async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
 }
 
 // Cache integrations in Vercel Data Cache so ISR re-renders don't
-// need to re-read .md files from disk (which may not be available
-// in the serverless function filesystem).
+// need to re-read .md files from disk.
 const getCachedIntegrations = unstable_cache(
   loadIntegrationsFromDisk,
   ["integrations-all"],
