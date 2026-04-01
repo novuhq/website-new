@@ -58,7 +58,9 @@ const nextConfig: NextConfig = {
     "typescript",
   ],
   outputFileTracingIncludes: {
-    "/**": ["src/content/integrations/**/*.md"],
+    "/integrations/channels": ["./src/content/integrations/**/*.md"],
+    "/integrations/sources": ["./src/content/integrations/**/*.md"],
+    "/integrations/[slug]": ["./src/content/integrations/**/*.md"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
