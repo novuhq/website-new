@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { ROUTE } from "@/constants/routes"
 
 import type { IntegrationTabType } from "@/types/integration"
@@ -29,12 +30,16 @@ async function IntegrationsTabPageContent({
   return (
     <div>
       <IntegrationsHero />
-      <IntegrationsTabs activeTab={tab} categoryItems={categoryItems} />
-      <IntegrationsSections
-        tab={tab}
-        categories={categories}
-        integrations={integrations}
-      />
+      <Suspense>
+        <IntegrationsTabs activeTab={tab} categoryItems={categoryItems} />
+      </Suspense>
+      <Suspense>
+        <IntegrationsSections
+          tab={tab}
+          categories={categories}
+          integrations={integrations}
+        />
+      </Suspense>
       <CTA
         title={`Send notifications with\r\nthe providers you already use`}
         titleClassName="whitespace-pre-line"
