@@ -21,12 +21,12 @@ function Hero({ hero }: { hero: IComparisonHero }) {
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-4 md:gap-7 lg:mt-8 xl:mt-8">
             <Button size="lg" variant="default" className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full" asChild>
-              <NextLink href={hero.primaryCta.href}>
+              <NextLink href={hero.primaryCta.href} data-click-location={hero.primaryCta.clickLocation} data-click-text={hero.primaryCta.clickText}>
                 {hero.primaryCta.label}
               </NextLink>
             </Button>
             <Button size="lg" variant="outline" className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full" asChild>
-              <NextLink href={hero.secondaryCta.href}>
+              <NextLink href={hero.secondaryCta.href} data-click-location={hero.secondaryCta.clickLocation} data-click-text={hero.secondaryCta.clickText}>
                 {hero.secondaryCta.label}
               </NextLink>
             </Button>

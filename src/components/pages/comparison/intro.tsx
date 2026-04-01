@@ -44,7 +44,7 @@ function Intro({ intro }: { intro: IComparisonIntro }) {
           </div>
 
           <Button size="lg" variant="outline" className="w-full max-sm:h-10 max-sm:px-5 max-sm:text-xs sm:w-fit" asChild>
-            <NextLink href={intro.cta.href}>{intro.cta.label}</NextLink>
+            <NextLink href={intro.cta.href} data-click-location={intro.cta.clickLocation} data-click-text={intro.cta.clickText}>{intro.cta.label}</NextLink>
           </Button>
         </div>
         <Image

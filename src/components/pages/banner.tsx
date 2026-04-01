@@ -25,7 +25,7 @@ function Banner({ title, description, className, cta }: IBanner) {
             size="default"
             asChild
           >
-            <NextLink href={cta.href}>{cta.label}</NextLink>
+            <NextLink href={cta.href} data-click-location={cta.clickLocation} data-click-text={cta.clickText}>{cta.label}</NextLink>
           </Button>
 
           <div className="absolute inset-0 z-10 overflow-hidden rounded-[inherit]">

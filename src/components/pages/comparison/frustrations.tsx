@@ -52,7 +52,7 @@ function Frustrations({
               className="w-full max-sm:h-10 max-sm:px-5 max-sm:text-xs sm:w-fit"
               asChild
             >
-              <NextLink href={frustrations.cta.href}>
+              <NextLink href={frustrations.cta.href} data-click-location={frustrations.cta.clickLocation} data-click-text={frustrations.cta.clickText}>
                 {frustrations.cta.label}
               </NextLink>
             </Button>

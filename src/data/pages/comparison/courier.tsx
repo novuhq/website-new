@@ -35,10 +35,14 @@ export const courierComparisonData: IComparisonPageData = {
     primaryCta: {
       label: "Start for Free",
       href: "https://dashboard.novu.co/auth/sign-up",
+      clickLocation: "comparison_courier_hero",
+      clickText: "start_for_free",
     },
     secondaryCta: {
       label: "Jump to Comparison",
       href: "#comparison",
+      clickLocation: "comparison_courier_hero",
+      clickText: "jump_to_comparison",
     },
     note: (
       <>
@@ -72,6 +76,8 @@ export const courierComparisonData: IComparisonPageData = {
     cta: {
       label: "Get Started",
       href: "https://dashboard.novu.co/auth/sign-up",
+      clickLocation: "comparison_courier_intro",
+      clickText: "get_started",
     },
   },
   frustrations: {
@@ -101,6 +107,8 @@ export const courierComparisonData: IComparisonPageData = {
     cta: {
       label: "Switch to Novu",
       href: "https://dashboard.novu.co/auth/sign-up",
+      clickLocation: "comparison_courier_frustrations",
+      clickText: "switch_to_novu",
     },
   },
   difference: {
@@ -154,6 +162,8 @@ export const courierComparisonData: IComparisonPageData = {
     cta: {
       label: "Explore Novu",
       href: "https://dashboard.novu.co/auth/sign-up",
+      clickLocation: "comparison_courier_difference",
+      clickText: "explore_novu",
     },
   },
   codeSection: {
@@ -271,6 +281,8 @@ export const courierComparisonData: IComparisonPageData = {
     cta: {
       label: "Migration Guide",
       href: "https://docs.novu.co/guides/migrate-from-courier-to-novu",
+      clickLocation: "comparison_courier_banner",
+      clickText: "migration_guide",
     },
   },
   reviewsSection: {
@@ -378,12 +390,16 @@ export const courierComparisonData: IComparisonPageData = {
       {
         kind: "primary-button",
         label: "Start Free",
-        href: "https://dashboard.novu.co/?utm_campaign=gs-website-inbox",
+        href: "https://dashboard.novu.co/",
+        clickLocation: "comparison_courier_cta",
+        clickText: "start_free",
       },
       {
         kind: "secondary-button",
         label: "Talk To Sales",
         href: "/contact-us",
+        clickLocation: "comparison_courier_cta",
+        clickText: "talk_to_sales",
       },
     ],
   },

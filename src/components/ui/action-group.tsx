@@ -29,7 +29,7 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
           size="lg"
           asChild
         >
-          <NextLink href={action.href}>{action.label}</NextLink>
+          <NextLink href={action.href} data-click-location={action.clickLocation} data-click-text={action.clickText}>{action.label}</NextLink>
         </Button>
       )
     case "link":
@@ -43,6 +43,8 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
           size={isSingleAction ? "lg" : "default"}
           variant="foreground"
           animation="arrow-right"
+          data-click-location={action.clickLocation}
+          data-click-text={action.clickText}
         >
           {action.label}
           <ChevronRight size={isSingleAction ? 18 : 16} />

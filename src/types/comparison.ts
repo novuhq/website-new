@@ -12,10 +12,14 @@ export interface IComparisonHero {
   primaryCta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
   secondaryCta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
   note: ReactNode
   illustration: {
@@ -35,6 +39,8 @@ export interface IComparisonIntro {
   cta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
 }
 
@@ -51,6 +57,8 @@ export interface IComparisonFrustrations {
   cta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
 }
 
@@ -68,6 +76,8 @@ export interface IComparisonDifference {
   cta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
 }
 

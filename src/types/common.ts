@@ -111,9 +111,9 @@ export interface ISeoFields {
 }
 
 export type TSectionAction =
-  | { kind: "primary-button"; label: string; href: Route<string> | URL }
-  | { kind: "secondary-button"; label: string; href: Route<string> | URL }
-  | { kind: "link"; label: string; href: Route<string> | URL }
+  | { kind: "primary-button"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
+  | { kind: "secondary-button"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
+  | { kind: "link"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
   | { kind: "subscription-form"; placeholder: string; buttonText: string }
 
 export interface ICtaSection {
@@ -156,5 +156,7 @@ export interface IBanner {
   cta: {
     label: string
     href: string
+    clickLocation?: string
+    clickText?: string
   }
 }
