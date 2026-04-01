@@ -9,6 +9,10 @@ import {
   getIntegrationBySlug,
   getRelatedIntegrations,
 } from "@/lib/integrations"
+import {
+  getDefaultIntegrationSeoDescription,
+  getDefaultIntegrationSeoTitleSegment,
+} from "@/lib/integrations/seo-defaults"
 import CTA from "@/components/pages/cta"
 import IntegrationDetail from "@/components/pages/integrations/integration-detail"
 
@@ -34,11 +38,13 @@ export async function generateMetadata({
     return {}
   }
 
-  const title = integration.seo?.title ?? `${integration.title} | Integrations`
-  const description = integration.seo?.description ?? integration.description
+  const titleSegment =
+    integration.seo?.title ?? getDefaultIntegrationSeoTitleSegment(integration)
+  const description =
+    integration.seo?.description ?? getDefaultIntegrationSeoDescription(integration)
 
   return getMetadata({
-    title: `${title} | ${config.projectName}`,
+    title: `${titleSegment} | ${config.projectName}`,
     description,
     pathname: `${ROUTE.integrations}/${integration.slug}`,
     noIndex: integration.seo?.noIndex,
@@ -58,11 +64,14 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
 
+  const resolvedDescription =
+    integration.seo?.description ?? getDefaultIntegrationSeoDescription(integration)
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: integration.title,
-    description: integration.seo?.description ?? integration.description,
+    description: resolvedDescription,
     url: pageUrl,
     isPartOf: {
       "@type": "WebSite",
