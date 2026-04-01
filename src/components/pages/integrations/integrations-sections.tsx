@@ -1,7 +1,7 @@
 "use client"
 
-import { ROUTE } from "@/constants/routes"
 import { useSearchParams } from "next/navigation"
+import { ROUTE } from "@/constants/routes"
 
 import type {
   IIntegration,
@@ -9,7 +9,7 @@ import type {
   IntegrationTabType,
 } from "@/types/integration"
 
-import CustomIntegrationsBanner from "./custom-integrations-banner"
+import Banner from "../banner"
 import IntegrationChannelCategory from "./integration-channel-category"
 
 function countIntegrationsInCategory(
@@ -80,7 +80,16 @@ function IntegrationsSections({
             <code className="text-xs">src/content/integrations</code>.
           </p>
         </section>
-        <CustomIntegrationsBanner className="pb-18" />
+        <Banner
+          title="Build custom integrations easily"
+          description="Connect your tools with flexible APIs and create integrations
+                tailored to your workflow."
+          cta={{
+            label: "Create Integration",
+            href: `${ROUTE.dashboardV2SignUp}`,
+          }}
+          className="pb-18"
+        />
       </>
     )
   }
@@ -96,7 +105,16 @@ function IntegrationsSections({
             No integrations found for "{query?.trim()}".
           </p>
         </section>
-        <CustomIntegrationsBanner className="pb-18" />
+        <Banner
+          title="Build custom integrations easily"
+          description="Connect your tools with flexible APIs and create integrations
+                tailored to your workflow."
+          cta={{
+            label: "Create Integration",
+            href: `${ROUTE.dashboardV2SignUp}`,
+          }}
+          className="pb-18"
+        />
       </>
     )
   }
@@ -142,7 +160,16 @@ function IntegrationsSections({
           })}
         </div>
       </section>
-      <CustomIntegrationsBanner className="pb-18" />
+      <Banner
+        title="Build custom integrations easily"
+        description="Connect your tools with flexible APIs and create integrations
+                tailored to your workflow."
+        cta={{
+          label: "Create Integration",
+          href: `${ROUTE.dashboardV2SignUp}`,
+        }}
+        className="pb-18"
+      />
     </>
   )
 }

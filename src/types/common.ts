@@ -141,3 +141,15 @@ export interface ITabsBlock {
   label: string
   content: PortableTextBlock
 }
+
+export interface IBanner {
+  className?: string
+  title: string
+  description: string
+  cta: {
+    label: string
+    href: string
+    clickLocation?: string
+    clickText?: string
+  }
+}
