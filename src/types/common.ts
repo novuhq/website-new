@@ -151,5 +151,6 @@ export interface IBanner {
     href: string
     clickLocation?: string
     clickText?: string
+    openInNewTab?: boolean
   }
 }
