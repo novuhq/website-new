@@ -2,10 +2,12 @@ import type { IComparisonPageData } from "@/types/comparison"
 
 import { courierComparisonData } from "./courier"
 import { knockComparisonData } from "./knock"
+import { magicbellComparisonData } from "./magicbell"
 
 export const comparisonPages: Record<string, IComparisonPageData> = {
   courier: courierComparisonData,
   knock: knockComparisonData,
+  magicbell: magicbellComparisonData,
 }
 
 export function getComparisonBySlug(

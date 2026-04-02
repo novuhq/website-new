@@ -5,11 +5,18 @@ import type {
   IComparisonFrustration,
   IComparisonFrustrations,
 } from "@/types/comparison"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-function FrustrationItem({ item }: { item: IComparisonFrustration }) {
+function FrustrationItem({
+  item,
+  className,
+}: {
+  item: IComparisonFrustration
+  className?: string
+}) {
   return (
-    <div className="flex flex-col gap-5">
+    <div className={cn("flex flex-col gap-5", className)}>
       <Image
         src={item.icon}
         alt=""
@@ -19,7 +26,7 @@ function FrustrationItem({ item }: { item: IComparisonFrustration }) {
         unoptimized
       />
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
+        <h3 className="text-xl leading-tight font-medium tracking-tighter whitespace-nowrap text-white">
           {item.title}
         </h3>
         <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
@@ -55,11 +62,21 @@ function Frustrations({
               ))}
             </div>
           ) : (
-            <div className="flex flex-wrap justify-center gap-10 md:gap-12">
+            <div
+              className={cn("gap-10 md:gap-15", {
+                "mx-auto grid max-w-3xl grid-cols-1 md:grid-cols-2":
+                  frustrations.items.length === 4,
+                "mx-auto flex max-w-175 flex-wrap xl:max-w-none xl:justify-center":
+                  frustrations.items.length > 4,
+              })}
+            >
               {frustrations.items.map((item) => (
                 <div
                   key={item.title}
-                  className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)]"
+                  className={cn({
+                    "w-full": frustrations.items.length <= 3,
+                    "md:max-w-80 xl:max-w-70": frustrations.items.length > 4,
+                  })}
                 >
                   <FrustrationItem item={item} />
                 </div>
@@ -74,7 +91,11 @@ function Frustrations({
               className="w-full max-sm:h-10 max-sm:px-5 max-sm:text-xs sm:w-fit"
               asChild
             >
-              <NextLink href={frustrations.cta.href} data-click-location={frustrations.cta.clickLocation} data-click-text={frustrations.cta.clickText}>
+              <NextLink
+                href={frustrations.cta.href}
+                data-click-location={frustrations.cta.clickLocation}
+                data-click-text={frustrations.cta.clickText}
+              >
                 {frustrations.cta.label}
               </NextLink>
             </Button>
