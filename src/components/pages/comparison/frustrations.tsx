@@ -1,8 +1,34 @@
 import Image from "next/image"
 import NextLink from "next/link"
 
-import type { IComparisonFrustrations } from "@/types/comparison"
+import type {
+  IComparisonFrustration,
+  IComparisonFrustrations,
+} from "@/types/comparison"
 import { Button } from "@/components/ui/button"
+
+function FrustrationItem({ item }: { item: IComparisonFrustration }) {
+  return (
+    <div className="flex flex-col gap-5">
+      <Image
+        src={item.icon}
+        alt=""
+        width={40}
+        height={40}
+        aria-hidden
+        unoptimized
+      />
+      <div className="flex flex-col gap-2">
+        <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
+          {item.title}
+        </h3>
+        <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
+          {item.description}
+        </p>
+      </div>
+    </div>
+  )
+}
 
 function Frustrations({
   frustrations,
@@ -22,28 +48,24 @@ function Frustrations({
         </div>
 
         <div className="flex w-full flex-col gap-10 lg:gap-14">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
-            {frustrations.items.map((item) => (
-              <div key={item.title} className="flex flex-col gap-5">
-                <Image
-                  src={item.icon}
-                  alt=""
-                  width={40}
-                  height={40}
-                  aria-hidden
-                  unoptimized
-                />
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
-                    {item.description}
-                  </p>
+          {frustrations.items.length <= 3 ? (
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
+              {frustrations.items.map((item) => (
+                <FrustrationItem key={item.title} item={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-10 md:gap-12">
+              {frustrations.items.map((item) => (
+                <div
+                  key={item.title}
+                  className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)]"
+                >
+                  <FrustrationItem item={item} />
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <div className="flex justify-center">
             <Button
