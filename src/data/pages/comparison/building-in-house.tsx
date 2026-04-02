@@ -221,82 +221,55 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
         "Time to first notification",
         "Minutes. One API call triggers delivery across all configured channels.",
         "Wiring up a single channel is fast. However, a multi-channel system with preference enforcement, observability, and edge-case handling takes meaningfully longer.",
-        <>
-          With Novu, you get a notification infrastructure with everything you
-          need <span>up and running in few minutes</span>
-        </>,
+        "With Novu, you get a notification infrastructure with everything you need up and running in few minutes",
       ],
       [
         "Multi-channel routing",
         "One unified API. Configure providers in the dashboard, Novu handles routing, formatting, and delivery per channel.",
         "Every new channel or provider becomes an integration to own and manage yourself",
-        <>
-          Add or swap providers{" "}
-          <span>without touching your notification codebase.</span>
-        </>,
+        "Add or swap providers without touching your notification codebase",
       ],
       [
         "Multi-channel workflow engine",
         "Multi-channel workflows with Delay, Digest, Throttle, HTTP steps, and step conditions.",
         "You design and maintain your own orchestration model, scheduling logic, and execution rules.",
-        <>
-          You get advanced notification logic without turning notifications into
-          an <span>internal platform project.</span>
-        </>,
+        "You get advanced notification logic without turning notifications into an internal platform project",
       ],
       [
         "In-app notification inbox",
         "Prebuilt Inbox for real-time in-app notifications.",
         "You build the feed UI, unread state, real-time updates, and interaction model yourself.",
-        <>
-          With Novu, you can ship a usable in-app experience{" "}
-          <span>faster.</span>
-        </>,
+        "With Novu, you can ship a usable in-app experience faster",
       ],
       [
         "Preferences, schedule, and snooze",
         "Built-in preferences, schedule controls, and snooze support in Inbox.",
         "You build the preference model, timezone logic, snooze behavior, and end-user UI yourself.",
-        <>
-          You can give users more control{" "}
-          <span>without expanding the scope</span> of your product team.
-        </>,
+        "You can give users more control without expanding the scope of your product team",
       ],
       [
         "Reusable email system",
         "Reusable email layouts plus channel template editors with blocks and code editing.",
         "You create your own template system, shared layouts, and editing workflow.",
-        <>
-          You can standardize branded notifications without inventing a{" "}
-          <span>content platform internally.</span>
-        </>,
+        "You can standardize branded notifications without inventing a content platform internally",
       ],
       [
         "Localization",
         "Workflow translations and Inbox localization support.",
         "You manage locale resolution, translated content, and localized notification UI yourself.",
-        <>
-          You can support global products earlier without adding{" "}
-          <span>another internal system</span> to maintain.
-        </>,
+        "You can support global products earlier without adding another internal system to maintain",
       ],
       [
         "Tenant-aware architecture",
         "Built-in multi-tenancy and tenant-aware notification patterns.",
         "You define and maintain tenant separation, scoping, and tenant-aware notification behavior yourself.",
-        <>
-          You get a cleaner path for B2B SaaS and workspace-based products{" "}
-          <span>from the start.</span>
-        </>,
+        "You get a cleaner path for B2B SaaS and workspace-based products from the start",
       ],
       [
         "Workflow debugging and delivery visibility",
         "Activity Feed plus email activity tracking.",
         "You build your own execution tracing, delivery logs, and debugging surface.",
-        <>
-          You can diagnose notification failures faster{" "}
-          <span>without building internal tooling first.</span>
-        </>,
+        "You can diagnose notification failures faster without building internal tooling first",
       ],
       [
         "Delivery observability",
@@ -308,28 +281,19 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
         "Environments and safe rollout",
         "Development and Production environments for workflows, layouts, and translations.",
         "You design your own promotion flow, versioning model, and release safety checks.",
-        <>
-          You can test and ship changes more safely{" "}
-          <span>before they reach users.</span>
-        </>,
+        "You can test and ship changes more safely before they reach users",
       ],
       [
         "Development model",
         "Dashboard workflows plus code-backed workflows with Novu Framework.",
         "Engineers own both the system and the editing path unless you build separate tooling.",
-        <>
-          You can keep engineering control where it matters without forcing
-          every workflow change <span>through developers.</span>
-        </>,
+        "You can keep engineering control where it matters without forcing every workflow change through developers",
       ],
       [
         "Ongoing maintenance",
         "Novu maintains the infrastructure. Provider integrations, scaling, and reliability are handled for you.",
         "Every provider API change, every new channel, every scaling challenge is your team\u2019s problem.",
-        <>
-          Your team gets to focus on your product instead of{" "}
-          <span>building a notification system from scratch.</span>
-        </>,
+        "Your team gets to focus on your product instead of building a notification system from scratch",
       ],
     ],
   },

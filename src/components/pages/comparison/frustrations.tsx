@@ -44,7 +44,7 @@ function Frustrations({
 }) {
   return (
     <section className="frustrations relative z-10 pt-16 md:pt-24 lg:pt-36 xl:pt-50">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-10 px-5 md:px-8 lg:gap-16">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-5 md:px-8 lg:gap-16">
         <div className="flex flex-col items-center gap-3 text-center">
           <h2 className="max-w-140 text-[1.75rem] leading-tight font-medium tracking-tighter text-pretty text-white md:text-[2rem] lg:text-[2.5rem]">
             {frustrations.title}
@@ -75,7 +75,7 @@ function Frustrations({
                   key={item.title}
                   className={cn({
                     "w-full": frustrations.items.length <= 3,
-                    "md:max-w-80 xl:max-w-70": frustrations.items.length > 4,
+                    "md:max-w-80": frustrations.items.length > 4,
                   })}
                 >
                   <FrustrationItem item={item} />
