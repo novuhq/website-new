@@ -37,10 +37,16 @@ export async function generateMetadata({
     return {}
   }
 
+  const ogTitle = `${data.hero.heading.prefix} ${data.hero.heading.highlight}`.replace(
+    /\u00a0/g,
+    " "
+  )
+
   return getMetadata({
-    title: `Best ${data.competitor} Alternatives | Novu`,
+    title: ogTitle,
     description: `Exploring alternatives to ${data.competitor}? See why developers choose Novu for multi-channel notifications: open-source, fully customizable, and built for scale.`,
     pathname: `/comparison/${slug}`,
+    imagePath: `/og-images/comparison/${slug}.jpg`,
   })
 }
 
