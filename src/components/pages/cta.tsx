@@ -1,4 +1,5 @@
 import Image from "next/image"
+import CheckboxIcon from "@/svgs/icons/checkbox-yellow.svg"
 import bgLg from "@/svgs/shared/cta/background-lg.svg"
 import bgMob from "@/svgs/shared/cta/background-mob.svg"
 import bgSvg from "@/svgs/shared/cta/background.svg"
@@ -19,7 +20,7 @@ const BACKGROUND_BREAKPOINTS = [
     width: 1385,
     height: 870,
     src: bgSvg,
-    className: "top-[53%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
+    className: "top-[68%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
   },
   {
     width: 1064,
@@ -32,7 +33,7 @@ const BACKGROUND_BREAKPOINTS = [
     height: 845,
     src: bgMob,
     className:
-      "top-[68%] left-[50%] w-[768px] md:top-[59%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
+      "top-[68%] left-[50%] w-[768px] md:top-[65%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
   },
 ]
 
@@ -41,6 +42,7 @@ function CTA({
   containerClassName,
   titleClassName,
   descriptionClassName,
+  hint,
   title,
   description,
   actions,
@@ -85,6 +87,21 @@ function CTA({
         >
           {description}
         </p>
+        {hint && (
+          <div className="mt-8 flex items-center gap-x-2.5">
+            <Image
+              src={CheckboxIcon}
+              alt=""
+              width={20}
+              height={20}
+              aria-hidden
+              unoptimized
+            />
+            <p className="leading-dense font-medium tracking-tighter text-white">
+              {hint}
+            </p>
+          </div>
+        )}
         {actions && actions.length > 0 && (
           <ActionGroup
             className="mt-6.5 2xs:justify-center md:mt-7.75"

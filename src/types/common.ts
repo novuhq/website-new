@@ -115,18 +115,24 @@ export type TSectionAction =
       kind: "primary-button"
       label: string
       href: Route<string> | URL
+      clickLocation?: string
+      clickText?: string
       openInNewTab?: boolean
     }
   | {
       kind: "secondary-button"
       label: string
       href: Route<string> | URL
+      clickLocation?: string
+      clickText?: string
       openInNewTab?: boolean
     }
   | {
       kind: "link"
       label: string
       href: Route<string> | URL
+      clickLocation?: string
+      clickText?: string
       openInNewTab?: boolean
     }
   | { kind: "subscription-form"; placeholder: string; buttonText: string }
@@ -134,12 +140,34 @@ export type TSectionAction =
 export interface ICtaSection {
   title: string
   description: string | ReactNode
+  hint?: string
   actions: TSectionAction[]
 }
 
 export interface ITabsBlock {
   label: string
   content: PortableTextBlock
+}
+
+export type FaqAnswer =
+  | ReactNode
+  | ((onScheduleClick: (source: string) => void) => ReactNode)
+
+export interface IAccordionItem {
+  question: string
+  answer: FaqAnswer
+}
+
+export interface IAccordion {
+  items: Array<{
+    question: string
+    answer: FaqAnswer
+  }>
+}
+
+export interface IFaqSection {
+  title: string
+  accordion: IAccordion
 }
 
 export interface IBanner {

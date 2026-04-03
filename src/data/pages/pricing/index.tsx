@@ -626,6 +626,22 @@ export const pricingPageData: IPricingPageData = {
       },
       {
         enterprise: {
+          booleanValue: true,
+        },
+        free: {
+          booleanValue: false,
+        },
+        isGroupTitle: false,
+        pro: {
+          booleanValue: true,
+        },
+        team: {
+          booleanValue: true,
+        },
+        title: "Environment Variables",
+      },
+      {
+        enterprise: {
           booleanValue: false,
           value: "Unlimited",
         },
@@ -1793,5 +1809,4 @@ export const pricingPageData: IPricingPageData = {
     buttonUrl:
       "https://go.novu.co/intro-call?utm_campaign=pricing-widget-self-host",
   },
-  title: null,
 }

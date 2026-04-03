@@ -1,14 +1,25 @@
+import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import { getLatestChangelogPost, getLatestBlogPost } from "@/lib/get-header-data"
+import {
+  getLatestBlogPost,
+  getLatestChangelogPost,
+} from "@/lib/get-header-data"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import MixpanelTracking from "@/components/mixpanel-tracking"
 import PreviewWarning from "@/components/preview-warning"
 import Scripts, { GTM_ID } from "@/components/scripts"
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-inter",
+})
 
 export default async function RootLayout({
   children,
@@ -29,7 +40,7 @@ export default async function RootLayout({
         <Fonts />
       </head>
       <body
-        className={`flex min-h-svh flex-col bg-background font-sans antialiased`}
+        className={`${inter.variable} flex min-h-svh flex-col bg-background font-sans antialiased`}
       >
         <MixpanelTracking />
         <Providers>
@@ -45,7 +56,9 @@ export default async function RootLayout({
             </a>
             <Header githubStars={stars} changelog={changelog} blog={blog} />
             {isDraftMode && <PreviewWarning />}
-            <main id="main-content" className="grow">{children}</main>
+            <main id="main-content" className="grow">
+              {children}
+            </main>
             <Footer />
           </div>
         </Providers>

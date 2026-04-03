@@ -19,6 +19,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   blogCategory: "/blog/category",
   blogRss: "/blog/rss.xml",
   community: "/community",
+  comparison: "/comparison",
   contactUs: "/contact-us",
   contributors: "/contributors",
   digest: "/digest",

@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-
 import { pricingPageData } from "@/data/pages/pricing"
+
 import CTA from "@/components/pages/cta"
+import FAQ from "@/components/pages/faq"
 import ComparisonTable from "@/components/pages/pricing/comparison-table"
-import FAQ from "@/components/pages/pricing/faq"
 import OnPremSection from "@/components/pages/pricing/on-prem-section"
 import PricingPlansCards from "@/components/pages/pricing/pricing-plans-cards"
 import SchedulingModal from "@/components/pages/pricing/scheduling-modal"

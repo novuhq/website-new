@@ -33,6 +33,8 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
             href={action.href}
             target={action.openInNewTab ? "_blank" : undefined}
             rel={action.openInNewTab ? "noopener noreferrer" : undefined}
+            data-click-location={action.clickLocation}
+            data-click-text={action.clickText}
           >
             {action.label}
           </NextLink>
@@ -51,6 +53,8 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
           size={isSingleAction ? "lg" : "default"}
           variant="foreground"
           animation="arrow-right"
+          data-click-location={action.clickLocation}
+          data-click-text={action.clickText}
         >
           {action.label}
           <ChevronRight size={isSingleAction ? 18 : 16} />
