@@ -39,19 +39,15 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
 
                 <div className="flex flex-col gap-7">
                   <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base">
-                    Connect{" "}
-                    <span className="font-normal text-white">
-                      50+ providers
-                    </span>{" "}
-                    across <span className="font-normal text-white">email</span>
-                    , <span className="font-normal text-white">SMS</span>,{" "}
+                    Connect the providers and tools you use with Novu across{" "}
+                    <span className="font-normal text-white">email</span>,{" "}
+                    <span className="font-normal text-white">SMS</span>,{" "}
                     <span className="font-normal text-white">push</span>,{" "}
-                    <span className="font-normal text-white">chat</span>, and{" "}
-                    <span className="font-normal text-white">in-app</span>. Use{" "}
-                    <span className="font-normal text-white">one API</span> to
-                    send notifications and switch providers without rebuilding.
-                    Need a provider not listed here? Novu is open source, so you
-                    can contribute a new provider.
+                    <span className="font-normal text-white">chat</span>,{" "}
+                    <span className="font-normal text-white">in-app</span>, and{" "}
+                    <span className="font-normal text-white">
+                      workflow integrations.
+                    </span>
                   </p>
 
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-7">

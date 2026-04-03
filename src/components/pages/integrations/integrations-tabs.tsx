@@ -178,15 +178,10 @@ function IntegrationsTabs({
           </h2>
           <div className="max-w-2xl text-base leading-normal font-book tracking-tight text-gray-8">
             <p className="mb-0">
-              Novu integrates with 50+ providers and tools across email, in-app,
-              SMS, push, chat, and workflow use cases. Connect the services your
-              system already uses, orchestrate them from a single workflow
-              engine, and manage notification delivery through one API.
-            </p>
-            <p className="mt-4 mb-0">
-              Use Novu to unify delivery providers, in-app experiences, and
-              workflow integrations without rebuilding your notification logic
-              every time your stack evolves.
+              Connect 50+ providers across email, SMS, push, chat, and in-app.
+              Use one API to send notifications and switch providers without
+              rebuilding. Need a provider not listed here? Novu is open source,
+              so you can contribute a new provider.
             </p>
           </div>
         </div>
