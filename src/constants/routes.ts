@@ -7,6 +7,9 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   // CURRENT WEBSITE
   changelog: "/changelog",
   customers: "/customers",
+  integrations: "/integrations",
+  integrationsChannels: "/integrations/channels",
+  integrationsSources: "/integrations/sources",
 
   // PREVIOUS WEBSITE
 

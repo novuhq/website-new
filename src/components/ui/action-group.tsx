@@ -29,7 +29,15 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
           size="lg"
           asChild
         >
-          <NextLink href={action.href} data-click-location={action.clickLocation} data-click-text={action.clickText}>{action.label}</NextLink>
+          <NextLink
+            href={action.href}
+            target={action.openInNewTab ? "_blank" : undefined}
+            rel={action.openInNewTab ? "noopener noreferrer" : undefined}
+            data-click-location={action.clickLocation}
+            data-click-text={action.clickText}
+          >
+            {action.label}
+          </NextLink>
         </Button>
       )
     case "link":
@@ -40,6 +48,8 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
             className
           )}
           href={action.href}
+          target={action.openInNewTab ? "_blank" : undefined}
+          rel={action.openInNewTab ? "noopener noreferrer" : undefined}
           size={isSingleAction ? "lg" : "default"}
           variant="foreground"
           animation="arrow-right"

@@ -16,7 +16,7 @@ function Banner({ title, description, className, cta }: IBanner) {
             <h2 className="text-xl/tight font-medium tracking-tighter lg:text-2xl/tight">
               {title}
             </h2>
-            <p className="mt-2.5 leading-snug tracking-tighter text-gray-9">
+            <p className="mt-2.5 leading-snug tracking-tighter whitespace-pre-line text-gray-9">
               {description}
             </p>
           </div>
@@ -25,7 +25,17 @@ function Banner({ title, description, className, cta }: IBanner) {
             size="default"
             asChild
           >
-            <NextLink href={cta.href} data-click-location={cta.clickLocation} data-click-text={cta.clickText}>{cta.label}</NextLink>
+            <NextLink
+              href={cta.href}
+              data-click-location={cta.clickLocation}
+              data-click-text={cta.clickText}
+              {...(cta.openInNewTab && {
+                target: "_blank",
+                rel: "noopener noreferrer",
+              })}
+            >
+              {cta.label}
+            </NextLink>
           </Button>
 
           <div className="absolute inset-0 z-10 overflow-hidden rounded-[inherit]">

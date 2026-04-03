@@ -39,6 +39,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/integrations",
+        destination: "/integrations/channels",
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
@@ -57,6 +66,11 @@ const nextConfig: NextConfig = {
     "shiki",
     "typescript",
   ],
+  outputFileTracingIncludes: {
+    "/integrations/channels": ["./src/content/integrations/**/*.mdx"],
+    "/integrations/sources": ["./src/content/integrations/**/*.mdx"],
+    "/integrations/[slug]": ["./src/content/integrations/**/*.mdx"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

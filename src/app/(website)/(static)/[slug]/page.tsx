@@ -65,7 +65,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
       url: "https://novu.co",
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/logo.svg",
+        url: "https://novu.co/images/logo.svg",
       },
     },
   }
