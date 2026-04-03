@@ -35,6 +35,7 @@ import logoUnops from "@/images/pages/pricing/logos/unops.svg"
 import logoWaltonEnterprises from "@/images/pages/pricing/logos/walton-enterprises.svg"
 import logoWhoppah from "@/images/pages/pricing/logos/whoppah.svg"
 
+import { ROUTE } from "@/constants/routes"
 import type { IPricingPageData } from "@/types/pricing"
 
 const renderScheduleCallButton = (
@@ -287,7 +288,7 @@ export const pricingPageData: IPricingPageData = {
         extraInfo: "No credit card required",
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -319,7 +320,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: true,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -354,7 +355,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: ROUTE.dashboardV2SignUp,
           isExternal: true,
           text: "Get started",
         },
@@ -393,7 +394,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://novu.co/contact-us/?utm_campaign=ws_pricing",
+          href: "/contact-us",
           isExternal: false,
           text: "Contact us",
         },
@@ -454,7 +455,7 @@ export const pricingPageData: IPricingPageData = {
   pageCta: {
     actions: [
       {
-        href: "https://dashboard.novu.co/?utm_campaign=gs-website-inbox",
+        href: ROUTE.dashboard,
         label: "Get started",
         kind: "primary-button",
       },
@@ -472,24 +473,21 @@ export const pricingPageData: IPricingPageData = {
     headings: [
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_free",
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "free",
         label: "Free",
         isFeatured: false,
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_pro",
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "pro",
         isFeatured: true,
         label: "Pro",
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_team",
+        buttonUrl: ROUTE.dashboardV2SignUp,
         id: "team",
         label: "Team",
         isFeatured: false,

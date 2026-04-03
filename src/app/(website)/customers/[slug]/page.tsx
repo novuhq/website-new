@@ -203,7 +203,7 @@ export default async function CustomerStoryPage({
           {
             kind: "primary-button",
             label: "Get started",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
           },
           {
             kind: "secondary-button",
