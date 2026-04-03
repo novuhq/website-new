@@ -27,7 +27,10 @@ function IntegrationSection({
   return (
     <section className={cn("flex flex-col gap-2.5", className)}>
       <h2 className="font-display flex items-center gap-2.5 text-lg leading-snug tracking-tight text-foreground">
-        <Icon className="size-[1.375rem] text-foreground" aria-hidden />
+        <Icon
+          className="size-[1.375rem] shrink-0 text-foreground"
+          aria-hidden
+        />
         {title}
       </h2>
       <div

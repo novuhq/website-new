@@ -215,11 +215,11 @@ function IntegrationsTabs({
             ))}
           </TabsList>
         </nav>
-        <div className="flex w-full flex-col gap-8 border-b border-gray-2 pb-6 md:-mx-8 md:w-[calc(100%+4rem)] md:flex-row md:items-center md:justify-between lg:mt-4 lg:max-w-[960px]">
+        <div className="flex w-full min-w-0 max-w-full flex-col gap-8 border-b border-gray-2 px-5 pb-6 md:-mx-8 md:w-[calc(100%+4rem)] md:flex-row md:items-center md:justify-between md:px-0 lg:mt-4 lg:max-w-[960px]">
           <Suspense
             fallback={
               <div
-                className="categories-list h-7.5 max-w-full md:overflow-hidden"
+                className="categories-list h-9 min-w-0 w-full max-w-full flex-1"
                 aria-hidden
               />
             }
@@ -229,7 +229,7 @@ function IntegrationsTabs({
               categories={categoryItems}
             />
           </Suspense>
-          <div className="flex w-full shrink-0 items-center justify-end gap-4 px-5 md:w-auto md:px-0">
+          <div className="flex w-full shrink-0 items-center justify-end gap-4 md:w-auto">
             <div
               className={cn(
                 "inline-flex h-9 w-full max-w-full shrink-0 items-center gap-2.5 rounded border border-gray-4 bg-background pr-2 pl-3 lg:w-[19.5rem]",

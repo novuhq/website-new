@@ -1,6 +1,7 @@
 "use client"
 
 import { useId, useState } from "react"
+import config from "@/configs/website-config"
 import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -11,8 +12,6 @@ import {
 } from "@/components/ui/collapsible"
 
 import IntegrationCard, { type IIntegrationCardProps } from "./integration-card"
-
-const VISIBLE_CARD_COUNT = 9
 
 export interface IIntegrationChannelCategoryProps {
   title: string
@@ -38,9 +37,13 @@ function IntegrationChannelCategory({
   const showMoreLabel = showMoreLabelProp ?? "Show more"
   const showLessLabel = "Show less"
 
-  const hasOverflow = cards.length > VISIBLE_CARD_COUNT
-  const visibleCards = hasOverflow ? cards.slice(0, VISIBLE_CARD_COUNT) : cards
-  const hiddenCards = hasOverflow ? cards.slice(VISIBLE_CARD_COUNT) : []
+  const hasOverflow = cards.length > config.integrations.visibleCardsCount
+  const visibleCards = hasOverflow
+    ? cards.slice(0, config.integrations.visibleCardsCount)
+    : cards
+  const hiddenCards = hasOverflow
+    ? cards.slice(config.integrations.visibleCardsCount)
+    : []
 
   const gridClassName = "grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
 

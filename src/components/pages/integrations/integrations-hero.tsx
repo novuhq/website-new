@@ -38,16 +38,11 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                 </h1>
 
                 <div className="flex flex-col gap-7">
-                  <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base">
+                  <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base [&_span]:font-normal [&_span]:text-white">
                     Connect the providers and tools you use with Novu across{" "}
-                    <span className="font-normal text-white">email</span>,{" "}
-                    <span className="font-normal text-white">SMS</span>,{" "}
-                    <span className="font-normal text-white">push</span>,{" "}
-                    <span className="font-normal text-white">chat</span>,{" "}
-                    <span className="font-normal text-white">in-app</span>, and{" "}
-                    <span className="font-normal text-white">
-                      workflow integrations.
-                    </span>
+                    <span>email</span>, <span>SMS</span>, <span>push</span>,{" "}
+                    <span>chat</span>, <span>in-app</span>, and{" "}
+                    <span>workflow integrations.</span>
                   </p>
 
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-7">

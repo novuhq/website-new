@@ -33,13 +33,13 @@ export const SEO_DATA = {
     title: `Integrations | ${config.projectName}`,
     description:
       "Explore all tools and services that integrate with Novu. Build notification workflows across email, SMS, push, in-app, and chat without switching providers.",
-    pathname: ROUTE.integrations as string,
+    pathname: ROUTE.integrationsSources as string,
   },
   integrationsChannels: {
     title: `Notification Providers | ${config.projectName}`,
     description:
       "Browse all notification providers supported by Novu. Connect email, SMS, push, in-app, and chat providers to your stack with a unified API.",
-    pathname: ROUTE.integrations as string,
+    pathname: ROUTE.integrationsChannels as string,
   },
   blog: {
     title: `Blog`,

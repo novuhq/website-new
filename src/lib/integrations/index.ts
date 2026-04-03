@@ -4,7 +4,6 @@ export {
   getIntegrationCategories,
   getIntegrationsByCategory,
   getIntegrationsByTab,
-  getRelatedArticles,
   getRelatedIntegrations,
 } from "./load"
 

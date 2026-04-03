@@ -19,6 +19,7 @@ const config = {
   },
   integrations: {
     contentDir: "src/content/integrations",
+    visibleCardsCount: 9, // Number of cards to show on the integrations page
   },
 }
 

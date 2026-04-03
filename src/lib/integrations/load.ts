@@ -12,9 +12,9 @@ import matter from "gray-matter"
 import type {
   IIntegration,
   IIntegrationCategoryMeta,
-  IIntegrationRelatedArticle,
   IntegrationTabType,
 } from "@/types/integration"
+
 import {
   integrationFrontmatterSchema,
   type IntegrationFrontmatter,
@@ -196,10 +196,4 @@ export async function getRelatedIntegrations(
   }
 
   return out
-}
-
-export function getRelatedArticles(
-  entry: IIntegration
-): IIntegrationRelatedArticle[] {
-  return entry.relatedArticles
 }
