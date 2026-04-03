@@ -1,4 +1,5 @@
 import { ICustomerTweetData } from "@/types/customers"
+import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 import Slider from "@/components/ui/slider"
 
@@ -73,16 +74,25 @@ const ReviewCard = ({
   )
 }
 
-const Reviews = ({ reviews }: { reviews: ICustomerTweetData[] }) => {
+const Reviews = ({
+  reviews,
+  title = "What our customers say about us",
+  subtitle = "Explore what developers and non-technical users say about why they're fans of our open-source notifications framework.",
+  className,
+}: {
+  reviews: ICustomerTweetData[]
+  title?: string
+  subtitle?: string
+  className?: string
+}) => {
   return (
-    <section className="reviews relative mt-26 [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-43.5">
+    <section className={cn("reviews relative mt-26 [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-43.5", className)}>
       <div className="relative mx-auto flex w-full max-w-[1216px] flex-col items-center px-5 text-center md:px-8 lg:px-0">
         <h2 className="relative z-10 max-w-212.5 gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-balance text-foreground md:max-w-129 md:text-[32px] lg:max-w-176 lg:text-[40px] xl:text-[44px]">
-          What our customers say about us
+          {title}
         </h2>
         <p className="relative z-10 mt-3 text-base leading-normal font-light tracking-tighter text-pretty text-muted-foreground md:max-w-129 lg:max-w-176 xl:mt-5 xl:max-w-152 xl:text-lg">
-          Explore what developers and non-technical users say about why they're
-          fans of our open-source notifications framework.
+          {subtitle}
         </p>
         <div className="relative z-10 mt-9 w-screen md:mt-10 md:w-full md:max-w-150 lg:max-w-214 xl:mt-14 xl:max-w-304">
           <Slider>

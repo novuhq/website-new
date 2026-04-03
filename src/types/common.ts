@@ -111,18 +111,52 @@ export interface ISeoFields {
 }
 
 export type TSectionAction =
-  | { kind: "primary-button"; label: string; href: Route<string> | URL }
-  | { kind: "secondary-button"; label: string; href: Route<string> | URL }
-  | { kind: "link"; label: string; href: Route<string> | URL }
+  | { kind: "primary-button"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
+  | { kind: "secondary-button"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
+  | { kind: "link"; label: string; href: Route<string> | URL; clickLocation?: string; clickText?: string }
   | { kind: "subscription-form"; placeholder: string; buttonText: string }
 
 export interface ICtaSection {
   title: string
   description: string | ReactNode
+  hint?: string
   actions: TSectionAction[]
 }
 
 export interface ITabsBlock {
   label: string
   content: PortableTextBlock
+}
+
+export type FaqAnswer =
+  | ReactNode
+  | ((onScheduleClick: (source: string) => void) => ReactNode)
+
+export interface IAccordionItem {
+  question: string
+  answer: FaqAnswer
+}
+
+export interface IAccordion {
+  items: Array<{
+    question: string
+    answer: FaqAnswer
+  }>
+}
+
+export interface IFaqSection {
+  title: string
+  accordion: IAccordion
+}
+
+export interface IBanner {
+  className?: string
+  title: string
+  description: string
+  cta: {
+    label: string
+    href: string
+    clickLocation?: string
+    clickText?: string
+  }
 }

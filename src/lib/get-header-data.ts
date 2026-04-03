@@ -42,8 +42,7 @@ export async function getLatestBlogPost() {
 
     return {
       title: latestPost?.title || DEFAULT_BLOG_POST.title,
-      description:
-        latestPost?.caption || DEFAULT_BLOG_POST.description,
+      description: latestPost?.caption || DEFAULT_BLOG_POST.description,
       href: latestPost?.url || DEFAULT_BLOG_POST.href,
       image: latestPost?.cover || DEFAULT_BLOG_POST.image,
     }

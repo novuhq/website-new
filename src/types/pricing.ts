@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { StaticImageData } from "next/image"
 
-import { ICtaSection } from "./common"
+import { ICtaSection, IFaqSection } from "./common"
 
 export type IPricingHero = {
   _type?: string
@@ -82,22 +82,6 @@ export type Plans = {
   onContactUsClick?: (source: string) => void
 }
 
-export type FaqAnswer =
-  | ReactNode
-  | ((onScheduleClick: (source: string) => void) => ReactNode)
-
-export type Accordion = {
-  items: Array<{
-    question: string
-    answer: FaqAnswer
-  }>
-}
-
-export type Faq = {
-  title: string
-  accordion: Accordion
-}
-
 export type ICtaCard = {
   text: string
   description?: string
@@ -129,16 +113,16 @@ export type OnPrem = {
   buttonUrl: string
 }
 
-export type IPricingPageData = {
+export interface IPricingPageData {
   _type: "pricing"
   _createdAt: string
   _updatedAt: string
-  title: string | null
+  title?: string
   hero: IPricingHero
   logos: Logos
   plans: Plans
   onPrem: OnPrem
-  faq: Faq
+  faq: IFaqSection
   cta: ICtaCard
   pageCta: ICtaSection
 }

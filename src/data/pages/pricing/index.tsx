@@ -1809,5 +1809,4 @@ export const pricingPageData: IPricingPageData = {
     buttonUrl:
       "https://go.novu.co/intro-call?utm_campaign=pricing-widget-self-host",
   },
-  title: null,
 }

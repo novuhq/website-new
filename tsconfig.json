@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,12 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@root/*": [
-        "./*"
-      ]
+      "@/*": ["./src/*"],
+      "@root/*": ["./*"]
     }
   },
   "include": [
@@ -37,11 +29,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "tailwind.plugins.mjs",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "src/data/pages/comparison/courier.tsx"
   ],
-  "exclude": [
-    "node_modules",
-    "next-sitemap.config.js",
-    "scripts"
-  ]
+  "exclude": ["node_modules", "next-sitemap.config.js", "scripts"]
 }
