@@ -128,6 +128,32 @@ export const MENUS = {
         ],
       },
       {
+        title: "Comparison",
+        items: [
+          {
+            label: "Novu vs Courier",
+            href: ROUTE.comparisonCourier,
+            isNew: false,
+          },
+          { label: "Novu vs Knock", href: ROUTE.comparisonKnock, isNew: false },
+          {
+            label: "Novu vs MagicBell",
+            href: ROUTE.comparisonMagicBell,
+            isNew: false,
+          },
+          {
+            label: "Novu vs SuprSend",
+            href: ROUTE.comparisonSuprSend,
+            isNew: false,
+          },
+          {
+            label: "Novu vs In-house",
+            href: ROUTE.comparisonInHouse,
+            isNew: false,
+          },
+        ],
+      },
+      {
         title: "Company",
         items: [
           { label: "Community", href: ROUTE.community, isNew: false },
