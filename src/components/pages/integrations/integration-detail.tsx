@@ -3,7 +3,7 @@ import type { Route } from "next"
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
-import { ArrowLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import type { IIntegration } from "@/types/integration"
 import { cn } from "@/lib/utils"
@@ -49,9 +49,9 @@ function IntegrationDetail({
           href={`${ROUTE.integrations}/${integration.tab}#integrations-explore`}
           variant="muted"
           size="sm"
-          className="inline-flex items-center gap-2 text-gray-8 hover:text-white"
+          className="inline-flex items-center gap-1 text-gray-7 hover:text-white"
         >
-          <ArrowLeft className="size-4" aria-hidden />
+          <ChevronLeft aria-hidden />
           All Integrations
         </Link>
 
