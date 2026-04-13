@@ -11,6 +11,7 @@ import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import MixpanelTracking from "@/components/mixpanel-tracking"
+import UtmForwarder from "@/components/utm-forwarder"
 import PreviewWarning from "@/components/preview-warning"
 import Scripts, { GTM_ID } from "@/components/scripts"
 
@@ -43,6 +44,7 @@ export default async function RootLayout({
         className={`${inter.variable} flex min-h-svh flex-col bg-background font-sans antialiased`}
       >
         <MixpanelTracking />
+        <UtmForwarder />
         <Providers>
           <div
             className="flex grow flex-col rounded-none bg-background aria-hidden:[-webkit-mask-image:-webkit-radial-gradient(white,black)]"
