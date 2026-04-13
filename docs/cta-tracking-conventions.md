@@ -113,9 +113,11 @@ Components pass the values through as data attributes on the `<a>` / `<NextLink>
 
 The attributes are optional — if not provided, they simply won't render on the element. Existing pages won't break.
 
-## Do NOT use UTM parameters on internal links
+## Do NOT hardcode UTM parameters on internal links
 
-**Bad:**
+Adding hardcoded UTMs like `utm_source=internal` to CTA links causes Google Analytics to start a new session and overwrite the user's original acquisition source (e.g. a paid Google Ads click). Use `data-` attributes for internal click tracking instead.
+
+**Bad -- hardcoded internal UTMs that overwrite acquisition attribution:**
 
 ```html
 <a
@@ -125,7 +127,7 @@ The attributes are optional — if not provided, they simply won't render on the
 </a>
 ```
 
-**Good:**
+**Good -- data attributes for click tracking, no UTMs in the href:**
 
 ```html
 <a
@@ -136,6 +138,14 @@ The attributes are optional — if not provided, they simply won't render on the
   Start for Free
 </a>
 ```
+
+## Acquisition UTM forwarding (UtmForwarder component)
+
+The `UtmForwarder` component (`src/components/utm-forwarder.tsx`) automatically forwards the visitor's **original acquisition UTMs** (from the URL they landed on, e.g. from a Google Ad) to dashboard.novu.co links. This is different from hardcoding internal UTMs -- it preserves the original paid campaign attribution through to signup.
+
+- It only appends params that are NOT already present on the link
+- It only targets links where `url.hostname === "dashboard.novu.co"`
+- It reads from `sessionStorage`, so only params from the user's actual landing are forwarded
 
 ## Supported Components
 
