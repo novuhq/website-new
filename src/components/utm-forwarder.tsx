@@ -11,7 +11,16 @@ const STORAGE_KEY = "novu_utm_params"
 function getStoredUtmParams(): Record<string, string> {
   try {
     const stored = sessionStorage.getItem(STORAGE_KEY)
-    return stored ? JSON.parse(stored) : {}
+    if (!stored) return {}
+    const parsed = JSON.parse(stored)
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed))
+      return {}
+    return Object.fromEntries(
+      TRACKING_PARAMS.flatMap((key) => {
+        const value = (parsed as Record<string, unknown>)[key]
+        return typeof value === "string" && value ? [[key, value]] : []
+      })
+    )
   } catch {
     return {}
   }
