@@ -90,14 +90,19 @@ function PromptActions({ prompt }: IPromptActionsProps) {
             <DropdownMenu.Content
               align="end"
               sideOffset={8}
-              className="z-50 flex min-w-[11.875rem] flex-col rounded-md border border-border bg-background"
+              className="z-50 flex min-w-[11.875rem] flex-col rounded-md border border-border bg-background outline-none"
             >
               {PROMPT_TARGETS.map((target, index) => {
                 const Icon = target.icon
                 const isLast = index === PROMPT_TARGETS.length - 1
 
                 return (
-                  <DropdownMenu.Item key={target.id} asChild>
+                  <DropdownMenu.Item
+                    key={target.id}
+                    asChild
+                    onPointerMove={(e) => e.preventDefault()}
+                    onPointerLeave={(e) => e.preventDefault()}
+                  >
                     <a
                       href={target.href(encodedPrompt)}
                       target="_blank"
