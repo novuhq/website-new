@@ -26,12 +26,21 @@ interface MobileMenuProps {
 
 function MobileMenu({ items }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
+  const [isBanner, setIsBanner] = useState(false)
   const pathname = usePathname()
   const { ref: scrollRef, isScrolledToBottom, hasScroll } = useScrollStatus()
 
   useEffect(() => {
     setOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    const linkBanner = document.querySelector(".link-banner")
+    const topBanner = document.querySelector(".top-banner")
+    if (linkBanner || topBanner) {
+      setIsBanner(true)
+    }
+  }, [])
 
   const onOpenChange = useCallback((open: boolean) => {
     setOpen(open)
@@ -49,11 +58,17 @@ function MobileMenu({ items }: MobileMenuProps) {
       preventScrollRestoration
       modal={false}
     >
-      <DrawerTrigger className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden" aria-label="Toggle menu">
+      <DrawerTrigger
+        className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden"
+        aria-label="Toggle menu"
+      >
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
-        className="top-16 flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden"
+        className={cn(
+          "flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
+          isBanner ? "top-25" : "top-16"
+        )}
         withTopLine={false}
       >
         <DrawerTitle className="sr-only">Menu</DrawerTitle>

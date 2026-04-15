@@ -16,9 +16,11 @@ function Banner({ title, description, className, cta }: IBanner) {
             <h2 className="text-xl/tight font-medium tracking-tighter lg:text-2xl/tight">
               {title}
             </h2>
-            <p className="mt-2.5 leading-snug tracking-tighter whitespace-pre-line text-gray-9">
-              {description}
-            </p>
+            {description && (
+              <p className="mt-2.5 leading-snug tracking-tighter whitespace-pre-line text-gray-9">
+                {description}
+              </p>
+            )}
           </div>
           <Button
             className="relative z-20 w-full shrink-0 md:w-auto"

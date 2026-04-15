@@ -1,0 +1,159 @@
+import CodeBlock from "@/components/content/code-block"
+
+import McpConfigSelect, { type IMcpConfigSnippet } from "./mcp-config-select"
+
+interface IMcpHowItWorksStep {
+  title: string
+  description: string
+}
+
+interface IMcpClientSnippet {
+  label: string
+  language: "json" | "toml"
+  code: string
+}
+
+const STEPS: IMcpHowItWorksStep[] = [
+  {
+    title: "Connect your AI client",
+    description:
+      "Point any MCP client — Claude, Cursor, or your app — to the Novu MCP Server.",
+  },
+  {
+    title: "Discover available tools",
+    description:
+      "Your agent finds 13 tools: trigger workflows, manage subscribers, query notifications.",
+  },
+  {
+    title: "Novu delivers everywhere",
+    description:
+      "Novu delivers across channels — in-app, email, SMS, push — with full observability.",
+  },
+]
+
+const BASE_JSON_SNIPPET = `{
+  "mcpServers": {
+    "novu": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.novu.co/",
+        "--header",
+        "Authorization:Bearer \${NOVU_API_KEY}"
+      ],
+      "env": {
+        "NOVU_API_KEY": "your-novu-api-key-here"
+      }
+    }
+  }
+}`
+
+const VSCODE_JSON_SNIPPET = `{
+  "servers": {
+    "novu": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.novu.co/",
+        "--header",
+        "Authorization:Bearer \${input:novu-api-key}"
+      ]
+    }
+  },
+  "inputs": [
+    {
+      "id": "novu-api-key",
+      "type": "promptString",
+      "description": "Novu API key",
+      "password": true
+    }
+  ]
+}`
+
+const CODEX_TOML_SNIPPET = `[mcp_servers.novu]
+command = "npx"
+args = [
+  "mcp-remote",
+  "https://mcp.novu.co/",
+  "--header",
+  "Authorization:Bearer \${NOVU_API_KEY}",
+]
+
+[mcp_servers.novu.env]
+NOVU_API_KEY = "your-novu-api-key-here"`
+
+const CLIENT_SNIPPETS: IMcpClientSnippet[] = [
+  { label: "Cursor", language: "json", code: BASE_JSON_SNIPPET },
+  { label: "Codex", language: "toml", code: CODEX_TOML_SNIPPET },
+  { label: "Claude Desktop", language: "json", code: BASE_JSON_SNIPPET },
+  { label: "VS Code", language: "json", code: VSCODE_JSON_SNIPPET },
+  { label: "Windsurf", language: "json", code: BASE_JSON_SNIPPET },
+  { label: "GitHub Copilot", language: "json", code: VSCODE_JSON_SNIPPET },
+]
+
+async function McpHowItWorksSection() {
+  const snippets: IMcpConfigSnippet[] = CLIENT_SNIPPETS.map((snippet) => ({
+    label: snippet.label,
+    raw: snippet.code,
+    node: (
+      <CodeBlock
+        language={snippet.language}
+        code={snippet.code}
+        themeVariant="mcp-snippet"
+        className="border-none bg-transparent"
+      />
+    ),
+  }))
+
+  return (
+    <section
+      id="how-it-works"
+      className="mcp-section-container mt-40 scroll-mt-24 md:mt-48 md:scroll-mt-28 lg:mt-62"
+    >
+      <div className="flex flex-col gap-12 md:gap-14 lg:gap-16">
+        <div className="flex max-w-208 flex-col gap-4 md:gap-5">
+          <div className="flex items-center gap-2">
+            <span className="size-1.5 bg-purple-3" />
+            <span className="text-sm leading-none tracking-tight text-purple-1 uppercase">
+              How it works
+            </span>
+          </div>
+          <h2 className="text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-5xl">
+            Trigger a workflow with your agent, and let Novu do the rest
+          </h2>
+        </div>
+
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
+          <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
+
+          <div className="relative pl-12">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-2 left-[0.875rem] w-px -translate-x-1/2 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0.12)_50%,rgba(255,255,255,0.25)_100%)]"
+              style={{ height: "calc(100% - 1.75rem)" }}
+            />
+
+            <ol className="flex flex-col gap-[3.75rem]">
+              {STEPS.map((step, index) => (
+                <li key={step.title} className="relative">
+                  <span className="absolute top-0 -left-12 inline-flex size-7 items-center justify-center rounded-full border border-[rgba(229,204,255,0.2)] bg-gray-2 font-inter text-base leading-[1.375] tracking-[-0.02em] text-foreground">
+                    {index + 1}
+                  </span>
+                  <h3 className="max-w-[19.4375rem] text-xl leading-[1.375] font-medium tracking-[-0.02em] text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2.5 max-w-[19.4375rem] text-base leading-[1.375] font-light text-gray-9">
+                    {step.description}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default McpHowItWorksSection

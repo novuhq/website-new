@@ -26,6 +26,10 @@ export const MENUS = {
       ],
     },
     {
+      title: "Novu MCP",
+      href: ROUTE.mcp,
+    },
+    {
       title: "Resources",
       content: [
         {
@@ -108,6 +112,11 @@ export const MENUS = {
             label: "Notifications Directory",
             href: ROUTE.docsNotifications,
             isNew: false,
+          },
+          {
+            label: "Novu MCP",
+            href: ROUTE.mcp,
+            isNew: true,
           },
         ],
       },
