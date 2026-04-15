@@ -125,7 +125,7 @@ export default function McpPage() {
       <GetInvolved />
       <CTA
         title="Start building with MCP"
-        titleClassName="whitespace-pre-line !text-4xl md:!text-[2.75rem]"
+        titleClassName="whitespace-pre-line !text-[1.75rem] md:!text-[2.75rem]"
         className="py-32 md:py-48 lg:py-60"
         description="Connect your first AI agent in under 5 minutes."
         actions={[

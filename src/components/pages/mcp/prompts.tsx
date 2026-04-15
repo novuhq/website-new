@@ -52,7 +52,7 @@ function McpPromptsSection() {
               Prompts
             </span>
           </div>
-          <h2 className="max-w-[50.75rem] text-4xl leading-dense font-medium tracking-tighter text-balance text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
+          <h2 className="max-w-[50.75rem] text-[1.75rem] leading-dense font-medium tracking-tighter text-balance text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
             Paste any prompt into your MCP client to interact with Novu in
             natural language
           </h2>
@@ -63,9 +63,9 @@ function McpPromptsSection() {
             return (
               <article
                 key={card.prompt}
-                className="relative min-h-[6.375rem] rounded-xl border border-integration-card-border bg-integration-card px-4 pt-4 pr-20 pb-5"
+                className="relative min-h-[6.375rem] rounded-xl border border-mcp-prompt-card-border bg-mcp-prompt-card px-4 pt-4 pr-20 pb-5"
               >
-                <p className="max-w-[15.6875rem] text-base leading-[1.375] font-book tracking-tight text-foreground">
+                <p className="text-base leading-[1.375] font-book tracking-tight text-foreground">
                   &ldquo;{card.prompt}&rdquo;
                 </p>
 

@@ -44,7 +44,7 @@ const ReviewCard = ({
   tag,
 }: ICustomerTweetData) => {
   return (
-    <div className="relative h-full w-full py-1 md:max-w-[384px]">
+    <div className="relative h-full w-full py-1 md:max-w-[352px]">
       {tweetLink ? (
         <Link
           className="relative z-10 flex h-full flex-col items-start rounded-xl border border-[rgba(51,51,71,0.60)] bg-[#111018] px-5 py-[18px] text-start duration-300 hover:bg-[#15141D] md:px-6 md:py-5"
@@ -88,14 +88,14 @@ const Reviews = ({
   return (
     <section className={cn("reviews relative mt-26 [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-43.5", className)}>
       <div className="relative mx-auto flex w-full max-w-[1216px] flex-col items-center px-5 text-center md:px-8 lg:px-0">
-        <h2 className="relative z-10 max-w-212.5 gap-y-4 text-center text-[28px] leading-[1.125] font-medium tracking-tighter text-balance text-foreground md:max-w-129 md:text-[32px] lg:max-w-176 lg:text-[40px] xl:text-[44px]">
+        <h2 className="relative z-10 max-w-212.5 gap-y-4 text-center text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-balance text-foreground md:max-w-129 md:text-[2rem] lg:max-w-176 lg:text-[2.5rem] xl:text-[2.75rem]">
           {title}
         </h2>
         <p className="relative z-10 mt-3 text-base leading-normal font-light tracking-tighter text-pretty text-muted-foreground md:max-w-129 lg:max-w-176 xl:mt-5 xl:max-w-152 xl:text-lg">
           {subtitle}
         </p>
-        <div className="relative z-10 mt-9 w-screen md:mt-10 md:w-full md:max-w-150 lg:max-w-214 xl:mt-14 xl:max-w-304">
-          <Slider>
+        <div className="relative z-10 mt-9 w-screen md:mt-10 md:w-full md:max-w-150 lg:max-w-208 xl:mt-14 xl:max-w-280">
+          <Slider className="sm:px-12 md:px-0">
             {reviews.map((review, index) => (
               <ReviewCard key={index} {...review} />
             ))}

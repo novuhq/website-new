@@ -1,5 +1,4 @@
 import { ROUTE } from "@/constants/routes"
-import { ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
@@ -87,18 +86,43 @@ const TOOL_GROUPS: IAgenticToolGroup[] = [
 
 function getGroupColumnsClassName(toolsCount: number) {
   if (toolsCount >= 3) {
-    return "md:grid-cols-2 lg:grid-cols-[17rem_17rem_1fr]"
+    return "md:grid-cols-2 lg:grid-cols-[18rem_17rem_1fr]"
   }
 
   if (toolsCount === 2) {
-    return "md:grid-cols-2 lg:grid-cols-[17rem_17rem]"
+    return "md:grid-cols-2 lg:grid-cols-[18rem_17rem]"
   }
 
   return "md:grid-cols-1"
 }
 
-const DIVIDER_CLASS =
-  "h-px w-full bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.12)_15%,rgba(255,255,255,0.12)_85%,transparent_100%)]"
+const DIVIDER_CLASS = "h-px w-full bg-white/12"
+
+function ApiReferenceLink({ className }: { className?: string }) {
+  return (
+    <Link
+      href={ROUTE.docsApis}
+      variant="clean"
+      animation="arrow-right"
+      size="none"
+      className={cn(
+        "w-fit items-end text-[15px] leading-[1.375] font-book text-lagune-3 hover:text-lagune-2",
+        className
+      )}
+    >
+      View full API reference
+      <svg
+        aria-hidden
+        className="h-4 w-1.5"
+        viewBox="0 0 6 10"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    </Link>
+  )
+}
 
 function McpAgenticToolsSection() {
   return (
@@ -112,21 +136,12 @@ function McpAgenticToolsSection() {
                 Agentic tools
               </span>
             </div>
-            <h2 className="text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
+            <h2 className="text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
               Every tool your agent needs to control notification infrastructure
             </h2>
           </div>
 
-          <Link
-            href={ROUTE.docsApis}
-            variant="clean"
-            animation="arrow-right"
-            size="none"
-            className="w-fit text-sm leading-none font-medium text-foreground uppercase"
-          >
-            View full API reference
-            <ArrowRight className="size-3" />
-          </Link>
+          <ApiReferenceLink className="hidden md:inline-flex" />
         </div>
 
         <div className="flex flex-col gap-7">
@@ -134,7 +149,7 @@ function McpAgenticToolsSection() {
           {TOOL_GROUPS.map((group) => (
             <div key={group.category} className="flex flex-col gap-7">
               <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-6">
-                <p className="w-full shrink-0 text-sm leading-none text-gray-7 uppercase md:w-40 lg:w-44">
+                <p className="w-full shrink-0 text-sm leading-none text-gray-7 uppercase md:w-40">
                   {group.category}
                 </p>
 
@@ -163,6 +178,8 @@ function McpAgenticToolsSection() {
             </div>
           ))}
         </div>
+
+        <ApiReferenceLink className="md:hidden" />
       </div>
     </section>
   )

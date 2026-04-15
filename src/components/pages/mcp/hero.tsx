@@ -19,10 +19,10 @@ function McpHeroSection() {
             </span>
           </div>
           <div className="flex flex-col items-center gap-4 text-center">
-            <h1 className="max-w-[53.75rem] text-4xl leading-dense font-medium tracking-tighter text-balance text-foreground md:text-[3.25rem]">
+            <h1 className="max-w-[53.75rem] text-4xl leading-dense font-medium tracking-tighter text-balance text-foreground md:text-[3rem] lg:text-[3.25rem]">
               Connect any AI to Novu. Instantly.
             </h1>
-            <p className="max-w-[32.5rem] text-lg leading-normal font-book tracking-tighter text-pretty text-muted-foreground">
+            <p className="max-w-[32.5rem] text-base leading-normal font-book tracking-tighter text-pretty text-muted-foreground md:text-lg">
               A standardized bridge for MCP-compatible AI clients to Novu.
               Connect once, notify everywhere.
             </p>

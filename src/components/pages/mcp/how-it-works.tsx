@@ -1,3 +1,6 @@
+import Image from "next/image"
+import circleNumberIcon from "@/images/pages/mcp/icons/circle-number.svg"
+
 import CodeBlock from "@/components/content/code-block"
 
 import McpConfigSelect, { type IMcpConfigSnippet } from "./mcp-config-select"
@@ -101,7 +104,7 @@ async function McpHowItWorksSection() {
         language={snippet.language}
         code={snippet.code}
         themeVariant="mcp-snippet"
-        className="border-none bg-transparent"
+        className="border-none bg-transparent [&_pre_code]:text-xs md:[&_pre_code]:text-sm [&_pre_code>.line::before]:text-xs md:[&_pre_code>.line::before]:text-sm"
       />
     ),
   }))
@@ -109,7 +112,7 @@ async function McpHowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="mcp-section-container mt-40 scroll-mt-24 md:mt-48 md:scroll-mt-28 lg:mt-62"
+      className="mcp-section-container mt-40 scroll-mt-[calc(var(--sticky-header-height)+5rem)] md:mt-48 lg:mt-62"
     >
       <div className="flex flex-col gap-12 md:gap-14 lg:gap-16">
         <div className="flex max-w-208 flex-col gap-4 md:gap-5">
@@ -119,7 +122,7 @@ async function McpHowItWorksSection() {
               How it works
             </span>
           </div>
-          <h2 className="text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-5xl">
+          <h2 className="text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-5xl">
             Trigger a workflow with your agent, and let Novu do the rest
           </h2>
         </div>
@@ -128,17 +131,22 @@ async function McpHowItWorksSection() {
           <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
 
           <div className="relative pl-12">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute top-2 left-[0.875rem] w-px -translate-x-1/2 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0.12)_50%,rgba(255,255,255,0.25)_100%)]"
-              style={{ height: "calc(100% - 1.75rem)" }}
-            />
-
-            <ol className="flex flex-col gap-[3.75rem]">
+            <ol className="flex flex-col gap-[2.5rem] md:gap-[3.75rem]">
               {STEPS.map((step, index) => (
-                <li key={step.title} className="relative">
-                  <span className="absolute top-0 -left-12 inline-flex size-7 items-center justify-center rounded-full border border-[rgba(229,204,255,0.2)] bg-gray-2 font-inter text-base leading-[1.375] tracking-[-0.02em] text-foreground">
-                    {index + 1}
+                <li
+                  key={step.title}
+                  className="relative before:pointer-events-none before:absolute before:top-7 before:-bottom-[2.5rem] before:left-[-2.125rem] before:w-px before:bg-[#262626] before:content-[''] last:before:hidden md:before:-bottom-[3.75rem]"
+                >
+                  <span className="absolute top-0 -left-12 inline-flex size-7 items-center justify-center font-inter text-base leading-[1.375] font-normal tracking-[-0.02em] text-white">
+                    <Image
+                      src={circleNumberIcon}
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="absolute inset-0 size-full"
+                      aria-hidden
+                    />
+                    <span className="relative">{index + 1}</span>
                   </span>
                   <h3 className="max-w-[19.4375rem] text-xl leading-[1.375] font-medium tracking-[-0.02em] text-foreground">
                     {step.title}

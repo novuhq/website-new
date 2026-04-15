@@ -18,7 +18,7 @@ const FRAMEWORK_LOGOS = [
 
 function McpFrameworksSection() {
   return (
-    <section className="relative mx-auto mt-40 max-w-[78rem] overflow-hidden rounded-xl bg-background px-5 pb-40 md:mt-48 md:px-10 md:pb-48 lg:mt-60 lg:pb-60">
+    <section className="relative mx-auto mt-40 max-w-[78rem] overflow-hidden rounded-xl bg-background px-5 pb-20 md:mt-48 md:px-10 md:pb-48 lg:mt-60 lg:pb-60">
       <Image
         src={bgGlow}
         alt=""
@@ -27,11 +27,11 @@ function McpFrameworksSection() {
       />
 
       <div className="relative z-10 flex flex-col items-center gap-10 md:gap-14 lg:gap-[4.125rem]">
-        <h2 className="max-w-[48.875rem] text-center text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
+        <h2 className="max-w-[48.875rem] text-center text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[2.5rem] lg:text-[2.75rem]">
           Integrates seamlessly with leading agentic frameworks
         </h2>
 
-        <ul className="flex w-full flex-wrap items-center justify-center gap-x-10 gap-y-7 xl:flex-nowrap xl:gap-x-[3.9375rem]">
+        <ul className="flex w-full scale-[.7] flex-wrap items-center justify-center gap-x-10 gap-y-7 md:scale-100 xl:flex-nowrap xl:gap-x-[3.9375rem]">
           {FRAMEWORK_LOGOS.map((logo) => (
             <li
               key={logo.name}

@@ -3,7 +3,6 @@ import { ROUTE } from "@/constants/routes"
 import discordIcon from "@/images/pages/mcp/icons/discord.svg"
 import githubIcon from "@/images/pages/mcp/icons/github.svg"
 import novuIcon from "@/images/pages/mcp/icons/novu-gradient-logo.svg"
-import { ChevronRight } from "lucide-react"
 
 const TITLE = "Get involved: start, engage, contribute"
 
@@ -45,7 +44,7 @@ function GetInvolved() {
   return (
     <section className="relative z-10 mcp-section-container mt-40 md:mt-48 lg:mt-54">
       <div className="relative z-10 flex flex-col items-center gap-10 md:gap-12 lg:gap-14">
-        <h2 className="text-center text-3xl leading-[1.125] font-medium tracking-tighter text-foreground md:text-4xl lg:text-[2.5rem]">
+        <h2 className="text-center text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-4xl lg:text-[2.5rem]">
           {TITLE}
         </h2>
         <ul className="flex w-full flex-wrap items-start justify-center gap-x-16 gap-y-10">
@@ -63,7 +62,7 @@ function GetInvolved() {
               />
               <div className="flex w-full flex-col items-center gap-2.5">
                 <div className="flex flex-col items-center gap-1.5">
-                  <h3 className="text-2xl leading-[1.25] font-medium tracking-[-0.02em] text-foreground">
+                  <h3 className="text-[1rem] leading-[1.25] font-medium tracking-[-0.02em] text-foreground md:text-[1.25rem] 2xl:text-[1.5rem]">
                     {title}
                   </h3>
                   <p className="text-[15px] leading-[1.375] font-book tracking-[-0.02em] text-gray-8">
@@ -74,10 +73,27 @@ function GetInvolved() {
                   href={linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[15px] leading-[1.375] font-book text-lagune-3 transition-colors hover:text-lagune-2"
+                  className="group inline-flex items-center gap-1.5 text-[15px] leading-[1.375] font-book text-lagune-3 transition-colors hover:text-lagune-2"
                 >
                   {linkText}
-                  <ChevronRight className="size-3.5 shrink-0" aria-hidden />
+                  <span className="relative mt-0.5 w-1.5 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
+                    <svg
+                      className="pointer-events-none ml-auto h-2.5 w-1.5"
+                      width="6"
+                      height="10"
+                      viewBox="0 0 6 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden
+                    >
+                      <path
+                        d="M1 9L5 5L1 1"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                    <span className="absolute top-1/2 right-px h-px w-full -translate-y-1/2 bg-lagune-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                  </span>
                 </a>
               </div>
             </li>

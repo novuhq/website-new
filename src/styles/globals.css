@@ -66,6 +66,8 @@
     #111117;
   --integration-card-category-border: #333347;
   --integration-card-category-bg: rgba(38, 38, 52, 0.8);
+  --mcp-prompt-card-bg: #111018;
+  --mcp-prompt-card-border: rgba(51, 51, 71, 0.6);
 
   --lagune-1: 190, 100%, 90%; /* #CCF7FF */
   --lagune-3: 190, 100%, 50%; /* #00D5FF */
@@ -152,6 +154,8 @@
     --integration-card-category-border
   );
   --color-integration-card-category-bg: var(--integration-card-category-bg);
+  --color-mcp-prompt-card: var(--mcp-prompt-card-bg);
+  --color-mcp-prompt-card-border: var(--mcp-prompt-card-border);
 
   --color-red-1: hsl(var(--red-1));
 
