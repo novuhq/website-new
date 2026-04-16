@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement, type SVGProps } from "react"
 import { ArrowUpRight, Check, ChevronDown, Copy } from "lucide-react"
-import { DropdownMenu } from "radix-ui"
+import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
@@ -102,19 +102,19 @@ function PromptActions({ prompt }: IPromptActionsProps) {
           )}
         </button>
 
-        <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <DropdownMenu.Trigger
+        <DropdownMenuPrimitive.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <DropdownMenuPrimitive.Trigger
             className={cn(
-              "inline-flex size-7 items-center justify-center rounded-r-sm border border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground",
+              "group inline-flex size-7 items-center justify-center rounded-r-sm border border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground",
               "data-[state=open]:text-foreground"
             )}
             aria-label="Open prompt actions"
           >
-            <ChevronDown className="size-3.5 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180 data-[state=open]:rotate-180" />
-          </DropdownMenu.Trigger>
+            <ChevronDown className="size-3.5 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180" />
+          </DropdownMenuPrimitive.Trigger>
 
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
+          <DropdownMenuPrimitive.Portal>
+            <DropdownMenuPrimitive.Content
               align="end"
               sideOffset={8}
               className="z-50 flex min-w-[11.875rem] flex-col rounded-md border border-border bg-background outline-none"
@@ -124,7 +124,7 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                 const Icon = target.icon
 
                 return (
-                  <DropdownMenu.Item
+                  <DropdownMenuPrimitive.Item
                     key={target.id}
                     asChild
                     onPointerMove={(e) => e.preventDefault()}
@@ -149,12 +149,12 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                         </span>
                       </span>
                     </a>
-                  </DropdownMenu.Item>
+                  </DropdownMenuPrimitive.Item>
                 )
               })}
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+            </DropdownMenuPrimitive.Content>
+          </DropdownMenuPrimitive.Portal>
+        </DropdownMenuPrimitive.Root>
       </div>
     </div>
   )

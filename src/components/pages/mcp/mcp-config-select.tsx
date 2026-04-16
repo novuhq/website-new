@@ -31,79 +31,80 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
   const current = snippets.find((s) => s.label === selected) ?? snippets[0]
 
   return (
-    <div className="relative flex aspect-[4/3] w-full flex-col rounded-xl sm:aspect-[640/374]">
+    <div className="relative flex aspect-[3/4] w-full min-w-0 flex-col overflow-hidden rounded-xl sm:aspect-[640/374]">
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0 left-[2.375rem] z-0 h-[17.8rem] w-[15.81rem] -translate-y-[3.5rem] rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
+        className="pointer-events-none absolute top-0 left-[min(2.375rem,8%)] z-0 h-[17.8rem] w-[min(15.81rem,calc(100%-1rem))] max-w-full -translate-y-[3.5rem] rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
       />
       <Image
         src={Shine}
         alt=""
         width={448}
         height={32}
+        sizes="(max-width: 448px) 100vw, 448px"
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 -translate-y-1/2"
+        className="pointer-events-none absolute top-0 left-0 h-auto w-full max-w-full -translate-y-1/2"
       />
       <McpSnippetBg />
 
-      <div className="relative flex shrink-0 items-center justify-between py-2 pr-2.25 pl-4 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-foreground/12 after:to-transparent">
-        <div className="flex items-center gap-3">
+      <div className="relative flex min-w-0 shrink-0 items-center justify-between gap-2 py-2 pr-2.25 pl-4 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-foreground/12 after:to-transparent">
+        <div className="flex shrink-0 items-center gap-3">
           <span className="size-2.5 rounded-full bg-[#FF605C]" />
           <span className="size-2.5 rounded-full bg-[#FFBD44]" />
           <span className="size-2.5 rounded-full bg-[#00CA4E]" />
         </div>
 
-        <SelectPrimitive.Root value={selected} onValueChange={setSelected}>
-          <SelectPrimitive.Trigger
-            aria-label="Select MCP client"
-            className="group relative inline-flex h-7 w-[9.625rem] items-center justify-between gap-2 overflow-hidden rounded-sm border border-[rgba(229,204,255,0.12)] bg-white/5 px-2.5 text-sm leading-none whitespace-nowrap text-foreground focus-visible:z-1 [&>span]:truncate"
-          >
-            <SelectPrimitive.Value>{selected}</SelectPrimitive.Value>
-            <SelectPrimitive.Icon asChild>
-              <ChevronDown className="size-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-            </SelectPrimitive.Icon>
-          </SelectPrimitive.Trigger>
-
-          <SelectPrimitive.Portal>
-            <SelectPrimitive.Content
-              position="popper"
-              sideOffset={6}
-              align="end"
-              className="z-50 w-[9.625rem] overflow-hidden rounded-[4px]"
+        <div className="flex min-w-0 flex-1 justify-end">
+          <SelectPrimitive.Root value={selected} onValueChange={setSelected}>
+            <SelectPrimitive.Trigger
+              aria-label="Select MCP client"
+              className="group relative inline-flex h-7 w-[9.625rem] max-w-full min-w-0 items-center justify-between gap-2 overflow-hidden rounded-sm border border-[rgba(229,204,255,0.12)] bg-white/5 px-2.5 text-sm leading-none whitespace-nowrap text-foreground focus-visible:z-1 [&>span]:truncate"
             >
-              <SelectPrimitive.Viewport className="flex flex-col">
-                {snippets.map((snippet) => (
-                  <SelectPrimitive.Item
-                    key={snippet.label}
-                    value={snippet.label}
-                    className={cn(
-                      "-mb-px flex cursor-pointer items-center justify-between gap-1.5 border border-[#252534] bg-[#111018] pt-[6px] pr-[10px] pb-[8px] pl-[10px] text-[14px] leading-none tracking-[-0.02em] whitespace-nowrap text-[#efeff0] outline-hidden transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0",
-                      "first:rounded-t-[4px] last:mb-0 last:rounded-b-[4px]",
-                      "data-[highlighted]:bg-[#1a1825]"
-                    )}
-                  >
-                    <SelectPrimitive.ItemText>
-                      {snippet.label}
-                    </SelectPrimitive.ItemText>
-                    <SelectPrimitive.ItemIndicator>
-                      <Check className="size-4 text-[#efeff0]" aria-hidden />
-                    </SelectPrimitive.ItemIndicator>
-                  </SelectPrimitive.Item>
-                ))}
-              </SelectPrimitive.Viewport>
-            </SelectPrimitive.Content>
-          </SelectPrimitive.Portal>
-        </SelectPrimitive.Root>
+              <SelectPrimitive.Value>{selected}</SelectPrimitive.Value>
+              <SelectPrimitive.Icon asChild>
+                <ChevronDown className="size-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+              </SelectPrimitive.Icon>
+            </SelectPrimitive.Trigger>
+
+            <SelectPrimitive.Portal>
+              <SelectPrimitive.Content
+                position="popper"
+                sideOffset={6}
+                align="end"
+                className="z-50 w-[var(--radix-select-trigger-width)] max-w-[9.625rem] min-w-0 overflow-hidden rounded-[4px]"
+              >
+                <SelectPrimitive.Viewport className="flex flex-col">
+                  {snippets.map((snippet) => (
+                    <SelectPrimitive.Item
+                      key={snippet.label}
+                      value={snippet.label}
+                      className={cn(
+                        "-mb-px flex cursor-pointer items-center justify-between gap-1.5 border border-[#252534] bg-[#111018] pt-[6px] pr-[10px] pb-[8px] pl-[10px] text-[14px] leading-none tracking-[-0.02em] whitespace-nowrap text-[#efeff0] outline-hidden transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                        "first:rounded-t-[4px] last:mb-0 last:rounded-b-[4px]",
+                        "data-[highlighted]:bg-[#1a1825]"
+                      )}
+                    >
+                      <SelectPrimitive.ItemText>
+                        {snippet.label}
+                      </SelectPrimitive.ItemText>
+                      <SelectPrimitive.ItemIndicator>
+                        <Check className="size-4 text-[#efeff0]" aria-hidden />
+                      </SelectPrimitive.ItemIndicator>
+                    </SelectPrimitive.Item>
+                  ))}
+                </SelectPrimitive.Viewport>
+              </SelectPrimitive.Content>
+            </SelectPrimitive.Portal>
+          </SelectPrimitive.Root>
+        </div>
       </div>
 
       <div
         tabIndex={-1}
         className={cn(
-          "show-linenumbers scrollbar-hidden relative min-h-0 flex-1 overflow-y-auto pb-4 outline-none",
+          "show-linenumbers scrollbar-hidden relative min-h-0 min-w-0 flex-1 overflow-y-auto pb-4 outline-none",
           "[&_.shiki]:!bg-transparent",
           "[&_.shiki_span.line]:!bg-transparent",
-          "[&_figure.code-block>div]:pr-0",
-          "[&_figure.code-block_button]:[display:none!important]",
           "[&_[data-slot=scroll-area-viewport]]:outline-none"
         )}
       >

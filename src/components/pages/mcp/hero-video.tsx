@@ -19,7 +19,7 @@ function McpHeroVideo() {
   }
 
   return (
-    <div className="relative mx-auto aspect-[1068/604] w-full max-w-[66.75rem] overflow-hidden shadow-[var(--shadow-mcp-hero-video)]">
+    <div className="relative mx-auto aspect-[1068/604] w-full max-w-[66.75rem] overflow-hidden filter-[var(--filter-mcp-hero-video)]">
       <Image
         src={GlassBorder}
         alt=""
@@ -30,7 +30,7 @@ function McpHeroVideo() {
         loading="eager"
         className="absolute inset-0 m-auto aspect-[1068/604] object-contain"
       />
-      <div className="absolute inset-1.5 overflow-hidden rounded-[.475rem] bg-background md:inset-2 md:rounded-[.975rem] lg:inset-2.5">
+      <div className="absolute inset-1.5 overflow-hidden rounded-[1.2vw] bg-background sm:rounded-[1.5vw] md:inset-2 md:rounded-[.975rem] lg:inset-2.5">
         <video
           ref={videoRef}
           src={VIDEO_SRC}

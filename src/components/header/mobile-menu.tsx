@@ -36,8 +36,7 @@ function MobileMenu({ items }: MobileMenuProps) {
 
   useEffect(() => {
     const linkBanner = document.querySelector(".link-banner")
-    const topBanner = document.querySelector(".top-banner")
-    if (linkBanner || topBanner) {
+    if (linkBanner) {
       setIsBanner(true)
     }
   }, [])

@@ -1,7 +1,8 @@
 import Image from "next/image"
 import NextLink from "next/link"
-import { ChevronRight } from "lucide-react"
 import { ROUTE } from "@/constants/routes"
+import { ChevronRight } from "lucide-react"
+
 import bgImage from "./images/banner-bg.jpg"
 
 function LinkBanner() {
@@ -17,7 +18,7 @@ function LinkBanner() {
           Novu MCP is live - connect your AI agents in minutes
         </span>
         <span className="hidden text-foreground/50 md:inline">|</span>
-        <span className="hidden text-xs font-medium text-foreground/85 transition-colors group-hover:text-foreground md:inline sm:text-sm">
+        <span className="hidden text-xs font-medium text-foreground/85 transition-colors group-hover:text-foreground sm:text-sm md:inline">
           Read more
         </span>
         <ChevronRight className="hidden size-4 text-foreground/80 transition-transform group-hover:translate-x-0.5 md:block" />
@@ -25,7 +26,7 @@ function LinkBanner() {
       <Image
         src={bgImage}
         alt=""
-        className="pointer-events-none absolute inset-y-0 left-1/2 z-10 h-9 min-w-[1920px] -translate-x-1/2 object-bottom xs:-translate-x-[45%] sm-xs:-translate-x-[40%]"
+        className="pointer-events-none absolute inset-y-0 left-1/2 z-10 h-9 min-w-[1920px] -translate-x-1/2 object-bottom xs:-translate-x-[45%]"
         width={1920}
         height={36}
         aria-hidden

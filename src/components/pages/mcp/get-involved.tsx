@@ -4,6 +4,8 @@ import discordIcon from "@/images/pages/mcp/icons/discord.svg"
 import githubIcon from "@/images/pages/mcp/icons/github.svg"
 import novuIcon from "@/images/pages/mcp/icons/novu-gradient-logo.svg"
 
+import { Link } from "@/components/ui/link"
+
 const TITLE = "Get involved: start, engage, contribute"
 
 interface IGetInvolvedItem {
@@ -69,11 +71,11 @@ function GetInvolved() {
                     {description}
                   </p>
                 </div>
-                <a
+                <Link
                   href={linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1.5 text-[15px] leading-[1.375] font-book text-lagune-3 transition-colors hover:text-lagune-2"
+                  variant="clean"
+                  size="none"
+                  className="group text-[15px] leading-[1.375] font-book text-lagune-3 transition-colors hover:text-lagune-2"
                 >
                   {linkText}
                   <span className="relative mt-0.5 w-1.5 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
@@ -94,7 +96,7 @@ function GetInvolved() {
                     </svg>
                     <span className="absolute top-1/2 right-px h-px w-full -translate-y-1/2 bg-lagune-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                   </span>
-                </a>
+                </Link>
               </div>
             </li>
           ))}

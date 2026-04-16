@@ -22,6 +22,7 @@ interface CodeBlockProps extends ICodeBlock {
   className?: string
   as?: "figure" | "div"
   themeVariant?: TCodeThemeVariant
+  showCopyButton?: boolean
   children?: React.ReactElement<CodeChildProps> | React.ReactNode
 }
 
@@ -32,6 +33,7 @@ async function CodeBlock({
   className,
   fileName,
   themeVariant,
+  showCopyButton,
   children,
   highlightedLines,
 }: CodeBlockProps) {
@@ -59,7 +61,12 @@ async function CodeBlock({
   const countLines = html.split("\n").length
 
   return (
-    <CodeBlockWrapper className={className} fileName={resolvedFileName} as={as}>
+    <CodeBlockWrapper
+      className={className}
+      fileName={resolvedFileName}
+      as={as}
+      showCopyButton={showCopyButton}
+    >
       <ScrollArea className="w-full">
         <div
           className={clsx(

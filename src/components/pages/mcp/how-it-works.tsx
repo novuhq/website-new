@@ -42,7 +42,7 @@ const BASE_JSON_SNIPPET = `{
         "mcp-remote",
         "https://mcp.novu.co/",
         "--header",
-        "Authorization:Bearer \${NOVU_API_KEY}"
+        "Authorization: Bearer \${NOVU_API_KEY}"
       ],
       "env": {
         "NOVU_API_KEY": "your-novu-api-key-here"
@@ -60,7 +60,7 @@ const VSCODE_JSON_SNIPPET = `{
         "mcp-remote",
         "https://mcp.novu.co/",
         "--header",
-        "Authorization:Bearer \${input:novu-api-key}"
+        "Authorization: Bearer \${input:novu-api-key}"
       ]
     }
   },
@@ -80,7 +80,7 @@ args = [
   "mcp-remote",
   "https://mcp.novu.co/",
   "--header",
-  "Authorization:Bearer \${NOVU_API_KEY}",
+  "Authorization: Bearer \${NOVU_API_KEY}",
 ]
 
 [mcp_servers.novu.env]
@@ -95,7 +95,7 @@ const CLIENT_SNIPPETS: IMcpClientSnippet[] = [
   { label: "GitHub Copilot", language: "json", code: VSCODE_JSON_SNIPPET },
 ]
 
-async function McpHowItWorksSection() {
+function McpHowItWorksSection() {
   const snippets: IMcpConfigSnippet[] = CLIENT_SNIPPETS.map((snippet) => ({
     label: snippet.label,
     raw: snippet.code,
@@ -104,6 +104,7 @@ async function McpHowItWorksSection() {
         language={snippet.language}
         code={snippet.code}
         themeVariant="mcp-snippet"
+        showCopyButton={false}
         className="border-none bg-transparent [&_pre_code]:text-xs md:[&_pre_code]:text-sm [&_pre_code>.line::before]:text-xs md:[&_pre_code>.line::before]:text-sm"
       />
     ),
@@ -127,7 +128,7 @@ async function McpHowItWorksSection() {
           </h2>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
+        <div className="grid min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
           <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
 
           <div className="relative pl-12">
