@@ -18,6 +18,8 @@ interface IGetInvolvedItem {
   description: string
   linkText: string
   linkUrl: string
+  clickLocation: string
+  clickText: string
 }
 
 const ITEMS: IGetInvolvedItem[] = [
@@ -26,7 +28,9 @@ const ITEMS: IGetInvolvedItem[] = [
     title: "Novu Cloud",
     description: "Embark on your journey by creating your personalized account",
     linkText: "Get started",
-    linkUrl: `${ROUTE.dashboard}/?utm_campaign=gs-website-mcp`,
+    linkUrl: ROUTE.dashboard as string,
+    clickLocation: "mcp_get_involved",
+    clickText: "get_started",
   },
   {
     icon: discordIcon,
@@ -35,6 +39,8 @@ const ITEMS: IGetInvolvedItem[] = [
       "Immerse yourself in the community by joining our dedicated server",
     linkText: "Join Discord",
     linkUrl: ROUTE.discord as string,
+    clickLocation: "mcp_get_involved",
+    clickText: "join_discord",
   },
   {
     icon: githubIcon,
@@ -43,6 +49,8 @@ const ITEMS: IGetInvolvedItem[] = [
       "Discover an issue within our project and make a valuable contribution",
     linkText: "Find an issue",
     linkUrl: ROUTE.githubIssues as string,
+    clickLocation: "mcp_get_involved",
+    clickText: "find_an_issue",
   },
 ]
 
@@ -54,39 +62,51 @@ function GetInvolved() {
           {TITLE}
         </h2>
         <ul className="flex w-full flex-wrap items-start justify-center gap-x-16 gap-y-10">
-          {ITEMS.map(({ icon, title, description, linkText, linkUrl }) => (
-            <li
-              className="flex w-64 flex-col items-center gap-5 text-center"
-              key={title}
-            >
-              <Image
-                className="size-10"
-                src={icon}
-                alt={`${title} icon`}
-                width={40}
-                height={40}
-              />
-              <div className="flex w-full flex-col items-center gap-2.5">
-                <div className="flex flex-col items-center gap-1.5">
-                  <h3 className="text-base leading-tight font-medium tracking-tighter text-foreground md:text-xl 2xl:text-2xl">
-                    {title}
-                  </h3>
-                  <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
-                    {description}
-                  </p>
+          {ITEMS.map(
+            ({
+              icon,
+              title,
+              description,
+              linkText,
+              linkUrl,
+              clickLocation,
+              clickText,
+            }) => (
+              <li
+                className="flex w-64 flex-col items-center gap-5 text-center"
+                key={title}
+              >
+                <Image
+                  className="size-10"
+                  src={icon}
+                  alt={`${title} icon`}
+                  width={40}
+                  height={40}
+                />
+                <div className="flex w-full flex-col items-center gap-2.5">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <h3 className="text-base leading-tight font-medium tracking-tighter text-foreground md:text-xl 2xl:text-2xl">
+                      {title}
+                    </h3>
+                    <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
+                      {description}
+                    </p>
+                  </div>
+                  <Link
+                    href={linkUrl}
+                    variant="clean"
+                    size="none"
+                    className={linkInlineArrowLaguneClassName}
+                    data-click-location={clickLocation}
+                    data-click-text={clickText}
+                  >
+                    {linkText}
+                    <LinkInlineArrow lineClassName="bg-lagune-2" />
+                  </Link>
                 </div>
-                <Link
-                  href={linkUrl}
-                  variant="clean"
-                  size="none"
-                  className={linkInlineArrowLaguneClassName}
-                >
-                  {linkText}
-                  <LinkInlineArrow lineClassName="bg-lagune-2" />
-                </Link>
-              </div>
-            </li>
-          ))}
+              </li>
+            )
+          )}
         </ul>
       </div>
     </section>

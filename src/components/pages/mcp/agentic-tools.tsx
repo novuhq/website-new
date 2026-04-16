@@ -174,6 +174,8 @@ function ApiReferenceLink({ className }: { className?: string }) {
       variant="clean"
       size="none"
       className={cn("w-fit", linkInlineArrowLaguneClassName, className)}
+      data-click-location="mcp_agentic_tools"
+      data-click-text="view_full_api_reference"
     >
       View full API reference
       <LinkInlineArrow lineClassName="bg-lagune-2" />
@@ -221,7 +223,7 @@ function AgenticTools() {
                       className="flex min-w-0 flex-col gap-1.5"
                       key={tool.name}
                     >
-                      <p className="font-mono text-base leading-none [overflow-wrap:anywhere] text-foreground">
+                      <p className="font-mono text-sm leading-none [overflow-wrap:anywhere] text-foreground lg:text-base">
                         {tool.name}
                       </p>
                       <p className="text-sm leading-normal tracking-tighter text-gray-8">

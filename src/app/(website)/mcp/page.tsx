@@ -132,14 +132,18 @@ export default function McpPage() {
           {
             kind: "primary-button",
             label: "GET STARTED FREE",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-mcp`,
+            href: ROUTE.dashboard,
             openInNewTab: true,
+            clickLocation: "mcp_cta",
+            clickText: "get_started_free",
           },
           {
             kind: "secondary-button",
             label: "READ THE DOCS",
             href: ROUTE.docsMcp,
             openInNewTab: true,
+            clickLocation: "mcp_cta",
+            clickText: "read_the_docs",
           },
         ]}
       />

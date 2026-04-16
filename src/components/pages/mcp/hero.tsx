@@ -36,7 +36,13 @@ function Hero() {
             className="w-full sm:w-auto"
             asChild
           >
-            <NextLink href="#how-it-works">Install MCP now</NextLink>
+            <NextLink
+              href="#how-it-works"
+              data-click-location="mcp_hero"
+              data-click-text="install_mcp_now"
+            >
+              Install MCP now
+            </NextLink>
           </Button>
           <Button
             variant="outline"
@@ -48,6 +54,8 @@ function Hero() {
               href={ROUTE.githubSkills as string}
               target="_blank"
               rel="noopener noreferrer"
+              data-click-location="mcp_hero"
+              data-click-text="review_the_skill_file"
             >
               Review the skill file
             </NextLink>

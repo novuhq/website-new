@@ -14,6 +14,7 @@ interface IPromptActionsProps {
 interface IPromptTarget {
   id: string
   label: string
+  clickText: string
   href: (encodedPrompt: string) => string
   icon: (props: SVGProps<SVGSVGElement>) => ReactElement
 }
@@ -57,18 +58,21 @@ const PROMPT_TARGETS: IPromptTarget[] = [
   {
     id: "chatgpt",
     label: "Open in ChatGPT",
+    clickText: "open_in_chatgpt",
     href: (encodedPrompt) => `https://chatgpt.com/?q=${encodedPrompt}`,
     icon: GptIcon,
   },
   {
     id: "claude",
     label: "Open in Claude",
+    clickText: "open_in_claude",
     href: (encodedPrompt) => `https://claude.ai/new?q=${encodedPrompt}`,
     icon: ClaudeIcon,
   },
   {
     id: "cursor",
     label: "Open in Cursor",
+    clickText: "open_in_cursor",
     href: (encodedPrompt) =>
       `https://cursor.com/link/prompt?text=${encodedPrompt}`,
     icon: CursorIcon,
@@ -141,6 +145,8 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                       href={target.href(encodedPrompt)}
                       target="_blank"
                       rel="noreferrer noopener"
+                      data-click-location="mcp_prompts"
+                      data-click-text={target.clickText}
                     >
                       <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-gray-1 text-muted-foreground">
                         <Icon className="size-4" />
