@@ -10,27 +10,26 @@ interface IMcpPromptCard {
 const PROMPT_CARDS: IMcpPromptCard[] = [
   {
     prompt:
-      "Create a workflow that sends an order confirmation via SendGrid email, a Twilio SMS with the tracking number, and an in-app notification through Novu Inbox.",
+      "List all failed chat notifications from the last 24 hours and show me the error details.",
   },
   {
     prompt:
-      "List all failed Slack and Discord chat notifications from the last 24 hours and show me the error details.",
+      "Create a workflow that sends an order confirmation via email, an SMS with the tracking number, and an in-app notification through Novu Inbox.",
+  },
+  {
+    prompt: "Check if my SendGrid and Twilio integrations are active.",
   },
   {
     prompt:
-      "Build a signup workflow: send a welcome email via Resend, a WhatsApp Business message with onboarding tips, and push a notification through FCM — all in one trigger.",
+      "Trigger a workflow that sends an order confirmation via SendGrid email, and sends an SMS with the tracking number, and an in-app notification through Novu Inbox.",
   },
   {
     prompt:
-      "Check if my SendGrid and Twilio integrations are active, then show me which workflows use each one.",
+      "Find subscriber user_789, mute their in-app channel, but keep email and push active.",
   },
   {
     prompt:
-      "Find subscriber user_789, mute their Slack and Microsoft Teams notifications, but keep email and push active.",
-  },
-  {
-    prompt:
-      "Pull last night’s failed notifications across all channels — group them by provider and show me the error details.",
+      "Pull all failed notifications across all channels in the past 24 hours and group them by provider and show me the error details.",
   },
 ]
 
