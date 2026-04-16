@@ -1,6 +1,8 @@
 "use client"
 
 import { ReactNode, useState } from "react"
+import Image from "next/image"
+import Shine from "@/images/pages/mcp/shine.svg"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, Copy } from "lucide-react"
 
@@ -26,11 +28,22 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
   const [selected, setSelected] = useState(initial)
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
 
-  const current =
-    snippets.find((s) => s.label === selected) ?? snippets[0]
+  const current = snippets.find((s) => s.label === selected) ?? snippets[0]
 
   return (
-    <div className="relative flex aspect-[4/3] w-full flex-col overflow-hidden rounded-xl sm:aspect-[640/374]">
+    <div className="relative flex aspect-[4/3] w-full flex-col rounded-xl sm:aspect-[640/374]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-0 left-[2.375rem] z-0 h-[17.8rem] w-[15.81rem] -translate-y-[3.5rem] rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
+      />
+      <Image
+        src={Shine}
+        alt=""
+        width={448}
+        height={32}
+        aria-hidden
+        className="pointer-events-none absolute top-0 left-0 -translate-y-1/2"
+      />
       <McpSnippetBg />
 
       <div className="relative flex shrink-0 items-center justify-between py-2 pr-2.25 pl-4 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-foreground/12 after:to-transparent">
@@ -86,7 +99,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
       <div
         tabIndex={-1}
         className={cn(
-          "show-linenumbers relative min-h-0 flex-1 overflow-y-auto pb-4 outline-none",
+          "show-linenumbers scrollbar-hidden relative min-h-0 flex-1 overflow-y-auto pb-4 outline-none",
           "[&_.shiki]:!bg-transparent",
           "[&_.shiki_span.line]:!bg-transparent",
           "[&_figure.code-block>div]:pr-0",

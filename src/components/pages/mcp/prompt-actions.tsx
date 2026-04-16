@@ -1,13 +1,8 @@
 "use client"
 
-import { type ReactElement, type SVGProps, useState } from "react"
+import { useState, type ReactElement, type SVGProps } from "react"
+import { ArrowUpRight, Check, ChevronDown, Copy } from "lucide-react"
 import { DropdownMenu } from "radix-ui"
-import {
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  Copy,
-} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
@@ -97,7 +92,7 @@ function PromptActions({ prompt }: IPromptActionsProps) {
         <button
           type="button"
           onClick={() => handleCopy(prompt)}
-          className="inline-flex size-7 items-center justify-center rounded-l-sm border border-r-0 border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground focus-visible:z-1"
+          className="inline-flex size-7 items-center justify-center rounded-l-sm border border-r-0 border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground"
           aria-label={isCopied ? "Prompt copied" : "Copy prompt"}
         >
           {isCopied ? (
@@ -110,12 +105,12 @@ function PromptActions({ prompt }: IPromptActionsProps) {
         <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <DropdownMenu.Trigger
             className={cn(
-              "inline-flex size-7 items-center justify-center rounded-r-sm border border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground focus-visible:z-1",
+              "inline-flex size-7 items-center justify-center rounded-r-sm border border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground",
               "data-[state=open]:text-foreground"
             )}
             aria-label="Open prompt actions"
           >
-            <ChevronDown className="size-3.5 transition-transform duration-200 ease-out data-[state=open]:rotate-180 group-data-[state=open]:rotate-180" />
+            <ChevronDown className="size-3.5 transition-transform duration-200 ease-out group-data-[state=open]:rotate-180 data-[state=open]:rotate-180" />
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
@@ -140,7 +135,7 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                       target="_blank"
                       rel="noreferrer noopener"
                       className={cn(
-                        "inline-flex cursor-pointer items-center gap-2 border-border px-2 py-2 pr-4 text-sm leading-none tracking-tight text-foreground outline-none transition-colors hover:bg-gray-2 focus-visible:bg-gray-2 data-[highlighted]:bg-gray-2",
+                        "inline-flex cursor-pointer items-center gap-2 border-border px-2 py-2 pr-4 text-sm leading-none tracking-tight text-foreground transition-colors outline-none hover:bg-gray-2 data-[highlighted]:bg-gray-2",
                         !isLast && "border-b"
                       )}
                     >

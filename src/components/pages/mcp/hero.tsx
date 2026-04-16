@@ -55,10 +55,10 @@ function McpHeroSection() {
         </div>
       </div>
 
-      <div className="relative w-full">
+      <div className="relative isolate w-full">
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[20%] left-[10%] -z-10 h-86 w-122 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[200px] [background:radial-gradient(92.52%_89.86%_at_62.86%_11.06%,var(--color-lagune-3)_27.2%,var(--color-blue-1)_80.5%,var(--color-blue-3)_100%)]"
+          className="pointer-events-none absolute top-[20%] left-[10%] z-0 h-86 w-122 rounded-full opacity-25 blur-[180px] will-change-transform [backface-visibility:hidden] [contain:paint] [transform:translate3d(-50%,-50%,0)] [background:radial-gradient(92.52%_89.86%_at_62.86%_11.06%,var(--color-lagune-3)_27.2%,var(--color-blue-1)_80.5%,var(--color-blue-3)_100%)]"
         />
         <Image
           src={HeroBgBlur}

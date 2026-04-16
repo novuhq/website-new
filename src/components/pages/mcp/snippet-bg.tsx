@@ -15,7 +15,8 @@ function McpSnippetBg({ className }: IMcpSnippetBgProps) {
       src={snippetBgImage}
       alt=""
       aria-hidden
-      priority
+      fetchPriority="high"
+      loading="eager"
       sizes="(min-width: 1024px) 640px, 100vw"
       className={cn(
         "pointer-events-none absolute inset-0 h-full w-full rounded-xl object-cover select-none",
