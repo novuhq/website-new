@@ -5,23 +5,35 @@ import Image from "next/image"
 import GlassBorder from "@/images/pages/mcp/glass-border.svg"
 import VideoPoster from "@/images/pages/mcp/mcp-poster.jpg"
 
-const VIDEO_SRC = "/videos/mcp.mp4"
+const VIDEO_WEBM_SRC = "/videos/mcp.webm"
+const VIDEO_MP4_SRC = "/videos/mcp.hevc.mp4"
 
 /**
+ * Current sources (tuned for ~4–5 MB at 1280p, ~46s, with audio):
  *
+ * HEVC (Safari, Chrome 107+, Edge):
  * ffmpeg -y -i original.mp4 \
-  -vf "scale=1920:-2" \
-  -c:v libx264 \
-  -preset medium \
-  -crf 28 \
-  -profile:v high \
-  -level 4.0 \
-  -pix_fmt yuv420p \
+  -c:v libx265 \
+  -crf 22 \
+  -vf "scale=1280:-2" \
+  -preset veryslow \
+  -tag:v hvc1 \
   -movflags +faststart \
   -c:a aac \
   -b:a 128k \
   -ac 2 \
-  out.mp4
+  example-4.hevc.mp4
+ *
+ * VP9 WebM (Chrome, Firefox, Safari 16+); -b:v 0 enables true CRF mode:
+ * ffmpeg -y -i original.mp4 \
+  -c:v libvpx-vp9 \
+  -crf 26 \
+  -b:v 0 \
+  -vf "scale=1280:-2" \
+  -deadline best \
+  -c:a libopus \
+  -b:a 96k \
+  example-4.webm
  */
 
 function HeroVideo() {
@@ -51,12 +63,14 @@ function HeroVideo() {
         <video
           className="h-full w-full object-cover"
           ref={videoRef}
-          src={VIDEO_SRC}
           poster={VideoPoster.src}
           playsInline
           controls={isPlaying}
           preload="metadata"
-        />
+        >
+          <source src={VIDEO_WEBM_SRC} type="video/webm" />
+          <source src={VIDEO_MP4_SRC} type='video/mp4; codecs="hvc1"' />
+        </video>
 
         {!isPlaying && (
           <button
