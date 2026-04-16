@@ -11,7 +11,7 @@ import { IMenuHeaderCard } from "@/types/common"
 import { Button } from "@/components/ui/button"
 import SearchBar from "@/components/ui/search-bar"
 import GithubStars from "@/components/github-stars"
-import LinkBanner from "@/components/link-banner/link-banner"
+import LinkBanner from "@/components/link-banner"
 
 import MobileMenu from "./mobile-menu"
 import Nav from "./nav"

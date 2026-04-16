@@ -8,7 +8,8 @@ import VideoPoster from "@/images/pages/mcp/mcp-poster.jpg"
 const VIDEO_SRC = "/videos/mcp.mp4"
 
 /**
- * ffmpeg -y -i mcp.original.mp4 \
+ *
+ * ffmpeg -y -i original.mp4 \
   -vf "scale=1920:-2" \
   -c:v libx264 \
   -preset medium \
@@ -17,8 +18,10 @@ const VIDEO_SRC = "/videos/mcp.mp4"
   -level 4.0 \
   -pix_fmt yuv420p \
   -movflags +faststart \
-  -an \
-  mcp.mp4
+  -c:a aac \
+  -b:a 128k \
+  -ac 2 \
+  out.mp4
  */
 
 function HeroVideo() {

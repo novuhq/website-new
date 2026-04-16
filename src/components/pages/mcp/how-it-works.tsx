@@ -26,7 +26,7 @@ const STEPS: IMcpHowItWorksStep[] = [
   {
     title: "Discover available tools",
     description:
-      "Your agent finds 12 tools: trigger workflows, manage subscribers, query notifications.",
+      "Your agent finds 23 tools: subscribers, preferences, workflows, triggers, notifications, integrations, and environments.",
   },
   {
     title: "Novu delivers everywhere",

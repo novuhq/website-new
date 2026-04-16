@@ -1,5 +1,9 @@
 import { cn } from "@/lib/utils"
 
+/** Text + hover styles for Link + LinkInlineArrow (lagune accent, e.g. MCP sections). */
+export const linkInlineArrowLaguneClassName =
+  "group text-[0.9375rem] leading-snug font-book text-lagune-3 transition-colors hover:text-lagune-2"
+
 interface ILinkInlineArrowProps {
   className?: string
   lineClassName?: string

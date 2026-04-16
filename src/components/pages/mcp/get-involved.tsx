@@ -5,7 +5,10 @@ import githubIcon from "@/images/pages/mcp/icons/github.svg"
 import novuIcon from "@/images/pages/mcp/icons/novu-gradient-logo.svg"
 
 import { Link } from "@/components/ui/link"
-import { LinkInlineArrow } from "@/components/ui/link-inline-arrow"
+import {
+  LinkInlineArrow,
+  linkInlineArrowLaguneClassName,
+} from "@/components/ui/link-inline-arrow"
 
 const TITLE = "Get involved: start, engage, contribute"
 
@@ -76,7 +79,7 @@ function GetInvolved() {
                   href={linkUrl}
                   variant="clean"
                   size="none"
-                  className="group text-[0.9375rem] leading-snug font-book text-lagune-3 transition-colors hover:text-lagune-2"
+                  className={linkInlineArrowLaguneClassName}
                 >
                   {linkText}
                   <LinkInlineArrow lineClassName="bg-lagune-2" />

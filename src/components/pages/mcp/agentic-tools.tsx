@@ -2,6 +2,10 @@ import { ROUTE } from "@/constants/routes"
 
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
+import {
+  LinkInlineArrow,
+  linkInlineArrowLaguneClassName,
+} from "@/components/ui/link-inline-arrow"
 
 interface IAgenticTool {
   name: string
@@ -15,23 +19,60 @@ interface IAgenticToolGroup {
 
 const TOOL_GROUPS: IAgenticToolGroup[] = [
   {
-    category: "Workflow",
+    category: "Subscriber management",
     tools: [
       {
-        name: "trigger_workflow",
-        description: "Trigger a notification workflow",
+        name: "create_subscriber",
+        description:
+          "Create a new subscriber with attributes like name, email, phone, and custom data",
+      },
+      {
+        name: "get_subscriber",
+        description: "Retrieve a single subscriber by their subscriberId",
+      },
+      {
+        name: "update_subscriber",
+        description: "Update an existing subscriber's attributes",
+      },
+      {
+        name: "delete_subscriber",
+        description: "Delete a subscriber by their subscriberId",
+      },
+      {
+        name: "find_subscribers",
+        description: "Search for subscribers using various query parameters",
+      },
+    ],
+  },
+  {
+    category: "Preferences",
+    tools: [
+      {
+        name: "get_subscriber_preferences",
+        description: "Get subscriber notification preferences for all channels",
+      },
+      {
+        name: "update_subscriber_preferences",
+        description:
+          "Update subscriber notification preferences for specific channels",
+      },
+    ],
+  },
+  {
+    category: "Workflow management",
+    tools: [
+      {
+        name: "create_workflow",
+        description:
+          "Create a new workflow with comprehensive configuration including steps",
       },
       {
         name: "get_workflow",
-        description: "Retrieve a specific workflow",
+        description: "Get detailed information about a specific workflow",
       },
       {
         name: "get_workflows",
-        description: "List all workflows",
-      },
-      {
-        name: "create_workflow",
-        description: "Create a new workflow",
+        description: "Get all available workflows",
       },
       {
         name: "update_workflow",
@@ -39,24 +80,24 @@ const TOOL_GROUPS: IAgenticToolGroup[] = [
       },
       {
         name: "delete_workflow",
-        description: "Delete a workflow",
+        description: "Delete a workflow by its unique identifier",
       },
     ],
   },
   {
-    category: "Subscribers",
+    category: "Triggering & events",
     tools: [
       {
-        name: "update_subscriber_preferences",
-        description: "Update preferences",
+        name: "trigger_workflow",
+        description: "Trigger a workflow to send notifications to a subscriber",
       },
       {
-        name: "get_subscriber_preferences",
-        description: "Get subscriber preferences",
+        name: "bulk_trigger_workflow",
+        description: "Trigger multiple workflows in a single API call",
       },
       {
-        name: "find_subscribers",
-        description: "Retrieve a specific workflow",
+        name: "cancel_triggered_event",
+        description: "Cancel a pending triggered event",
       },
     ],
   },
@@ -64,21 +105,49 @@ const TOOL_GROUPS: IAgenticToolGroup[] = [
     category: "Notifications",
     tools: [
       {
+        name: "get_notification",
+        description:
+          "Get a specific notification by ID with detailed execution logs",
+      },
+      {
         name: "get_notifications",
-        description: "Retrieve notification history",
+        description: "Get notifications/events with advanced filtering options",
       },
     ],
   },
   {
-    category: "System",
+    category: "Integrations",
     tools: [
       {
-        name: "get_api_key_status",
-        description: "Verify API key validity",
+        name: "get_integrations",
+        description:
+          "List all channel integrations (email, SMS, push, chat, in-app)",
       },
       {
+        name: "get_active_integrations",
+        description: "List only the active integrations",
+      },
+      {
+        name: "delete_integration",
+        description: "Delete an integration by its integrationId",
+      },
+      {
+        name: "set_primary_integration",
+        description: "Mark an integration as the primary for its channel",
+      },
+    ],
+  },
+  {
+    category: "Other",
+    tools: [
+      {
         name: "get_environments",
-        description: "List available environments",
+        description: "Get all environments with their details and API keys",
+      },
+      {
+        name: "get_api_key_status",
+        description:
+          "Check the current API key status and server region configuration",
       },
     ],
   },
@@ -86,11 +155,11 @@ const TOOL_GROUPS: IAgenticToolGroup[] = [
 
 function getGroupColumnsClassName(toolsCount: number) {
   if (toolsCount >= 3) {
-    return "md:grid-cols-2 lg:grid-cols-[18rem_17rem_1fr]"
+    return "md:grid-cols-2 xl:grid-cols-[18rem_18rem_1fr]"
   }
 
   if (toolsCount === 2) {
-    return "md:grid-cols-2 lg:grid-cols-[18rem_17rem]"
+    return "md:grid-cols-2 xl:grid-cols-[18rem_18rem]"
   }
 
   return "md:grid-cols-1"
@@ -103,23 +172,11 @@ function ApiReferenceLink({ className }: { className?: string }) {
     <Link
       href={ROUTE.docsApis}
       variant="clean"
-      animation="arrow-right"
       size="none"
-      className={cn(
-        "w-fit items-end text-[0.9375rem] leading-snug font-book text-lagune-3 hover:text-lagune-2",
-        className
-      )}
+      className={cn("w-fit", linkInlineArrowLaguneClassName, className)}
     >
       View full API reference
-      <svg
-        aria-hidden
-        className="h-4 w-1.5"
-        viewBox="0 0 6 10"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.2" />
-      </svg>
+      <LinkInlineArrow lineClassName="bg-lagune-2" />
     </Link>
   )
 }
@@ -141,7 +198,7 @@ function AgenticTools() {
             </h2>
           </div>
 
-          <ApiReferenceLink className="inline-flex" />
+          <ApiReferenceLink />
         </div>
 
         <div className="flex flex-col gap-7">
@@ -155,7 +212,7 @@ function AgenticTools() {
 
                 <div
                   className={cn(
-                    "grid w-full gap-x-6 gap-y-8 2xl:w-[50rem]",
+                    "grid w-full gap-x-6 gap-y-8 2xl:w-[53rem]",
                     getGroupColumnsClassName(group.tools.length)
                   )}
                 >
