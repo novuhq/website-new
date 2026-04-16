@@ -90,9 +90,9 @@ function PromptActions({ prompt }: IPromptActionsProps) {
     >
       <div className="inline-flex">
         <button
+          className="inline-flex size-7 items-center justify-center rounded-l-sm border border-r-0 border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground"
           type="button"
           onClick={() => handleCopy(prompt)}
-          className="inline-flex size-7 items-center justify-center rounded-l-sm border border-r-0 border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground"
           aria-label={isCopied ? "Prompt copied" : "Copy prompt"}
         >
           {isCopied ? (
@@ -134,13 +134,13 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                     onPointerLeave={(e) => e.preventDefault()}
                   >
                     <a
-                      href={target.href(encodedPrompt)}
-                      target="_blank"
-                      rel="noreferrer noopener"
                       className={cn(
                         "inline-flex cursor-pointer items-center gap-2 border-border px-2 py-2 pr-4 text-sm leading-none tracking-tight text-foreground transition-colors outline-none hover:bg-gray-2 data-[highlighted]:bg-gray-2",
                         !isLast && "border-b"
                       )}
+                      href={target.href(encodedPrompt)}
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
                       <span className="inline-flex size-7 items-center justify-center rounded-sm border border-border bg-gray-1 text-muted-foreground">
                         <Icon className="size-4" />

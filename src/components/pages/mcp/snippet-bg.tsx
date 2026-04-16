@@ -1,5 +1,3 @@
-"use client"
-
 import Image from "next/image"
 import snippetBgImage from "@/images/pages/mcp/snippet-bg.png"
 

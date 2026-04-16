@@ -85,31 +85,31 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
       </div>
 
       <div
-        tabIndex={-1}
         className={cn(
           "show-linenumbers scrollbar-hidden relative min-h-0 min-w-0 flex-1 overflow-y-auto pb-4 outline-none",
           "[&_.shiki]:!bg-transparent",
           "[&_.shiki_span.line]:!bg-transparent",
           "[&_[data-slot=scroll-area-viewport]]:outline-none"
         )}
+        tabIndex={-1}
       >
         {current.node}
       </div>
 
       <div
-        aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-b from-transparent to-[#0b0a12]"
+        aria-hidden
       />
 
       <button
-        type="button"
-        onClick={() => handleCopy(current.raw)}
-        disabled={isCopied}
-        aria-label={isCopied ? "Copied" : "Copy snippet"}
         className={cn(
           "absolute top-[2.875rem] right-2.25 flex size-7 items-center justify-center rounded-sm border border-[rgba(229,204,255,0.12)] bg-white/5 text-muted-foreground transition-colors hover:text-foreground/80 focus-visible:z-1",
           isCopied && "text-foreground/80"
         )}
+        type="button"
+        onClick={() => handleCopy(current.raw)}
+        disabled={isCopied}
+        aria-label={isCopied ? "Copied" : "Copy snippet"}
       >
         {isCopied ? <Check size={14} /> : <Copy size={14} />}
       </button>

@@ -46,6 +46,7 @@ export const SEO_DATA = {
     description:
       "The Novu MCP server gives AI agents native access to 13 notification tools - trigger workflows, manage subscribers, and deliver across every channel. Works with Claude, Cursor, and any MCP-compatible client.",
     pathname: ROUTE.mcp as string,
+    imagePath: "/og-images/og-image-mcp.jpg",
   },
   blog: {
     title: `Blog`,

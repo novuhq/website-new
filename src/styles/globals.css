@@ -285,7 +285,7 @@
   }
 }
 
-@utility mcp-section-container {
+@utility section-container {
   @apply mx-auto max-w-272 px-5 md:px-8 2xl:px-0;
 }
 

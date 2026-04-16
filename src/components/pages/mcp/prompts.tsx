@@ -34,9 +34,9 @@ const PROMPT_CARDS: IMcpPromptCard[] = [
   },
 ]
 
-function McpPromptsSection() {
+function Prompts() {
   return (
-    <section className="relative mcp-section-container mt-26 md:mt-48 lg:mt-60">
+    <section className="section-container relative mt-26 md:mt-48 lg:mt-60">
       <Image
         src={promptsEllipses}
         alt=""
@@ -79,4 +79,4 @@ function McpPromptsSection() {
   )
 }
 
-export default McpPromptsSection
+export default Prompts

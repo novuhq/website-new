@@ -14,12 +14,12 @@ import rauchg from "@/images/pages/mcp/reviews/rauchg.jpg"
 import { ICustomerTweetData } from "@/types/customers"
 import { getMetadata } from "@/lib/get-metadata"
 import CTA from "@/components/pages/cta"
-import McpAgenticToolsSection from "@/components/pages/mcp/agentic-tools"
-import McpFrameworksSection from "@/components/pages/mcp/frameworks"
+import AgenticTools from "@/components/pages/mcp/agentic-tools"
+import Frameworks from "@/components/pages/mcp/frameworks"
 import GetInvolved from "@/components/pages/mcp/get-involved"
-import McpHeroSection from "@/components/pages/mcp/hero"
-import McpHowItWorksSection from "@/components/pages/mcp/how-it-works"
-import McpPromptsSection from "@/components/pages/mcp/prompts"
+import Hero from "@/components/pages/mcp/hero"
+import HowItWorks from "@/components/pages/mcp/how-it-works"
+import Prompts from "@/components/pages/mcp/prompts"
 import Reviews from "@/components/pages/reviews"
 
 const REVIEWS: ICustomerTweetData[] = [
@@ -111,11 +111,11 @@ const REVIEWS: ICustomerTweetData[] = [
 export default function McpPage() {
   return (
     <div className="relative overflow-clip pt-10 md:pt-12 lg:pt-24.5">
-      <McpHeroSection />
-      <McpHowItWorksSection />
-      <McpPromptsSection />
-      <McpAgenticToolsSection />
-      <McpFrameworksSection />
+      <Hero />
+      <HowItWorks />
+      <Prompts />
+      <AgenticTools />
+      <Frameworks />
       <Reviews
         reviews={REVIEWS}
         title="Don’t just take our word for it..."

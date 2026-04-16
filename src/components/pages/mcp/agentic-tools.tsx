@@ -124,9 +124,9 @@ function ApiReferenceLink({ className }: { className?: string }) {
   )
 }
 
-function McpAgenticToolsSection() {
+function AgenticTools() {
   return (
-    <section className="mcp-section-container mt-26 md:mt-48 lg:mt-60">
+    <section className="section-container mt-26 md:mt-48 lg:mt-60">
       <div className="flex flex-col gap-10 md:gap-12">
         <div className="flex flex-col gap-6 md:gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex max-w-[46.875rem] flex-col gap-5">
@@ -145,9 +145,9 @@ function McpAgenticToolsSection() {
         </div>
 
         <div className="flex flex-col gap-7">
-          <span aria-hidden className={DIVIDER_CLASS} />
+          <span className={DIVIDER_CLASS} aria-hidden />
           {TOOL_GROUPS.map((group) => (
-            <div key={group.category} className="flex flex-col gap-7">
+            <div className="flex flex-col gap-7" key={group.category}>
               <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-6">
                 <p className="w-full shrink-0 text-sm leading-none text-gray-7 uppercase md:w-40">
                   {group.category}
@@ -161,8 +161,8 @@ function McpAgenticToolsSection() {
                 >
                   {group.tools.map((tool) => (
                     <div
-                      key={tool.name}
                       className="flex min-w-0 flex-col gap-1.5"
+                      key={tool.name}
                     >
                       <p className="font-mono text-base leading-none [overflow-wrap:anywhere] text-foreground">
                         {tool.name}
@@ -174,7 +174,7 @@ function McpAgenticToolsSection() {
                   ))}
                 </div>
               </div>
-              <span aria-hidden className={DIVIDER_CLASS} />
+              <span className={DIVIDER_CLASS} aria-hidden />
             </div>
           ))}
         </div>
@@ -183,4 +183,4 @@ function McpAgenticToolsSection() {
   )
 }
 
-export default McpAgenticToolsSection
+export default AgenticTools

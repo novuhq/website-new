@@ -44,7 +44,7 @@ const ITEMS: IGetInvolvedItem[] = [
 
 function GetInvolved() {
   return (
-    <section className="relative z-10 mcp-section-container mt-40 md:mt-48 lg:mt-54">
+    <section className="section-container relative z-10 mt-40 md:mt-48 lg:mt-54">
       <div className="relative z-10 flex flex-col items-center gap-10 md:gap-12 lg:gap-14">
         <h2 className="text-center text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-4xl lg:text-[2.5rem]">
           {TITLE}
@@ -52,8 +52,8 @@ function GetInvolved() {
         <ul className="flex w-full flex-wrap items-start justify-center gap-x-16 gap-y-10">
           {ITEMS.map(({ icon, title, description, linkText, linkUrl }) => (
             <li
-              key={title}
               className="flex w-64 flex-col items-center gap-5 text-center"
+              key={title}
             >
               <Image
                 className="size-10"

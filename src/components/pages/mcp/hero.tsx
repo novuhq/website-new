@@ -5,11 +5,11 @@ import HeroBgBlur from "@/images/pages/mcp/hero-bg-blur.svg"
 
 import { Button } from "@/components/ui/button"
 
-import McpHeroVideo from "./hero-video"
+import HeroVideo from "./hero-video"
 
-function McpHeroSection() {
+function Hero() {
   return (
-    <section className="relative mcp-section-container flex flex-col items-center gap-14">
+    <section className="section-container relative flex flex-col items-center gap-14">
       <div className="flex w-full max-w-5xl flex-col items-center gap-8">
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center gap-2">
@@ -57,8 +57,8 @@ function McpHeroSection() {
 
       <div className="relative isolate w-full">
         <div
-          aria-hidden
           className="pointer-events-none absolute top-[20%] left-[10%] z-0 h-86 w-122 [transform:translate3d(-50%,-50%,0)] rounded-full opacity-25 blur-[11.25rem] will-change-transform [contain:paint] [backface-visibility:hidden] [background:radial-gradient(92.52%_89.86%_at_62.86%_11.06%,var(--color-lagune-3)_27.2%,var(--color-blue-1)_80.5%,var(--color-blue-3)_100%)]"
+          aria-hidden
         />
         <Image
           src={HeroBgBlur}
@@ -66,10 +66,10 @@ function McpHeroSection() {
           aria-hidden
           className="absolute right-0 bottom-0 translate-x-[40%] translate-y-[42%]"
         />
-        <McpHeroVideo />
+        <HeroVideo />
       </div>
     </section>
   )
 }
 
-export default McpHeroSection
+export default Hero

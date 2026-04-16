@@ -16,7 +16,7 @@ const FRAMEWORK_LOGOS = [
   { name: "Codex", src: codexLogo, width: 133, height: 36 },
 ] as const
 
-function McpFrameworksSection() {
+function Frameworks() {
   return (
     <section className="relative mx-auto mt-26 max-w-[78rem] overflow-hidden rounded-xl bg-background px-5 pb-26 md:mt-48 md:px-10 md:pb-48 lg:mt-60 lg:pb-60">
       <Image
@@ -34,8 +34,8 @@ function McpFrameworksSection() {
         <ul className="flex w-full max-w-[20rem] flex-wrap items-center justify-center gap-x-12 gap-y-10 md:max-w-none md:gap-x-10 md:gap-y-7 xl:flex-nowrap xl:gap-x-[3.9375rem]">
           {FRAMEWORK_LOGOS.map((logo) => (
             <li
-              key={logo.name}
               className="flex shrink-0 items-center justify-center md:h-9"
+              key={logo.name}
             >
               <Image
                 src={logo.src}
@@ -70,4 +70,4 @@ function McpFrameworksSection() {
   )
 }
 
-export default McpFrameworksSection
+export default Frameworks
