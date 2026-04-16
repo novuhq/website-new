@@ -5,6 +5,7 @@ import githubIcon from "@/images/pages/mcp/icons/github.svg"
 import novuIcon from "@/images/pages/mcp/icons/novu-gradient-logo.svg"
 
 import { Link } from "@/components/ui/link"
+import { LinkInlineArrow } from "@/components/ui/link-inline-arrow"
 
 const TITLE = "Get involved: start, engage, contribute"
 
@@ -44,7 +45,7 @@ const ITEMS: IGetInvolvedItem[] = [
 
 function GetInvolved() {
   return (
-    <section className="section-container relative z-10 mt-40 md:mt-48 lg:mt-54">
+    <section className="relative z-10 section-container mt-40 md:mt-48 lg:mt-54">
       <div className="relative z-10 flex flex-col items-center gap-10 md:gap-12 lg:gap-14">
         <h2 className="text-center text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-foreground md:text-4xl lg:text-[2.5rem]">
           {TITLE}
@@ -78,24 +79,7 @@ function GetInvolved() {
                   className="group text-[0.9375rem] leading-snug font-book text-lagune-3 transition-colors hover:text-lagune-2"
                 >
                   {linkText}
-                  <span className="relative mt-0.5 w-1.5 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">
-                    <svg
-                      className="pointer-events-none ml-auto h-2.5 w-1.5"
-                      width="6"
-                      height="10"
-                      viewBox="0 0 6 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden
-                    >
-                      <path
-                        d="M1 9L5 5L1 1"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                      />
-                    </svg>
-                    <span className="absolute top-1/2 right-px h-px w-full -translate-y-1/2 bg-lagune-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                  </span>
+                  <LinkInlineArrow lineClassName="bg-lagune-2" />
                 </Link>
               </div>
             </li>

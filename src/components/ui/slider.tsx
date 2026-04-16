@@ -2,10 +2,33 @@
 
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-import Image from "next/image"
-import reviewArrowIcon from "@/images/pages/mcp/icons/review-arrow.svg"
 
 import { cn } from "@/lib/utils"
+
+function ReviewArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={cn(
+        "h-auto w-full shrink-0 text-gray-6 transition-colors duration-300 group-hover:text-foreground",
+        className,
+      )}
+      aria-hidden
+    >
+      <path
+        d="M17.6641 21.332L12.3307 15.9987L17.6641 10.6654"
+        stroke="currentColor"
+        strokeWidth={1.33333}
+        strokeMiterlimit={10}
+        strokeLinecap="square"
+      />
+    </svg>
+  )
+}
 
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
@@ -25,14 +48,7 @@ const NextArrow = (props: { onClick?: () => void }) => {
       onClick={onClick}
     >
       <span className="flex h-full w-full items-center justify-center rounded-full bg-[#111018] transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-[#111018] group-hover:via-[#302D43] group-hover:to-[#464C6D]">
-        <Image
-          src={reviewArrowIcon}
-          alt=""
-          width={32}
-          height={32}
-          className="h-auto w-full rotate-180"
-          aria-hidden
-        />
+        <ReviewArrowIcon className="rotate-180" />
       </span>
     </button>
   )
@@ -48,14 +64,7 @@ const PrevArrow = (props: { onClick?: () => void }) => {
       onClick={onClick}
     >
       <span className="flex h-full w-full items-center justify-center rounded-full bg-[#111018] transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-[#111018] group-hover:via-[#302D43] group-hover:to-[#464C6D]">
-        <Image
-          src={reviewArrowIcon}
-          alt=""
-          width={32}
-          height={32}
-          className="h-auto w-full"
-          aria-hidden
-        />
+        <ReviewArrowIcon />
       </span>
     </button>
   )

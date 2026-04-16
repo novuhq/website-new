@@ -43,7 +43,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
           <SelectPrimitive.Root value={selected} onValueChange={setSelected}>
             <SelectPrimitive.Trigger
               aria-label="Select MCP client"
-              className="group relative inline-flex h-7 w-[9.625rem] max-w-full min-w-0 items-center justify-between gap-2 overflow-hidden rounded-sm border border-[rgba(229,204,255,0.12)] bg-white/5 px-2.5 text-sm leading-none whitespace-nowrap text-foreground focus-visible:z-1 [&>span]:truncate"
+              className="group relative inline-flex h-7 w-[9.625rem] max-w-full min-w-0 items-center justify-between gap-2 overflow-hidden rounded-[0.25rem] border border-[rgba(229,204,255,0.12)] bg-white/5 px-2.5 text-sm leading-none whitespace-nowrap text-foreground focus-visible:z-1 [&>span]:truncate"
             >
               <SelectPrimitive.Value>{selected}</SelectPrimitive.Value>
               <SelectPrimitive.Icon asChild>
@@ -56,7 +56,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
                 position="popper"
                 sideOffset={6}
                 align="end"
-                className="z-50 w-[var(--radix-select-trigger-width)] max-w-[9.625rem] min-w-0 overflow-hidden rounded-[4px]"
+                className="z-50 w-[var(--radix-select-trigger-width)] max-w-[9.625rem] min-w-0 overflow-hidden rounded-[0.25rem]"
               >
                 <SelectPrimitive.Viewport className="flex flex-col">
                   {snippets.map((snippet) => (
@@ -65,7 +65,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
                       value={snippet.label}
                       className={cn(
                         "-mb-px flex cursor-pointer items-center justify-between gap-1.5 border border-[#252534] bg-[#111018] pt-1.5 pr-2.5 pb-2 pl-2.5 text-sm leading-none tracking-tighter whitespace-nowrap text-[#efeff0] outline-hidden transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0",
-                        "first:rounded-t-[4px] last:mb-0 last:rounded-b-[4px]",
+                        "first:rounded-t-[0.25rem] last:mb-0 last:rounded-b-[0.25rem]",
                         "data-[highlighted]:bg-[#1a1825]"
                       )}
                     >
@@ -103,7 +103,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
 
       <button
         className={cn(
-          "absolute top-[2.875rem] right-2.25 flex size-7 items-center justify-center rounded-sm border border-[rgba(229,204,255,0.12)] bg-white/5 text-muted-foreground transition-colors hover:text-foreground/80 focus-visible:z-1",
+          "absolute top-[2.875rem] right-2.25 flex size-7 items-center justify-center rounded-[0.25rem] border border-[rgba(229,204,255,0.12)] bg-white/5 text-muted-foreground transition-colors hover:text-foreground/80 focus-visible:z-1",
           isCopied && "text-foreground/80"
         )}
         type="button"
