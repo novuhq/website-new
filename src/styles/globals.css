@@ -27,6 +27,7 @@
   --color-blue: 225, 100%, 75%; /* blue-2 */
 
   --purple: 239, 100%, 78%; /* purple-default */
+  --purple-1: 290 82% 89%; /* #F5CFFC */
   --purple-2: 290 80% 75%; /* purple-2 */
   --purple-3: 290 60% 60%; /* purple-3 */
 
@@ -65,9 +66,14 @@
     #111117;
   --integration-card-category-border: #333347;
   --integration-card-category-bg: rgba(38, 38, 52, 0.8);
+  --mcp-prompt-card-bg: #111018;
+  --mcp-prompt-card-border: rgba(51, 51, 71, 0.6);
 
+  --lagune-1: 190, 100%, 90%; /* #CCF7FF */
   --lagune-3: 190, 100%, 50%; /* #00D5FF */
   --lagune-2: 190, 100%, 75%; /* #80EAFF */
+  --blue-1: 225, 100%, 90%; /* #CCD9FF */
+  --blue-3: 224, 81%, 61%; /* #4B73EC */
 
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
@@ -148,15 +154,21 @@
     --integration-card-category-border
   );
   --color-integration-card-category-bg: var(--integration-card-category-bg);
+  --color-mcp-prompt-card: var(--mcp-prompt-card-bg);
+  --color-mcp-prompt-card-border: var(--mcp-prompt-card-border);
 
   --color-red-1: hsl(var(--red-1));
 
   --color-purple: hsl(var(--purple));
+  --color-purple-1: hsl(var(--purple-1));
   --color-purple-2: hsl(var(--purple-2));
   --color-purple-3: hsl(var(--purple-3));
 
+  --color-lagune-1: hsl(var(--lagune-1));
   --color-lagune-3: hsl(var(--lagune-3));
   --color-lagune-2: hsl(var(--lagune-2));
+  --color-blue-1: hsl(var(--blue-1));
+  --color-blue-3: hsl(var(--blue-3));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius));
@@ -166,7 +178,8 @@
     "brother-1816", "brother-1816-fallback", ui-sans-serif, system-ui,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
-  --font-inter: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-inter:
+    var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --font-weight-book: 350;
 
@@ -193,6 +206,7 @@
     2.415px 2.415px 4.829px 0 rgba(15, 16, 21, 0.1);
   --shadow-tooltip:
     0 12px 24px 0 hsla(0, 0%, 0%, 0.06), 0 1px 2px 0 hsla(0, 0%, 0%, 0.03);
+  --filter-mcp-hero-video: drop-shadow(0 3.059px 21.107px #0f0e13);
 
   --button-gradient:
     258deg, hsla(265, 16%, 70%, 0.6) -8.62%, hsla(264, 16%, 70%, 0.3) 113.79%;
@@ -269,6 +283,10 @@
       transform: translateX(0);
     }
   }
+}
+
+@utility section-container {
+  @apply mx-auto max-w-272 px-5 md:px-8 2xl:px-0;
 }
 
 @utility text-balance {

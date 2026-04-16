@@ -10,8 +10,11 @@ import {
   getSingletonHighlighter,
   HighlighterGeneric,
 } from "shiki"
+import { Element } from "hast"
 
 import { type ICodeBlock } from "@/types/common"
+
+export type TCodeThemeVariant = "default" | "mcp-snippet"
 
 function isBundledLanguage(lang: string): lang is BundledLanguage {
   return Object.keys(bundledLanguages).includes(lang as BundledLanguage)
@@ -38,10 +41,60 @@ const parseHighlightLines = (meta: string): number[] => {
   return highlights
 }
 
+const MCP_SNIPPET_THEME = {
+  name: "mcp-snippet",
+  type: "dark" as const,
+  colors: {
+    "editor.background": "#00000000",
+    "editor.foreground": "#ffffff",
+  },
+  tokenColors: [
+    {
+      scope: [
+        "source",
+        "keyword",
+        "keyword.operator",
+        "storage",
+        "constant",
+        "variable",
+        "meta",
+        "entity.name",
+        "support.type.property-name",
+      ],
+      settings: { foreground: "#ffffff" },
+    },
+    {
+      scope: [
+        "meta.structure.dictionary.key.json string.quoted.double.json",
+        "meta.structure.dictionary.key.json punctuation.definition.string.begin.json",
+        "meta.structure.dictionary.key.json punctuation.definition.string.end.json",
+      ],
+      settings: { foreground: "#ffffff" },
+    },
+    {
+      scope: [
+        "meta.structure.dictionary.value.json string.quoted.double.json",
+        "meta.structure.dictionary.value.json punctuation.definition.string.begin.json",
+        "meta.structure.dictionary.value.json punctuation.definition.string.end.json",
+        "meta.structure.dictionary.value.json string.quoted.single.json",
+        "meta.structure.array.json string.quoted.double.json",
+        "meta.structure.array.json punctuation.definition.string.begin.json",
+        "meta.structure.array.json punctuation.definition.string.end.json",
+        "string.quoted.double.toml",
+        "string.quoted.single.toml",
+        "punctuation.definition.string.begin.toml",
+        "punctuation.definition.string.end.toml",
+      ],
+      settings: { foreground: "#e28cf2" },
+    },
+  ],
+}
+
 export async function highlight(
   code: string,
   lang: BundledLanguage = "bash",
-  highlightedLines?: string
+  highlightedLines?: string,
+  themeVariant: TCodeThemeVariant = "default"
 ): Promise<string> {
   if (!isBundledLanguage(lang)) {
     lang = "bash"
@@ -55,42 +108,51 @@ export async function highlight(
 
   await highlighter.loadLanguage(lang)
 
-  const html = codeToHtml(code, {
-    lang,
-    themes: {
-      light: "github-light",
-      dark: "github-dark",
-    },
-    transformers: [
-      transformerNotationDiff({
-        matchAlgorithm: "v3",
-      }),
-      transformerNotationHighlight({
-        matchAlgorithm: "v3",
-      }),
-      {
-        pre(node) {
-          node.properties["data-language"] = lang
-        },
-        code(node) {
-          node.properties.class = "grid"
-        },
-        line(node, line) {
-          node.properties["data-line"] = line
-
-          if (highlightedLines) {
-            const highlights = parseHighlightLines(String(highlightedLines))
-
-            highlights.forEach((item) => {
-              if (item === line) {
-                node.properties["class"] += " highlighted"
-              }
-            })
-          }
-        },
+  const transformers = [
+    transformerNotationDiff({
+      matchAlgorithm: "v3",
+    }),
+    transformerNotationHighlight({
+      matchAlgorithm: "v3",
+    }),
+    {
+      pre(node: Element) {
+        node.properties["data-language"] = lang
       },
-    ],
-  })
+      code(node: Element) {
+        node.properties.class = "grid"
+      },
+      line(node: Element, line: number) {
+        node.properties["data-line"] = line
+
+        if (highlightedLines) {
+          const highlights = parseHighlightLines(String(highlightedLines))
+
+          highlights.forEach((item) => {
+            if (item === line) {
+              node.properties["class"] += " highlighted"
+            }
+          })
+        }
+      },
+    },
+  ]
+
+  const html =
+    themeVariant === "mcp-snippet"
+      ? codeToHtml(code, {
+          lang,
+          theme: MCP_SNIPPET_THEME,
+          transformers,
+        })
+      : codeToHtml(code, {
+          lang,
+          themes: {
+            light: "github-light",
+            dark: "github-dark",
+          },
+          transformers,
+        })
 
   return html
 }

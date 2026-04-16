@@ -10,6 +10,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrations: "/integrations",
   integrationsChannels: "/integrations/channels",
   integrationsSources: "/integrations/sources",
+  mcp: "/mcp",
 
   // PREVIOUS WEBSITE
 
@@ -57,6 +58,8 @@ export const ROUTE: Record<string, Route<string> | URL> = {
     "https://podcasts.apple.com/il/podcast/sourcelife/id1632801980",
   discord: "https://discord.gg/novu?utm_campaign=website",
   github: "https://github.com/novuhq/novu?utm_campaign=website",
+  githubIssues: "https://github.com/novuhq/novu/issues",
+  githubSkills: "https://github.com/novuhq/skills",
   pixelPoint: "https://pixelpoint.io/",
   spotify: "https://open.spotify.com/show/2OyQJkn07lnJPNdxFWft96",
   twitter: "https://twitter.com/novuhq?utm_campaign=website",
@@ -69,6 +72,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   docsFramework: "https://docs.novu.co/framework/introduction",
   docsGuides: "https://docs.novu.co/guides",
   docsInApp: "https://docs.novu.co/platform/inbox",
+  docsMcp: "https://docs.novu.co/platform/additional-resources/mcp",
   docsNotifications: "https://docs.novu.co/platform/sdks/react",
   docsOverview: "https://docs.novu.co/platform",
   docsProviders:

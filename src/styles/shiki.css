@@ -5,12 +5,16 @@ html .shiki:not(.echo-code) {
 
   @apply !bg-black;
   & span.line {
-    & > span {
-      color: var(--shiki-dark) !important;
-    }
-
     @apply bg-[hsl(240,37%,3%)];
   }
+}
+
+html .shiki:not(.echo-code, .mcp-snippet) span.line > span {
+  color: var(--shiki-dark) !important;
+}
+
+.prose .shiki:not(.echo-code, .mcp-snippet) span.line > span {
+  color: var(--shiki-dark) !important;
 }
 
 pre code {
@@ -31,6 +35,15 @@ code .line::after {
     content: counter(line);
 
     @apply mr-5 inline-block w-4 text-right text-sm text-[#999999];
+  }
+
+  /* MCP config snippet: figure.code-block — override global `pre code` + line ::before sizes */
+  .code-block pre code {
+    @apply text-xs md:text-sm;
+  }
+
+  .code-block pre code > .line::before {
+    @apply text-xs md:text-sm;
   }
 }
 

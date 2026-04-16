@@ -4,24 +4,51 @@ import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 
 import { cn } from "@/lib/utils"
-import DynamicIcon from "@/components/dynamic-icon"
+
+function ReviewArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={cn(
+        "h-auto w-full shrink-0 text-gray-6 transition-colors duration-300 group-hover:text-foreground",
+        className,
+      )}
+      aria-hidden
+    >
+      <path
+        d="M17.6641 21.332L12.3307 15.9987L17.6641 10.6654"
+        stroke="currentColor"
+        strokeWidth={1.33333}
+        strokeMiterlimit={10}
+        strokeLinecap="square"
+      />
+    </svg>
+  )
+}
 
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
 
 const SlickSlider = dynamic(() => import("react-slick"), { ssr: false })
 
+const MOBILE_BREAKPOINT = 640
+const TABLET_BREAKPOINT = 1024
+
 const NextArrow = (props: { onClick?: () => void }) => {
   const { onClick } = props
   return (
     <button
-      className="group absolute inset-y-1/2 -right-9 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-2xl bg-gradient-to-br from-[#333347]/60 to-[#2B2B3B]/40 p-[1px] transition-all duration-300 hover:from-[#272730] hover:via-[#5C638A]/50 hover:to-[#5C638A] md:-right-[52px] xl:-right-16"
+      className="group absolute inset-y-1/2 right-2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-2xl bg-gradient-to-br from-[#333347]/60 to-[#2B2B3B]/40 p-[1px] transition-all duration-300 hover:from-[#272730] hover:via-[#5C638A]/50 hover:to-[#5C638A] md:-right-[3.25rem] xl:-right-16"
       type="button"
       aria-label="Next testimonial"
       onClick={onClick}
     >
       <span className="flex h-full w-full items-center justify-center rounded-full bg-[#111018] transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-[#111018] group-hover:via-[#302D43] group-hover:to-[#464C6D]">
-        <DynamicIcon icon="chevron-right" color="#C7C9D1" />
+        <ReviewArrowIcon className="rotate-180" />
       </span>
     </button>
   )
@@ -31,13 +58,13 @@ const PrevArrow = (props: { onClick?: () => void }) => {
   const { onClick } = props
   return (
     <button
-      className="group absolute inset-y-1/2 -left-9 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-2xl bg-gradient-to-br from-[#333347]/60 to-[#2B2B3B]/40 p-[1px] transition-all duration-300 hover:from-[#272730] hover:via-[#5C638A]/50 hover:to-[#5C638A] md:-left-[52px] xl:-left-16"
+      className="group absolute inset-y-1/2 left-2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-2xl bg-gradient-to-br from-[#333347]/60 to-[#2B2B3B]/40 p-[1px] transition-all duration-300 hover:from-[#272730] hover:via-[#5C638A]/50 hover:to-[#5C638A] md:-left-[3.25rem] xl:-left-16"
       type="button"
       aria-label="Prev testimonial"
       onClick={onClick}
     >
       <span className="flex h-full w-full items-center justify-center rounded-full bg-[#111018] transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-[#111018] group-hover:via-[#302D43] group-hover:to-[#464C6D]">
-        <DynamicIcon icon="chevron-left" color="#C7C9D1" />
+        <ReviewArrowIcon />
       </span>
     </button>
   )
@@ -50,29 +77,27 @@ export default function Slider({
   children: React.ReactNode
   className?: string
 }) {
-  const [slidesToShow, setSlidesToShow] = useState<number | null>(null)
+  const [viewportWidth, setViewportWidth] = useState<number | null>(null)
 
   useEffect(() => {
-    const updateSlides = () => {
-      const width = window.innerWidth
-      if (width < 524) setSlidesToShow(1)
-      else if (width < 1024) setSlidesToShow(2)
-      else setSlidesToShow(3)
-    }
+    const updateWidth = () => setViewportWidth(window.innerWidth)
 
-    updateSlides()
-    window.addEventListener("resize", updateSlides)
-    return () => window.removeEventListener("resize", updateSlides)
+    updateWidth()
+    window.addEventListener("resize", updateWidth)
+    return () => window.removeEventListener("resize", updateWidth)
   }, [])
 
-  if (slidesToShow === null) return null
+  if (viewportWidth === null) return null
+
+  const isMobile = viewportWidth < MOBILE_BREAKPOINT
+  const slidesToShow = isMobile ? 1 : viewportWidth < TABLET_BREAKPOINT ? 2 : 3
 
   const settings = {
-    dots: window.innerWidth < 768,
+    dots: isMobile,
     infinite: true,
     slidesToShow,
     slidesToScroll: 1,
-    arrows: window.innerWidth >= 768,
+    arrows: !isMobile,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     swipe: true,

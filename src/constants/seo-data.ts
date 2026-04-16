@@ -41,6 +41,13 @@ export const SEO_DATA = {
       "Browse all notification providers supported by Novu. Connect email, SMS, push, in-app, and chat providers to your stack with a unified API.",
     pathname: ROUTE.integrationsChannels as string,
   },
+  mcp: {
+    title: "Novu MCP Server — Add Notifications to Any AI Agent",
+    description:
+      "The Novu MCP server gives AI agents native access to 23 notification tools — subscribers, workflows, triggers, notifications, integrations, and more. Works with Claude, Cursor, and any MCP-compatible client.",
+    pathname: ROUTE.mcp as string,
+    imagePath: "/og-images/og-image-mcp.jpg",
+  },
   blog: {
     title: `Blog`,
     description: "Stay up to date with the latest updates from Novu",
