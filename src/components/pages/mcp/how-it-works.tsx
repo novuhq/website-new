@@ -1,5 +1,6 @@
 import Image from "next/image"
 import circleNumberIcon from "@/images/pages/mcp/icons/circle-number.svg"
+import Shine from "@/images/pages/mcp/shine.svg"
 
 import CodeBlock from "@/components/content/code-block"
 
@@ -128,7 +129,20 @@ function McpHowItWorksSection() {
           </h2>
         </div>
 
-        <div className="grid min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
+        <div className="relative grid min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-[min(2.375rem,8%)] z-0 h-[17.8rem] w-[min(15.81rem,calc(100%-1rem))] max-w-full -translate-y-[3.5rem] rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
+          />
+          <Image
+            src={Shine}
+            alt=""
+            width={448}
+            height={32}
+            sizes="(max-width: 448px) 100vw, 448px"
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-0 h-auto w-full max-w-full -translate-y-1/2 md:w-[50%] md:max-w-[50%]"
+          />
           <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
 
           <div className="relative pl-12">
