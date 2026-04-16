@@ -9,11 +9,11 @@ html .shiki:not(.echo-code) {
   }
 }
 
-html .shiki:not(.echo-code):not(.mcp-snippet) span.line > span {
+html .shiki:not(.echo-code, .mcp-snippet) span.line > span {
   color: var(--shiki-dark) !important;
 }
 
-.prose .shiki:not(.echo-code):not(.mcp-snippet) span.line > span {
+.prose .shiki:not(.echo-code, .mcp-snippet) span.line > span {
   color: var(--shiki-dark) !important;
 }
 

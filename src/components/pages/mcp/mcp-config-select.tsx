@@ -21,6 +21,10 @@ interface IMcpConfigSelectProps {
 }
 
 function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
+  if (snippets.length === 0) {
+    return null
+  }
+
   const initial =
     snippets.find((s) => s.label === defaultLabel)?.label ?? snippets[0].label
   const [selected, setSelected] = useState(initial)

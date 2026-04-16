@@ -107,7 +107,10 @@ function MobileMenu({ items }: MobileMenuProps) {
               className={cn(
                 hasScroll &&
                   !isScrolledToBottom &&
-                  "after:pointer-events-none after:fixed after:inset-x-0 after:top-16 after:bottom-35.5 after:z-50 after:bg-[linear-gradient(180deg,#05050B00_86.18%,#05050B_100%)] 2xs:after:bottom-24"
+                  cn(
+                    "after:pointer-events-none after:fixed after:inset-x-0 after:bottom-35.5 after:z-50 after:bg-[linear-gradient(180deg,#05050B00_86.18%,#05050B_100%)] 2xs:after:bottom-24",
+                    isBanner ? "after:top-25" : "after:top-16"
+                  )
               )}
             />
           </nav>
