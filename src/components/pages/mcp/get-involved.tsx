@@ -64,10 +64,10 @@ function GetInvolved() {
               />
               <div className="flex w-full flex-col items-center gap-2.5">
                 <div className="flex flex-col items-center gap-1.5">
-                  <h3 className="text-[1rem] leading-[1.25] font-medium tracking-[-0.02em] text-foreground md:text-[1.25rem] 2xl:text-[1.5rem]">
+                  <h3 className="text-base leading-tight font-medium tracking-tighter text-foreground md:text-xl 2xl:text-2xl">
                     {title}
                   </h3>
-                  <p className="text-[15px] leading-[1.375] font-book tracking-[-0.02em] text-gray-8">
+                  <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
                     {description}
                   </p>
                 </div>
@@ -75,7 +75,7 @@ function GetInvolved() {
                   href={linkUrl}
                   variant="clean"
                   size="none"
-                  className="group text-[15px] leading-[1.375] font-book text-lagune-3 transition-colors hover:text-lagune-2"
+                  className="group text-[0.9375rem] leading-snug font-book text-lagune-3 transition-colors hover:text-lagune-2"
                 >
                   {linkText}
                   <span className="relative mt-0.5 w-1.5 shrink-0 overflow-hidden transition-[width] duration-200 group-hover:w-3">

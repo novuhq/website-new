@@ -36,7 +36,7 @@ const PROMPT_CARDS: IMcpPromptCard[] = [
 
 function McpPromptsSection() {
   return (
-    <section className="relative mcp-section-container mt-40 md:mt-48 lg:mt-60">
+    <section className="relative mcp-section-container mt-26 md:mt-48 lg:mt-60">
       <Image
         src={promptsEllipses}
         alt=""
@@ -65,7 +65,7 @@ function McpPromptsSection() {
                 key={card.prompt}
                 className="relative min-h-[6.375rem] rounded-xl border border-mcp-prompt-card-border bg-mcp-prompt-card px-4 pt-4 pr-20 pb-5"
               >
-                <p className="text-base leading-[1.375] font-book tracking-tight text-foreground">
+                <p className="text-base leading-snug font-book tracking-tight text-foreground">
                   &ldquo;{card.prompt}&rdquo;
                 </p>
 

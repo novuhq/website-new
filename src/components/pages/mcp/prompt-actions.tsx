@@ -102,7 +102,10 @@ function PromptActions({ prompt }: IPromptActionsProps) {
           )}
         </button>
 
-        <DropdownMenuPrimitive.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <DropdownMenuPrimitive.Root
+          open={isMenuOpen}
+          onOpenChange={setIsMenuOpen}
+        >
           <DropdownMenuPrimitive.Trigger
             className={cn(
               "group inline-flex size-7 items-center justify-center rounded-r-sm border border-border bg-background/30 text-muted-foreground transition-colors hover:text-foreground",
@@ -144,7 +147,7 @@ function PromptActions({ prompt }: IPromptActionsProps) {
                       </span>
                       <span className="inline-flex items-center gap-1">
                         {target.label}
-                        <span className="inline-flex size-3.5 items-center justify-center rounded-[2px] bg-gray-2 text-muted-foreground">
+                        <span className="inline-flex size-3.5 items-center justify-center rounded-sm bg-gray-2 text-muted-foreground">
                           <ArrowUpRight className="size-2.5" />
                         </span>
                       </span>

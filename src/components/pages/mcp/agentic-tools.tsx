@@ -106,7 +106,7 @@ function ApiReferenceLink({ className }: { className?: string }) {
       animation="arrow-right"
       size="none"
       className={cn(
-        "w-fit items-end text-[15px] leading-[1.375] font-book text-lagune-3 hover:text-lagune-2",
+        "w-fit items-end text-[0.9375rem] leading-snug font-book text-lagune-3 hover:text-lagune-2",
         className
       )}
     >
@@ -126,7 +126,7 @@ function ApiReferenceLink({ className }: { className?: string }) {
 
 function McpAgenticToolsSection() {
   return (
-    <section className="mcp-section-container mt-40 md:mt-48 lg:mt-60">
+    <section className="mcp-section-container mt-26 md:mt-48 lg:mt-60">
       <div className="flex flex-col gap-10 md:gap-12">
         <div className="flex flex-col gap-6 md:gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex max-w-[46.875rem] flex-col gap-5">
@@ -141,7 +141,7 @@ function McpAgenticToolsSection() {
             </h2>
           </div>
 
-          <ApiReferenceLink className="hidden md:inline-flex" />
+          <ApiReferenceLink className="inline-flex" />
         </div>
 
         <div className="flex flex-col gap-7">
@@ -167,7 +167,7 @@ function McpAgenticToolsSection() {
                       <p className="font-mono text-base leading-none [overflow-wrap:anywhere] text-foreground">
                         {tool.name}
                       </p>
-                      <p className="text-sm leading-[1.5] tracking-[-0.02em] text-gray-8">
+                      <p className="text-sm leading-normal tracking-tighter text-gray-8">
                         {tool.description}
                       </p>
                     </div>
@@ -178,8 +178,6 @@ function McpAgenticToolsSection() {
             </div>
           ))}
         </div>
-
-        <ApiReferenceLink className="md:hidden" />
       </div>
     </section>
   )

@@ -26,7 +26,7 @@ function LinkBanner() {
       <Image
         src={bgImage}
         alt=""
-        className="pointer-events-none absolute inset-y-0 left-1/2 z-10 h-9 min-w-[1920px] -translate-x-1/2 object-bottom xs:-translate-x-[45%]"
+        className="pointer-events-none absolute inset-y-0 left-1/2 z-10 h-9 min-w-[120rem] -translate-x-1/2 object-bottom xs:-translate-x-[45%]"
         width={1920}
         height={36}
         aria-hidden

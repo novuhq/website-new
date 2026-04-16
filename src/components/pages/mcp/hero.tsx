@@ -19,7 +19,7 @@ function McpHeroSection() {
             </span>
           </div>
           <div className="flex flex-col items-center gap-4 text-center">
-            <h1 className="max-w-[53.75rem] text-4xl leading-dense font-medium tracking-tighter text-balance text-foreground md:text-[3rem] lg:text-[3.25rem]">
+            <h1 className="max-w-[53.75rem] text-4xl leading-dense font-medium tracking-tighter text-balance text-foreground md:text-5xl lg:text-[3.25rem]">
               Connect any AI to Novu. Instantly.
             </h1>
             <p className="max-w-[32.5rem] text-base leading-normal font-book tracking-tighter text-pretty text-muted-foreground md:text-lg">
@@ -58,7 +58,7 @@ function McpHeroSection() {
       <div className="relative isolate w-full">
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[20%] left-[10%] z-0 h-86 w-122 rounded-full opacity-25 blur-[180px] will-change-transform [backface-visibility:hidden] [contain:paint] [transform:translate3d(-50%,-50%,0)] [background:radial-gradient(92.52%_89.86%_at_62.86%_11.06%,var(--color-lagune-3)_27.2%,var(--color-blue-1)_80.5%,var(--color-blue-3)_100%)]"
+          className="pointer-events-none absolute top-[20%] left-[10%] z-0 h-86 w-122 [transform:translate3d(-50%,-50%,0)] rounded-full opacity-25 blur-[11.25rem] will-change-transform [contain:paint] [backface-visibility:hidden] [background:radial-gradient(92.52%_89.86%_at_62.86%_11.06%,var(--color-lagune-3)_27.2%,var(--color-blue-1)_80.5%,var(--color-blue-3)_100%)]"
         />
         <Image
           src={HeroBgBlur}

@@ -29,7 +29,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
   const current = snippets.find((s) => s.label === selected) ?? snippets[0]
 
   return (
-    <div className="relative flex aspect-[3/4] w-full min-w-0 flex-col overflow-hidden rounded-xl sm:aspect-[640/374]">
+    <div className="relative flex aspect-[4/4] w-full min-w-0 flex-col overflow-hidden rounded-xl sm:aspect-[640/374]">
       <McpSnippetBg />
 
       <div className="relative flex min-w-0 shrink-0 items-center justify-between gap-2 py-2 pr-2.25 pl-4 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-foreground/12 after:to-transparent">
@@ -64,7 +64,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
                       key={snippet.label}
                       value={snippet.label}
                       className={cn(
-                        "-mb-px flex cursor-pointer items-center justify-between gap-1.5 border border-[#252534] bg-[#111018] pt-[6px] pr-[10px] pb-[8px] pl-[10px] text-[14px] leading-none tracking-[-0.02em] whitespace-nowrap text-[#efeff0] outline-hidden transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                        "-mb-px flex cursor-pointer items-center justify-between gap-1.5 border border-[#252534] bg-[#111018] pt-1.5 pr-2.5 pb-2 pl-2.5 text-sm leading-none tracking-tighter whitespace-nowrap text-[#efeff0] outline-hidden transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0",
                         "first:rounded-t-[4px] last:mb-0 last:rounded-b-[4px]",
                         "data-[highlighted]:bg-[#1a1825]"
                       )}

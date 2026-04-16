@@ -114,7 +114,7 @@ function McpHowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="mcp-section-container mt-40 scroll-mt-[calc(var(--sticky-header-height)+5rem)] md:mt-48 lg:mt-62"
+      className="mcp-section-container mt-26 scroll-mt-[calc(var(--sticky-header-height)+5rem)] md:mt-48 lg:mt-62"
     >
       <div className="flex flex-col gap-12 md:gap-14 lg:gap-16">
         <div className="flex max-w-208 flex-col gap-4 md:gap-5">
@@ -132,7 +132,7 @@ function McpHowItWorksSection() {
         <div className="relative grid min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:items-start md:gap-8 lg:grid-cols-[40rem_minmax(0,22.5rem)] xl:gap-22">
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 left-[min(2.375rem,8%)] z-0 h-[17.8rem] w-[min(15.81rem,calc(100%-1rem))] max-w-full -translate-y-[3.5rem] rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
+            className="pointer-events-none absolute top-0 left-[min(2.375rem,8%)] z-0 h-[17.8rem] w-[min(15.81rem,calc(100%-1rem))] max-w-full -translate-y-14 rounded-full bg-[radial-gradient(130.5%_66.3%_at_74.3%_61.6%,_#FFB7E2_27.2%,_#FF96FB_80.5%,_#F047FF_100%)] opacity-[0.21] blur-[8.38rem]"
           />
           <Image
             src={Shine}
@@ -146,13 +146,13 @@ function McpHowItWorksSection() {
           <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
 
           <div className="relative pl-12">
-            <ol className="flex flex-col gap-[2.5rem] md:gap-[3.75rem]">
+            <ol className="flex flex-col gap-10 md:gap-15">
               {STEPS.map((step, index) => (
                 <li
                   key={step.title}
-                  className="relative before:pointer-events-none before:absolute before:top-7 before:-bottom-[2.5rem] before:left-[-2.125rem] before:w-px before:bg-[#262626] before:content-[''] last:before:hidden md:before:-bottom-[3.75rem]"
+                  className="relative before:pointer-events-none before:absolute before:top-7 before:-bottom-10 before:left-[-2.125rem] before:w-px before:bg-[#262626] before:content-[''] last:before:hidden md:before:-bottom-15"
                 >
-                  <span className="absolute top-0 -left-12 inline-flex size-7 items-center justify-center font-inter text-base leading-[1.375] font-normal tracking-[-0.02em] text-white">
+                  <span className="absolute top-0 -left-12 inline-flex size-7 items-center justify-center font-inter text-base leading-snug font-normal tracking-tighter text-white">
                     <Image
                       src={circleNumberIcon}
                       alt=""
@@ -163,10 +163,10 @@ function McpHowItWorksSection() {
                     />
                     <span className="relative">{index + 1}</span>
                   </span>
-                  <h3 className="max-w-[19.4375rem] text-xl leading-[1.375] font-medium tracking-[-0.02em] text-foreground">
+                  <h3 className="max-w-[19.4375rem] text-xl leading-snug font-medium tracking-tighter text-foreground">
                     {step.title}
                   </h3>
-                  <p className="mt-2.5 max-w-[19.4375rem] text-base leading-[1.375] font-light text-gray-9">
+                  <p className="mt-2.5 max-w-[19.4375rem] text-base leading-snug font-light text-gray-9">
                     {step.description}
                   </p>
                 </li>
