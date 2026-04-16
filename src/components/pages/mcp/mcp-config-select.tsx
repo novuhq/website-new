@@ -29,7 +29,7 @@ function McpConfigSelect({ snippets, defaultLabel }: IMcpConfigSelectProps) {
   const current = snippets.find((s) => s.label === selected) ?? snippets[0]
 
   return (
-    <div className="relative flex aspect-[4/4] w-full min-w-0 flex-col overflow-hidden rounded-xl sm:aspect-[640/374]">
+    <div className="relative flex aspect-[4/4] w-full min-w-0 flex-col overflow-hidden rounded-xl min-[460px]:aspect-[4/3] sm:aspect-[640/374]">
       <McpSnippetBg />
 
       <div className="relative flex min-w-0 shrink-0 items-center justify-between gap-2 py-2 pr-2.25 pl-4 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-linear-to-r after:from-transparent after:via-foreground/12 after:to-transparent">

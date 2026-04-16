@@ -36,6 +36,15 @@ code .line::after {
 
     @apply mr-5 inline-block w-4 text-right text-sm text-[#999999];
   }
+
+  /* MCP config snippet: figure.code-block — override global `pre code` + line ::before sizes */
+  .code-block pre code {
+    @apply text-xs md:text-sm;
+  }
+
+  .code-block pre code > .line::before {
+    @apply text-xs md:text-sm;
+  }
 }
 
 /* TODO: add styles for highlighted lines */

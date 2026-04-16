@@ -88,7 +88,7 @@ const Reviews = ({
   return (
     <section
       className={cn(
-        "reviews relative mt-26 [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-43.5",
+        "reviews relative mt-0 [overflow-x:clip] md:mt-28 md:overflow-x-visible lg:mt-43.5",
         className
       )}
     >

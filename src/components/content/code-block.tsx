@@ -70,7 +70,8 @@ async function CodeBlock({
       <ScrollArea className="w-full">
         <div
           className={clsx(
-            "px-4 text-left font-mono text-sm",
+            "px-4 text-left font-mono",
+            themeVariant === "mcp-snippet" ? "text-xs md:text-sm" : "text-sm",
             `code-block-${resolvedLanguage}`,
             countLines > 1 ? "py-4" : "py-3.5"
           )}

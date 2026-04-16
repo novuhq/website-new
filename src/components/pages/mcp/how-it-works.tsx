@@ -106,7 +106,7 @@ function McpHowItWorksSection() {
         code={snippet.code}
         themeVariant="mcp-snippet"
         showCopyButton={false}
-        className="border-none bg-transparent [&_pre_code]:text-xs md:[&_pre_code]:text-sm [&_pre_code>.line::before]:text-xs md:[&_pre_code>.line::before]:text-sm"
+        className="border-none bg-transparent"
       />
     ),
   }))
