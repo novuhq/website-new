@@ -170,14 +170,14 @@ const DIVIDER_CLASS = "h-px w-full bg-white/12"
 function ApiReferenceLink({ className }: { className?: string }) {
   return (
     <Link
-      href={ROUTE.docsApis}
+      href={ROUTE.docsMcp}
       variant="clean"
       size="none"
       className={cn("w-fit", linkInlineArrowLaguneClassName, className)}
       data-click-location="mcp_agentic_tools"
       data-click-text="view_full_api_reference"
     >
-      View full API reference
+      Read the docs
       <LinkInlineArrow lineClassName="bg-lagune-2" />
     </Link>
   )
