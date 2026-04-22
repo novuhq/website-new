@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
+import Script from "next/script"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
@@ -11,9 +12,9 @@ import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import MixpanelTracking from "@/components/mixpanel-tracking"
-import UtmForwarder from "@/components/utm-forwarder"
 import PreviewWarning from "@/components/preview-warning"
 import Scripts, { GTM_ID } from "@/components/scripts"
+import UtmForwarder from "@/components/utm-forwarder"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -95,10 +96,8 @@ export default async function RootLayout({
             }).replace(/</g, "\\u003c"),
           }}
         />
-        <script
-          key="plain-live-chat"
-          dangerouslySetInnerHTML={{
-            __html: `
+        <Script id="plain-live-chat" strategy="afterInteractive">
+          {`
             (function(d, script) {
               script = d.createElement('script');
               script.async = false;
@@ -106,15 +105,14 @@ export default async function RootLayout({
                 Plain.init({
                   appId: 'liveChatApp_01KJAVQQ5YRKY7NNZDEZV6KHED',
                   hideBranding: true,
-                  threadDetails: { externalId: 'marketing_page' }, 
+                  threadDetails: { externalId: 'marketing_page' },
                 });
               };
               script.src = 'https://chat.cdn-plain.com/index.js';
               d.getElementsByTagName('head')[0].appendChild(script);
             }(document));
-          `,
-          }}
-        />
+          `}
+        </Script>
         {/* Google Tag Manager noscript */}
         <noscript>
           <iframe

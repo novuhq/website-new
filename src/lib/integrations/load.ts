@@ -2,7 +2,6 @@ import fs from "fs/promises"
 import path from "path"
 
 import { unstable_cache } from "next/cache"
-import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 import { CHANNEL_CATEGORY_TAXONOMY } from "@/content/integrations/taxonomy/channels"
 import { SOURCE_CATEGORY_TAXONOMY } from "@/content/integrations/taxonomy/sources"
@@ -15,17 +14,13 @@ import type {
   IntegrationTabType,
 } from "@/types/integration"
 
+import { INTEGRATIONS_DIR } from "./paths"
 import {
   integrationFrontmatterSchema,
   type IntegrationFrontmatter,
 } from "./schema"
 
 const PLACEHOLDER_ICON = "/images/logo.svg"
-
-const INTEGRATIONS_DIR = path.join(
-  process.cwd(),
-  config.integrations.contentDir
-)
 
 function defaultBadge(tab: IntegrationTabType, category: string): string {
   const list =
@@ -63,7 +58,7 @@ async function fileToIntegration(
   filePath: string
 ): Promise<IIntegration | null> {
   const raw = await fs.readFile(filePath, "utf-8")
-  const { data, content } = matter(raw)
+  const { data } = matter(raw)
   const parsed = integrationFrontmatterSchema.safeParse(data)
 
   if (!parsed.success) {
@@ -77,6 +72,10 @@ async function fileToIntegration(
   const fm: IntegrationFrontmatter = parsed.data
 
   const badge = fm.badge?.trim() || defaultBadge(fm.tab, fm.category)
+
+  const relativePath = path
+    .relative(INTEGRATIONS_DIR, filePath)
+    .replace(/\\/g, "/")
 
   return {
     slug: fm.slug,
@@ -97,7 +96,7 @@ async function fileToIntegration(
     primaryCtaHref: fm.primaryCtaHref,
     secondaryCtaLabel: fm.secondaryCtaLabel,
     secondaryCtaHref: fm.secondaryCtaHref,
-    rawBody: content.trim(),
+    relativePath,
     pathname: `${ROUTE.integrations}/${fm.slug}` as IIntegration["pathname"],
   }
 }
