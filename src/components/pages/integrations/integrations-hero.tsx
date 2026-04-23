@@ -1,13 +1,12 @@
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import heroIllustration from "@/images/pages/integrations/hero/integrations-hero.png"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 import IntegrationsHeroTrustedBy from "./integrations-hero-trusted-by"
-
-const HERO_ILLUSTRATION = "/images/header/integrations-hero.png"
 
 interface IntegrationsHeroProps {
   className?: string
@@ -88,7 +87,7 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
           >
             <div className="absolute top-1/2 left-1/2 h-250 w-250 -translate-x-[50%] -translate-y-1/2 md:h-304 md:w-304 lg:-translate-x-[49%]">
               <Image
-                src={HERO_ILLUSTRATION}
+                src={heroIllustration}
                 alt=""
                 fill
                 className="object-cover object-center"
