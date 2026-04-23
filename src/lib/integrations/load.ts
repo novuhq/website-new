@@ -1,7 +1,6 @@
 import fs from "fs/promises"
 import path from "path"
 
-import { unstable_cache } from "next/cache"
 import { ROUTE } from "@/constants/routes"
 import { CHANNEL_CATEGORY_TAXONOMY } from "@/content/integrations/taxonomy/channels"
 import { SOURCE_CATEGORY_TAXONOMY } from "@/content/integrations/taxonomy/sources"
@@ -123,16 +122,13 @@ async function loadIntegrationsFromDisk(): Promise<IIntegration[]> {
   return results
 }
 
-// Cache integrations in Vercel Data Cache so ISR re-renders don't
-// need to re-read .md files from disk.
-const getCachedIntegrations = unstable_cache(
-  loadIntegrationsFromDisk,
-  ["integrations-all"],
-  { revalidate: false }
-)
+let integrationsPromise: Promise<IIntegration[]> | null = null
 
-export async function getAllIntegrations(): Promise<IIntegration[]> {
-  return getCachedIntegrations()
+export function getAllIntegrations(): Promise<IIntegration[]> {
+  if (!integrationsPromise) {
+    integrationsPromise = loadIntegrationsFromDisk()
+  }
+  return integrationsPromise
 }
 
 export async function getIntegrationBySlug(
