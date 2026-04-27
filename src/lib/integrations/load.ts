@@ -126,7 +126,10 @@ let integrationsPromise: Promise<IIntegration[]> | null = null
 
 export function getAllIntegrations(): Promise<IIntegration[]> {
   if (!integrationsPromise) {
-    integrationsPromise = loadIntegrationsFromDisk()
+    integrationsPromise = loadIntegrationsFromDisk().catch((error) => {
+      integrationsPromise = null
+      throw error
+    })
   }
   return integrationsPromise
 }
