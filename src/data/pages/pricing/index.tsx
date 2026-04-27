@@ -1320,14 +1320,14 @@ export const pricingPageData: IPricingPageData = {
         team: {
           booleanValue: false,
         },
-        title: "Custom SSO / OIDC",
+        title: "Custom SSO / OIDC, SCIM",
         tooltip: (
           <p>
             <strong>Enterprise authentication</strong> that allows organizations
             to integrate their own identity providers (Okta, Azure AD, Auth0,
             etc.) for user authentication.
             {"\n\n"}
-            Supports <strong>SAML SSO and OIDC</strong> protocols. Enables
+            Supports <strong>SAML SSO, OIDC, SCIM</strong> protocols. Enables
             centralized user management, enforcement of corporate security
             policies, and compliance with enterprise authentication
             requirements—distinct from standard built-in authentication
