@@ -122,9 +122,13 @@ export const MENUS = {
             isNew: false,
           },
           {
+            label: "Novu Copilot",
+            href: ROUTE.copilot,
+            isNew: true,
+          },
+          {
             label: "Novu MCP",
             href: ROUTE.mcp,
-            isNew: true,
           },
         ],
       },
