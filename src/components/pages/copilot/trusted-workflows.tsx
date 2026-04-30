@@ -2,8 +2,34 @@ import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import logosImage from "@/images/pages/copilot/logos/logos.svg"
+import bgLg from "@/svgs/shared/cta/background-lg.svg"
+import bgMob from "@/svgs/shared/cta/background-mob.svg"
+import bgSvg from "@/svgs/shared/cta/background.svg"
 
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+
+const BACKGROUND_BREAKPOINTS = [
+  {
+    width: 1385,
+    height: 870,
+    src: bgSvg,
+    className: "top-[68%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
+  },
+  {
+    width: 1064,
+    height: 844,
+    src: bgLg,
+    className: "top-[60%] left-[60%] hidden h-[844px] w-full lg:flex xl:hidden",
+  },
+  {
+    width: 1043,
+    height: 845,
+    src: bgMob,
+    className:
+      "top-[68%] left-[50%] w-[768px] md:top-[65%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
+  },
+]
 
 function TrustedWorkflows() {
   return (
@@ -11,19 +37,25 @@ function TrustedWorkflows() {
       className="section-container mt-26 scroll-mt-[calc(var(--sticky-header-height)+5rem)] md:mt-48 lg:mt-60 lg:mb-59"
       id="trusted-workflows"
     >
-      <div className="relative isolate flex min-h-[17.4375rem] overflow-hidden py-12 lg:items-center lg:py-0">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 bg-background"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute top-1/2 left-[20%] -z-10 h-58 w-[52rem] -translate-x-1/2 -translate-y-1/2 rotate-[-12deg] rounded-full opacity-55 blur-[5rem] [background:radial-gradient(50%_50%_at_50%_50%,rgba(75,115,236,0.34)_0%,rgba(219,117,245,0.16)_44%,rgba(0,0,0,0)_100%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute top-1/2 left-[21%] -z-10 h-[24.3125rem] w-[64rem] -translate-x-1/2 -translate-y-1/2 [background-image:radial-gradient(circle,rgba(255,255,255,0.5)_0_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,#000_0%,rgba(0,0,0,0.72)_32%,transparent_67%)] [background-size:18px_18px] opacity-45"
-          aria-hidden
-        />
+      <div className="relative isolate flex min-h-[17.4375rem] py-12 lg:items-center lg:py-0">
+        {BACKGROUND_BREAKPOINTS.map(
+          ({ width, height, src, className }, index) => (
+            <Image
+              key={index}
+              className={cn(
+                "pointer-events-none absolute max-w-none -translate-x-[74%] -translate-y-1/2 select-none",
+                className
+              )}
+              src={src}
+              alt=""
+              width={width}
+              height={height}
+              quality={90}
+              loading="lazy"
+              aria-hidden
+            />
+          )
+        )}
 
         <div className="relative z-10 grid w-full gap-12 lg:grid-cols-[minmax(0,36rem)_minmax(20rem,28rem)] lg:items-center lg:justify-between">
           <div className="flex max-w-[36rem] flex-col items-start gap-12 lg:gap-22">
