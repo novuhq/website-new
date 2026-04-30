@@ -10,6 +10,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrations: "/integrations",
   integrationsChannels: "/integrations/channels",
   integrationsSources: "/integrations/sources",
+  copilot: "/copilot",
   mcp: "/mcp",
 
   // PREVIOUS WEBSITE

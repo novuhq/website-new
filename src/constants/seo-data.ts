@@ -48,6 +48,13 @@ export const SEO_DATA = {
     pathname: ROUTE.mcp as string,
     imagePath: "/og-images/og-image-mcp.jpg",
   },
+  copilot: {
+    title: "Novu Copilot — From Prompt to Production-Ready Workflow",
+    description:
+      "Describe your notification workflow in plain English. Novu Copilot generates your workflow in seconds following Novu's best practices.",
+    pathname: ROUTE.copilot as string,
+    imagePath: "/og-images/og-image-mcp.jpg",
+  },
   blog: {
     title: `Blog`,
     description: "Stay up to date with the latest updates from Novu",
