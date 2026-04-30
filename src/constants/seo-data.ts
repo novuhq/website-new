@@ -54,7 +54,7 @@ export const SEO_DATA = {
     description:
       "Product managers can now describe a notification workflow in plain English. Novu Copilot generates your workflow in seconds following Novu's best practices.",
     pathname: ROUTE.copilot as string,
-    imagePath: "/og-images/og-image-mcp.jpg",
+    imagePath: "/og-images/og-image-copilot.jpg",
   },
   blog: {
     title: `Blog`,

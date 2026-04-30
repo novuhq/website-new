@@ -37,7 +37,7 @@ export default function CopilotPage() {
           {
             kind: "primary-button",
             label: "start shipping",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             openInNewTab: true,
             clickLocation: "copilot_cta",
             clickText: "start_shipping",

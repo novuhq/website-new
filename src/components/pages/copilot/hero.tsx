@@ -40,7 +40,9 @@ function Hero() {
             asChild
           >
             <NextLink
-              href="#how-it-works"
+              href={ROUTE.dashboardV2SignUp}
+              target="_blank"
+              rel="noopener noreferrer"
               data-click-location="copilot_hero"
               data-click-text="start_building_for_free"
             >
