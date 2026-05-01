@@ -5,8 +5,8 @@ import promptsIcon from "@/images/pages/copilot/icons/prompts.svg"
 import rocketIcon from "@/images/pages/copilot/icons/rocket.svg"
 import shapeIcon from "@/images/pages/copilot/icons/shape.svg"
 import ticketsIcon from "@/images/pages/copilot/icons/tickets.svg"
-import oldWayImage from "@/images/pages/copilot/old-way.svg"
-import yourTeamImage from "@/images/pages/copilot/your-team.svg"
+import oldWayImage from "@/images/pages/copilot/old-way.webp"
+import yourTeamImage from "@/images/pages/copilot/your-team.webp"
 
 import { cn } from "@/lib/utils"
 
