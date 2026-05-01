@@ -71,7 +71,7 @@ function TrustedWorkflows() {
               asChild
             >
               <NextLink
-                href={ROUTE.dashboard as string}
+                href={ROUTE.workflows as string}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-click-location="copilot_trusted_workflows"

@@ -56,9 +56,7 @@ function Hero() {
             asChild
           >
             <NextLink
-              href={ROUTE.githubSkills as string}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#how-it-works"
               data-click-location="copilot_hero"
               data-click-text="see_how_it_works"
             >
