@@ -1,13 +1,16 @@
+"use client"
+
 import type { CSSProperties } from "react"
 import Image, { type StaticImageData } from "next/image"
-import arrowUpIcon from "@/images/pages/copilot/cards/icons/arrow-up.svg"
-import delayIcon from "@/images/pages/copilot/cards/icons/delay.svg"
-import emailIcon from "@/images/pages/copilot/cards/icons/email.svg"
-import inAppIcon from "@/images/pages/copilot/cards/icons/inapp.svg"
-import pushIcon from "@/images/pages/copilot/cards/icons/push.svg"
-import { Check } from "lucide-react"
+import arrowUpIcon from "@/svgs/pages/copilot/cards/icons/arrow-up.svg"
+import delayIcon from "@/svgs/pages/copilot/cards/icons/delay.svg"
+import emailIcon from "@/svgs/pages/copilot/cards/icons/email.svg"
+import inAppIcon from "@/svgs/pages/copilot/cards/icons/inapp.svg"
+import pushIcon from "@/svgs/pages/copilot/cards/icons/push.svg"
+import { Check, Copy } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 
 export type PromptInTheWildButtonType = "email" | "delay" | "push" | "inApp"
 
@@ -193,6 +196,7 @@ function PromptInTheWildCard({
   sizes = "(max-width: 767px) calc(100vw - 40px), (max-width: 1248px) calc((100vw - 92px) / 2), 562px",
   theme,
 }: PromptInTheWildCardProps) {
+  const { isCopied, handleCopy } = useCopyToClipboard(3000)
   const mergedTheme = { ...DEFAULT_THEME, ...theme }
   const stepSurfaceBackgrounds =
     theme?.stepSurfaceBackgrounds ?? DEFAULT_THEME.stepSurfaceBackgrounds
@@ -215,7 +219,7 @@ function PromptInTheWildCard({
     <article
       aria-labelledby={titleId}
       className={cn(
-        "[container-type:inline-size] relative isolate aspect-[562/298] w-full overflow-hidden rounded-xl bg-[#0e0c17]",
+        "group [container-type:inline-size] relative isolate aspect-[562/298] w-full overflow-hidden rounded-xl bg-[#0e0c17]",
         className
       )}
       style={style}
@@ -239,6 +243,24 @@ function PromptInTheWildCard({
         </h3>
 
         <div className="absolute top-[16.443%] right-[4.0925%] left-[4.0925%] flex items-end gap-[17em] overflow-hidden rounded-[10em] bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_1.32%,rgba(255,255,255,0.75)_98.71%)] py-[10em] pr-[10em] pl-[16em] [box-shadow:0_18em_44em_rgba(15,16,21,0.6)]">
+          <button
+            className={cn(
+              "absolute top-[10em] right-[10em] z-20 flex size-[24em] items-center justify-center rounded-[4.5em] bg-[#7f859c] text-white",
+              "opacity-100 transition-[color,opacity] duration-300 hover:text-white md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100",
+              isCopied && "text-white"
+            )}
+            type="button"
+            disabled={isCopied}
+            aria-label={isCopied ? "Copied" : "Copy prompt"}
+            onClick={() => handleCopy(prompt)}
+          >
+            {isCopied ? (
+              <Check className="size-[14em]" strokeWidth={3} />
+            ) : (
+              <Copy className="size-[14em]" />
+            )}
+          </button>
+
           <p className="min-w-0 flex-1 font-inter text-[16em] leading-[1.375] font-normal tracking-[-0.02em] text-black/90">
             {prompt}
           </p>

@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import GlassBorder from "@/images/pages/copilot/glass-border.svg"
 import VideoPoster from "@/images/pages/copilot/poster.webp"
+import GlassBorder from "@/svgs/pages/copilot/glass-border.svg"
 
 const VIDEO_WEBM_SRC = "/videos/copilot.webm"
 const VIDEO_MP4_SRC = "/videos/copilot.hevc.mp4"

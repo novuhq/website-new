@@ -1,35 +1,10 @@
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
-import logosImage from "@/images/pages/copilot/logos/logos.svg"
-import bgLg from "@/svgs/shared/cta/background-lg.svg"
-import bgMob from "@/svgs/shared/cta/background-mob.svg"
-import bgSvg from "@/svgs/shared/cta/background.svg"
+import bgLights from "@/svgs/pages/copilot/lights.svg"
+import logosImage from "@/svgs/pages/copilot/logos/logos.svg"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-
-const BACKGROUND_BREAKPOINTS = [
-  {
-    width: 1385,
-    height: 870,
-    src: bgSvg,
-    className: "top-[68%] left-[44%] hidden h-[870px] w-[1385px] xl:flex",
-  },
-  {
-    width: 1064,
-    height: 844,
-    src: bgLg,
-    className: "top-[60%] left-[60%] hidden h-[844px] w-full lg:flex xl:hidden",
-  },
-  {
-    width: 1043,
-    height: 845,
-    src: bgMob,
-    className:
-      "top-[68%] left-[50%] w-[768px] md:top-[65%] md:flex md:h-[845px] md:w-[1043px] lg:hidden",
-  },
-]
 
 function TrustedWorkflows() {
   return (
@@ -38,24 +13,16 @@ function TrustedWorkflows() {
       id="trusted-workflows"
     >
       <div className="relative isolate flex min-h-[17.4375rem] py-12 lg:items-center lg:py-0">
-        {BACKGROUND_BREAKPOINTS.map(
-          ({ width, height, src, className }, index) => (
-            <Image
-              key={index}
-              className={cn(
-                "pointer-events-none absolute max-w-none -translate-x-[74%] -translate-y-1/2 select-none",
-                className
-              )}
-              src={src}
-              alt=""
-              width={width}
-              height={height}
-              quality={90}
-              loading="lazy"
-              aria-hidden
-            />
-          )
-        )}
+        <Image
+          className="pointer-events-none absolute max-w-none -translate-x-[22%] -translate-y-[21%] select-none lg:translate-y-0"
+          src={bgLights}
+          alt=""
+          width={1056}
+          height={693}
+          quality={90}
+          loading="lazy"
+          aria-hidden
+        />
 
         <div className="relative z-10 grid w-full gap-12 lg:grid-cols-[minmax(0,36rem)_minmax(20rem,28rem)] lg:items-center lg:justify-between">
           <div className="flex max-w-[36rem] flex-col items-start gap-12 lg:gap-22">

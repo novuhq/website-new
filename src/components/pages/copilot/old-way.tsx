@@ -1,12 +1,12 @@
 import Image, { type StaticImageData } from "next/image"
-import docsIcon from "@/images/pages/copilot/icons/docs.svg"
-import handoffsIcon from "@/images/pages/copilot/icons/handoffs.svg"
-import promptsIcon from "@/images/pages/copilot/icons/prompts.svg"
-import rocketIcon from "@/images/pages/copilot/icons/rocket.svg"
-import shapeIcon from "@/images/pages/copilot/icons/shape.svg"
-import ticketsIcon from "@/images/pages/copilot/icons/tickets.svg"
 import oldWayImage from "@/images/pages/copilot/old-way.webp"
 import yourTeamImage from "@/images/pages/copilot/your-team.webp"
+import docsIcon from "@/svgs/pages/copilot/icons/docs.svg"
+import handoffsIcon from "@/svgs/pages/copilot/icons/handoffs.svg"
+import promptsIcon from "@/svgs/pages/copilot/icons/prompts.svg"
+import rocketIcon from "@/svgs/pages/copilot/icons/rocket.svg"
+import shapeIcon from "@/svgs/pages/copilot/icons/shape.svg"
+import ticketsIcon from "@/svgs/pages/copilot/icons/tickets.svg"
 
 import { cn } from "@/lib/utils"
 
