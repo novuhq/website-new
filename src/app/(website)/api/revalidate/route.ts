@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     const config = REVALIDATION_CONFIG[type]
 
-    config.tags.forEach((tag) => revalidateTag(tag))
+    config.tags.forEach((tag) => revalidateTag(tag, "max"))
     config.paths?.forEach((path) => revalidatePath(path, "page"))
 
     return NextResponse.json({ body })
