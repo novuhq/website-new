@@ -10,6 +10,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrations: "/integrations",
   integrationsChannels: "/integrations/channels",
   integrationsSources: "/integrations/sources",
+  copilot: "/copilot",
   mcp: "/mcp",
 
   // PREVIOUS WEBSITE
@@ -44,6 +45,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   dashboardV2: "https://dashboard.novu.co",
   dashboardV2SignIn: "https://dashboard.novu.co/auth/sign-in",
   dashboardV2SignUp: "https://dashboard.novu.co/auth/sign-up",
+  workflows: "https://dashboard.novu.co/workflows",
 
   // Other services
   bookMeeting: "https://novu.co/contact-us/",

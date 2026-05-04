@@ -22,6 +22,7 @@ interface ISectionWithLogosAnimatedProps {
   title: string
   titleHighlight?: string
   titleSize?: "default" | "sm"
+  titleClassName?: string
   description?: string
   rows?: number
   className?: string
@@ -65,6 +66,7 @@ const SectionWithLogosAnimated = async ({
   title,
   titleHighlight,
   titleSize = "default",
+  titleClassName,
   description,
   rows = 1,
   className,
@@ -90,7 +92,8 @@ const SectionWithLogosAnimated = async ({
             "mx-auto text-center tracking-tighter",
             titleSize === "sm"
               ? "text-base text-gray-8 lg:text-lg"
-              : "leading-denser max-w-60 text-3xl font-medium md:max-w-max lg:text-[32px]"
+              : "leading-denser max-w-60 text-3xl font-medium md:max-w-max lg:text-[32px]",
+            titleClassName
           )}
         >
           {titleHighlight && (

@@ -26,8 +26,16 @@ export const MENUS = {
       ],
     },
     {
-      title: "Novu MCP",
-      href: ROUTE.mcp,
+      title: "AI",
+      content: [
+        {
+          subtitle: "AI",
+          items: [
+            { label: "Novu Copilot", href: ROUTE.copilot },
+            { label: "Novu MCP", href: ROUTE.mcp },
+          ],
+        },
+      ],
     },
     {
       title: "Resources",
@@ -114,9 +122,13 @@ export const MENUS = {
             isNew: false,
           },
           {
+            label: "Novu Copilot",
+            href: ROUTE.copilot,
+            isNew: true,
+          },
+          {
             label: "Novu MCP",
             href: ROUTE.mcp,
-            isNew: true,
           },
         ],
       },
