@@ -11,7 +11,7 @@ function LinkBanner() {
     <section className="link-banner relative overflow-hidden bg-[#0B0C0F] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:w-full after:bg-white after:mix-blend-overlay">
       <NextLink
         className="group relative z-20 mx-auto flex h-9 w-full max-w-384 items-center justify-center gap-1.5 px-5 text-center transition-colors duration-200 md:px-8"
-        href={ROUTE.mcp}
+        href={ROUTE.copilot}
         data-click-location="header-link-banner"
         data-click-text="read_more"
       >
