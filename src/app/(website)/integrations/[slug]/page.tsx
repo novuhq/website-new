@@ -63,7 +63,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
 
   const [relatedIntegrations, { content }] = await Promise.all([
     getRelatedIntegrations(slug),
-    compileIntegrationMdx(integration.rawBody),
+    compileIntegrationMdx(integration.relativePath),
   ])
 
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""

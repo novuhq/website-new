@@ -33,7 +33,7 @@ export interface IIntegration {
   primaryCtaHref?: string
   secondaryCtaLabel?: string
   secondaryCtaHref?: string
-  rawBody: string
+  relativePath: string
   pathname: Route<string>
 }
 

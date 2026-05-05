@@ -1,4 +1,5 @@
 import type { NextConfig } from "next"
+import createMDX from "@next/mdx"
 
 const securityHeaders = [
   {
@@ -73,6 +74,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 90, 95, 100],
     remotePatterns: [
       {
         protocol: "https",
@@ -96,4 +98,17 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [
+      "remark-gfm",
+      "remark-frontmatter",
+      "remark-mdx",
+      ["remark-mdx-frontmatter", { name: "metadata" }],
+    ],
+    rehypePlugins: [],
+  },
+})
+
+export default withMDX(nextConfig)
