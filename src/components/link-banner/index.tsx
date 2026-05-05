@@ -16,13 +16,14 @@ function LinkBanner() {
         data-click-text="read_more"
       >
         <span className="truncate text-xs font-medium text-foreground transition-colors group-hover:text-lagune-3 sm:text-sm">
-          Novu MCP is live - connect your AI agents in minutes
+          Novu Copilot is live in BETA - describe a workflow, ship it the same
+          day
         </span>
         <span className="hidden text-foreground/50 transition-colors group-hover:text-lagune-3/80 md:inline">
           |
         </span>
         <span className="hidden items-center gap-1 text-xs font-medium text-foreground/85 transition-colors group-hover:text-lagune-3 sm:text-sm md:inline-flex">
-          Read more
+          Try it free
           <LinkInlineArrow lineClassName="bg-lagune-3" />
         </span>
       </NextLink>
