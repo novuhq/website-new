@@ -11,18 +11,19 @@ function LinkBanner() {
     <section className="link-banner relative overflow-hidden bg-[#0B0C0F] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:w-full after:bg-white after:mix-blend-overlay">
       <NextLink
         className="group relative z-20 mx-auto flex h-9 w-full max-w-384 items-center justify-center gap-1.5 px-5 text-center transition-colors duration-200 md:px-8"
-        href={ROUTE.mcp}
+        href={ROUTE.copilot}
         data-click-location="header-link-banner"
         data-click-text="read_more"
       >
         <span className="truncate text-xs font-medium text-foreground transition-colors group-hover:text-lagune-3 sm:text-sm">
-          Novu MCP is live - connect your AI agents in minutes
+          Novu Copilot is live in BETA - describe a workflow, ship it the same
+          day
         </span>
         <span className="hidden text-foreground/50 transition-colors group-hover:text-lagune-3/80 md:inline">
           |
         </span>
         <span className="hidden items-center gap-1 text-xs font-medium text-foreground/85 transition-colors group-hover:text-lagune-3 sm:text-sm md:inline-flex">
-          Read more
+          Try it free
           <LinkInlineArrow lineClassName="bg-lagune-3" />
         </span>
       </NextLink>
