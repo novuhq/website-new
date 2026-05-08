@@ -214,7 +214,7 @@ export async function getPostBySlug(
       description: post.seo?.description || post.caption,
       socialImage:
         post.seo?.socialImage ??
-        `/api/cover?template=gradient-bottom&title=${encodeURIComponent(
+        `/api/og?template=blog&title=${encodeURIComponent(
           post.seo?.title || post.title
         )}`,
       noIndex: post.seo?.noIndex || false,

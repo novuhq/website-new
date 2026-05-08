@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const postImage =
     post.seo?.socialImage ||
-    `${siteUrl}/api/og?title=${encodeURIComponent(post.title)}`
+    `${siteUrl}/api/og?template=blog&title=${encodeURIComponent(post.title)}`
 
   const jsonLd = {
     "@context": "https://schema.org",

@@ -47,7 +47,7 @@ _type,
   "seo": {
     "title": coalesce(seo.title, title, ""),
     "description": coalesce(seo.description, caption, ""),
-    "socialImage": coalesce(seo.socialImage->url + "?w=1200&h=630&fit=crop&auto=format"),
+    "socialImage": coalesce(seo.socialImage.asset->url + "?w=1200&h=630&fit=crop&auto=format"),
     "noIndex": seo.noIndex == true
   }
 
