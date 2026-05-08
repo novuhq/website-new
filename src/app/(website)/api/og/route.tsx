@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
               display: "flex",
               paddingLeft: "56px",
               paddingRight: "115px",
-              paddingBottom: "80px",
+              paddingBottom: "44px",
               width: "100%",
             }}
           >
