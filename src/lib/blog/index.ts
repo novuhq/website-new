@@ -196,6 +196,7 @@ export async function getPostBySlug(
   slug: string,
   preview = false
 ): Promise<IPostWithTableOfContents | null> {
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const post = await sanityFetch<IPostData>({
     query: postBySlugQuery,
     qParams: { slug },
@@ -214,7 +215,7 @@ export async function getPostBySlug(
       description: post.seo?.description || post.caption,
       socialImage:
         post.seo?.socialImage ??
-        `/api/og?template=blog&title=${encodeURIComponent(
+        `${siteUrl}/api/og?template=blog&title=${encodeURIComponent(
           post.seo?.title || post.title
         )}`,
       noIndex: post.seo?.noIndex || false,
