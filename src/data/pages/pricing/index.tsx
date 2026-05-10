@@ -1456,7 +1456,7 @@ export const pricingPageData: IPricingPageData = {
         },
         team: {
           booleanValue: false,
-          value: "Custom",
+          value: "Standard",
         },
         title: "DPA",
         tooltip: (
