@@ -8,7 +8,7 @@ import { getMetadata } from "@/lib/get-metadata"
 import CTA from "@/components/pages/cta"
 import CustomersGrid from "@/components/pages/customers/customers-grid"
 import Hero from "@/components/pages/customers/hero"
-import Reviews from "@/components/pages/customers/reviews"
+import Reviews from "@/components/pages/reviews"
 
 export default async function CustomersPage() {
   const page = await getCustomersPage()
@@ -25,9 +25,57 @@ export default async function CustomersPage() {
 
   const isFeaturedExist = page.customersGrid.some((item) => item.isFeatured)
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+
+  const reviews = page.tweets
+    .filter((tweet) => tweet.name && tweet.text)
+    .slice(0, 10)
+    .map((tweet) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: tweet.name,
+      },
+      reviewBody: tweet.text.replace(/<[^>]*>/g, ""),
+    }))
+
+  const reviewJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Novu",
+    description:
+      "Open-source notification infrastructure for developers and product teams.",
+    url: `${siteUrl}/customers/`,
+    image: `${siteUrl}/social-previews/index.jpg`,
+    brand: { "@type": "Brand", name: "Novu" },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      description: "Free up to 10,000 workflow runs per month",
+      url: `${siteUrl}/pricing/`,
+    },
+    ...(reviews.length > 0 && { review: reviews }),
+    ...(reviews.length > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5",
+        bestRating: "5",
+        ratingCount: String(reviews.length),
+      },
+    }),
+  }
+
   return (
-    <main>
+    <div>
       <Hero customers={page.cards} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <CustomersGrid
         isFeaturedExist={isFeaturedExist}
         categories={categories}
@@ -59,7 +107,7 @@ export default async function CustomersPage() {
           },
         ]}
       />
-    </main>
+    </div>
   )
 }
 

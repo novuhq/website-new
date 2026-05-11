@@ -16,11 +16,24 @@ export const MENUS = {
             { label: "Framework", href: ROUTE.framework },
             { label: "Digest", href: ROUTE.digest },
             { label: "Content Management", href: ROUTE.docsContentManagement },
+            { label: "Integrations", href: ROUTE.integrations },
           ],
         },
         {
           subtitle: "Changelog news",
           type: "changelog" as const,
+        },
+      ],
+    },
+    {
+      title: "AI",
+      content: [
+        {
+          subtitle: "AI",
+          items: [
+            { label: "Novu Copilot", href: ROUTE.copilot },
+            { label: "Novu MCP", href: ROUTE.mcp },
+          ],
         },
       ],
     },
@@ -102,10 +115,20 @@ export const MENUS = {
             href: ROUTE.docsContentManagement,
             isNew: false,
           },
+          { label: "Integrations", href: ROUTE.integrations, isNew: false },
           {
             label: "Notifications Directory",
             href: ROUTE.docsNotifications,
             isNew: false,
+          },
+          {
+            label: "Novu Copilot",
+            href: ROUTE.copilot,
+            isNew: true,
+          },
+          {
+            label: "Novu MCP",
+            href: ROUTE.mcp,
           },
         ],
       },
@@ -125,6 +148,32 @@ export const MENUS = {
           },
           { label: "Pricing", href: ROUTE.pricing, isNew: false },
           { label: "Customers", href: ROUTE.customers, isNew: false },
+        ],
+      },
+      {
+        title: "Comparison",
+        items: [
+          {
+            label: "Novu vs Courier",
+            href: ROUTE.comparisonCourier,
+            isNew: false,
+          },
+          { label: "Novu vs Knock", href: ROUTE.comparisonKnock, isNew: false },
+          {
+            label: "Novu vs MagicBell",
+            href: ROUTE.comparisonMagicBell,
+            isNew: false,
+          },
+          {
+            label: "Novu vs SuprSend",
+            href: ROUTE.comparisonSuprSend,
+            isNew: false,
+          },
+          {
+            label: "Novu vs In-house",
+            href: ROUTE.comparisonInHouse,
+            isNew: false,
+          },
         ],
       },
       {

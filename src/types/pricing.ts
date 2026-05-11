@@ -1,15 +1,18 @@
-import { PortableTextBlock } from "@portabletext/react"
+import { ReactNode } from "react"
+import { StaticImageData } from "next/image"
 
-import { ICtaSection } from "./common"
+import { ICtaSection, IFaqSection } from "./common"
 
 export type IPricingHero = {
+  _type?: string
   title: string
+  description?: string
   plans: IPricingHeroCard[]
-  onContactUsClick: (source: string) => void
+  onContactUsClick?: (source: string) => void
 }
 
 export type Link = {
-  _type: "link"
+  _type?: "link"
   text: string
   href: string
   isExternal?: boolean
@@ -17,17 +20,20 @@ export type Link = {
 }
 
 export type NumericPrice = {
+  _key?: string
   _type: "numericPrice"
   value: number
   paymentPeriod: string
 }
 
 export type CustomPrice = {
+  _key?: string
   _type: "customPrice"
   value: string
 }
 
 export type IPricingHeroCard = {
+  _type?: string
   title: string
   textBeforePrice?: string
   description: string
@@ -35,17 +41,21 @@ export type IPricingHeroCard = {
   price: (NumericPrice | CustomPrice)[]
   link: Link
   extraInfo?: string
-  details: PortableTextBlock[]
+  details: ReactNode
 }
 
 export type TableCell = {
-  value?: PortableTextBlock[]
+  _type?: string
+  value?:
+    | ReactNode
+    | ((onContactUsClick: (source: string) => void) => ReactNode)
   booleanValue?: boolean
 }
 
 export type Row = {
+  _type?: string
   isGroupTitle?: boolean
-  tooltip?: PortableTextBlock[]
+  tooltip?: ReactNode
   title: string
   subtitle?: string
   free?: TableCell
@@ -55,6 +65,7 @@ export type Row = {
 }
 
 export type PlanHeading = {
+  _key?: string
   id: string
   label: string
   isFeatured: boolean
@@ -68,19 +79,7 @@ export type Plans = {
   title: string
   headings: Headings
   rows: Row[]
-  onContactUsClick: (source: string) => void
-}
-
-export type Accordion = {
-  items: Array<{
-    question: string
-    answer: PortableTextBlock[]
-  }>
-}
-
-export type Faq = {
-  title: string
-  accordion: Accordion
+  onContactUsClick?: (source: string) => void
 }
 
 export type ICtaCard = {
@@ -88,47 +87,42 @@ export type ICtaCard = {
   description?: string
   buttonText: string
   buttonUrl: string | URL
-  onScheduleClick: (source: string) => void
+  onScheduleClick?: (source: string) => void
 }
 
 export type LogoItem = {
-  _key: string
-  _type: "logoItem"
-  title?: string
-  logo?: {
-    asset?: {
-      _id: string
-      url: string
-      metadata?: {
-        dimensions?: {
-          width: number
-          height: number
-        }
-      }
-    }
-    alt?: string
-  }
+  title: string
+  image: string | StaticImageData
   priority?: number
   rowIndex?: number
 }
 
 export type Logos = {
-  _type: "logos"
-  title?: string
+  title: string
   description?: string
-  items?: LogoItem[]
+  items: LogoItem[]
   rows?: number
 }
 
-export type IPricingPageData = {
+export type OnPrem = {
+  badge: string
+  title: string
+  description: string
+  features: string[]
+  buttonText: string
+  buttonUrl: string
+}
+
+export interface IPricingPageData {
   _type: "pricing"
   _createdAt: string
   _updatedAt: string
-  title: string
+  title?: string
   hero: IPricingHero
   logos: Logos
   plans: Plans
-  faq: Faq
+  onPrem: OnPrem
+  faq: IFaqSection
   cta: ICtaCard
   pageCta: ICtaSection
 }

@@ -9,6 +9,7 @@ _type,
   title,
   slug,
   publishedAt,
+  _createdAt,
   caption,
   "categories": categories[]->{
     title,
@@ -22,6 +23,7 @@ _type,
   "cover": cover.asset->url + "?w=${COVER_WIDTH * 2}&h=${Math.ceil(
     (COVER_WIDTH / COVER_ASPECT_RATIO) * 2
   )}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "content": content[] {
     ...,
     _type == "quoteBlock" => {
@@ -45,7 +47,7 @@ _type,
   "seo": {
     "title": coalesce(seo.title, title, ""),
     "description": coalesce(seo.description, caption, ""),
-    "socialImage": coalesce(seo.socialImage->url + "?w=1200&h=630&fit=crop&auto=format"),
+    "socialImage": coalesce(seo.socialImage.asset->url + "?w=1200&h=630&fit=crop&auto=format"),
     "noIndex": seo.noIndex == true
   }
 

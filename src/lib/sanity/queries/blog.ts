@@ -6,6 +6,7 @@ const COVER_ASPECT_RATIO = config.blog.coverAspectRatio
 
 const commonPostFields = `
   _type,
+  _createdAt,
   title,
   slug,
   caption,
@@ -21,6 +22,7 @@ const commonPostFields = `
 const postCardFields = `
   ${commonPostFields},
   "cover": cover.asset->url + "?w=${config.blog.postCardCoverWidth * 2}&h=${Math.ceil((config.blog.postCardCoverWidth / COVER_ASPECT_RATIO) * 2)}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "authors": authors[]->{
     name,
     position,
@@ -54,6 +56,7 @@ const postExcerptFields = groq`
 const fullPostFields = groq`
   ${commonPostFields},
   "cover": cover.asset->url + "?w=${config.blog.postCardCoverWidth * 2}&h=${Math.ceil((config.blog.postCardCoverWidth / COVER_ASPECT_RATIO) * 2)}&q=100&fit=crop&auto=format",
+  "coverAlt": cover.alt,
   "content": content[] {
     ...,
     _type == "relatedPostsBlock" => {
@@ -94,7 +97,7 @@ const fullPostFields = groq`
   "seo": {
     "title": coalesce(seo.title, title, ""),
     "description": coalesce(seo.description, caption, ""),
-    "socialImage": seo.socialImage->url + "?w=1200&h=630&fit=crop&auto=format",
+    "socialImage": seo.socialImage.asset->url + "?w=1200&h=630&fit=crop&auto=format",
     "noIndex": seo.noIndex == true
   }
 `

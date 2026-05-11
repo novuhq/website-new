@@ -6,6 +6,7 @@ export interface ISanityImage {
   url: string
   width: number
   height: number
+  alt?: string
 }
 
 export interface ICustomerCardData {
@@ -36,6 +37,7 @@ export interface ICustomersGridData {
 
 export interface ICustomerData {
   _id: string
+  _createdAt: string
   _type: "customer"
   name: string
   type: "external" | "story"
@@ -51,6 +53,7 @@ export interface ICustomerData {
   isFeatured?: boolean
   channelsList?: string[]
   storyPhoto?: string
+  storyPhotoAlt?: string
   about?: string
   industry?: string
   quote?: {

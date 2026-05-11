@@ -10,6 +10,8 @@
 @import "./zoom-illustration.css";
 
 @import "./slider.css";
+@import "./inbox-slider.css";
+@import "./echo-code.css";
 
 :root {
   --color-primary-1: 190 100% 50%; /* primary-1 */
@@ -25,6 +27,7 @@
   --color-blue: 225, 100%, 75%; /* blue-2 */
 
   --purple: 239, 100%, 78%; /* purple-default */
+  --purple-1: 290 82% 89%; /* #F5CFFC */
   --purple-2: 290 80% 75%; /* purple-2 */
   --purple-3: 290 60% 60%; /* purple-3 */
 
@@ -43,8 +46,34 @@
   --gray-11: 0 0% 96%; /* #F5F5F5 */
   --gray-13: 0 0% 99%; /* #FCFCFC */
 
+  --integration-count-badge-from: 47 100% 70%; /* #ffdf66 */
+  --integration-count-badge-to: 38 100% 60%; /* #ffb433 */
+  --integration-card-surface: 240 11% 3.5%;
+  --integration-card-hover-bg:
+    radial-gradient(
+      136.34% 55.67% at 81.56% 3.42%,
+      rgba(102, 122, 152, 0.12) 0%,
+      rgba(102, 122, 152, 0) 88.97%
+    ),
+    #111117;
+  --integration-icon-wrapper-border: #49495f;
+  --integration-icon-wrapper-bg:
+    radial-gradient(
+      346.37% 141.42% at 0% 0%,
+      rgba(102, 122, 152, 0.24) 0%,
+      rgba(102, 122, 152, 0) 88.97%
+    ),
+    #111117;
+  --integration-card-category-border: #333347;
+  --integration-card-category-bg: rgba(38, 38, 52, 0.8);
+  --mcp-prompt-card-bg: #111018;
+  --mcp-prompt-card-border: rgba(51, 51, 71, 0.6);
+
+  --lagune-1: 190, 100%, 90%; /* #CCF7FF */
   --lagune-3: 190, 100%, 50%; /* #00D5FF */
   --lagune-2: 190, 100%, 75%; /* #80EAFF */
+  --blue-1: 225, 100%, 90%; /* #CCD9FF */
+  --blue-3: 224, 81%, 61%; /* #4B73EC */
 
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
@@ -119,14 +148,27 @@
   --color-gray-11: hsl(var(--gray-11));
   --color-gray-13: hsl(var(--gray-13));
 
+  --color-integration-card: hsl(var(--integration-card-surface));
+  --color-integration-card-border: hsl(240 16% 24% / 0.6);
+  --color-integration-card-category-border: var(
+    --integration-card-category-border
+  );
+  --color-integration-card-category-bg: var(--integration-card-category-bg);
+  --color-mcp-prompt-card: var(--mcp-prompt-card-bg);
+  --color-mcp-prompt-card-border: var(--mcp-prompt-card-border);
+
   --color-red-1: hsl(var(--red-1));
 
   --color-purple: hsl(var(--purple));
+  --color-purple-1: hsl(var(--purple-1));
   --color-purple-2: hsl(var(--purple-2));
   --color-purple-3: hsl(var(--purple-3));
 
+  --color-lagune-1: hsl(var(--lagune-1));
   --color-lagune-3: hsl(var(--lagune-3));
   --color-lagune-2: hsl(var(--lagune-2));
+  --color-blue-1: hsl(var(--blue-1));
+  --color-blue-3: hsl(var(--blue-3));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius));
@@ -136,11 +178,15 @@
     "brother-1816", "brother-1816-fallback", ui-sans-serif, system-ui,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
+  --font-inter:
+    var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --font-weight-book: 350;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
   --animate-logos: logos 60s linear infinite;
   --animate-logos-backward: backward 160s linear infinite;
   --animate-logos-forward: forward 160s linear infinite;
@@ -160,6 +206,7 @@
     2.415px 2.415px 4.829px 0 rgba(15, 16, 21, 0.1);
   --shadow-tooltip:
     0 12px 24px 0 hsla(0, 0%, 0%, 0.06), 0 1px 2px 0 hsla(0, 0%, 0%, 0.03);
+  --filter-mcp-hero-video: drop-shadow(0 3.059px 21.107px #0f0e13);
 
   --button-gradient:
     258deg, hsla(265, 16%, 70%, 0.6) -8.62%, hsla(264, 16%, 70%, 0.3) 113.79%;
@@ -196,6 +243,22 @@
       height: 0;
     }
   }
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+    }
+  }
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
   @keyframes logos {
     0% {
       transform: translateX(0);
@@ -220,6 +283,10 @@
       transform: translateX(0);
     }
   }
+}
+
+@utility section-container {
+  @apply mx-auto max-w-272 px-5 md:px-8 2xl:px-0;
 }
 
 @utility text-balance {
@@ -278,6 +345,15 @@
   .summary-mark-hidden > summary::-webkit-details-marker {
     @apply hidden;
   }
+
+  .custom-integrations-banner-border {
+    background-image: radial-gradient(
+      148% 188% at 116% -34%,
+      #ecd1fa 11%,
+      rgba(95, 82, 122, 0.3) 50%,
+      rgba(168, 148, 209, 0.1) 100%
+    );
+  }
 }
 
 /*
@@ -290,6 +366,12 @@
 */
 
 @layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   *,
   ::after,
   ::before,

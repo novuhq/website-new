@@ -10,6 +10,8 @@ const DEFAULT_HEIGHT = 630
 
 const DEFAULT_TEMPLATES = {
   default: "/og-images/default.jpg",
+  blog: "/og-images/default-post.jpg",
+  changelog: "/og-images/default-post.jpg",
 } as const
 
 type TemplateKey = keyof typeof DEFAULT_TEMPLATES
@@ -58,7 +60,6 @@ export async function GET(request: NextRequest) {
             justifyContent: "flex-end",
             width: "100%",
             height: "100%",
-            padding: "40px",
             backgroundColor: config.metaThemeColor,
             overflow: "hidden",
           }}
@@ -69,33 +70,43 @@ export async function GET(request: NextRequest) {
               position: "absolute",
               inset: 0,
               zIndex: 1,
+              width: "100%",
+              height: "100%",
               objectFit: "cover",
             }}
             src={backgroundDataUrl}
             alt=""
-            width={width}
-            height={height}
           />
 
-          <h1
+          <div
             style={{
               position: "relative",
               zIndex: 10,
-              fontSize: "3.5rem",
-              letterSpacing: "-0.04em",
-              fontWeight: 600,
-              lineHeight: 1.25,
-              color: "white",
-              maxWidth: "80%",
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
+              display: "flex",
+              paddingLeft: "56px",
+              paddingRight: "115px",
+              paddingBottom: "44px",
+              width: "100%",
             }}
           >
-            {title}
-          </h1>
+            <h1
+              style={{
+                fontSize: "3.875rem",
+                letterSpacing: "-0.04em",
+                fontWeight: 600,
+                lineHeight: 1.25,
+                color: "white",
+                maxWidth: "100%",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {title}
+            </h1>
+          </div>
         </div>
       ),
       {

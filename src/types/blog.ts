@@ -26,11 +26,13 @@ export interface ICategory extends ICategoryData {
 
 export interface IPostData {
   _type: "blogPost"
+  _createdAt: string
   title: string
   slug: ISlug
   url: Route<string>
   authors: IAuthorData[]
   cover: string
+  coverAlt?: string
   category: ICategoryData
   isFeatured: boolean
   publishedAt: string

@@ -124,8 +124,64 @@ export default async function ChangelogPostPage({
     content,
   } = post
 
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const postUrl = `${siteUrl}${pathname}`
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
+
+  // Extract video data from portable text content for VideoObject schema
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const videoBlocks = ((content || []) as any[]).filter(
+    (block) => block._type === "video"
+  )
+  const videoJsonLd = videoBlocks.map((block) => {
+    const ref = (block.videoFile?.asset?._ref as string) || ""
+    const videoUrl = `https://cdn.sanity.io/files/${projectId}/${dataset}/${ref
+      .replace("file-", "")
+      .replace("-mp4", ".mp4")
+      .replace("-webm", ".webm")}`
+    return {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: (block.alt as string) || title,
+      description: caption || title,
+      thumbnailUrl: cover || undefined,
+      uploadDate: publishedAt,
+      contentUrl: videoUrl,
+    }
+  })
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: caption || title,
+    datePublished: publishedAt || post._createdAt,
+    url: postUrl,
+    image:
+      cover ||
+      `${siteUrl}/api/og?template=changelog&title=${encodeURIComponent(title)}`,
+    author:
+      authors && authors.length > 0
+        ? authors.map((author) => ({
+            "@type": "Person",
+            name: author.name,
+            ...(author.photo ? { image: author.photo } : {}),
+          }))
+        : [{ "@type": "Organization", name: "Novu" }],
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/images/logo.svg",
+      },
+    },
+  }
+
   return (
-    <main className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
+    <div className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
           <Breadcrumbs firstLabel="Back to all updates" />
@@ -143,7 +199,7 @@ export default async function ChangelogPostPage({
           <div className="relative mt-7.75 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px] lg:gap-x-8 xl:grid-cols-[minmax(0,1fr)_256px]">
             {cover && (
               <div className="relative mb-10.5 aspect-video w-full overflow-hidden rounded-xl bg-[#1C1D22] shadow-changelog-image md:mb-12 lg:col-start-1 lg:mb-0">
-                <Image src={cover} alt="Cover" fill />
+                <Image src={cover} alt={`Cover image for ${title}`} fill />
               </div>
             )}
             <div className="top-20 flex w-full flex-col gap-8 md:flex-row md:justify-between md:pt-px lg:sticky lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:ml-auto lg:flex-col lg:justify-start lg:gap-5.5 lg:self-start xl:pt-0.5">
@@ -199,6 +255,21 @@ export default async function ChangelogPostPage({
           </div>
         </article>
       </section>
-    </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      {videoJsonLd.map((videoLd, index) => (
+        <script
+          key={`video-ld-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(videoLd).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
+    </div>
   )
 }

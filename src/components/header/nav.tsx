@@ -96,12 +96,13 @@ function Nav({ className, items }: IHeaderNavProps) {
   return (
     <nav
       className={cn("relative flex justify-center px-4 xl:mt-1", className)}
+      aria-label="Main navigation"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={handleMouseLeave}
       ref={navRef}
     >
       <LazyMotion features={domAnimation}>
-        <ul className="-ml-5.5 flex items-center xl:ml-[15%]">
+        <ul className="flex items-center xl:-ml-5.5 2xl:ml-[15%]">
           {items.map(({ title, content, href }, index) => {
             const isActive = index === activeIndex
             const hasDropdown = !href && content && content.length > 0
@@ -117,7 +118,7 @@ function Nav({ className, items }: IHeaderNavProps) {
               >
                 {href ? (
                   <Link
-                    className="relative z-10 lg:!px-3.5"
+                    className="relative z-10 whitespace-nowrap lg:!px-2 xl:!px-3.5"
                     href={href}
                     size="md"
                     variant="muted"
@@ -132,7 +133,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                 ) : (
                   <>
                     <Button
-                      className="relative z-10"
+                      className="relative z-10 whitespace-nowrap lg:!px-2 xl:!px-3"
                       size="md"
                       variant="link"
                       ref={(el: HTMLButtonElement | null) => {
@@ -165,6 +166,7 @@ function Nav({ className, items }: IHeaderNavProps) {
 
         {isHovering && hoveredIndex !== null && motionData && (
           <m.span
+            aria-hidden="true"
             className="absolute inset-0 rounded-full bg-[#17171f]/85 will-change-transform"
             initial={{ opacity: 0, x: motionData.x, width: motionData.width }}
             animate={{ opacity: 1, x: motionData.x, width: motionData.width }}

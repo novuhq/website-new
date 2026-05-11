@@ -1,0 +1,80 @@
+.inbox-component {
+  & .slick-list {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 1) 40%,
+      rgba(255, 255, 255, 1) 60%,
+      transparent 100%
+    );
+  }
+
+  & .slick-slide {
+    @apply cursor-pointer px-3 first:pl-0 last:pr-0;
+  }
+
+  & .slick-slide > div {
+    @apply h-full;
+  }
+
+  & .slick-active > div > div {
+    @apply !text-gray-10;
+  }
+
+  & .slick-dots {
+    @apply -bottom-6 !flex items-center justify-center gap-2.5;
+
+    li {
+      @apply m-0 h-[3px] w-12 rounded-full;
+
+      button {
+        @apply relative flex h-full w-full justify-center rounded-full bg-[#A3A8C333] p-0 opacity-100 transition-colors duration-300;
+        @apply before:absolute before:left-1/2 before:top-1/2 before:h-[12px] before:w-[58px] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded;
+      }
+
+      &.slick-active {
+        button {
+          @apply bg-white;
+        }
+      }
+    }
+  }
+
+  & .slick-arrow {
+    @apply absolute -top-[340px] !hidden size-8 items-center justify-center rounded-full border border-solid border-[#A3A8C3]/20 bg-[#0D111C] 2xl:!flex;
+    @apply transition-all duration-200 hover:border-[#A3A8C3]/30;
+
+    &::before {
+      @apply block h-3.5 w-2 bg-center bg-no-repeat opacity-100 content-[''];
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='14' viewBox='0 0 8 14' fill='none'%3E%3Cpath d='M1 1L7 7L1 13' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    &.slick-prev {
+      @apply -left-14;
+
+      &::before {
+        @apply -ml-0.5 rotate-180;
+      }
+    }
+
+    &.slick-next {
+      @apply -right-14;
+
+      &::before {
+        @apply ml-0.5;
+      }
+    }
+
+    &.slick-disabled {
+      @apply pointer-events-none opacity-50;
+    }
+  }
+}
+
+/* Menu hover/focus pattern for header dropdowns */
+.menu-btn:focus-within + .menu,
+.menu-btn:hover + .menu,
+.menu:hover {
+  visibility: visible;
+  opacity: 1;
+}

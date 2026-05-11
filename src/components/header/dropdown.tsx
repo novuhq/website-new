@@ -18,6 +18,7 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
       {isOpen && (
         <motion.div
           layoutId="navigation-dropdown"
+          aria-label={`${title} submenu`}
           className={cn(
             "absolute top-10.5 -left-5 rounded-[14px] border-gray-2 bg-gray-1 shadow-header-dropdown transition-[left,min-width] ease-in-out will-change-transform",
             "before:absolute before:-top-1.5 before:z-10 before:h-3.5 before:w-3.5 before:rotate-45 before:rounded-[1px] before:border before:border-gray-2 before:bg-gray-1",
@@ -26,6 +27,7 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
               "min-w-[515px] before:left-[59px] lg:-left-[22px] lg:before:left-[60px]",
             title === "Resources" &&
               "min-w-[515px] before:left-[53px] lg:-left-1.5 lg:before:left-[54px]",
+            title === "AI" && "min-w-[190px] before:left-[31px]",
             title === "Docs" && "min-w-[434px] before:left-[50px]"
           )}
           exit={{
@@ -45,14 +47,16 @@ function Dropdown({ isOpen, title, content }: IDropdownProps) {
                 )}
                 key={index}
               >
-                <p
-                  className={cn(
-                    "mb-6 text-sm leading-none -tracking-[0.01em] text-[#909090]",
-                    title === "Product" && "mb-5"
-                  )}
-                >
-                  {subtitle}
-                </p>
+                {title !== "AI" && (
+                  <p
+                    className={cn(
+                      "mb-6 text-sm leading-none -tracking-[0.01em] text-[#909090]",
+                      title === "Product" && "mb-5"
+                    )}
+                  >
+                    {subtitle}
+                  </p>
+                )}
                 {items && items.length > 0 && (
                   <ul className="flex flex-col gap-y-4">
                     {items.map(({ label, href }, itemIndex) => (

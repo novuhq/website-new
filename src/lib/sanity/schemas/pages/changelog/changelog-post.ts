@@ -105,6 +105,14 @@ export default defineType({
       type: "image",
       title: "Cover Image",
       group: GROUP.content.name,
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        }),
+      ],
     }),
     defineField({
       name: "content",

@@ -46,10 +46,10 @@ export default async function CategoryPagePagination({
   }
 
   return (
-    <main>
-      <h1 className="sr-only">
+    <div>
+      <h2 className="sr-only">
         Blog - {categoryData.title} - page {page}
-      </h1>
+      </h2>
       <PostsList title={`Posts in ${categoryData.title}`} posts={posts} />
       {totalPages > 1 && (
         <Pagination
@@ -59,7 +59,7 @@ export default async function CategoryPagePagination({
           path={category}
         />
       )}
-    </main>
+    </div>
   )
 }
 

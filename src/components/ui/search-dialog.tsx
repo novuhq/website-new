@@ -338,18 +338,19 @@ export default function SearchDialog({
         `[data-index="${selectedIndex}"]`
       )
       if (selectedElement) {
-        const blockOption = cn({
-          start: selectedIndex === 0,
-          end: selectedIndex === totalItems - 1,
-          nearest: selectedIndex > 0 && selectedIndex < totalItems - 1,
-        }) as ScrollLogicalPosition
+        const blockOption: ScrollLogicalPosition =
+          totalItems <= 1
+            ? "nearest"
+            : selectedIndex === 0
+              ? "start"
+              : selectedIndex === totalItems - 1
+                ? "end"
+                : "nearest"
 
-        if (blockOption) {
-          selectedElement.scrollIntoView({
-            behavior: "smooth",
-            block: blockOption,
-          })
-        }
+        selectedElement.scrollIntoView({
+          behavior: "smooth",
+          block: blockOption,
+        })
       }
     }
   }, [selectedIndex, totalItems, isTouchDevice])

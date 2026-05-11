@@ -17,11 +17,13 @@ export interface IChangelogCategoryData {
 
 export interface IChangelogPostData {
   _type: "changelogPost"
+  _createdAt?: string
   title: string
   slug: ISlug
   pathname: string
   authors: IAuthorData[]
   cover?: string
+  coverAlt?: string
   categories?: IChangelogCategoryData[]
   isFeatured: boolean
   publishedAt: string

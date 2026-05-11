@@ -92,6 +92,8 @@ export interface IContentCtaBlock {
   text: string
   buttonText: string
   buttonUrl: string
+  clickLocation?: string
+  clickText?: string
 }
 
 export interface IContentTabs {

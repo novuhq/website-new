@@ -51,9 +51,10 @@ export function getMetadata({
 }: Metadata) {
   const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
   const canonicalUrl = SITE_URL + withTrailingSlash(pathname)
-  const imageUrl = imagePath.startsWith("http")
-    ? imagePath
-    : SITE_URL + imagePath
+  const resolvedImagePath = imagePath || config.defaultSocialImage
+  const imageUrl = resolvedImagePath.startsWith("http")
+    ? resolvedImagePath
+    : SITE_URL + resolvedImagePath
 
   return {
     title,

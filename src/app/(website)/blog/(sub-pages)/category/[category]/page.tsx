@@ -33,13 +33,24 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     getCategoryBySlug(category, isDraftMode),
   ])
 
-  if (totalPages === 0 || !categoryData) {
+  if (!categoryData) {
     notFound()
   }
 
+  if (totalPages === 0) {
+    return (
+      <div className="pb-20 md:pb-24 xl:pb-32">
+        <h2 className="sr-only">Blog - {categoryData.title}</h2>
+        <p className="text-lg tracking-tight text-muted-foreground">
+          No posts in {categoryData.title} yet
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <main>
-      <h1 className="sr-only">Blog - {categoryData.title}</h1>
+    <div>
+      <h2 className="sr-only">Blog - {categoryData.title}</h2>
       <PostsList title={`Posts in ${categoryData.title}`} posts={posts} />
       {totalPages > 1 && (
         <Pagination
@@ -49,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           path={category}
         />
       )}
-    </main>
+    </div>
   )
 }
 

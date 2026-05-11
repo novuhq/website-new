@@ -4,7 +4,6 @@ import blog from "./pages/blog"
 import changelog from "./pages/changelog"
 import customer from "./pages/customer"
 import customersPage from "./pages/customers"
-import pricing from "./pages/pricing"
 import staticPage from "./pages/static"
 import shared from "./shared"
 
@@ -14,7 +13,6 @@ const PAGE_TYPES = [
   ...customer,
   ...blog,
   ...staticPage,
-  ...pricing,
 ]
 
 const SHARED_TYPES = [...shared]

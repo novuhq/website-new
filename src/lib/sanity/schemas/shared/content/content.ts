@@ -78,6 +78,12 @@ const content = defineField({
       options: { hotspot: true },
       fields: [
         {
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        },
+        {
           name: "caption",
           type: "string",
           title: "Caption",

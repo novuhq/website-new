@@ -18,6 +18,7 @@ interface ICodeBlockWrapperProps {
   className?: string
   children?: ReactNode
   fileName?: string
+  showCopyButton?: boolean
 }
 
 type ExpectedProps = {
@@ -104,6 +105,7 @@ function CodeBlockWrapper({
   className = "",
   children,
   fileName,
+  showCopyButton = true,
 }: ICodeBlockWrapperProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
   const blockRef = useRef<HTMLDivElement>(null)
@@ -130,21 +132,26 @@ function CodeBlockWrapper({
           {fileName}
         </div>
       )}
-      <div className="relative pr-8" ref={blockRef}>
+      <div
+        className={cn("relative", showCopyButton && "pr-8")}
+        ref={blockRef}
+      >
         {children}
-        <button
-          className={cn(
-            "absolute top-4 right-4 flex size-7 items-center justify-center rounded border border-gray-2 bg-popover text-muted-foreground",
-            "opacity-100 transition-[color,opacity] duration-300 hover:text-foreground/80 md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100",
-            isCopied && "text-foreground/80",
-            height < 50 && "!top-2.5"
-          )}
-          disabled={isCopied}
-          aria-label={cn(isCopied ? "Copied" : "Copy")}
-          onClick={() => handleCopy(code)}
-        >
-          {isCopied ? <Check size={14} /> : <Copy size={14} />}
-        </button>
+        {showCopyButton && (
+          <button
+            className={cn(
+              "absolute top-4 right-4 flex size-7 items-center justify-center rounded border border-gray-2 bg-popover text-muted-foreground",
+              "opacity-100 transition-[color,opacity] duration-300 hover:text-foreground/80 md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100",
+              isCopied && "text-foreground/80",
+              height < 50 && "!top-2.5"
+            )}
+            disabled={isCopied}
+            aria-label={cn(isCopied ? "Copied" : "Copy")}
+            onClick={() => handleCopy(code)}
+          >
+            {isCopied ? <Check size={14} /> : <Copy size={14} />}
+          </button>
+        )}
       </div>
     </Tag>
   )

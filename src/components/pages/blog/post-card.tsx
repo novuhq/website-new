@@ -49,7 +49,7 @@ function PostCard({
         )}
       </div>
       <div className="flex grow flex-col">
-        <h1>
+        <h3>
           <Link
             className="line-clamp-2 text-2xl/tight font-medium tracking-tighter text-pretty hover:text-gray-9 md:text-[1.75rem]/tight"
             href={url}
@@ -57,7 +57,7 @@ function PostCard({
           >
             {title}
           </Link>
-        </h1>
+        </h3>
         <p className="mt-2 line-clamp-3 text-base font-book tracking-tighter text-pretty text-gray-8 md:mt-3">
           {caption}
         </p>

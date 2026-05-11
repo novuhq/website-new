@@ -41,17 +41,37 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const staticPageUrl = `${siteUrl}/${staticPageSlug.current}`
 
+  const jsonLdDescription =
+    seo?.description?.length > 0
+      ? seo.description
+      : getExcerpt({ content: portableToPlain(content), length: 160 })
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: seo?.title || title,
-    description: seo?.description || "",
-    datePublished: publishedAt,
+    description: jsonLdDescription,
+    datePublished: publishedAt || staticPage._createdAt,
     url: staticPageUrl,
+    image:
+      seo?.socialImage || `${siteUrl}/social-previews/index.jpg`,
+    author: {
+      "@type": "Organization",
+      name: "Novu",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Novu",
+      url: "https://novu.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://novu.co/images/logo.svg",
+      },
+    },
   }
 
   return (
-    <main className="pt-8 md:pt-11 lg:pt-16">
+    <div className="pt-8 md:pt-11 lg:pt-16">
       <section className="content relative z-10">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <article className="grid w-full grid-cols-1 gap-y-8 md:gap-y-10 lg:grid-cols-[auto_16rem] lg:gap-y-14 xl:grid-cols-[16rem_auto_16rem]">
@@ -102,7 +122,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-    </main>
+    </div>
   )
 }
 

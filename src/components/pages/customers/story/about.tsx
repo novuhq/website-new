@@ -14,7 +14,7 @@ export default function About({
   "logo" | "name" | "about" | "industry" | "channelsList"
 >) {
   return (
-    <dl className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
+    <div className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
       <Image
         className="h-auto w-36"
         src={logo.url}
@@ -23,15 +23,16 @@ export default function About({
         height={logo.height}
         priority
         quality={100}
+        sizes="144px"
       />
-      <div className="mt-7 flex flex-col gap-2">
-        <dt className="leading-tight font-medium tracking-tighter">About</dt>
-        <dd className="text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
-          {about}
-        </dd>
-      </div>
-      <div className="mt-5 flex flex-col gap-5 md:mt-6 md:flex-row md:gap-6 lg:flex-col">
-        <div className="flex flex-col gap-2 md:mt-0 md:w-1/2 lg:w-auto">
+      <dl className="mt-7 grid grid-cols-1 gap-y-5 md:grid-cols-2 md:gap-x-6 md:gap-y-6 lg:grid-cols-1">
+        <div className="flex flex-col gap-2 md:col-span-2 lg:col-span-1">
+          <dt className="leading-tight font-medium tracking-tighter">About</dt>
+          <dd className="text-sm leading-snug tracking-tighter text-muted-foreground lg:-mt-px">
+            {about}
+          </dd>
+        </div>
+        <div className="flex flex-col gap-2">
           <dt className="leading-tight font-medium tracking-tighter">
             Industry
           </dt>
@@ -40,7 +41,7 @@ export default function About({
           </dd>
         </div>
         {channelsList && channelsList.length > 0 && (
-          <div className="flex flex-col gap-2.5 md:w-1/2 lg:w-auto">
+          <div className="flex flex-col gap-2.5">
             <dt className="leading-tight font-medium tracking-tighter">
               Channels
             </dt>
@@ -49,7 +50,7 @@ export default function About({
             </dd>
           </div>
         )}
-      </div>
-    </dl>
+      </dl>
+    </div>
   )
 }

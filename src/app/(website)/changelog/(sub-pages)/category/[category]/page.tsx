@@ -19,7 +19,7 @@ export default async function CategoryPage({
     category
 
   return (
-    <main className="pb-12 md:pb-14 lg:pb-16 xl:pb-24">
+    <div className="pb-12 md:pb-14 lg:pb-16 xl:pb-24">
       <ChangelogHero
         title="Changelog"
         description={`Latest updates and improvements in the ${categoryTitle.toLowerCase()} category.`}
@@ -34,7 +34,7 @@ export default async function CategoryPage({
           </p>
         </section>
       )}
-    </main>
+    </div>
   )
 }
 

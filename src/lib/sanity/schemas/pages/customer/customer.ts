@@ -103,6 +103,14 @@ export default defineType({
       title: "Logo",
       description: "Should be white with slight transparency",
       group: GROUP.content.name,
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        }),
+      ],
       validation: (rule: ImageRule) =>
         rule.error("You have to fill in this field.").required(),
     }),
@@ -176,6 +184,14 @@ export default defineType({
       title: "Illustration",
       description: "Main illustrations for the story (optional)",
       group: GROUP.content.name,
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        }),
+      ],
       hidden: ({ document }) => document?.type !== "story",
     }),
     defineField({
@@ -207,6 +223,14 @@ export default defineType({
       type: "image",
       title: "Author Photo",
       group: GROUP.content.name,
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Describe the image for accessibility and SEO",
+        }),
+      ],
       fieldset: "quote",
       hidden: ({ document }) => document?.type !== "story",
     }),

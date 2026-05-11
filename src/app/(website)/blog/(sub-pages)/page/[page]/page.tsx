@@ -42,8 +42,8 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <>
-      <main>
-        <h1 className="sr-only">Blog - page {currentPage}</h1>
+      <div>
+        <h2 className="sr-only">Blog - page {currentPage}</h2>
         <PostsList title="All posts" posts={posts} />
         {totalPages > 1 && (
           <Pagination
@@ -52,7 +52,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             pageCount={totalPages}
           />
         )}
-      </main>
+      </div>
     </>
   )
 }

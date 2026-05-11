@@ -198,7 +198,7 @@ function getComponents(
             <Image
               className="aspect-video h-auto w-full rounded-lg object-cover"
               src={previewCover}
-              alt=""
+              alt="Video thumbnail"
               width={renderWidth}
               height={Math.ceil(renderWidth / 1.777)}
             />

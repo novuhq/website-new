@@ -4,7 +4,7 @@ import parse from "html-react-parser"
 import { BundledLanguage } from "shiki/langs"
 
 import { ICodeBlock } from "@/types/common"
-import { highlight } from "@/lib/shiki"
+import { highlight, TCodeThemeVariant } from "@/lib/shiki"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 import "@/styles/shiki.css"
@@ -21,6 +21,8 @@ interface CodeChildProps {
 interface CodeBlockProps extends ICodeBlock {
   className?: string
   as?: "figure" | "div"
+  themeVariant?: TCodeThemeVariant
+  showCopyButton?: boolean
   children?: React.ReactElement<CodeChildProps> | React.ReactNode
 }
 
@@ -30,6 +32,8 @@ async function CodeBlock({
   code = "",
   className,
   fileName,
+  themeVariant,
+  showCopyButton,
   children,
   highlightedLines,
 }: CodeBlockProps) {
@@ -50,17 +54,24 @@ async function CodeBlock({
   const html = await highlight(
     resolvedCode,
     resolvedLanguage.toLowerCase() as BundledLanguage,
-    resolvedHighlightedLines
+    resolvedHighlightedLines,
+    themeVariant
   )
 
   const countLines = html.split("\n").length
 
   return (
-    <CodeBlockWrapper className={className} fileName={resolvedFileName} as={as}>
+    <CodeBlockWrapper
+      className={className}
+      fileName={resolvedFileName}
+      as={as}
+      showCopyButton={showCopyButton}
+    >
       <ScrollArea className="w-full">
         <div
           className={clsx(
-            "px-4 text-left font-mono text-sm",
+            "px-4 text-left font-mono",
+            themeVariant === "mcp-snippet" ? "text-xs md:text-sm" : "text-sm",
             `code-block-${resolvedLanguage}`,
             countLines > 1 ? "py-4" : "py-3.5"
           )}
