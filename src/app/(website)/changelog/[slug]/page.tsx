@@ -160,7 +160,7 @@ export default async function ChangelogPostPage({
     url: postUrl,
     image:
       cover ||
-      `${siteUrl}/api/og?title=${encodeURIComponent(title)}`,
+      `${siteUrl}/api/og?template=changelog&title=${encodeURIComponent(title)}`,
     author:
       authors && authors.length > 0
         ? authors.map((author) => ({
