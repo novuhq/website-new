@@ -149,7 +149,7 @@ export const suprsendComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and Managed VPC on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
@@ -221,7 +221,7 @@ export const suprsendComparisonData: IComparisonPageData = {
       ],
       [
         "Deployment model",
-        "Cloud, self-hosted, and Managed VPC options on all tiers",
+        "Cloud and On Prem Self-Hosted on all tiers",
         "Self-hosted only on Enterprise plan",
         <>
           With Novu, you can <span>self-host from day one</span> for free

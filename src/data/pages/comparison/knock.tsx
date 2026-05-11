@@ -152,7 +152,7 @@ export const knockComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and Managed VPC on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
@@ -223,7 +223,7 @@ export const knockComparisonData: IComparisonPageData = {
       ],
       [
         "Deployment model",
-        "Cloud, self-hosted, and Managed VPC options",
+        "Cloud and On Prem Self-Hosted",
         "Hosted platform",
         <>
           Choose the deployment model that fits your requirements instead of
@@ -339,7 +339,7 @@ export const knockComparisonData: IComparisonPageData = {
           answer: (
             <p>
               No. You can use Novu as a cloud product on the Free, Pro, or Team
-              plans, and move to self-hosted or Managed VPC only if you later
+              plans, and move to self-hosted only if you later
               need more control.
             </p>
           ),
