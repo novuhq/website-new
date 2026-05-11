@@ -382,12 +382,13 @@ export const pricingPageData: IPricingPageData = {
               <li>Custom retention policies (feed, audit, logs)</li>
               <li>Custom delay & digest windows</li>
               <li>HIPAA BAA</li>
-              <li>Dedicated SSO (SAML / OIDC, SCIM)</li>
+              <li>Dedicated SSO (SAML / OIDC)</li>
+              <li>Directory Sync (SCIM)</li>
               <li>Private Slack/Teams support channel</li>
               <li>
                 Advanced data residency (SG, UK, AU, JP, KR, custom regions)
               </li>
-              <li>Self-hosted + Managed VPC deployment options</li>
+              <li>Self-hosted deployment options</li>
             </ul>
           </>
         ),
@@ -840,6 +841,22 @@ export const pricingPageData: IPricingPageData = {
           value: "7d",
         },
         title: "Throttle Window",
+      },
+      {
+        enterprise: {
+          booleanValue: true,
+        },
+        free: {
+          booleanValue: true,
+        },
+        isGroupTitle: false,
+        pro: {
+          booleanValue: true,
+        },
+        team: {
+          booleanValue: true,
+        },
+        title: "HTTP Step",
       },
       {
         enterprise: {
@@ -1320,18 +1337,41 @@ export const pricingPageData: IPricingPageData = {
         team: {
           booleanValue: false,
         },
-        title: "Custom SSO / OIDC, SCIM",
+        title: "Custom SSO / OIDC",
         tooltip: (
           <p>
             <strong>Enterprise authentication</strong> that allows organizations
             to integrate their own identity providers (Okta, Azure AD, Auth0,
             etc.) for user authentication.
             {"\n\n"}
-            Supports <strong>SAML SSO, OIDC, SCIM</strong> protocols. Enables
+            Supports <strong>SAML SSO, OIDC</strong> protocols. Enables
             centralized user management, enforcement of corporate security
             policies, and compliance with enterprise authentication
             requirements—distinct from standard built-in authentication
             (Google/GitHub).
+          </p>
+        ),
+      },
+      {
+        enterprise: {
+          booleanValue: true,
+        },
+        free: {
+          booleanValue: false,
+        },
+        isGroupTitle: false,
+        pro: {
+          booleanValue: false,
+        },
+        team: {
+          booleanValue: false,
+        },
+        title: "Directory Sync (SCIM)",
+        tooltip: (
+          <p>
+            <strong>Directory Sync (SCIM)</strong> allows organizations to
+            synchronize user data from their directory service (e.g., Active
+            Directory, LDAP) into Novu. Supports <strong>SCIM</strong> protocol.
           </p>
         ),
       },
@@ -1753,41 +1793,6 @@ export const pricingPageData: IPricingPageData = {
             and premium features, with compliance certifications and
             professional services. Deployable via Kubernetes/Helm with
             horizontal scaling support.
-          </p>
-        ),
-      },
-      {
-        enterprise: {
-          booleanValue: true,
-        },
-        free: {
-          booleanValue: false,
-        },
-        isGroupTitle: false,
-        pro: {
-          booleanValue: false,
-        },
-        team: {
-          booleanValue: false,
-          value: [],
-        },
-        title: "Managed On-Prem",
-        tooltip: (
-          <p>
-            <strong>Fully managed on-premises deployment</strong> where Novu
-            operates and maintains the infrastructure within your own
-            environment or dedicated infrastructure. Combines the control and
-            compliance benefits of on-premises hosting with the operational
-            simplicity of a managed service.
-            {"\n\n"}
-            Provides{" "}
-            <strong>
-              enhanced security, compliance guarantees, and performance SLAs
-            </strong>{" "}
-            with complete data isolation. Includes multi-region support for data
-            residency requirements. Ideal for enterprises with strict regulatory
-            requirements or data sovereignty needs without the operational
-            burden.
           </p>
         ),
       },
