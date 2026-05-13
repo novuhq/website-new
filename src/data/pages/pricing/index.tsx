@@ -1739,37 +1739,6 @@ export const pricingPageData: IPricingPageData = {
           booleanValue: true,
         },
         free: {
-          booleanValue: true,
-        },
-        isGroupTitle: false,
-        pro: {
-          booleanValue: true,
-        },
-        team: {
-          booleanValue: true,
-        },
-        title: "Self-hosted (OSS)",
-        tooltip: (
-          <p>
-            <strong>Open-source, self-deployable version</strong> (MIT licensed)
-            that runs on your own infrastructure, giving you complete control
-            over your notification system and data.
-            {"\n\n"}
-            Deploy via{" "}
-            <strong>
-              Docker Compose, Kubernetes/Helm, or manual installation
-            </strong>
-            . Ideal for organizations with strict data residency requirements,
-            compliance needs, or avoiding vendor lock-in. Includes unlimited
-            retention and community-driven support.
-          </p>
-        ),
-      },
-      {
-        enterprise: {
-          booleanValue: true,
-        },
-        free: {
           booleanValue: false,
         },
         isGroupTitle: false,
