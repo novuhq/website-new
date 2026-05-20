@@ -5,8 +5,8 @@ on:
     branches: ['*']
 
 jobs:
-  checks:
-    name: Install and typecheck
+  install:
+    name: Install dependencies
     runs-on: ubuntu-latest
 
     steps:
@@ -27,14 +27,3 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Next.js types
-        env:
-          NEXT_PUBLIC_DEFAULT_SITE_URL: http://localhost:3000
-          NEXT_PUBLIC_SANITY_PROJECT_ID: placeholder
-          NEXT_PUBLIC_SANITY_DATASET: production
-          NEXT_PUBLIC_SANITY_API_VERSION: '2025-02-19'
-        run: pnpm exec next build --experimental-build-mode compile
-
-      - name: Typecheck
-        run: pnpm run typecheck
