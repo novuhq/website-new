@@ -73,10 +73,7 @@ const agentTemplateFields = `
     ${templateReferenceFields}
   },
   tools[]->{
-    ${templateReferenceFields},
-    mcpServer->{
-      ${templateMcpServerFields}
-    }
+    ${templateReferenceFields}
   },
   systemPrompt
 `

@@ -37,25 +37,12 @@ export default defineType({
       rows: 3,
       validation: (rule: StringRule) => rule.max(240),
     }),
-    defineField({
-      name: "mcpServer",
-      title: "MCP server",
-      type: "reference",
-      to: [{ type: "templateMcpServer" }],
-    }),
     orderRankField({ type: "templateTool" }),
   ],
   preview: {
     select: {
       title: "name",
-      description: "description",
-      mcpServerName: "mcpServer.name",
-    },
-    prepare({ title, description, mcpServerName }) {
-      return {
-        title,
-        subtitle: mcpServerName || description,
-      }
+      subtitle: "description",
     },
   },
 })

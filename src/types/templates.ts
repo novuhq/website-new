@@ -36,9 +36,7 @@ export interface ITemplateAvatarData {
   lightImage: ITemplateImage
 }
 
-export interface ITemplateToolData extends ITemplateReferenceData {
-  mcpServer?: ITemplateMcpServerData
-}
+export type ITemplateToolData = ITemplateReferenceData
 
 export interface IAgentTemplateData {
   _id: string
