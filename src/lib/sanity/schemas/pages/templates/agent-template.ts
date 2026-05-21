@@ -109,7 +109,7 @@ export default defineType({
       name: "skillsList",
       title: "Skills",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "templateSkill" }] }],
+      of: [{ type: "string" }],
       group: TEMPLATE_GROUP.provisioning.name,
       validation: (rule) => rule.required().min(1).unique(),
     }),

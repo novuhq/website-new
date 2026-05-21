@@ -3,7 +3,6 @@ import {
   FilterIcon,
   PlugIcon,
   RobotIcon,
-  SparklesIcon,
   UserIcon,
   WrenchIcon,
 } from "@sanity/icons"
@@ -54,13 +53,6 @@ const templatesStructure = (
             title: "Channels",
             icon: BellIcon,
             type: "templateChannel",
-            context,
-            S,
-          }),
-          orderableDocumentListDeskItem({
-            title: "Skills",
-            icon: SparklesIcon,
-            type: "templateSkill",
             context,
             S,
           }),

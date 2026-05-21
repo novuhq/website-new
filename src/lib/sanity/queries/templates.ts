@@ -69,9 +69,9 @@ const agentTemplateFields = `
   channels[]->{
     ${templateChannelFields}
   },
-  skillsList[]->{
-    ${templateReferenceFields}
-  },
+  "skillsList": skillsList[]{
+    "value": select(defined(_ref) => @->slug.current, @)
+  }.value,
   tools[]->{
     ${templateReferenceFields}
   },
@@ -109,7 +109,9 @@ export const agentTemplateSignupPayloadByIdQuery = groq`
     "category": category->slug.current,
     "mcpServerList": mcpServerList[]->slug.current,
     "channels": channels[]->slug.current,
-    "skillsList": skillsList[]->slug.current,
+    "skillsList": skillsList[]{
+      "value": select(defined(_ref) => @->slug.current, @)
+    }.value,
     "tools": tools[]->slug.current,
     systemPrompt
   }

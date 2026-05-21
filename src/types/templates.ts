@@ -49,7 +49,7 @@ export interface IAgentTemplateData {
   category: ITemplateCategoryData
   mcpServerList: ITemplateMcpServerData[]
   channels: ITemplateChannelData[]
-  skillsList: ITemplateReferenceData[]
+  skillsList: string[]
   tools?: ITemplateToolData[]
   systemPrompt: string
 }
