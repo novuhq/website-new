@@ -28,6 +28,7 @@ const templatesStructure = (
             .title("Templates")
             .icon(RobotIcon)
             .child(S.documentTypeList("agentTemplate").title("All Templates")),
+          S.divider(),
           orderableDocumentListDeskItem({
             title: "Avatars",
             icon: UserIcon,
