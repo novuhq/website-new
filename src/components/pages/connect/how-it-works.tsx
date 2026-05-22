@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { type MutableRefObject, useEffect, useRef, useState } from "react"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 
@@ -63,12 +63,18 @@ function ConnectVideoCard() {
   )
 }
 
-function ProgressLine({ progress }: { progress: number }) {
+function ProgressLine({
+  setProgressNode,
+}: {
+  setProgressNode: (node: HTMLDivElement | null) => void
+}) {
   return (
     <div className="relative h-px w-full overflow-hidden bg-[rgba(51,51,71,0.45)]">
       <div
-        className="h-full bg-gray-8 transition-[width] duration-150 ease-linear"
-        style={{ width: `${progress * 100}%` }}
+        ref={setProgressNode}
+        className="h-full origin-left bg-gray-8 will-change-transform"
+        style={{ transform: "scaleX(0)" }}
+        data-connect-progress-line
       />
     </div>
   )
@@ -140,10 +146,10 @@ function ConnectAgentButton() {
 
 function DesktopStepsPanel({
   activeStep,
-  progress,
+  progressLineRefs,
 }: {
   activeStep: number
-  progress: [number, number, number]
+  progressLineRefs: MutableRefObject<Array<HTMLDivElement | null>>
 }) {
   return (
     <div className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none">
@@ -155,7 +161,11 @@ function DesktopStepsPanel({
               description={step.description}
               isActive={activeStep === index}
             />
-            <ProgressLine progress={progress[index]} />
+            <ProgressLine
+              setProgressNode={(node) => {
+                progressLineRefs.current[index] = node
+              }}
+            />
           </div>
         ))}
       </div>
@@ -187,14 +197,17 @@ function MobileStepsWithVideos() {
 
 function HowItWorks() {
   const mediaRef = useRef<HTMLDivElement>(null)
+  const progressLineRefs = useRef<Array<HTMLDivElement | null>>([])
+  const activeStepRef = useRef(0)
   const [activeStep, setActiveStep] = useState(0)
-  const [progress, setProgress] = useState<[number, number, number]>([0, 0, 0])
 
   useEffect(() => {
     const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY)
-    let frame = 0
+    let frame: number | null = null
 
     const updateProgress = () => {
+      frame = null
+
       if (!desktopQuery.matches) {
         return
       }
@@ -222,31 +235,53 @@ function HowItWorks() {
         Math.floor(scrollProgress * VIDEO_TO_STEP.length),
         VIDEO_TO_STEP.length - 1
       )
+      const nextActiveStep = VIDEO_TO_STEP[activeVideo]
 
-      setActiveStep(VIDEO_TO_STEP[activeVideo])
-      setProgress(nextProgress)
+      nextProgress.forEach((value, index) => {
+        const progressLine = progressLineRefs.current[index]
+
+        if (progressLine) {
+          progressLine.style.transform = `scaleX(${value})`
+        }
+      })
+
+      if (activeStepRef.current !== nextActiveStep) {
+        activeStepRef.current = nextActiveStep
+        setActiveStep(nextActiveStep)
+      }
     }
 
     const scheduleUpdate = () => {
-      cancelAnimationFrame(frame)
+      if (frame !== null) {
+        return
+      }
+
       frame = requestAnimationFrame(updateProgress)
     }
 
     scheduleUpdate()
     window.addEventListener("scroll", scheduleUpdate, { passive: true })
+    window.addEventListener("scrollend", scheduleUpdate, { passive: true })
     window.addEventListener("resize", scheduleUpdate)
     desktopQuery.addEventListener("change", scheduleUpdate)
 
     return () => {
-      cancelAnimationFrame(frame)
+      if (frame !== null) {
+        cancelAnimationFrame(frame)
+      }
+
       window.removeEventListener("scroll", scheduleUpdate)
+      window.removeEventListener("scrollend", scheduleUpdate)
       window.removeEventListener("resize", scheduleUpdate)
       desktopQuery.removeEventListener("change", scheduleUpdate)
     }
   }, [])
 
   return (
-    <section className="pt-28 md:pt-36 lg:pt-44 xl:pt-50">
+    <section
+      className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+      data-connect-section="how-it-works"
+    >
       <div className="mx-auto flex w-full max-w-304 flex-col items-start gap-16 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full max-w-174.75 flex-col items-start gap-5">
           <div className="flex items-center gap-2">
@@ -264,7 +299,10 @@ function HowItWorks() {
         <MobileStepsWithVideos />
 
         <div className="hidden w-full gap-12 lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start xl:grid-cols-[418px_704px] xl:gap-23.5">
-          <DesktopStepsPanel activeStep={activeStep} progress={progress} />
+          <DesktopStepsPanel
+            activeStep={activeStep}
+            progressLineRefs={progressLineRefs}
+          />
 
           <div ref={mediaRef} className="flex w-full flex-col gap-8">
             {Array.from({ length: VIDEO_TO_STEP.length }).map((_, index) => (
