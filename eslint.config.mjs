@@ -3,9 +3,27 @@ import nextPlugin from "@next/eslint-plugin-next"
 import tseslint from "typescript-eslint"
 
 const eslintConfig = [
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      ".next-docs/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        module: "readonly",
+        process: "readonly",
+        require: "readonly",
+      },
+    },
     plugins: {
       "@next/next": nextPlugin,
     },

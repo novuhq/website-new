@@ -41,6 +41,12 @@ export const SEO_DATA = {
       "Browse all notification providers supported by Novu. Connect email, SMS, push, in-app, and chat providers to your stack with a unified API.",
     pathname: ROUTE.integrationsChannels as string,
   },
+  connect: {
+    title: `Connect | ${config.projectName}`,
+    description:
+      "Connect your notification stack to Novu and manage multi-channel delivery from one place.",
+    pathname: ROUTE.connect as string,
+  },
   mcp: {
     title: "Novu MCP Server — Add Notifications to Any AI Agent",
     description:

@@ -285,6 +285,20 @@
   }
 }
 
+@utility text-swap-layer {
+  transition-property: translate, opacity;
+  transition-duration: 300ms, 240ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
+  will-change: translate, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-swap-layer {
+    transition: none;
+    will-change: auto;
+  }
+}
+
 @utility section-container {
   @apply mx-auto max-w-272 px-5 md:px-8 2xl:px-0;
 }
