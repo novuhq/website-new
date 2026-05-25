@@ -28,6 +28,30 @@ export const REVALIDATION_TYPES = {
     tags: ["staticPage"],
     paths: ["/app/(website)/(static)/[slug]"],
   },
+  agentTemplate: {
+    types: ["agentTemplate"],
+    tags: ["agentTemplate"],
+  },
+  templateAvatar: {
+    types: ["templateAvatar"],
+    tags: ["agentTemplate", "templateAvatar"],
+  },
+  templateCategory: {
+    types: ["templateCategory"],
+    tags: ["agentTemplate", "templateCategory"],
+  },
+  templateChannel: {
+    types: ["templateChannel"],
+    tags: ["agentTemplate", "templateChannel"],
+  },
+  templateMcpServer: {
+    types: ["templateMcpServer"],
+    tags: ["agentTemplate", "templateMcpServer"],
+  },
+  templateTool: {
+    types: ["templateTool"],
+    tags: ["agentTemplate", "templateTool"],
+  },
 } as const
 
 export const WEBHOOK_TYPES = Object.values(REVALIDATION_TYPES).flatMap(
@@ -41,7 +65,7 @@ export const REVALIDATION_CONFIG: Record<WebhookType, RevalidationConfigItem> =
         acc[type] = {
           type: type,
           tags: group.tags,
-          paths: group.paths,
+          paths: "paths" in group ? group.paths : undefined,
         }
       })
       return acc
