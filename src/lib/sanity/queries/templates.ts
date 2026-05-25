@@ -22,14 +22,14 @@ const templateReferenceFields = `
 const templateChannelFields = `
   ${templateReferenceFields},
   "isComingSoon": isComingSoon == true,
-  "icon": {
+  "icon": icon {
     ${imageFields}
   }
 `
 
 const templateIconReferenceFields = `
   ${templateReferenceFields},
-  "icon": {
+  "icon": icon {
     ${imageFields}
   }
 `
@@ -42,10 +42,10 @@ const templateMcpServerFields = `
 const templateAvatarFields = `
   "id": slug.current,
   name,
-  "darkImage": {
+  "darkImage": darkImage {
     ${imageFields}
   },
-  "lightImage": {
+  "lightImage": lightImage {
     ${imageFields}
   }
 `
@@ -81,6 +81,17 @@ const agentTemplateFields = `
 export const agentTemplatesQuery = groq`
   *[_type == "agentTemplate"] | order(category->orderRank asc, name asc) {
     ${agentTemplateFields}
+  }
+`
+
+export const agentTemplatesSectionQuery = groq`
+  {
+    "categories": *[_type == "templateCategory"] | order(orderRank asc) {
+      ${templateCategoryFields}
+    },
+    "templates": *[_type == "agentTemplate"] | order(category->orderRank asc, name asc) {
+      ${agentTemplateFields}
+    }
   }
 `
 

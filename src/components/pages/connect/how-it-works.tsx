@@ -41,21 +41,21 @@ const VIDEOS = [
 
 const STEPS = [
   {
-    title: "Prepare your agent",
+    title: "Start from a template, or bring your own",
     description:
-      "Select Claude managed agents, paste your Anthropic API key, and configure your agent. Create a new one or import an existing Claude agent you've already built.",
+      "Pick a pre-built agent template with prompts, tools, and skills already wired up, or point Novu Connect at the Claude Managed Agent you have already built.",
     videoIndexes: [0, 1],
   },
   {
-    title: "Connect the MCP tools and skills",
+    title: "Keep your tools and skills",
     description:
       "Connect the sources your agent relies on, from docs and code to MCP tools and product data, so it can work with real context.",
     videoIndexes: [2, 3],
   },
   {
-    title: "Work where teams work",
+    title: "Show up where work happens",
     description:
-      "Launch the same agent across Slack, WhatsApp, email, and more, with one setup, unified delivery, and visibility in one place.",
+      "Bring the same agent into the tools your team already uses, so it can answer questions, move work forward, and stay visible in one place.",
     videoIndexes: [4],
   },
 ] as const
@@ -360,7 +360,7 @@ function HowItWorks() {
           </div>
 
           <h2 className="max-w-134 text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
-            Everything your agent needs to run
+            Everything your agent needs to run like a teammate
           </h2>
         </div>
 

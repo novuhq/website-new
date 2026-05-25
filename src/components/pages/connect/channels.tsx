@@ -214,8 +214,7 @@ function Channels() {
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-12 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full max-w-[874.109375px] flex-col items-center gap-4 text-center">
           <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
-            Connect your agent to work with you in your environment — as a
-            teammate in any channel
+            Work with your agent like a teammate in any channel
           </h2>
           <p className="max-w-150 text-base leading-normal font-normal tracking-tighter text-gray-8 md:text-lg">
             Pick one. Or all of them. Your agent shows up everywhere at once.

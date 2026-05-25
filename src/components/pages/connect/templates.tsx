@@ -6,182 +6,46 @@ import type { ReactNode } from "react"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import { ChevronDown } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { flushSync } from "react-dom"
 
+import type {
+  IAgentTemplateData,
+  IAgentTemplatesSectionData,
+  ITemplateCategoryData,
+  ITemplateImage,
+} from "@/types/templates"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-const TEMPLATE_CATEGORIES = [
-  "All",
-  "Product",
-  "Marketing",
-  "Sales",
-  "Support / CS",
-  "Finance",
-  "Engineering",
-] as const
-
 const INITIAL_TEMPLATE_COUNT = 6
+const ALL_TEMPLATES_CATEGORY = {
+  id: "all",
+  title: "All",
+} satisfies ITemplateFilterCategory
 
-type TemplateCategory = (typeof TEMPLATE_CATEGORIES)[number]
-type TemplateCardCategory = Exclude<TemplateCategory, "All">
+interface ITemplateFilterCategory {
+  id: string
+  title: string
+}
 
 interface ITemplateBadge {
   label: string
+  icon?: ITemplateImage | null
 }
 
 interface ITemplateCard {
+  id: string
   title: string
   agent: string
-  category: TemplateCardCategory
+  categoryId: string
+  category: string
   quote: string
+  avatar?: ITemplateImage | null
   connectors: ITemplateBadge[]
   channels: ITemplateBadge[]
 }
-
-const TEMPLATES: ITemplateCard[] = [
-  {
-    title: "Product insights",
-    agent: "Iris",
-    category: "Product",
-    quote:
-      "“Catches funnel drops before standup. PMs stop checking dashboards.”",
-    connectors: [
-      { label: "Mixpanel" },
-      { label: "Linear" },
-      { label: "Notion" },
-    ],
-    channels: [{ label: "Slack" }],
-  },
-  {
-    title: "Release notes",
-    agent: "Rex",
-    category: "Product",
-    quote: "“Turns merged PRs into release notes nobody has to write.”",
-    connectors: [{ label: "GitHub" }, { label: "Linear" }, { label: "Notion" }],
-    channels: [{ label: "Slack" }, { label: "Email" }],
-  },
-  {
-    title: "Ad performance",
-    agent: "Addy",
-    category: "Marketing",
-    quote: "“Spots budget bleed within hours, not weeks.”",
-    connectors: [
-      { label: "Google Ads" },
-      { label: "Meta Ads" },
-      { label: "Attio" },
-    ],
-    channels: [{ label: "WhatsApp" }, { label: "Email" }],
-  },
-  {
-    title: "Content distribution",
-    agent: "Cleo",
-    category: "Marketing",
-    quote:
-      "“Every published post lands in the right channel and right list. No more ‘did we tweet that?’”",
-    connectors: [
-      { label: "Notion" },
-      { label: "LinkedIn" },
-      { label: "HubSpot" },
-    ],
-    channels: [{ label: "Slack" }, { label: "Email" }],
-  },
-  {
-    title: "Pipeline coach",
-    agent: "Pip",
-    category: "Sales",
-    quote:
-      "“Flags stalled deals before forecast call. Reps know which deal to work today.”",
-    connectors: [{ label: "Attio" }, { label: "Grain" }, { label: "Gmail" }],
-    channels: [{ label: "Slack" }, { label: "SMS" }],
-  },
-  {
-    title: "Pre-call researcher",
-    agent: "Brief",
-    category: "Sales",
-    quote: "“Every call starts with context. Reps walk in knowing the room.”",
-    connectors: [
-      { label: "Attio" },
-      { label: "LinkedIn" },
-      { label: "Notion" },
-    ],
-    channels: [{ label: "Slack DM" }],
-  },
-  {
-    title: "Escalation brief",
-    agent: "Ember",
-    category: "Support / CS",
-    quote:
-      "“Summarizes hot accounts before the handoff. Every escalation starts with context.”",
-    connectors: [
-      { label: "Zendesk" },
-      { label: "Linear" },
-      { label: "Notion" },
-    ],
-    channels: [{ label: "Slack" }, { label: "Email" }],
-  },
-  {
-    title: "Bug triage",
-    agent: "Delta",
-    category: "Engineering",
-    quote:
-      "“Groups fresh reports by impact, owner, and release. Triage starts already sorted.”",
-    connectors: [{ label: "GitHub" }, { label: "Sentry" }, { label: "Linear" }],
-    channels: [{ label: "Slack" }],
-  },
-  {
-    title: "Revenue digest",
-    agent: "Ledger",
-    category: "Finance",
-    quote:
-      "“Turns billing movement into a clean morning digest for finance and ops.”",
-    connectors: [
-      { label: "Stripe" },
-      { label: "HubSpot" },
-      { label: "Sheets" },
-    ],
-    channels: [{ label: "Email" }, { label: "Slack" }],
-  },
-  {
-    title: "Incident notifier",
-    agent: "Onyx",
-    category: "Engineering",
-    quote:
-      "“Keeps the incident room current, from alert to customer-facing follow-up.”",
-    connectors: [
-      { label: "Datadog" },
-      { label: "Statuspage" },
-      { label: "Linear" },
-    ],
-    channels: [{ label: "Slack" }, { label: "Email" }],
-  },
-  {
-    title: "Renewal watch",
-    agent: "Atlas",
-    category: "Finance",
-    quote:
-      "“Flags upcoming renewals, usage shifts, and risk signals before the forecast changes.”",
-    connectors: [
-      { label: "Stripe" },
-      { label: "Salesforce" },
-      { label: "Notion" },
-    ],
-    channels: [{ label: "Slack" }],
-  },
-  {
-    title: "Support QA",
-    agent: "Echo",
-    category: "Support / CS",
-    quote:
-      "“Samples conversations, catches misses, and sends coaching notes without another dashboard.”",
-    connectors: [
-      { label: "Intercom" },
-      { label: "Zendesk" },
-      { label: "Notion" },
-    ],
-    channels: [{ label: "Email" }, { label: "Slack" }],
-  },
-]
 
 const TEMPLATE_CARD_HOVER_BACKGROUND =
   "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 384 428' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='0.11999999731779099'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-32.568 46.387 -88.035 -76.748 313.18 14.627)'><stop stop-color='rgba(102,122,152,1)' offset='0'/><stop stop-color='rgba(102,122,152,0)' offset='0.88967'/></radialGradient></defs></svg>\"), linear-gradient(90deg, rgba(15, 15, 21, 0.8) 0%, rgba(15, 15, 21, 0.8) 100%)"
@@ -189,6 +53,64 @@ const TEMPLATE_BUTTON_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.06) 8.6198%, rgba(176, 166, 191, 0.03) 113.79%)"
 const TEMPLATE_BUTTON_HOVER_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.24) 8.6198%, rgba(176, 166, 191, 0.12) 113.79%)"
+
+function normalizeTemplate(template: IAgentTemplateData): ITemplateCard {
+  return {
+    id: template.id,
+    title: template.name,
+    agent: template.agentName,
+    categoryId: template.category?.id ?? "",
+    category: template.category?.title ?? "",
+    quote: template.summary,
+    avatar: template.avatar?.darkImage,
+    connectors: (template.mcpServerList ?? []).map((connector) => ({
+      label: connector.name,
+      icon: connector.icon,
+    })),
+    channels: (template.channels ?? []).map((channel) => ({
+      label: channel.name,
+      icon: channel.icon,
+    })),
+  }
+}
+
+function normalizeCategory(
+  category?: ITemplateCategoryData | null
+): ITemplateFilterCategory | null {
+  if (!category?.id || !category.title) {
+    return null
+  }
+
+  return {
+    id: category.id,
+    title: category.title,
+  }
+}
+
+function getTemplateFilterCategories({
+  categories,
+  templates,
+}: IAgentTemplatesSectionData): ITemplateFilterCategory[] {
+  const categoryMap = new Map<string, ITemplateFilterCategory>()
+
+  for (const category of categories ?? []) {
+    const normalizedCategory = normalizeCategory(category)
+
+    if (normalizedCategory) {
+      categoryMap.set(normalizedCategory.id, normalizedCategory)
+    }
+  }
+
+  for (const template of templates ?? []) {
+    const normalizedCategory = normalizeCategory(template.category)
+
+    if (normalizedCategory && !categoryMap.has(normalizedCategory.id)) {
+      categoryMap.set(normalizedCategory.id, normalizedCategory)
+    }
+  }
+
+  return [ALL_TEMPLATES_CATEGORY, ...categoryMap.values()]
+}
 
 function TemplateActionLink({
   children,
@@ -223,27 +145,41 @@ function TemplateActionLink({
   )
 }
 
-function TemplateAvatarPlaceholder() {
+function TemplateAvatar({ image }: { image?: ITemplateImage | null }) {
+  const imageSrc = image?.url || undefined
+
   return (
     <span className="relative size-11 shrink-0 overflow-hidden">
-      <img alt="" aria-hidden className="block size-full object-contain" />
+      <img
+        src={imageSrc}
+        alt={image?.alt ?? ""}
+        aria-hidden={image?.alt ? undefined : true}
+        className="block size-full object-contain"
+      />
     </span>
   )
 }
 
-function TemplateIconPlaceholder() {
+function TemplateIcon({ image }: { image?: ITemplateImage | null }) {
+  const imageSrc = image?.url || undefined
+
   return (
     <span className="relative size-5 shrink-0 overflow-hidden">
-      <img alt="" aria-hidden className="block size-full object-contain" />
+      <img
+        src={imageSrc}
+        alt={image?.alt ?? ""}
+        aria-hidden={image?.alt ? undefined : true}
+        className="block size-full object-contain"
+      />
     </span>
   )
 }
 
-function TemplateCardBadge({ label }: ITemplateBadge) {
+function TemplateCardBadge({ label, icon }: ITemplateBadge) {
   return (
-    <span className="flex h-8 shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
-      <TemplateIconPlaceholder />
-      <span className="text-[0.9375rem] leading-snug font-normal tracking-normal whitespace-nowrap text-gray-10">
+    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
+      <TemplateIcon image={icon} />
+      <span className="min-w-0 text-[0.9375rem] leading-snug font-normal tracking-normal whitespace-nowrap text-gray-10">
         {label}
       </span>
     </span>
@@ -271,7 +207,13 @@ function TemplateBadgeRow({
   )
 }
 
-function TemplateCardButton({ templateTitle }: { templateTitle: string }) {
+function TemplateCardButton({
+  templateId,
+  templateTitle,
+}: {
+  templateId: string
+  templateTitle: string
+}) {
   return (
     <NextLink
       href={ROUTE.dashboardV2SignUp}
@@ -281,7 +223,7 @@ function TemplateCardButton({ templateTitle }: { templateTitle: string }) {
       style={{ backgroundImage: TEMPLATE_BUTTON_BACKGROUND }}
       aria-label={`View ${templateTitle} template`}
       data-click-location="connect_templates"
-      data-click-text={`view_${templateTitle.toLowerCase().replace(/\s+/g, "_")}_template`}
+      data-click-text={`view_${templateId}_template`}
     >
       <span
         className="pointer-events-none absolute inset-0 rounded opacity-0 transition-opacity duration-200 ease-out group-hover/button:opacity-100 group-focus-visible/button:opacity-100 motion-reduce:transition-none"
@@ -294,16 +236,18 @@ function TemplateCardButton({ templateTitle }: { templateTitle: string }) {
 }
 
 function TemplateCard({
+  id,
   title,
   agent,
   category,
   quote,
+  avatar,
   connectors,
   channels,
 }: ITemplateCard) {
   return (
     <article
-      className="group/card relative flex min-h-107 w-full flex-col items-start gap-8 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none xl:h-107"
+      className="group/card relative flex h-full min-h-107 w-full flex-col items-start overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none"
       data-template-card
     >
       <span
@@ -312,28 +256,30 @@ function TemplateCard({
         aria-hidden
       />
 
-      <div className="relative z-10 flex w-full flex-col items-start gap-6">
-        <div className="relative flex w-full flex-col items-start gap-6">
-          <div className="flex w-full items-center gap-4.5">
-            <TemplateAvatarPlaceholder />
+      <div className="relative z-10 flex w-full flex-1 flex-col items-start gap-6">
+        <div className="flex w-full flex-col items-start gap-6">
+          <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4.5">
+            <TemplateAvatar image={avatar} />
 
-            <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
-              <h3 className="max-w-full overflow-visible text-lg leading-none font-medium tracking-tighter whitespace-nowrap text-white">
-                {title}
-              </h3>
-              <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
-                {agent}
-              </p>
+            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-2">
+              <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
+                <h3 className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
+                  {title}
+                </h3>
+                <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
+                  {agent}
+                </p>
+              </div>
+
+              <span className="flex h-6.25 shrink-0 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
+                {category}
+              </span>
             </div>
           </div>
 
           <p className="min-h-16.5 w-full text-base leading-snug font-light tracking-normal text-gray-9">
             {quote}
           </p>
-
-          <span className="absolute top-0 right-0 flex h-6.25 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
-            {category}
-          </span>
         </div>
 
         <div className="flex w-full flex-col items-start gap-6">
@@ -342,19 +288,21 @@ function TemplateCard({
         </div>
       </div>
 
-      <div className="relative z-10 w-full">
-        <TemplateCardButton templateTitle={title} />
+      <div className="relative z-10 mt-auto w-full pt-8">
+        <TemplateCardButton templateId={id} templateTitle={title} />
       </div>
     </article>
   )
 }
 
 function TemplateFilters({
+  categories,
   activeCategory,
   onCategoryChange,
 }: {
-  activeCategory: TemplateCategory
-  onCategoryChange: (category: TemplateCategory) => void
+  categories: ITemplateFilterCategory[]
+  activeCategory: string
+  onCategoryChange: (category: string) => void
 }) {
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
@@ -401,11 +349,11 @@ function TemplateFilters({
       <nav className="relative -mx-5 md:mx-0" aria-label="Template categories">
         <ScrollArea className="w-full" ref={scrollAreaRef}>
           <ul className="flex h-7.5 w-full items-center px-5 md:pl-0">
-            {TEMPLATE_CATEGORIES.map((category) => {
-              const isActive = category === activeCategory
+            {categories.map((category) => {
+              const isActive = category.id === activeCategory
 
               return (
-                <li key={category} data-active={isActive}>
+                <li key={category.id} data-active={isActive}>
                   <button
                     type="button"
                     className={cn(
@@ -415,9 +363,9 @@ function TemplateFilters({
                         : "border-background text-gray-8 hover:text-white"
                     )}
                     aria-pressed={isActive}
-                    onClick={() => onCategoryChange(category)}
+                    onClick={() => onCategoryChange(category.id)}
                   >
-                    {category}
+                    {category.title}
                   </button>
                 </li>
               )
@@ -438,72 +386,129 @@ function TemplatesList({
   templates,
   isExpanded,
   extraListId,
+  hasToggle,
+  onToggle,
 }: {
   templates: ITemplateCard[]
   isExpanded: boolean
   extraListId: string
+  hasToggle: boolean
+  onToggle: () => void
 }) {
-  const primaryTemplates = templates.slice(0, INITIAL_TEMPLATE_COUNT)
-  const extraTemplates = templates.slice(INITIAL_TEMPLATE_COUNT)
+  const hasExtraTemplates = templates.length > INITIAL_TEMPLATE_COUNT
+  const visibleTemplates =
+    isExpanded || !hasExtraTemplates
+      ? templates
+      : templates.slice(0, INITIAL_TEMPLATE_COUNT)
 
   return (
     <div className="flex w-full flex-col items-center">
-      <ul className="grid w-full grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3 xl:gap-x-8">
-        {primaryTemplates.map((template) => (
-          <li key={template.title} className="min-w-0">
-            <TemplateCard {...template} />
-          </li>
-        ))}
-      </ul>
-
-      {extraTemplates.length > 0 && (
-        <div
-          id={extraListId}
-          className={cn(
-            "grid w-full overflow-hidden transition-[grid-template-rows,margin-top,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
-            isExpanded
-              ? "mt-7 grid-rows-[1fr] opacity-100"
-              : "mt-0 grid-rows-[0fr] opacity-0"
-          )}
-          aria-hidden={!isExpanded}
-          inert={isExpanded ? undefined : true}
-        >
-          <div className="min-h-0 overflow-hidden">
-            <ul
-              className={cn(
-                "grid w-full grid-cols-1 gap-7 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none md:grid-cols-2 xl:grid-cols-3 xl:gap-x-8",
-                isExpanded ? "translate-y-0" : "translate-y-4"
-              )}
+      <motion.ul
+        id={extraListId}
+        className="grid w-full auto-rows-fr grid-cols-1 items-stretch gap-7 md:grid-cols-2 xl:grid-cols-3 xl:gap-x-8"
+        layout={false}
+      >
+        <AnimatePresence initial={false}>
+          {visibleTemplates.map((template) => (
+            <motion.li
+              key={template.id}
+              className="h-full min-w-0"
+              initial={false}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 1 }}
+              transition={{ duration: 0 }}
             >
-              {extraTemplates.map((template) => (
-                <li key={template.title} className="min-w-0">
-                  <TemplateCard {...template} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+              <TemplateCard {...template} />
+            </motion.li>
+          ))}
+        </AnimatePresence>
+      </motion.ul>
+
+      {hasToggle && (
+        <button
+          type="button"
+          className="group mt-7 flex min-h-11 items-center gap-1 overflow-visible text-[0.9375rem] leading-snug font-book tracking-normal text-lagune-3 transition-colors duration-200 ease-out outline-none [overflow-anchor:none] hover:text-lagune-1 focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
+          aria-expanded={isExpanded}
+          aria-controls={extraListId}
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={(event) => {
+            event.currentTarget.blur()
+            onToggle()
+          }}
+        >
+          {isExpanded ? "Show less" : "Show more"}
+          <ChevronDown
+            className={cn(
+              "size-4 transition-transform duration-200 ease-out group-hover:translate-y-0.5 motion-reduce:transition-none",
+              isExpanded && "rotate-180 group-hover:-translate-y-0.5"
+            )}
+            strokeWidth={1.5}
+            aria-hidden
+          />
+        </button>
       )}
     </div>
   )
 }
 
-function Templates() {
-  const [activeCategory, setActiveCategory] = useState<TemplateCategory>("All")
+function Templates({
+  templatesSection,
+}: {
+  templatesSection: IAgentTemplatesSectionData
+}) {
+  const [activeCategory, setActiveCategory] = useState(
+    ALL_TEMPLATES_CATEGORY.id
+  )
   const [isExpanded, setIsExpanded] = useState(false)
   const extraListId = useId()
+  const categories = useMemo(
+    () => getTemplateFilterCategories(templatesSection),
+    [templatesSection]
+  )
+  const templates = useMemo(
+    () => (templatesSection.templates ?? []).map(normalizeTemplate),
+    [templatesSection.templates]
+  )
   const visibleTemplates = useMemo(() => {
-    if (activeCategory === "All") {
-      return TEMPLATES
+    if (activeCategory === ALL_TEMPLATES_CATEGORY.id) {
+      return templates
     }
 
-    return TEMPLATES.filter((template) => template.category === activeCategory)
-  }, [activeCategory])
+    return templates.filter(
+      (template) => template.categoryId === activeCategory
+    )
+  }, [activeCategory, templates])
   const hasExpandableTemplates =
-    activeCategory === "All" && visibleTemplates.length > INITIAL_TEMPLATE_COUNT
+    activeCategory === ALL_TEMPLATES_CATEGORY.id &&
+    visibleTemplates.length > INITIAL_TEMPLATE_COUNT
 
-  const handleCategoryChange = (category: TemplateCategory) => {
+  const handleCategoryChange = (category: string) => {
     setActiveCategory(category)
+    setIsExpanded(false)
+  }
+
+  const handleToggleTemplates = () => {
+    if (!isExpanded) {
+      const root = document.documentElement
+      const body = document.body
+      const previousRootOverflowAnchor = root.style.overflowAnchor
+      const previousBodyOverflowAnchor = body.style.overflowAnchor
+
+      root.style.overflowAnchor = "none"
+      body.style.overflowAnchor = "none"
+
+      flushSync(() => {
+        setIsExpanded(true)
+      })
+
+      window.requestAnimationFrame(() => {
+        root.style.overflowAnchor = previousRootOverflowAnchor
+        body.style.overflowAnchor = previousBodyOverflowAnchor
+      })
+
+      return
+    }
+
     setIsExpanded(false)
   }
 
@@ -518,12 +523,7 @@ function Templates() {
           <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex w-full max-w-137.5 flex-col items-start gap-4">
               <h2 className="max-w-full text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
-                <span className="block md:whitespace-nowrap">
-                  Start faster with
-                </span>
-                <span className="block md:whitespace-nowrap">
-                  Novu Connect templates
-                </span>
+                Don't start from a blank prompt
               </h2>
               <p className="max-w-137.5 text-base leading-normal font-normal tracking-tighter text-gray-8 md:text-lg">
                 Choose a ready-to-use template, connect its tools, and send
@@ -551,6 +551,7 @@ function Templates() {
           <div className="h-px w-full bg-gray-2" />
 
           <TemplateFilters
+            categories={categories}
             activeCategory={activeCategory}
             onCategoryChange={handleCategoryChange}
           />
@@ -560,33 +561,17 @@ function Templates() {
           {visibleTemplates.length > 0 ? (
             <TemplatesList
               templates={visibleTemplates}
-              isExpanded={activeCategory === "All" && isExpanded}
+              isExpanded={
+                activeCategory === ALL_TEMPLATES_CATEGORY.id && isExpanded
+              }
               extraListId={extraListId}
+              hasToggle={hasExpandableTemplates}
+              onToggle={handleToggleTemplates}
             />
           ) : (
             <div className="flex min-h-107 w-full items-center justify-center rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] px-6 text-center text-base leading-normal font-book tracking-tighter text-gray-8">
               No templates in this category yet.
             </div>
-          )}
-
-          {hasExpandableTemplates && (
-            <button
-              type="button"
-              className="group flex items-center gap-1 text-[0.9375rem] leading-snug font-book tracking-normal text-lagune-3 transition-colors duration-200 ease-out outline-none hover:text-lagune-1 focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
-              aria-expanded={isExpanded}
-              aria-controls={extraListId}
-              onClick={() => setIsExpanded((current) => !current)}
-            >
-              {isExpanded ? "Show less" : "Show more"}
-              <ChevronDown
-                className={cn(
-                  "size-4 transition-transform duration-200 ease-out group-hover:translate-y-0.5 motion-reduce:transition-none",
-                  isExpanded && "rotate-180 group-hover:-translate-y-0.5"
-                )}
-                strokeWidth={1.5}
-                aria-hidden
-              />
-            </button>
           )}
         </div>
       </div>

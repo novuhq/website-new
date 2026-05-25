@@ -54,6 +54,11 @@ export interface IAgentTemplateData {
   systemPrompt: string
 }
 
+export interface IAgentTemplatesSectionData {
+  categories: ITemplateCategoryData[]
+  templates: IAgentTemplateData[]
+}
+
 export interface IAgentTemplateSignupPayload {
   id: string
   avatar: string

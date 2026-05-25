@@ -1,3 +1,4 @@
+import type { IAgentTemplatesSectionData } from "@/types/templates"
 import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
 import Channels from "./channels"
@@ -9,7 +10,11 @@ import HowItWorks from "./how-it-works"
 import Pricing from "./pricing"
 import Templates from "./templates"
 
-function ConnectPageContent() {
+interface IConnectPageContentProps {
+  templatesSection: IAgentTemplatesSectionData
+}
+
+function ConnectPageContent({ templatesSection }: IConnectPageContentProps) {
   return (
     <div className="relative overflow-clip bg-black">
       <Hero />
@@ -23,7 +28,7 @@ function ConnectPageContent() {
       />
       <Channels />
       <HowItWorks />
-      <Templates />
+      <Templates templatesSection={templatesSection} />
       <Compliance />
       <Pricing />
       <ConnectFaq />
