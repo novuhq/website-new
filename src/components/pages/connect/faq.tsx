@@ -1,5 +1,4 @@
 import type { IFaqSection } from "@/types/common"
-
 import FAQ from "@/components/pages/faq"
 
 const CONNECT_FAQ: IFaqSection = {
@@ -36,7 +35,15 @@ const CONNECT_FAQ: IFaqSection = {
 }
 
 function ConnectFaq() {
-  return <FAQ {...CONNECT_FAQ} className="pt-28 md:pt-36 lg:pt-44 xl:pt-50" />
+  return (
+    <div id="faq" className="scroll-mt-16">
+      <FAQ
+        {...CONNECT_FAQ}
+        className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+        titleClassName="text-[1.75rem] md:text-[40px]"
+      />
+    </div>
+  )
 }
 
 export default ConnectFaq

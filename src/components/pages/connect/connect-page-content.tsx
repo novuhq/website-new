@@ -1,6 +1,7 @@
 import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
 import Channels from "./channels"
+import Compliance from "./compliance"
 import ConnectFaq from "./faq"
 import FinalCta from "./final-cta"
 import Hero from "./hero"
@@ -10,7 +11,7 @@ import Templates from "./templates"
 
 function ConnectPageContent() {
   return (
-    <div className="relative overflow-clip">
+    <div className="relative overflow-clip bg-black">
       <Hero />
       <SectionWithLogosAnimated
         className="mt-6.25 mb-0 px-5 md:mt-6.25 md:mb-0 md:px-8 lg:mt-6.25 lg:mb-0 xl:mt-6.25 xl:mb-0"
@@ -23,6 +24,7 @@ function ConnectPageContent() {
       <Channels />
       <HowItWorks />
       <Templates />
+      <Compliance />
       <Pricing />
       <ConnectFaq />
       <FinalCta />

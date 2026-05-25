@@ -1,5 +1,7 @@
+import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
 import { Button } from "@/components/ui/button"
 
@@ -7,27 +9,47 @@ import ConnectHeroVideo from "./hero-video"
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-30 pb-20 md:pt-36 md:pb-26 lg:pt-44 lg:pb-34">
+    <section
+      id="connect"
+      className="relative isolate scroll-mt-16 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-44 lg:pb-34"
+    >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
-        <div className="flex w-full max-w-154.5 flex-col items-start gap-4">
+        <div className="relative z-10 flex w-full max-w-154.5 flex-col items-start gap-4 lg:max-w-128 xl:max-w-140">
           <div className="flex w-full flex-col items-start gap-8">
-            <div className="flex flex-col items-start gap-4">
+            <div className="flex flex-col items-start gap-5">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 bg-lagune-3" />
-                <span className="text-sm leading-none overflow-visible font-normal tracking-normal text-lagune-1 uppercase">
-                  Built for AI agents
+                <span className="overflow-visible text-sm leading-none font-normal tracking-normal text-lagune-1 uppercase">
+                  Novu connect
                 </span>
               </div>
 
               <div className="flex w-full flex-col items-start gap-4">
-                <h1 className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[3.25rem]">
-                  Connect Claude Managed Agents to any channel
+                <h1
+                  className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
+                  aria-label="Connect your Claude agent where your team actually works"
+                >
+                  Connect{" "}
+                  <span className="whitespace-nowrap">
+                    <span aria-hidden>your</span>
+                    <Image
+                      className="mx-2 inline-block size-[0.923em] align-[-0.12em]"
+                      src={claudeLogo}
+                      alt=""
+                      width={48}
+                      height={48}
+                      priority
+                      aria-hidden
+                    />
+                    <span aria-hidden>Claude</span>
+                  </span>{" "}
+                  agent where your team actually works
                 </h1>
 
                 <p className="max-w-[523.4609375px] text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
-                  Novu brings Anthropic&apos;s Claude managed agents
-                  infrastructure into Slack, Teams, Discord, WhatsApp, email,
-                  and more — with powerful reasoning, tool use, and MCP support.
+                  Novu Connect plugs any Claude Managed Agent into Slack, Teams,
+                  WhatsApp, email, and more. Two minutes from template to live
+                  agent. No infrastructure to babysit.
                 </p>
               </div>
             </div>
@@ -44,9 +66,9 @@ function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-click-location="connect_hero"
-                  data-click-text="connect_an_agent_for_free"
+                  data-click-text="connect_agent_for_free_now"
                 >
-                  Connect an agent for free
+                  Connect agent for free now
                 </NextLink>
               </Button>
               <Button
@@ -58,9 +80,9 @@ function Hero() {
                 <NextLink
                   href="#connect-demo"
                   data-click-location="connect_hero"
-                  data-click-text="watch_the_30_second_demo"
+                  data-click-text="watch_the_30_sec_demo"
                 >
-                  Watch the 30-second demo
+                  Watch the 30-sec demo
                 </NextLink>
               </Button>
             </div>

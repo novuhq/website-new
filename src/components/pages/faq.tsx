@@ -15,9 +15,11 @@ const FAQ = ({
   title,
   accordion,
   className,
+  titleClassName,
   onScheduleClick,
 }: IFaqSection & {
   className?: string
+  titleClassName?: string
   onScheduleClick?: (source: string) => void
 }) => {
   if (!title || !accordion) {
@@ -32,7 +34,12 @@ const FAQ = ({
       )}
     >
       <div className="container mx-auto max-w-[832px] px-5 md:px-8 lg:max-w-[896px]">
-        <h2 className="text-[32px] leading-dense font-medium tracking-tighter text-white md:text-[40px]">
+        <h2
+          className={cn(
+            "text-[32px] leading-dense font-medium tracking-tighter text-white md:text-[40px]",
+            titleClassName
+          )}
+        >
           {title}
         </h2>
         <Accordion type="single" collapsible className="mt-6 md:mt-[22px]">
@@ -48,10 +55,10 @@ const FAQ = ({
                 value={question}
                 className="border-b border-gray-3"
               >
-                <AccordionTrigger className="pt-6 pb-5 text-start text-[20px] leading-snug font-medium tracking-snug hover:no-underline sm:pt-5 sm:pb-4 sm:text-[18px]">
+                <AccordionTrigger className="tracking-snug pt-6 pb-5 text-start text-[20px] leading-snug font-medium hover:no-underline sm:pt-5 sm:pb-4 sm:text-[18px]">
                   {question}
                 </AccordionTrigger>
-                <AccordionContent className="max-w-[752px] pt-2 pb-8 text-[18px] leading-relaxed font-book tracking-snug text-gray-8 sm:mr-7 sm:pb-6 sm:text-[16px] sm:leading-normal md:mr-14 [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_br]:mb-3 [&_br]:block">
+                <AccordionContent className="tracking-snug max-w-[752px] pt-2 pb-8 text-[18px] leading-relaxed font-book text-gray-8 sm:mr-7 sm:pb-6 sm:text-[16px] sm:leading-normal md:mr-14 [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_br]:mb-3 [&_br]:block">
                   {resolvedAnswer}
                 </AccordionContent>
               </AccordionItem>

@@ -1,19 +1,14 @@
 "use client"
 
 /* eslint-disable @next/next/no-img-element */
-import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useEffect, useId, useMemo, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import NextLink from "next/link"
-import { ChevronDown } from "lucide-react"
 import { ROUTE } from "@/constants/routes"
+import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const TEMPLATE_CATEGORIES = [
@@ -51,7 +46,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Product",
     quote:
       "“Catches funnel drops before standup. PMs stop checking dashboards.”",
-    connectors: [{ label: "Mixpanel" }, { label: "Linear" }, { label: "Notion" }],
+    connectors: [
+      { label: "Mixpanel" },
+      { label: "Linear" },
+      { label: "Notion" },
+    ],
     channels: [{ label: "Slack" }],
   },
   {
@@ -80,7 +79,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Marketing",
     quote:
       "“Every published post lands in the right channel and right list. No more ‘did we tweet that?’”",
-    connectors: [{ label: "Notion" }, { label: "LinkedIn" }, { label: "HubSpot" }],
+    connectors: [
+      { label: "Notion" },
+      { label: "LinkedIn" },
+      { label: "HubSpot" },
+    ],
     channels: [{ label: "Slack" }, { label: "Email" }],
   },
   {
@@ -96,9 +99,12 @@ const TEMPLATES: ITemplateCard[] = [
     title: "Pre-call researcher",
     agent: "Brief",
     category: "Sales",
-    quote:
-      "“Every call starts with context. Reps walk in knowing the room.”",
-    connectors: [{ label: "Attio" }, { label: "LinkedIn" }, { label: "Notion" }],
+    quote: "“Every call starts with context. Reps walk in knowing the room.”",
+    connectors: [
+      { label: "Attio" },
+      { label: "LinkedIn" },
+      { label: "Notion" },
+    ],
     channels: [{ label: "Slack DM" }],
   },
   {
@@ -107,7 +113,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Support / CS",
     quote:
       "“Summarizes hot accounts before the handoff. Every escalation starts with context.”",
-    connectors: [{ label: "Zendesk" }, { label: "Linear" }, { label: "Notion" }],
+    connectors: [
+      { label: "Zendesk" },
+      { label: "Linear" },
+      { label: "Notion" },
+    ],
     channels: [{ label: "Slack" }, { label: "Email" }],
   },
   {
@@ -125,7 +135,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Finance",
     quote:
       "“Turns billing movement into a clean morning digest for finance and ops.”",
-    connectors: [{ label: "Stripe" }, { label: "HubSpot" }, { label: "Sheets" }],
+    connectors: [
+      { label: "Stripe" },
+      { label: "HubSpot" },
+      { label: "Sheets" },
+    ],
     channels: [{ label: "Email" }, { label: "Slack" }],
   },
   {
@@ -134,7 +148,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Engineering",
     quote:
       "“Keeps the incident room current, from alert to customer-facing follow-up.”",
-    connectors: [{ label: "Datadog" }, { label: "Statuspage" }, { label: "Linear" }],
+    connectors: [
+      { label: "Datadog" },
+      { label: "Statuspage" },
+      { label: "Linear" },
+    ],
     channels: [{ label: "Slack" }, { label: "Email" }],
   },
   {
@@ -143,7 +161,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Finance",
     quote:
       "“Flags upcoming renewals, usage shifts, and risk signals before the forecast changes.”",
-    connectors: [{ label: "Stripe" }, { label: "Salesforce" }, { label: "Notion" }],
+    connectors: [
+      { label: "Stripe" },
+      { label: "Salesforce" },
+      { label: "Notion" },
+    ],
     channels: [{ label: "Slack" }],
   },
   {
@@ -152,7 +174,11 @@ const TEMPLATES: ITemplateCard[] = [
     category: "Support / CS",
     quote:
       "“Samples conversations, catches misses, and sends coaching notes without another dashboard.”",
-    connectors: [{ label: "Intercom" }, { label: "Zendesk" }, { label: "Notion" }],
+    connectors: [
+      { label: "Intercom" },
+      { label: "Zendesk" },
+      { label: "Notion" },
+    ],
     channels: [{ label: "Email" }, { label: "Slack" }],
   },
 ]
@@ -163,8 +189,6 @@ const TEMPLATE_BUTTON_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.06) 8.6198%, rgba(176, 166, 191, 0.03) 113.79%)"
 const TEMPLATE_BUTTON_HOVER_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.24) 8.6198%, rgba(176, 166, 191, 0.12) 113.79%)"
-const TEMPLATE_SECONDARY_BUTTON_BACKGROUND =
-  "linear-gradient(229.623deg, rgba(176, 166, 191, 0.06) 8.6198%, rgba(176, 166, 191, 0.03) 113.79%)"
 
 function TemplateActionLink({
   children,
@@ -180,23 +204,22 @@ function TemplateActionLink({
   const isPrimary = variant === "primary"
 
   return (
-    <NextLink
-      href={ROUTE.dashboardV2SignUp}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={cn(
-        "inline-flex h-12 items-center justify-center rounded-md px-5 py-4.25 text-sm leading-none overflow-visible font-medium tracking-normal uppercase outline-none transition-[background,border-color,color] duration-200 ease-out motion-reduce:transition-none",
-        isPrimary
-          ? "bg-white text-black hover:bg-gray-10 focus-visible:ring-2 focus-visible:ring-lagune-3/40"
-          : "border border-[#534b5d] text-white hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40",
-        className
-      )}
-      style={isPrimary ? undefined : { backgroundImage: TEMPLATE_SECONDARY_BUTTON_BACKGROUND }}
-      data-click-location="connect_templates"
-      data-click-text={clickText}
+    <Button
+      variant={isPrimary ? "default" : "outline"}
+      size="lg"
+      className={cn(isPrimary ? "px-5" : "overflow-visible px-6", className)}
+      asChild
     >
-      {children}
-    </NextLink>
+      <NextLink
+        href={ROUTE.dashboardV2SignUp}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-click-location="connect_templates"
+        data-click-text={clickText}
+      >
+        {children}
+      </NextLink>
+    </Button>
   )
 }
 
@@ -220,7 +243,7 @@ function TemplateCardBadge({ label }: ITemplateBadge) {
   return (
     <span className="flex h-8 shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
       <TemplateIconPlaceholder />
-      <span className="whitespace-nowrap text-[0.9375rem] leading-snug font-normal tracking-normal text-gray-10">
+      <span className="text-[0.9375rem] leading-snug font-normal tracking-normal whitespace-nowrap text-gray-10">
         {label}
       </span>
     </span>
@@ -236,7 +259,7 @@ function TemplateBadgeRow({
 }) {
   return (
     <div className="flex w-full flex-col items-start justify-center gap-3">
-      <p className="w-full text-[0.9375rem] leading-none overflow-visible font-book tracking-normal text-gray-7">
+      <p className="w-full overflow-visible text-[0.9375rem] leading-none font-book tracking-normal text-gray-7">
         {title}
       </p>
       <div className="flex w-full flex-wrap items-center gap-2">
@@ -254,7 +277,7 @@ function TemplateCardButton({ templateTitle }: { templateTitle: string }) {
       href={ROUTE.dashboardV2SignUp}
       target="_blank"
       rel="noopener noreferrer"
-      className="group/button relative flex h-10 w-full items-center justify-center rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none overflow-visible font-medium tracking-normal text-white uppercase outline-none transition-[border-color] duration-200 ease-out hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
+      className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
       style={{ backgroundImage: TEMPLATE_BUTTON_BACKGROUND }}
       aria-label={`View ${templateTitle} template`}
       data-click-location="connect_templates"
@@ -284,7 +307,7 @@ function TemplateCard({
       data-template-card
     >
       <span
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 ease-out group-hover/card:opacity-100 group-focus-within/card:opacity-100 motion-reduce:transition-none"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 ease-out group-focus-within/card:opacity-100 group-hover/card:opacity-100 motion-reduce:transition-none"
         style={{ backgroundImage: TEMPLATE_CARD_HOVER_BACKGROUND }}
         aria-hidden
       />
@@ -294,11 +317,11 @@ function TemplateCard({
           <div className="flex w-full items-center gap-4.5">
             <TemplateAvatarPlaceholder />
 
-            <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 leading-none overflow-visible">
-              <h3 className="max-w-full text-lg leading-none overflow-visible font-medium tracking-tighter whitespace-nowrap text-white">
+            <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
+              <h3 className="max-w-full overflow-visible text-lg leading-none font-medium tracking-tighter whitespace-nowrap text-white">
                 {title}
               </h3>
-              <p className="max-w-full text-base leading-none overflow-visible font-book tracking-normal whitespace-nowrap text-gray-7">
+              <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
                 {agent}
               </p>
             </div>
@@ -308,7 +331,7 @@ function TemplateCard({
             {quote}
           </p>
 
-          <span className="absolute top-0 right-0 flex h-6.25 items-center justify-center rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none overflow-visible font-normal tracking-tighter text-gray-10">
+          <span className="absolute top-0 right-0 flex h-6.25 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
             {category}
           </span>
         </div>
@@ -386,7 +409,7 @@ function TemplateFilters({
                   <button
                     type="button"
                     className={cn(
-                      "relative inline-flex h-7.5 items-center justify-center rounded-full border px-3 text-sm leading-none overflow-visible tracking-tight whitespace-nowrap outline-none transition-colors focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none",
+                      "relative inline-flex h-7.5 items-center justify-center overflow-visible rounded-full border px-3 text-sm leading-none tracking-tight whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none",
                       isActive
                         ? "border-[#81869E] text-white"
                         : "border-background text-gray-8 hover:text-white"
@@ -486,14 +509,15 @@ function Templates() {
 
   return (
     <section
-      className="pt-28 [overflow-anchor:none] md:pt-36 lg:pt-44 xl:pt-50"
+      id="templates"
+      className="scroll-mt-16 pt-28 [overflow-anchor:none] md:pt-36 lg:pt-44 xl:pt-50"
       data-connect-section="templates"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full flex-col items-start gap-11">
           <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex w-full max-w-137.5 flex-col items-start gap-4">
-              <h2 className="max-w-full text-4xl leading-dense font-medium tracking-tighter text-white md:text-5xl">
+              <h2 className="max-w-full text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
                 <span className="block md:whitespace-nowrap">
                   Start faster with
                 </span>
@@ -548,7 +572,7 @@ function Templates() {
           {hasExpandableTemplates && (
             <button
               type="button"
-              className="group flex items-center gap-1 text-[0.9375rem] leading-snug font-book tracking-normal text-lagune-3 outline-none transition-colors duration-200 ease-out hover:text-lagune-1 focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
+              className="group flex items-center gap-1 text-[0.9375rem] leading-snug font-book tracking-normal text-lagune-3 transition-colors duration-200 ease-out outline-none hover:text-lagune-1 focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
               aria-expanded={isExpanded}
               aria-controls={extraListId}
               onClick={() => setIsExpanded((current) => !current)}

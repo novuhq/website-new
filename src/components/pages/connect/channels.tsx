@@ -1,6 +1,18 @@
-/* eslint-disable @next/next/no-img-element */
+import Image, { StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import discord from "@/svgs/pages/connect/channels/discord.svg"
+import email from "@/svgs/pages/connect/channels/email.svg"
+import github from "@/svgs/pages/connect/channels/github.svg"
+import googleChat from "@/svgs/pages/connect/channels/google-chat.svg"
+import iMessage from "@/svgs/pages/connect/channels/imessage.svg"
+import linear from "@/svgs/pages/connect/channels/linear.svg"
+import messenger from "@/svgs/pages/connect/channels/messenger.svg"
+import slack from "@/svgs/pages/connect/channels/slack.svg"
+import teams from "@/svgs/pages/connect/channels/teams.png"
+import telegram from "@/svgs/pages/connect/channels/telegram.svg"
+import whatsapp from "@/svgs/pages/connect/channels/whatsapp.svg"
+import zoom from "@/svgs/pages/connect/channels/zoom.svg"
 
 import { cn } from "@/lib/utils"
 
@@ -10,70 +22,90 @@ interface IChannel {
   name: string
   description?: string
   state?: ChannelState
+  icon: StaticImageData
 }
 
 const CHANNELS: IChannel[] = [
   {
     name: "Slack",
     description: "Send team alerts",
+    icon: slack,
   },
   {
     name: "WhatsApp",
     description: "Reach users fast",
+    icon: whatsapp,
   },
   {
     name: "Email",
     description: "Deliver clean digests",
+    icon: email,
   },
   {
     name: "Telegram",
     description: "Push instant updates",
+    icon: telegram,
   },
   {
     name: "Teams",
     description: "Notify team channels",
+    icon: teams,
   },
   {
     name: "Google Chat",
     state: "coming-soon",
+    icon: googleChat,
   },
   {
     name: "iMessage",
     state: "coming-soon",
+    icon: iMessage,
   },
   {
     name: "Linear",
     state: "coming-soon",
+    icon: linear,
   },
   {
     name: "Zoom",
     state: "coming-soon",
+    icon: zoom,
   },
   {
     name: "Discord",
     state: "coming-soon",
+    icon: discord,
   },
   {
     name: "Messenger",
     state: "coming-soon",
+    icon: messenger,
   },
   {
     name: "GitHub",
     state: "coming-soon",
+    icon: github,
   },
 ]
 
-function ChannelIconPlaceholder() {
+function ChannelIcon({ icon }: { icon: StaticImageData }) {
   return (
     <span className="flex size-11 shrink-0 items-center justify-center rounded-md border border-[rgba(51,51,71,0.4)]">
-      <img alt="" aria-hidden className="size-6" />
+      <Image
+        className="size-6"
+        src={icon}
+        alt=""
+        aria-hidden
+        width={24}
+        height={24}
+      />
     </span>
   )
 }
 
 function ComingSoonBadge() {
   return (
-    <span className="inline-flex h-5 items-center rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2 pt-0.75 pb-1.25 text-xs leading-none overflow-visible font-normal tracking-tighter text-gray-7 opacity-50">
+    <span className="inline-flex h-5 items-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2 pt-0.75 pb-1.25 text-xs leading-none font-normal tracking-tighter text-gray-7 opacity-50">
       Coming soon
     </span>
   )
@@ -101,17 +133,17 @@ function ConnectAgentLabel() {
 function ChannelTextSwap({ description }: { description: string }) {
   return (
     <div className="relative h-[1.3125rem] w-full overflow-hidden" aria-hidden>
-      <p className="text-swap-layer absolute inset-x-0 top-0 max-w-full transform-gpu truncate text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8 group-hover:-translate-y-2.5 group-hover:opacity-0 group-focus-visible:-translate-y-2.5 group-focus-visible:opacity-0 motion-reduce:transform-none">
+      <p className="absolute inset-x-0 top-0 max-w-full transform-gpu truncate text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8 text-swap-layer group-hover:-translate-y-2.5 group-hover:opacity-0 group-focus-visible:-translate-y-2.5 group-focus-visible:opacity-0 motion-reduce:transform-none">
         {description}
       </p>
-      <span className="text-swap-layer absolute inset-x-0 top-0 flex translate-y-2.5 transform-gpu items-center opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transform-none">
+      <span className="absolute inset-x-0 top-0 flex translate-y-2.5 transform-gpu items-center opacity-0 text-swap-layer group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transform-none">
         <ConnectAgentLabel />
       </span>
     </div>
   )
 }
 
-function ChannelCard({ name, description, state = "default" }: IChannel) {
+function ChannelCard({ name, description, state = "default", icon }: IChannel) {
   const isComingSoon = state === "coming-soon"
   const cardClassName = cn(
     "group flex h-21 min-w-0 items-center gap-4 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-5 transition-[background,border-color,box-shadow] duration-200 ease-[ease] motion-reduce:transition-none",
@@ -122,7 +154,7 @@ function ChannelCard({ name, description, state = "default" }: IChannel) {
 
   const content = (
     <>
-      <ChannelIconPlaceholder />
+      <ChannelIcon icon={icon} />
 
       <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
         <h3 className="max-w-full truncate text-base leading-dense font-medium tracking-tighter text-white">
@@ -175,10 +207,13 @@ function ChannelCardsList() {
 
 function Channels() {
   return (
-    <section className="pt-28 md:pt-36 lg:pt-44 xl:pt-50">
+    <section
+      id="channels"
+      className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+    >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-12 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full max-w-[874.109375px] flex-col items-center gap-4 text-center">
-          <h2 className="text-[2rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
+          <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
             Connect your agent to work with you in your environment — as a
             teammate in any channel
           </h2>

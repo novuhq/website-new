@@ -5,13 +5,13 @@ import blueShineInside from "@/images/pages/connect/pricing/blue-shine-inside.sv
 import borderShine from "@/images/pages/connect/pricing/border-shine.svg"
 import dotsPattern from "@/images/pages/connect/pricing/dots-pattern.png"
 import stars from "@/images/pages/connect/pricing/stars.png"
-import chatIcon from "@/svgs/icons/сhat.inline.svg"
 import dollarIcon from "@/svgs/icons/dollar.inline.svg"
 import letterIcon from "@/svgs/icons/letter.inline.svg"
 import robotIcon from "@/svgs/icons/robot.inline.svg"
 import shieldIcon from "@/svgs/icons/shield.inline.svg"
 import stackIcon from "@/svgs/icons/stack.inline.svg"
 import teamIcon from "@/svgs/icons/team.inline.svg"
+import chatIcon from "@/svgs/icons/сhat.inline.svg"
 
 import { cn } from "@/lib/utils"
 
@@ -145,7 +145,7 @@ function PricingButton({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "group/button relative flex h-11.5 w-full items-center justify-center rounded-md px-6 py-4 text-center text-sm leading-none overflow-visible font-medium tracking-normal uppercase outline-none transition-[background,border-color,color] duration-200 ease-out focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none",
+        "group/button relative flex h-11.5 w-full items-center justify-center overflow-visible rounded-md px-6 py-4 text-center text-sm leading-none font-medium tracking-normal uppercase transition-[background,border-color,color] duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none",
         featured
           ? "bg-white px-5 text-black hover:bg-gray-10"
           : "border border-[#534b5d] text-white hover:border-[#686170] focus-visible:border-[#686170]"
@@ -376,7 +376,7 @@ function EnterpriseBanner() {
 
       <NextLink
         href={ROUTE.contactUs}
-        className="group/button relative mt-6 inline-flex h-11.5 w-34.5 items-center justify-center rounded-md border border-[#534b5d] px-0 py-4 text-center text-sm leading-none overflow-visible font-medium tracking-normal text-white uppercase outline-none transition-[border-color] duration-200 ease-out hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none lg:absolute lg:top-26.25 lg:right-7.75 lg:mt-0"
+        className="group/button relative mt-6 inline-flex h-11.5 w-34.5 items-center justify-center overflow-visible rounded-md border border-[#534b5d] px-0 py-4 text-center text-sm leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none lg:absolute lg:top-26.25 lg:right-7.75 lg:mt-0"
         style={{ backgroundImage: BANNER_BUTTON_BACKGROUND }}
         data-click-location="connect_pricing"
         data-click-text="contact_us"
@@ -395,11 +395,12 @@ function EnterpriseBanner() {
 function Pricing() {
   return (
     <section
-      className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+      id="pricing"
+      className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
       data-connect-section="pricing"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
-        <h2 className="relative z-10 mx-auto w-fit max-w-full text-center text-4xl leading-dense font-medium tracking-tighter text-white md:text-5xl md:whitespace-nowrap">
+        <h2 className="relative z-10 mx-auto w-fit max-w-full text-center text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl md:whitespace-nowrap">
           Pricing Novu Connect
         </h2>
 
