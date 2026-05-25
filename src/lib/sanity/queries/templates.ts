@@ -72,9 +72,9 @@ const agentTemplateFields = `
   "skillsList": skillsList[]{
     "value": select(defined(_ref) => @->slug.current, @)
   }.value,
-  tools[]->{
+  "tools": coalesce(tools[]->{
     ${templateReferenceFields}
-  },
+  }, []),
   systemPrompt
 `
 
@@ -112,7 +112,7 @@ export const agentTemplateSignupPayloadByIdQuery = groq`
     "skillsList": skillsList[]{
       "value": select(defined(_ref) => @->slug.current, @)
     }.value,
-    "tools": tools[]->slug.current,
+    "tools": coalesce(tools[]->slug.current, []),
     systemPrompt
   }
 `

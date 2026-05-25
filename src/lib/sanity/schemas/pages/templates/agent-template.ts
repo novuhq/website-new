@@ -1,5 +1,6 @@
 import { RobotIcon } from "@sanity/icons"
 import {
+  defineArrayMember,
   defineField,
   defineType,
   ReferenceRule,
@@ -109,7 +110,19 @@ export default defineType({
       name: "skillsList",
       title: "Skills",
       type: "array",
-      of: [{ type: "string" }],
+      of: [
+        defineArrayMember({
+          type: "string",
+          validation: (rule) =>
+            rule.required().custom((value) => {
+              if (typeof value !== "string" || value.trim().length === 0) {
+                return "Skill cannot be empty."
+              }
+
+              return true
+            }),
+        }),
+      ],
       group: TEMPLATE_GROUP.provisioning.name,
       validation: (rule) => rule.required().min(1).unique(),
     }),

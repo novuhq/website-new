@@ -50,7 +50,7 @@ export interface IAgentTemplateData {
   mcpServerList: ITemplateMcpServerData[]
   channels: ITemplateChannelData[]
   skillsList: string[]
-  tools?: ITemplateToolData[]
+  tools: ITemplateToolData[]
   systemPrompt: string
 }
 
@@ -61,6 +61,6 @@ export interface IAgentTemplateSignupPayload {
   mcpServerList: string[]
   channels: string[]
   skillsList: string[]
-  tools?: string[]
+  tools: string[]
   systemPrompt: string
 }
