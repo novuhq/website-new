@@ -157,7 +157,7 @@ function ChannelCard({ name, description, state = "default", icon }: IChannel) {
       <ChannelIcon icon={icon} />
 
       <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
-        <h3 className="max-w-full truncate text-base leading-dense font-medium tracking-tighter text-white">
+        <h3 className="max-w-full truncate overflow-visible text-base leading-dense font-medium tracking-tighter text-white">
           {name}
         </h3>
 
@@ -212,7 +212,7 @@ function Channels() {
       className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-12 px-5 md:px-8 2xl:px-0">
-        <div className="flex w-full max-w-[874.109375px] flex-col items-center gap-4 text-center">
+        <div className="flex w-full max-w-163 flex-col items-center gap-4 text-center">
           <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
             Work with your agent like a teammate in any channel
           </h2>

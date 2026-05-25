@@ -139,20 +139,29 @@ function StepItem({
   title,
   description,
   isActive,
+  onSelect,
 }: {
   title: string
   description: string
   isActive: boolean
+  onSelect: () => void
 }) {
   return (
     <div className="flex w-full flex-col items-start gap-2">
-      <h3
-        className={cn(
-          "text-xl leading-tight font-medium tracking-tighter transition-colors duration-300 ease-out",
-          isActive ? "text-white" : "text-gray-9"
-        )}
-      >
-        {title}
+      <h3 className="w-full">
+        <button
+          type="button"
+          className={cn(
+            "w-full rounded-sm text-left text-xl leading-tight font-medium tracking-tighter transition-colors duration-200 ease-out outline-none focus-visible:ring-2 focus-visible:ring-white/40 motion-reduce:transition-none",
+            isActive
+              ? "text-white"
+              : "text-gray-9 hover:text-gray-10 focus-visible:text-gray-10"
+          )}
+          aria-current={isActive ? "step" : undefined}
+          onClick={onSelect}
+        >
+          {title}
+        </button>
       </h3>
       <div
         className={cn(
@@ -207,9 +216,11 @@ function ConnectAgentButton() {
 function DesktopStepsPanel({
   activeStep,
   progressLineRefs,
+  onStepSelect,
 }: {
   activeStep: number
   progressLineRefs: MutableRefObject<Array<HTMLDivElement | null>>
+  onStepSelect: (stepIndex: number) => void
 }) {
   return (
     <div className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none">
@@ -220,6 +231,7 @@ function DesktopStepsPanel({
               title={step.title}
               description={step.description}
               isActive={activeStep === index}
+              onSelect={() => onStepSelect(index)}
             />
             <ProgressLine
               setProgressNode={(node) => {
@@ -243,15 +255,15 @@ function MobileStepsWithVideos() {
           key={step.title}
           className="flex w-full flex-col items-start gap-6"
         >
-          <StaticStepItem title={step.title} description={step.description} />
-
-          {index === STEPS.length - 1 && <ConnectAgentButton />}
-
           <div className="flex w-full flex-col gap-4 md:gap-6">
             {step.videoIndexes.map((videoIndex) => (
               <ConnectVideoCard key={videoIndex} video={VIDEOS[videoIndex]} />
             ))}
           </div>
+
+          <StaticStepItem title={step.title} description={step.description} />
+
+          {index === STEPS.length - 1 && <ConnectAgentButton />}
         </div>
       ))}
     </div>
@@ -260,9 +272,28 @@ function MobileStepsWithVideos() {
 
 function HowItWorks() {
   const mediaRef = useRef<HTMLDivElement>(null)
+  const videoCardRefs = useRef<Array<HTMLDivElement | null>>([])
   const progressLineRefs = useRef<Array<HTMLDivElement | null>>([])
   const activeStepRef = useRef(0)
   const [activeStep, setActiveStep] = useState(0)
+
+  const handleStepSelect = (stepIndex: number) => {
+    const firstVideoIndex = STEPS[stepIndex].videoIndexes[0]
+    const targetVideo = videoCardRefs.current[firstVideoIndex]
+
+    if (!targetVideo) {
+      return
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+
+    targetVideo.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "center",
+    })
+  }
 
   useEffect(() => {
     const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY)
@@ -359,7 +390,7 @@ function HowItWorks() {
             </span>
           </div>
 
-          <h2 className="max-w-134 text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
+          <h2 className="max-w-163 text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
             Everything your agent needs to run like a teammate
           </h2>
         </div>
@@ -370,11 +401,19 @@ function HowItWorks() {
           <DesktopStepsPanel
             activeStep={activeStep}
             progressLineRefs={progressLineRefs}
+            onStepSelect={handleStepSelect}
           />
 
           <div ref={mediaRef} className="flex w-full flex-col gap-8">
             {VIDEOS.map((video, index) => (
-              <ConnectVideoCard key={index} video={video} />
+              <div
+                key={index}
+                ref={(node) => {
+                  videoCardRefs.current[index] = node
+                }}
+              >
+                <ConnectVideoCard video={video} />
+              </div>
             ))}
           </div>
         </div>

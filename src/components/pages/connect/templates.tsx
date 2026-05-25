@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useId, useMemo, useRef, useState } from "react"
-import type { ReactNode } from "react"
+import type { MutableRefObject, ReactNode } from "react"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import { ChevronDown } from "lucide-react"
@@ -53,6 +53,35 @@ const TEMPLATE_BUTTON_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.06) 8.6198%, rgba(176, 166, 191, 0.03) 113.79%)"
 const TEMPLATE_BUTTON_HOVER_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.24) 8.6198%, rgba(176, 166, 191, 0.12) 113.79%)"
+
+function restoreFilterPosition(
+  filterNode: HTMLElement | null,
+  previousTop: number | null,
+  onComplete?: () => void
+) {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      if (!filterNode || previousTop === null) {
+        onComplete?.()
+        return
+      }
+
+      const nextTop = filterNode.getBoundingClientRect().top
+      const delta = nextTop - previousTop
+
+      if (Math.abs(delta) > 1) {
+        const root = document.documentElement
+        const previousScrollBehavior = root.style.scrollBehavior
+
+        root.style.scrollBehavior = "auto"
+        window.scrollTo(window.scrollX, window.scrollY + delta)
+        root.style.scrollBehavior = previousScrollBehavior
+      }
+
+      onComplete?.()
+    })
+  })
+}
 
 function normalizeTemplate(template: IAgentTemplateData): ITemplateCard {
   return {
@@ -298,10 +327,12 @@ function TemplateCard({
 function TemplateFilters({
   categories,
   activeCategory,
+  filtersRef,
   onCategoryChange,
 }: {
   categories: ITemplateFilterCategory[]
   activeCategory: string
+  filtersRef: MutableRefObject<HTMLElement | null>
   onCategoryChange: (category: string) => void
 }) {
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -344,7 +375,12 @@ function TemplateFilters({
   }, [activeCategory])
 
   return (
-    <section className="categories-list w-full max-w-full md:overflow-hidden">
+    <section
+      ref={(node) => {
+        filtersRef.current = node
+      }}
+      className="categories-list w-full max-w-full md:overflow-hidden"
+    >
       <h2 className="sr-only">Template categories</h2>
       <nav className="relative -mx-5 md:mx-0" aria-label="Template categories">
         <ScrollArea className="w-full" ref={scrollAreaRef}>
@@ -363,6 +399,7 @@ function TemplateFilters({
                         : "border-background text-gray-8 hover:text-white"
                     )}
                     aria-pressed={isActive}
+                    onMouseDown={(event) => event.preventDefault()}
                     onClick={() => onCategoryChange(category.id)}
                   >
                     {category.title}
@@ -460,6 +497,7 @@ function Templates({
     ALL_TEMPLATES_CATEGORY.id
   )
   const [isExpanded, setIsExpanded] = useState(false)
+  const filtersRef = useRef<HTMLElement | null>(null)
   const extraListId = useId()
   const categories = useMemo(
     () => getTemplateFilterCategories(templatesSection),
@@ -483,8 +521,29 @@ function Templates({
     visibleTemplates.length > INITIAL_TEMPLATE_COUNT
 
   const handleCategoryChange = (category: string) => {
-    setActiveCategory(category)
-    setIsExpanded(false)
+    if (category === activeCategory) {
+      return
+    }
+
+    const filterNode = filtersRef.current
+    const previousTop = filterNode?.getBoundingClientRect().top ?? null
+    const root = document.documentElement
+    const body = document.body
+    const previousRootOverflowAnchor = root.style.overflowAnchor
+    const previousBodyOverflowAnchor = body.style.overflowAnchor
+
+    root.style.overflowAnchor = "none"
+    body.style.overflowAnchor = "none"
+
+    flushSync(() => {
+      setActiveCategory(category)
+      setIsExpanded(false)
+    })
+
+    restoreFilterPosition(filterNode, previousTop, () => {
+      root.style.overflowAnchor = previousRootOverflowAnchor
+      body.style.overflowAnchor = previousBodyOverflowAnchor
+    })
   }
 
   const handleToggleTemplates = () => {
@@ -553,6 +612,7 @@ function Templates({
           <TemplateFilters
             categories={categories}
             activeCategory={activeCategory}
+            filtersRef={filtersRef}
             onCategoryChange={handleCategoryChange}
           />
         </div>
