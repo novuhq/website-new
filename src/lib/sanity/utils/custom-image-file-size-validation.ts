@@ -17,10 +17,16 @@ export const customImageFileSizeValidation =
       return true
     }
 
-    const asset = await client.fetch<{ size?: number } | null>(
-      `*[_id == $assetId][0]{size}`,
-      { assetId: value.asset._ref }
-    )
+    let asset: { size?: number } | null
+
+    try {
+      asset = await client.fetch<{ size?: number } | null>(
+        `*[_id == $assetId][0]{size}`,
+        { assetId: value.asset._ref }
+      )
+    } catch {
+      return true
+    }
 
     if (!asset?.size || asset.size <= maxSizeBytes) {
       return true

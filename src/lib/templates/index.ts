@@ -11,11 +11,20 @@ import {
   templateCategoriesQuery,
 } from "@/lib/sanity/queries/templates"
 
+const AGENT_TEMPLATE_DEPENDENCY_TAGS = [
+  "agentTemplate",
+  "templateAvatar",
+  "templateCategory",
+  "templateMcpServer",
+  "templateChannel",
+  "templateTool",
+]
+
 export const getAgentTemplates = (preview = false) =>
   sanityFetch<IAgentTemplateData[]>({
     query: agentTemplatesQuery,
     preview,
-    tags: ["agentTemplate"],
+    tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
   })
 
 export const getAgentTemplateById = (id: string, preview = false) =>
@@ -23,7 +32,7 @@ export const getAgentTemplateById = (id: string, preview = false) =>
     query: agentTemplateByIdQuery,
     qParams: { id },
     preview,
-    tags: ["agentTemplate"],
+    tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
   })
 
 export const getTemplateCategories = (preview = false) =>
