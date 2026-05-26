@@ -60,9 +60,9 @@ const STEPS = [
   },
 ] as const
 
-const VIDEO_TO_STEP = [0, 0, 1, 1, 2] as const
+const STEP_TRIGGER_VIDEO_INDEXES = [0, 1, 2] as const
 const STEP_DESCRIPTION_CLASS_NAME =
-  "min-h-0 max-w-101.75 overflow-hidden text-base leading-normal font-book tracking-tighter text-gray-8"
+  "min-h-0 max-w-101.75 overflow-hidden text-base leading-normal font-book tracking-tighter text-gray-9"
 
 function clamp(value: number) {
   return Math.min(Math.max(value, 0), 1)
@@ -184,9 +184,9 @@ function StaticStepItem({
 }) {
   return (
     <div className="flex w-full flex-col items-start gap-2">
-      <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
+      <p className="text-xl leading-tight font-medium tracking-tighter text-white">
         {title}
-      </h3>
+      </p>
       <p className={STEP_DESCRIPTION_CLASS_NAME}>{description}</p>
     </div>
   )
@@ -216,14 +216,19 @@ function ConnectAgentButton() {
 function DesktopStepsPanel({
   activeStep,
   progressLineRefs,
+  setPanelNode,
   onStepSelect,
 }: {
   activeStep: number
   progressLineRefs: MutableRefObject<Array<HTMLDivElement | null>>
+  setPanelNode: (node: HTMLDivElement | null) => void
   onStepSelect: (stepIndex: number) => void
 }) {
   return (
-    <div className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none">
+    <div
+      ref={setPanelNode}
+      className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none"
+    >
       <div className="flex w-full flex-col items-start gap-7">
         {STEPS.map((step, index) => (
           <div key={step.title} className="contents">
@@ -272,6 +277,7 @@ function MobileStepsWithVideos() {
 
 function HowItWorks() {
   const mediaRef = useRef<HTMLDivElement>(null)
+  const stepsPanelRef = useRef<HTMLDivElement | null>(null)
   const videoCardRefs = useRef<Array<HTMLDivElement | null>>([])
   const progressLineRefs = useRef<Array<HTMLDivElement | null>>([])
   const activeStepRef = useRef(0)
@@ -288,10 +294,12 @@ function HowItWorks() {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
+    const stepsPanelTop = stepsPanelRef.current?.getBoundingClientRect().top
+    const targetTop = targetVideo.getBoundingClientRect().top
 
-    targetVideo.scrollIntoView({
+    window.scrollTo({
+      top: window.scrollY + targetTop - (stepsPanelTop ?? 0),
       behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "center",
     })
   }
 
@@ -307,32 +315,40 @@ function HowItWorks() {
       }
 
       const media = mediaRef.current
+      const stepsPanel = stepsPanelRef.current
 
-      if (!media) {
+      if (!media || !stepsPanel) {
         return
       }
 
-      const rect = media.getBoundingClientRect()
-
-      if (rect.height === 0) {
-        return
-      }
-
-      const anchor = window.innerHeight * 0.5
-      const scrollProgress = clamp((anchor - rect.top) / rect.height)
-      const activeVideo = Math.min(
-        Math.floor(scrollProgress * VIDEO_TO_STEP.length),
-        VIDEO_TO_STEP.length - 1
+      const triggerRects = STEP_TRIGGER_VIDEO_INDEXES.map((videoIndex) =>
+        videoCardRefs.current[videoIndex]?.getBoundingClientRect()
       )
-      const nextActiveStep = VIDEO_TO_STEP[activeVideo]
-      const nextProgress: [number, number, number] = [0, 0, 0]
 
-      if (nextActiveStep === 0) {
-        nextProgress[0] = clamp(scrollProgress / 0.4)
-      } else if (nextActiveStep === 1) {
-        nextProgress[1] = clamp((scrollProgress - 0.4) / 0.4)
-      } else {
-        nextProgress[2] = clamp((scrollProgress - 0.8) / 0.2)
+      if (triggerRects.some((rect) => !rect)) {
+        return
+      }
+
+      const mediaRect = media.getBoundingClientRect()
+      const stepsPanelRect = stepsPanel.getBoundingClientRect()
+      const anchor = stepsPanelRect.top
+      const nextActiveStep = triggerRects.reduce((activeIndex, rect, index) => {
+        if (rect && rect.top <= anchor) {
+          return index
+        }
+
+        return activeIndex
+      }, 0)
+      const nextProgress: [number, number, number] = [0, 0, 0]
+      const activeStart = triggerRects[nextActiveStep]?.top
+      const finalStepEnd = mediaRect.bottom - stepsPanelRect.height
+      const activeEnd = triggerRects[nextActiveStep + 1]?.top ?? finalStepEnd
+
+      if (typeof activeStart === "number") {
+        const activeRange = Math.max(activeEnd - activeStart, 1)
+        nextProgress[nextActiveStep] = clamp(
+          (anchor - activeStart) / activeRange
+        )
       }
 
       nextProgress.forEach((value, index) => {
@@ -401,6 +417,9 @@ function HowItWorks() {
           <DesktopStepsPanel
             activeStep={activeStep}
             progressLineRefs={progressLineRefs}
+            setPanelNode={(node) => {
+              stepsPanelRef.current = node
+            }}
             onStepSelect={handleStepSelect}
           />
 

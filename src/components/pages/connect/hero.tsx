@@ -88,7 +88,7 @@ function Hero() {
             </div>
           </div>
 
-          <p className="text-[0.9375rem] leading-normal font-normal tracking-tighter text-gray-5">
+          <p className="text-[0.9375rem] leading-normal font-normal tracking-tighter text-gray-9">
             No credit card required
           </p>
         </div>
