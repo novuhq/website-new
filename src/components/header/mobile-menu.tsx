@@ -63,6 +63,10 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
     setOpen(open)
   }, [])
 
+  const closeMenu = useCallback(() => {
+    setOpen(false)
+  }, [])
+
   if (!items || items.length === 0) {
     return null
   }
@@ -109,13 +113,18 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
                       className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
                       href={href}
                       variant="foreground"
+                      onClick={closeMenu}
                     >
                       {title}
                     </Link>
                   ) : (
                     content &&
                     content.length > 0 && (
-                      <MobileItem title={title} content={content} />
+                      <MobileItem
+                        title={title}
+                        content={content}
+                        onNavigate={closeMenu}
+                      />
                     )
                   )}
                 </li>
@@ -135,12 +144,12 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
 
           <div className="mt-auto flex gap-3.5 px-5 py-6 max-2xs:flex-col 2xs:gap-5 2xs:py-7 md:px-8">
             <Button className="w-full" variant="outline" asChild>
-              <NextLink href={actions.secondary.href}>
+              <NextLink href={actions.secondary.href} onClick={closeMenu}>
                 {actions.secondary.label}
               </NextLink>
             </Button>
             <Button className="w-full" asChild>
-              <NextLink href={actions.primary.href}>
+              <NextLink href={actions.primary.href} onClick={closeMenu}>
                 {actions.primary.label}
               </NextLink>
             </Button>
