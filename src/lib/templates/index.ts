@@ -1,5 +1,6 @@
 import {
   type IAgentTemplateData,
+  type IAgentTemplatesSectionData,
   type ITemplateAvatarData,
   type ITemplateCategoryData,
 } from "@/types/templates"
@@ -7,6 +8,7 @@ import { sanityFetch } from "@/lib/sanity/client"
 import {
   agentTemplateByIdQuery,
   agentTemplatesQuery,
+  agentTemplatesSectionQuery,
   templateAvatarsQuery,
   templateCategoriesQuery,
 } from "@/lib/sanity/queries/templates"
@@ -26,6 +28,21 @@ export const getAgentTemplates = (preview = false) =>
     preview,
     tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
   })
+
+export async function getAgentTemplatesSection(
+  preview = false
+): Promise<IAgentTemplatesSectionData> {
+  const section = await sanityFetch<IAgentTemplatesSectionData | null>({
+    query: agentTemplatesSectionQuery,
+    preview,
+    tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
+  })
+
+  return {
+    categories: section?.categories ?? [],
+    templates: section?.templates ?? [],
+  }
+}
 
 export const getAgentTemplateById = (id: string, preview = false) =>
   sanityFetch<IAgentTemplateData | null>({

@@ -94,6 +94,17 @@
   /* Custom project variables */
   --sticky-header-height: 3.25rem;
   --footer-safe-area-spacing: 0rem;
+  --connect-footer-background-color: #05050b;
+  --connect-footer-background-image: radial-gradient(
+    62.51% 116.04% at 50% -37.62%,
+    #2d2581 2.87%,
+    #05050b 65.42%
+  );
+  --connect-footer-top-border-image: radial-gradient(
+    93.84% 72.07% at 50% 96.92%,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 @theme inline {
@@ -285,6 +296,20 @@
   }
 }
 
+@utility text-swap-layer {
+  transition-property: translate, opacity;
+  transition-duration: 300ms, 240ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
+  will-change: translate, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-swap-layer {
+    transition: none;
+    will-change: auto;
+  }
+}
+
 @utility section-container {
   @apply mx-auto max-w-272 px-5 md:px-8 2xl:px-0;
 }
@@ -305,6 +330,18 @@
 /* TODO: Prettier does not work in CSS */
 @utility border-grid {
   @apply border-border;
+}
+
+@utility bg-connect-footer {
+  background-color: var(--connect-footer-background-color);
+}
+
+@utility connect-footer-background {
+  background-image: var(--connect-footer-background-image);
+}
+
+@utility connect-footer-top-border {
+  background-image: var(--connect-footer-top-border-image);
 }
 
 @utility remove-autocomplete-styles {

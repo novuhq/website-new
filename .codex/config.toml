@@ -1,0 +1,3 @@
+[mcp_servers.sanity]
+bearer_token_env_var = "SANITY_VISUAL_EDITING_TOKEN"
+url = "https://mcp.sanity.io"
