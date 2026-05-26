@@ -46,7 +46,6 @@ export const SEO_DATA = {
     description:
       "Connect your notification stack to Novu and manage multi-channel delivery from one place.",
     pathname: ROUTE.connect as string,
-    noIndex: true,
   },
   mcp: {
     title: "Novu MCP Server — Add Notifications to Any AI Agent",

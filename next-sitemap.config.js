@@ -4,5 +4,5 @@ module.exports = {
   trailingSlash: true,
   generateRobotsTxt: false,
   sitemapBaseFileName: "next-sitemap",
-  exclude: ["/studio", "/studio/*", "/api/*", "/connect"],
+  exclude: ["/studio", "/studio/*", "/api/*"],
 }
