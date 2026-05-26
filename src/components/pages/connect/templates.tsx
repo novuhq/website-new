@@ -375,13 +375,12 @@ function TemplateFilters({
   }, [activeCategory])
 
   return (
-    <section
+    <div
       ref={(node) => {
         filtersRef.current = node
       }}
       className="categories-list w-full max-w-full md:overflow-hidden"
     >
-      <h2 className="sr-only">Template categories</h2>
       <nav className="relative -mx-5 md:mx-0" aria-label="Template categories">
         <ScrollArea className="w-full" ref={scrollAreaRef}>
           <ul className="flex h-7.5 w-full items-center px-5 md:pl-0">
@@ -415,7 +414,7 @@ function TemplateFilters({
           aria-hidden
         />
       </nav>
-    </section>
+    </div>
   )
 }
 

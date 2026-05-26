@@ -14,6 +14,8 @@ type Metadata = {
   pathname: string
   /** Path to social sharing image (defaults to site config) */
   imagePath?: string
+  /** Alternative text for social sharing image */
+  imageAlt?: string
   /** OpenGraph content type (defaults to "website") */
   type?: string
   /** Whether search engines should index this page */
@@ -36,6 +38,7 @@ function withTrailingSlash(pathname: string) {
  * @param {string} options.description - Page description
  * @param {string} options.pathname - URL pathname (without domain)
  * @param {string} [options.imagePath=config.defaultSocialImage] - Path to social sharing image
+ * @param {string} [options.imageAlt] - Alternative text for social sharing image
  * @param {string} [options.type="website"] - OpenGraph content type
  * @param {boolean} [options.noIndex=false] - Whether search engines should index this page
  *
@@ -46,6 +49,7 @@ export function getMetadata({
   description = config.defaultDescription,
   pathname,
   imagePath = config.defaultSocialImage,
+  imageAlt,
   type = "website",
   noIndex = false,
 }: Metadata) {
@@ -119,12 +123,16 @@ export function getMetadata({
           url: imageUrl,
           width: 1200,
           height: 630,
+          ...(imageAlt ? { alt: imageAlt } : {}),
         },
       ],
       type,
     },
     twitter: {
       card: "summary_large_image",
+      title,
+      description,
+      images: imageAlt ? { url: imageUrl, alt: imageAlt } : imageUrl,
     },
     robots: noIndex ? "noindex" : null,
   } as NextMetadata

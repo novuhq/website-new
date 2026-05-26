@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 const DESKTOP_MEDIA_QUERY = "(min-width: 1024px)"
 const VIDEO_BASE_PATH = "/videos/pages/connect/how-it-works"
 const VIDEO_PLAY_VISIBILITY_THRESHOLD = 0.2
+const STEP_ACTIVATION_VIEWPORT_RATIO = 0.46
 
 const VIDEOS = [
   {
@@ -60,9 +61,9 @@ const STEPS = [
   },
 ] as const
 
-const VIDEO_TO_STEP = [0, 0, 1, 1, 2] as const
+const STEP_TRIGGER_VIDEO_INDEXES = [0, 1, 2] as const
 const STEP_DESCRIPTION_CLASS_NAME =
-  "min-h-0 max-w-101.75 overflow-hidden text-base leading-normal font-book tracking-tighter text-gray-8"
+  "min-h-0 max-w-101.75 overflow-hidden text-base leading-normal font-book tracking-tighter text-gray-9"
 
 function clamp(value: number) {
   return Math.min(Math.max(value, 0), 1)
@@ -184,9 +185,9 @@ function StaticStepItem({
 }) {
   return (
     <div className="flex w-full flex-col items-start gap-2">
-      <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
+      <p className="text-xl leading-tight font-medium tracking-tighter text-white">
         {title}
-      </h3>
+      </p>
       <p className={STEP_DESCRIPTION_CLASS_NAME}>{description}</p>
     </div>
   )
@@ -312,27 +313,35 @@ function HowItWorks() {
         return
       }
 
-      const rect = media.getBoundingClientRect()
+      const triggerRects = STEP_TRIGGER_VIDEO_INDEXES.map((videoIndex) =>
+        videoCardRefs.current[videoIndex]?.getBoundingClientRect()
+      )
 
-      if (rect.height === 0) {
+      if (triggerRects.some((rect) => !rect)) {
         return
       }
 
-      const anchor = window.innerHeight * 0.5
-      const scrollProgress = clamp((anchor - rect.top) / rect.height)
-      const activeVideo = Math.min(
-        Math.floor(scrollProgress * VIDEO_TO_STEP.length),
-        VIDEO_TO_STEP.length - 1
-      )
-      const nextActiveStep = VIDEO_TO_STEP[activeVideo]
-      const nextProgress: [number, number, number] = [0, 0, 0]
+      const anchor = window.innerHeight * STEP_ACTIVATION_VIEWPORT_RATIO
+      const nextActiveStep = triggerRects.reduce((activeIndex, rect, index) => {
+        if (rect && rect.top <= anchor) {
+          return index
+        }
 
-      if (nextActiveStep === 0) {
-        nextProgress[0] = clamp(scrollProgress / 0.4)
-      } else if (nextActiveStep === 1) {
-        nextProgress[1] = clamp((scrollProgress - 0.4) / 0.4)
-      } else {
-        nextProgress[2] = clamp((scrollProgress - 0.8) / 0.2)
+        return activeIndex
+      }, 0)
+      const nextProgress: [number, number, number] = [0, 0, 0]
+      const activeStart = triggerRects[nextActiveStep]?.top
+      const activeEnd =
+        triggerRects[nextActiveStep + 1]?.top ??
+        videoCardRefs.current[VIDEOS.length - 1]?.getBoundingClientRect()
+          .bottom ??
+        media.getBoundingClientRect().bottom
+
+      if (typeof activeStart === "number") {
+        const activeRange = Math.max(activeEnd - activeStart, 1)
+        nextProgress[nextActiveStep] = clamp(
+          (anchor - activeStart) / activeRange
+        )
       }
 
       nextProgress.forEach((value, index) => {
