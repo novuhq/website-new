@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button"
 const DESKTOP_MEDIA_QUERY = "(min-width: 1024px)"
 const VIDEO_BASE_PATH = "/videos/pages/connect/how-it-works"
 const VIDEO_PLAY_VISIBILITY_THRESHOLD = 0.2
-const STEP_ACTIVATION_VIEWPORT_RATIO = 0.46
 
 const VIDEOS = [
   {
@@ -217,14 +216,19 @@ function ConnectAgentButton() {
 function DesktopStepsPanel({
   activeStep,
   progressLineRefs,
+  setPanelNode,
   onStepSelect,
 }: {
   activeStep: number
   progressLineRefs: MutableRefObject<Array<HTMLDivElement | null>>
+  setPanelNode: (node: HTMLDivElement | null) => void
   onStepSelect: (stepIndex: number) => void
 }) {
   return (
-    <div className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none">
+    <div
+      ref={setPanelNode}
+      className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none"
+    >
       <div className="flex w-full flex-col items-start gap-7">
         {STEPS.map((step, index) => (
           <div key={step.title} className="contents">
@@ -273,6 +277,7 @@ function MobileStepsWithVideos() {
 
 function HowItWorks() {
   const mediaRef = useRef<HTMLDivElement>(null)
+  const stepsPanelRef = useRef<HTMLDivElement | null>(null)
   const videoCardRefs = useRef<Array<HTMLDivElement | null>>([])
   const progressLineRefs = useRef<Array<HTMLDivElement | null>>([])
   const activeStepRef = useRef(0)
@@ -289,10 +294,12 @@ function HowItWorks() {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
+    const stepsPanelTop = stepsPanelRef.current?.getBoundingClientRect().top
+    const targetTop = targetVideo.getBoundingClientRect().top
 
-    targetVideo.scrollIntoView({
+    window.scrollTo({
+      top: window.scrollY + targetTop - (stepsPanelTop ?? 0),
       behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "center",
     })
   }
 
@@ -308,8 +315,9 @@ function HowItWorks() {
       }
 
       const media = mediaRef.current
+      const stepsPanel = stepsPanelRef.current
 
-      if (!media) {
+      if (!media || !stepsPanel) {
         return
       }
 
@@ -321,7 +329,9 @@ function HowItWorks() {
         return
       }
 
-      const anchor = window.innerHeight * STEP_ACTIVATION_VIEWPORT_RATIO
+      const mediaRect = media.getBoundingClientRect()
+      const stepsPanelRect = stepsPanel.getBoundingClientRect()
+      const anchor = stepsPanelRect.top
       const nextActiveStep = triggerRects.reduce((activeIndex, rect, index) => {
         if (rect && rect.top <= anchor) {
           return index
@@ -331,11 +341,8 @@ function HowItWorks() {
       }, 0)
       const nextProgress: [number, number, number] = [0, 0, 0]
       const activeStart = triggerRects[nextActiveStep]?.top
-      const activeEnd =
-        triggerRects[nextActiveStep + 1]?.top ??
-        videoCardRefs.current[VIDEOS.length - 1]?.getBoundingClientRect()
-          .bottom ??
-        media.getBoundingClientRect().bottom
+      const finalStepEnd = mediaRect.bottom - stepsPanelRect.height
+      const activeEnd = triggerRects[nextActiveStep + 1]?.top ?? finalStepEnd
 
       if (typeof activeStart === "number") {
         const activeRange = Math.max(activeEnd - activeStart, 1)
@@ -410,6 +417,9 @@ function HowItWorks() {
           <DesktopStepsPanel
             activeStep={activeStep}
             progressLineRefs={progressLineRefs}
+            setPanelNode={(node) => {
+              stepsPanelRef.current = node
+            }}
             onStepSelect={handleStepSelect}
           />
 
