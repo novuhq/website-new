@@ -1,6 +1,5 @@
 "use client"
 
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useId, useMemo, useRef, useState } from "react"
 import type { MutableRefObject, ReactNode } from "react"
 import NextLink from "next/link"
@@ -13,11 +12,12 @@ import type {
   IAgentTemplateData,
   IAgentTemplatesSectionData,
   ITemplateCategoryData,
-  ITemplateImage,
 } from "@/types/templates"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+
+import AgentGuideCard, { type IAgentGuideCardData } from "./agent-guide-card"
 
 const INITIAL_TEMPLATE_COUNT = 6
 const ALL_TEMPLATES_CATEGORY = {
@@ -30,29 +30,9 @@ interface ITemplateFilterCategory {
   title: string
 }
 
-interface ITemplateBadge {
-  label: string
-  icon?: ITemplateImage | null
-}
-
-interface ITemplateCard {
-  id: string
-  title: string
-  agent: string
+interface ITemplateCard extends IAgentGuideCardData {
   categoryId: string
-  category: string
-  quote: string
-  avatar?: ITemplateImage | null
-  connectors: ITemplateBadge[]
-  channels: ITemplateBadge[]
 }
-
-const TEMPLATE_CARD_HOVER_BACKGROUND =
-  "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 384 428' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='0.11999999731779099'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-32.568 46.387 -88.035 -76.748 313.18 14.627)'><stop stop-color='rgba(102,122,152,1)' offset='0'/><stop stop-color='rgba(102,122,152,0)' offset='0.88967'/></radialGradient></defs></svg>\"), linear-gradient(90deg, rgba(15, 15, 21, 0.8) 0%, rgba(15, 15, 21, 0.8) 100%)"
-const TEMPLATE_BUTTON_BACKGROUND =
-  "linear-gradient(210.097deg, rgba(176, 166, 191, 0.06) 8.6198%, rgba(176, 166, 191, 0.03) 113.79%)"
-const TEMPLATE_BUTTON_HOVER_BACKGROUND =
-  "linear-gradient(210.097deg, rgba(176, 166, 191, 0.24) 8.6198%, rgba(176, 166, 191, 0.12) 113.79%)"
 
 function restoreFilterPosition(
   filterNode: HTMLElement | null,
@@ -100,6 +80,7 @@ function normalizeTemplate(template: IAgentTemplateData): ITemplateCard {
       label: channel.name,
       icon: channel.icon,
     })),
+    href: ROUTE.dashboardV2SignUp,
   }
 }
 
@@ -171,156 +152,6 @@ function TemplateActionLink({
         {children}
       </NextLink>
     </Button>
-  )
-}
-
-function TemplateAvatar({ image }: { image?: ITemplateImage | null }) {
-  const imageSrc = image?.url || undefined
-
-  return (
-    <span className="relative size-11 shrink-0 overflow-hidden">
-      <img
-        src={imageSrc}
-        alt={image?.alt ?? ""}
-        aria-hidden={image?.alt ? undefined : true}
-        className="block size-full object-contain"
-      />
-    </span>
-  )
-}
-
-function TemplateIcon({ image }: { image?: ITemplateImage | null }) {
-  const imageSrc = image?.url || undefined
-
-  return (
-    <span className="relative size-5 shrink-0 overflow-hidden">
-      <img
-        src={imageSrc}
-        alt={image?.alt ?? ""}
-        aria-hidden={image?.alt ? undefined : true}
-        className="block size-full object-contain"
-      />
-    </span>
-  )
-}
-
-function TemplateCardBadge({ label, icon }: ITemplateBadge) {
-  return (
-    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
-      <TemplateIcon image={icon} />
-      <span className="min-w-0 text-[0.9375rem] leading-snug font-normal tracking-normal whitespace-nowrap text-gray-10">
-        {label}
-      </span>
-    </span>
-  )
-}
-
-function TemplateBadgeRow({
-  title,
-  items,
-}: {
-  title: string
-  items: ITemplateBadge[]
-}) {
-  return (
-    <div className="flex w-full flex-col items-start justify-center gap-3">
-      <p className="w-full overflow-visible text-[0.9375rem] leading-none font-book tracking-normal text-gray-7">
-        {title}
-      </p>
-      <div className="flex w-full flex-wrap items-center gap-2">
-        {items.map((item) => (
-          <TemplateCardBadge key={item.label} {...item} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function TemplateCardButton({
-  templateId,
-  templateTitle,
-}: {
-  templateId: string
-  templateTitle: string
-}) {
-  return (
-    <NextLink
-      href={ROUTE.dashboardV2SignUp}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
-      style={{ backgroundImage: TEMPLATE_BUTTON_BACKGROUND }}
-      aria-label={`View ${templateTitle} template`}
-      data-click-location="connect_templates"
-      data-click-text={`view_${templateId}_template`}
-    >
-      <span
-        className="pointer-events-none absolute inset-0 rounded opacity-0 transition-opacity duration-200 ease-out group-hover/button:opacity-100 group-focus-visible/button:opacity-100 motion-reduce:transition-none"
-        style={{ backgroundImage: TEMPLATE_BUTTON_HOVER_BACKGROUND }}
-        aria-hidden
-      />
-      <span className="relative z-10">View template</span>
-    </NextLink>
-  )
-}
-
-function TemplateCard({
-  id,
-  title,
-  agent,
-  category,
-  quote,
-  avatar,
-  connectors,
-  channels,
-}: ITemplateCard) {
-  return (
-    <article
-      className="group/card relative flex h-full min-h-107 w-full flex-col items-start overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none"
-      data-template-card
-    >
-      <span
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 ease-out group-focus-within/card:opacity-100 group-hover/card:opacity-100 motion-reduce:transition-none"
-        style={{ backgroundImage: TEMPLATE_CARD_HOVER_BACKGROUND }}
-        aria-hidden
-      />
-
-      <div className="relative z-10 flex w-full flex-1 flex-col items-start gap-6">
-        <div className="flex w-full flex-col items-start gap-6">
-          <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4.5">
-            <TemplateAvatar image={avatar} />
-
-            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-2">
-              <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
-                <h3 className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
-                  {title}
-                </h3>
-                <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
-                  {agent}
-                </p>
-              </div>
-
-              <span className="flex h-6.25 shrink-0 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
-                {category}
-              </span>
-            </div>
-          </div>
-
-          <p className="min-h-16.5 w-full text-base leading-snug font-light tracking-normal text-gray-9">
-            {quote}
-          </p>
-        </div>
-
-        <div className="flex w-full flex-col items-start gap-6">
-          <TemplateBadgeRow title="MCP connectors" items={connectors} />
-          <TemplateBadgeRow title="Channels" items={channels} />
-        </div>
-      </div>
-
-      <div className="relative z-10 mt-auto w-full pt-8">
-        <TemplateCardButton templateId={id} templateTitle={title} />
-      </div>
-    </article>
   )
 }
 
@@ -454,7 +285,12 @@ function TemplatesList({
               exit={{ opacity: 1 }}
               transition={{ duration: 0 }}
             >
-              <TemplateCard {...template} />
+              <AgentGuideCard
+                card={template}
+                buttonLabel="View template"
+                clickLocation="connect_templates"
+                newTab
+              />
             </motion.li>
           ))}
         </AnimatePresence>

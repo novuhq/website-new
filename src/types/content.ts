@@ -13,6 +13,7 @@ import {
   type TTableTheme,
 } from "@/types/common"
 import { type ISanityImageWithAsset } from "@/types/sanity"
+import { type ITemplateMcpServerData } from "@/types/templates"
 
 export interface IContentPicture extends ISanityImageWithAsset {
   alt?: string
@@ -86,6 +87,24 @@ export interface IContentChangeItem {
 export interface IContentChangeBlock {
   type: "improvements" | "fixes"
   items: IContentChangeItem[]
+}
+
+export interface IContentFaqItem {
+  question: string
+  answer: PortableTextBlock[]
+}
+
+export interface IContentFaqBlock {
+  items: IContentFaqItem[]
+}
+
+export interface IContentConnectedMcpItem {
+  connector: ITemplateMcpServerData
+  description: string
+}
+
+export interface IContentConnectedMcpBlock {
+  items: IContentConnectedMcpItem[]
 }
 
 export interface IContentCtaBlock {

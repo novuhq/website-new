@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react"
 import { Route } from "next"
 import Image from "next/image"
@@ -16,8 +17,10 @@ import {
   IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
+  IContentConnectedMcpBlock,
   IContentCtaBlock,
   IContentDetailsToggle,
+  IContentFaqBlock,
   IContentIframeBlock,
   IContentNote,
   IContentPicture,
@@ -35,6 +38,12 @@ import {
   generateHeadingSlug,
   parseMdxTable,
 } from "@/lib/utils"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
@@ -50,6 +59,82 @@ import { Step, Steps } from "@/components/content/steps"
 import Table from "@/components/content/table"
 import Video from "@/components/content/video"
 import YouTubeEmbed from "@/components/content/youtube-embed"
+
+function ContentFaqBlock({ items }: IContentFaqBlock) {
+  if (!items?.length) {
+    return null
+  }
+
+  return (
+    <section className="not-prose my-14">
+      <h2 className="text-[2rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
+        Frequently asked questions
+      </h2>
+      <Accordion type="single" collapsible className="mt-6 md:mt-[22px]">
+        {items.map(({ question, answer }) => (
+          <AccordionItem
+            key={question}
+            value={question}
+            className="border-b border-gray-3"
+          >
+            <AccordionTrigger className="tracking-snug pt-6 pb-5 text-start text-xl leading-snug font-medium hover:no-underline sm:pt-5 sm:pb-4 sm:text-lg">
+              {question}
+            </AccordionTrigger>
+            <AccordionContent className="pt-2 pb-8 sm:mr-7 sm:pb-6 md:mr-14">
+              <Content
+                className="max-w-[47rem] text-lg leading-relaxed font-book tracking-normal text-gray-8 sm:text-base sm:leading-normal [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_br]:mb-3 [&_br]:block [&_p]:text-gray-8 [&>*:first-child]:mt-0! [&>*:last-child]:mb-0!"
+                content={answer}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </section>
+  )
+}
+
+function ConnectedMcpBlock({ items }: IContentConnectedMcpBlock) {
+  if (!items?.length) {
+    return null
+  }
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-3" role="list">
+      {items.map(({ connector, description }) => {
+        if (!connector) {
+          return null
+        }
+
+        return (
+          <article
+            key={connector.id}
+            className="flex flex-col gap-4 rounded-lg border border-[rgba(51,51,71,0.5)] bg-[#0d0d13] px-4 py-4 md:flex-row md:items-center md:gap-4 md:pr-5"
+            role="listitem"
+          >
+            <div className="flex min-w-0 items-center gap-4 md:w-64 md:shrink-0">
+              <span className="relative flex size-11 shrink-0 items-center justify-center rounded-md border border-[rgba(51,51,71,0.4)]">
+                {connector.icon?.url && (
+                  <img
+                    src={connector.icon.url}
+                    alt={connector.icon.alt ?? ""}
+                    aria-hidden={connector.icon.alt ? undefined : true}
+                    className="size-6 object-contain"
+                  />
+                )}
+              </span>
+              <span className="min-w-0 text-xl leading-[1.125] font-medium tracking-tighter text-white">
+                {connector.name}
+              </span>
+            </div>
+            <p className="min-w-0 flex-1 text-base leading-[1.375] font-book tracking-tighter text-gray-9">
+              {description}
+            </p>
+          </article>
+        )
+      })}
+    </section>
+  )
+}
 
 function getComponents(
   uniqueHeadingMap: Record<string, number>,
@@ -293,6 +378,16 @@ function getComponents(
       }: PortableTextComponentProps<IContentChangeBlock>) => {
         return <ChangeBlock type={type} items={items} />
       },
+      faqBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentFaqBlock>) => (
+        <ContentFaqBlock items={items} />
+      ),
+      connectedMcpBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentConnectedMcpBlock>) => (
+        <ConnectedMcpBlock items={items} />
+      ),
     },
     block: {
       h2: ({ children }: { children: ReactNode }) => {

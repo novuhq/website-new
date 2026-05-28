@@ -11,6 +11,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrationsChannels: "/integrations/channels",
   integrationsSources: "/integrations/sources",
   connect: "/connect",
+  connectHowTo: "/connect/how-to",
   copilot: "/copilot",
   mcp: "/mcp",
 
