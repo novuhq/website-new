@@ -10,7 +10,7 @@ const VIDEO_MP4_SRC = "/videos/pages/connect/cta.hevc.mp4"
 function ConnectFinalCtaVideo() {
   return (
     <div
-      className="pointer-events-none absolute bottom-0 left-1/2 z-0 aspect-1920/742 h-auto w-full max-w-480 -translate-x-1/2 overflow-hidden"
+      className="pointer-events-none absolute bottom-0 left-1/2 z-0 aspect-1920/742 h-auto w-[150%] max-w-480 -translate-x-1/2 overflow-hidden md:w-[120%] xl:w-full"
       aria-hidden
     >
       <video
@@ -32,7 +32,7 @@ function ConnectFinalCtaVideo() {
 function FinalCta() {
   return (
     <section
-      className="relative isolate overflow-hidden pt-28 pb-56 md:pt-36 md:pb-72 lg:pt-44 lg:pb-92 xl:pt-50 xl:pb-112"
+      className="relative isolate overflow-hidden pt-20 pb-56 md:pt-36 md:pb-72 lg:pt-44 lg:pb-92 xl:pt-50 xl:pb-112"
       data-connect-section="final-cta"
     >
       <ConnectFinalCtaVideo />
