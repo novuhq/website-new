@@ -16,10 +16,12 @@ const FAQ = ({
   accordion,
   className,
   titleClassName,
+  containerClassName = "max-w-208 lg:max-w-224",
   onScheduleClick,
 }: IFaqSection & {
   className?: string
   titleClassName?: string
+  containerClassName?: string
   onScheduleClick?: (source: string) => void
 }) => {
   if (!title || !accordion) {
@@ -33,7 +35,7 @@ const FAQ = ({
         className
       )}
     >
-      <div className="container mx-auto max-w-[832px] px-5 md:px-8 lg:max-w-[896px]">
+      <div className={cn("container mx-auto px-5 md:px-8", containerClassName)}>
         <h2
           className={cn(
             "text-[32px] leading-dense font-medium tracking-tighter text-white md:text-[40px]",

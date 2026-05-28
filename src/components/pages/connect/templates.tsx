@@ -579,7 +579,7 @@ function Templates({
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full flex-col items-start gap-11">
           <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex w-full max-w-137.5 flex-col items-start gap-4">
+            <div className="flex w-full max-w-174 flex-col items-start gap-4">
               <h2 className="max-w-full text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
                 Don't start from a blank prompt
               </h2>

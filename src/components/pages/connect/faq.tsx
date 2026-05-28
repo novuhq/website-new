@@ -41,6 +41,7 @@ function ConnectFaq() {
         {...CONNECT_FAQ}
         className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
         titleClassName="text-[1.75rem] md:text-[40px]"
+        containerClassName="max-w-272"
       />
     </div>
   )
