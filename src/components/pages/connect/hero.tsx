@@ -14,7 +14,7 @@ function Hero() {
       className="relative isolate scroll-mt-16 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-44 lg:pb-34"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
-        <div className="relative z-10 flex w-full max-w-154.5 flex-col items-center gap-4 text-center lg:max-w-128 lg:items-start lg:text-left xl:max-w-140">
+        <div className="relative z-10 mx-auto flex w-full max-w-154.5 flex-col items-center gap-4 text-center lg:mx-0 lg:max-w-128 lg:items-start lg:text-left xl:max-w-140">
           <div className="flex w-full flex-col items-center gap-8 lg:items-start">
             <div className="flex flex-col items-center gap-5 lg:items-start">
               <div className="flex items-center gap-2">
