@@ -180,7 +180,7 @@ function ChannelCard({ name, description, state = "default", icon }: IChannel) {
 
   return (
     <NextLink
-      href={ROUTE.dashboardV2SignUp}
+      href={ROUTE.connectApp}
       target="_blank"
       rel="noopener noreferrer"
       className={cardClassName}

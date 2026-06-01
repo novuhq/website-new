@@ -162,7 +162,7 @@ function TemplateActionLink({
       asChild
     >
       <NextLink
-        href={ROUTE.dashboardV2SignUp}
+        href={ROUTE.connectApp}
         target="_blank"
         rel="noopener noreferrer"
         data-click-location="connect_templates"
@@ -245,7 +245,7 @@ function TemplateCardButton({
 }) {
   return (
     <NextLink
-      href={ROUTE.dashboardV2SignUp}
+      href={ROUTE.connectApp}
       target="_blank"
       rel="noopener noreferrer"
       className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
