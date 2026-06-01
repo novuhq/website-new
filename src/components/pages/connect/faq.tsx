@@ -40,7 +40,8 @@ function ConnectFaq() {
       <FAQ
         {...CONNECT_FAQ}
         className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
-        titleClassName="text-[1.75rem] md:text-[40px]"
+        titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
+        containerClassName="max-w-272"
       />
     </div>
   )

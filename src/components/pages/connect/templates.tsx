@@ -578,8 +578,8 @@ function Templates({
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">
         <div className="flex w-full flex-col items-start gap-11">
-          <div className="flex w-full flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex w-full max-w-137.5 flex-col items-start gap-4">
+          <div className="flex w-full flex-col items-center gap-8 text-center lg:flex-row lg:items-end lg:justify-between lg:text-left">
+            <div className="flex w-full max-w-174 flex-col items-center gap-4 lg:items-start">
               <h2 className="max-w-full text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-5xl">
                 Don't start from a blank prompt
               </h2>
@@ -589,7 +589,7 @@ function Templates({
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 xs:flex-row lg:gap-7">
+            <div className="flex flex-col items-center justify-center gap-4 xs:flex-row lg:justify-start lg:gap-7">
               <TemplateActionLink
                 clickText="start_from_scratch"
                 className="w-fit"

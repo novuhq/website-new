@@ -14,9 +14,9 @@ function Hero() {
       className="relative isolate scroll-mt-16 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-44 lg:pb-34"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
-        <div className="relative z-10 flex w-full max-w-154.5 flex-col items-start gap-4 lg:max-w-128 xl:max-w-140">
-          <div className="flex w-full flex-col items-start gap-8">
-            <div className="flex flex-col items-start gap-5">
+        <div className="relative z-10 mx-auto flex w-full max-w-154.5 flex-col items-center gap-4 text-center lg:mx-0 lg:max-w-128 lg:items-start lg:text-left xl:max-w-140">
+          <div className="flex w-full flex-col items-center gap-8 lg:items-start">
+            <div className="flex flex-col items-center gap-5 lg:items-start">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 bg-lagune-3" />
                 <span className="overflow-visible text-sm leading-none font-normal tracking-normal text-lagune-1 uppercase">
@@ -24,7 +24,7 @@ function Hero() {
                 </span>
               </div>
 
-              <div className="flex w-full flex-col items-start gap-4">
+              <div className="flex w-full flex-col items-center gap-4 lg:items-start">
                 <h1
                   className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
                   aria-label="Connect your Claude agent where your team actually works"
@@ -54,7 +54,7 @@ function Hero() {
               </div>
             </div>
 
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center lg:gap-7">
+            <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center lg:justify-start lg:gap-7">
               <Button
                 variant="default"
                 size="lg"

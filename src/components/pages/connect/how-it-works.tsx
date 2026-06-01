@@ -183,7 +183,7 @@ function StaticStepItem({
   description: string
 }) {
   return (
-    <div className="flex w-full flex-col items-start gap-2">
+    <div className="flex w-full flex-col items-center gap-2 text-center">
       <p className="text-xl leading-tight font-medium tracking-tighter text-white">
         {title}
       </p>
@@ -268,7 +268,11 @@ function MobileStepsWithVideos() {
 
           <StaticStepItem title={step.title} description={step.description} />
 
-          {index === STEPS.length - 1 && <ConnectAgentButton />}
+          {index === STEPS.length - 1 && (
+            <div className="flex w-full justify-center">
+              <ConnectAgentButton />
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -397,8 +401,8 @@ function HowItWorks() {
       className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
       data-connect-section="how-it-works"
     >
-      <div className="mx-auto flex w-full max-w-304 flex-col items-start gap-16 px-5 md:px-8 2xl:px-0">
-        <div className="flex w-full max-w-174.75 flex-col items-start gap-5">
+      <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-16 px-5 md:px-8 lg:items-start 2xl:px-0">
+        <div className="flex w-full max-w-174.75 flex-col items-center gap-5 text-center lg:items-start lg:text-left">
           <div className="flex items-center gap-2">
             <span className="size-1.5 bg-lagune-3" />
             <span className="overflow-visible text-sm leading-none font-normal tracking-normal text-lagune-1 uppercase">
