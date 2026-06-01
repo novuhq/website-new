@@ -46,7 +46,7 @@ const CONNECT_HEADER_ACTIONS = {
     label: "Novu Platform",
   },
   primary: {
-    href: ROUTE.dashboardV2SignUp,
+    href: ROUTE.connectApp,
     label: "Novu Connect",
   },
 }

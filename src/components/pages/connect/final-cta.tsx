@@ -59,7 +59,7 @@ function FinalCta() {
           asChild
         >
           <NextLink
-            href={ROUTE.dashboardV2SignUp}
+            href={ROUTE.connectApp}
             target="_blank"
             rel="noopener noreferrer"
             data-click-location="connect_final_cta"
