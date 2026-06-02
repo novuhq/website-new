@@ -121,7 +121,7 @@ function CustomerStorySlide({
       />
 
       <blockquote className="mt-9 flex w-full flex-col items-center">
-        <p className="w-full max-w-207 bg-[linear-gradient(146deg,rgba(255,255,255,0.85)_9.63%,rgba(255,255,255,0.60)_113.79%)] bg-clip-text text-[1.375rem] leading-normal font-book tracking-normal text-balance text-transparent md:max-w-[72%] md:text-[1.75rem] lg:max-w-[78%] xl:max-w-none">
+        <p className="w-full max-w-207 bg-[linear-gradient(146deg,rgba(255,255,255,0.85)_9.63%,rgba(255,255,255,0.60)_113.79%)] bg-clip-text text-xl leading-normal font-book tracking-normal text-balance text-transparent md:max-w-[72%] md:text-[1.75rem] lg:max-w-[78%] xl:max-w-none">
           {quoteText}
         </p>
 

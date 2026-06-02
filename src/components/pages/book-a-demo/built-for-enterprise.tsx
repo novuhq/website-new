@@ -44,15 +44,14 @@ function EnterpriseCard({
   return (
     <article
       className={cn(
-        "relative aspect-[408/434] min-h-88 w-full max-w-102 overflow-hidden rounded-xl bg-[#090911]",
+        "relative w-full max-w-102 overflow-hidden",
         className
       )}
     >
       <Image
-        className="absolute inset-0 size-full object-cover"
+        className="block h-auto w-full"
         src={image}
         alt=""
-        fill
         loading="lazy"
         sizes="(max-width: 767px) calc(100vw - 64px), 408px"
       />
@@ -61,7 +60,7 @@ function EnterpriseCard({
         <h3 className="text-base leading-dense font-medium tracking-tighter text-white min-[24.375rem]:text-lg xs:text-xl">
           {title}
         </h3>
-        <p className="text-[0.8125rem] leading-snug font-book tracking-tighter text-gray-8 min-[24.375rem]:text-sm xs:text-[0.9375rem]">
+        <p className="text-[0.8125rem] leading-snug font-book tracking-tighter text-gray-8 xs:text-[0.9375rem]">
           {description}
         </p>
       </div>
