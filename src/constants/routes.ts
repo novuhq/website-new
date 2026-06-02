@@ -5,6 +5,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   apiHubspot: "/api/hubspot",
 
   // CURRENT WEBSITE
+  bookADemo: "/book-a-demo",
   changelog: "/changelog",
   customers: "/customers",
   integrations: "/integrations",

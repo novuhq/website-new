@@ -13,6 +13,11 @@ export const SEO_DATA = {
     description: `${config.projectName} is an open-source notification platform that empowers developers to create robust, multi-channel notifications for web and mobile apps. With powerful workflows, seamless integrations, and a flexible API-first approach, ${config.projectName} enables product teams to manage notifications without breaking production.`,
     pathname: "",
   },
+  bookADemo: {
+    title: `Book a Demo | Enterprise Notification Infrastructure | ${config.projectName}`,
+    description: `Book a ${config.projectName} demo to discuss enterprise notification infrastructure, SSO/SAML, RBAC, audit logs, SLA, compliance, and self-hosted deployment options.`,
+    pathname: ROUTE.bookADemo as string,
+  },
   changelog: {
     title: `Changelog | ${config.projectName}`,
     description: `Stay up-to-date with ${config.projectName}`,

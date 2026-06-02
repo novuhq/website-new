@@ -15,6 +15,12 @@ const customersCardsFields = `
     "alt": logo.alt
   },
   "quoteText": quote_text,
+  "quoteAuthorPhoto": select(defined(quote_photo.asset) => {
+    "url": quote_photo.asset->url + "?w=64&h=64&fit=crop&auto=format",
+    "width": quote_photo.asset->metadata.dimensions.width,
+    "height": quote_photo.asset->metadata.dimensions.height,
+    "alt": quote_photo.alt
+  }),
   "quoteAuthorName": quote_name,
   "quoteAuthorPosition": quote_position,
 `
