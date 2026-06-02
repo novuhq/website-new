@@ -1,11 +1,13 @@
 import Image from "next/image"
 import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
 import { Button } from "@/components/ui/button"
+import CopyCliCommand from "@/components/ui/copy-cli-command"
 
 import ConnectHeroVideo from "./hero-video"
+
+const CONNECT_CLI_COMMAND = "npx novu connect"
 
 function Hero() {
   return (
@@ -55,22 +57,12 @@ function Hero() {
             </div>
 
             <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center lg:justify-start lg:gap-7">
-              <Button
-                variant="default"
-                size="lg"
-                className="w-full px-5 sm:w-auto"
-                asChild
-              >
-                <NextLink
-                  href={ROUTE.connectApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-click-location="connect_hero"
-                  data-click-text="connect_agent_for_free_now"
-                >
-                  Connect agent for free now
-                </NextLink>
-              </Button>
+              <CopyCliCommand
+                command={CONNECT_CLI_COMMAND}
+                className="w-full sm:w-auto"
+                clickLocation="connect_hero"
+                clickText="copy_npx_novu_connect"
+              />
               <Button
                 variant="outline"
                 size="lg"
