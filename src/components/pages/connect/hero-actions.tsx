@@ -123,10 +123,7 @@ function ConnectHeroActions() {
 
         <button
           type="button"
-          className={cn(
-            "absolute top-1.5 right-1.5 z-30 flex h-9 w-18.5 items-center justify-center rounded-sm bg-white text-xs leading-none font-medium text-black uppercase transition-colors hover:bg-gray-10 focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none disabled:cursor-default",
-            isCopied && "bg-gray-10"
-          )}
+          className="absolute top-1.5 right-1.5 z-30 flex h-9 w-18.5 items-center justify-center rounded-sm bg-white text-xs leading-none font-medium text-black uppercase transition-colors hover:bg-gray-10 focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none disabled:cursor-default"
           onClick={() => handleCopy(CONNECT_COMMAND)}
           disabled={isCopied}
           aria-label={isCopied ? "Copied command" : "Copy command"}
