@@ -1,10 +1,7 @@
 import Image from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
-import { Button } from "@/components/ui/button"
-
+import ConnectHeroActions from "./hero-actions"
 import ConnectHeroVideo from "./hero-video"
 
 function Hero() {
@@ -54,38 +51,7 @@ function Hero() {
               </div>
             </div>
 
-            <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center lg:justify-start lg:gap-7">
-              <Button
-                variant="default"
-                size="lg"
-                className="w-full px-5 sm:w-auto"
-                asChild
-              >
-                <NextLink
-                  href={ROUTE.connectApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-click-location="connect_hero"
-                  data-click-text="connect_agent_for_free_now"
-                >
-                  Connect agent for free now
-                </NextLink>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full overflow-visible sm:w-auto"
-                asChild
-              >
-                <NextLink
-                  href="#connect-demo"
-                  data-click-location="connect_hero"
-                  data-click-text="watch_the_30_sec_demo"
-                >
-                  Watch the 30-sec demo
-                </NextLink>
-              </Button>
-            </div>
+            <ConnectHeroActions />
           </div>
 
           <p className="text-[0.9375rem] leading-normal font-normal tracking-tighter text-gray-9">
