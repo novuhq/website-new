@@ -50,6 +50,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   workflows: "https://dashboard.novu.co/workflows",
 
   // Other services
+  connectApp: "https://connect.novu.co",
   bookMeeting: "https://novu.co/contact-us/",
   careers: "https://careers.novu.co",
   handbook: "https://handbook.novu.co",

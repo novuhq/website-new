@@ -94,11 +94,11 @@ function ConnectFooter() {
   return (
     <footer className="relative overflow-hidden bg-connect-footer px-5 pt-10 pb-6 md:px-8 md:pb-7 lg:pt-12 lg:pb-8">
       <div
-        className="pointer-events-none absolute top-0 left-1/2 aspect-1920/614 h-auto w-full max-w-480 -translate-x-1/2 connect-footer-background"
+        className="pointer-events-none absolute top-0 left-1/2 aspect-1920/614 h-auto w-[150%] max-w-480 -translate-x-1/2 connect-footer-background md:w-[120%] xl:w-full"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute top-0 left-1/2 h-px w-full max-w-none -translate-x-1/2 connect-footer-top-border"
+        className="pointer-events-none absolute top-0 left-1/2 h-px w-[150%] max-w-480 -translate-x-1/2 connect-footer-top-border md:w-[120%] xl:w-full"
         aria-hidden="true"
       />
       <div className="relative z-10 mx-auto w-full max-w-336">
@@ -118,8 +118,8 @@ function ConnectFooter() {
             groups={CONNECT_FOOTER_GROUPS}
           />
 
-          <div className="mt-10 flex flex-col items-start gap-5 md:mt-12 md:flex-row md:items-center md:justify-between xl:absolute xl:top-0 xl:right-0 xl:mt-0 xl:w-62.25 xl:flex-col xl:items-end xl:gap-5.5">
-            <p className="w-62.25 max-w-full text-base leading-snug font-normal tracking-tighter text-gray-13/50 md:text-right">
+          <div className="mt-10 flex flex-col items-start gap-5 md:mt-12 md:flex-row md:items-center xl:absolute xl:top-0 xl:right-0 xl:mt-0 xl:w-62.25 xl:flex-col xl:items-end xl:justify-between xl:gap-5.5">
+            <p className="order-last w-62.25 max-w-full text-base leading-snug font-normal tracking-tighter text-gray-13/50 xl:order-first xl:text-right">
               Built for Claude agents.
               <br />
               Not affiliated with Anthropic.

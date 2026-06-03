@@ -32,7 +32,7 @@ function ConnectHeroVideo() {
   return (
     <div
       id="connect-demo"
-      className="pointer-events-none relative z-0 mx-auto mt-14 aspect-[1216/1144] w-full max-w-152 overflow-hidden lg:absolute lg:top-0 lg:right-8 lg:mt-0 lg:w-106 lg:max-w-none xl:-top-28 xl:w-132 2xl:-top-38 2xl:right-0 2xl:w-152"
+      className="pointer-events-none relative left-1/2 z-0 mt-4 aspect-[1216/1144] w-[115%] max-w-175 -translate-x-1/2 overflow-hidden lg:absolute lg:-top-20 lg:right-0 lg:left-auto lg:mt-0 lg:w-[53.5%] lg:max-w-none lg:translate-x-0 xl:w-170 xl:translate-x-[10%] 2xl:-top-28 2xl:w-196 2xl:translate-x-[22%]"
       aria-hidden
     >
       <video
