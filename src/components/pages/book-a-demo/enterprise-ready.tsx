@@ -1,6 +1,9 @@
 import Image, { type StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import aicpaIcon from "@/images/pages/book-a-demo/enterprise-ready/aicpa.svg"
+import gdprIcon from "@/images/pages/book-a-demo/enterprise-ready/gdpr.svg"
+import hipaaIcon from "@/images/pages/book-a-demo/enterprise-ready/hipaa.svg"
 import auditIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/audit.svg"
 import enterpriseIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/enterprise.svg"
 import ratesIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/rates.svg"
@@ -9,10 +12,7 @@ import selfHostIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/self
 import shieldIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/shield.svg"
 import supportIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/support.svg"
 import userLockIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/user-lock.svg"
-import gdprIcon from "@/images/pages/connect/compliance/gdpr.svg"
-import hipaaIcon from "@/images/pages/connect/compliance/hipaa.svg"
-import isoIcon from "@/images/pages/connect/compliance/iso.svg"
-import soc2Icon from "@/images/pages/connect/compliance/soc-2.svg"
+import isoIcon from "@/images/pages/book-a-demo/enterprise-ready/iso.svg"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -40,12 +40,12 @@ const COMPLIANCE_CARDS: IComplianceCard[] = [
     title: "ISO 27001",
     description: "International standard for information security management.",
     image: isoIcon,
-    imageClassName: "h-16 w-14.25",
+    imageClassName: "h-16 w-14.5",
   },
   {
     title: "SOC 2 Type II",
     description: "Proven long-term data security through independent audits.",
-    image: soc2Icon,
+    image: aicpaIcon,
     imageClassName: "h-16 w-12.5",
   },
   {
@@ -168,7 +168,7 @@ function BookADemoEnterpriseReady() {
                   height={16}
                   loading="lazy"
                 />
-                <span className="text-base leading-tight font-normal tracking-tighter whitespace-nowrap text-white">
+                <span className="text-[0.9375rem] leading-tight font-normal tracking-tighter whitespace-nowrap text-white md:text-base">
                   {title}
                 </span>
               </li>

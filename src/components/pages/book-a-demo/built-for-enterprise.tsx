@@ -43,10 +43,7 @@ function EnterpriseCard({
 }: IEnterpriseCard & { className?: string }) {
   return (
     <article
-      className={cn(
-        "relative w-full max-w-102 overflow-hidden",
-        className
-      )}
+      className={cn("relative w-full max-w-102 overflow-hidden", className)}
     >
       <Image
         className="block h-auto w-full"
@@ -101,7 +98,7 @@ function BookADemoBuiltForEnterprise() {
         </div>
 
         <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 xl:hidden">
-          <ul className="enterprise-requirements-scroll flex snap-x snap-mandatory scroll-px-5 gap-7 overflow-x-auto px-5 md:scroll-px-8 md:px-8">
+          <ul className="enterprise-requirements-scroll flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 md:scroll-px-8 md:px-8">
             {ENTERPRISE_CARDS.map((card) => (
               <li
                 key={card.title}

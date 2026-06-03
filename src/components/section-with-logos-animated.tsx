@@ -93,7 +93,7 @@ const SectionWithLogosAnimated = async ({
             titleSize === "sm"
               ? "text-base text-gray-8 lg:text-lg"
               : titleSize === "lg"
-                ? "max-w-xs text-[2rem] leading-[1.125] font-medium text-foreground md:max-w-none md:text-[2.5rem]"
+                ? "max-w-xs text-[1.75rem] leading-[1.125] font-medium text-foreground md:max-w-none md:text-[2.5rem]"
                 : "leading-denser max-w-60 text-3xl font-medium md:max-w-max lg:text-[2rem]",
             titleClassName
           )}
