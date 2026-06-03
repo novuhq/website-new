@@ -1,15 +1,15 @@
 "use client"
 
-import NextLink from "next/link"
 import Image from "next/image"
+import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import CheckIcon from "@/svgs/icons/check.svg"
 
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
+import { Button } from "@/components/ui/button"
 
-const CONNECT_COMMAND = "npx novu@rc connect"
+const CONNECT_COMMAND = "npx novu connect"
 const INPUT_GLOW_BLURS = [
   "blur-[18px]",
   "blur-[14px]",
@@ -99,10 +99,7 @@ function ConnectHeroActions() {
           <CommandInputStroke
             id={`connect-command-input-glow-${index}`}
             key={blur}
-            className={cn(
-              "z-0 rounded-md opacity-50",
-              blur
-            )}
+            className={cn("z-0 rounded-md opacity-50", blur)}
             type="glow"
           />
         ))}
