@@ -71,6 +71,30 @@ From that, draft a concise **1–2 sentence agent description** of the assistant
 
 Show the drafted description to the user, let them edit it, and **get explicit confirmation** before running anything.
 
+**MCP servers — only choose from the supported catalog below.** When the description implies third‑party integrations (e.g. Stripe, GitHub, Linear), only reference ones that exist in the [Supported MCP servers](#supported-mcp-servers) list, by their catalog **id**. Never invent MCP ids, names, or URLs. Keep the set minimal — pick only what the project clearly needs; if a needed integration isn't in the list, omit it (the user can add MCPs later in the dashboard). The generated agent's MCP servers are drawn from this catalog; if you review or adjust them, drop anything whose id is not in the list.
+
+---
+
+## Supported MCP servers
+
+The agent may only use MCP servers from this catalog — match by **id**. These are the only valid ids; anything else will not connect.
+
+**Popular (prefer these):** `slack`, `linear`, `atlassian-rovo`, `github`, `gitlab`, `sentry`, `notion`, `asana`, `amplitude`, `airtable`, `stripe`, `intercom`, `datadog`, `grafana`, `new-relic`, `pagerduty`
+
+**Full catalog by category (ids):**
+
+- **code:** `github`, `gitlab`, `sentry`, `datadog`, `grafana`, `new-relic`, `pagerduty`, `aws-marketplace`, `buildkite`, `cloudflare`, `axiom`, `better-stack`, `cloudflare-developer-platform`, `context7`, `google-compute-engine`, `harness-io`, `honeycomb`, `hugging-face`, `incident-io`, `jam`, `jentic`, `ketryx`, `launchdarkly`, `mintlify`, `netlify`, `planetscale`, `postman`, `pulumi`, `railway`, `replicate`, `semgrep`, `sourcegraph`, `stytch`, `vercel`
+- **communication:** `slack`, `intercom`, `campfire`, `circleback`, `fathom`, `fellow-ai`, `fireflies`, `gmail`, `grain`, `guru`, `krisp`, `lorikeet`, `otter-ai`, `pylon`, `read-ai`, `send`, `superhuman-mail`, `tldv`, `unthread`, `zoho-desk`, `zoom-for-claude`
+- **data:** `amplitude`, `airtable`, `mixpanel`, `neon`, `supabase`, `bigdata-com`, `cb-insights`, `cdata-connect-ai`, `consensus`, `contentsquare`, `coupler-io`, `enterpret`, `exa`, `google-cloud-bigquery`, `monte-carlo`, `motherduck`, `motion-creative-analytics`, `omni-analytics`, `orion-by-gravity`, `polar-analytics`, `posthog`, `scholar-gateway`, `scite`, `sprouts-data-intelligence`, `supermetrics-marketing-analytics`, `tavily`, `thoughtspot-spotter`, `windsor-ai`
+- **design:** `canva`, `figma`, `adobe-for-creativity`, `biorender`, `cloudinary`, `descript`, `eraser`, `gamma`, `lucid`, `magic-patterns`, `miro`, `splice`, `three-js-3d-viewer`, `trimble-sketchup`, `webflow`, `wix`
+- **financial-services:** `stripe`, `brex`, `plaid`, `square`, `aiera`, `airwallex-developer`, `carta`, `chronograph`, `coindesk`, `d-b-risk-analytics`, `daloopa`, `datasite`, `digits`, `factset-ai-ready-data`, `fiscal-ai`, `fmp`, `guidepoint`, `gusto`, `harmonic`, `ibisworld`, `ice-data-services`, `intuit-credit-karma`, `intuit-turbotax`, `lseg`, `lunarcrush`, `mercury`, `moodys`, `morningstar`, `msci`, `mt-newswires`, `paypal`, `pitchbook-premium`, `privacy-com`, `quartr`, `ramp`, `razorpay`, `rillet`, `s-p-global`, `third-bridge`, `tropic`, `verisk-underwriting-intelligence`, `xero`, `yardi-virtuoso`, `zocks`, `zoho-books`
+- **health-and-wellness:** `adisinsight`, `medidata`, `owkin`, `synapse-org`, `synthesize-bio`
+- **productivity:** `linear`, `atlassian-rovo`, `notion`, `asana`, `adobe-experience-manager`, `box`, `dropbox`, `google-drive`, `base44`, `calendly`, `clickup`, `craft`, `day-ai`, `devrev`, `docuseal`, `docusign`, `dovetail`, `egnyte`, `era-context`, `euler`, `google-calendar`, `granola`, `ifttt`, `imanage-work`, `ironclad-contracts`, `jotform`, `klarity`, `lumin`, `make`, `mem`, `microsoft-365`, `monday-com`, `netdocuments`, `pandadoc`, `process-street`, `sanity`, `signnow`, `todoist`, `wordpress-com`, `zapier`, `zoho-projects`
+- **sales-and-marketing:** `ahrefs`, `attio`, `hubspot`, `adobe-journey-optimizer`, `adobe-marketing-agent`, `airops`, `apollo-io`, `aura`, `bitly`, `clarify`, `clay`, `close`, `common-room`, `crossbeam`, `g2`, `indeed`, `intuit-mailchimp`, `klaviyo`, `local-falcon`, `lusha`, `mailerlite`, `metaview`, `outreach`, `peec-ai`, `phoenix-by-hg-insights`, `quo`, `semrush`, `shopify`, `similarweb`, `surveymonkey`, `sybill`, `vibe-prospecting`, `workable`, `zoho-crm`, `zoominfo`
+- **other:** `alma`, `aurora`, `candid`, `cocounsel-legal`, `courtlistener`, `definely`, `descrybe-legal-engine`, `everlaw`, `fever-event-discovery`, `gainsight`, `govtribe`, `harvey`, `instacart`, `interactive-brokers`, `lawve-ai`, `legal-data-hunter`, `legalzoom`, `lilt`, `melon`, `midpage-legal-research`, `pdf-viewer`, `play-sheet-music`, `playmcp`, `resy`, `shapes`, `solve-intelligence`, `tango`, `ticket-tailor`, `topcounsel-by-the-l-suite`, `trellis`, `udemy-business`, `verisk-xactrestore`
+
+> Source of truth: `MCP_SERVERS` in `packages/shared/src/consts/providers/mcp-servers.ts`. If this list and the code diverge, the code wins — regenerate this section from `MCP_SERVERS[].id`.
+
 ---
 
 ## Step 3 — Run `novu connect` (keyless, non‑interactive)
@@ -175,4 +199,3 @@ On failure (non‑zero exit, or a line starting with `✗`), surface the error m
 - **One run = one new agent + one channel.** Re‑running `connect` creates another agent; there's no "add a channel to the existing agent" in this non‑interactive flow yet.
 - **Channel support is uneven headlessly:** `slack` and `email` complete with one user action; `whatsapp`/`teams` finish in the dashboard; `telegram` is interactive‑only (QR) and not usable through this agent flow.
 - Keyless data is temporary until the user claims it via the in‑channel sign‑up link.
-
