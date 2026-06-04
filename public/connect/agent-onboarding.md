@@ -29,7 +29,7 @@ pnpm --filter novu build
 2. Resolve the absolute repo root (the directory that contains `packages/novu`) and set the entry path you will use for every command below:
 
 ```bash
-NOVU_REPO="<ABSOLUTE_PATH_TO_THE_NOVU_REPO>"
+NOVU_REPO="~/projects/novu"
 NOVU_CLI="$NOVU_REPO/packages/novu/dist/src/index.js"
 ```
 
