@@ -75,6 +75,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75, 90, 95, 100],
+    localPatterns: [
+      {
+        pathname: "/api/connect/how-to/cover/**",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",

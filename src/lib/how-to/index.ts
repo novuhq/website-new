@@ -9,6 +9,7 @@ import {
   type IHowToPostWithTableOfContents,
 } from "@/types/how-to"
 import { type ITemplateMcpServerData } from "@/types/templates"
+import { getHowToCoverPath, getHowToCoverText } from "@/lib/how-to/cover"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   howToIndexQuery,
@@ -27,9 +28,44 @@ function transformCategory(category: IHowToCategoryData): IHowToCategory {
   }
 }
 
+function getAbsoluteUrl(path: string, siteUrl: string) {
+  return path.startsWith("http") ? path : `${siteUrl}${path}`
+}
+
+function resolvePostCover(post: IHowToPostData) {
+  const hasCoverFields =
+    post.coverMode || post.coverTemplate || post.coverText || post.customCover
+
+  if (!hasCoverFields) {
+    return post.cover
+  }
+
+  const coverMode =
+    post.coverMode ?? (post.customCover ? "custom" : "generated")
+
+  if (coverMode === "none") {
+    return undefined
+  }
+
+  if (coverMode === "custom" && post.customCover) {
+    return post.customCover
+  }
+
+  return getHowToCoverPath({
+    template: post.coverTemplate,
+    title: getHowToCoverText({
+      coverText: post.coverText,
+      title: post.title,
+    }),
+  })
+}
+
 function transformPost(post: IHowToPostData): IHowToPost {
+  const cover = resolvePostCover(post)
+
   return {
     ...post,
+    ...(cover ? { cover } : {}),
     url: `${ROUTE.connectHowTo}/${post.slug.current}`,
     category: transformCategory(post.category),
   }
@@ -81,18 +117,28 @@ export async function getHowToPostBySlug(
     return null
   }
 
+  const transformedPost = transformPost(post)
+  const fallbackSocialImage = transformedPost.cover
+    ? getAbsoluteUrl(transformedPost.cover, siteUrl)
+    : getAbsoluteUrl(
+        getHowToCoverPath({
+          template: post.coverTemplate,
+          title: getHowToCoverText({
+            coverText: post.coverText,
+            title: post.title,
+          }),
+        }),
+        siteUrl
+      )
+
   return {
-    ...transformPost(post),
+    ...transformedPost,
     tableOfContents: getTableOfContents(post.content),
     seo: {
       ...post.seo,
       title: post.seo?.title || post.title,
       description: post.seo?.description || post.caption,
-      socialImage:
-        post.seo?.socialImage ??
-        `${siteUrl}/api/og?template=blog&title=${encodeURIComponent(
-          post.seo?.title || post.title
-        )}`,
+      socialImage: post.seo?.socialImage ?? fallbackSocialImage,
       noIndex: post.seo?.noIndex || false,
     },
   }

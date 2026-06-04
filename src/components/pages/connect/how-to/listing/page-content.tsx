@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, type ReactNode } from "react"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import searchIcon from "@/svgs/icons/search.svg"
 import { Check, ChevronDown, X } from "lucide-react"
@@ -9,26 +9,37 @@ import { type IHowToIndexData, type IHowToPost } from "@/types/how-to"
 import { type ITemplateMcpServerData } from "@/types/templates"
 import { cn } from "@/lib/utils"
 
-import AgentGuideCard, { type IAgentGuideCardData } from "./agent-guide-card"
+import AgentGuideCard, {
+  type IAgentGuideCardData,
+} from "../../shared/agent-guide-card"
 
 const INITIAL_POSTS_PER_CATEGORY = 6
 const FILTER_OPTIONS_SCROLL_THRESHOLD = 10
+const CARDS_SCROLL_GAP = 16
 
-type FilterGroupId = "category" | "connector"
+type FilterGroupId = "provider" | "category" | "connector"
+type ProviderId = "novu" | "community"
 
 interface IFilterOption {
   id: string
   label: string
 }
 
+const PROVIDER_OPTIONS: IFilterOption[] = [
+  { id: "novu", label: "Novu" },
+  { id: "community", label: "Community" },
+]
+
 function toCard(post: IHowToPost): IAgentGuideCardData {
   return {
     id: post.slug.current,
     title: post.title,
-    agent: post.agentName,
+    heading: post.category.title,
+    agent: post.author.name,
+    agentCompany: post.author.company?.name,
     category: post.category.title,
     quote: post.summary,
-    avatar: post.avatar?.darkImage,
+    avatar: post.author?.avatar?.darkImage,
     connectors: (post.mcpServerList ?? []).map((connector) => ({
       label: connector.name,
       icon: connector.icon,
@@ -66,6 +77,12 @@ function getConnectorOptions(
   })
 
   return [...connectorMap.values()]
+}
+
+function getPostProviderId(post: IHowToPost): ProviderId {
+  return post.author.company?.name?.trim().toLowerCase() === "novu"
+    ? "novu"
+    : "community"
 }
 
 function FilterCount({ count }: { count: number }) {
@@ -134,13 +151,17 @@ function FilterGroup({
   options,
   selected,
   onToggle,
+  defaultOpen = true,
 }: {
   title: string
   groupId: FilterGroupId
   options: IFilterOption[]
   selected: string[]
   onToggle: (groupId: FilterGroupId, id: string) => void
+  defaultOpen?: boolean
 }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+
   if (!options.length) {
     return null
   }
@@ -148,7 +169,11 @@ function FilterGroup({
   const shouldScroll = options.length > FILTER_OPTIONS_SCROLL_THRESHOLD
 
   return (
-    <details className="group flex flex-col" open>
+    <details
+      className="group flex flex-col"
+      open={isOpen}
+      onToggle={(event) => setIsOpen(event.currentTarget.open)}
+    >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded outline-none focus-visible:ring-2 focus-visible:ring-lagune-3/40 [&::-webkit-details-marker]:hidden">
         <span className="flex min-w-0 items-center gap-2 text-sm leading-none font-medium tracking-tighter text-white">
           <ChevronDown
@@ -185,7 +210,7 @@ function FilterGroup({
         </div>
 
         {shouldScroll && (
-          <div className="pointer-events-none absolute right-3 bottom-0 left-0 h-27 bg-gradient-to-b from-transparent to-background" />
+          <div className="pointer-events-none absolute right-3 bottom-0 left-0 h-27 bg-gradient-to-b from-transparent to-black" />
         )}
       </div>
     </details>
@@ -195,8 +220,11 @@ function FilterGroup({
 function FiltersPanel({
   categoryOptions,
   connectorOptions,
+  defaultGroupsOpen = true,
+  providerOptions,
   selectedCategories,
   selectedConnectors,
+  selectedProviders,
   selectedCount,
   onToggle,
   onClear,
@@ -204,8 +232,11 @@ function FiltersPanel({
 }: {
   categoryOptions: IFilterOption[]
   connectorOptions: IFilterOption[]
+  defaultGroupsOpen?: boolean
+  providerOptions: IFilterOption[]
   selectedCategories: string[]
   selectedConnectors: string[]
+  selectedProviders: string[]
   selectedCount: number
   onToggle: (groupId: FilterGroupId, id: string) => void
   onClear: () => void
@@ -213,6 +244,7 @@ function FiltersPanel({
 }) {
   const hasCategoryOptions = categoryOptions.length > 0
   const hasConnectorOptions = connectorOptions.length > 0
+  const hasPostFilterOptions = hasCategoryOptions || hasConnectorOptions
 
   return (
     <div className={cn("flex w-full flex-col gap-7", className)}>
@@ -222,8 +254,12 @@ function FiltersPanel({
         </p>
         <button
           type="button"
-          className="flex items-center gap-1.5 rounded-full text-sm leading-snug tracking-tighter text-gray-6 transition-colors hover:text-gray-9 focus-visible:ring-2 focus-visible:ring-lagune-3/40 disabled:pointer-events-none disabled:opacity-50"
+          className={cn(
+            "flex items-center gap-1.5 rounded-full text-sm leading-snug tracking-tighter text-gray-6 transition-colors hover:text-gray-9 focus-visible:ring-2 focus-visible:ring-lagune-3/40",
+            selectedCount === 0 && "pointer-events-none invisible"
+          )}
           disabled={selectedCount === 0}
+          aria-hidden={selectedCount === 0}
           onClick={onClear}
         >
           <span className="flex size-3.5 items-center justify-center rounded-full border border-current">
@@ -235,11 +271,21 @@ function FiltersPanel({
 
       <div className="flex flex-col gap-6">
         <FilterGroup
+          title="Providers"
+          groupId="provider"
+          options={providerOptions}
+          selected={selectedProviders}
+          onToggle={onToggle}
+          defaultOpen={defaultGroupsOpen}
+        />
+        {hasPostFilterOptions && <div className="h-px w-full bg-gray-3" />}
+        <FilterGroup
           title="Category"
           groupId="category"
           options={categoryOptions}
           selected={selectedCategories}
           onToggle={onToggle}
+          defaultOpen={defaultGroupsOpen}
         />
         {hasCategoryOptions && hasConnectorOptions && (
           <div className="h-px w-full bg-gray-3" />
@@ -250,34 +296,10 @@ function FiltersPanel({
           options={connectorOptions}
           selected={selectedConnectors}
           onToggle={onToggle}
+          defaultOpen={defaultGroupsOpen}
         />
       </div>
     </div>
-  )
-}
-
-function MobileFilters({
-  selectedCount,
-  children,
-}: {
-  selectedCount: number
-  children: ReactNode
-}) {
-  return (
-    <details className="group rounded-lg border border-gray-3 bg-[rgba(15,15,21,0.8)] p-4 md:hidden">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[0.9375rem] leading-none font-medium tracking-tighter text-white outline-none focus-visible:ring-2 focus-visible:ring-lagune-3/40 [&::-webkit-details-marker]:hidden">
-        <span className="flex items-center gap-2">
-          Filter agents
-          <FilterCount count={selectedCount} />
-        </span>
-        <ChevronDown
-          className="size-4 text-gray-8 transition-transform group-open:rotate-180"
-          strokeWidth={1.75}
-          aria-hidden
-        />
-      </summary>
-      <div className="mt-5">{children}</div>
-    </details>
   )
 }
 
@@ -317,7 +339,7 @@ function CategorySection({
         </div>
 
         <div className="flex flex-col items-center gap-7">
-          <ul className="grid w-full auto-rows-fr grid-cols-1 items-stretch gap-4 lg:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid w-full auto-rows-fr grid-cols-1 items-stretch gap-4 md:grid-cols-2 xl:grid-cols-3">
             {visiblePosts.map((post) => (
               <li key={post.slug.current} className="h-full min-w-0">
                 <AgentGuideCard
@@ -378,9 +400,12 @@ function EmptyState() {
 }
 
 function HowToPageContent({ data }: { data: IHowToIndexData }) {
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedConnectors, setSelectedConnectors] = useState<string[]>([])
   const [expandedCategories, setExpandedCategories] = useState<string[]>([])
+  const cardsContainerRef = useRef<HTMLDivElement>(null)
+  const shouldScrollToCardsRef = useRef(false)
 
   const categoryOptions = useMemo<IFilterOption[]>(
     () =>
@@ -397,6 +422,9 @@ function HowToPageContent({ data }: { data: IHowToIndexData }) {
   const visiblePosts = useMemo(
     () =>
       data.posts.filter((post) => {
+        const matchesProvider =
+          selectedProviders.length === 0 ||
+          selectedProviders.includes(getPostProviderId(post))
         const matchesCategory =
           selectedCategories.length === 0 ||
           selectedCategories.includes(post.category.id)
@@ -406,9 +434,9 @@ function HowToPageContent({ data }: { data: IHowToIndexData }) {
             selectedConnectors.includes(connector.id)
           )
 
-        return matchesCategory && matchesConnector
+        return matchesProvider && matchesCategory && matchesConnector
       }),
-    [data.posts, selectedCategories, selectedConnectors]
+    [data.posts, selectedProviders, selectedCategories, selectedConnectors]
   )
   const visiblePostsByCategory = useMemo(() => {
     const postsByCategory = new Map<string, IHowToPost[]>()
@@ -421,22 +449,80 @@ function HowToPageContent({ data }: { data: IHowToIndexData }) {
 
     return postsByCategory
   }, [visiblePosts])
-  const selectedCount = selectedCategories.length + selectedConnectors.length
+  const selectedCount =
+    selectedProviders.length +
+    selectedCategories.length +
+    selectedConnectors.length
+
+  useLayoutEffect(() => {
+    if (!shouldScrollToCardsRef.current) {
+      return
+    }
+
+    shouldScrollToCardsRef.current = false
+
+    const cardsContainer = cardsContainerRef.current
+
+    if (!cardsContainer) {
+      return
+    }
+
+    const root = document.documentElement
+    const previousScrollBehavior = root.style.scrollBehavior
+    const stickyHeader = document.querySelector("header.sticky")
+    const stickyHeaderHeight =
+      stickyHeader instanceof HTMLElement
+        ? stickyHeader.getBoundingClientRect().height
+        : 0
+    const cardsContainerRect = cardsContainer.getBoundingClientRect()
+    const visibleTop = stickyHeaderHeight + CARDS_SCROLL_GAP
+    const isCardsContainerTopVisible =
+      cardsContainerRect.top >= visibleTop &&
+      cardsContainerRect.top <= window.innerHeight
+
+    if (isCardsContainerTopVisible) {
+      return
+    }
+
+    const nextScrollTop = Math.max(
+      0,
+      window.scrollY + cardsContainerRect.top - visibleTop
+    )
+
+    root.style.scrollBehavior = "auto"
+    window.scrollTo({
+      top: nextScrollTop,
+      left: window.scrollX,
+      behavior: "auto",
+    })
+    root.style.scrollBehavior = previousScrollBehavior
+  }, [selectedProviders, selectedCategories, selectedConnectors])
 
   const handleToggleFilter = (groupId: FilterGroupId, id: string) => {
+    shouldScrollToCardsRef.current = true
+
     const update = (values: string[]) =>
       values.includes(id)
         ? values.filter((value) => value !== id)
         : [...values, id]
 
-    if (groupId === "category") {
-      setSelectedCategories(update)
-    } else {
-      setSelectedConnectors(update)
+    switch (groupId) {
+      case "provider":
+        setSelectedProviders(update)
+        break
+      case "category":
+        setSelectedCategories(update)
+        break
+      case "connector":
+        setSelectedConnectors(update)
+        break
     }
   }
 
   const handleClearFilters = () => {
+    shouldScrollToCardsRef.current = true
+
+    setSelectedProviders([])
     setSelectedCategories([])
     setSelectedConnectors([])
   }
@@ -449,31 +535,44 @@ function HowToPageContent({ data }: { data: IHowToIndexData }) {
     )
   }
 
-  const filtersPanel = (
+  const filtersPanelProps = {
+    categoryOptions,
+    connectorOptions,
+    providerOptions: PROVIDER_OPTIONS,
+    selectedCategories,
+    selectedConnectors,
+    selectedProviders,
+    selectedCount,
+    onToggle: handleToggleFilter,
+    onClear: handleClearFilters,
+  }
+
+  const topFiltersPanel = (
     <FiltersPanel
-      categoryOptions={categoryOptions}
-      connectorOptions={connectorOptions}
-      selectedCategories={selectedCategories}
-      selectedConnectors={selectedConnectors}
-      selectedCount={selectedCount}
-      onToggle={handleToggleFilter}
-      onClear={handleClearFilters}
+      {...filtersPanelProps}
+      defaultGroupsOpen={false}
+      className="lg:hidden"
     />
+  )
+
+  const desktopFiltersPanel = (
+    <FiltersPanel {...filtersPanelProps} defaultGroupsOpen />
   )
 
   return (
     <section className="pt-20 pb-24 md:pt-24 md:pb-32 lg:pt-28 xl:pt-32">
-      <div className="mx-auto flex w-full max-w-[89.5rem] flex-col gap-8 px-5 md:px-8 2xl:px-0">
-        <MobileFilters selectedCount={selectedCount}>
-          {filtersPanel}
-        </MobileFilters>
+      <div className="mx-auto flex w-full max-w-[89.5rem] flex-col gap-11 px-5 md:gap-12 md:px-8 lg:gap-8 2xl:px-0">
+        {topFiltersPanel}
 
-        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-10 xl:gap-16">
-          <aside className="hidden h-fit md:sticky md:top-28 md:mt-28 md:block">
-            {filtersPanel}
+        <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-[13.5rem_minmax(0,1fr)] lg:gap-10 xl:gap-16">
+          <aside className="hidden h-fit lg:sticky lg:top-28 lg:mt-28 lg:block">
+            {desktopFiltersPanel}
           </aside>
 
-          <div className="flex min-w-0 flex-col gap-16 lg:gap-20">
+          <div
+            ref={cardsContainerRef}
+            className="flex min-w-0 flex-col gap-16 lg:gap-20"
+          >
             {data.categories.map((category) => {
               const posts = visiblePostsByCategory.get(category.id) ?? []
 

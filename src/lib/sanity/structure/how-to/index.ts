@@ -1,4 +1,4 @@
-import { FilterIcon, RobotIcon } from "@sanity/icons"
+import { FilterIcon, RobotIcon, TagIcon, UsersIcon } from "@sanity/icons"
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list"
 import type {
   StructureBuilder,
@@ -20,6 +20,16 @@ const howToStructure = (
             .title("Posts")
             .icon(RobotIcon)
             .child(S.documentTypeList("howToPost").title("All Posts")),
+          S.divider(),
+          S.listItem()
+            .title("Authors")
+            .icon(UsersIcon)
+            .child(S.documentTypeList("howToAuthor").title("All Authors")),
+          S.listItem()
+            .title("Companies")
+            .icon(TagIcon)
+            .child(S.documentTypeList("howToCompany").title("All Companies")),
+          S.divider(),
           orderableDocumentListDeskItem({
             title: "Categories",
             icon: FilterIcon,

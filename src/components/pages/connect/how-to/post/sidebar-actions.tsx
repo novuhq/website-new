@@ -2,12 +2,18 @@
 
 import { useEffect, useState } from "react"
 import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import { CircleArrowUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
-function HowToSidebarActions({ className }: { className?: string }) {
+function HowToSidebarActions({
+  className,
+  useTemplateUrl,
+}: {
+  className?: string
+  useTemplateUrl: string
+}) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -48,17 +54,22 @@ function HowToSidebarActions({ className }: { className?: string }) {
           Back to top
         </button>
 
-        <NextLink
-          href={ROUTE.dashboardV2SignUp}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Button
+          size="lg"
           tabIndex={visible ? 0 : -1}
-          className="flex h-13.5 w-full items-center justify-center rounded-md bg-white px-5 text-sm leading-none font-medium tracking-normal text-black uppercase transition-colors duration-300 hover:bg-secondary-foreground focus-visible:ring-2 focus-visible:ring-lagune-3/40"
-          data-click-location="connect_how_to_post_sidebar"
-          data-click-text="use_this_template"
+          className="w-full"
+          asChild
         >
-          Use this template
-        </NextLink>
+          <NextLink
+            href={useTemplateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-click-location="connect_how_to_post_sidebar"
+            data-click-text="use_this_template"
+          >
+            Use this template
+          </NextLink>
+        </Button>
       </div>
     </div>
   )

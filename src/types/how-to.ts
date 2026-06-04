@@ -23,6 +23,20 @@ export interface IHowToCategory extends IHowToCategoryData {
   url: Route<string>
 }
 
+export interface IHowToCompanyData {
+  id: string
+  name: string
+}
+
+export interface IHowToAuthorData {
+  name: string
+  company?: IHowToCompanyData | null
+  avatar: ITemplateAvatarData
+}
+
+export type THowToCoverMode = "generated" | "custom" | "none"
+export type THowToCoverTemplate = "default" | "template-1" | "template-2"
+
 export interface IHowToPostData {
   _type: "howToPost"
   _createdAt: string
@@ -30,12 +44,17 @@ export interface IHowToPostData {
   slug: ISlug
   url: Route<string>
   caption: string
-  agentName: string
+  author: IHowToAuthorData
   summary: string
-  avatar: ITemplateAvatarData
   category: IHowToCategoryData
   mcpServerList: ITemplateMcpServerData[]
   channels: ITemplateChannelData[]
+  useTemplateUrl?: string
+  readDocsUrl?: string
+  coverMode?: THowToCoverMode
+  coverTemplate?: THowToCoverTemplate
+  coverText?: string
+  customCover?: string
   cover?: string
   coverAlt?: string
   publishedAt: string

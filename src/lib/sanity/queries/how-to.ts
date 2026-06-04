@@ -1,8 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 import { groq } from "next-sanity"
 
-const HOW_TO_COVER_WIDTH = 1344
-const HOW_TO_COVER_HEIGHT = 792
+import { HOW_TO_COVER_HEIGHT, HOW_TO_COVER_WIDTH } from "@/lib/how-to/cover"
 
 const imageFields = `
   "url": asset->url + "?auto=format",
@@ -52,19 +51,42 @@ const templateAvatarFields = `
   }
 `
 
+const howToCompanyFields = `
+  "id": _id,
+  name
+`
+
+const howToAuthorFields = `
+  name,
+  company->{
+    ${howToCompanyFields}
+  },
+  avatar->{
+    ${templateAvatarFields}
+  }
+`
+
 const howToCardFields = groq`
   _type,
   _createdAt,
   title,
   slug,
   caption,
-  agentName,
   summary,
   publishedAt,
   "pathname": "${ROUTE.connectHowTo}/" + slug.current,
-  avatar->{
-    ${templateAvatarFields}
-  },
+  "author": select(
+    defined(author) => author->{
+      ${howToAuthorFields}
+    },
+    {
+      "name": agentName,
+      "company": null,
+      "avatar": avatar->{
+        ${templateAvatarFields}
+      }
+    }
+  ),
   category->{
     ${howToCategoryFields}
   },
@@ -100,7 +122,12 @@ const howToContentFields = groq`
 
 const howToFullPostFields = groq`
   ${howToCardFields},
-  "cover": cover.asset->url + "?w=${HOW_TO_COVER_WIDTH}&h=${HOW_TO_COVER_HEIGHT}&q=100&fit=crop&auto=format",
+  coverMode,
+  coverTemplate,
+  "coverText": coalesce(coverText, title),
+  useTemplateUrl,
+  readDocsUrl,
+  "customCover": cover.asset->url + "?w=${HOW_TO_COVER_WIDTH}&h=${HOW_TO_COVER_HEIGHT}&q=100&fit=crop&auto=format",
   "coverAlt": cover.alt,
   ${howToContentFields},
   "seo": {

@@ -2,20 +2,22 @@
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
-import { ArrowLeft } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 
 import {
   type IHowToPost,
   type IHowToPostWithTableOfContents,
 } from "@/types/how-to"
+import { HOW_TO_COVER_HEIGHT, HOW_TO_COVER_WIDTH } from "@/lib/how-to/cover"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Aside from "@/components/pages/aside"
 import Content from "@/components/pages/content"
 import TableOfContents from "@/components/pages/table-of-contents"
 
-import HowToSidebarActions from "./how-to-sidebar-actions"
-import RelatedHowToPosts from "./related-how-to-posts"
+import AgentAuthorLine from "../../shared/agent-author-line"
+import RelatedHowToPosts from "./related-posts"
+import HowToSidebarActions from "./sidebar-actions"
 
 function Badge({
   label,
@@ -77,7 +79,7 @@ function HowToBreadcrumbs({ post }: { post: IHowToPostWithTableOfContents }) {
             href={ROUTE.connect}
             className="group flex items-center gap-1 text-gray-6 transition-colors hover:text-gray-9 focus-visible:ring-2 focus-visible:ring-lagune-3/40"
           >
-            <ArrowLeft
+            <ChevronLeft
               className="size-3.5 transition-transform group-hover:-translate-x-0.5"
               strokeWidth={2}
               aria-hidden
@@ -114,18 +116,25 @@ function HowToPostHeader({
   post: IHowToPostWithTableOfContents
   className?: string
 }) {
+  const useTemplateUrl = post.useTemplateUrl || String(ROUTE.dashboardV2SignUp)
+  const readDocsUrl = post.readDocsUrl || String(ROUTE.docsMcp)
+
   return (
     <header className={cn("flex w-full max-w-168 flex-col", className)}>
-      <h1 className="text-[2.5rem] leading-[1.125] font-medium tracking-tighter text-balance text-white md:text-5xl">
+      <h1 className="text-[2.25rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.5rem] lg:text-[2.75rem]">
         {post.title}
       </h1>
       <p className="mt-4 max-w-157.5 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
         {post.caption}
       </p>
-      <div className="mt-6 flex flex-col gap-4 xs:flex-row">
-        <Button size="lg" className="h-12 px-5" asChild>
+      <div className="mt-6 flex w-full max-w-[303px] flex-row flex-wrap items-center gap-3 md:max-w-[467px] md:flex-nowrap md:gap-5">
+        <Button
+          size="lg"
+          className="h-10 min-w-34 flex-1 px-4 text-xs md:h-12 md:w-fit md:max-w-none md:flex-none md:px-6 md:text-sm"
+          asChild
+        >
           <NextLink
-            href={ROUTE.dashboardV2SignUp}
+            href={useTemplateUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-click-location="connect_how_to_post_header"
@@ -137,11 +146,11 @@ function HowToPostHeader({
         <Button
           variant="outline"
           size="lg"
-          className="h-12 overflow-visible px-6"
+          className="h-10 min-w-30 flex-1 overflow-visible px-4 text-xs md:h-12 md:w-36 md:max-w-none md:flex-none md:px-6 md:text-sm"
           asChild
         >
           <NextLink
-            href={ROUTE.docsMcp}
+            href={readDocsUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-click-location="connect_how_to_post_header"
@@ -157,8 +166,8 @@ function HowToPostHeader({
           className="mt-12 h-auto w-full rounded-xl"
           src={post.cover}
           alt={post.coverAlt || post.title}
-          width={1344}
-          height={792}
+          width={HOW_TO_COVER_WIDTH}
+          height={HOW_TO_COVER_HEIGHT}
           quality={100}
           sizes="(min-width: 1280px) 672px, (min-width: 1024px) calc(100vw - 352px), 100vw"
           priority
@@ -179,11 +188,11 @@ function HowToPostSidebarInfo({
     <div className={cn("flex flex-col gap-11", className)}>
       <div className="flex items-center gap-4.5">
         <span className="relative size-11 shrink-0 overflow-hidden">
-          {post.avatar?.darkImage?.url && (
+          {post.author?.avatar?.darkImage?.url && (
             <img
-              src={post.avatar.darkImage.url}
-              alt={post.avatar.darkImage.alt ?? ""}
-              aria-hidden={post.avatar.darkImage.alt ? undefined : true}
+              src={post.author.avatar.darkImage.url}
+              alt={post.author.avatar.darkImage.alt ?? ""}
+              aria-hidden={post.author.avatar.darkImage.alt ? undefined : true}
               className="block size-full object-contain"
             />
           )}
@@ -192,9 +201,10 @@ function HowToPostSidebarInfo({
           <p className="text-lg leading-none font-medium tracking-tighter text-white">
             {post.category.title}
           </p>
-          <p className="text-base leading-none font-book text-gray-7">
-            {post.agentName}
-          </p>
+          <AgentAuthorLine
+            name={post.author.name}
+            company={post.author.company?.name}
+          />
         </div>
       </div>
 
@@ -205,6 +215,8 @@ function HowToPostSidebarInfo({
 }
 
 function HowToPostSidebar({ post }: { post: IHowToPostWithTableOfContents }) {
+  const useTemplateUrl = post.useTemplateUrl || String(ROUTE.dashboardV2SignUp)
+
   return (
     <div className="flex flex-col gap-11">
       <HowToPostSidebarInfo post={post} />
@@ -215,7 +227,7 @@ function HowToPostSidebar({ post }: { post: IHowToPostWithTableOfContents }) {
           title="On this page"
           items={post.tableOfContents}
         />
-        <HowToSidebarActions />
+        <HowToSidebarActions useTemplateUrl={useTemplateUrl} />
       </div>
     </div>
   )
@@ -242,11 +254,11 @@ function HowToPost({
 
               <HowToPostSidebarInfo
                 post={post}
-                className="mt-12 max-w-none rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.55)] p-5 md:p-6 lg:hidden"
+                className="mt-10 max-w-none md:mt-12 lg:hidden"
               />
 
               <Content
-                className="mt-12 [&>*:first-child]:mt-0!"
+                className="mt-16 md:mt-20 lg:mt-30 [&>*:first-child]:mt-0!"
                 content={post.content}
               />
             </div>

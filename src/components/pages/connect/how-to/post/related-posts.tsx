@@ -7,7 +7,10 @@ import NextLink from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { type IHowToPost } from "@/types/how-to"
+import { temporarilyDisableSmoothScroll } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
+
+import AgentAuthorLine from "../../shared/agent-author-line"
 
 interface IRelatedImage {
   url: string
@@ -22,7 +25,9 @@ interface IRelatedBadge {
 interface IRelatedAgentCard {
   id: string
   title: string
+  category: string
   agent: string
+  agentCompany?: string | null
   quote: string
   avatar?: IRelatedImage | null
   connectors: IRelatedBadge[]
@@ -39,9 +44,11 @@ function toCard(post: IHowToPost): IRelatedAgentCard {
   return {
     id: post.slug.current,
     title: post.title,
-    agent: post.agentName,
+    category: post.category.title,
+    agent: post.author.name,
+    agentCompany: post.author.company?.name,
     quote: post.summary,
-    avatar: post.avatar?.darkImage,
+    avatar: post.author?.avatar?.darkImage,
     connectors: (post.mcpServerList ?? []).map((connector) => ({
       label: connector.name,
       icon: connector.icon,
@@ -121,20 +128,6 @@ function RelatedBadgeRow({
   )
 }
 
-function AgentLine({ agent }: { agent: string }) {
-  const [name, byline] = agent.split("—").map((part) => part.trim())
-
-  if (!byline) {
-    return <>{agent}</>
-  }
-
-  return (
-    <>
-      {name} <span className="text-gray-7">— {byline}</span>
-    </>
-  )
-}
-
 function RelatedAgentCard({ card }: { card: IRelatedAgentCard }) {
   return (
     <article className="flex h-full min-h-[22.25rem] flex-col gap-8 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-5">
@@ -144,12 +137,10 @@ function RelatedAgentCard({ card }: { card: IRelatedAgentCard }) {
             <RelatedAvatar image={card.avatar} />
 
             <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
-              <h3 className="min-w-0 text-lg leading-none font-medium tracking-tighter text-white">
-                {card.title}
-              </h3>
-              <p className="min-w-0 text-base leading-none font-book tracking-normal text-gray-8">
-                <AgentLine agent={card.agent} />
-              </p>
+              <span className="min-w-0 text-lg leading-none font-medium tracking-tighter text-white">
+                {card.category}
+              </span>
+              <AgentAuthorLine name={card.agent} company={card.agentCompany} />
             </div>
           </div>
 
@@ -174,6 +165,7 @@ function RelatedAgentCard({ card }: { card: IRelatedAgentCard }) {
 
       <NextLink
         href={card.href}
+        onNavigate={() => temporarilyDisableSmoothScroll()}
         className="group/button relative flex h-10 w-full items-center justify-center overflow-hidden rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40"
         style={{ backgroundImage: BUTTON_BACKGROUND }}
         aria-label={`View agent guide for ${card.title}`}
@@ -266,7 +258,7 @@ function RelatedHowToPosts({ posts }: { posts: IHowToPost[] }) {
 
   return (
     <section className="relative pt-24 pb-4 md:pt-32 lg:pt-40">
-      <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-12 px-5 md:px-8 xl:px-0">
+      <div className="mx-auto flex w-full flex-col gap-12 px-5 md:px-8 lg:max-w-none xl:max-w-[60rem] xl:px-0">
         <div className="flex items-center justify-between gap-6">
           <h2 className="text-[2rem] leading-[1.125] font-medium tracking-tighter text-white md:text-[2.5rem]">
             Related Agents
@@ -315,7 +307,7 @@ function RelatedHowToPosts({ posts }: { posts: IHowToPost[] }) {
 
         <ul
           ref={scrollerRef}
-          className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-4 [scrollbar-width:none] md:-mx-8 md:px-8 xl:mx-0 xl:px-0 [&::-webkit-scrollbar]:hidden"
+          className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto overscroll-x-contain px-5 pb-4 [scrollbar-width:none] md:-mx-8 md:scroll-px-8 md:px-8 lg:mx-0 lg:scroll-px-0 lg:px-0 [&::-webkit-scrollbar]:hidden"
         >
           {posts.map((post) => (
             <li

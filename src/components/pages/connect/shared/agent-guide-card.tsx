@@ -4,7 +4,10 @@
 import type { Route } from "next"
 import NextLink from "next/link"
 
+import { temporarilyDisableSmoothScroll } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
+
+import AgentAuthorLine from "./agent-author-line"
 
 export interface IAgentGuideImage {
   url: string
@@ -19,7 +22,9 @@ export interface IAgentGuideBadge {
 export interface IAgentGuideCardData {
   id: string
   title: string
+  heading?: string
   agent: string
+  agentCompany?: string | null
   category?: string
   quote: string
   avatar?: IAgentGuideImage | null
@@ -128,6 +133,7 @@ function GuideCardButton({
       href={href}
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
+      onNavigate={() => temporarilyDisableSmoothScroll()}
       className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
       style={{ backgroundImage: BUTTON_BACKGROUND }}
       aria-label={`${label} for ${title}`}
@@ -159,6 +165,8 @@ function AgentGuideCard({
   showCategory?: boolean
   compactBadges?: boolean
 }) {
+  const heading = card.heading ?? card.title
+
   return (
     <article
       className="group/card relative flex h-full min-h-107 w-full flex-col items-start overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none"
@@ -177,12 +185,13 @@ function AgentGuideCard({
 
             <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-2">
               <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
-                <h3 className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
-                  {card.title}
-                </h3>
-                <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
-                  {card.agent}
-                </p>
+                <span className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
+                  {heading}
+                </span>
+                <AgentAuthorLine
+                  name={card.agent}
+                  company={card.agentCompany}
+                />
               </div>
 
               {showCategory && card.category && (

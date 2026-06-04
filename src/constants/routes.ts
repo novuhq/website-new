@@ -3,6 +3,7 @@ import type { Route } from "next"
 export const ROUTE: Record<string, Route<string> | URL> = {
   // API
   apiHubspot: "/api/hubspot",
+  apiConnectHowToCover: "/api/connect/how-to/cover",
 
   // CURRENT WEBSITE
   changelog: "/changelog",

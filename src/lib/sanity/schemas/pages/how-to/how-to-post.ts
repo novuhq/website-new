@@ -10,14 +10,25 @@ import {
   SlugRule,
   SortOrdering,
   StringRule,
+  UrlRule,
 } from "sanity"
 
+import { HOW_TO_COVER_HEIGHT, HOW_TO_COVER_WIDTH } from "@/lib/how-to/cover"
 import { GROUP } from "@/lib/sanity/schemas/shared/group"
 import { SEO_FIELDS } from "@/lib/sanity/schemas/shared/seo"
+import { customImageValidation } from "@/lib/sanity/utils/custom-image-validation"
 import {
   customSlugify,
   customSlugValidation,
 } from "@/lib/sanity/utils/custom-slug-validation"
+
+const HOW_TO_COVER_ASPECT_RATIO = HOW_TO_COVER_WIDTH / HOW_TO_COVER_HEIGHT
+
+function hasLegacyCustomCover(document: unknown) {
+  const post = document as { coverMode?: unknown; cover?: unknown } | undefined
+
+  return !post?.coverMode && Boolean(post?.cover)
+}
 
 const HOW_TO_POST_ORDERINGS: SortOrdering[] = [
   {
@@ -42,13 +53,13 @@ const HOW_TO_POST_PREVIEW = {
   select: {
     title: "title",
     publishedAt: "publishedAt",
-    media: "avatar.darkImage",
+    media: "author.avatar.darkImage",
+    authorName: "author.name",
     category: "category.title",
-    agentName: "agentName",
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prepare(selection: Record<string, any>) {
-    const { title, publishedAt, media, category, agentName } = selection
+    const { title, publishedAt, media, category, authorName } = selection
     const dateSegment = publishedAt
       ? format(new Date(publishedAt), "yyyy/MMMM")
       : "No date"
@@ -56,7 +67,7 @@ const HOW_TO_POST_PREVIEW = {
     return {
       title,
       media,
-      subtitle: [category, agentName, `Published: ${dateSegment}`]
+      subtitle: [category, authorName, `Published: ${dateSegment}`]
         .filter(Boolean)
         .join(" · "),
     }
@@ -106,11 +117,12 @@ export default defineType({
       validation: (rule: DatetimeRule) => rule.required(),
     }),
     defineField({
-      name: "agentName",
-      title: "Agent name",
-      type: "string",
+      name: "author",
+      title: "Author",
+      type: "reference",
+      to: [{ type: "howToAuthor" }],
       group: GROUP.content.name,
-      validation: (rule: StringRule) => rule.required().max(40),
+      validation: (rule: ReferenceRule) => rule.required(),
     }),
     defineField({
       name: "summary",
@@ -120,14 +132,6 @@ export default defineType({
       description: "Short quote shown on how-to cards.",
       group: GROUP.content.name,
       validation: (rule: StringRule) => rule.required().max(180),
-    }),
-    defineField({
-      name: "avatar",
-      title: "Avatar",
-      type: "reference",
-      to: [{ type: "templateAvatar" }],
-      group: GROUP.content.name,
-      validation: (rule: ReferenceRule) => rule.required(),
     }),
     defineField({
       name: "category",
@@ -154,10 +158,102 @@ export default defineType({
       validation: (rule: ArrayRule<unknown>) => rule.required().min(1).unique(),
     }),
     defineField({
+      name: "useTemplateUrl",
+      title: "Use this template URL",
+      type: "url",
+      group: GROUP.content.name,
+      initialValue: "https://dashboard.novu.co/auth/sign-up",
+      validation: (rule: UrlRule) =>
+        rule
+          .uri({
+            allowRelative: true,
+            scheme: ["http", "https"],
+          })
+          .required(),
+    }),
+    defineField({
+      name: "readDocsUrl",
+      title: "Read the docs URL",
+      type: "url",
+      group: GROUP.content.name,
+      initialValue: "https://docs.novu.co/platform/additional-resources/mcp",
+      validation: (rule: UrlRule) =>
+        rule
+          .uri({
+            allowRelative: true,
+            scheme: ["http", "https"],
+          })
+          .required(),
+    }),
+    defineField({
+      name: "coverMode",
+      type: "string",
+      title: "Cover source",
+      group: GROUP.content.name,
+      initialValue: "generated",
+      options: {
+        layout: "radio",
+        direction: "horizontal",
+        list: [
+          { title: "Generated", value: "generated" },
+          { title: "Custom", value: "custom" },
+          { title: "No cover", value: "none" },
+        ],
+      },
+    }),
+    defineField({
+      name: "coverTemplate",
+      type: "string",
+      title: "Generated cover template",
+      group: GROUP.content.name,
+      description: "Choose a generated cover design.",
+      initialValue: "template-1",
+      hidden: ({ document }) =>
+        document?.coverMode === "custom" ||
+        document?.coverMode === "none" ||
+        hasLegacyCustomCover(document),
+      options: {
+        layout: "radio",
+        list: [
+          { title: "Template 1", value: "template-1" },
+          { title: "Template 2", value: "template-2" },
+          { title: "Default image", value: "default" },
+        ],
+      },
+    }),
+    defineField({
+      name: "coverText",
+      type: "text",
+      title: "Generated cover text",
+      rows: 3,
+      group: GROUP.content.name,
+      description: "Leave empty to use the article title.",
+      hidden: ({ document }) =>
+        document?.coverMode === "custom" ||
+        document?.coverMode === "none" ||
+        document?.coverTemplate === "default" ||
+        hasLegacyCustomCover(document),
+      validation: (rule: StringRule) =>
+        rule.max(120).custom((value) => {
+          if (!value) {
+            return true
+          }
+
+          const lineCount = value.split(/\r\n|\r|\n/).length
+
+          return lineCount <= 3
+            ? true
+            : "Cover text must be no more than 3 lines"
+        }),
+    }),
+    defineField({
       name: "cover",
       type: "image",
-      title: "Cover Image",
+      title: "Custom cover image",
+      description: `Shown when Cover source is Custom. Upload a ${HOW_TO_COVER_WIDTH}x${HOW_TO_COVER_HEIGHT}px image.`,
       group: GROUP.content.name,
+      hidden: ({ document }) =>
+        Boolean(document?.coverMode) && document?.coverMode !== "custom",
       fields: [
         defineField({
           name: "alt",
@@ -166,7 +262,24 @@ export default defineType({
           description: "Describe the image for accessibility and SEO",
         }),
       ],
-      validation: (rule: ImageRule) => rule.required(),
+      validation: (rule: ImageRule) =>
+        rule.custom((value, context) => {
+          const document = context.document as { coverMode?: string }
+
+          if (document?.coverMode !== "custom") {
+            return true
+          }
+
+          if (!value?.asset?._ref) {
+            return "Custom cover image is required when Cover source is Custom"
+          }
+
+          return customImageValidation()
+            .type("png", "jpg", "jpeg")
+            .dimensions(HOW_TO_COVER_WIDTH, HOW_TO_COVER_HEIGHT)
+            .aspectRatio(HOW_TO_COVER_ASPECT_RATIO)
+            .validate(value, context)
+        }),
     }),
     defineField({
       name: "content",

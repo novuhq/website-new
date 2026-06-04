@@ -10,10 +10,11 @@ import {
   getHowToPostBySlug,
   getRelatedHowToPosts,
 } from "@/lib/how-to"
+import { getHowToCoverPath } from "@/lib/how-to/cover"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
 import { getExcerpt } from "@/lib/utils"
 import FinalCta from "@/components/pages/connect/final-cta"
-import HowToPost from "@/components/pages/connect/how-to-post"
+import HowToPost from "@/components/pages/connect/how-to/post/post-content"
 
 interface HowToPostPageProps {
   params: Promise<{ slug: string }>
@@ -41,14 +42,37 @@ export default async function ConnectHowToPostPage({
   const description =
     post.seo?.description ||
     getExcerpt({ content: portableToPlain(post.content), length: 160 })
+  let postCoverImage: string | null = null
+
+  if (post.cover) {
+    postCoverImage = post.cover.startsWith("http")
+      ? post.cover
+      : `${siteUrl}${post.cover}`
+  }
+
   const postImage =
     post.seo?.socialImage ||
-    `${siteUrl}/api/og?template=blog&title=${encodeURIComponent(post.title)}`
+    postCoverImage ||
+    `${siteUrl}${getHowToCoverPath({ template: "default" })}`
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.seo?.title || post.title,
     description,
+    author: post.author
+      ? {
+          "@type": "Person",
+          name: post.author.name,
+          ...(post.author.company?.name
+            ? {
+                affiliation: {
+                  "@type": "Organization",
+                  name: post.author.company.name,
+                },
+              }
+            : {}),
+        }
+      : undefined,
     datePublished: post.publishedAt || post._createdAt,
     url: postUrl,
     image: postImage,
@@ -69,7 +93,7 @@ export default async function ConnectHowToPostPage({
       <FinalCta
         title={
           <>
-            Build {post.agentName}
+            Build {post.author.name}
             <br className="hidden sm:block" aria-hidden />
             <span className="sm:hidden"> </span>
             in your workspace

@@ -6,7 +6,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { getMetadata } from "@/lib/get-metadata"
 import { getHowToIndexData } from "@/lib/how-to"
 import FinalCta from "@/components/pages/connect/final-cta"
-import HowToPageContent from "@/components/pages/connect/how-to-page-content"
+import HowToPageContent from "@/components/pages/connect/how-to/listing/page-content"
 
 export default async function ConnectHowToPage() {
   const { isEnabled: isDraftMode } = await draftMode()
@@ -44,7 +44,7 @@ export default async function ConnectHowToPage() {
       />
       <section className="mx-auto flex w-full max-w-304 flex-col items-center px-5 pt-24 text-center md:px-8 md:pt-32 lg:pt-40 2xl:px-0">
         <div className="flex w-full max-w-247.5 flex-col items-center gap-6">
-          <h1 className="w-full text-[2.5rem] leading-[1.125] font-medium tracking-tighter text-balance text-white md:text-5xl">
+          <h1 className="w-full text-[2.25rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.75] lg:text-5xl/dense">
             Build agents that work across your tools
           </h1>
           <p className="w-full max-w-180 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8">

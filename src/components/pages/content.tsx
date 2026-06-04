@@ -66,7 +66,7 @@ function ContentFaqBlock({ items }: IContentFaqBlock) {
   }
 
   return (
-    <section className="not-prose my-14">
+    <section className="not-prose mt-20 mb-14 lg:mt-24">
       <h2 className="text-[2rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
         Frequently asked questions
       </h2>

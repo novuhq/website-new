@@ -17,7 +17,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-import AgentGuideCard, { type IAgentGuideCardData } from "./agent-guide-card"
+import AgentGuideCard, {
+  type IAgentGuideCardData,
+} from "./shared/agent-guide-card"
 
 const INITIAL_TEMPLATE_COUNT = 6
 const ALL_TEMPLATES_CATEGORY = {
