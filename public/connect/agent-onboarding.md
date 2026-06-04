@@ -1,6 +1,6 @@
 # Novu Agent Onboarding — instructions for an AI agent
 
-You are an AI coding agent helping a user create their first **Novu managed agent** and connect it to **Slack**, with **no Novu account required up front** (keyless mode). You will gather a couple of inputs, infer the agent's purpose from the user's project, run one non‑interactive CLI command, hand the user a Slack authorization link, and then explain how they keep the agent by signing up.
+You are an AI coding agent helping a user create their first **Novu managed agent** and connect it to a **channel of their choice**, with **no Novu account required up front** (keyless mode). You will gather a couple of inputs, infer the agent's purpose from the user's project, run one non‑interactive CLI command, hand the user whatever they need to finish connecting the channel, and then explain how they keep the agent by signing up.
 
 Do not wire Novu into the user's codebase. This flow only creates a hosted agent and connects a channel.
 
@@ -8,10 +8,10 @@ Do not wire Novu into the user's codebase. This flow only creates a hosted agent
 
 ## What you will do (overview)
 
-1. Collect inputs from the user (Slack config token; optionally a Claude key).
+1. Ask the user which **channel** they want, and collect channel‑specific inputs.
 2. Infer the agent's purpose from the project and confirm it with the user.
-3. Run `novu connect` non‑interactively (keyless, Slack).
-4. Watch the output, surface the Slack authorize URL to the user immediately.
+3. Run `novu connect` non‑interactively (keyless).
+4. Watch the output and hand the user the channel‑specific next step (authorize link, inbox address, or dashboard link).
 5. Report success and explain the demo limit → sign‑up/claim.
 
 ---
@@ -29,19 +29,33 @@ pnpm --filter novu build
 2. Resolve the absolute repo root (the directory that contains `packages/novu`) and set the entry path you will use for every command below:
 
 ```bash
-NOVU_REPO=~/projects/novu
+NOVU_REPO="<ABSOLUTE_PATH_TO_THE_NOVU_REPO>"
 NOVU_CLI="$NOVU_REPO/packages/novu/dist/src/index.js"
 ```
 
-> Assume the Novu API/stack is already running and configured for keyless. This guide targets the local stack via `--api-url https://api.novu.localhost` and `--connect-dashboard-url https://dashboard.novu.localhost`. When the CLI ships to npm, every `node "$NOVU_CLI" connect …` below becomes simply `npx novu connect …`.
+> Assume the Novu API/stack is already running and configured for keyless. This guide targets the local stack via `--region local`. When the CLI ships to npm, every `node "$NOVU_CLI" connect …` below becomes simply `npx novu connect …`.
+
 ---
 
-## Step 1 — Collect inputs from the user
+## Step 1 — Ask the user which channel, and collect inputs
 
-Ask the user for:
+**Always ask the user to choose a channel** — do not assume one. Present these options and what each requires:
 
-- **Slack App Configuration Token** (`xoxe.xoxp-…`) — **required**. The CLI uses it once to create the Slack app from a manifest; it is never stored. The user generates it at <https://api.slack.com/apps> under **"Your App Configuration Tokens"** (see <https://api.slack.com/authentication/config-tokens>). Tell them to copy the **access token** (`xoxe.xoxp-…`); it is short‑lived (~12h), so use it promptly.
-- **(Optional) Their own Claude/Anthropic key** — only if they don't want the shared demo runtime. If they provide `sk-ant-…`, you'll pass BYOK flags (see Step 3). Otherwise the default **demo runtime** is used (no key needed).
+| Channel (`--channel`) | What the user must do | Works headlessly? |
+|---|---|---|
+| `slack` | Provide a **Slack App Configuration Token** (`xoxe.xoxp-…`), then click an OAuth link to approve the install. | Yes (with a click) |
+| `email` | Nothing up front. The CLI prints an inbound email address; the user sends one email to it. | Yes (with one email) |
+| `whatsapp` | Finish setup in the Novu dashboard — the CLI prints a dashboard link to open. | Partial (dashboard) |
+| `teams` | Finish setup in the Novu dashboard — the CLI prints a dashboard link to open. | Partial (dashboard) |
+| `telegram` | **Not supported through this agent flow** — Telegram setup is interactive (QR scans) and the non‑interactive CLI rejects it. Tell the user to either pick another channel, or run `node "$NOVU_CLI" connect "<description>" --region local --channel telegram` themselves (without `--ci`) and follow the prompts. | No |
+| `skip` | Create the agent only, connect a channel later. | n/a |
+
+Channel‑specific inputs to collect **after** they choose:
+
+- **slack** → ask for the **Slack App Configuration Token** (`xoxe.xoxp-…`, required). The CLI uses it once to create the Slack app from a manifest; it is never stored. The user generates it at <https://api.slack.com/apps> under **"Your App Configuration Tokens"** (see <https://api.slack.com/authentication/config-tokens>); copy the **access token** (`xoxe.xoxp-…`), which is short‑lived (~12h).
+- **email / whatsapp / teams / skip** → no extra input needed.
+
+Also (any channel), optionally ask: **use your own Claude/Anthropic key?** If yes, capture `sk-ant-…` for BYOK (Step 3). Otherwise the default **demo runtime** is used (no key needed).
 
 Do **not** ask them for the agent name/description — you will infer it next.
 
@@ -59,59 +73,73 @@ Show the drafted description to the user, let them edit it, and **get explicit c
 
 ---
 
-## Step 3 — Run `novu connect` (keyless, Slack, non‑interactive)
+## Step 3 — Run `novu connect` (keyless, non‑interactive)
 
-Run the command **streamed / in the background** so you can read its output live (Step 4 depends on this). Keyless is the default — do **not** pass `--secret-key`.
+Run the command **streamed / in the background** so you can read its output live (Step 4 depends on this). Keyless is the default — do **not** pass `--secret-key`. Substitute the channel the user picked.
 
 ```bash
 node "$NOVU_CLI" connect "<CONFIRMED AGENT DESCRIPTION>" \
   --ci \
-  --api-url https://api.novu.localhost \
-  --connect-dashboard-url https://dashboard.novu.localhost \
-  --channel slack \
-  --slack-config-token "<xoxe.xoxp-...>"
+  --region local \
+  --channel <slack|email|whatsapp|teams|skip>
 ```
 
-- `--ci` forces non‑interactive mode (no prompts, no TUI).
+- For **slack**, also pass the token: `--slack-config-token "<xoxe.xoxp-...>"`.
+- `--ci` forces non‑interactive mode (no prompts, no TUI). Do **not** use `--ci` for `telegram` (it is rejected) — telegram must be run interactively by the user.
 - The positional description is **required** in non‑interactive mode.
-- Default runtime is the **demo** Claude runtime (no key). For **BYOK**, append:
-
-```bash
-  --runtime claude --anthropic-api-key "sk-ant-..."
-```
+- Default runtime is the **demo** Claude runtime (no key). For **BYOK**, append: `--runtime claude --anthropic-api-key "sk-ant-..."`.
+- **Transient Slack‑app‑creation failure:** for `slack`, if the run fails with `Failed to create Slack app: …` (Slack's app‑create can be slow on a cold first call), **silently re‑run the exact same command once** before reporting anything to the user — the step is safe to repeat. Only surface an error if the second attempt also fails.
 
 ---
 
-## Step 4 — Hand off Slack authorization (human‑in‑the‑loop)
+## Step 4 — Channel‑specific handoff (human‑in‑the‑loop)
 
-Slack OAuth cannot be automated — a human must approve the install. The CLI creates the Slack app, prints an authorize URL, then **polls for up to 5 minutes**.
+Watch stdout and act based on the channel the user picked:
 
-- Watch stdout for the line:
+- **slack** — Channel connection can't be automated. Watch for:
 
   ```
   → Authorize Slack here: <url>
   ```
 
-- The moment it appears, **give the user that URL** and ask them to open it and approve the Slack install **within 5 minutes**.
-- The command finishes on its own once they authorize. If it times out (~5 min) it exits with an error — just **re‑run the exact same command**; it reuses the Slack app it already created.
+  The moment it appears, give the user that URL and ask them to approve the Slack install **within 5 minutes**. The command finishes on its own once they authorize; if it times out (~5 min) it exits with an error — **re‑run the same command** (the Slack app is reused).
+
+- **email** — Watch for:
+
+  ```
+  → Your agent's inbound address: <address>
+  ```
+
+  Give the user that address and ask them to send any email to it. The CLI polls **for 5 minutes** and completes once the email arrives; on timeout, re‑run after they've sent it. (Requires `NOVU_AGENT_SHARED_INBOUND_DOMAIN` on the API.)
+
+- **whatsapp / teams** — The CLI prints a Novu Connect dashboard link and exits:
+
+  ```
+  → <Channel> continues in Novu Connect: <url>
+  ```
+
+  Give the user that link and tell them to finish the channel setup in the dashboard.
+
+- **skip** — Nothing to hand off; the agent is created without a channel.
 
 ---
 
 ## Step 5 — Report the result
 
-On success the CLI exits `0` and prints:
+On success the CLI exits `0` and prints a block like:
 
 ```
 ✓ Your agent is live.
   Agent: <name> (<identifier>)
-  → Check Slack — your agent just messaged you.
+  → Check <Channel> — your agent just messaged you.      # connected channels (slack/email)
+  → Finish <Channel> setup in Novu Connect — we opened it for you.   # dashboard channels (whatsapp/teams)
   Dashboard: <dashboard url>
 ```
 
 Extract the **agent identifier** and **Dashboard URL** and tell the user:
 
-- Their agent is live — open Slack and message it (the agent already said hello).
-- **Keyless demo limit:** they get a handful of free replies (about 5). After that, the agent posts a **"Sign up & keep this agent"** link in the channel. Clicking it creates their Novu account and **migrates the agent, the Slack connection, and the whole conversation** into their new workspace's Development environment — and the agent picks the conversation back up right where it left off.
+- Their agent is live — go message it on the channel they connected (or finish the dashboard step for whatsapp/teams).
+- **Keyless demo limit:** they get a handful of free replies (about 5). After that, the agent posts a **"Sign up & keep this agent"** link in the channel. Clicking it creates their Novu account and **migrates the agent, the channel connection, and the whole conversation** into their new workspace's Development environment — and the agent picks the conversation back up right where it left off.
 
 On failure (non‑zero exit, or a line starting with `✗`), surface the error message and the matching fix:
 
@@ -119,8 +147,11 @@ On failure (non‑zero exit, or a line starting with `✗`), surface the error m
 |---|---|
 | `…requires --prompt "<agent description>"` | You didn't pass the positional description — re‑run Step 3 with it. |
 | `…--slack-config-token "xoxe.xoxp-…"` | Ask the user for the Slack App Configuration Token (Step 1) and pass it. |
+| `Failed to create Slack app: …` (e.g. timeout) | Transient — Slack's app‑create can be slow on a cold call. Silently re‑run the same command once; only surface to the user if it fails again. |
 | `Slack OAuth was not completed within … seconds` | The user didn't approve in time — re‑run the same command (the Slack app is reused). |
-| `Keyless environment creation is currently disabled` / no demo integration | The target API isn't configured for keyless/demo — confirm you're pointing at the right `--api-url` and `--connect-dashboard-url`, or have the user provide `--secret-key` for their existing account instead. |
+| `We didn't see your email at … within …s` | The user hasn't emailed the inbound address yet — re‑run after they send it. |
+| `Telegram setup is interactive only …` | Don't use `--ci` for telegram; have the user run it interactively, or pick another channel. |
+| `Keyless environment creation is currently disabled` / no demo integration | The target API isn't configured for keyless/demo — confirm you're pointing at the right `--region`/`--api-url`, or have the user provide `--secret-key` for their existing account instead. |
 | `credential input required …` | A BYOK runtime was selected without a key — pass `--anthropic-api-key` (or use the default demo runtime). |
 
 ---
@@ -130,11 +161,10 @@ On failure (non‑zero exit, or a line starting with `✗`), surface the error m
 | Flag | Purpose |
 |---|---|
 | `connect "<description>"` | Positional agent description (required in `--ci`). |
-| `--ci` | Non‑interactive mode. |
-| `--api-url https://api.novu.localhost` | Target the local API (change for other environments). |
-| `--connect-dashboard-url https://dashboard.novu.localhost` | Local Connect dashboard URL shown in CLI output and links. |
-| `--channel slack` | Connect Slack (the only channel this guide covers). |
-| `--slack-config-token <xoxe.xoxp-…>` | Create the Slack app headlessly. |
+| `--ci` | Non‑interactive mode (omit for `telegram`). |
+| `--region local` | Target the local stack (drop / change for other environments). |
+| `--channel <slack\|email\|whatsapp\|teams\|telegram\|skip>` | Which channel to connect. |
+| `--slack-config-token <xoxe.xoxp-…>` | Create the Slack app headlessly (slack only). |
 | `--runtime claude --anthropic-api-key <sk-ant-…>` | Optional BYOK Claude runtime (default is the shared demo runtime). |
 | `--secret-key <key>` | Optional — use an existing Novu account instead of keyless. |
 
@@ -143,5 +173,6 @@ On failure (non‑zero exit, or a line starting with `✗`), surface the error m
 ## Limitations to keep in mind
 
 - **One run = one new agent + one channel.** Re‑running `connect` creates another agent; there's no "add a channel to the existing agent" in this non‑interactive flow yet.
-- **Slack only** for now. Email is planned; **Telegram is interactive‑only** (QR scans) and **WhatsApp/Teams** only open the dashboard — none of these work headlessly today.
+- **Channel support is uneven headlessly:** `slack` and `email` complete with one user action; `whatsapp`/`teams` finish in the dashboard; `telegram` is interactive‑only (QR) and not usable through this agent flow.
 - Keyless data is temporary until the user claims it via the in‑channel sign‑up link.
+
