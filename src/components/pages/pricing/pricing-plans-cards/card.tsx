@@ -106,6 +106,8 @@ const Card = ({
               <Link
                 variant="white"
                 href={link.href}
+                data-click-location={link.clickLocation}
+                data-click-text={link.clickText}
                 rel={link.isExternal ? "noopener noreferrer" : undefined}
                 target={link.isExternal ? "_blank" : undefined}
               >
