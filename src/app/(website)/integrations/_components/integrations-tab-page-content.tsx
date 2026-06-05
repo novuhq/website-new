@@ -92,7 +92,9 @@ async function IntegrationsTabPageContent({
           {
             kind: "primary-button",
             label: "Start building",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: `integrations_${tab}_cta`,
+            clickText: "start_building",
             openInNewTab: true,
           },
           {

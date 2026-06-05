@@ -133,7 +133,9 @@ export default async function BlogPage() {
           {
             kind: "primary-button",
             label: "Get started",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: "blog_index_cta",
+            clickText: "get_started",
           },
           {
             kind: "secondary-button",

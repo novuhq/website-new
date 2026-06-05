@@ -113,7 +113,9 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
           {
             kind: "primary-button",
             label: "Start building",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: "integrations_detail_cta",
+            clickText: "start_building",
           },
           {
             kind: "secondary-button",
