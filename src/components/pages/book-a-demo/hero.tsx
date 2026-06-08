@@ -66,7 +66,7 @@ function BookADemoHero() {
             alt=""
             priority
             sizes="(max-width: 1023px) 100vw, 896px"
-            unoptimized
+            quality={95}
           />
         </div>
       </div>
