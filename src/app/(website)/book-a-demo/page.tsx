@@ -41,7 +41,7 @@ export default async function BookADemoPage() {
       <CTA
         title="See how Novu fits your enterprise stack"
         titleClassName="whitespace-pre-line !text-[1.75rem] md:!text-[2.75rem]"
-        className="py-32 md:py-48 lg:py-39 xl:pt-84.5"
+        className="py-32 md:py-48 lg:py-50 xl:py-50"
         description="Talk with our team about your security, compliance, deployment, and notification infrastructure requirements."
         actions={[]}
         actionSlot={
