@@ -51,7 +51,7 @@ function BookADemoSchedulingProvider({ children }: { children: ReactNode }) {
       <SchedulingModal
         key={utmSource}
         isOpen={isSchedulingModalOpen}
-        utmCampaign="book_a_demo"
+        utmCampaign="book_a_demo_enterprise"
         utmSource={utmSource}
         onClose={closeSchedulingModal}
       />
