@@ -22,7 +22,7 @@ interface ICentralizeFeature {
 
 const CENTRALIZE_FEATURES: ICentralizeFeature[] = [
   {
-    title: "Notification center",
+    title: "Inbox",
     description: "Give users one place to receive and act on key updates.",
     icon: "layers",
   },
@@ -77,8 +77,8 @@ function BookADemoCentralizeNotifications() {
           </h2>
           <p className="max-w-170.5 text-base leading-normal font-book tracking-tighter text-pretty text-gray-8 md:text-lg">
             Give teams one controlled layer for notification workflows,
-            preferences, digests, and in-app communication &mdash; without
-            rebuilding notification logic in every product.
+            preferences, digests, and in-app communication without rebuilding
+            notification logic in every product.
           </p>
         </div>
 

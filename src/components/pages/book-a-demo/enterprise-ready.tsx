@@ -1,6 +1,5 @@
+import type { ReactNode } from "react"
 import Image, { type StaticImageData } from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import aicpaIcon from "@/images/pages/book-a-demo/enterprise-ready/aicpa.svg"
 import gdprIcon from "@/images/pages/book-a-demo/enterprise-ready/gdpr.svg"
 import hipaaIcon from "@/images/pages/book-a-demo/enterprise-ready/hipaa.svg"
@@ -13,13 +12,18 @@ import shieldIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/shield
 import supportIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/support.svg"
 import userLockIcon from "@/images/pages/book-a-demo/enterprise-ready/icons/user-lock.svg"
 import isoIcon from "@/images/pages/book-a-demo/enterprise-ready/iso.svg"
+import complianceSupportIcon from "@/images/pages/book-a-demo/enterprise-ready/support.svg"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+
+import BookADemoSchedulingButton, {
+  BookADemoSchedulingInlineButton,
+} from "./scheduling-button"
 
 interface IComplianceCard {
   title: string
-  description: string
+  description: ReactNode
+  descriptionClassName?: string
   image: StaticImageData
   imageClassName: string
 }
@@ -52,6 +56,24 @@ const COMPLIANCE_CARDS: IComplianceCard[] = [
     title: "HIPAA",
     description: "Support for protected health information workflows.",
     image: hipaaIcon,
+    imageClassName: "h-16 w-14.5",
+  },
+  {
+    title: "Compliance Support",
+    description: (
+      <>
+        If you don&apos;t see the required certification listed,{" "}
+        <BookADemoSchedulingInlineButton
+          clickLocation="book_a_demo_enterprise_ready_compliance_support"
+          clickText="talk_to_us"
+          source="book_a_demo_enterprise_ready_compliance_support"
+        >
+          talk to us.
+        </BookADemoSchedulingInlineButton>
+      </>
+    ),
+    descriptionClassName: "lg:max-w-45",
+    image: complianceSupportIcon,
     imageClassName: "h-16 w-14.5",
   },
 ]
@@ -95,34 +117,41 @@ function BookADemoEnterpriseReady() {
   return (
     <section className="relative bg-background">
       <div className="mx-auto w-full max-w-320 px-5 md:px-8 2xl:px-0">
-        <div className="mx-auto flex w-full max-w-304 flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-167.25">
+        <div className="mx-auto flex w-full max-w-167.25 flex-col items-center gap-8 text-center">
+          <div className="flex w-full flex-col items-center gap-4">
             <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.5rem] xl:text-[2.75rem]">
               Enterprise-ready from day one
             </h2>
-            <p className="mt-4 max-w-143 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
+            <p className="max-w-153 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
               Everything your team needs to meet security, compliance,
               deployment, and support requirements at scale.
             </p>
           </div>
 
-          <Button variant="default" size="lg" className="w-36 px-0" asChild>
-            <NextLink
-              href={ROUTE.bookMeeting}
-              data-click-location="book_a_demo_enterprise_ready"
-              data-click-text="book_a_demo"
-            >
-              Book a demo
-            </NextLink>
-          </Button>
+          <BookADemoSchedulingButton
+            variant="default"
+            size="lg"
+            className="w-36 px-0"
+            clickLocation="book_a_demo_enterprise_ready"
+            clickText="book_a_demo"
+            source="book_a_demo_enterprise_ready"
+          >
+            Book a demo
+          </BookADemoSchedulingButton>
         </div>
 
-        <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-5">
           {COMPLIANCE_CARDS.map(
-            ({ title, description, image, imageClassName }) => (
+            ({
+              title,
+              description,
+              descriptionClassName,
+              image,
+              imageClassName,
+            }) => (
               <li
                 key={title}
-                className="flex min-h-57.25 flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6"
+                className="flex min-h-62.5 flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6"
               >
                 <Image
                   className={cn(
@@ -140,7 +169,12 @@ function BookADemoEnterpriseReady() {
                   <h3 className="text-xl leading-tight font-medium tracking-tighter text-white">
                     {title}
                   </h3>
-                  <p className="mt-1.5 text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">
+                  <p
+                    className={cn(
+                      "mt-1.5 text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8",
+                      descriptionClassName
+                    )}
+                  >
                     {description}
                   </p>
                 </div>
@@ -149,12 +183,12 @@ function BookADemoEnterpriseReady() {
           )}
         </ul>
 
-        <div className="mt-14 border-y border-[rgba(51,51,71,0.6)] py-8 lg:grid lg:grid-cols-[max-content_1fr] lg:gap-x-24 [@media(min-width:80.0625rem)]:gap-x-76">
+        <div className="mt-9 border-y border-[rgba(51,51,71,0.6)] py-8 lg:grid lg:grid-cols-[max-content_1fr] lg:gap-x-24 [@media(min-width:80.0625rem)]:gap-x-76">
           <p className="text-base leading-none font-normal tracking-normal text-gray-7 uppercase">
             Enterprise features included
           </p>
 
-          <ul className="mt-6 flex max-w-176 flex-wrap items-center gap-2 lg:mt-0">
+          <ul className="mt-6 flex max-w-176 flex-wrap items-center gap-3 lg:mt-0">
             {ENTERPRISE_FEATURES.map(({ title, icon }) => (
               <li
                 key={title}

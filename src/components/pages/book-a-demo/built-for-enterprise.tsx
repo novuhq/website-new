@@ -1,12 +1,11 @@
 import Image, { type StaticImageData } from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import accessImage from "@/images/pages/book-a-demo/built-for-enterprise/access.webp"
 import deployImage from "@/images/pages/book-a-demo/built-for-enterprise/deploy.webp"
 import openSourceImage from "@/images/pages/book-a-demo/built-for-enterprise/open-source.webp"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+
+import BookADemoSchedulingButton from "./scheduling-button"
 
 interface IEnterpriseCard {
   title: string
@@ -69,32 +68,28 @@ function BookADemoBuiltForEnterprise() {
   return (
     <section className="relative bg-background pb-20 md:pb-24 xl:pb-66">
       <div className="mx-auto w-full max-w-320">
-        <div className="flex w-full flex-col items-start gap-8 px-5 md:px-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-167.25">
+        <div className="mx-auto flex w-full max-w-167.25 flex-col items-center gap-8 px-5 text-center md:px-8 2xl:px-0">
+          <div className="flex w-full flex-col items-center gap-4">
             <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.5rem] xl:text-[2.75rem]">
               Built for enterprise requirements
             </h2>
-            <p className="mt-4 max-w-143 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
+            <p className="max-w-149 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
               Meet enterprise expectations for security, compliance,
-              reliability, and support &mdash; without rebuilding notification
+              reliability, and support without rebuilding notification
               infrastructure in-house.
             </p>
           </div>
 
-          <Button
+          <BookADemoSchedulingButton
             variant="default"
             size="lg"
             className="h-12 px-5 text-sm"
-            asChild
+            clickLocation="book_a_demo_built_for_enterprise"
+            clickText="book_a_demo"
+            source="book_a_demo_built_for_enterprise"
           >
-            <NextLink
-              href={ROUTE.bookMeeting}
-              data-click-location="book_a_demo_built_for_enterprise"
-              data-click-text="book_a_demo"
-            >
-              Book a demo
-            </NextLink>
-          </Button>
+            Book a demo
+          </BookADemoSchedulingButton>
         </div>
 
         <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 xl:hidden">

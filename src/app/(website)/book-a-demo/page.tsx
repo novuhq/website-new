@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import type { ICustomerCardData } from "@/types/customers"
@@ -11,6 +10,8 @@ import BookADemoCustomerStories from "@/components/pages/book-a-demo/customer-st
 import BookADemoEnterpriseReady from "@/components/pages/book-a-demo/enterprise-ready"
 import BookADemoHero from "@/components/pages/book-a-demo/hero"
 import BookADemoLogos from "@/components/pages/book-a-demo/logos"
+import BookADemoSchedulingActions from "@/components/pages/book-a-demo/scheduling-actions"
+import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 import CTA from "@/components/pages/cta"
 
 function isCustomerStoryCard(
@@ -30,7 +31,7 @@ export default async function BookADemoPage() {
   const customerStories = customersPage?.cards.filter(isCustomerStoryCard) || []
 
   return (
-    <>
+    <BookADemoSchedulingProvider>
       <BookADemoHero />
       <BookADemoLogos />
       <BookADemoBuiltForEnterprise />
@@ -42,24 +43,12 @@ export default async function BookADemoPage() {
         titleClassName="whitespace-pre-line !text-[1.75rem] md:!text-[2.75rem]"
         className="py-32 md:py-48 lg:py-39 xl:pt-84.5"
         description="Talk with our team about your security, compliance, deployment, and notification infrastructure requirements."
-        actions={[
-          {
-            kind: "primary-button",
-            label: "Book a demo",
-            href: ROUTE.bookMeeting,
-            clickLocation: "book_a_demo_cta",
-            clickText: "book_a_demo",
-          },
-          {
-            kind: "secondary-button",
-            label: "Book a Call",
-            href: ROUTE.bookMeeting,
-            clickLocation: "book_a_demo_cta",
-            clickText: "book_a_call",
-          },
-        ]}
+        actions={[]}
+        actionSlot={
+          <BookADemoSchedulingActions className="mt-6.5 2xs:justify-center md:mt-7.75" />
+        }
       />
-    </>
+    </BookADemoSchedulingProvider>
   )
 }
 

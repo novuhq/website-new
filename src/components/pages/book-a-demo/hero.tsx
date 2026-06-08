@@ -1,9 +1,7 @@
 import Image from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import heroImage from "@/images/pages/book-a-demo/hero/book-demo-hero.jpg"
 
-import { Button } from "@/components/ui/button"
+import BookADemoSchedulingButton from "./scheduling-button"
 
 function BookADemoHero() {
   return (
@@ -35,34 +33,26 @@ function BookADemoHero() {
           </div>
 
           <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center lg:justify-start lg:gap-7">
-            <Button
+            <BookADemoSchedulingButton
               variant="default"
               size="lg"
               className="w-full px-5 sm:w-auto"
-              asChild
+              clickLocation="book_a_demo_hero"
+              clickText="book_a_demo"
+              source="book_a_demo_hero"
             >
-              <NextLink
-                href={ROUTE.bookMeeting}
-                data-click-location="book_a_demo_hero"
-                data-click-text="book_a_demo"
-              >
-                Book a demo
-              </NextLink>
-            </Button>
-            <Button
+              Book a demo
+            </BookADemoSchedulingButton>
+            <BookADemoSchedulingButton
               variant="outline"
               size="lg"
               className="w-full overflow-visible sm:w-auto"
-              asChild
+              clickLocation="book_a_demo_hero"
+              clickText="book_a_call"
+              source="book_a_demo_hero"
             >
-              <NextLink
-                href={ROUTE.bookMeeting}
-                data-click-location="book_a_demo_hero"
-                data-click-text="book_a_call"
-              >
-                Book a Call
-              </NextLink>
-            </Button>
+              Book a Call
+            </BookADemoSchedulingButton>
           </div>
         </div>
 
