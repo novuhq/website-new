@@ -470,7 +470,7 @@ function Templates({
               onToggle={handleToggleTemplates}
             />
           ) : (
-            <div className="flex min-h-107 w-full items-center justify-center rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] px-6 text-center text-base leading-normal font-book tracking-tighter text-gray-8">
+            <div className="flex min-h-107 w-full items-center justify-center rounded-xl border border-connect-card-border bg-[rgba(15,15,21,0.8)] px-6 text-center text-base leading-normal font-book tracking-tighter text-gray-8">
               No templates in this category yet.
             </div>
           )}

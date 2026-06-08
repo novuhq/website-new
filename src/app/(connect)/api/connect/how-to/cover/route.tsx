@@ -1,6 +1,6 @@
+import type { CSSProperties } from "react"
 import { ImageResponse } from "next/og"
 import { NextRequest } from "next/server"
-import type { CSSProperties } from "react"
 
 import {
   HOW_TO_COVER_HEIGHT,
@@ -25,13 +25,13 @@ const COVER_TEMPLATES = {
 } satisfies Record<THowToCoverTemplate, { path: string }>
 
 const SCALE = 2
+const DEFAULT_ASSET_BASE_URL = "http://localhost:3000"
 
 const TITLE_STYLE = {
   display: "-webkit-box",
   margin: 0,
   overflow: "hidden",
   color: "white",
-  fontFamily: "Inter",
   fontSize: 40 * SCALE,
   fontWeight: 500,
   letterSpacing: `${-0.8 * SCALE}px`,
@@ -46,11 +46,42 @@ function getTemplateKey(value: string | null): THowToCoverTemplate {
   return isHowToCoverTemplate(value) ? value : "default"
 }
 
+function getPublicAssetUrl(path: string) {
+  const assetBaseUrl =
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || DEFAULT_ASSET_BASE_URL
+
+  return new URL(path, assetBaseUrl).toString()
+}
+
+async function loadCoverFont() {
+  const fontUrl = getPublicAssetUrl("/fonts/inter/inter-semibold.ttf")
+
+  try {
+    const response = await fetch(fontUrl)
+
+    if (!response.ok) {
+      console.warn(
+        `Failed to load how-to cover font: ${response.status} ${response.statusText}`
+      )
+
+      return null
+    }
+
+    return response.arrayBuffer()
+  } catch (error) {
+    console.warn("Failed to load how-to cover font", error)
+
+    return null
+  }
+}
+
 function CoverTitle({
+  hasCustomFont,
   logo,
   template,
   title,
 }: {
+  hasCustomFont: boolean
   logo: string
   template: THowToCoverTemplate
   title: string
@@ -85,7 +116,14 @@ function CoverTitle({
             objectFit: "contain",
           }}
         />
-        <h1 style={TITLE_STYLE}>{title}</h1>
+        <h1
+          style={{
+            ...TITLE_STYLE,
+            fontFamily: hasCustomFont ? "Inter" : undefined,
+          }}
+        >
+          {title}
+        </h1>
       </div>
     )
   }
@@ -100,23 +138,29 @@ function CoverTitle({
         width: 1120,
       }}
     >
-      <h1 style={TITLE_STYLE}>{title}</h1>
+      <h1
+        style={{
+          ...TITLE_STYLE,
+          fontFamily: hasCustomFont ? "Inter" : undefined,
+        }}
+      >
+        {title}
+      </h1>
     </div>
   )
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const template = getTemplateKey(request.nextUrl.searchParams.get("template"))
+    const template = getTemplateKey(
+      request.nextUrl.searchParams.get("template")
+    )
     const title = request.nextUrl.searchParams.get("title")?.trim() || ""
     const cover = COVER_TEMPLATES[template]
-    const background = new URL(cover.path, request.nextUrl.origin).toString()
-    const logo = new URL("/images/connect-logo.png", request.nextUrl.origin).toString()
+    const background = getPublicAssetUrl(cover.path)
+    const logo = getPublicAssetUrl("/images/connect-logo.png")
 
-    const [font] = await Promise.all([
-      fetch(new URL("/fonts/inter/inter-semibold.ttf", request.nextUrl.origin))
-        .then((response) => response.arrayBuffer()),
-    ])
+    const font = await loadCoverFont()
 
     return new ImageResponse(
       (
@@ -142,20 +186,27 @@ export async function GET(request: NextRequest) {
               objectFit: "cover",
             }}
           />
-          <CoverTitle logo={logo} template={template} title={title} />
+          <CoverTitle
+            hasCustomFont={Boolean(font)}
+            logo={logo}
+            template={template}
+            title={title}
+          />
         </div>
       ),
       {
         width: HOW_TO_COVER_WIDTH,
         height: HOW_TO_COVER_HEIGHT,
-        fonts: [
-          {
-            name: "Inter",
-            data: font,
-            style: "normal",
-            weight: 500,
-          },
-        ],
+        fonts: font
+          ? [
+              {
+                name: "Inter",
+                data: font,
+                style: "normal",
+                weight: 500,
+              },
+            ]
+          : [],
       }
     )
   } catch (error) {

@@ -31,7 +31,7 @@ export interface IHowToCompanyData {
 export interface IHowToAuthorData {
   name: string
   company?: IHowToCompanyData | null
-  avatar: ITemplateAvatarData
+  avatar?: ITemplateAvatarData | null
 }
 
 export type THowToCoverMode = "generated" | "custom" | "none"

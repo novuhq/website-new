@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react"
 import { Route } from "next"
 import Image from "next/image"
@@ -60,6 +59,8 @@ import Table from "@/components/content/table"
 import Video from "@/components/content/video"
 import YouTubeEmbed from "@/components/content/youtube-embed"
 
+const FAQ_BLOCK_TITLE = "Frequently asked questions"
+
 function ContentFaqBlock({ items }: IContentFaqBlock) {
   if (!items?.length) {
     return null
@@ -67,23 +68,23 @@ function ContentFaqBlock({ items }: IContentFaqBlock) {
 
   return (
     <section className="not-prose mt-20 mb-14 lg:mt-24">
-      <h2 className="text-[2rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
-        Frequently asked questions
+      <h2 className="text-content-faq-heading leading-dense font-medium tracking-tighter text-white md:text-content-faq-heading-lg">
+        {FAQ_BLOCK_TITLE}
       </h2>
-      <Accordion type="single" collapsible className="mt-6 md:mt-[22px]">
-        {items.map(({ question, answer }) => (
+      <Accordion type="single" collapsible className="mt-6 md:mt-5.5">
+        {items.map((item) => (
           <AccordionItem
-            key={question}
-            value={question}
+            key={item._key}
+            value={item._key}
             className="border-b border-gray-3"
           >
             <AccordionTrigger className="tracking-snug pt-6 pb-5 text-start text-xl leading-snug font-medium hover:no-underline sm:pt-5 sm:pb-4 sm:text-lg">
-              {question}
+              {item.question}
             </AccordionTrigger>
             <AccordionContent className="pt-2 pb-8 sm:mr-7 sm:pb-6 md:mr-14">
               <Content
                 className="max-w-[47rem] text-lg leading-relaxed font-book tracking-normal text-gray-8 sm:text-base sm:leading-normal [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_br]:mb-3 [&_br]:block [&_p]:text-gray-8 [&>*:first-child]:mt-0! [&>*:last-child]:mb-0!"
-                content={answer}
+                content={item.answer}
               />
             </AccordionContent>
           </AccordionItem>
@@ -100,24 +101,26 @@ function ConnectedMcpBlock({ items }: IContentConnectedMcpBlock) {
 
   return (
     <section className="not-prose my-8 flex flex-col gap-3" role="list">
-      {items.map(({ connector, description }) => {
+      {items.map(({ _key, connector, description }) => {
         if (!connector) {
           return null
         }
 
         return (
           <article
-            key={connector.id}
-            className="flex flex-col gap-4 rounded-lg border border-[rgba(51,51,71,0.5)] bg-[#0d0d13] px-4 py-4 md:flex-row md:items-center md:gap-4 md:pr-5"
+            key={_key}
+            className="flex flex-col gap-4 rounded-lg border border-connect-card-border bg-connect-content-card px-4 py-4 md:flex-row md:items-center md:gap-4 md:pr-5"
             role="listitem"
           >
             <div className="flex min-w-0 items-center gap-4 md:w-64 md:shrink-0">
-              <span className="relative flex size-11 shrink-0 items-center justify-center rounded-md border border-[rgba(51,51,71,0.4)]">
+              <span className="relative flex size-11 shrink-0 items-center justify-center rounded-md border border-connect-card-border-subtle">
                 {connector.icon?.url && (
-                  <img
+                  <Image
                     src={connector.icon.url}
                     alt={connector.icon.alt ?? ""}
                     aria-hidden={connector.icon.alt ? undefined : true}
+                    width={connector.icon.width}
+                    height={connector.icon.height}
                     className="size-6 object-contain"
                   />
                 )}

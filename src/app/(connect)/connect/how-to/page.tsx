@@ -44,7 +44,7 @@ export default async function ConnectHowToPage() {
       />
       <section className="mx-auto flex w-full max-w-304 flex-col items-center px-5 pt-24 text-center md:px-8 md:pt-32 lg:pt-40 2xl:px-0">
         <div className="flex w-full max-w-247.5 flex-col items-center gap-6">
-          <h1 className="w-full text-[2.25rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.75] lg:text-5xl/dense">
+          <h1 className="w-full text-[2.25rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.75rem] lg:text-5xl/dense">
             Build agents that work across your tools
           </h1>
           <p className="w-full max-w-180 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8">

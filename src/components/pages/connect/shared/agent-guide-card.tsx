@@ -23,7 +23,7 @@ export interface IAgentGuideCardData {
   id: string
   title: string
   heading?: string
-  agent: string
+  agent?: string | null
   agentCompany?: string | null
   category?: string
   quote: string
@@ -41,38 +41,38 @@ const BUTTON_HOVER_BACKGROUND =
   "linear-gradient(210.097deg, rgba(176, 166, 191, 0.24) 8.6198%, rgba(176, 166, 191, 0.12) 113.79%)"
 
 function GuideAvatar({ image }: { image?: IAgentGuideImage | null }) {
-  const imageSrc = image?.url || undefined
-
   return (
     <span className="relative size-11 shrink-0 overflow-hidden">
-      <img
-        src={imageSrc}
-        alt={image?.alt ?? ""}
-        aria-hidden={image?.alt ? undefined : true}
-        className="block size-full object-contain"
-      />
+      {image?.url && (
+        <img
+          src={image.url}
+          alt={image.alt ?? ""}
+          aria-hidden={image.alt ? undefined : true}
+          className="block size-full object-contain"
+        />
+      )}
     </span>
   )
 }
 
 function GuideIcon({ image }: { image?: IAgentGuideImage | null }) {
-  const imageSrc = image?.url || undefined
-
   return (
     <span className="relative size-5 shrink-0 overflow-hidden">
-      <img
-        src={imageSrc}
-        alt={image?.alt ?? ""}
-        aria-hidden={image?.alt ? undefined : true}
-        className="block size-full object-contain"
-      />
+      {image?.url && (
+        <img
+          src={image.url}
+          alt={image.alt ?? ""}
+          aria-hidden={image.alt ? undefined : true}
+          className="block size-full object-contain"
+        />
+      )}
     </span>
   )
 }
 
 function GuideCardBadge({ label, icon }: IAgentGuideBadge) {
   return (
-    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
+    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-connect-card-border py-1.5 pr-2.5 pl-1.5">
       <GuideIcon image={icon} />
       <span className="min-w-0 text-[0.9375rem] leading-snug font-normal tracking-normal whitespace-nowrap text-gray-10">
         {label}
@@ -169,7 +169,7 @@ function AgentGuideCard({
 
   return (
     <article
-      className="group/card relative flex h-full min-h-107 w-full flex-col items-start overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none"
+      className="group/card relative flex h-full min-h-107 w-full flex-col items-start overflow-hidden rounded-xl border border-connect-card-border bg-[rgba(15,15,21,0.8)] p-7 transition-[border-color] duration-200 ease-out focus-within:border-[rgba(51,51,71,0.65)] motion-reduce:transition-none"
       data-template-card
     >
       <span

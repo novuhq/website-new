@@ -26,7 +26,7 @@ interface IRelatedAgentCard {
   id: string
   title: string
   category: string
-  agent: string
+  agent?: string | null
   agentCompany?: string | null
   quote: string
   avatar?: IRelatedImage | null
@@ -45,8 +45,8 @@ function toCard(post: IHowToPost): IRelatedAgentCard {
     id: post.slug.current,
     title: post.title,
     category: post.category.title,
-    agent: post.author.name,
-    agentCompany: post.author.company?.name,
+    agent: post.author?.name,
+    agentCompany: post.author?.company?.name,
     quote: post.summary,
     avatar: post.author?.avatar?.darkImage,
     connectors: (post.mcpServerList ?? []).map((connector) => ({
@@ -78,7 +78,7 @@ function RelatedAvatar({ image }: { image?: IRelatedImage | null }) {
 
 function RelatedBadge({ label, icon }: IRelatedBadge) {
   return (
-    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
+    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-connect-card-border py-1.5 pr-2.5 pl-1.5">
       <span className="relative size-5 shrink-0 overflow-hidden">
         {icon?.url && (
           <img
@@ -130,7 +130,7 @@ function RelatedBadgeRow({
 
 function RelatedAgentCard({ card }: { card: IRelatedAgentCard }) {
   return (
-    <article className="flex h-full min-h-[22.25rem] flex-col gap-8 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-5">
+    <article className="flex h-full min-h-[22.25rem] flex-col gap-8 overflow-hidden rounded-xl border border-connect-card-border bg-[rgba(15,15,21,0.8)] p-5">
       <div className="flex w-full flex-1 flex-col gap-5">
         <div className="flex flex-col gap-4">
           <div className="flex w-full items-center gap-4.5">

@@ -90,6 +90,7 @@ export interface IContentChangeBlock {
 }
 
 export interface IContentFaqItem {
+  _key: string
   question: string
   answer: PortableTextBlock[]
 }
@@ -99,6 +100,7 @@ export interface IContentFaqBlock {
 }
 
 export interface IContentConnectedMcpItem {
+  _key: string
   connector: ITemplateMcpServerData
   description: string
 }

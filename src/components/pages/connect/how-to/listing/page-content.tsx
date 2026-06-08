@@ -35,8 +35,8 @@ function toCard(post: IHowToPost): IAgentGuideCardData {
     id: post.slug.current,
     title: post.title,
     heading: post.category.title,
-    agent: post.author.name,
-    agentCompany: post.author.company?.name,
+    agent: post.author?.name,
+    agentCompany: post.author?.company?.name,
     category: post.category.title,
     quote: post.summary,
     avatar: post.author?.avatar?.darkImage,
@@ -80,7 +80,7 @@ function getConnectorOptions(
 }
 
 function getPostProviderId(post: IHowToPost): ProviderId {
-  return post.author.company?.name?.trim().toLowerCase() === "novu"
+  return post.author?.company?.name?.trim().toLowerCase() === "novu"
     ? "novu"
     : "community"
 }

@@ -27,7 +27,7 @@ function Badge({
   icon?: { url: string; alt?: string } | null
 }) {
   return (
-    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
+    <span className="flex min-h-8 max-w-full shrink-0 items-center gap-1 rounded border border-connect-card-border py-1.5 pr-2.5 pl-1.5">
       <span className="relative size-5 shrink-0 overflow-hidden">
         {icon?.url && (
           <img
@@ -118,6 +118,8 @@ function HowToPostHeader({
 }) {
   const useTemplateUrl = post.useTemplateUrl || String(ROUTE.dashboardV2SignUp)
   const readDocsUrl = post.readDocsUrl || String(ROUTE.docsMcp)
+  const isGeneratedCover =
+    post.cover?.startsWith(String(ROUTE.apiConnectHowToCover)) ?? false
 
   return (
     <header className={cn("flex w-full max-w-168 flex-col", className)}>
@@ -171,6 +173,7 @@ function HowToPostHeader({
           quality={100}
           sizes="(min-width: 1280px) 672px, (min-width: 1024px) calc(100vw - 352px), 100vw"
           priority
+          unoptimized={isGeneratedCover}
         />
       )}
     </header>

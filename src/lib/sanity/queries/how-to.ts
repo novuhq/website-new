@@ -76,11 +76,11 @@ const howToCardFields = groq`
   publishedAt,
   "pathname": "${ROUTE.connectHowTo}/" + slug.current,
   "author": select(
-    defined(author) => author->{
+    defined(author->name) => author->{
       ${howToAuthorFields}
     },
     {
-      "name": agentName,
+      "name": coalesce(agentName, ""),
       "company": null,
       "avatar": avatar->{
         ${templateAvatarFields}
@@ -104,6 +104,7 @@ const howToContentFields = groq`
     _type == "connectedMcpBlock" => {
       ...,
       "items": items[] {
+        _key,
         description,
         connector->{
           ${templateMcpServerFields}

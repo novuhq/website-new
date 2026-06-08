@@ -78,6 +78,7 @@ const nextConfig: NextConfig = {
     localPatterns: [
       {
         pathname: "/api/connect/how-to/cover/**",
+        search: "",
       },
     ],
     remotePatterns: [
