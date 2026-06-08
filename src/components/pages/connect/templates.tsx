@@ -66,6 +66,10 @@ function restoreFilterPosition(
 }
 
 function normalizeTemplate(template: IAgentTemplateData): ITemplateCard {
+  const href = new URL(ROUTE.connectApp)
+
+  href.searchParams.set("agentTemplateId", template.id)
+
   return {
     id: template.id,
     title: template.name,
@@ -82,7 +86,7 @@ function normalizeTemplate(template: IAgentTemplateData): ITemplateCard {
       label: channel.name,
       icon: channel.icon,
     })),
-    href: ROUTE.dashboardV2SignUp,
+    href,
   }
 }
 
