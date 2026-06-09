@@ -15,6 +15,7 @@ export interface ICustomerCardData {
   slug: ISlug
   logo: ISanityImage
   quoteText: string
+  quoteAuthorPhoto?: ISanityImage | null
   quoteAuthorName: string
   quoteAuthorPosition: string
 }
