@@ -25,6 +25,9 @@ public/robots.txt
 # production
 /build
 
+# agent skills source cache
+/.cache/
+
 # misc
 .DS_Store
 *.pem
