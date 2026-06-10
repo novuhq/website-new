@@ -18,6 +18,11 @@ export const SEO_DATA = {
     description: `Book a ${config.projectName} demo to discuss enterprise notification infrastructure, SSO/SAML, RBAC, audit logs, SLA, compliance, and self-hosted deployment options.`,
     pathname: ROUTE.bookADemo as string,
   },
+  bookADemoConnect: {
+    title: `Book a Demo | ${config.projectName} Connect`,
+    description: `Book a ${config.projectName} Connect demo to discuss agent notifications across Slack, Teams, email, and more.`,
+    pathname: ROUTE.bookADemoConnect as string,
+  },
   changelog: {
     title: `Changelog | ${config.projectName}`,
     description: `Stay up-to-date with ${config.projectName}`,
