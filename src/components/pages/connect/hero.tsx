@@ -3,6 +3,7 @@ import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
 import ConnectHeroActions from "./hero-actions"
 import ConnectHeroVideo from "./hero-video"
+import ConnectPromptCopyLine from "./prompt-copy-line"
 
 function Hero() {
   return (
@@ -54,9 +55,7 @@ function Hero() {
             <ConnectHeroActions />
           </div>
 
-          <p className="text-[0.9375rem] leading-normal font-normal tracking-tighter text-gray-9">
-            No credit card required
-          </p>
+          <ConnectPromptCopyLine />
         </div>
 
         <ConnectHeroVideo />

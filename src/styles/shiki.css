@@ -3,9 +3,9 @@ html .shiki:not(.echo-code) {
   --shiki-removed-line-background: hsla(1, 41%, 20%, 0.9);
   --shiki-added-line-background: hsla(124, 24%, 23%, 0.9);
 
-  @apply !bg-black;
+  background-color: black !important;
   & span.line {
-    @apply bg-[hsl(240,37%,3%)];
+    background-color: hsl(240, 37%, 3%);
   }
 }
 
@@ -18,11 +18,16 @@ html .shiki:not(.echo-code, .mcp-snippet) span.line > span {
 }
 
 pre code {
-  @apply !flex flex-col text-sm;
+  display: flex !important;
+  flex-direction: column;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 code .line::after {
-  @apply invisible overflow-hidden content-["'"];
+  visibility: hidden;
+  overflow: hidden;
+  content: "'";
 }
 
 .show-linenumbers {
@@ -34,28 +39,50 @@ code .line::after {
     counter-increment: line;
     content: counter(line);
 
-    @apply mr-5 inline-block w-4 text-right text-sm text-[#999999];
+    margin-right: 1.25rem;
+    display: inline-block;
+    width: 1rem;
+    text-align: right;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #999999;
   }
 
   /* MCP config snippet: figure.code-block — override global `pre code` + line ::before sizes */
-  .code-block pre code {
-    @apply text-xs md:text-sm;
+  .code-block pre code,
+  .code-block pre code > .line::before {
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 
-  .code-block pre code > .line::before {
-    @apply text-xs md:text-sm;
+  @media (min-width: 48rem) {
+    .code-block pre code,
+    .code-block pre code > .line::before {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
   }
 }
 
 /* TODO: add styles for highlighted lines */
 .shiki span.line.highlighted {
-  @apply !bg-[var(--shiki-highlighted-line-background)];
+  background-color: var(--shiki-highlighted-line-background) !important;
 }
 .shiki span.line.diff.add {
-  @apply !bg-[var(--shiki-added-line-background)] before:ml-2 before:text-white/90 before:content-["+"];
+  background-color: var(--shiki-added-line-background) !important;
+}
+.shiki span.line.diff.add::before {
+  margin-left: 0.5rem;
+  color: rgb(255 255 255 / 0.9);
+  content: "+";
 }
 .shiki span.line.diff.remove {
-  @apply !bg-[var(--shiki-removed-line-background)] before:ml-2 before:text-white/90 before:content-["-"];
+  background-color: var(--shiki-removed-line-background) !important;
+}
+.shiki span.line.diff.remove::before {
+  margin-left: 0.5rem;
+  color: rgb(255 255 255 / 0.9);
+  content: "-";
 }
 
 .numbered-lines {
@@ -64,12 +91,18 @@ code .line::after {
   }
 
   .line {
-    @apply relative pb-px pl-8.5;
+    position: relative;
+    padding-bottom: 1px;
+    padding-left: 2.125rem;
     counter-increment: main-counter;
   }
 
   .line::before {
+    position: absolute;
+    left: 0;
+    width: 1.125rem;
+    text-align: right;
+    color: #666666;
     content: counter(main-counter);
-    @apply absolute left-0 w-4.5 text-right text-[#666666];
   }
 }
