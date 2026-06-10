@@ -1,0 +1,120 @@
+# Novu
+
+> Novu is the open-source notification infrastructure for developers. Manage multi-channel notifications (in-app, email, SMS, push, chat) through a single API, define notification workflows as code, and deploy them with a fully managed GitOps flow.
+
+Novu provides a unified platform for building, operating, and debugging notification systems. Developers define workflows in TypeScript with Echo, product teams manage content in the dashboard, and AI agents can trigger or build notifications through MCP and Connect.
+
+## Products
+
+### Agents
+- [Agent Quickstart](https://novu.co/agents.md): Onboard an AI coding agent to create a managed agent and connect it to a channel without creating a Novu account first
+- Connect any agent to the channels where people already work: Slack, email, Microsoft Teams, WhatsApp, Discord, Telegram, and more
+- Keyless mode lets agents spin up a hosted agent in minutes, then claim it into a workspace when ready
+- [Novu Connect](https://novu.co/connect/): Bring Claude Managed Agents into team channels with templates, MCP tools, and managed runtime
+
+### Inbox
+- [Inbox Overview](https://novu.co/inbox/): Embeddable, real-time in-app notification center
+- React, Next.js, Vue, Angular, iframe, and web component options
+- User preferences, HMAC encryption, and customizable UI
+
+### Framework (Echo)
+- [Framework Overview](https://novu.co/framework/): Notification workflows as code in your application
+- Define workflows in TypeScript with step-level validation via Zod or JSON Schema
+- Access local data, custom skip logic, provider overrides, and React Email/MJML integrations
+- Deployed from your CI with a fully managed GitOps flow
+- [Echo Quickstart](https://docs.novu.co/echo/quickstart): Get started with `npx novu-labs@latest echo`
+
+### MCP Server
+- [MCP Overview](https://novu.co/mcp/): Give AI agents native access to Novu notification tools
+- 23+ tools for subscribers, workflows, triggers, notifications, and integrations
+- Works with Claude, Cursor, Copilot, and any MCP-compatible client
+
+### Copilot
+- [Copilot Overview](https://novu.co/copilot/): Generate production-ready notification workflows from plain English
+- Built for product managers to describe journeys and ship workflows the same day
+
+### Digest
+- [Digest Overview](https://novu.co/digest/): Batch and consolidate notifications to reduce overload
+- Time-based, count-based, and cron digest strategies
+
+## Notification Channels
+- **In-App**: Real-time notifications with the Novu Inbox component
+- **Email**: Transactional and lifecycle email with visual and code editors
+- **SMS**: Text messaging via Twilio, Vonage, Plivo, and more
+- **Push**: Mobile and web push via FCM, APNS, Expo, and OneSignal
+- **Chat**: Slack, Discord, Microsoft Teams, and Mattermost
+
+## Key Pages
+
+- [Homepage](https://novu.co/): Overview of Novu's notification infrastructure
+- [Pricing](https://novu.co/pricing/): Plans from Free (10K workflow runs/month) to Enterprise
+- [Connect](https://novu.co/connect/): Connect agents to Slack, Teams, email, and more
+- [MCP Server](https://novu.co/mcp/): Add notifications to any AI agent
+- [Copilot](https://novu.co/copilot/): Build workflows from natural language
+- [Integrations](https://novu.co/integrations/channels/): Providers and workflow tools
+- [Customers](https://novu.co/customers/): Teams shipping with Novu
+- [Security](https://novu.co/security/): SOC 2, encryption, and compliance
+- [Book a Demo](https://novu.co/book-a-demo/): Talk with the Novu team
+
+## Use Cases
+
+- [Add Notifications](https://novu.co/usecases/add-notifications/): Quickly add notification capabilities to your app
+- [Multi-Channel Notifications](https://novu.co/usecases/multi-channel-notifications/): Unified delivery across all channels
+- [Unified Platform](https://novu.co/usecases/unified-platform/): Single platform for all notification needs
+- [Content Management](https://novu.co/usecases/content-management/): Manage notification templates and content
+- [Communication Experience](https://novu.co/usecases/improve-communication-experience/): Enhance user engagement
+
+## Documentation
+
+- [Documentation Home](https://docs.novu.co/): Complete guides and API reference
+- [Platform Quick Start](https://docs.novu.co/platform/quickstart/nextjs): Get started in minutes
+- [Echo Quickstart](https://docs.novu.co/echo/quickstart): Workflows-as-code with Echo
+- [Framework Docs](https://docs.novu.co/framework/overview): Code-based workflow documentation
+- [API Reference](https://docs.novu.co/api-reference): REST API documentation
+- [SDKs](https://docs.novu.co/sdks): Node.js, Python, Go, Ruby, and more
+- [MCP Setup](https://docs.novu.co/platform/build-with-ai/mcp): Connect AI clients to Novu
+
+## Developer Resources
+
+- [Dashboard](https://dashboard.novu.co/): Novu Cloud dashboard for managing notifications
+- [GitHub Repository](https://github.com/novuhq/novu): Open-source codebase (35K+ stars)
+- [Agent Onboarding Guide](https://novu.co/agents.md): Instructions for AI agents to create and connect a managed agent
+- [NPM Packages](https://www.npmjs.com/org/novu): @novu/node, @novu/react, @novu/nextjs
+- [Blog](https://novu.co/blog/): Technical articles and product updates
+- [Discord Community](https://discord.gg/novu): Community support and discussions
+
+## Integrations
+
+Novu integrates with popular tools and services:
+- **Email Providers**: SendGrid, Mailgun, Postmark, Amazon SES, Resend, Mailjet
+- **SMS Providers**: Twilio, Vonage, Plivo, Telnyx, SNS
+- **Push Providers**: Firebase Cloud Messaging, Apple Push Notification Service, Expo
+- **Chat Providers**: Slack, Discord, Microsoft Teams, Mattermost
+- **Frameworks**: React, Next.js, Remix, NestJS, Express, Astro
+- **Content Tools**: React Email, MJML, Maizzle
+- **Auth**: Clerk, Auth0
+- **Feature Flags**: LaunchDarkly
+
+## Pricing Tiers
+
+- **Free**: $0/month - 10K workflow runs, all channels, 3 team members
+- **Pro**: From $30/month - 30K+ workflow runs, 7-day retention, remove branding
+- **Team**: From $250/month - 250K+ workflow runs, 10 environments, RBAC
+- **Enterprise**: Custom - 5M+ workflow runs, SOC 2, HIPAA, dedicated support
+
+## Company
+
+Novu is an open-source company backed by leading investors. The platform processes millions of notifications for companies like MongoDB, Unity, Siemens, Roche, and UNOPS.
+
+- Founded: 2021
+- Open Source: MIT License
+- GitHub Stars: 35,000+
+
+## Contact
+
+- Website: https://novu.co
+- Documentation: https://docs.novu.co
+- GitHub: https://github.com/novuhq/novu
+- Discord: https://discord.gg/novu
+- Twitter: https://x.com/novuhq
+- Email: support@novu.co
