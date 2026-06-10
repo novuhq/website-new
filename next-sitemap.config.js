@@ -3,13 +3,28 @@
 // (not directories), so `trailingSlash: false` keeps the canonical URL exact.
 const agentDiscoveryFiles = ["/agents.md", "/auth.md", "/llms.txt"]
 
+const CONTENT_SIGNAL = "Content-Signal: ai-train=yes, search=yes, ai-input=yes"
+
+function addContentSignal(robotsTxt) {
+  return robotsTxt
+    .split("\n")
+    .flatMap((line) =>
+      line.trim() === "Allow: /" ? [line, CONTENT_SIGNAL] : [line]
+    )
+    .join("\n")
+}
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "http://localhost:3000",
   trailingSlash: true,
-  generateRobotsTxt: false,
+  generateRobotsTxt: true,
   sitemapBaseFileName: "next-sitemap",
   exclude: ["/studio", "/studio/*", "/api/*"],
+  robotsTxtOptions: {
+    policies: [{ userAgent: "*", allow: "/" }],
+    transformRobotsTxt: async (_, robotsTxt) => addContentSignal(robotsTxt),
+  },
   additionalPaths: async () =>
     agentDiscoveryFiles.map((loc) => ({
       loc,
