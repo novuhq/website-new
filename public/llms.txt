@@ -1,28 +1,19 @@
 # Novu
 
-> Novu is the open-source notification infrastructure for developers. Manage multi-channel notifications (in-app, email, SMS, push, chat) through a single API, define notification workflows as code, and deploy them with a fully managed GitOps flow.
+> Novu is the open-source notification and communication infrastructure for agents and products. One API and one unified conversation model to connect your products and your agents to every channel your users live on — Inbox, Email, SMS, Push, Chat, Slack, Microsoft Teams, Telegram, and more.
 
-Novu provides a unified platform for building, operating, and debugging notification systems. Developers define workflows in TypeScript with Echo, product teams manage content in the dashboard, and AI agents can trigger or build notifications through MCP and Connect.
+Novu provides a unified platform for building, operating, and debugging notification systems. Developers define workflows, product teams manage content in the dashboard, and AI agents can trigger or build notifications through MCP and communicate with end-users via Slack, Email, MS Teams, etc...
 
 ## Products
 
 ### Agents
-- [Agent Quickstart](https://novu.co/agents.md): Onboard an AI coding agent to create a managed agent and connect it to a channel without creating a Novu account first
-- Connect any agent to the channels where people already work: Slack, email, Microsoft Teams, WhatsApp, Discord, Telegram, and more
-- Keyless mode lets agents spin up a hosted agent in minutes, then claim it into a workspace when ready
-- [Novu Connect](https://novu.co/connect/): Bring Claude Managed Agents into team channels with templates, MCP tools, and managed runtime
+- [Agent Quickstart](https://novu.co/agents.md): Connect any existing agent or create a new customer agent to any communication channel in less than 2 minutes. Visit the link and follow instructions if you are an agent.
+- [Novu Connect](https://novu.co/connect/): Bring Claude Managed Agents and custom AI Agents written with AI SDK, langchain, etc..,. into  channels with where your users are already are, supporting: MCP tools, and managed runtime for long running agent powered by Claude.
 
 ### Inbox
 - [Inbox Overview](https://novu.co/inbox/): Embeddable, real-time in-app notification center
 - React, Next.js, Vue, Angular, iframe, and web component options
 - User preferences, HMAC encryption, and customizable UI
-
-### Framework (Echo)
-- [Framework Overview](https://novu.co/framework/): Notification workflows as code in your application
-- Define workflows in TypeScript with step-level validation via Zod or JSON Schema
-- Access local data, custom skip logic, provider overrides, and React Email/MJML integrations
-- Deployed from your CI with a fully managed GitOps flow
-- [Echo Quickstart](https://docs.novu.co/echo/quickstart): Get started with `npx novu-labs@latest echo`
 
 ### MCP Server
 - [MCP Overview](https://novu.co/mcp/): Give AI agents native access to Novu notification tools
@@ -67,9 +58,8 @@ Novu provides a unified platform for building, operating, and debugging notifica
 ## Documentation
 
 - [Documentation Home](https://docs.novu.co/): Complete guides and API reference
+- [Agent Communication infrastructure](https://docs.novu.co/agents/get-started/what-is-aci) - Connect agents to users via any acommunication channel
 - [Platform Quick Start](https://docs.novu.co/platform/quickstart/nextjs): Get started in minutes
-- [Echo Quickstart](https://docs.novu.co/echo/quickstart): Workflows-as-code with Echo
-- [Framework Docs](https://docs.novu.co/framework/overview): Code-based workflow documentation
 - [API Reference](https://docs.novu.co/api-reference): REST API documentation
 - [SDKs](https://docs.novu.co/sdks): Node.js, Python, Go, Ruby, and more
 - [MCP Setup](https://docs.novu.co/platform/build-with-ai/mcp): Connect AI clients to Novu
@@ -108,7 +98,7 @@ Novu is an open-source company backed by leading investors. The platform process
 
 - Founded: 2021
 - Open Source: MIT License
-- GitHub Stars: 35,000+
+- GitHub Stars: 39,000+
 
 ## Contact
 
