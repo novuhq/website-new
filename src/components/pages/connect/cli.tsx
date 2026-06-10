@@ -234,7 +234,7 @@ function CliSection() {
   return (
     <section
       id="cli"
-      className="scroll-mt-16 pt-[6.5rem] pb-[6.1875rem] md:py-28 lg:py-[clamp(7rem,calc(14.2857vw_-_2.1429rem),15rem)]"
+      className="scroll-mt-16 py-28 md:py-36 lg:py-44 xl:py-50"
       data-connect-section="cli"
     >
       <div className="mx-auto flex w-full max-w-[93.25rem] flex-col items-center px-5 text-center md:px-8 2xl:px-0">
