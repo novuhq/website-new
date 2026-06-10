@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto"
 import {
-  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -8,12 +7,15 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs"
-import { basename, join, relative } from "node:path"
+import { basename, join } from "node:path"
 import { spawnSync } from "node:child_process"
 
 const SCHEMA_URI =
   "https://schemas.agentskills.io/discovery/0.2.0/schema.json"
-const SKILLS_SOURCE_DIR = join(process.cwd(), ".agents", "skills")
+const NOVU_SKILLS_REPO = "https://github.com/novuhq/skills.git"
+const NOVU_SKILLS_REF = process.env.NOVU_SKILLS_REF ?? "main"
+const SKILLS_SOURCE_DIR =
+  process.env.NOVU_SKILLS_DIR ?? join(process.cwd(), ".cache", "novuhq-skills", "skills")
 const OUTPUT_DIR = join(process.cwd(), "public", ".well-known", "agent-skills")
 
 function sha256Digest(filePath) {
@@ -70,6 +72,53 @@ function hasSupportingFiles(skillDirectory) {
   return files.some((filePath) => basename(filePath) !== "SKILL.md")
 }
 
+function ensureNovuSkillsSource() {
+  if (process.env.NOVU_SKILLS_DIR) {
+    if (!existsSync(join(SKILLS_SOURCE_DIR, ".."))) {
+      throw new Error(`NOVU_SKILLS_DIR does not exist: ${SKILLS_SOURCE_DIR}`)
+    }
+
+    return
+  }
+
+  const cacheRoot = join(process.cwd(), ".cache", "novuhq-skills")
+  mkdirSync(join(process.cwd(), ".cache"), { recursive: true })
+
+  if (!existsSync(join(cacheRoot, ".git"))) {
+    const cloneResult = spawnSync(
+      "git",
+      ["clone", "--depth", "1", "--branch", NOVU_SKILLS_REF, NOVU_SKILLS_REPO, cacheRoot],
+      { stdio: "inherit" },
+    )
+
+    if (cloneResult.status !== 0) {
+      throw new Error(`Failed to clone ${NOVU_SKILLS_REPO} at ref ${NOVU_SKILLS_REF}`)
+    }
+
+    return
+  }
+
+  const fetchResult = spawnSync(
+    "git",
+    ["fetch", "origin", NOVU_SKILLS_REF, "--depth", "1"],
+    { cwd: cacheRoot, stdio: "inherit" },
+  )
+
+  if (fetchResult.status !== 0) {
+    throw new Error(`Failed to fetch ${NOVU_SKILLS_REF} from ${NOVU_SKILLS_REPO}`)
+  }
+
+  const checkoutResult = spawnSync(
+    "git",
+    ["checkout", "FETCH_HEAD"],
+    { cwd: cacheRoot, stdio: "inherit" },
+  )
+
+  if (checkoutResult.status !== 0) {
+    throw new Error(`Failed to checkout ${NOVU_SKILLS_REF} in ${cacheRoot}`)
+  }
+}
+
 function ensureCleanOutputDirectory() {
   rmSync(OUTPUT_DIR, { recursive: true, force: true })
   mkdirSync(OUTPUT_DIR, { recursive: true })
@@ -81,7 +130,7 @@ function publishSkillMd(skillName, skillDirectory) {
 
   const sourceSkillMd = join(skillDirectory, "SKILL.md")
   const destinationSkillMd = join(destinationDirectory, "SKILL.md")
-  cpSync(sourceSkillMd, destinationSkillMd)
+  writeFileSync(destinationSkillMd, readFileSync(sourceSkillMd))
 
   const digest = sha256Digest(destinationSkillMd)
 
@@ -116,8 +165,10 @@ function publishArchive(skillName, skillDirectory) {
 }
 
 function discoverSkills() {
+  ensureNovuSkillsSource()
+
   if (!existsSync(SKILLS_SOURCE_DIR)) {
-    throw new Error(`Skills source directory not found: ${SKILLS_SOURCE_DIR}`)
+    throw new Error(`Novu skills directory not found: ${SKILLS_SOURCE_DIR}`)
   }
 
   const skillDirectories = readdirSync(SKILLS_SOURCE_DIR, {
@@ -126,20 +177,11 @@ function discoverSkills() {
     .filter((entry) => entry.isDirectory())
     .map((entry) => join(SKILLS_SOURCE_DIR, entry.name))
     .filter((directory) => existsSync(join(directory, "SKILL.md")))
-    .sort((left, right) => relative(SKILLS_SOURCE_DIR, left).localeCompare(
-      relative(SKILLS_SOURCE_DIR, right),
-    ))
+    .sort((left, right) => basename(left).localeCompare(basename(right)))
 
   return skillDirectories.map((skillDirectory) => {
     const skillMdPath = join(skillDirectory, "SKILL.md")
     const metadata = parseFrontmatter(skillMdPath)
-    const directoryName = basename(skillDirectory)
-
-    if (metadata.name !== directoryName) {
-      throw new Error(
-        `Skill directory "${directoryName}" does not match frontmatter name "${metadata.name}"`,
-      )
-    }
 
     const artifact = hasSupportingFiles(skillDirectory)
       ? publishArchive(metadata.name, skillDirectory)
@@ -170,7 +212,9 @@ function main() {
     "utf8",
   )
 
-  console.info(`Published ${skills.length} skills to ${OUTPUT_DIR}`)
+  console.info(
+    `Published ${skills.length} Novu skills from novuhq/skills to ${OUTPUT_DIR}`,
+  )
 }
 
 main()
