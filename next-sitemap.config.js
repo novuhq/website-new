@@ -5,29 +5,15 @@ const agentDiscoveryFiles = ["/agents.md", "/auth.md", "/llms.txt"]
 
 const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "http://localhost:3000"
 
-const CONTENT_SIGNAL = "Content-Signal: ai-train=yes, search=yes, ai-input=yes"
-
-function addContentSignal(robotsTxt) {
-  return robotsTxt
-    .split("\n")
-    .flatMap((line) =>
-      line.trim() === "Allow: /" ? [line, CONTENT_SIGNAL] : [line]
-    )
-    .join("\n")
-}
-
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl,
   trailingSlash: true,
-  generateRobotsTxt: true,
+  // robots.txt is served by src/app/(website)/robots.txt/route.ts so it is
+  // included in the Next.js build output (postbuild public/ files are not).
+  generateRobotsTxt: false,
   sitemapBaseFileName: "next-sitemap",
   exclude: ["/studio", "/studio/*", "/api/*"],
-  robotsTxtOptions: {
-    policies: [{ userAgent: "*", allow: "/" }],
-    additionalSitemaps: [`${siteUrl}/sitemap-index.xml`],
-    transformRobotsTxt: async (_, robotsTxt) => addContentSignal(robotsTxt),
-  },
   additionalPaths: async () =>
     agentDiscoveryFiles.map((loc) => ({
       loc,
