@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
+    "generate:agent-skills": "node scripts/generate-agent-skills-index.mjs",
+    "prebuild": "pnpm generate:agent-skills",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",

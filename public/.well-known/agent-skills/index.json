@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "content-editing",
+      "type": "skill-md",
+      "description": "Use when updating marketing copy, markdown or MDX content, frontmatter, structured content objects, or other user-facing content sources. Keeps edits aligned with the existing content model and rendering pipeline.",
+      "url": "/.well-known/agent-skills/content-editing/SKILL.md",
+      "digest": "sha256:fc02508ae3b27b6ad52f66a3c3f7db734c0254ba1cbc6881ea2f7bc66dc10422"
+    },
+    {
+      "name": "conventional-commit",
+      "type": "skill-md",
+      "description": "Prompt and workflow for generating conventional commit messages using a structured XML format. Guides users to create standardized, descriptive commit messages in line with the Conventional Commits specification, including instructions, examples, and validation.",
+      "url": "/.well-known/agent-skills/conventional-commit/SKILL.md",
+      "digest": "sha256:250235f71b8c501a7744ded911281292324bcd1a2d014e34b25041e2d2c8bf73"
+    },
+    {
+      "name": "figma-to-code",
+      "type": "skill-md",
+      "description": "Use when given a Figma URL and asked to make a component or section match the Figma design. Covers fetching Figma data, mapping design tokens to Tailwind/CSS, and updating component code.",
+      "url": "/.well-known/agent-skills/figma-to-code/SKILL.md",
+      "digest": "sha256:449e99c32e8b358dd17d4a43b904b9164e59fb8989fab9c09400421c875ac40f"
+    },
+    {
+      "name": "implementation-planning",
+      "type": "skill-md",
+      "description": "Use when the user explicitly asks for a plan, roadmap, phased implementation, or task breakdown. Produces a plan only; it does not implement code changes.",
+      "url": "/.well-known/agent-skills/implementation-planning/SKILL.md",
+      "digest": "sha256:60ebfdd7f6d9a87e7012c8f4d7128ac8e73c88c56b61abe6a86a694d185a288a"
+    },
+    {
+      "name": "shadcn",
+      "type": "archive",
+      "description": "Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for \"shadcn init\", \"create an app with --preset\", or \"switch to --preset\".",
+      "url": "/.well-known/agent-skills/shadcn.tar.gz",
+      "digest": "sha256:3272f93d755d77a7a1a72c26dbb4231fb636f305f45a4e15f2fe1f7204b6d50a"
+    },
+    {
+      "name": "webapp-testing",
+      "type": "archive",
+      "description": "Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.",
+      "url": "/.well-known/agent-skills/webapp-testing.tar.gz",
+      "digest": "sha256:05561f0f666101e3acb5b68f02f28eca275ed025e1a1f4c7352199a3d044e876"
+    }
+  ]
+}
