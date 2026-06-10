@@ -25,7 +25,7 @@ function Hero() {
               <div className="flex w-full flex-col items-center gap-4 lg:items-start">
                 <h1
                   className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
-                  aria-label="Connect your Claude agent where your team actually works"
+                  aria-label="Connect your Claude agent where your customers actually works"
                 >
                   Connect{" "}
                   <span className="whitespace-nowrap">
@@ -41,7 +41,7 @@ function Hero() {
                     />
                     <span aria-hidden>Claude</span>
                   </span>{" "}
-                  agent where your team actually works
+                  agent where your customers actually work
                 </h1>
 
                 <p className="max-w-[523.4609375px] text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
