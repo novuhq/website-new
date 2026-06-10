@@ -47,6 +47,11 @@ const nextConfig: NextConfig = {
         destination: "/integrations/channels",
         permanent: true,
       },
+      {
+        source: "/connect/agent-onboarding.md",
+        destination: "/agents.md",
+        permanent: true,
+      },
     ]
   },
   async headers() {
