@@ -1,8 +1,8 @@
 import Image from "next/image"
-import controlLayerImage from "@/images/pages/book-a-demo-connect/control-layer/contol-layer.jpg"
 import capabilityIcon from "@/images/pages/book-a-demo-connect/control-layer/icons/capability.svg"
 import permissionsIcon from "@/images/pages/book-a-demo-connect/control-layer/icons/permissions.svg"
 import visibilityIcon from "@/images/pages/book-a-demo-connect/control-layer/icons/visibility.svg"
+import controlLayerImage from "@/images/pages/book-a-demo-connect/control-layer/сontrol-layer.jpg"
 
 import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling-button"
 
