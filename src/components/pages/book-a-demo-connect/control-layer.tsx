@@ -9,20 +9,47 @@ import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling
 const CONTROL_LAYER_FEATURES = [
   {
     title: "Agent permissions",
-    description:
-      "Control what each agent can read, write, search, or execute across connected tools and customer-facing workflows.",
+    description: (
+      <>
+        Control what each agent can read, write, search,
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        or execute across connected tools and
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        customer-facing workflows.
+      </>
+    ),
     icon: permissionsIcon,
   },
   {
     title: "Capability guardrails",
-    description:
-      "Disable risky actions before agents go live, so every workflow stays within approved operational boundaries.",
+    description: (
+      <>
+        Disable risky actions before agents go live,
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        so every workflow stays within approved
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        operational boundaries.
+      </>
+    ),
     icon: capabilityIcon,
   },
   {
     title: "Operational visibility",
-    description:
-      "See which tools are enabled for each agent, review capability changes, and keep agent behavior transparent across teams.",
+    description: (
+      <>
+        See which tools are enabled for each agent,
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        review capability changes, and keep agent
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        behavior transparent across teams.
+      </>
+    ),
     icon: visibilityIcon,
   },
 ]
@@ -72,7 +99,7 @@ function BookADemoConnectControlLayer() {
           />
         </div>
 
-        <ul className="relative z-10 -mt-6 grid w-full max-w-304 grid-cols-1 gap-12 text-left sm:-mt-24 sm:grid-cols-2 md:-mt-28 md:gap-10 lg:-mt-45 xl:absolute xl:bottom-25 xl:left-1/2 xl:mt-0 xl:-translate-x-1/2 xl:grid-cols-3 xl:gap-14 xl:px-0">
+        <ul className="relative z-10 -mt-6 grid w-full max-w-304 grid-cols-1 gap-12 text-left sm:-mt-24 sm:grid-cols-2 md:-mt-28 md:gap-10 lg:-mt-45 xl:absolute xl:bottom-25 xl:left-1/2 xl:mt-0 xl:-translate-x-1/2 xl:grid-cols-3 xl:gap-14 xl:px-0 2xl:max-w-303.5">
           {CONTROL_LAYER_FEATURES.map(({ title, description, icon }) => (
             <li key={title} className="flex flex-col items-start gap-6">
               <Image
@@ -89,7 +116,7 @@ function BookADemoConnectControlLayer() {
                 <h3 className="text-xl leading-snug font-medium tracking-tighter text-white">
                   {title}
                 </h3>
-                <p className="text-base leading-snug font-book tracking-tighter text-gray-9">
+                <p className="text-base leading-snug font-book tracking-tighter text-gray-9 2xl:tracking-normal">
                   {description}
                 </p>
               </div>

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import Image, { type StaticImageData } from "next/image"
 import deploymentImage from "@/images/pages/book-a-demo-connect/enterprise/deployment.jpg"
 import governanceImage from "@/images/pages/book-a-demo-connect/enterprise/governance.jpg"
@@ -9,7 +10,7 @@ import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling
 
 interface IEnterpriseCard {
   title: string
-  description: string
+  description: ReactNode
   image: StaticImageData
   imageSize: "wide" | "narrow"
   className: string
@@ -19,8 +20,14 @@ interface IEnterpriseCard {
 const ENTERPRISE_CARDS: IEnterpriseCard[] = [
   {
     title: "Governance & Access",
-    description:
-      "Control who can create, deploy, and manage customer-facing agents across your organization.",
+    description: (
+      <>
+        Control who can create, deploy, and manage
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        customer-facing agents across your organization.
+      </>
+    ),
     image: governanceImage,
     imageSize: "wide",
     className:
@@ -29,8 +36,14 @@ const ENTERPRISE_CARDS: IEnterpriseCard[] = [
   },
   {
     title: "Production Reliability",
-    description:
-      "Monitor agent status, delivery health, and communication workflows before they impact customers.",
+    description: (
+      <>
+        Monitor agent status, delivery health, and communication
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        workflows before they impact customers.
+      </>
+    ),
     image: reliabilityImage,
     imageSize: "narrow",
     className:
@@ -39,8 +52,14 @@ const ENTERPRISE_CARDS: IEnterpriseCard[] = [
   },
   {
     title: "Human Oversight",
-    description:
-      "Route sensitive, failed, or high-value interactions to the right team with context preserved.",
+    description: (
+      <>
+        Route sensitive, failed, or high-value interactions
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        to the right team with context preserved.
+      </>
+    ),
     image: oversightImage,
     imageSize: "narrow",
     className:
@@ -49,8 +68,14 @@ const ENTERPRISE_CARDS: IEnterpriseCard[] = [
   },
   {
     title: "Deployment Flexibility",
-    description:
-      "Run agent communication infrastructure in the setup that fits your security and scale requirements.",
+    description: (
+      <>
+        Run agent communication infrastructure in the setup
+        <span className="2xl:hidden"> </span>
+        <br className="hidden 2xl:block" aria-hidden />
+        that fits your security and scale requirements.
+      </>
+    ),
     image: deploymentImage,
     imageSize: "wide",
     className:
