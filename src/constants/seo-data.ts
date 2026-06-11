@@ -21,6 +21,8 @@ export const SEO_DATA = {
   bookADemoConnect: {
     title: `Book a Demo | ${config.projectName} Connect`,
     description: `Book a ${config.projectName} Connect demo to discuss agent notifications across Slack, Teams, email, and more.`,
+    imagePath: "/og-images/og-image-connect.jpg",
+    imageAlt: `${config.projectName} Connect social preview`,
     pathname: ROUTE.bookADemoConnect as string,
   },
   changelog: {

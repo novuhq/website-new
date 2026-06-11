@@ -63,7 +63,7 @@ function BookADemoConnectHero() {
         </div>
 
         <div
-          className="pointer-events-none relative top-4 left-1/2 z-0 mx-auto mt-4 aspect-[832/730] w-[calc(100%+6rem)] max-w-208 -translate-x-1/2 md:mt-0 md:w-full lg:left-auto lg:mx-0 lg:w-[min(52rem,54vw)] lg:max-w-none lg:translate-x-[2.625rem] lg:justify-self-center"
+          className="pointer-events-none relative top-4 left-1/2 z-0 mx-auto mt-4 aspect-[832/730] w-[calc(100%+6rem)] max-w-208 -translate-x-1/2 md:left-auto md:mt-0 md:w-full md:translate-x-0 lg:mx-0 lg:w-[min(52rem,54vw)] lg:max-w-none lg:translate-x-4 lg:justify-self-center xl:translate-x-6 2xl:translate-x-[2.625rem]"
           aria-hidden
         >
           <Image

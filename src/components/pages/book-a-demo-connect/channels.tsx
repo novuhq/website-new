@@ -83,6 +83,7 @@ function BookADemoConnectChannels() {
       channels={CHANNELS}
       className="pt-20 md:pt-30 lg:pt-40 xl:pt-60"
       description="Support customer communication across messaging, email, collaboration, and custom channels from one platform."
+      headerClassName="xl:max-w-none"
       title="Meet customers wherever they are"
       titleClassName="xl:text-5xl xl:whitespace-nowrap"
       trackingLocation="book_a_demo_connect_channels"
