@@ -6,7 +6,7 @@ import checkIcon from "@/svgs/icons/check.svg"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 
 const CONNECT_PROMPT_PLACEHOLDER =
-  "Placeholder prompt for connecting a Claude agent with Novu Connect."
+  "Add an agent to my app https://novu.co/agents.md"
 const COPY_ICON_SRC = copyIcon.src
 const CHECK_ICON_SRC = checkIcon.src
 
