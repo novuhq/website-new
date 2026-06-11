@@ -8,7 +8,7 @@ function BookADemoConnectHero() {
   return (
     <section
       id="book-a-demo-connect"
-      className="relative isolate overflow-x-clip overflow-y-visible bg-background pt-12 pb-16 md:pt-20 md:pb-24 lg:min-h-183 lg:pt-10 lg:pb-0"
+      className="relative isolate overflow-x-clip overflow-y-visible bg-black pt-12 pb-16 md:pt-20 md:pb-24 lg:min-h-183 lg:pt-10 lg:pb-0"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 lg:grid lg:min-h-183 lg:grid-cols-[minmax(0,min(38.75rem,48vw))_minmax(0,1fr)] lg:items-center lg:gap-0 2xl:px-0">
         <div className="relative z-10 mx-auto flex w-full max-w-155 flex-col items-center gap-8 text-center lg:mx-0 lg:items-start lg:text-left">

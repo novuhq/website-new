@@ -155,7 +155,7 @@ function EnterpriseCard({
 
 function BookADemoConnectEnterprise() {
   return (
-    <section className="relative overflow-hidden bg-background py-20 md:py-30 xl:pt-58 xl:pb-0">
+    <section className="relative overflow-hidden bg-black py-20 md:py-30 xl:pt-58 xl:pb-0">
       <div className="mx-auto flex w-full max-w-304 flex-col items-center px-5 md:px-8 2xl:px-0">
         <div className="mx-auto flex w-full max-w-184 flex-col items-center gap-10 text-center">
           <div className="flex w-full flex-col items-center gap-4">

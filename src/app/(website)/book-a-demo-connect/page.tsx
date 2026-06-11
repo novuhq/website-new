@@ -20,19 +20,22 @@ export default async function BookADemoConnectPage() {
 
   return (
     <BookADemoSchedulingProvider utmCampaign="book_a_demo_connect">
-      <BookADemoConnectHero />
-      <BookADemoConnectLogos />
-      <BookADemoConnectControlLayer />
-      <BookADemoConnectEnterprise />
-      <BookADemoConnectEnterpriseReady />
-      <BookADemoConnectChannels />
-      <BookADemoCustomerStories
-        articleClassName="xl:mt-63"
-        customers={customerStories}
-        trackingLocation="book_a_demo_connect_customer_stories"
-      />
-      <ConnectFaq className="xl:pt-63 xl:pb-0" />
-      <BookADemoConnectFinalCta />
+      <div className="bg-black">
+        <BookADemoConnectHero />
+        <BookADemoConnectLogos />
+        <BookADemoConnectControlLayer />
+        <BookADemoConnectEnterprise />
+        <BookADemoConnectEnterpriseReady />
+        <BookADemoConnectChannels />
+        <BookADemoCustomerStories
+          articleClassName="xl:mt-63"
+          className="bg-black"
+          customers={customerStories}
+          trackingLocation="book_a_demo_connect_customer_stories"
+        />
+        <ConnectFaq className="bg-black xl:pt-63 xl:pb-0" />
+        <BookADemoConnectFinalCta />
+      </div>
     </BookADemoSchedulingProvider>
   )
 }

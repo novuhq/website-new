@@ -175,9 +175,11 @@ function CustomerStorySlide({
 function BookADemoCustomerStories({
   customers,
   articleClassName,
+  className,
   trackingLocation = "book_a_demo_customer_stories",
 }: {
   articleClassName?: string
+  className?: string
   customers: ICustomerCardData[]
   trackingLocation?: string
 }) {
@@ -216,7 +218,12 @@ function BookADemoCustomerStories({
   }
 
   return (
-    <section className="relative overflow-hidden bg-background py-0 md:min-h-64.5">
+    <section
+      className={cn(
+        "relative overflow-hidden bg-background py-0 md:min-h-64.5",
+        className
+      )}
+    >
       <div className="relative mx-auto flex w-full max-w-256 items-center px-5 pb-16 md:min-h-64.5 md:px-8 md:pb-0 xl:px-0">
         <SlickSlider
           key={isDotsMode ? "dots" : "arrows"}

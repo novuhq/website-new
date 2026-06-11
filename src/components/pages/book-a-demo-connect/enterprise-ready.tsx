@@ -57,7 +57,7 @@ const ENTERPRISE_FEATURES = [
 function BookADemoConnectEnterpriseReady() {
   return (
     <BookADemoEnterpriseReady
-      className="mt-10 md:mt-10 lg:mt-40 xl:mt-63"
+      className="mt-10 bg-black md:mt-10 lg:mt-40 xl:mt-63"
       complianceSchedulingSource="book_a_demo_connect"
       enterpriseFeatures={ENTERPRISE_FEATURES}
       schedulingSource="book_a_demo_connect"

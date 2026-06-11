@@ -56,7 +56,7 @@ const CONTROL_LAYER_FEATURES = [
 
 function BookADemoConnectControlLayer() {
   return (
-    <section className="relative isolate overflow-hidden bg-background pt-28 pb-16 md:pt-30 md:pb-20 lg:pt-40 xl:min-h-291 xl:pt-0 xl:pb-0">
+    <section className="relative isolate overflow-hidden bg-black pt-28 pb-16 md:pt-30 md:pb-20 lg:pt-40 xl:min-h-291 xl:pt-0 xl:pb-0">
       <div className="relative mx-auto flex w-full max-w-384 flex-col items-center px-5 md:px-8 xl:min-h-291 xl:px-0">
         <div className="relative z-10 mx-auto flex w-full max-w-184 flex-col items-center gap-8 text-center md:gap-10">
           <div className="flex w-full flex-col items-center gap-4">
