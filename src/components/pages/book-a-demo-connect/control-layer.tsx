@@ -56,9 +56,9 @@ const CONTROL_LAYER_FEATURES = [
 
 function BookADemoConnectControlLayer() {
   return (
-    <section className="relative isolate overflow-hidden bg-background pt-20 pb-16 md:pt-30 md:pb-20 lg:pt-40 xl:min-h-291 xl:pt-0 xl:pb-0">
+    <section className="relative isolate overflow-hidden bg-background pt-28 pb-16 md:pt-30 md:pb-20 lg:pt-40 xl:min-h-291 xl:pt-0 xl:pb-0">
       <div className="relative mx-auto flex w-full max-w-384 flex-col items-center px-5 md:px-8 xl:min-h-291 xl:px-0">
-        <div className="relative z-10 mx-auto flex w-full max-w-184 flex-col items-center gap-10 text-center">
+        <div className="relative z-10 mx-auto flex w-full max-w-184 flex-col items-center gap-8 text-center md:gap-10">
           <div className="flex w-full flex-col items-center gap-4">
             <h2 className="w-full text-[2rem] leading-[1.125] font-medium tracking-tighter text-balance text-white md:text-[2.5rem] xl:text-5xl">
               One control layer for
@@ -86,7 +86,7 @@ function BookADemoConnectControlLayer() {
         </div>
 
         <div
-          className="pointer-events-none relative z-0 mt-0 aspect-[3840/2174] w-[140%] max-w-384 translate-x-[2vw] sm:-mt-16 md:-mt-24 md:w-[140%] md:max-w-none lg:-mt-34 lg:w-[calc(100%+28rem)] xl:absolute xl:top-19.25 xl:left-1/2 xl:mt-0 xl:w-[110rem] xl:max-w-none xl:translate-x-[calc(-50%+1.8125rem)] 2xl:w-[120rem] 2xl:-translate-x-1/2"
+          className="pointer-events-none relative z-0 -mt-4 aspect-[3840/2174] w-[140%] max-w-384 translate-x-[2vw] sm:-mt-16 md:-mt-24 md:w-[140%] md:max-w-none lg:-mt-34 lg:w-[calc(100%+28rem)] xl:absolute xl:top-19.25 xl:left-1/2 xl:mt-0 xl:w-[110rem] xl:max-w-none xl:translate-x-[calc(-50%+1.8125rem)] 2xl:w-[120rem] 2xl:-translate-x-1/2"
           aria-hidden
         >
           <Image

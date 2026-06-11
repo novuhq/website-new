@@ -176,7 +176,7 @@ function BookADemoEnterpriseReady({
             }) => (
               <li
                 key={title}
-                className="flex min-h-62.5 flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6"
+                className="flex flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6 md:min-h-62.5"
               >
                 <Image
                   className={cn(

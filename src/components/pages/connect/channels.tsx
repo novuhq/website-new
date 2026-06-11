@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import Image, { StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
@@ -30,7 +31,7 @@ interface IChannelsProps {
   className?: string
   description?: string
   headerClassName?: string
-  title?: string
+  title?: ReactNode
   titleClassName?: string
   trackingLocation?: string
 }

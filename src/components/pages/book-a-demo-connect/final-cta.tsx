@@ -4,9 +4,9 @@ import ConnectFinalCta from "@/components/pages/connect/final-cta"
 function BookADemoConnectFinalCta() {
   return (
     <ConnectFinalCta
-      sectionClassName="xl:pt-80 xl:pb-94"
+      sectionClassName="pb-68 md:pb-100 lg:pb-104 xl:pt-62.5 xl:pb-120"
       containerClassName="max-w-272"
-      videoClassName="xl:translate-y-16"
+      videoClassName="w-234 max-w-none md:w-403.25 xl:w-480"
       title={
         <>
           <span>See how Novu Connect fits</span>
