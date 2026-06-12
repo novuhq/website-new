@@ -32,14 +32,13 @@ export default function NotificationsAnimation() {
     <section className="bg-black px-5 py-28 text-white md:py-42.5">
       <div
         ref={ref}
-        className="mx-auto flex max-w-2xl flex-col items-center text-center"
+        className="mx-auto flex max-w-176 flex-col items-center text-center"
       >
         <div className="relative z-0 flex size-91 items-center justify-center">
           <Image src={bellIcon} alt="" width={368} height={368} aria-hidden />
-          <div className="absolute inset-x-0 bottom-0 h-46.5 bg-[linear-gradient(180deg,rgba(0,0,0,0)_20%,#000000_50%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-52 bg-[linear-gradient(180deg,rgba(0,0,0,0)_20%,#000000_50%)]" />
         </div>
         <div className="relative z-10 -mt-32.5">
-          {/* Animated heading */}
           <div className="relative flex h-16 items-center justify-center overflow-visible sm:h-18">
             <AnimatePresence mode="wait">
               {phase !== "swapped" ? (
@@ -53,7 +52,6 @@ export default function NotificationsAnimation() {
                   }}
                 >
                   Notifications
-                  {/* Strikethrough line */}
                   {phase === "striking" && (
                     <motion.span
                       aria-hidden
@@ -82,15 +80,14 @@ export default function NotificationsAnimation() {
             </AnimatePresence>
           </div>
 
-          {/* Body text */}
-          <p className="mt-6 max-w-176 text-base leading-normal font-book tracking-tighter text-gray-8 md:text-2xl [&_strong]:font-medium [&_strong]:text-white">
-            For decades, products communicated with users via{" "}
-            <strong>one-way notifications</strong>, that always{" "}
+          <p className="mt-6 text-base leading-normal font-book tracking-tighter text-gray-8 md:text-2xl [&_strong]:font-medium [&_strong]:text-white">
+            For decades, products notifed users one way{" "}
+            <strong>via notifications</strong>, that always{" "}
             <strong>
               lacked the correct context, and limited users&apos; ability
             </strong>{" "}
-            to perform meaningful interactions with them. Software is changing,
-            and it&apos;s conversational first.
+            to perform meaningful interactions with them. Software has changed,
+            now it needs to communicate <strong>via conversations.</strong>
           </p>
         </div>
       </div>

@@ -14,17 +14,17 @@ function HowItWorksIntro() {
               How it works
             </span>
           </div>
-          <h2 className="mt-5.5 text-4xl leading-dense font-medium tracking-tighter md:text-5xl lg:text-[3.5rem]">
+          <h2 className="mt-5.5 text-4xl leading-dense font-medium tracking-tighter sm:text-[2.625rem] md:text-5xl lg:text-[3.5rem]">
             You own the brain. ACI owns the communication.
           </h2>
-          <p className="mt-4 max-w-192 text-base leading-normal font-book tracking-tighter text-pretty text-gray-8 md:text-lg lg:text-[1.4375rem]">
+          <p className="mt-4 max-w-192 text-base leading-normal font-book tracking-tighter text-pretty text-gray-8 sm:text-lg md:text-xl lg:text-[1.4375rem]">
             Three columns, one seam. Channels feed ACI, ACI hands a single
             conversation to your agent, your agent replies on the thread of
             origin.
           </p>
         </div>
 
-        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-5 mb-2">
+        <div className="mb-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-5">
           <Button
             variant="default"
             size="lg"

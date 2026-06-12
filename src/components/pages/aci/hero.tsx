@@ -9,7 +9,7 @@ function Hero() {
   return (
     <section
       className={cn(
-        "integrations-hero safe-paddings overflow-x-clip bg-black pt-14 pb-16 text-white md:pt-16 md:pb-12 lg:pt-18.5 lg:pb-31.5 xl:pt-22.5"
+        "integrations-hero safe-paddings overflow-x-clip bg-black pt-14 pb-16 text-white md:pt-16 md:pb-100 lg:pt-18.5 lg:pb-31.5 xl:pt-52"
       )}
     >
       <div className="mx-auto w-full max-w-304 px-8 sm:px-4 md:px-7 2xl:px-0">
@@ -28,19 +28,19 @@ function Hero() {
               <p className="mt-1 text-2xl leading-none font-medium tracking-tighter sm:text-[1.75rem]">
                 Agent Communication Infrastructure
               </p>
-              <p className="mt-4 max-w-131 text-base leading-normal font-book tracking-tighter text-gray-8 md:text-lg">
-                Defining the missing agent-to-user communication layer, and the
-                best practices that come with it. One layer between every
-                customer, every channel, and every agent.
+              <p className="mt-4 max-w-none text-base leading-normal font-book tracking-tighter text-gray-8 md:text-lg lg:max-w-131">
+                Defining the missing agent-to-user communication layer — and the
+                best-practices that come with it. One layer between every app,
+                every channel, and every smart agent.
               </p>
             </div>
             <HeroActions />
           </div>
           <div
-            className="pointer-events-none relative flex w-full justify-center lg:max-w-[min(100%,68rem)]"
+            className="pointer-events-none relative flex w-full justify-center"
             aria-hidden
           >
-            <div className="absolute top-1/2 left-1/2 aspect-[1073/1021] w-250 -translate-x-[50%] -translate-y-1/2 md:w-268.25 lg:-translate-x-[calc(50%+6rem)]">
+            <div className="absolute top-1/2 left-1/2 hidden aspect-[1073/1021] w-250 -translate-x-[calc(50%+94px)] -translate-y-[calc(50%-280px)] md:block md:w-268.25 lg:-translate-x-[calc(50%+6rem)] lg:-translate-y-1/2">
               <Image
                 src={heroIllustration}
                 alt=""

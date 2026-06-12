@@ -62,7 +62,7 @@ function OwnershipTable() {
                     className="flex min-h-11 items-start gap-2 border-b border-white/6 px-4 py-4 text-sm font-medium tracking-tighter last:border-b-0"
                   >
                     <Check
-                      className="size-4 mt-0.5 shrink-0 text-lagune-3"
+                      className="mt-0.5 size-4 shrink-0 text-lagune-3"
                       strokeWidth={2}
                       aria-hidden
                     />
@@ -76,7 +76,7 @@ function OwnershipTable() {
 
         <div className="relative mt-14 hidden overflow-hidden md:block">
           <Image
-            className="pointer-events-none absolute inset-0 z-0 w-full h-full object-cover"
+            className="pointer-events-none absolute inset-x-0 top-0 z-0 w-full object-cover md:[mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,transparent_100%)] md:[-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,transparent_100%)] lg:[mask-image:none] lg:[-webkit-mask-image:none]"
             src={aciTableBg}
             alt=""
             width={960}

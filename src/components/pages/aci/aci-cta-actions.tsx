@@ -9,7 +9,8 @@ import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
 
 const CONNECT_COMMAND = "npx novu connect"
-const ACI_PROMPT='Help me connect my agent to customers using Novu Agent Communication Infrastructure (ACI). Review the Novu documentation and guide me through the setup.'
+const ACI_PROMPT =
+  "Help me connect my agent to customers using Novu Agent Communication Infrastructure (ACI). Review the Novu documentation and guide me through the setup."
 const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${ACI_PROMPT}`
 
 function AciCtaActions() {
@@ -17,7 +18,7 @@ function AciCtaActions() {
 
   return (
     <div className="mt-7 flex w-full max-w-167 flex-col gap-3 sm:flex-row sm:gap-5">
-      <div className="relative h-14 flex-1 items-center rounded-md bg-white/50 p-[1.5px] shadow-[0_0_14px_rgba(167,187,255,0.2)]">
+      <div className="relative h-14 w-full shrink-0 items-center rounded-md bg-white/50 p-[1.5px] shadow-[0_0_14px_rgba(167,187,255,0.2)] sm:flex-1">
         <div className="absolute inset-0 z-0 rounded-md bg-[radial-gradient(circle,#fff_3%,#a7bbff_22%,rgba(183,165,255,0.2)_100%)]" />
         <div className="relative z-10 flex h-full items-center rounded-[4px] bg-[#05050B] pr-25 pl-5">
           <code className="truncate font-mono text-base leading-[1.2] font-medium text-white">
