@@ -72,17 +72,18 @@ const ACI_FINAL_CTA: FinalCtaProps = {
     {
       kind: "primary-button",
       label: "Start building",
-      href: ROUTE.connectApp,
+      href: ROUTE.dashboardV2,
       clickLocation: "aci_final_cta",
       clickText: "start_building",
       openInNewTab: true,
     },
     {
-      kind: "secondary-button",
+      kind: "scheduling-button",
       label: "Talk to the team",
-      href: ROUTE.contactUs,
+      source: "aci_final_cta",
       clickLocation: "aci_final_cta",
       clickText: "talk_to_the_team",
+      variant: "secondary",
     },
   ],
 }

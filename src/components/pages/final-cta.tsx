@@ -1,18 +1,17 @@
 import type { ReactNode } from "react"
-import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import videoPoster from "@/images/pages/connect/final-cta/video-poster.jpg"
 
 import type { TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import ActionGroup from "@/components/ui/action-group"
 
 const VIDEO_WEBM_SRC = "/videos/pages/connect/cta.webm"
 const VIDEO_MP4_SRC = "/videos/pages/connect/cta.hevc.mp4"
 
 type FinalCtaAction = Extract<
   TSectionAction,
-  { kind: "primary-button" | "secondary-button" }
+  { kind: "primary-button" | "secondary-button" | "scheduling-button" }
 >
 
 export interface FinalCtaProps {
@@ -68,30 +67,6 @@ function FinalCtaVideo() {
   )
 }
 
-function FinalCtaActionButton({ action }: { action: FinalCtaAction }) {
-  return (
-    <Button
-      variant={action.kind === "secondary-button" ? "outline" : "default"}
-      size="lg"
-      className={cn(
-        "max-2xs:w-full",
-        action.kind === "primary-button" ? "px-5" : "px-6"
-      )}
-      asChild
-    >
-      <NextLink
-        href={action.href}
-        target={action.openInNewTab ? "_blank" : undefined}
-        rel={action.openInNewTab ? "noopener noreferrer" : undefined}
-        data-click-location={action.clickLocation}
-        data-click-text={action.clickText}
-      >
-        {action.label}
-      </NextLink>
-    </Button>
-  )
-}
-
 function FinalCta({
   actions = DEFAULT_FINAL_CTA_ACTIONS,
   className,
@@ -141,11 +116,10 @@ function FinalCta({
         </div>
 
         {renderedActions.length > 0 && (
-          <div className="flex items-center gap-4 max-2xs:w-full max-2xs:flex-col md:gap-7">
-            {renderedActions.map((action) => (
-              <FinalCtaActionButton key={action.label} action={action} />
-            ))}
-          </div>
+          <ActionGroup
+            className="gap-4 max-2xs:w-full max-2xs:flex-col md:gap-7"
+            actions={renderedActions}
+          />
         )}
       </div>
     </section>

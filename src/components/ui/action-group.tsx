@@ -3,9 +3,16 @@ import { ChevronRight } from "lucide-react"
 
 import { type TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
+import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling-button"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 import SubscriptionForm from "@/components/ui/subscription-form"
+
+const BUTTON_ACTION_KINDS = [
+  "primary-button",
+  "secondary-button",
+  "scheduling-button",
+] as const
 
 interface IActionGroupProps {
   className?: string
@@ -60,6 +67,19 @@ function Action({ action, isSingleAction = false, className }: IActionProps) {
           <ChevronRight size={isSingleAction ? 18 : 16} />
         </Link>
       )
+    case "scheduling-button":
+      return (
+        <BookADemoSchedulingButton
+          className={cn(className)}
+          variant={action.variant === "primary" ? "default" : "outline"}
+          size="lg"
+          clickLocation={action.clickLocation ?? ""}
+          clickText={action.clickText ?? ""}
+          source={action.source}
+        >
+          {action.label}
+        </BookADemoSchedulingButton>
+      )
     case "subscription-form":
       return (
         <div className="relative mt-9.5 max-w-98 p-px">
@@ -98,8 +118,8 @@ function ActionGroup({ actions, className }: IActionGroupProps) {
     )
   }
 
-  const isSecondButton = ["primary-button", "secondary-button"].includes(
-    renderedActions[1].kind
+  const isSecondButton = BUTTON_ACTION_KINDS.includes(
+    renderedActions[1].kind as (typeof BUTTON_ACTION_KINDS)[number]
   )
 
   return (
