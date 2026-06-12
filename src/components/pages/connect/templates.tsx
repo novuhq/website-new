@@ -301,23 +301,29 @@ function TemplateCard({
       />
 
       <div className="relative z-10 flex w-full flex-1 flex-col items-start gap-6">
-        <div className="flex w-full flex-col items-start gap-6">
-          <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4.5">
-            <TemplateAvatar image={avatar} />
-
-            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-2">
-              <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
-                <h3 className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
-                  {title}
-                </h3>
-                <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
-                  {agent}
-                </p>
-              </div>
+        <div className="flex w-full flex-col items-start gap-2.5">
+          <div className="flex w-full flex-col items-start gap-6">
+            <div className="flex w-full items-start justify-between gap-4">
+              <TemplateAvatar image={avatar} />
 
               <span className="flex h-6.25 shrink-0 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
                 {category}
               </span>
+            </div>
+
+            <div className="flex max-w-full min-w-0 items-baseline gap-1.5 overflow-visible leading-none">
+              <h3 className="min-w-0 text-lg leading-tight font-medium tracking-tighter text-white">
+                {title}
+              </h3>
+              <span
+                className="shrink-0 text-base leading-none font-book tracking-normal text-gray-7"
+                aria-hidden
+              >
+                &bull;
+              </span>
+              <p className="min-w-0 text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
+                {agent}
+              </p>
             </div>
           </div>
 
