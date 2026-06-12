@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 import AciCta from "@/components/pages/aci/aci-cta"
 import AciDefinition from "@/components/pages/aci/aci-definition"
 import CommunicationFlow from "@/components/pages/aci/communication-flow"
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function AciPage() {
   return (
-    <>
+    <BookADemoSchedulingProvider utmCampaign="aci">
       <Hero />
       <NotificationsAnimation />
       <StopReinventing />
@@ -26,6 +27,6 @@ export default function AciPage() {
       <CommunicationFlow />
       <AciCta />
       <OwnershipTable />
-    </>
+    </BookADemoSchedulingProvider>
   )
 }
