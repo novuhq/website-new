@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import bellIcon from "@/images/pages/aci/notifications-animation/bell.png"
+import bellIcon from "@/images/pages/aci/notifications-animation/bell-icon.svg"
+import chatIcon from "@/images/pages/aci/notifications-animation/chat-icon.svg"
+import underlayImage from "@/images/pages/aci/notifications-animation/underlay.png"
 import { AnimatePresence, motion, useInView } from "motion/react"
 
 type Phase = "idle" | "striking" | "swapped"
@@ -29,13 +31,57 @@ export default function NotificationsAnimation() {
   }, [isInView])
 
   return (
-    <section className="bg-black px-5 pt-9 text-white md:pt-44 lg:pt-16 xl:pt-42.5">
+    <section className="notifications-animation bg-black px-5 pt-9 text-white md:pt-44 lg:pt-16 xl:pt-42.5">
       <div
         ref={ref}
         className="mx-auto flex max-w-176 flex-col items-center text-center"
       >
         <div className="relative z-0 flex size-52 items-center justify-center md:size-64.5 lg:size-77 xl:size-91">
-          <Image src={bellIcon} alt="" width={368} height={368} aria-hidden />
+          <Image
+            className="relative z-0"
+            src={underlayImage}
+            alt=""
+            width={368}
+            height={368}
+            aria-hidden
+          />
+          <AnimatePresence mode="wait">
+            {phase !== "swapped" ? (
+              <motion.div
+                key="bell"
+                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%-4px)]"
+                exit={{
+                  opacity: 0,
+                  y: -10,
+                  transition: { duration: 0.3, ease: "easeIn" },
+                }}
+              >
+                <Image
+                  src={bellIcon}
+                  alt=""
+                  width={136}
+                  height={136}
+                  aria-hidden
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="chat"
+                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%-4px)]"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <Image
+                  src={chatIcon}
+                  alt=""
+                  width={136}
+                  height={136}
+                  aria-hidden
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-[linear-gradient(180deg,rgba(0,0,0,0)_20%,#000000_50%)] md:h-48 lg:h-52" />
         </div>
         <div className="relative z-10 -mt-23 md:-mt-26 lg:-mt-28 xl:-mt-32.5">
