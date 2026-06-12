@@ -15,7 +15,7 @@ function Hero() {
     >
       <div className="mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-6 xl:gap-24">
-          <div className="relative z-10 flex flex-col items-center gap-8 xl:gap-7 lg:items-start">
+          <div className="relative z-10 flex flex-col items-center gap-8 lg:items-start xl:gap-7">
             <div className="flex flex-col items-center lg:items-start">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 bg-lagune-3" />
@@ -51,7 +51,7 @@ function Hero() {
                 priority
               />
             </div>
-            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[140%] max-w-[800px] -translate-x-1/2 -translate-y-[calc(50%-60px)] sm:w-[109%] sm:-translate-y-[calc(50%-100px)] lg:hidden lg:w-228.5">
+            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[140%] max-w-[440px] -translate-x-1/2 -translate-y-[calc(50%-60px)] sm:w-[109%] md:-translate-y-[calc(50%-100px)] sm:max-w-[460px] md:max-w-[800px] lg:hidden lg:w-228.5">
               <Image
                 src={heroIllustrationMobile}
                 alt=""

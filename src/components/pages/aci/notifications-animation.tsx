@@ -49,7 +49,7 @@ export default function NotificationsAnimation() {
             {phase !== "swapped" ? (
               <motion.div
                 key="bell"
-                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%-4px)]"
+                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 lg:-translate-y-[calc(50%-4px)]"
                 exit={{
                   opacity: 0,
                   y: -10,
@@ -57,6 +57,7 @@ export default function NotificationsAnimation() {
                 }}
               >
                 <Image
+                  className="aspect-square w-17.5 md:w-24.5 lg:w-29.5 xl:w-34"
                   src={bellIcon}
                   alt=""
                   width={136}
@@ -67,12 +68,13 @@ export default function NotificationsAnimation() {
             ) : (
               <motion.div
                 key="chat"
-                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%-4px)]"
+                className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 lg:-translate-y-[calc(50%-4px)]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
                 <Image
+                  className="aspect-square w-17.5 md:w-24.5 lg:w-29.5 xl:w-34"
                   src={chatIcon}
                   alt=""
                   width={136}
