@@ -56,17 +56,6 @@ const PRICING_PLANS: IPricingPlan[] = [
     ],
   },
   {
-    name: "Starter",
-    price: "$9.99",
-    cta: "Get started",
-    features: [
-      { text: "500 active conversations", icon: chatIcon },
-      { text: "10 agents", icon: robotIcon },
-      { text: "3 channels", icon: stackIcon },
-      { text: "$0.03 / extra conversation", icon: dollarIcon },
-    ],
-  },
-  {
     name: "Pro",
     price: "$30",
     cta: "Get started",
@@ -404,8 +393,8 @@ function Pricing() {
           Pricing Novu Connect
         </h2>
 
-        <div className="relative z-10 mx-auto mt-16 w-full max-w-[460px] md:max-w-[760px] lg:max-w-[890px] xl:max-w-304">
-          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="relative z-10 mx-auto mt-16 w-full max-w-[460px] md:max-w-[760px] lg:max-w-227">
+          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {PRICING_PLANS.map((plan) => (
               <li key={plan.name} className="min-w-0">
                 <PricingCard plan={plan} />

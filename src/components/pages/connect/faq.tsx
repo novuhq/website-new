@@ -42,7 +42,7 @@ function ConnectFaq({ className }: { className?: string }) {
         {...CONNECT_FAQ}
         className={cn("pt-28 md:pt-36 lg:pt-44 xl:pt-50", className)}
         titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
-        containerClassName="max-w-272"
+        containerClassName="lg:max-w-227 md:max-w-[796px] lg:px-0"
       />
     </div>
   )
