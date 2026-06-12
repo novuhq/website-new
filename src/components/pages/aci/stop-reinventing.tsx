@@ -38,7 +38,7 @@ function StopReinventing() {
   return (
     <section
       id="what-is-aci"
-      className="scroll-mt-20 bg-black px-5 pb-26 text-white md:px-8 md:pb-16 lg:pt-18"
+      className="scroll-mt-20 bg-black px-5 pb-26 pt-26 md:pt-40 text-white md:px-8 md:pb-16 lg:pt-60"
     >
       <div className="mx-auto w-full max-w-240">
         <div className="mx-auto flex max-w-184 flex-col items-center text-center">

@@ -15,7 +15,7 @@ function Hero() {
     >
       <div className="mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-6 xl:gap-24">
-          <div className="relative z-10 flex flex-col items-center gap-8 lg:items-start">
+          <div className="relative z-10 flex flex-col items-center gap-8 xl:gap-7 lg:items-start">
             <div className="flex flex-col items-center lg:items-start">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 bg-lagune-3" />
@@ -26,7 +26,7 @@ function Hero() {
               <h1 className="mt-6 bg-[linear-gradient(75deg,#FFFDFF_1.28%,#FFDDBA_13.96%,#FCAE9C_25.25%,#EB47E0_48.76%,#B028EC_70.43%,#4F32F0_97.17%)] bg-clip-text text-[6rem] leading-dense font-medium tracking-tighter text-transparent md:text-[7rem] lg:text-[10.5rem]">
                 ACI
               </h1>
-              <p className="mt-1 text-center text-2xl leading-none font-medium tracking-tighter sm:text-[1.75rem] lg:text-start">
+              <p className="text-center text-[1.75rem] leading-dense font-medium tracking-tighter md:mt-1 lg:text-start">
                 Agent Communication Infrastructure
               </p>
               <p className="mt-4 max-w-none text-center text-base leading-normal font-book tracking-tighter text-gray-8 md:max-w-[480px] md:text-lg lg:max-w-131 lg:text-start">
@@ -51,12 +51,11 @@ function Hero() {
                 priority
               />
             </div>
-            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[109%] max-w-[800px] -translate-x-1/2 -translate-y-[calc(50%-100px)] lg:hidden lg:w-228.5">
+            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[140%] max-w-[800px] -translate-x-1/2 -translate-y-[calc(50%-60px)] sm:w-[109%] sm:-translate-y-[calc(50%-100px)] lg:hidden lg:w-228.5">
               <Image
                 src={heroIllustrationMobile}
                 alt=""
                 fill
-                className="object-cover object-center"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority
               />

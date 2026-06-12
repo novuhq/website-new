@@ -15,7 +15,7 @@ function HeroActions() {
 
   return (
     <div className="flex w-full max-w-79.25 flex-col items-center lg:items-start">
-      <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-5">
+      <div className="flex w-full gap-3 flex-row sm:gap-5">
         <Button
           variant="default"
           size="lg"
