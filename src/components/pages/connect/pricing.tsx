@@ -253,7 +253,7 @@ function PricingCard({ plan }: { plan: IPricingPlan }) {
           "relative z-20 h-full overflow-hidden rounded-xl shadow-[0px_4px_20px_0px_rgba(0,0,0,0.5)]",
           featured
             ? "shadow-[0px_4px_10px_0px_rgba(0,0,0,0.5)]"
-            : "border border-[rgba(51,51,71,0.5)]"
+            : "border border-connect-card-border"
         )}
         style={featured ? undefined : { backgroundImage: CARD_BACKGROUND }}
       >
@@ -344,7 +344,7 @@ function BannerCheckIcon() {
 function EnterpriseBanner() {
   return (
     <div
-      className="relative mt-4 min-h-46 rounded-xl border border-[rgba(51,51,71,0.5)] px-6 py-6 shadow-[0px_4px_20px_0px_rgba(0,0,0,0.5)] md:px-8 lg:h-46"
+      className="relative mt-4 min-h-46 rounded-xl border border-connect-card-border px-6 py-6 shadow-[0px_4px_20px_0px_rgba(0,0,0,0.5)] md:px-8 lg:h-46"
       style={{ backgroundImage: BANNER_BACKGROUND }}
       data-connect-pricing-banner
     >

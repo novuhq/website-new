@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import videoPoster from "@/images/pages/connect/final-cta/video-poster.jpg"
@@ -29,7 +30,19 @@ function ConnectFinalCtaVideo() {
   )
 }
 
-function FinalCta() {
+interface IFinalCtaProps {
+  title?: ReactNode
+  description?: ReactNode
+  buttonText?: string
+  clickLocation?: string
+}
+
+function FinalCta({
+  title,
+  description,
+  buttonText = "Connect an agent",
+  clickLocation = "connect_final_cta",
+}: IFinalCtaProps) {
   return (
     <section
       className="relative isolate overflow-hidden pt-20 pb-56 md:pt-36 md:pb-72 lg:pt-44 lg:pb-92 xl:pt-50 xl:pb-112"
@@ -40,15 +53,19 @@ function FinalCta() {
       <div className="relative z-10 mx-auto flex w-full max-w-210.5 flex-col items-center gap-8 px-5 text-center md:px-8">
         <div className="flex w-full flex-col items-center gap-4">
           <h2 className="w-full text-[1.75rem] leading-[1.125] font-medium tracking-tighter text-balance text-white md:text-5xl xl:text-[4rem] xl:tracking-[-1.28px]">
-            <span>Two minutes. One live</span>
-            <br className="hidden sm:block" aria-hidden />
-            <span className="sm:hidden"> </span>
-            <span>agent. One month of Pro.</span>
+            {title ?? (
+              <>
+                <span>Two minutes. One live</span>
+                <br className="hidden sm:block" aria-hidden />
+                <span className="sm:hidden"> </span>
+                <span>agent. One month of Pro.</span>
+              </>
+            )}
           </h2>
 
           <p className="max-w-104.5 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
-            Take the Novu Connect challenge: go live in under 2 minutes and get
-            one month of Pro.
+            {description ??
+              "Take the Novu Connect challenge: go live in under 2 minutes and get one month of Pro."}
           </p>
         </div>
 
@@ -62,10 +79,10 @@ function FinalCta() {
             href={ROUTE.connectApp}
             target="_blank"
             rel="noopener noreferrer"
-            data-click-location="connect_final_cta"
-            data-click-text="connect_an_agent"
+            data-click-location={clickLocation}
+            data-click-text={buttonText.toLowerCase().replace(/\s+/g, "_")}
           >
-            Connect an agent
+            {buttonText}
           </NextLink>
         </Button>
       </div>

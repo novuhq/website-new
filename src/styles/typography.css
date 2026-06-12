@@ -322,16 +322,21 @@
       @apply pl-0;
 
       ol {
-        @apply mt-3.5 pl-4;
+        @apply mt-3.5 list-none pl-7;
         counter-reset: main-counter;
 
         li {
-          @apply relative pl-2;
+          @apply relative pl-0;
           counter-increment: main-counter;
         }
+
+        li::marker {
+          content: "";
+        }
+
         li::before {
           content: counter(main-counter) ".";
-          @apply absolute -left-4 text-current;
+          @apply absolute top-0 -left-7 w-5 text-right text-current;
         }
       }
     }
