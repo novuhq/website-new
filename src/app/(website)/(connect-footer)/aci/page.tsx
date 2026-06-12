@@ -1,4 +1,6 @@
 import { ROUTE } from "@/constants/routes"
+import { SEO_DATA } from "@/constants/seo-data"
+import { getMetadata } from "@/lib/get-metadata"
 import type { IFaqSection } from "@/types/common"
 import type { Metadata } from "next"
 
@@ -16,12 +18,6 @@ import StopReinventing from "@/components/pages/aci/stop-reinventing"
 import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 import FAQ from "@/components/pages/faq"
 import FinalCta, { type FinalCtaProps } from "@/components/pages/final-cta"
-
-export const metadata: Metadata = {
-  title: "Agent Communication Infrastructure | Novu",
-  description:
-    "The missing agent-to-user communication layer between every customer, channel, and agent.",
-}
 
 const ACI_FAQ_ANSWER =
   "Claude Managed Agents are Anthropic’s fully managed infrastructure for building and running autonomous AI agents. You define what the agent should do, the tools it can use, and the guardrails it should follow, while Anthropic handles the managed runtime behind it. Novu Connect then brings that agent into the channels where people already work, such as Slack, WhatsApp, email, Telegram, and Discord."
@@ -117,3 +113,5 @@ export default function AciPage() {
     </BookADemoSchedulingProvider>
   )
 }
+
+export const metadata: Metadata = getMetadata(SEO_DATA.aci)
