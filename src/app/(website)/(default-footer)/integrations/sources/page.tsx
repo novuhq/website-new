@@ -4,7 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
-import IntegrationsTabPageContent from "@/app/(website)/integrations/_components/integrations-tab-page-content"
+import IntegrationsTabPageContent from "../_components/integrations-tab-page-content"
 
 const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
 
