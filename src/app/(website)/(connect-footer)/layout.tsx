@@ -13,7 +13,7 @@ export default function ConnectFooterLayout({
     <WebsiteShellLayout
       footer={<ConnectFooter />}
       bodyClassName="bg-black"
-      wrapperClassName="bg-black"
+      wrapperClassName="overflow-x-clip bg-black"
     >
       {children}
     </WebsiteShellLayout>

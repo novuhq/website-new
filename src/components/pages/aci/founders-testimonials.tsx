@@ -58,6 +58,9 @@ const STATS: IFounderStat[] = [
   { value: "6", label: "Regions" },
 ]
 
+const DESKTOP_CONTENT_WIDTH_CLASS_NAME =
+  "lg:max-w-[calc(100%-6rem)] 2xl:max-w-240"
+
 function SliderArrowIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -209,7 +212,7 @@ function FoundersTestimonials() {
   }
 
   return (
-    <section className="relative isolate mt-26 overflow-x-clip bg-background text-white md:mt-48 lg:mt-70">
+    <section className="relative isolate mt-26 bg-black text-white md:mt-48 lg:mt-70">
       <div
         className="pointer-events-none absolute top-36 left-1/2 z-0 h-80 w-[42rem] -translate-x-1/2 md:top-30 md:h-100 md:w-[56rem] lg:top-19.5 lg:h-118 lg:w-248.75"
         aria-hidden
@@ -221,7 +224,9 @@ function FoundersTestimonials() {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-272 px-5 pt-2 md:px-8 md:pt-0 2xl:px-0">
-        <div className="mx-auto max-w-240">
+        <div
+          className={cn("mx-auto max-w-240", DESKTOP_CONTENT_WIDTH_CLASS_NAME)}
+        >
           <div className="flex max-w-152 flex-col gap-5">
             <h2 className="text-[2rem] leading-dense font-medium tracking-tighter text-balance text-white md:text-[2.5rem] lg:text-[2.75rem]">
               We&apos;ve been the notification layer for half a decade.
@@ -246,14 +251,19 @@ function FoundersTestimonials() {
             onClick={() => scrollTestimonials("next")}
           />
 
-          <div className="relative left-1/2 w-screen -translate-x-1/2 lg:static lg:mx-auto lg:w-full lg:max-w-240 lg:translate-x-0">
+          <div
+            className={cn(
+              "relative left-1/2 w-screen -translate-x-1/2 lg:static lg:mx-auto lg:w-full lg:translate-x-0",
+              DESKTOP_CONTENT_WIDTH_CLASS_NAME
+            )}
+          >
             <ul
               ref={sliderRef}
               className="scrollbar-hidden flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto scroll-smooth px-5 md:scroll-px-8 md:gap-8 md:px-8 lg:scroll-px-0 lg:px-0"
             >
               {TESTIMONIALS.map((testimonial) => (
                 <li
-                  className="flex w-[calc(100vw-4rem)] max-w-116 shrink-0 snap-start last:snap-end md:w-116 lg:w-116 lg:max-w-none"
+                  className="flex w-[calc(100vw-4rem)] max-w-116 shrink-0 snap-start last:snap-end md:w-116 lg:w-[calc((100%-2rem)/2)] lg:max-w-none 2xl:w-116"
                   key={testimonial.id}
                   data-testimonial-card
                 >
@@ -264,7 +274,12 @@ function FoundersTestimonials() {
           </div>
         </div>
 
-        <div className="mx-auto mt-14 max-w-240 md:mt-17.25">
+        <div
+          className={cn(
+            "mx-auto mt-14 max-w-240 md:mt-17.25",
+            DESKTOP_CONTENT_WIDTH_CLASS_NAME
+          )}
+        >
           <dl className="grid grid-cols-2 gap-x-8 gap-y-8 md:flex md:gap-13.5">
             {STATS.map((stat) => (
               <div className="w-full md:w-38.5" key={stat.label}>

@@ -314,7 +314,7 @@ function Manifesto() {
 
   return (
     <section
-      className="relative mt-26 bg-[#05050B] text-white md:mt-48 lg:mt-60"
+      className="relative isolate mt-26 bg-black text-white md:mt-48 lg:mt-60"
       data-aci-manifesto
       ref={sectionRef}
       style={{ height: `${SECTION_HEIGHT_VH}vh` }}
@@ -338,7 +338,7 @@ function Manifesto() {
             }}
           >
             <div
-              className="origin-top-left"
+              className="relative origin-top-left overflow-visible"
               data-aci-manifesto-scale-content
               style={{
                 width: MANIFESTO_WIDTH,
@@ -346,12 +346,18 @@ function Manifesto() {
               }}
             >
               <m.div
-                className="relative flex w-full flex-col items-center will-change-transform"
-                ref={itemsWrapperRef}
+                className="pointer-events-none absolute top-0 left-0 z-0 w-full overflow-visible will-change-transform"
+                aria-hidden
                 style={{ y: itemsWrapperOffset }}
               >
                 <ManifestoGlowLayer />
+              </m.div>
 
+              <m.div
+                className="relative z-10 flex w-full flex-col items-center will-change-transform"
+                ref={itemsWrapperRef}
+                style={{ y: itemsWrapperOffset }}
+              >
                 <div className="relative z-10 flex w-full flex-col items-center gap-10">
                   <ManifestoLine
                     index={0}
