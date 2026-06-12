@@ -1,6 +1,7 @@
-import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import NextLink from "next/link"
 
+import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling-button"
 import { Button } from "@/components/ui/button"
 
 function HowItWorksIntro() {
@@ -32,7 +33,7 @@ function HowItWorksIntro() {
             asChild
           >
             <NextLink
-              href={ROUTE.dashboardV2SignUp}
+              href={ROUTE.dashboardV2}
               target="_blank"
               rel="noopener noreferrer"
               data-click-location="aci_how_it_works"
@@ -42,20 +43,16 @@ function HowItWorksIntro() {
             </NextLink>
           </Button>
 
-          <Button
+          <BookADemoSchedulingButton
             variant="outline"
             size="lg"
             className="w-full sm:w-45.25"
-            asChild
+            clickLocation="aci_how_it_works"
+            clickText="talk_to_the_team"
+            source="aci_how_it_works"
           >
-            <NextLink
-              href={ROUTE.contactUs}
-              data-click-location="aci_how_it_works"
-              data-click-text="talk_to_the_team"
-            >
-              Talk to the team
-            </NextLink>
-          </Button>
+            Talk to the team
+          </BookADemoSchedulingButton>
         </div>
       </div>
     </section>

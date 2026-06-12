@@ -1,6 +1,6 @@
-import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
 import type { IFaqSection } from "@/types/common"
+import type { Metadata } from "next"
 
 import AciCta from "@/components/pages/aci/aci-cta"
 import AciDefinition from "@/components/pages/aci/aci-definition"
@@ -13,8 +13,9 @@ import NotificationsAnimation from "@/components/pages/aci/notifications-animati
 import OpenSourceCta from "@/components/pages/aci/open-source-cta"
 import OwnershipTable from "@/components/pages/aci/ownership-table"
 import StopReinventing from "@/components/pages/aci/stop-reinventing"
-import FinalCta, { type FinalCtaProps } from "@/components/pages/final-cta"
+import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 import FAQ from "@/components/pages/faq"
+import FinalCta, { type FinalCtaProps } from "@/components/pages/final-cta"
 
 export const metadata: Metadata = {
   title: "Agent Communication Infrastructure | Novu",
@@ -88,7 +89,7 @@ const ACI_FINAL_CTA: FinalCtaProps = {
 
 export default function AciPage() {
   return (
-    <>
+    <BookADemoSchedulingProvider utmCampaign="aci">
       <Hero />
       <NotificationsAnimation />
       <StopReinventing />
@@ -112,6 +113,6 @@ export default function AciPage() {
         dataConnectSection={null}
         descriptionClassName="max-w-139.75 tracking-[-0.02em]"
       />
-    </>
+    </BookADemoSchedulingProvider>
   )
 }
