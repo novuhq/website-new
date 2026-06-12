@@ -25,25 +25,26 @@ const DESKTOP_PADDING = 40
 const MAX_BLUR = 6
 const INACTIVE_COLOR = "#464853"
 const SCROLL_START_VIEWPORT_OFFSET = 0.42
-const STICKY_VIEWPORT_HEIGHT = 1 - SCROLL_START_VIEWPORT_OFFSET
+const SCROLL_END_VIEWPORT_OFFSET = 0.675
+const STICKY_VIEWPORT_HEIGHT =
+  SCROLL_END_VIEWPORT_OFFSET - SCROLL_START_VIEWPORT_OFFSET
 const STAGE_VIEWPORT_OFFSET = 0.5 - SCROLL_START_VIEWPORT_OFFSET
-const SECTION_HEIGHT_VH = 138
+const SECTION_HEIGHT_VH = 112
 const SHARE_URL =
   "https://x.com/intent/post?url=https%3A%2F%2Fnovu.co%2Faci&text=Agent%20Communication%20Infrastructure%20by%20Novu"
 
-type OffsetMap = [number, number, number, number, number]
+type OffsetMap = [number, number, number, number]
 
 const SECOND_LINE_PROGRESS = 0.333
 const THIRD_LINE_PROGRESS = 0.666
-const FOURTH_LINE_PROGRESS = 0.86
+const FOURTH_LINE_PROGRESS = 1
 const ITEM_OFFSET_INPUT = [
   0,
   SECOND_LINE_PROGRESS,
   THIRD_LINE_PROGRESS,
-  FOURTH_LINE_PROGRESS,
   1,
 ]
-const INITIAL_OFFSET_MAP: OffsetMap = [0, 0, 0, 0, 0]
+const INITIAL_OFFSET_MAP: OffsetMap = [0, 0, 0, 0]
 
 const ACCENT_TEXT_STYLE = {
   backgroundImage:
@@ -54,6 +55,54 @@ const AGENTS_TEXT_STYLE = {
   backgroundImage:
     "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 832 162' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='0.6000000238418579'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-16.45 8.6899e-14 1.5254e-12 -3.9254 669 142.29)'><stop stop-color='rgba(13,189,175,1)' offset='0'/><stop stop-color='rgba(13,189,175,0)' offset='1'/></radialGradient></defs></svg>\"), url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 832 162' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='0.6000000238418579'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-17.45 1.5353e-14 -2.8678e-12 -4.7857 773 85.714)'><stop stop-color='rgba(112,10,244,1)' offset='0'/><stop stop-color='rgba(112,10,244,0)' offset='1'/></radialGradient></defs></svg>\"), url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 832 162' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='0.5'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(17.85 9.5993e-14 3.0217e-12 7.0986 375.5 87)'><stop stop-color='rgba(233,37,250,1)' offset='0'/><stop stop-color='rgba(233,37,250,0)' offset='1'/></radialGradient></defs></svg>\"), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)",
 } satisfies CSSProperties
+
+const MANIFESTO_GLOW_LAYER_CLASS_NAME = [
+  "pointer-events-none absolute z-0",
+  "left-[-319px] top-[-325.98992919921875px]",
+  "h-[1242.4798583984375px] w-[1564.46875px]",
+].join(" ")
+
+const MANIFESTO_GLOW_ELLIPSE_CLASS_NAMES = [
+  [
+    "absolute rounded-full mix-blend-normal",
+    "left-[656.46875px] top-[645.87744140625px]",
+    "h-[129px] w-[317px]",
+    "bg-[radial-gradient(50%_50%_at_50%_50%,rgba(68,116,242,1)_0%,rgba(68,116,242,0)_100%)]",
+    "opacity-[0.11999999731779099]",
+  ].join(" "),
+  [
+    "absolute origin-top-left rounded-full mix-blend-normal",
+    "left-[1564.46875px] top-[340.7813720703125px]",
+    "h-[1384px] w-[705.0000610351562px]",
+    "bg-[radial-gradient(50%_50%_at_50%_50%,rgba(245,117,202,1)_18.510127067565918%,rgba(245,117,202,1)_50%,rgba(245,117,202,0)_100%)]",
+    "opacity-[0.03999999910593033]",
+    "[transform:matrix(-0.00000004371139183945161,1,-1,-0.00000004371139183945161,0,0)]",
+  ].join(" "),
+  [
+    "absolute origin-top-left rounded-full mix-blend-normal",
+    "left-[1529.421875px] top-[473.095458984375px]",
+    "h-[799.6069946289062px] w-[954.34912109375px]",
+    "bg-[radial-gradient(50%_50%_at_50%_50%,rgba(245,117,202,1)_0%,rgba(245,117,202,0)_100%)]",
+    "opacity-[0.07000000029802322]",
+    "[transform:matrix(-0.5916599035263062,0.8061876893043518,-0.8061876893043518,-0.5916599035263062,0,0)]",
+  ].join(" "),
+  [
+    "absolute origin-top-left rounded-full mix-blend-normal",
+    "left-0 top-[710.348876953125px]",
+    "h-[588.2268676757812px] w-[942.9749145507812px]",
+    "bg-[radial-gradient(50%_50%_at_50%_50%,rgba(103,137,255,1)_27.198195457458496%,rgba(103,137,255,0)_100%)]",
+    "opacity-[0.10999999940395355]",
+    "[transform:matrix(0.8792047500610352,-0.4764440953731537,0.4764440953731537,0.8792047500610352,0,0)]",
+  ].join(" "),
+  [
+    "absolute origin-top-left rounded-full mix-blend-normal",
+    "left-[398.6796875px] top-[494.26397705078125px]",
+    "h-[588.2268676757812px] w-[723.8033447265625px]",
+    "bg-[radial-gradient(50%_50%_at_50%_50%,rgba(103,137,255,1)_27.198195457458496%,rgba(103,137,255,0)_100%)]",
+    "opacity-[0.03999999910593033]",
+    "[transform:matrix(0.8792047500610352,-0.4764440953731537,0.4764440953731537,0.8792047500610352,0,0)]",
+  ].join(" "),
+]
 
 const LINE_PROGRESS = [
   {
@@ -86,11 +135,11 @@ const LINE_PROGRESS = [
     color: [INACTIVE_COLOR, "#ffffff", INACTIVE_COLOR],
   },
   {
-    visibilityInput: [THIRD_LINE_PROGRESS, FOURTH_LINE_PROGRESS, 1],
-    opacity: [0.34, 1, 1],
-    blur: [4, 0, 0],
-    colorInput: [THIRD_LINE_PROGRESS, FOURTH_LINE_PROGRESS, 1],
-    color: [INACTIVE_COLOR, "#ffffff", "#ffffff"],
+    visibilityInput: [THIRD_LINE_PROGRESS, FOURTH_LINE_PROGRESS],
+    opacity: [0.34, 1],
+    blur: [4, 0],
+    colorInput: [THIRD_LINE_PROGRESS, FOURTH_LINE_PROGRESS],
+    color: [INACTIVE_COLOR, "#ffffff"],
   },
 ]
 
@@ -131,6 +180,24 @@ function ManifestoAvatar({
       aria-hidden
       placeholder="blur"
     />
+  )
+}
+
+function ManifestoGlowLayer() {
+  return (
+    <div
+      aria-hidden
+      className={MANIFESTO_GLOW_LAYER_CLASS_NAME}
+      data-aci-manifesto-glow
+    >
+      {MANIFESTO_GLOW_ELLIPSE_CLASS_NAMES.map((className, index) => (
+        <div
+          className={className}
+          data-aci-manifesto-glow-ellipse={index}
+          key={index}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -176,8 +243,9 @@ function ManifestoLine({
 
 function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null)
+  const stickyRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
   const itemsWrapperRef = useRef<HTMLDivElement>(null)
-  const shareButtonRef = useRef<HTMLAnchorElement>(null)
   const lineRefs = useRef<(HTMLDivElement | null)[]>([])
   const [scale, setScale] = useState(1)
   const [itemsWrapperOffsetMap, setItemsWrapperOffsetMap] =
@@ -185,7 +253,7 @@ function Manifesto() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 42vh", "end end"],
+    offset: ["start 42vh", "end 67.5vh"],
   })
 
   const itemsWrapperOffset = useTransform(
@@ -203,19 +271,19 @@ function Manifesto() {
       const lineOffsets = lineRefs.current.map((line) =>
         line ? -line.offsetTop - line.offsetHeight / 2 : 0
       )
-      const initialOffset =
-        -(window.innerHeight * STAGE_VIEWPORT_OFFSET) / nextScale
-      const shareButtonOffset = shareButtonRef.current
-        ? -shareButtonRef.current.offsetTop -
-          shareButtonRef.current.offsetHeight / (2 * nextScale)
-        : lineOffsets[3] ?? 0
+      const stickyRect = stickyRef.current?.getBoundingClientRect()
+      const stageRect = stageRef.current?.getBoundingClientRect()
+      const stageOffset =
+        stickyRect && stageRect
+          ? stageRect.top - stickyRect.top
+          : window.innerHeight * STAGE_VIEWPORT_OFFSET
+      const initialOffset = -stageOffset / nextScale
 
       const nextOffsetMap: OffsetMap = [
         initialOffset,
         lineOffsets[1] ?? 0,
         lineOffsets[2] ?? 0,
         lineOffsets[3] ?? 0,
-        shareButtonOffset,
       ]
 
       setItemsWrapperOffsetMap(nextOffsetMap)
@@ -224,15 +292,23 @@ function Manifesto() {
     updateLayout()
 
     const resizeObserver = new ResizeObserver(updateLayout)
-    if (itemsWrapperRef.current) {
-      resizeObserver.observe(itemsWrapperRef.current)
-    }
+    const observedElements: Element[] = []
+
+    if (stickyRef.current) observedElements.push(stickyRef.current)
+    if (stageRef.current) observedElements.push(stageRef.current)
+    if (itemsWrapperRef.current) observedElements.push(itemsWrapperRef.current)
+
+    observedElements.forEach((element) => {
+      resizeObserver.observe(element)
+    })
 
     window.addEventListener("resize", updateLayout)
+    window.visualViewport?.addEventListener("resize", updateLayout)
 
     return () => {
       resizeObserver.disconnect()
       window.removeEventListener("resize", updateLayout)
+      window.visualViewport?.removeEventListener("resize", updateLayout)
     }
   }, [])
 
@@ -244,7 +320,8 @@ function Manifesto() {
       style={{ height: `${SECTION_HEIGHT_VH}vh` }}
     >
       <div
-        className="sticky overflow-visible px-5"
+        ref={stickyRef}
+        className="pointer-events-none sticky overflow-visible px-5"
         style={{
           top: `${SCROLL_START_VIEWPORT_OFFSET * 100}vh`,
           height: `${STICKY_VIEWPORT_HEIGHT * 100}vh`,
@@ -252,7 +329,8 @@ function Manifesto() {
       >
         <LazyMotion features={domAnimation}>
           <div
-            className="absolute left-1/2 z-10 -translate-x-1/2"
+            ref={stageRef}
+            className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2"
             data-aci-manifesto-scale-shell
             style={{
               top: `${STAGE_VIEWPORT_OFFSET * 100}vh`,
@@ -268,11 +346,13 @@ function Manifesto() {
               }}
             >
               <m.div
-                className="flex w-full flex-col items-center will-change-transform"
+                className="relative flex w-full flex-col items-center will-change-transform"
                 ref={itemsWrapperRef}
                 style={{ y: itemsWrapperOffset }}
               >
-                <div className="flex w-full flex-col items-center gap-10">
+                <ManifestoGlowLayer />
+
+                <div className="relative z-10 flex w-full flex-col items-center gap-10">
                   <ManifestoLine
                     index={0}
                     scrollYProgress={scrollYProgress}
@@ -351,8 +431,7 @@ function Manifesto() {
                 </div>
 
                 <a
-                  ref={shareButtonRef}
-                  className="mt-16 inline-flex h-12 origin-top items-center justify-center rounded-md border border-[#534B5D] bg-[linear-gradient(218.095deg,rgba(176,166,191,0.06)_8.6198%,rgba(176,166,191,0.03)_113.79%)] px-6 text-center text-sm leading-none font-medium whitespace-nowrap text-white uppercase transition-colors hover:border-[#766C85] focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
+                  className="pointer-events-auto relative z-10 mt-16 inline-flex h-12 origin-top items-center justify-center rounded-md border border-[#534B5D] bg-[linear-gradient(218.095deg,rgba(176,166,191,0.06)_8.6198%,rgba(176,166,191,0.03)_113.79%)] px-6 text-center text-sm leading-none font-medium whitespace-nowrap text-white uppercase transition-colors hover:border-[#766C85] focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
                   href={SHARE_URL}
                   target="_blank"
                   rel="noopener noreferrer"

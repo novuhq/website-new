@@ -143,7 +143,7 @@ function FounderTestimonialCard({
   clickText,
 }: IFounderTestimonial) {
   return (
-    <article className="flex min-h-56.5 w-full flex-col justify-between rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#111018] px-6 pt-5 pb-6">
+    <article className="flex h-full min-h-56.5 w-full flex-col justify-between rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#111018] px-6 pt-5 pb-6">
       <p className="max-w-100 text-base leading-[1.375] font-book text-white">
         {quote}
       </p>
@@ -249,11 +249,11 @@ function FoundersTestimonials() {
           <div className="relative left-1/2 w-screen -translate-x-1/2 lg:static lg:mx-auto lg:w-full lg:max-w-240 lg:translate-x-0">
             <ul
               ref={sliderRef}
-              className="scrollbar-hidden flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto scroll-smooth px-5 md:scroll-px-8 md:gap-8 md:px-8 lg:snap-none lg:px-0"
+              className="scrollbar-hidden flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto scroll-smooth px-5 md:scroll-px-8 md:gap-8 md:px-8 lg:scroll-px-0 lg:px-0"
             >
               {TESTIMONIALS.map((testimonial) => (
                 <li
-                  className="w-[calc(100vw-4rem)] max-w-116 shrink-0 snap-start last:snap-end md:w-116 lg:w-116 lg:max-w-none"
+                  className="flex w-[calc(100vw-4rem)] max-w-116 shrink-0 snap-start last:snap-end md:w-116 lg:w-116 lg:max-w-none"
                   key={testimonial.id}
                   data-testimonial-card
                 >
