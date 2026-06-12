@@ -51,7 +51,7 @@ function StopReinventing() {
             patterns that have nothing to do with their core value.
           </p>
         </div>
-        <div className="mt-16 aspect-[960/428] w-full overflow-hidden rounded-xl border border-[#1C2131]">
+        <div className="mt-5 aspect-[960/428] w-full overflow-hidden rounded-xl border border-[#1C2131] md:mt-10 lg:mt-16">
           <Image src={bgImage} alt="" width={960} height={428} aria-hidden />
         </div>
 

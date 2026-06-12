@@ -15,17 +15,16 @@ const ROWS = [
 
 function OwnershipTable() {
   return (
-    <section className="relative isolate overflow-hidden bg-black px-5 pb-32 text-white md:px-8 md:pb-40">
-      <div
-        className="pointer-events-none absolute bottom-0 left-[20%] -z-10 h-90 w-90 rounded-full bg-blue-500/5 blur-3xl"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute right-0 bottom-0 -z-10 h-90 w-90 rounded-full bg-blue-500/5 blur-3xl"
-        aria-hidden
-      />
-
-      <div className="mx-auto w-full max-w-240">
+    <section className="bg-black px-5 pb-32 text-white md:px-8 md:pb-40 overflow-hidden">
+      <div className="relative mx-auto w-full max-w-240">
+        <div
+          className="pointer-events-none absolute top-35 -right-16 h-99 w-106 rounded-full bg-[radial-gradient(81.76%_76.71%_at_62.86%_11.06%,#3BDCFF_27.2%,#69B7FF_80.5%,#4759FF_100%)] opacity-14 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute top-35 -left-20 h-100 w-120 rounded-full bg-[radial-gradient(81.76%_76.71%_at_62.86%_11.06%,#3BDCFF_27.2%,#69B7FF_80.5%,#4759FF_100%)] opacity-4 blur-3xl"
+          aria-hidden
+        />
         <div className="mx-auto max-w-240 text-center">
           <h2 className="text-3xl leading-dense font-medium tracking-tighter md:text-4xl lg:text-[2.5rem]">
             Opinionated about communication infrastructure.
@@ -74,7 +73,7 @@ function OwnershipTable() {
           ))}
         </div>
 
-        <div className="relative mt-14 hidden overflow-hidden md:block">
+        <div className="relative mt-14 hidden overflow-hidden rounded-[20px] md:block">
           <Image
             className="pointer-events-none absolute inset-x-0 top-0 z-0 w-full object-cover md:[mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,transparent_100%)] md:[-webkit-mask-image:linear-gradient(to_bottom,#000_0%,#000_90%,transparent_100%)] lg:[mask-image:none] lg:[-webkit-mask-image:none]"
             src={aciTableBg}

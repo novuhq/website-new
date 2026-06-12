@@ -38,15 +38,15 @@ function AciDefinition() {
       <div className="mx-auto w-full max-w-240">
         <div className="relative w-full">
           <span
-            className="pointer-events-none absolute -top-[292px] -right-[270px] hidden h-[664px] w-[645px] rounded-[50%] bg-[radial-gradient(51.37%_48.31%_at_50.11%_50.04%,#FFB7E2_0%,#FF96FB_32.58%,rgba(240,71,255,0.00)_100%)] opacity-8 md:block"
+            className="pointer-events-none absolute -top-[292px] -right-[270px] h-[664px] w-[645px] rounded-[50%] bg-[radial-gradient(51.37%_48.31%_at_50.11%_50.04%,#FFB7E2_0%,#FF96FB_32.58%,rgba(240,71,255,0.00)_100%)] opacity-8"
             aria-hidden
           />
           <span
-            className="pointer-events-none absolute -top-[228px] -right-[382px] hidden h-[573px] w-[1033px] rounded-[50%] bg-[radial-gradient(49.99%_49.93%_at_49.98%_50%,#F575E0_18.51%,#F575E0_50%,rgba(245,117,224,0.00)_100%)] opacity-4 md:block"
+            className="pointer-events-none absolute -top-[228px] -right-[382px] h-[573px] w-[1033px] rounded-[50%] bg-[radial-gradient(49.99%_49.93%_at_49.98%_50%,#F575E0_18.51%,#F575E0_50%,rgba(245,117,224,0.00)_100%)] opacity-4"
             aria-hidden
           />
           <span
-            className="pointer-events-none absolute -top-[187px] -right-[94px] hidden h-[490px] w-[1136px] rounded-[50%] bg-[radial-gradient(49.99%_49.93%_at_49.98%_50%,#7599F5_18.51%,#7599F5_50%,rgba(117,153,245,0.00)_100%)] opacity-4 md:block"
+            className="pointer-events-none absolute -top-[187px] -right-[94px] h-[490px] w-[1136px] rounded-[50%] bg-[radial-gradient(49.99%_49.93%_at_49.98%_50%,#7599F5_18.51%,#7599F5_50%,rgba(117,153,245,0.00)_100%)] opacity-4"
             aria-hidden
           />
           <Image

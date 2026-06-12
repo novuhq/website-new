@@ -14,7 +14,7 @@ function HeroActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
 
   return (
-    <div className="flex w-full max-w-79.25 flex-col items-start">
+    <div className="flex w-full max-w-79.25 flex-col items-center lg:items-start">
       <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-5">
         <Button
           variant="default"

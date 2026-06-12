@@ -34,17 +34,17 @@ export default function NotificationsAnimation() {
         ref={ref}
         className="mx-auto flex max-w-176 flex-col items-center text-center"
       >
-        <div className="relative z-0 flex size-91 items-center justify-center">
+        <div className="relative z-0 flex size-64 items-center justify-center md:size-72 lg:size-91">
           <Image src={bellIcon} alt="" width={368} height={368} aria-hidden />
-          <div className="absolute inset-x-0 bottom-0 h-52 bg-[linear-gradient(180deg,rgba(0,0,0,0)_20%,#000000_50%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-42 bg-[linear-gradient(180deg,rgba(0,0,0,0)_20%,#000000_50%)] md:h-48 lg:h-52" />
         </div>
-        <div className="relative z-10 -mt-32.5">
+        <div className="relative z-10 -mt-28 lg:-mt-32.5">
           <div className="relative flex h-16 items-center justify-center overflow-visible sm:h-18">
             <AnimatePresence mode="wait">
               {phase !== "swapped" ? (
                 <motion.h2
                   key="notifications"
-                  className="relative text-4xl font-bold tracking-tight text-gray-8 sm:text-[4rem]"
+                  className="relative text-[2.75rem] font-medium tracking-tight text-gray-8 md:text-[3.5rem] lg:text-[4rem]"
                   exit={{
                     opacity: 0,
                     y: -10,
@@ -69,7 +69,7 @@ export default function NotificationsAnimation() {
               ) : (
                 <motion.h2
                   key="communication"
-                  className="text-4xl font-bold tracking-tight text-white sm:text-[4rem]"
+                  className="text-[2.75rem] font-medium tracking-tight text-white md:text-[3.5rem] lg:text-[4rem]"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
@@ -80,7 +80,7 @@ export default function NotificationsAnimation() {
             </AnimatePresence>
           </div>
 
-          <p className="mt-6 text-base leading-normal font-book tracking-tighter text-gray-8 md:text-2xl [&_strong]:font-medium [&_strong]:text-white">
+          <p className="mt-6 text-[1.125rem] leading-normal font-book tracking-tighter text-gray-8 md:text-xl lg:text-2xl [&_strong]:font-medium [&_strong]:text-white">
             For decades, products notifed users one way{" "}
             <strong>via notifications</strong>, that always{" "}
             <strong>
