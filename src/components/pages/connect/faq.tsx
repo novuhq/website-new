@@ -1,4 +1,7 @@
+import Link from "next/link"
+
 import type { IFaqSection } from "@/types/common"
+import { ROUTE } from "@/constants/routes"
 import FAQ from "@/components/pages/faq"
 
 const CONNECT_FAQ: IFaqSection = {
@@ -6,29 +9,34 @@ const CONNECT_FAQ: IFaqSection = {
   accordion: {
     items: [
       {
-        question: "What are Claude Managed Agents?",
+        question: "What happens when I exceed my conversation limit?",
         answer:
-          "Claude Managed Agents are Anthropic’s fully managed infrastructure for building and running autonomous AI agents. You define what the agent should do, the tools it can use, and the guardrails it should follow, while Anthropic handles the managed runtime behind it. Novu Connect then brings that agent into the channels where people already work, such as Slack, WhatsApp, email, Telegram, and Discord.",
+          "You're billed per-conversation overage at the rate for your plan ($0.03 Starter / $0.02 Pro / $0.015 Team). Free is capped and needs to wait for limit reset. Enterprise plans use committed volume.",
       },
       {
-        question: "Does Novu manage or host my Claude agent?",
+        question: "What happens when I hit my agent or channel limit?",
         answer:
-          "No. Your agent runs on Claude Managed Agents. Novu Connect provides the communication layer around the agent, so it can listen, respond, and work across channels without you building separate integrations for each one.",
+          "You're prompted to upgrade or disable existing ones. Agents and channels are plan-level capacity, not metered usage, Connect won't surprise-bill you for an extra agent.",
       },
       {
-        question: "Can I use a Claude agent I've already built?",
+        question: "Are some agent providers or channels gated to higher plans?",
         answer:
-          "Yes. During setup you can choose to create a new agent or connect an existing one you've already configured on Anthropic. Your system prompt, tools, and configuration carry over. You don't need to start from scratch.",
+          "No. Every channel and every agent provider is available on every plan. Plans differ in how many connections you can have active and in team/security features.",
       },
       {
-        question: "Can I share my agent with my team?",
+        question: "Can I move between plans without losing data?",
         answer:
-          "Yes. You can start with an agent for your own workflow, test it in the channels you use, and share it with teammates when it is useful. Teams can also create shared agents from the start for internal workflows across tools, MCP servers, and communication channels.",
+          "es. Agents, conversations, and channel connections are preserved across upgrades and downgrades. Past-limit items are paused (not deleted) on downgraded.",
       },
       {
-        question: "How many channels can I connect to a single agent?",
-        answer:
-          "There's no limit. One agent can be live in Slack, Teams, Discord, WhatsApp, email, and any other supported channel at the same time. It shares the same context and capabilities across all of them.",
+        question: "Is Connect HIPAA compliant?",
+        answer: (
+          <p>
+            HIPAA BAAs are available on Enterprise.{" "}
+            <Link href={ROUTE.contactUs}>Contact us</Link> if you need to route
+            PHI through Connect.
+          </p>
+        ),
       },
     ],
   },
