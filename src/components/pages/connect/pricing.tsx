@@ -8,7 +8,6 @@ import stars from "@/images/pages/connect/pricing/stars.png"
 import dollarIcon from "@/svgs/icons/dollar.inline.svg"
 import letterIcon from "@/svgs/icons/letter.inline.svg"
 import robotIcon from "@/svgs/icons/robot.inline.svg"
-import shieldIcon from "@/svgs/icons/shield.inline.svg"
 import stackIcon from "@/svgs/icons/stack.inline.svg"
 import teamIcon from "@/svgs/icons/team.inline.svg"
 import chatIcon from "@/svgs/icons/сhat.inline.svg"
@@ -51,19 +50,9 @@ const PRICING_PLANS: IPricingPlan[] = [
     cta: "Sign up for free",
     features: [
       { text: "100 active conversations", icon: chatIcon },
-      { text: "3 agents", icon: robotIcon },
+      { text: "2 agents", icon: robotIcon },
       { text: "2 channels", icon: stackIcon },
-    ],
-  },
-  {
-    name: "Starter",
-    price: "$9.99",
-    cta: "Get started",
-    features: [
-      { text: "500 active conversations", icon: chatIcon },
-      { text: "10 agents", icon: robotIcon },
-      { text: "3 channels", icon: stackIcon },
-      { text: "$0.03 / extra conversation", icon: dollarIcon },
+      { text: "Powered by Novu branding", icon: teamIcon },
     ],
   },
   {
@@ -73,10 +62,10 @@ const PRICING_PLANS: IPricingPlan[] = [
     featured: true,
     features: [
       { text: "1,000 active conversations", icon: chatIcon },
-      { text: "20 agents", icon: robotIcon },
+      { text: "5 agents", icon: robotIcon },
       { text: "5 channels", icon: stackIcon },
       { text: "$0.02 / extra conversation", icon: dollarIcon },
-      { text: "Team-shared MCP vault", icon: teamIcon },
+      { text: "Remove Novu branding", icon: teamIcon },
     ],
   },
   {
@@ -85,12 +74,10 @@ const PRICING_PLANS: IPricingPlan[] = [
     cta: "Get started",
     features: [
       { text: "5,000 active conversations", icon: chatIcon },
-      { text: "50 agents", icon: robotIcon },
+      { text: "10 agents", icon: robotIcon },
       { text: "10 channels", icon: stackIcon },
       { text: "$0.015 / extra conversation", icon: dollarIcon },
       { text: "Custom email domain", icon: letterIcon, iconSize: 16 },
-      { text: "Cross-team shared context", icon: teamIcon },
-      { text: "RBAC", icon: shieldIcon },
     ],
   },
 ]
@@ -404,8 +391,8 @@ function Pricing() {
           Pricing Novu Connect
         </h2>
 
-        <div className="relative z-10 mx-auto mt-16 w-full max-w-[460px] md:max-w-[760px] lg:max-w-[890px] xl:max-w-304">
-          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="relative z-10 mx-auto mt-16 w-full max-w-[460px] md:max-w-[760px] lg:max-w-227">
+          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {PRICING_PLANS.map((plan) => (
               <li key={plan.name} className="min-w-0">
                 <PricingCard plan={plan} />
