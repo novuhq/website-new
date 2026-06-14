@@ -102,14 +102,24 @@ function CustomerStorySlide({
   quoteAuthorPhoto,
   quoteAuthorName,
   quoteAuthorPosition,
-}: ICustomerCardData) {
+  trackingLocation,
+  articleClassName,
+}: ICustomerCardData & {
+  articleClassName?: string
+  trackingLocation: string
+}) {
   const logoHeight = 32
   const logoWidth = Math.round(
     ((logo.width || 120) / (logo.height || logoHeight)) * logoHeight
   )
 
   return (
-    <article className="mx-auto mt-38 flex w-full max-w-240 flex-col items-center text-center">
+    <article
+      className={cn(
+        "mx-auto mt-38 flex w-full max-w-240 flex-col items-center text-center",
+        articleClassName
+      )}
+    >
       <Image
         className="object-contain"
         src={logo.url}
@@ -152,7 +162,7 @@ function CustomerStorySlide({
       <Link
         className="mt-9 text-base leading-snug font-book tracking-normal text-lagune-3 hover:text-lagune-2"
         href={`${ROUTE.customers}/${slug.current}`}
-        data-click-location="book_a_demo_customer_stories"
+        data-click-location={trackingLocation}
         data-click-text="read_story"
       >
         Read Story
@@ -164,8 +174,14 @@ function CustomerStorySlide({
 
 function BookADemoCustomerStories({
   customers,
+  articleClassName,
+  className,
+  trackingLocation = "book_a_demo_customer_stories",
 }: {
+  articleClassName?: string
+  className?: string
   customers: ICustomerCardData[]
+  trackingLocation?: string
 }) {
   const [isDotsMode, setIsDotsMode] = useState(false)
 
@@ -202,7 +218,12 @@ function BookADemoCustomerStories({
   }
 
   return (
-    <section className="relative overflow-hidden bg-background py-0 md:min-h-64.5">
+    <section
+      className={cn(
+        "relative overflow-hidden bg-background py-0 md:min-h-64.5",
+        className
+      )}
+    >
       <div className="relative mx-auto flex w-full max-w-256 items-center px-5 pb-16 md:min-h-64.5 md:px-8 md:pb-0 xl:px-0">
         <SlickSlider
           key={isDotsMode ? "dots" : "arrows"}
@@ -216,7 +237,11 @@ function BookADemoCustomerStories({
         >
           {customers.map((customer) => (
             <div key={customer._id} className="outline-hidden">
-              <CustomerStorySlide {...customer} />
+              <CustomerStorySlide
+                {...customer}
+                articleClassName={articleClassName}
+                trackingLocation={trackingLocation}
+              />
             </div>
           ))}
         </SlickSlider>

@@ -6,6 +6,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
 
   // CURRENT WEBSITE
   bookADemo: "/book-a-demo",
+  bookADemoConnect: "/book-a-demo-connect",
   changelog: "/changelog",
   customers: "/customers",
   integrations: "/integrations",

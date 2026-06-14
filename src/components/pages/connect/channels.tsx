@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import Image, { StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
@@ -23,6 +24,16 @@ interface IChannel {
   description?: string
   state?: ChannelState
   icon: StaticImageData
+}
+
+interface IChannelsProps {
+  channels?: IChannel[]
+  className?: string
+  description?: string
+  headerClassName?: string
+  title?: ReactNode
+  titleClassName?: string
+  trackingLocation?: string
 }
 
 const CHANNELS: IChannel[] = [
@@ -143,7 +154,13 @@ function ChannelTextSwap({ description }: { description: string }) {
   )
 }
 
-function ChannelCard({ name, description, state = "default", icon }: IChannel) {
+function ChannelCard({
+  name,
+  description,
+  state = "default",
+  icon,
+  trackingLocation,
+}: IChannel & { trackingLocation: string }) {
   const isComingSoon = state === "coming-soon"
   const cardClassName = cn(
     "group flex h-21 min-w-0 items-center gap-4 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-5 transition-[background,border-color,box-shadow] duration-200 ease-[ease] motion-reduce:transition-none",
@@ -185,7 +202,7 @@ function ChannelCard({ name, description, state = "default", icon }: IChannel) {
       rel="noopener noreferrer"
       className={cardClassName}
       aria-label={`Connect ${name} agent`}
-      data-click-location="connect_channels"
+      data-click-location={trackingLocation}
       data-click-text={`connect_${name.toLowerCase().replace(/\s+/g, "_")}_agent`}
     >
       {content}
@@ -193,38 +210,66 @@ function ChannelCard({ name, description, state = "default", icon }: IChannel) {
   )
 }
 
-function ChannelCardsList() {
+function ChannelCardsList({
+  channels,
+  trackingLocation,
+}: {
+  channels: IChannel[]
+  trackingLocation: string
+}) {
   return (
     <ul className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-      {CHANNELS.map((channel) => (
+      {channels.map((channel) => (
         <li key={channel.name} className="min-w-0">
-          <ChannelCard {...channel} />
+          <ChannelCard {...channel} trackingLocation={trackingLocation} />
         </li>
       ))}
     </ul>
   )
 }
 
-function Channels() {
+function Channels({
+  channels = CHANNELS,
+  className,
+  description = "Pick one. Or all of them. Your agent shows up everywhere at once.",
+  headerClassName,
+  title = "Work with your agent like a teammate in any channel",
+  titleClassName,
+  trackingLocation = "connect_channels",
+}: IChannelsProps) {
   return (
     <section
       id="channels"
-      className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+      className={cn("scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50", className)}
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-12 px-5 md:px-8 2xl:px-0">
-        <div className="flex w-full max-w-163 flex-col items-center gap-4 text-center">
-          <h2 className="text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]">
-            Work with your agent like a teammate in any channel
+        <div
+          className={cn(
+            "flex w-full max-w-163 flex-col items-center gap-4 text-center",
+            headerClassName
+          )}
+        >
+          <h2
+            className={cn(
+              "text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.5rem]",
+              titleClassName
+            )}
+          >
+            {title}
           </h2>
           <p className="max-w-150 text-base leading-normal font-normal tracking-tighter text-gray-8 md:text-lg">
-            Pick one. Or all of them. Your agent shows up everywhere at once.
+            {description}
           </p>
         </div>
 
-        <ChannelCardsList />
+        <ChannelCardsList
+          channels={channels}
+          trackingLocation={trackingLocation}
+        />
       </div>
     </section>
   )
 }
 
 export default Channels
+export type { IChannel }

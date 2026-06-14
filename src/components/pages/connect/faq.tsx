@@ -2,6 +2,7 @@ import Link from "next/link"
 
 import type { IFaqSection } from "@/types/common"
 import { ROUTE } from "@/constants/routes"
+import { cn } from "@/lib/utils"
 import FAQ from "@/components/pages/faq"
 
 const CONNECT_FAQ: IFaqSection = {
@@ -42,12 +43,12 @@ const CONNECT_FAQ: IFaqSection = {
   },
 }
 
-function ConnectFaq() {
+function ConnectFaq({ className }: { className?: string }) {
   return (
     <div id="faq" className="scroll-mt-16">
       <FAQ
         {...CONNECT_FAQ}
-        className="pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+        className={cn("pt-28 md:pt-36 lg:pt-44 xl:pt-50", className)}
         titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
         containerClassName="lg:max-w-227 md:max-w-[796px] lg:px-0"
       />

@@ -4,7 +4,15 @@ import { cn } from "@/lib/utils"
 
 import BookADemoSchedulingButton from "./scheduling-button"
 
-function BookADemoSchedulingActions({ className }: { className?: string }) {
+function BookADemoSchedulingActions({
+  className,
+  clickLocation = "book_a_demo_cta",
+  source = "book_a_demo_cta",
+}: {
+  className?: string
+  clickLocation?: string
+  source?: string
+}) {
   return (
     <div
       className={cn(
@@ -16,9 +24,9 @@ function BookADemoSchedulingActions({ className }: { className?: string }) {
         className="max-2xs:w-full md:min-w-39.5"
         variant="default"
         size="lg"
-        clickLocation="book_a_demo_cta"
+        clickLocation={clickLocation}
         clickText="book_a_demo"
-        source="book_a_demo_cta"
+        source={source}
       >
         Book a demo
       </BookADemoSchedulingButton>
@@ -26,9 +34,9 @@ function BookADemoSchedulingActions({ className }: { className?: string }) {
         className="max-2xs:w-full md:min-w-39.5"
         variant="outline"
         size="lg"
-        clickLocation="book_a_demo_cta"
+        clickLocation={clickLocation}
         clickText="book_a_call"
-        source="book_a_demo_cta"
+        source={source}
       >
         Book a Call
       </BookADemoSchedulingButton>

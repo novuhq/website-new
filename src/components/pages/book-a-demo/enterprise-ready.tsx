@@ -33,50 +33,64 @@ interface IEnterpriseFeature {
   icon: StaticImageData
 }
 
-const COMPLIANCE_CARDS: IComplianceCard[] = [
-  {
-    title: "GDPR",
-    description: "Built to support EU data protection requirements.",
-    image: gdprIcon,
-    imageClassName: "h-16 w-12.5",
-  },
-  {
-    title: "ISO 27001",
-    description: "International standard for information security management.",
-    image: isoIcon,
-    imageClassName: "h-16 w-14.5",
-  },
-  {
-    title: "SOC 2 Type II",
-    description: "Proven long-term data security through independent audits.",
-    image: aicpaIcon,
-    imageClassName: "h-16 w-12.5",
-  },
-  {
-    title: "HIPAA",
-    description: "Support for protected health information workflows.",
-    image: hipaaIcon,
-    imageClassName: "h-16 w-14.5",
-  },
-  {
-    title: "Compliance Support",
-    description: (
-      <>
-        If you don&apos;t see the required certification listed,{" "}
-        <BookADemoSchedulingInlineButton
-          clickLocation="book_a_demo_enterprise_ready_compliance_support"
-          clickText="talk_to_us"
-          source="book_a_demo_enterprise_ready_compliance_support"
-        >
-          talk to us.
-        </BookADemoSchedulingInlineButton>
-      </>
-    ),
-    descriptionClassName: "lg:max-w-45",
-    image: complianceSupportIcon,
-    imageClassName: "h-16 w-14.5",
-  },
-]
+interface IBookADemoEnterpriseReadyProps {
+  className?: string
+  complianceSchedulingSource?: string
+  enterpriseFeatures?: IEnterpriseFeature[]
+  schedulingSource?: string
+  trackingBase?: string
+}
+
+function getComplianceCards(
+  trackingBase: string,
+  schedulingSource: string
+): IComplianceCard[] {
+  return [
+    {
+      title: "GDPR",
+      description: "Built to support EU data protection requirements.",
+      image: gdprIcon,
+      imageClassName: "h-16 w-12.5",
+    },
+    {
+      title: "ISO 27001",
+      description:
+        "International standard for information security management.",
+      image: isoIcon,
+      imageClassName: "h-16 w-14.5",
+    },
+    {
+      title: "SOC 2 Type II",
+      description: "Proven long-term data security through independent audits.",
+      image: aicpaIcon,
+      imageClassName: "h-16 w-12.5",
+    },
+    {
+      title: "HIPAA",
+      description: "Support for protected health information workflows.",
+      image: hipaaIcon,
+      imageClassName: "h-16 w-14.5",
+    },
+    {
+      title: "Compliance Support",
+      description: (
+        <>
+          If you don&apos;t see the required certification listed,{" "}
+          <BookADemoSchedulingInlineButton
+            clickLocation={`${trackingBase}_compliance_support`}
+            clickText="talk_to_us"
+            source={schedulingSource}
+          >
+            talk to us.
+          </BookADemoSchedulingInlineButton>
+        </>
+      ),
+      descriptionClassName: "lg:max-w-45",
+      image: complianceSupportIcon,
+      imageClassName: "h-16 w-14.5",
+    },
+  ]
+}
 
 const ENTERPRISE_FEATURES: IEnterpriseFeature[] = [
   {
@@ -113,9 +127,20 @@ const ENTERPRISE_FEATURES: IEnterpriseFeature[] = [
   },
 ]
 
-function BookADemoEnterpriseReady() {
+function BookADemoEnterpriseReady({
+  className,
+  complianceSchedulingSource,
+  enterpriseFeatures = ENTERPRISE_FEATURES,
+  schedulingSource,
+  trackingBase = "book_a_demo_enterprise_ready",
+}: IBookADemoEnterpriseReadyProps) {
+  const modalSource = schedulingSource || trackingBase
+  const complianceModalSource =
+    complianceSchedulingSource || `${trackingBase}_compliance_support`
+  const complianceCards = getComplianceCards(trackingBase, complianceModalSource)
+
   return (
-    <section className="relative bg-background">
+    <section className={cn("relative bg-background", className)}>
       <div className="mx-auto w-full max-w-320 px-5 md:px-8 2xl:px-0">
         <div className="mx-auto flex w-full max-w-167.25 flex-col items-center gap-8 text-center">
           <div className="flex w-full flex-col items-center gap-4">
@@ -132,16 +157,16 @@ function BookADemoEnterpriseReady() {
             variant="default"
             size="lg"
             className="w-36 px-0"
-            clickLocation="book_a_demo_enterprise_ready"
+            clickLocation={trackingBase}
             clickText="book_a_demo"
-            source="book_a_demo_enterprise_ready"
+            source={modalSource}
           >
             Book a demo
           </BookADemoSchedulingButton>
         </div>
 
         <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-5">
-          {COMPLIANCE_CARDS.map(
+          {complianceCards.map(
             ({
               title,
               description,
@@ -151,7 +176,7 @@ function BookADemoEnterpriseReady() {
             }) => (
               <li
                 key={title}
-                className="flex min-h-62.5 flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6"
+                className="flex flex-col items-start gap-11 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] p-6 md:min-h-62.5"
               >
                 <Image
                   className={cn(
@@ -189,7 +214,7 @@ function BookADemoEnterpriseReady() {
           </p>
 
           <ul className="mt-6 flex max-w-176 flex-wrap items-center gap-3 lg:mt-0">
-            {ENTERPRISE_FEATURES.map(({ title, icon }) => (
+            {enterpriseFeatures.map(({ title, icon }) => (
               <li
                 key={title}
                 className="flex min-h-9 items-center justify-center gap-2 rounded-full border border-[rgba(51,51,71,0.6)] bg-[#0f0f15] py-2 pr-5 pl-4"

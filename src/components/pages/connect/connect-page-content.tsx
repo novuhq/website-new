@@ -2,6 +2,7 @@ import type { IAgentTemplatesSectionData } from "@/types/templates"
 import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
 import Channels from "./channels"
+import CliSection from "./cli"
 import Compliance from "./compliance"
 import ConnectFaq from "./faq"
 import FinalCta from "./final-cta"
@@ -28,6 +29,7 @@ function ConnectPageContent({ templatesSection }: IConnectPageContentProps) {
       />
       <Channels />
       <HowItWorks />
+      <CliSection />
       <Templates templatesSection={templatesSection} />
       <Compliance />
       <Pricing />
