@@ -15,6 +15,7 @@ type FinalCtaAction = Extract<
 >
 
 export interface FinalCtaProps {
+  actionSlot?: ReactNode
   actions?: FinalCtaAction[]
   className?: string
   containerClassName?: string
@@ -23,6 +24,7 @@ export interface FinalCtaProps {
   descriptionClassName?: string
   title?: ReactNode
   titleClassName?: string
+  videoClassName?: string
 }
 
 const DEFAULT_FINAL_CTA_ACTIONS: FinalCtaAction[] = [
@@ -45,10 +47,13 @@ const DEFAULT_FINAL_CTA_TITLE = (
   </>
 )
 
-function FinalCtaVideo() {
+function FinalCtaVideo({ className }: { className?: string }) {
   return (
     <div
-      className="pointer-events-none absolute bottom-0 left-1/2 z-0 aspect-1920/742 h-auto w-[150%] max-w-480 -translate-x-1/2 overflow-hidden md:w-[120%] xl:w-full"
+      className={cn(
+        "pointer-events-none absolute bottom-0 left-1/2 z-0 aspect-1920/742 h-auto w-[150%] max-w-480 -translate-x-1/2 overflow-hidden md:w-[120%] xl:w-full",
+        className
+      )}
       aria-hidden
     >
       <video
@@ -68,6 +73,7 @@ function FinalCtaVideo() {
 }
 
 function FinalCta({
+  actionSlot,
   actions = DEFAULT_FINAL_CTA_ACTIONS,
   className,
   containerClassName,
@@ -76,6 +82,7 @@ function FinalCta({
   descriptionClassName,
   title = DEFAULT_FINAL_CTA_TITLE,
   titleClassName,
+  videoClassName,
 }: FinalCtaProps) {
   const renderedActions = actions.slice(0, 2)
 
@@ -87,7 +94,7 @@ function FinalCta({
       )}
       data-connect-section={dataConnectSection ?? undefined}
     >
-      <FinalCtaVideo />
+      <FinalCtaVideo className={videoClassName} />
 
       <div
         className={cn(
@@ -115,12 +122,13 @@ function FinalCta({
           </p>
         </div>
 
-        {renderedActions.length > 0 && (
-          <ActionGroup
-            className="gap-4 max-2xs:w-full max-2xs:flex-col md:gap-7"
-            actions={renderedActions}
-          />
-        )}
+        {actionSlot ||
+          (renderedActions.length > 0 && (
+            <ActionGroup
+              className="gap-4 max-2xs:w-full max-2xs:flex-col md:gap-7"
+              actions={renderedActions}
+            />
+          ))}
       </div>
     </section>
   )

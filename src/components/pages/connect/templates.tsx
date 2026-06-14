@@ -120,25 +120,40 @@ function getTemplateFilterCategories({
   categories,
   templates,
 }: IAgentTemplatesSectionData): ITemplateFilterCategory[] {
-  const categoryMap = new Map<string, ITemplateFilterCategory>()
-
-  for (const category of categories ?? []) {
-    const normalizedCategory = normalizeCategory(category)
-
-    if (normalizedCategory) {
-      categoryMap.set(normalizedCategory.id, normalizedCategory)
-    }
-  }
+  const categoriesWithTemplates = new Map<string, ITemplateFilterCategory>()
 
   for (const template of templates ?? []) {
     const normalizedCategory = normalizeCategory(template.category)
 
-    if (normalizedCategory && !categoryMap.has(normalizedCategory.id)) {
-      categoryMap.set(normalizedCategory.id, normalizedCategory)
+    if (normalizedCategory) {
+      categoriesWithTemplates.set(normalizedCategory.id, normalizedCategory)
     }
   }
 
-  return [ALL_TEMPLATES_CATEGORY, ...categoryMap.values()]
+  const orderedCategories: ITemplateFilterCategory[] = []
+  const orderedCategoryIds = new Set<string>()
+
+  for (const category of categories ?? []) {
+    const normalizedCategory = normalizeCategory(category)
+
+    if (
+      normalizedCategory &&
+      categoriesWithTemplates.has(normalizedCategory.id)
+    ) {
+      orderedCategories.push(normalizedCategory)
+      orderedCategoryIds.add(normalizedCategory.id)
+    }
+  }
+
+  for (const category of categoriesWithTemplates.values()) {
+    if (!orderedCategoryIds.has(category.id)) {
+      orderedCategories.push(category)
+    }
+  }
+
+  return orderedCategories.length > 0
+    ? [ALL_TEMPLATES_CATEGORY, ...orderedCategories]
+    : []
 }
 
 function TemplateActionLink({
@@ -250,16 +265,16 @@ function TemplateCardButton({
       rel="noopener noreferrer"
       className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"
       style={{ backgroundImage: TEMPLATE_BUTTON_BACKGROUND }}
-      aria-label={`View ${templateTitle} template`}
+      aria-label={`Use ${templateTitle} template`}
       data-click-location="connect_templates"
-      data-click-text={`view_${templateId}_template`}
+      data-click-text={`use_${templateId}_template`}
     >
       <span
         className="pointer-events-none absolute inset-0 rounded opacity-0 transition-opacity duration-200 ease-out group-hover/button:opacity-100 group-focus-visible/button:opacity-100 motion-reduce:transition-none"
         style={{ backgroundImage: TEMPLATE_BUTTON_HOVER_BACKGROUND }}
         aria-hidden
       />
-      <span className="relative z-10">View template</span>
+      <span className="relative z-10">Use template</span>
     </NextLink>
   )
 }
@@ -286,23 +301,29 @@ function TemplateCard({
       />
 
       <div className="relative z-10 flex w-full flex-1 flex-col items-start gap-6">
-        <div className="flex w-full flex-col items-start gap-6">
-          <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4.5">
-            <TemplateAvatar image={avatar} />
-
-            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-2">
-              <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-2 overflow-visible leading-none">
-                <h3 className="max-w-full overflow-visible text-lg leading-tight font-medium tracking-tighter text-white">
-                  {title}
-                </h3>
-                <p className="max-w-full overflow-visible text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
-                  {agent}
-                </p>
-              </div>
+        <div className="flex w-full flex-col items-start gap-2.5">
+          <div className="flex w-full flex-col items-start gap-6">
+            <div className="flex w-full items-start justify-between gap-4">
+              <TemplateAvatar image={avatar} />
 
               <span className="flex h-6.25 shrink-0 items-center justify-center overflow-visible rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 pt-1.25 pb-1.75 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
                 {category}
               </span>
+            </div>
+
+            <div className="flex max-w-full min-w-0 items-baseline gap-1.5 overflow-visible leading-none">
+              <h3 className="min-w-0 text-lg leading-tight font-medium tracking-tighter text-white">
+                {title}
+              </h3>
+              <span
+                className="shrink-0 text-base leading-none font-book tracking-normal text-gray-7"
+                aria-hidden
+              >
+                &bull;
+              </span>
+              <p className="min-w-0 text-base leading-none font-book tracking-normal whitespace-nowrap text-gray-7">
+                {agent}
+              </p>
             </div>
           </div>
 
@@ -573,7 +594,7 @@ function Templates({
   return (
     <section
       id="templates"
-      className="scroll-mt-16 pt-28 [overflow-anchor:none] md:pt-36 lg:pt-44 xl:pt-50"
+      className="scroll-mt-16 [overflow-anchor:none]"
       data-connect-section="templates"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">
@@ -608,12 +629,14 @@ function Templates({
 
           <div className="h-px w-full bg-gray-2" />
 
-          <TemplateFilters
-            categories={categories}
-            activeCategory={activeCategory}
-            filtersRef={filtersRef}
-            onCategoryChange={handleCategoryChange}
-          />
+          {categories.length > 0 && (
+            <TemplateFilters
+              categories={categories}
+              activeCategory={activeCategory}
+              filtersRef={filtersRef}
+              onCategoryChange={handleCategoryChange}
+            />
+          )}
         </div>
 
         <div className="flex w-full flex-col items-center gap-7">

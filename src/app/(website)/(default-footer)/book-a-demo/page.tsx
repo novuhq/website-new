@@ -1,8 +1,7 @@
 import { Metadata } from "next"
 import { SEO_DATA } from "@/constants/seo-data"
 
-import type { ICustomerCardData } from "@/types/customers"
-import { getCustomersPage } from "@/lib/customers"
+import { getCustomersPage, isCustomerStoryCard } from "@/lib/customers"
 import { getMetadata } from "@/lib/get-metadata"
 import BookADemoBuiltForEnterprise from "@/components/pages/book-a-demo/built-for-enterprise"
 import BookADemoCentralizeNotifications from "@/components/pages/book-a-demo/centralize-notifications"
@@ -13,18 +12,6 @@ import BookADemoLogos from "@/components/pages/book-a-demo/logos"
 import BookADemoSchedulingActions from "@/components/pages/book-a-demo/scheduling-actions"
 import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 import CTA from "@/components/pages/cta"
-
-function isCustomerStoryCard(
-  customer: ICustomerCardData | null | undefined
-): customer is ICustomerCardData {
-  return Boolean(
-    customer?._id &&
-      customer.slug?.current &&
-      customer.logo?.url &&
-      customer.quoteText &&
-      customer.quoteAuthorName
-  )
-}
 
 export default async function BookADemoPage() {
   const customersPage = await getCustomersPage()
