@@ -27,7 +27,7 @@ const CONNECT_FAQ: IFaqSection = {
       {
         question: "Can I move between plans without losing data?",
         answer:
-          "es. Agents, conversations, and channel connections are preserved across upgrades and downgrades. Past-limit items are paused (not deleted) on downgraded.",
+          "Yes. Agents, conversations, and channel connections are preserved across upgrades and downgrades. Past-limit items are paused (not deleted) on downgrade.",
       },
       {
         question: "Is Connect HIPAA compliant?",
