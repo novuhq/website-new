@@ -8,7 +8,7 @@ import CheckIcon from "@/svgs/icons/check.svg"
 import { cn } from "@/lib/utils"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 
-const CONNECT_COMMAND = "npx novu@latest connect"
+const CONNECT_COMMAND = "npx novu connect"
 const FIELD_BACKGROUND_IMAGE = fieldBackgroundImage.src
 const INPUT_GLOW_BLURS = [
   "blur-[18px]",
