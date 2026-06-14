@@ -2,13 +2,16 @@
 
 import { useRef } from "react"
 import Image from "next/image"
-import avatarPlaceholder from "@/images/pages/aci/founders/avatar-placeholder.svg"
+import type { StaticImageData } from "next/image"
+import dimaGrossmanAvatar from "@/images/pages/aci/founders/dima-grossman.jpg"
+import tomerBarneaAvatar from "@/images/pages/aci/founders/tomer-barnea.jpg"
 
 import { cn } from "@/lib/utils"
 
 interface IFounderTestimonial {
   id: string
   quote: string
+  authorAvatar: StaticImageData
   authorName: string
   authorRole: string
   linkLabel: string
@@ -24,32 +27,32 @@ interface IFounderStat {
 const FOUNDER_TESTIMONIALS: Omit<IFounderTestimonial, "id">[] = [
   {
     quote:
-      "We spent five years inside the notification layer. The seam between an agent and the people it talks to is exactly the boring layer that makes the interesting one possible.",
+      "The real work is everything that makes the conversation feel human. Why we're building ACI, and why we're doing it in the open source",
+    authorAvatar: dimaGrossmanAvatar,
     authorName: "Dima Grossman",
     authorRole: "Co-founder & CTO, Novu",
     linkLabel: "Read Dima’s essay",
-    linkHref: "#",
+    linkHref: "/blog/the-missing-layer-between-agents-and-people/",
     clickText: "read_dimas_essay",
   },
   {
     quote:
-      "Agents don't wait. They reach out, they follow up, they live where you live. The interface is no longer a screen — it's a conversation.",
+      "The hardest part of shipping an AI agent isn't building it. It's getting it in front of the people it works for.",
+    authorAvatar: tomerBarneaAvatar,
     authorName: "Tomer Barnea",
-    authorRole: "Co-founder & CEO, Novu",
+    authorRole: "Co-founder, Novu",
     linkLabel: "Read Tomer’s essay",
-    linkHref: "#",
+    linkHref: "/blog/agents-can-think-now-they-can-talk/",
     clickText: "read_tomers_essay",
   },
 ]
 
-const TESTIMONIALS: IFounderTestimonial[] = Array.from(
-  { length: 3 },
-  (_, groupIndex) =>
-    FOUNDER_TESTIMONIALS.map((testimonial) => ({
-      ...testimonial,
-      id: `${testimonial.authorName}-${groupIndex}`,
-    }))
-).flat()
+const TESTIMONIALS: IFounderTestimonial[] = FOUNDER_TESTIMONIALS.map(
+  (testimonial, index) => ({
+    ...testimonial,
+    id: `${testimonial.authorName}-${index}`,
+  })
+)
 
 const STATS: IFounderStat[] = [
   { value: "39,8k", label: "Stars on GitHub" },
@@ -139,6 +142,7 @@ function SliderArrow({
 
 function FounderTestimonialCard({
   quote,
+  authorAvatar,
   authorName,
   authorRole,
   linkLabel,
@@ -157,7 +161,7 @@ function FounderTestimonialCard({
         <div className="flex min-w-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="flex min-w-0 items-center gap-3">
             <Image
-              src={avatarPlaceholder}
+              src={authorAvatar}
               alt=""
               width={36}
               height={36}
@@ -192,6 +196,8 @@ function FounderTestimonialCard({
 
 function FoundersTestimonials() {
   const sliderRef = useRef<HTMLUListElement>(null)
+  const hasMobileSlider = TESTIMONIALS.length > 1
+  const hasDesktopSlider = TESTIMONIALS.length > 2
 
   const scrollTestimonials = (direction: "previous" | "next") => {
     const slider = sliderRef.current
@@ -242,14 +248,18 @@ function FoundersTestimonials() {
         </div>
 
         <div className="relative mt-8.75 lg:mt-8.75">
-          <SliderArrow
-            direction="previous"
-            onClick={() => scrollTestimonials("previous")}
-          />
-          <SliderArrow
-            direction="next"
-            onClick={() => scrollTestimonials("next")}
-          />
+          {hasDesktopSlider && (
+            <>
+              <SliderArrow
+                direction="previous"
+                onClick={() => scrollTestimonials("previous")}
+              />
+              <SliderArrow
+                direction="next"
+                onClick={() => scrollTestimonials("next")}
+              />
+            </>
+          )}
 
           <div
             className={cn(
@@ -259,7 +269,12 @@ function FoundersTestimonials() {
           >
             <ul
               ref={sliderRef}
-              className="scrollbar-hidden flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto scroll-smooth px-5 md:scroll-px-8 md:gap-8 md:px-8 lg:scroll-px-0 lg:px-0"
+              className={cn(
+                "scrollbar-hidden flex gap-5 px-5 md:gap-8 md:px-8 lg:scroll-px-0 lg:px-0",
+                hasMobileSlider &&
+                  "snap-x snap-mandatory scroll-px-5 overflow-x-auto scroll-smooth md:scroll-px-8",
+                !hasDesktopSlider && "lg:snap-none lg:overflow-visible"
+              )}
             >
               {TESTIMONIALS.map((testimonial) => (
                 <li
