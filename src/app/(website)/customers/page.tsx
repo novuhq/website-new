@@ -98,7 +98,9 @@ export default async function CustomersPage() {
           {
             kind: "primary-button",
             label: "Get started",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: "customers_cta",
+            clickText: "get_started",
           },
           {
             kind: "secondary-button",
