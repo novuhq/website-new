@@ -81,4 +81,11 @@ export const SEO_DATA = {
     description: "Stay up to date with the latest updates from Novu",
     pathname: ROUTE.blog as string,
   },
+  aci: {
+    title: "Agent Communication Infrastructure | Novu",
+    description:
+      "The missing agent-to-user communication layer between every customer, channel, and agent.",
+    pathname: ROUTE.aci as string,
+    imagePath: "/og-images/og-image-aci.jpg",
+  },
 }
