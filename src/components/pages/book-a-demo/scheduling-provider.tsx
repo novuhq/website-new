@@ -29,13 +29,15 @@ function useBookADemoScheduling() {
   return context
 }
 
+type BookADemoSchedulingProviderProps = {
+  children: ReactNode
+  utmCampaign?: string
+}
+
 function BookADemoSchedulingProvider({
   children,
   utmCampaign = "book_a_demo_enterprise",
-}: {
-  children: ReactNode
-  utmCampaign?: string
-}) {
+}: BookADemoSchedulingProviderProps) {
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false)
   const [utmSource, setUtmSource] = useState<string | null>(null)
 

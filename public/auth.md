@@ -21,7 +21,7 @@ Novu now supports **keyless** flows: you can do meaningful work for the user wit
 **Use no authentication (keyless) when the user is testing, prototyping, or just getting started:**
 
 - **Embedding the `<Inbox />` component to see a working notification UI.** Render the Inbox with no `applicationIdentifier` and no `subscriberId` — keyless mode boots an isolated, temporary environment so the user can evaluate look, feel, and behavior instantly. The data is temporary (expires in ~24h) and is **not** tied to real subscribers, so it is for local testing and demos only, never production.
-- **Spinning up a managed Novu agent connected to a channel.** Use the keyless CLI flow (`npx novu connect …`, no `--secret-key`) to create a temporary, hosted agent and connect Slack or email without a Novu account. The full step-by-step runbook for this lives in `https://novu.co/agents.md` — follow that file for the agent-onboarding flow rather than improvising. Keyless agents are temporary until the user **claims** them by signing up through the in-channel link, which migrates the agent, channel, and conversation into their own workspace.
+- **Spinning up a managed Novu agent connected to a channel.** Use the keyless CLI flow (`npx novu@latest connect …`, no `--secret-key`) to create a temporary, hosted agent and connect Slack or email without a Novu account. The full step-by-step runbook for this lives in `https://novu.co/agents.md` — follow that file for the agent-onboarding flow rather than improvising. Keyless agents are temporary until the user **claims** them by signing up through the in-channel link, which migrates the agent, channel, and conversation into their own workspace.
 
 **Use a secret key when the user needs account-owned or production resources:**
 
@@ -64,9 +64,9 @@ export function NotificationInbox() {
 
 The `applicationIdentifier` is public and client-side only (see below). For EU Cloud, also pass `backendUrl="https://eu.api.novu.co"` and `socketUrl="wss://eu.socket.novu.co"`. Setup guide: `https://docs.novu.co/platform/inbox/setup-inbox`.
 
-### Keyless agent (`npx novu connect`)
+### Keyless agent (`npx novu@latest connect`)
 
-To create a hosted agent without an account, follow the dedicated runbook at `https://novu.co/agents.md`. In short: it runs one non-interactive `npx novu connect "<description>" --ci --channel <slack|email|skip>` command (no `--secret-key`), hands the user a channel-specific action, and explains the demo limit and sign-up-to-claim path. Do not pass `--secret-key` for keyless; only add it when the user wants to use their existing account.
+To create a hosted agent without an account, follow the dedicated runbook at `https://novu.co/agents.md`. In short: it runs one non-interactive `npx novu@latest connect "<description>" --ci --channel <slack|email|skip>` command (no `--secret-key`), hands the user a channel-specific action, and explains the demo limit and sign-up-to-claim path. Do not pass `--secret-key` for keyless; only add it when the user wants to use their existing account.
 
 ## Current state for keyed access
 

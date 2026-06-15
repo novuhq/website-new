@@ -1,10 +1,10 @@
 import BookADemoSchedulingActions from "@/components/pages/book-a-demo/scheduling-actions"
-import ConnectFinalCta from "@/components/pages/connect/final-cta"
+import FinalCta from "@/components/pages/final-cta"
 
 function BookADemoConnectFinalCta() {
   return (
-    <ConnectFinalCta
-      sectionClassName="bg-black pb-68 md:pb-100 lg:pb-104 xl:pt-62.5 xl:pb-120"
+    <FinalCta
+      className="bg-black pb-68 md:pb-100 lg:pb-104 xl:pt-62.5 xl:pb-120"
       containerClassName="max-w-272"
       videoClassName="w-234 max-w-none md:w-403.25 xl:w-480"
       title={

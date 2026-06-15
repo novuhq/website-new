@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/accordion"
 
 const FAQ = ({
+  id,
   title,
   accordion,
   className,
@@ -19,6 +20,7 @@ const FAQ = ({
   containerClassName = "max-w-208 lg:max-w-224",
   onScheduleClick,
 }: IFaqSection & {
+  id?: string
   className?: string
   titleClassName?: string
   containerClassName?: string
@@ -30,6 +32,7 @@ const FAQ = ({
 
   return (
     <section
+      id={id}
       className={cn(
         "safe-paddings pt-15 pb-20 sm:pb-10 md:pt-12.5 md:pb-5 lg:pb-16",
         className

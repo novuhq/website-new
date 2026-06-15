@@ -1,15 +1,53 @@
 import type { ReactNode } from "react"
-import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import videoPoster from "@/images/pages/connect/final-cta/video-poster.jpg"
 
+import type { TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import ActionGroup from "@/components/ui/action-group"
 
 const VIDEO_WEBM_SRC = "/videos/pages/connect/cta.webm"
 const VIDEO_MP4_SRC = "/videos/pages/connect/cta.hevc.mp4"
 
-function ConnectFinalCtaVideo({ className }: { className?: string }) {
+type FinalCtaAction = Extract<
+  TSectionAction,
+  { kind: "primary-button" | "secondary-button" | "scheduling-button" }
+>
+
+export interface FinalCtaProps {
+  actionSlot?: ReactNode
+  actions?: FinalCtaAction[]
+  className?: string
+  containerClassName?: string
+  dataConnectSection?: string | null
+  description?: ReactNode
+  descriptionClassName?: string
+  title?: ReactNode
+  titleClassName?: string
+  videoClassName?: string
+}
+
+const DEFAULT_FINAL_CTA_ACTIONS: FinalCtaAction[] = [
+  {
+    kind: "primary-button",
+    label: "Connect an agent",
+    href: ROUTE.connectApp,
+    clickLocation: "connect_final_cta",
+    clickText: "connect_an_agent",
+    openInNewTab: true,
+  },
+]
+
+const DEFAULT_FINAL_CTA_TITLE = (
+  <>
+    <span>Two minutes. One live</span>
+    <br className="hidden sm:block" aria-hidden />
+    <span className="sm:hidden"> </span>
+    <span>agent. One month of Pro.</span>
+  </>
+)
+
+function FinalCtaVideo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
@@ -34,36 +72,29 @@ function ConnectFinalCtaVideo({ className }: { className?: string }) {
   )
 }
 
-type FinalCtaProps = {
-  actionSlot?: ReactNode
-  containerClassName?: string
-  description?: ReactNode
-  descriptionClassName?: string
-  sectionClassName?: string
-  title?: ReactNode
-  titleClassName?: string
-  videoClassName?: string
-}
-
 function FinalCta({
   actionSlot,
+  actions = DEFAULT_FINAL_CTA_ACTIONS,
+  className,
   containerClassName,
+  dataConnectSection = "final-cta",
   description = "Take the Novu Connect challenge: go live in under 2 minutes and get one month of Pro.",
   descriptionClassName,
-  sectionClassName,
-  title,
+  title = DEFAULT_FINAL_CTA_TITLE,
   titleClassName,
   videoClassName,
 }: FinalCtaProps) {
+  const renderedActions = actions.slice(0, 2)
+
   return (
     <section
       className={cn(
         "relative isolate overflow-hidden pt-20 pb-56 md:pt-36 md:pb-72 lg:pt-44 lg:pb-92 xl:pt-50 xl:pb-112",
-        sectionClassName
+        className
       )}
-      data-connect-section="final-cta"
+      data-connect-section={dataConnectSection ?? undefined}
     >
-      <ConnectFinalCtaVideo className={videoClassName} />
+      <FinalCtaVideo className={videoClassName} />
 
       <div
         className={cn(
@@ -78,14 +109,7 @@ function FinalCta({
               titleClassName
             )}
           >
-            {title || (
-              <>
-                <span>Two minutes. One live</span>
-                <br className="hidden sm:block" aria-hidden />
-                <span className="sm:hidden"> </span>
-                <span>agent. One month of Pro.</span>
-              </>
-            )}
+            {title}
           </h2>
 
           <p
@@ -98,24 +122,13 @@ function FinalCta({
           </p>
         </div>
 
-        {actionSlot || (
-          <Button
-            variant="default"
-            size="lg"
-            className="h-12 overflow-visible px-5"
-            asChild
-          >
-            <NextLink
-              href={ROUTE.connectApp}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-click-location="connect_final_cta"
-              data-click-text="connect_an_agent"
-            >
-              Connect an agent
-            </NextLink>
-          </Button>
-        )}
+        {actionSlot ||
+          (renderedActions.length > 0 && (
+            <ActionGroup
+              className="gap-4 max-2xs:w-full max-2xs:flex-col md:gap-7"
+              actions={renderedActions}
+            />
+          ))}
       </div>
     </section>
   )

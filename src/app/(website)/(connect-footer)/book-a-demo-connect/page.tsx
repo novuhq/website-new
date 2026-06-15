@@ -12,7 +12,8 @@ import BookADemoConnectHero from "@/components/pages/book-a-demo-connect/hero"
 import BookADemoConnectLogos from "@/components/pages/book-a-demo-connect/logos"
 import BookADemoCustomerStories from "@/components/pages/book-a-demo/customer-stories"
 import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
-import ConnectFaq from "@/components/pages/connect/faq"
+import { CONNECT_FAQ } from "@/components/pages/connect/faq-data"
+import FAQ from "@/components/pages/faq"
 
 export default async function BookADemoConnectPage() {
   const customersPage = await getCustomersPage()
@@ -33,7 +34,13 @@ export default async function BookADemoConnectPage() {
           customers={customerStories}
           trackingLocation="book_a_demo_connect_customer_stories"
         />
-        <ConnectFaq className="bg-black xl:pt-63 xl:pb-0" />
+        <FAQ
+          {...CONNECT_FAQ}
+          id="faq"
+          className="scroll-mt-16 bg-black pt-28 md:pt-36 lg:pt-44 xl:pt-63 xl:pb-0"
+          titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
+          containerClassName="lg:max-w-227 md:max-w-[796px] lg:px-0"
+        />
         <BookADemoConnectFinalCta />
       </div>
     </BookADemoSchedulingProvider>
