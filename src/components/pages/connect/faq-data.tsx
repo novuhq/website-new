@@ -1,7 +1,7 @@
 import Link from "next/link"
+import { ROUTE } from "@/constants/routes"
 
 import type { IFaqSection } from "@/types/common"
-import { ROUTE } from "@/constants/routes"
 
 export const CONNECT_FAQ: IFaqSection = {
   title: "Frequently asked questions",
