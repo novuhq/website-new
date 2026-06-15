@@ -383,7 +383,7 @@ function Pricing() {
   return (
     <section
       id="pricing"
-      className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+      className="scroll-mt-25 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
       data-connect-section="pricing"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
