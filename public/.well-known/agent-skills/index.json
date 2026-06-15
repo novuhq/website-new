@@ -2,53 +2,60 @@
   "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
   "skills": [
     {
+      "name": "novu-connect-agent",
+      "type": "skill-md",
+      "description": "Guides AI agents through creating a Novu managed agent and connecting a channel (Slack, email, Telegram, WhatsApp, MS Teams) via `npx novu@latest connect`. Use when onboarding a Novu agent, connecting a channel, creating a first managed agent, or when the user is signed in to the Novu dashboard and wants agent setup.",
+      "url": "/.well-known/agent-skills/novu-connect-agent/SKILL.md",
+      "digest": "sha256:2e3e854313fcfda2cc417802199dbc820d71ede7763ae5dd8cfe19692d3bf9b4"
+    },
+    {
       "name": "novu-dashboard-workflows",
       "type": "archive",
       "description": "Author step content for Novu workflows defined in the Dashboard or generated/edited via the Novu MCP. Use when filling in step controls (subject, body, editorType, headers, body, conditions) for email, in-app, sms, push, chat, delay, digest, throttle, or HTTP Request steps.",
       "url": "/.well-known/agent-skills/novu-dashboard-workflows.tar.gz",
-      "digest": "sha256:6e8433c3141f04c0f7e050fae2fb2b3d83a18122b12f4e3795a63b7c2c0e94a5"
+      "digest": "sha256:5452410a1bed6d2d1489d50450878b8c77c3786c35045f981aa592bce6c8eaf4"
     },
     {
       "name": "novu-design-workflow",
       "type": "archive",
       "description": "Design notification workflows the Novu way — choose channels, set severity, decide when a workflow is critical, configure digests, and route based on subscriber state. Applies to BOTH dashboard-authored and code-first (`@novu/framework`) workflows. Use when planning a new workflow, deciding which channels to include, picking severity, configuring digest behavior, or matching a use case (order confirmation, payment failed, account suspended, comment, trial expiring, password reset, webhook fan-out, fetch-then-notify) to a proven template.",
       "url": "/.well-known/agent-skills/novu-design-workflow.tar.gz",
-      "digest": "sha256:6f39a0cc23587fbffdf3c105a7b32c2542704ddd887537d250aa5cc0f7f1bc06"
+      "digest": "sha256:84d6e76bab29716a3a7b91a85ffe0a60cd75df073e6697c1f570ccbc32ad36b8"
     },
     {
       "name": "novu-framework-integration",
       "type": "archive",
       "description": "Build code-first notification workflows with @novu/framework. Use when defining workflows in TypeScript (Zod / JSON Schema / Class Validator), composing channel steps (email, SMS, push, chat, in-app) with action steps (delay, digest, custom), exposing Step Controls for non-technical teammates, rendering React/Vue/Svelte Email templates, hosting the Bridge Endpoint inside Next.js, Express, NestJS, Remix, Nuxt, SvelteKit, H3, or AWS Lambda, syncing to Novu Cloud via CLI / GitHub Actions, securing production with HMAC, or implementing translations, hydration, multi-channel orchestration, and LLM-powered notification logic in code.",
       "url": "/.well-known/agent-skills/novu-framework-integration.tar.gz",
-      "digest": "sha256:a8959a9337b2e541718c9e4bd9d729d977762973e264da837960062a486269d2"
+      "digest": "sha256:52d75c4962e5a5e5eea1826af80772d9c46aecf8f198df9d9a930ee64b8e8d1f"
     },
     {
       "name": "novu-inbox-integration",
       "type": "archive",
       "description": "Integrate Novu's in-app notification inbox into web applications. Supports React, Next.js, and vanilla JavaScript. Includes the Inbox component (bell icon + notification feed), composable components (Bell, Notifications, InboxContent, Preferences), headless hooks, branded theming, custom render props, multi-tenancy via contexts, tabs, localization, and HMAC security. Use when adding an in-app notification center, bell icon, notification feed, real-time notification updates, or building a personalized and branded notification experience.",
       "url": "/.well-known/agent-skills/novu-inbox-integration.tar.gz",
-      "digest": "sha256:020ca6813f45bd878e3e62dc8e8ea8e2ec537490eda4d6a4962d81270f4ea7c0"
+      "digest": "sha256:619adb232bef6d1fa79718d5151f208c8a0b131394f2ef8614662e5c890782f1"
     },
     {
       "name": "novu-manage-preferences",
       "type": "archive",
       "description": "Configure notification preferences in Novu at the workflow and subscriber level. Set default channel preferences (email, SMS, push, chat, in-app), mark preferences as read-only or subscriber-editable, and manage subscriber-specific overrides. Use when setting up notification opt-in/opt-out, configuring per-channel delivery preferences, or building a preferences management UI.",
       "url": "/.well-known/agent-skills/novu-manage-preferences.tar.gz",
-      "digest": "sha256:e335c332d87b5318422dfae4394fde7a856c57ceea4e194944a1bd04ddce8f5e"
+      "digest": "sha256:bb687a9a47ef9af60d0edb63dc6e4a7512aa8fd160d5397c84d57aac1f26f37d"
     },
     {
       "name": "novu-manage-subscribers",
       "type": "archive",
       "description": "Create, update, search, and delete subscribers in Novu. Manage topics for group-based notification targeting. Set subscriber credentials for push and chat channels. Use when managing notification recipients, creating subscriber records, organizing subscribers into topics, or configuring channel-specific credentials.",
       "url": "/.well-known/agent-skills/novu-manage-subscribers.tar.gz",
-      "digest": "sha256:c5d05d4353c9f4b0cd0864756a8e52d971cdc33b2c1e8a4ba7b0220725d8ebfc"
+      "digest": "sha256:7edb1cc9d0833b0d97badd4036c26167afa3d12b03e2955c9280135a6e1cab32"
     },
     {
       "name": "novu-trigger-notification",
       "type": "archive",
       "description": "Trigger Novu notification workflows to send messages across email, SMS, push, chat, and in-app channels. Supports single triggers, bulk triggers, broadcast to all subscribers, topic-based targeting, and cancellation. Use when sending transactional notifications, alerts, or any event-driven messages.",
       "url": "/.well-known/agent-skills/novu-trigger-notification.tar.gz",
-      "digest": "sha256:ce9da673bef16bea0aa7c473d79226347241f2404fe0f7ceaf2e6163e4135712"
+      "digest": "sha256:cf9d597c048008eb2587f83be08060c171b67e558d933df3ec32fdc36b220042"
     }
   ]
 }
