@@ -15,6 +15,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   connect: "/connect",
   copilot: "/copilot",
   mcp: "/mcp",
+  aci: "/aci",
 
   // PREVIOUS WEBSITE
 

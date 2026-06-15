@@ -8,7 +8,6 @@ import stars from "@/images/pages/connect/pricing/stars.png"
 import dollarIcon from "@/svgs/icons/dollar.inline.svg"
 import letterIcon from "@/svgs/icons/letter.inline.svg"
 import robotIcon from "@/svgs/icons/robot.inline.svg"
-import shieldIcon from "@/svgs/icons/shield.inline.svg"
 import stackIcon from "@/svgs/icons/stack.inline.svg"
 import teamIcon from "@/svgs/icons/team.inline.svg"
 import chatIcon from "@/svgs/icons/сhat.inline.svg"
@@ -51,8 +50,9 @@ const PRICING_PLANS: IPricingPlan[] = [
     cta: "Sign up for free",
     features: [
       { text: "100 active conversations", icon: chatIcon },
-      { text: "3 agents", icon: robotIcon },
+      { text: "2 agents", icon: robotIcon },
       { text: "2 channels", icon: stackIcon },
+      { text: "Powered by Novu branding", icon: teamIcon },
     ],
   },
   {
@@ -62,10 +62,10 @@ const PRICING_PLANS: IPricingPlan[] = [
     featured: true,
     features: [
       { text: "1,000 active conversations", icon: chatIcon },
-      { text: "20 agents", icon: robotIcon },
+      { text: "5 agents", icon: robotIcon },
       { text: "5 channels", icon: stackIcon },
       { text: "$0.02 / extra conversation", icon: dollarIcon },
-      { text: "Team-shared MCP vault", icon: teamIcon },
+      { text: "Remove Novu branding", icon: teamIcon },
     ],
   },
   {
@@ -74,12 +74,10 @@ const PRICING_PLANS: IPricingPlan[] = [
     cta: "Get started",
     features: [
       { text: "5,000 active conversations", icon: chatIcon },
-      { text: "50 agents", icon: robotIcon },
+      { text: "10 agents", icon: robotIcon },
       { text: "10 channels", icon: stackIcon },
       { text: "$0.015 / extra conversation", icon: dollarIcon },
       { text: "Custom email domain", icon: letterIcon, iconSize: 16 },
-      { text: "Cross-team shared context", icon: teamIcon },
-      { text: "RBAC", icon: shieldIcon },
     ],
   },
 ]
