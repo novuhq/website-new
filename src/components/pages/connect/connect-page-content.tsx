@@ -37,7 +37,7 @@ function ConnectPageContent({ templatesSection }: IConnectPageContentProps) {
       <FAQ
         {...CONNECT_FAQ}
         id="faq"
-        className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+        className="scroll-mt-25 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
         titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
         containerClassName="max-w-272"
       />

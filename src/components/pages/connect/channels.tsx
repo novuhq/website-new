@@ -240,7 +240,7 @@ function Channels({
   return (
     <section
       id="channels"
-      className={cn("scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50", className)}
+      className={cn("scroll-mt-25 pt-28 md:pt-36 lg:pt-44 xl:pt-50", className)}
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-12 px-5 md:px-8 2xl:px-0">
         <div

@@ -227,7 +227,7 @@ function DesktopStepsPanel({
   return (
     <div
       ref={setPanelNode}
-      className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-28 lg:max-w-none"
+      className="flex w-full max-w-104.5 flex-col items-start gap-10 lg:sticky lg:top-37 lg:max-w-none"
     >
       <div className="flex w-full flex-col items-start gap-7">
         {STEPS.map((step, index) => (
@@ -398,7 +398,7 @@ function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="scroll-mt-16 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
+      className="scroll-mt-25 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
       data-connect-section="how-it-works"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-16 px-5 md:px-8 lg:items-start 2xl:px-0">

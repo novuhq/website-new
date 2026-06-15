@@ -594,7 +594,7 @@ function Templates({
   return (
     <section
       id="templates"
-      className="scroll-mt-16 [overflow-anchor:none]"
+      className="scroll-mt-25 [overflow-anchor:none]"
       data-connect-section="templates"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">

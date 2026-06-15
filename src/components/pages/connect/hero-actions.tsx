@@ -19,7 +19,7 @@ function ConnectHeroActions() {
         asChild
       >
         <NextLink
-          href={ROUTE.dashboardV2SignUp}
+          href={ROUTE.dashboardV2AgentsSignUp}
           target="_blank"
           rel="noopener noreferrer"
           data-click-location="connect_hero"
