@@ -1,6 +1,8 @@
 import Image from "next/image"
 import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
+import ProductHuntBadge from "@/components/ui/product-hunt-badge"
+
 import ConnectHeroActions from "./hero-actions"
 import ConnectHeroVideo from "./hero-video"
 import ConnectPromptCopyLine from "./prompt-copy-line"
@@ -9,7 +11,7 @@ function Hero() {
   return (
     <section
       id="connect"
-      className="relative isolate scroll-mt-25 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-44 lg:pb-34"
+      className="relative isolate scroll-mt-25 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-33 lg:pb-34"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
         <div className="relative z-10 mx-auto flex w-full max-w-154.5 flex-col items-center gap-4 text-center lg:mx-0 lg:max-w-128 lg:items-start lg:text-left xl:max-w-140">
@@ -56,6 +58,13 @@ function Hero() {
           </div>
 
           <ConnectPromptCopyLine />
+          <ProductHuntBadge
+            className="mt-6 lg:mt-11"
+            linkProps={{
+              "data-click-location": "connect_hero",
+              "data-click-text": "product_hunt",
+            }}
+          />
         </div>
 
         <ConnectHeroVideo />

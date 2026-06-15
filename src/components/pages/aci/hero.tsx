@@ -3,6 +3,7 @@ import heroIllustrationMobile from "@/images/pages/aci/hero/image-mobile.png"
 import heroIllustration from "@/images/pages/aci/hero/image.png"
 
 import { cn } from "@/lib/utils"
+import ProductHuntBadge from "@/components/ui/product-hunt-badge"
 
 import HeroActions from "./hero-actions"
 
@@ -10,7 +11,7 @@ function Hero() {
   return (
     <section
       className={cn(
-        "integrations-hero safe-paddings overflow-x-clip bg-black pt-14 pb-49 text-white md:pt-16 lg:pt-18.5 lg:pb-31.5 xl:pt-52"
+        "integrations-hero safe-paddings overflow-x-clip bg-black pt-14 pb-49 text-white md:pt-16 lg:pt-18.5 lg:pb-31.5 xl:pt-37"
       )}
     >
       <div className="mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
@@ -36,6 +37,13 @@ function Hero() {
               </p>
             </div>
             <HeroActions />
+            <ProductHuntBadge
+              className="mt-6 xl:mt-7"
+              linkProps={{
+                "data-click-location": "aci_hero",
+                "data-click-text": "product_hunt",
+              }}
+            />
           </div>
           <div
             className="pointer-events-none relative flex w-full justify-center"
@@ -51,7 +59,7 @@ function Hero() {
                 priority
               />
             </div>
-            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[140%] max-w-[440px] -translate-x-1/2 -translate-y-[calc(50%-60px)] sm:w-[109%] md:-translate-y-[calc(50%-100px)] sm:max-w-[460px] md:max-w-[800px] lg:hidden lg:w-228.5">
+            <div className="absolute top-1/2 left-1/2 aspect-[768/787] w-[140%] max-w-[440px] -translate-x-1/2 -translate-y-[calc(50%-60px)] sm:w-[109%] sm:max-w-[460px] md:max-w-[800px] md:-translate-y-[calc(50%-100px)] lg:hidden lg:w-228.5">
               <Image
                 src={heroIllustrationMobile}
                 alt=""
