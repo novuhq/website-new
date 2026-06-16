@@ -52,9 +52,11 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                       asChild
                     >
                       <NextLink
-                        href={`${ROUTE.dashboardV2SignUp}?utm_campaign=ws_integrations_hero`}
+                        href={ROUTE.dashboardV2SignUp}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-click-location="integrations_hero"
+                        data-click-text="try_now"
                       >
                         Try now
                       </NextLink>

@@ -1,6 +1,9 @@
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
 
+const agentDiscoveryLinkHeader =
+  '</.well-known/api-catalog>; rel="api-catalog", </llms.txt>; rel="describedby", </agents.md>; rel="describedby", </auth.md>; rel="describedby", <https://docs.novu.co/api-reference>; rel="service-doc", <https://api.novu.co/openapi.json>; rel="service-desc"'
+
 const securityHeaders = [
   {
     key: "X-Content-Type-Options",
@@ -47,10 +50,89 @@ const nextConfig: NextConfig = {
         destination: "/integrations/channels",
         permanent: true,
       },
+      {
+        source: "/connect/agent-onboarding.md",
+        destination: "/agents.md",
+        permanent: true,
+      },
     ]
   },
   async headers() {
     return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value: agentDiscoveryLinkHeader,
+          },
+        ],
+      },
+      {
+        source: "/.well-known/api-catalog",
+        headers: [
+          {
+            key: "Content-Type",
+            value:
+              'application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"',
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600",
+          },
+        ],
+      },
+      {
+        source: "/.well-known/agent-skills/index.json",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/json; charset=utf-8",
+          },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/.well-known/agent-skills/:skill/SKILL.md",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "text/markdown; charset=utf-8",
+          },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/.well-known/agent-skills/:archive.tar.gz",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/gzip",
+          },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
       {
         source: "/(.*)",
         headers: securityHeaders,

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import type { Route } from "next"
 import Image from "next/image"
 import NextLink from "next/link"
@@ -10,8 +11,24 @@ import type { IMenuHeaderItem } from "@/types/common"
 import { Button } from "@/components/ui/button"
 import MobileMenu from "@/components/header/mobile-menu"
 import Nav from "@/components/header/nav"
+import LinkBanner from "@/components/link-banner"
 
 const connectAnchor = (hash: string) => `/connect/${hash}` as Route<string>
+const PRODUCT_HUNT_LAUNCH_URL = new URL(
+  "https://www.producthunt.com/products/novu/launches/novu-connect"
+)
+const PRODUCT_HUNT_LAUNCH_DATE = "2026-06-15"
+const PRODUCT_HUNT_MESSAGE =
+  "We’re live on Product Hunt. One agent, every channel, one conversation."
+const PRODUCT_HUNT_MESSAGE_LAUNCH_DAY =
+  "We’re live on Product Hunt today. One agent, every channel, one conversation."
+
+function getLocalDateKey(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+
+  return `${date.getFullYear()}-${month}-${day}`
+}
 
 const CONNECT_HEADER_ITEMS: IMenuHeaderItem[] = [
   {
@@ -52,8 +69,29 @@ const CONNECT_HEADER_ACTIONS = {
 }
 
 function ConnectHeader() {
+  const [isProductHuntLaunchDay, setIsProductHuntLaunchDay] = useState(false)
+
+  useEffect(() => {
+    setIsProductHuntLaunchDay(
+      getLocalDateKey(new Date()) === PRODUCT_HUNT_LAUNCH_DATE
+    )
+  }, [])
+
   return (
     <header className="sticky top-0 z-50 bg-black">
+      <LinkBanner
+        href={PRODUCT_HUNT_LAUNCH_URL}
+        message={
+          isProductHuntLaunchDay
+            ? PRODUCT_HUNT_MESSAGE_LAUNCH_DAY
+            : PRODUCT_HUNT_MESSAGE
+        }
+        actionLabel="Upvote"
+        clickLocation="connect-header-link-banner"
+        clickText="upvote"
+        target="_blank"
+        rel="noopener noreferrer"
+      />
       <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:justify-start">
         <NextLink
           className="mr-5 inline-flex shrink-0 rounded lg:mr-7"

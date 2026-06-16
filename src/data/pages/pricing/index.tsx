@@ -58,7 +58,7 @@ export const pricingPageData: IPricingPageData = {
   _updatedAt: "2026-02-12T13:59:33Z",
   cta: {
     buttonText: "Schedule a call",
-    buttonUrl: "https://dashboard-v2.novu.co/auth/sign-up",
+    buttonUrl: "https://dashboard.novu.co",
     description:
       "Schedule a call with our team to find the perfect plan for your use case",
     text: "Not sure what plan fits your needs?",
@@ -287,9 +287,11 @@ export const pricingPageData: IPricingPageData = {
         extraInfo: "No credit card required",
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_free",
+          clickText: "get_started",
         },
         price: [
           {
@@ -319,9 +321,11 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: true,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_pro",
+          clickText: "get_started",
         },
         price: [
           {
@@ -354,9 +358,11 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_team",
+          clickText: "get_started",
         },
         price: [
           {
@@ -455,9 +461,11 @@ export const pricingPageData: IPricingPageData = {
   pageCta: {
     actions: [
       {
-        href: "https://dashboard.novu.co/?utm_campaign=gs-website-inbox",
+        href: "https://dashboard.novu.co",
         label: "Get started",
         kind: "primary-button",
+        clickLocation: "pricing_page_cta",
+        clickText: "get_started",
       },
       {
         href: "/contact-us",
@@ -473,24 +481,27 @@ export const pricingPageData: IPricingPageData = {
     headings: [
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_free",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_free",
+        clickText: "get_started",
         id: "free",
         label: "Free",
         isFeatured: false,
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_pro",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_pro",
+        clickText: "get_started",
         id: "pro",
         isFeatured: true,
         label: "Pro",
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_team",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_team",
+        clickText: "get_started",
         id: "team",
         label: "Team",
         isFeatured: false,

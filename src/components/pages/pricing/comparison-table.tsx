@@ -3,7 +3,7 @@
 import React, { ReactNode, useState } from "react"
 import { Check, ChevronLeft, ChevronRight, Info } from "lucide-react"
 
-import { Headings, Plans, Row } from "@/types/pricing"
+import { Headings, PlanHeading, Plans, Row } from "@/types/pricing"
 import { cn, normalizeString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
@@ -34,8 +34,7 @@ const getColumnStartClass = (columnIndex: number) => {
   }
 }
 interface TableHeaderProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  plan?: any
+  plan?: PlanHeading
   planId: string
   isFeatured: boolean
   plansCount: number
@@ -48,7 +47,8 @@ function TableHeader({
   plansCount,
   onContactUsClick,
 }: TableHeaderProps) {
-  const { label, isFeatured, buttonUrl, buttonText } = plan || {}
+  const { label, isFeatured, buttonUrl, buttonText, clickLocation, clickText } =
+    plan || {}
   const isContactCta =
     buttonText?.trim().toLowerCase().includes("contact") ?? false
 
@@ -109,7 +109,13 @@ function TableHeader({
             }}
             asChild
           >
-            <Link variant="white" className="rounded-sm" href={buttonUrl}>
+            <Link
+              variant="white"
+              className="rounded-sm"
+              href={buttonUrl}
+              data-click-location={clickLocation}
+              data-click-text={clickText}
+            >
               {buttonText}
             </Link>
           </Button>
@@ -120,7 +126,9 @@ function TableHeader({
 }
 
 interface Feature {
-  value?: ReactNode | ((onContactUsClick: (source: string) => void) => ReactNode)
+  value?:
+    | ReactNode
+    | ((onContactUsClick: (source: string) => void) => ReactNode)
   booleanValue?: boolean
 }
 interface ITableCellProps {

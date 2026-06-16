@@ -13,8 +13,8 @@ import {
 import { getHowToCoverPath } from "@/lib/how-to/cover"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
 import { getExcerpt } from "@/lib/utils"
-import FinalCta from "@/components/pages/connect/final-cta"
 import HowToPost from "@/components/pages/connect/how-to/post/post-content"
+import FinalCta from "@/components/pages/final-cta"
 
 interface HowToPostPageProps {
   params: Promise<{ slug: string }>
@@ -107,8 +107,16 @@ export default async function ConnectHowToPostPage({
             No infrastructure to set up.
           </>
         }
-        buttonText="Connect agent for free now"
-        clickLocation="connect_how_to_post_final_cta"
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Connect agent for free now",
+            href: ROUTE.connectApp,
+            clickLocation: "connect_how_to_post_final_cta",
+            clickText: "connect_agent_for_free_now",
+            openInNewTab: true,
+          },
+        ]}
       />
       <script
         type="application/ld+json"

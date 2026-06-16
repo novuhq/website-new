@@ -1,12 +1,13 @@
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
 import config from "@/configs/website-config"
+import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { getHowToIndexData } from "@/lib/how-to"
-import FinalCta from "@/components/pages/connect/final-cta"
 import HowToPageContent from "@/components/pages/connect/how-to/listing/page-content"
+import FinalCta from "@/components/pages/final-cta"
 
 export default async function ConnectHowToPage() {
   const { isEnabled: isDraftMode } = await draftMode()
@@ -73,8 +74,16 @@ export default async function ConnectHowToPage() {
             your team already uses.
           </>
         }
-        buttonText="Connect agent for free now"
-        clickLocation="connect_how_to_final_cta"
+        actions={[
+          {
+            kind: "primary-button",
+            label: "Connect agent for free now",
+            href: ROUTE.connectApp,
+            clickLocation: "connect_how_to_final_cta",
+            clickText: "connect_agent_for_free_now",
+            openInNewTab: true,
+          },
+        ]}
       />
     </div>
   )

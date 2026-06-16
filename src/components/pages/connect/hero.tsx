@@ -1,14 +1,17 @@
 import Image from "next/image"
 import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
 
+import ProductHuntBadge from "@/components/ui/product-hunt-badge"
+
 import ConnectHeroActions from "./hero-actions"
 import ConnectHeroVideo from "./hero-video"
+import ConnectPromptCopyLine from "./prompt-copy-line"
 
 function Hero() {
   return (
     <section
       id="connect"
-      className="relative isolate scroll-mt-16 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-44 lg:pb-34"
+      className="relative isolate scroll-mt-25 overflow-hidden pt-12 pb-20 md:pt-24 md:pb-26 lg:pt-33 lg:pb-34"
     >
       <div className="relative mx-auto w-full max-w-304 px-5 md:px-8 2xl:px-0">
         <div className="relative z-10 mx-auto flex w-full max-w-154.5 flex-col items-center gap-4 text-center lg:mx-0 lg:max-w-128 lg:items-start lg:text-left xl:max-w-140">
@@ -24,7 +27,7 @@ function Hero() {
               <div className="flex w-full flex-col items-center gap-4 lg:items-start">
                 <h1
                   className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
-                  aria-label="Connect your Claude agent where your team actually works"
+                  aria-label="Connect your Claude agent where your customers actually work"
                 >
                   Connect{" "}
                   <span className="whitespace-nowrap">
@@ -40,7 +43,7 @@ function Hero() {
                     />
                     <span aria-hidden>Claude</span>
                   </span>{" "}
-                  agent where your team actually works
+                  agent where your customers actually work
                 </h1>
 
                 <p className="max-w-[523.4609375px] text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
@@ -54,9 +57,14 @@ function Hero() {
             <ConnectHeroActions />
           </div>
 
-          <p className="text-[0.9375rem] leading-normal font-normal tracking-tighter text-gray-9">
-            No credit card required
-          </p>
+          <ConnectPromptCopyLine />
+          <ProductHuntBadge
+            className="mt-6 lg:mt-11"
+            linkProps={{
+              "data-click-location": "connect_hero",
+              "data-click-text": "product_hunt",
+            }}
+          />
         </div>
 
         <ConnectHeroVideo />

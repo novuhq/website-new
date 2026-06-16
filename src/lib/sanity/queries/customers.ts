@@ -3,6 +3,7 @@ import { groq } from "next-sanity"
 
 const COVER_WIDTH = 704
 const COVER_ASPECT_RATIO = 16 / 9
+const QUOTE_AUTHOR_PHOTO_SIZE = 64
 
 const customersCardsFields = `
   _id,
@@ -15,6 +16,12 @@ const customersCardsFields = `
     "alt": logo.alt
   },
   "quoteText": quote_text,
+  "quoteAuthorPhoto": select(defined(quote_photo.asset) => {
+    "url": quote_photo.asset->url + "?w=${QUOTE_AUTHOR_PHOTO_SIZE}&h=${QUOTE_AUTHOR_PHOTO_SIZE}&fit=crop&auto=format",
+    "width": ${QUOTE_AUTHOR_PHOTO_SIZE},
+    "height": ${QUOTE_AUTHOR_PHOTO_SIZE},
+    "alt": quote_photo.alt
+  }),
   "quoteAuthorName": quote_name,
   "quoteAuthorPosition": quote_position,
 `

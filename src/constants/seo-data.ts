@@ -13,6 +13,18 @@ export const SEO_DATA = {
     description: `${config.projectName} is an open-source notification platform that empowers developers to create robust, multi-channel notifications for web and mobile apps. With powerful workflows, seamless integrations, and a flexible API-first approach, ${config.projectName} enables product teams to manage notifications without breaking production.`,
     pathname: "",
   },
+  bookADemo: {
+    title: `Book a Demo | Enterprise Notification Infrastructure | ${config.projectName}`,
+    description: `Book a ${config.projectName} demo to discuss enterprise notification infrastructure, SSO/SAML, RBAC, audit logs, SLA, compliance, and self-hosted deployment options.`,
+    pathname: ROUTE.bookADemo as string,
+  },
+  bookADemoConnect: {
+    title: `Book a Demo | ${config.projectName} Connect`,
+    description: `Book a ${config.projectName} Connect demo to discuss agent notifications across Slack, Teams, email, and more.`,
+    imagePath: "/og-images/og-image-connect.jpg",
+    imageAlt: `${config.projectName} Connect social preview`,
+    pathname: ROUTE.bookADemoConnect as string,
+  },
   changelog: {
     title: `Changelog | ${config.projectName}`,
     description: `Stay up-to-date with ${config.projectName}`,
@@ -76,5 +88,12 @@ export const SEO_DATA = {
     title: `Blog`,
     description: "Stay up to date with the latest updates from Novu",
     pathname: ROUTE.blog as string,
+  },
+  aci: {
+    title: "Agent Communication Infrastructure | Novu",
+    description:
+      "The missing agent-to-user communication layer between every customer, channel, and agent.",
+    pathname: ROUTE.aci as string,
+    imagePath: "/og-images/og-image-aci.jpg",
   },
 }

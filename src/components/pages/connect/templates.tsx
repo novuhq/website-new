@@ -107,25 +107,40 @@ function getTemplateFilterCategories({
   categories,
   templates,
 }: IAgentTemplatesSectionData): ITemplateFilterCategory[] {
-  const categoryMap = new Map<string, ITemplateFilterCategory>()
-
-  for (const category of categories ?? []) {
-    const normalizedCategory = normalizeCategory(category)
-
-    if (normalizedCategory) {
-      categoryMap.set(normalizedCategory.id, normalizedCategory)
-    }
-  }
+  const categoriesWithTemplates = new Map<string, ITemplateFilterCategory>()
 
   for (const template of templates ?? []) {
     const normalizedCategory = normalizeCategory(template.category)
 
-    if (normalizedCategory && !categoryMap.has(normalizedCategory.id)) {
-      categoryMap.set(normalizedCategory.id, normalizedCategory)
+    if (normalizedCategory) {
+      categoriesWithTemplates.set(normalizedCategory.id, normalizedCategory)
     }
   }
 
-  return [ALL_TEMPLATES_CATEGORY, ...categoryMap.values()]
+  const orderedCategories: ITemplateFilterCategory[] = []
+  const orderedCategoryIds = new Set<string>()
+
+  for (const category of categories ?? []) {
+    const normalizedCategory = normalizeCategory(category)
+
+    if (
+      normalizedCategory &&
+      categoriesWithTemplates.has(normalizedCategory.id)
+    ) {
+      orderedCategories.push(normalizedCategory)
+      orderedCategoryIds.add(normalizedCategory.id)
+    }
+  }
+
+  for (const category of categoriesWithTemplates.values()) {
+    if (!orderedCategoryIds.has(category.id)) {
+      orderedCategories.push(category)
+    }
+  }
+
+  return orderedCategories.length > 0
+    ? [ALL_TEMPLATES_CATEGORY, ...orderedCategories]
+    : []
 }
 
 function TemplateActionLink({
@@ -415,7 +430,7 @@ function Templates({
   return (
     <section
       id="templates"
-      className="scroll-mt-16 pt-28 [overflow-anchor:none] md:pt-36 lg:pt-44 xl:pt-50"
+      className="scroll-mt-25 [overflow-anchor:none]"
       data-connect-section="templates"
     >
       <div className="mx-auto flex w-full max-w-304 flex-col items-center gap-9 px-5 md:px-8 2xl:px-0">
@@ -450,12 +465,14 @@ function Templates({
 
           <div className="h-px w-full bg-gray-2" />
 
-          <TemplateFilters
-            categories={categories}
-            activeCategory={activeCategory}
-            filtersRef={filtersRef}
-            onCategoryChange={handleCategoryChange}
-          />
+          {categories.length > 0 && (
+            <TemplateFilters
+              categories={categories}
+              activeCategory={activeCategory}
+              filtersRef={filtersRef}
+              onCategoryChange={handleCategoryChange}
+            />
+          )}
         </div>
 
         <div className="flex w-full flex-col items-center gap-7">
