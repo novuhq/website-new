@@ -4,16 +4,31 @@ import bgIllustration from "@/images/pages/customers/cta/bg-illustration.png"
 import shine from "@/svgs/pages/customers/cta/shine.svg"
 
 import { IContentCtaBlock } from "@/types/content"
+import { normalizeDashboardUrl } from "@/lib/normalize-dashboard-url"
 import { Button } from "@/components/ui/button"
 
-function Cta({ text, buttonText, buttonUrl, clickLocation, clickText }: IContentCtaBlock) {
+function Cta({
+  text,
+  buttonText,
+  buttonUrl,
+  clickLocation,
+  clickText,
+}: IContentCtaBlock) {
+  const normalizedButtonUrl = normalizeDashboardUrl(buttonUrl)
+
   return (
     <div className="not-prose relative my-6 flex items-center justify-between gap-x-4 rounded-xl px-4 py-6 md:px-5">
       <h2 className="relative z-20 text-[20px] leading-tight font-medium md:text-[22px]">
         {text}
       </h2>
       <Button className="relative z-20 h-9" asChild>
-        <NextLink href={buttonUrl} data-click-location={clickLocation} data-click-text={clickText}>{buttonText}</NextLink>
+        <NextLink
+          href={normalizedButtonUrl}
+          data-click-location={clickLocation}
+          data-click-text={clickText}
+        >
+          {buttonText}
+        </NextLink>
       </Button>
 
       <div className="absolute inset-0 z-10 overflow-hidden rounded-[inherit]">

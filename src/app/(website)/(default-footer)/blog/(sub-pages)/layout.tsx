@@ -65,7 +65,9 @@ export default async function BlogPagesLayout({
           {
             kind: "primary-button",
             label: "Get started",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: "blog_archive_cta",
+            clickText: "get_started",
           },
           {
             kind: "secondary-button",

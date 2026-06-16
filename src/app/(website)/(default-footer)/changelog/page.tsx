@@ -84,7 +84,9 @@ export default async function ChangelogPage({
           {
             kind: "primary-button",
             label: "Get started",
-            href: `${ROUTE.dashboard}?utm_campaign=gs-website-inbox`,
+            href: ROUTE.dashboard,
+            clickLocation: "changelog_cta",
+            clickText: "get_started",
           },
           {
             kind: "secondary-button",

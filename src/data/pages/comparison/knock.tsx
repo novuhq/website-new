@@ -34,7 +34,7 @@ export const knockComparisonData: IComparisonPageData = {
       "All your notification infrastructure needs, workflows, routing, preferences, and <Inbox /> in one platform, open source and built for builders and teams.",
     primaryCta: {
       label: "Start for Free",
-      href: "https://dashboard.novu.co/auth/sign-up",
+      href: "https://dashboard.novu.co",
       clickLocation: "comparison_knock_hero",
       clickText: "start_for_free",
     },
@@ -75,7 +75,7 @@ export const knockComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Get Started",
-      href: "https://dashboard.novu.co/auth/sign-up",
+      href: "https://dashboard.novu.co",
       clickLocation: "comparison_knock_intro",
       clickText: "get_started",
     },
@@ -118,7 +118,7 @@ export const knockComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Switch to Novu",
-      href: "https://dashboard.novu.co/auth/sign-up",
+      href: "https://dashboard.novu.co",
       clickLocation: "comparison_knock_frustrations",
       clickText: "switch_to_novu",
     },
@@ -173,7 +173,7 @@ export const knockComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Explore Novu",
-      href: "https://dashboard.novu.co/auth/sign-up",
+      href: "https://dashboard.novu.co",
       clickLocation: "comparison_knock_difference",
       clickText: "explore_novu",
     },
