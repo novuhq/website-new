@@ -25,7 +25,7 @@ const COVER_TEMPLATES = {
 } satisfies Record<THowToCoverTemplate, { path: string }>
 
 const SCALE = 2
-const DEFAULT_ASSET_BASE_URL = "http://localhost:3000"
+const LOCAL_ASSET_BASE_URL = "http://localhost:3000"
 
 const TITLE_STYLE = {
   display: "-webkit-box",
@@ -46,11 +46,26 @@ function getTemplateKey(value: string | null): THowToCoverTemplate {
   return isHowToCoverTemplate(value) ? value : "default"
 }
 
-function getPublicAssetUrl(path: string) {
-  const assetBaseUrl =
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || DEFAULT_ASSET_BASE_URL
+function getVercelDeploymentUrl() {
+  const vercelUrl = process.env.VERCEL_URL
 
-  return new URL(path, assetBaseUrl).toString()
+  if (!vercelUrl) {
+    return null
+  }
+
+  return vercelUrl.startsWith("http") ? vercelUrl : `https://${vercelUrl}`
+}
+
+function getPublicAssetBaseUrl() {
+  return (
+    getVercelDeploymentUrl() ||
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL ||
+    LOCAL_ASSET_BASE_URL
+  )
+}
+
+function getPublicAssetUrl(path: string) {
+  return new URL(path, getPublicAssetBaseUrl()).toString()
 }
 
 async function loadCoverFont() {
