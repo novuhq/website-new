@@ -163,7 +163,7 @@ function ChannelCard({
 }: IChannel & { trackingLocation: string }) {
   const isComingSoon = state === "coming-soon"
   const cardClassName = cn(
-    "group flex h-21 min-w-0 items-center gap-4 overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-5 transition-[background,border-color,box-shadow] duration-200 ease-[ease] motion-reduce:transition-none",
+    "group flex h-21 min-w-0 items-center gap-4 overflow-hidden rounded-xl border border-connect-card-border bg-[rgba(15,15,21,0.8)] p-5 transition-[background,border-color,box-shadow] duration-200 ease-[ease] motion-reduce:transition-none",
     !isComingSoon &&
       "touch-manipulation outline-none hover:border-[rgba(51,51,71,0.6)] hover:[background:var(--integration-card-hover-bg)] focus-visible:border-[rgba(51,51,71,0.6)] focus-visible:[background:var(--integration-card-hover-bg)] focus-visible:ring-2 focus-visible:ring-lagune-3/40",
     isComingSoon && "opacity-60"

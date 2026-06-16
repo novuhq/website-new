@@ -61,6 +61,14 @@ export const SEO_DATA = {
     imageAlt: `${config.projectName} Connect social preview`,
     pathname: ROUTE.connect as string,
   },
+  connectHowTo: {
+    title: `How-to Guides for ${config.projectName} Connect`,
+    description:
+      "Step-by-step guides for connecting agents to the tools and channels your team already uses with Novu Connect.",
+    imagePath: "/og-images/og-image-connect.jpg",
+    imageAlt: `${config.projectName} Connect how-to guides social preview`,
+    pathname: ROUTE.connectHowTo as string,
+  },
   mcp: {
     title: "Novu MCP Server — Add Notifications to Any AI Agent",
     description:
