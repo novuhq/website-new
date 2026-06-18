@@ -129,7 +129,7 @@ export default function NotificationsAnimation() {
           </div>
 
           <p className="text-base leading-normal font-book tracking-tighter text-gray-8 md:max-w-148 md:text-[1.125rem] lg:mt-5 lg:text-xl xl:mt-6.5 xl:max-w-176 xl:text-2xl [&_strong]:font-medium [&_strong]:text-white">
-            For decades, products notifed users one way{" "}
+            For decades, products notified users one way{" "}
             <strong>via notifications</strong>, that always{" "}
             <strong>
               lacked the correct context, and limited users&apos; ability

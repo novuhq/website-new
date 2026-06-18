@@ -7,15 +7,14 @@ import { Check, Copy } from "lucide-react"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
 
-const ACI_PROMPT =
-  "Help me connect my agent to customers using Novu Agent Communication Infrastructure (ACI). Review the Novu documentation and guide me through the setup."
+const ACI_PROMPT = "Add an agent to my app https://novu.co/agents.md"
 
 function HeroActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
 
   return (
     <div className="flex w-full max-w-79.25 flex-col items-center lg:items-start">
-      <div className="flex w-full gap-3 flex-row sm:gap-5">
+      <div className="flex w-full flex-row gap-3 sm:gap-5">
         <Button
           variant="default"
           size="lg"
