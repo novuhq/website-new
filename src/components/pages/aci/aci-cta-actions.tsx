@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 
 const CONNECT_COMMAND = "npx novu connect"
 const ACI_PROMPT =
-  "Help me connect my agent to customers using Novu Agent Communication Infrastructure (ACI). Review the Novu documentation and guide me through the setup."
+  "Add an agent to my app using instructions from <https://novu.co/agents.md>"
 const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${ACI_PROMPT}`
 
 function AciCtaActions() {

@@ -8,7 +8,7 @@ import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
 
 const ACI_PROMPT =
-  "Help me connect my agent to customers using Novu Agent Communication Infrastructure (ACI). Review the Novu documentation and guide me through the setup."
+  "Add an agent to my app using instructions from <https://novu.co/agents.md>"
 
 function HeroActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
