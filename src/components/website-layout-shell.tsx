@@ -5,6 +5,7 @@ import Script from "next/script"
 import { Providers } from "@/contexts"
 
 import { cn } from "@/lib/utils"
+import DemoBookingTracker from "@/components/demo-booking-tracker"
 import Fonts from "@/components/fonts"
 import MixpanelTracking from "@/components/mixpanel-tracking"
 import PreviewWarning from "@/components/preview-warning"
@@ -50,6 +51,7 @@ async function WebsiteLayoutShell({
       >
         <MixpanelTracking />
         <UtmForwarder />
+        <DemoBookingTracker />
         <Providers>
           <div
             className={cn(
