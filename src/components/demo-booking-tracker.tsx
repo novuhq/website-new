@@ -40,29 +40,34 @@ function getStoredUtmParams(): Record<string, string> {
 export default function DemoBookingTracker() {
   useEffect(() => {
     let cancelled = false
+    let cal: Awaited<ReturnType<typeof getCalApi>> | null = null
+
+    // Stable reference so the same callback can be passed to both `on` and
+    // `off` (Cal.com requires an identical reference to unregister).
+    const handleBookingSuccessful = () => {
+      const w = window as Window & {
+        dataLayer?: Record<string, unknown>[]
+      }
+      w.dataLayer = w.dataLayer || []
+      w.dataLayer.push({
+        event: "demo_booked",
+        demo_booking: {
+          source: "cal.com",
+          namespace: NAMESPACE,
+          // UTM/gclid captured on landing, for downstream/offline use.
+          ...getStoredUtmParams(),
+        },
+      })
+    }
 
     const init = async () => {
       try {
-        const cal = await getCalApi({ namespace: NAMESPACE })
+        cal = await getCalApi({ namespace: NAMESPACE })
         if (cancelled) return
 
         cal("on", {
           action: "bookingSuccessful",
-          callback: () => {
-            const w = window as Window & {
-              dataLayer?: Record<string, unknown>[]
-            }
-            w.dataLayer = w.dataLayer || []
-            w.dataLayer.push({
-              event: "demo_booked",
-              demo_booking: {
-                source: "cal.com",
-                namespace: NAMESPACE,
-                // UTM/gclid captured on landing, for downstream/offline use.
-                ...getStoredUtmParams(),
-              },
-            })
-          },
+          callback: handleBookingSuccessful,
         })
       } catch {
         // Cal.com embed unavailable; nothing to track.
@@ -73,6 +78,12 @@ export default function DemoBookingTracker() {
 
     return () => {
       cancelled = true
+      // Unregister so a remount doesn't stack listeners and double-fire the
+      // conversion on a single booking.
+      cal?.("off", {
+        action: "bookingSuccessful",
+        callback: handleBookingSuccessful,
+      })
     }
   }, [])
 
