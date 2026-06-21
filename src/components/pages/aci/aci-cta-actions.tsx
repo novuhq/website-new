@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 const CONNECT_COMMAND = "npx novu connect"
 const ACI_PROMPT =
   "Add an agent to my app using instructions from https://novu.co/agents.md"
-const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${ACI_PROMPT}`
+const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${encodeURIComponent(ACI_PROMPT)}`
 
 function AciCtaActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
