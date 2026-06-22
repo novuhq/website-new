@@ -25,27 +25,40 @@ function sha256Digest(filePath) {
   return `sha256:${hash.digest("hex")}`
 }
 
-function parseFrontmatter(skillMdPath) {
+function normalizeDescription(description) {
+  return description.replace(/^['"]|['"]$/g, "").slice(0, 1024)
+}
+
+function parseFrontmatter(skillMdPath, skillDirectory) {
   const content = readFileSync(skillMdPath, "utf8")
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
 
-  if (!match) {
-    throw new Error(`Missing YAML frontmatter in ${skillMdPath}`)
+  if (match) {
+    const frontmatter = match[1]
+    const name = frontmatter.match(/^name:\s*(.+)$/m)?.[1]?.trim()
+    const description = frontmatter.match(/^description:\s*(.+)$/m)?.[1]?.trim()
+
+    if (!name || !description) {
+      throw new Error(`Missing name or description in ${skillMdPath}`)
+    }
+
+    return { name, description: normalizeDescription(description) }
   }
 
-  const frontmatter = match[1]
-  const name = frontmatter.match(/^name:\s*(.+)$/m)?.[1]?.trim()
-  const description = frontmatter.match(/^description:\s*(.+)$/m)?.[1]?.trim()
+  const directoryName = basename(skillDirectory)
+  const name = `novu-${directoryName}`
+  const body = content.replace(/^#\s+.+\r?\n+/, "")
+  const firstParagraph = body.match(/^([^\n#].+(?:\r?\n[^\n#].+)*)/)?.[1]?.trim()
 
-  if (!name || !description) {
-    throw new Error(`Missing name or description in ${skillMdPath}`)
+  if (!firstParagraph) {
+    throw new Error(`Missing YAML frontmatter and fallback description in ${skillMdPath}`)
   }
 
-  const normalizedDescription = description
-    .replace(/^['"]|['"]$/g, "")
-    .slice(0, 1024)
+  const description = normalizeDescription(
+    firstParagraph.replace(/\*\*/g, "").replace(/\s+/g, " "),
+  )
 
-  return { name, description: normalizedDescription }
+  return { name, description }
 }
 
 function listFilesRecursively(directory) {
@@ -181,7 +194,7 @@ function discoverSkills() {
 
   return skillDirectories.map((skillDirectory) => {
     const skillMdPath = join(skillDirectory, "SKILL.md")
-    const metadata = parseFrontmatter(skillMdPath)
+    const metadata = parseFrontmatter(skillMdPath, skillDirectory)
 
     const artifact = hasSupportingFiles(skillDirectory)
       ? publishArchive(metadata.name, skillDirectory)
