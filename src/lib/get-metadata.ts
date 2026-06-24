@@ -20,6 +20,8 @@ type Metadata = {
   type?: string
   /** Whether search engines should index this page */
   noIndex?: boolean
+  /** Pathname for the markdown alternate. Set true to derive pathname + ".md". */
+  markdownPathname?: string | true | false
 }
 
 function withTrailingSlash(pathname: string) {
@@ -28,6 +30,15 @@ function withTrailingSlash(pathname: string) {
   }
 
   return pathname.endsWith("/") ? pathname : `${pathname}/`
+}
+
+function withMarkdownExtension(pathname: string) {
+  if (!pathname || pathname === "/") {
+    return "/index.md"
+  }
+
+  const normalized = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname
+  return `${normalized}.md`
 }
 
 /**
@@ -52,9 +63,17 @@ export function getMetadata({
   imageAlt,
   type = "website",
   noIndex = false,
+  markdownPathname,
 }: Metadata) {
   const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
   const canonicalUrl = SITE_URL + withTrailingSlash(pathname)
+  const markdownUrl =
+    !noIndex && markdownPathname
+      ? SITE_URL +
+        (markdownPathname === true
+          ? withMarkdownExtension(pathname)
+          : markdownPathname)
+      : null
   const resolvedImagePath = imagePath || config.defaultSocialImage
   const imageUrl = resolvedImagePath.startsWith("http")
     ? resolvedImagePath
@@ -65,6 +84,13 @@ export function getMetadata({
     description,
     alternates: {
       canonical: canonicalUrl,
+      ...(markdownUrl
+        ? {
+            types: {
+              "text/markdown": markdownUrl,
+            },
+          }
+        : {}),
     },
     manifest: `${SITE_URL}/manifest.json`,
     icons: {

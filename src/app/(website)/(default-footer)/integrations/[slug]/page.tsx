@@ -4,8 +4,6 @@ import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
-import { safeJsonLdStringify } from "@/lib/json-ld"
-import { compileIntegrationMdx } from "@/lib/markdown/compile-mdx"
 import {
   getAllIntegrations,
   getIntegrationBySlug,
@@ -15,6 +13,8 @@ import {
   getDefaultIntegrationSeoDescription,
   getDefaultIntegrationSeoTitleSegment,
 } from "@/lib/integrations/seo-defaults"
+import { safeJsonLdStringify } from "@/lib/json-ld"
+import { compileIntegrationMdx } from "@/lib/markdown/compile-mdx"
 import CTA from "@/components/pages/cta"
 import IntegrationDetail from "@/components/pages/integrations/integration-detail"
 
@@ -43,13 +43,15 @@ export async function generateMetadata({
   const titleSegment =
     integration.seo?.title ?? getDefaultIntegrationSeoTitleSegment(integration)
   const description =
-    integration.seo?.description ?? getDefaultIntegrationSeoDescription(integration)
+    integration.seo?.description ??
+    getDefaultIntegrationSeoDescription(integration)
 
   return getMetadata({
     title: `${titleSegment} | ${config.projectName}`,
     description,
     pathname: `${ROUTE.integrations}/${integration.slug}`,
     noIndex: integration.seo?.noIndex,
+    markdownPathname: true,
   })
 }
 
@@ -70,7 +72,8 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
   const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
 
   const resolvedDescription =
-    integration.seo?.description ?? getDefaultIntegrationSeoDescription(integration)
+    integration.seo?.description ??
+    getDefaultIntegrationSeoDescription(integration)
 
   const jsonLd = {
     "@context": "https://schema.org",

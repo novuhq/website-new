@@ -43,6 +43,14 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  async rewrites() {
+    return [
+      {
+        source: "/:path(.*)\\.md",
+        destination: "/md/:path?format=markdown",
+      },
+    ]
+  },
   async redirects() {
     return [
       {

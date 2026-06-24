@@ -99,10 +99,11 @@ export default async function ChangelogPage({
   )
 }
 
-export const metadata: Metadata = getMetadata(
-  SEO_DATA.changelog || {
+export const metadata: Metadata = getMetadata({
+  ...(SEO_DATA.changelog || {
     title: "Changelog",
     description: "Latest updates",
     pathname: ROUTE.changelog,
-  }
-)
+  }),
+  markdownPathname: true,
+})

@@ -41,6 +41,7 @@ export async function generateMetadata({
     description: seo?.description || about,
     pathname: `${ROUTE.customers}/${slug}`,
     imagePath: seo?.socialImage || SEO_DATA.customers.imagePath,
+    markdownPathname: true,
   })
 }
 

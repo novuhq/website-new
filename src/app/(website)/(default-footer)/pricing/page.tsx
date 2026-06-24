@@ -36,8 +36,7 @@ const faqItems = [
       "Yes. We offer reduced annual pricing and volume-based tiers. Enterprise customers receive custom bundle pricing.",
   },
   {
-    question:
-      "Which regions do you support and how is data residency handled?",
+    question: "Which regions do you support and how is data residency handled?",
     answer:
       "All plans support US and EU regions. Enterprise can use additional regions (Singapore, UK, Australia, Japan, South Korea) or request custom regions/VPC hosting.",
   },
@@ -146,6 +145,9 @@ async function PricingPage() {
 
 export default PricingPage
 
-export const metadata: Metadata = getMetadata(SEO_DATA.pricing)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.pricing,
+  markdownPathname: true,
+})
 
 export const revalidate = 90

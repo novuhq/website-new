@@ -48,4 +48,7 @@ export default function CopilotPage() {
   )
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.copilot)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.copilot,
+  markdownPathname: true,
+})

@@ -11,4 +11,7 @@ export default async function ConnectPage() {
   return <ConnectPageContent templatesSection={templatesSection} />
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.connect)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.connect,
+  markdownPathname: true,
+})

@@ -8,7 +8,6 @@ import { comparisonReviews } from "@/data/pages/comparison/reviews"
 
 import { getMetadata } from "@/lib/get-metadata"
 import Banner from "@/components/pages/banner"
-import CodeWithInbox from "@/components/pages/home/code-with-inbox/code-with-inbox"
 import ComparisonTableSection from "@/components/pages/comparison/comparison-table"
 import Difference from "@/components/pages/comparison/difference"
 import Frustrations from "@/components/pages/comparison/frustrations"
@@ -16,6 +15,7 @@ import Hero from "@/components/pages/comparison/hero"
 import Intro from "@/components/pages/comparison/intro"
 import CTA from "@/components/pages/cta"
 import FAQ from "@/components/pages/faq"
+import CodeWithInbox from "@/components/pages/home/code-with-inbox/code-with-inbox"
 import Reviews from "@/components/pages/reviews"
 import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
@@ -37,16 +37,18 @@ export async function generateMetadata({
     return {}
   }
 
-  const ogTitle = `${data.hero.heading.prefix} ${data.hero.heading.highlight}`.replace(
-    /\u00a0/g,
-    " "
-  )
+  const ogTitle =
+    `${data.hero.heading.prefix} ${data.hero.heading.highlight}`.replace(
+      /\u00a0/g,
+      " "
+    )
 
   return getMetadata({
     title: ogTitle,
     description: `Exploring alternatives to ${data.competitor}? See why developers choose Novu for multi-channel notifications: open-source, fully customizable, and built for scale.`,
     pathname: `/comparison/${slug}`,
     imagePath: `/og-images/comparison/${slug}.jpg`,
+    markdownPathname: true,
   })
 }
 
