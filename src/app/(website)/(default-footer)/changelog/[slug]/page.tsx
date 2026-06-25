@@ -89,6 +89,7 @@ export async function generateMetadata({
     description: seo?.description || caption,
     pathname: pathname,
     imagePath: seo?.socialImage || cover,
+    noIndex: seo?.noIndex,
     markdownPathname: true,
   })
 }

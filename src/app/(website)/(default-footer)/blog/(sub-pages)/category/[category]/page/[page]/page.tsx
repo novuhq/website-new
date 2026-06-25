@@ -97,6 +97,5 @@ export async function generateMetadata({
     title: `${SEO_DATA.blog.title}: ${categoryData.title} - page ${page} | ${config.projectName}`,
     description: `${categoryData.title} ${SEO_DATA.blog.description} ${page > 1 ? `Page ${page}` : ""}`,
     pathname: `${ROUTE.blogCategory}/${category}/page/${page}`,
-    markdownPathname: true,
   })
 }

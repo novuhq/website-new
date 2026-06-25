@@ -2,12 +2,14 @@ import type { NextRequest } from "next/server"
 
 import {
   getMarkdownPageByPath,
-  getSiteUrl,
   markdownResponseBody,
+} from "@/lib/markdown/page-markdown"
+import {
+  getSiteUrl,
   pathSegmentsToPathname,
   toCanonicalPathname,
   toMarkdownPathname,
-} from "@/lib/markdown/page-markdown"
+} from "@/lib/markdown/url"
 
 type RouteContext = {
   params: Promise<{ path: string[] }>
