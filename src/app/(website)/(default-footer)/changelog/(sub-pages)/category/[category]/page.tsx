@@ -53,5 +53,6 @@ export async function generateMetadata({
     title: `${categoryTitle} | Changelog | Novu`,
     description: `Latest updates and improvements in the ${categoryTitle.toLowerCase()} category.`,
     pathname: `${ROUTE.changelog}/category/${category}`,
+    markdownPathname: true,
   })
 }

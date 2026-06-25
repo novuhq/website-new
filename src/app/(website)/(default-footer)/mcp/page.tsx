@@ -151,4 +151,7 @@ export default function McpPage() {
   )
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.mcp)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.mcp,
+  markdownPathname: true,
+})

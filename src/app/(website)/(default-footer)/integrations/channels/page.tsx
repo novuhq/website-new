@@ -4,6 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
+
 import IntegrationsTabPageContent from "../_components/integrations-tab-page-content"
 
 const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
@@ -13,12 +14,13 @@ export const dynamic = "force-static"
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = SEO_DATA.integrationsChannels
-  const base = getMetadata(seo)
+  const base = getMetadata({ ...seo, markdownPathname: true })
   const canonicalUrl = `${SITE_URL}${ROUTE.integrations}/channels/`
 
   return {
     ...base,
     alternates: {
+      ...base.alternates,
       canonical: canonicalUrl,
     },
     openGraph: {

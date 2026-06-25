@@ -117,4 +117,7 @@ export default function AciPage() {
   )
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.aci)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.aci,
+  markdownPathname: true,
+})
