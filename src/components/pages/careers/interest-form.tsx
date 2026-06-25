@@ -25,16 +25,35 @@ const interestOptions = [
   "Operations",
 ]
 
+const labelClassName =
+  "text-[0.9375rem] leading-snug font-normal tracking-tighter text-white"
+
 const formSchema = z.object({
-  name: z.string().min(2, "Please enter your name."),
+  fullName: z.string().min(2, "Please enter your full name."),
   email: z.string().email("Please enter a valid email address."),
-  role: z.string().min(1, "Please select an area of interest."),
-  link: z.string().url("Please enter a valid URL."),
-  note: z.string().min(20, "Please add a little more detail."),
+  phoneNumber: z.string().min(5, "Please enter your phone number."),
+  linkedInProfile: z.string().url("Please enter a valid LinkedIn URL."),
+  location: z.string().min(2, "Please enter your city and country."),
+  remoteAsyncExperience: z.string().min(1, "Please select one of the options."),
+  cv: z.any().refine((files) => files?.length === 1, "Please attach your CV."),
+  personalNote: z.string().min(20, "Please add a little more detail."),
+  department: z.string().min(1, "Please select a department."),
 })
 
 type CareersInterestFormValues = z.infer<typeof formSchema>
 type CareersFieldName = keyof CareersInterestFormValues
+
+const formDefaultValues: CareersInterestFormValues = {
+  fullName: "",
+  email: "",
+  phoneNumber: "",
+  linkedInProfile: "",
+  location: "",
+  remoteAsyncExperience: "",
+  cv: undefined,
+  personalNote: "",
+  department: "",
+}
 
 type CareersFieldProps = {
   control: ReturnType<typeof useForm<CareersInterestFormValues>>["control"]
@@ -58,9 +77,37 @@ function CareersTextField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
             <Input placeholder={placeholder} type={type} {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
+
+function CareersFileField({
+  control,
+  name,
+  label,
+}: Omit<CareersFieldProps, "placeholder">) {
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field: { onChange, ref, name } }) => (
+        <FormItem>
+          <FormLabel className={labelClassName}>{label}</FormLabel>
+          <FormControl>
+            <Input
+              ref={ref}
+              name={name}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={(event) => onChange(event.target.files)}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -84,7 +131,7 @@ function CareersSelectField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
             <select
               className="flex h-11 w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-base leading-snug tracking-tight text-foreground transition-colors duration-300 focus-visible:border-accent-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 has-[option[value='']:checked]:text-muted-foreground"
@@ -117,7 +164,7 @@ function CareersTextareaField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
             <textarea
               className="flex min-h-30 w-full resize-y rounded-md border border-border bg-background px-3.5 py-2.5 text-base leading-snug tracking-tight transition-colors duration-300 placeholder:text-muted-foreground focus-visible:border-accent-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
@@ -135,15 +182,10 @@ function CareersTextareaField({
 function CareersInterestForm() {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [formKey, setFormKey] = useState(0)
   const form = useForm<CareersInterestFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      role: "",
-      link: "",
-      note: "",
-    },
+    defaultValues: formDefaultValues,
   })
 
   async function onSubmit(values: CareersInterestFormValues) {
@@ -151,12 +193,20 @@ function CareersInterestForm() {
     setSubmitError(null)
 
     try {
+      const formData = new FormData()
+      formData.append("fullName", values.fullName)
+      formData.append("email", values.email)
+      formData.append("phoneNumber", values.phoneNumber)
+      formData.append("linkedInProfile", values.linkedInProfile)
+      formData.append("location", values.location)
+      formData.append("remoteAsyncExperience", values.remoteAsyncExperience)
+      formData.append("personalNote", values.personalNote)
+      formData.append("department", values.department)
+      formData.append("cv", values.cv[0])
+
       const response = await fetch("/api/careers/apply", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+        body: formData,
       })
 
       if (!response.ok) {
@@ -164,7 +214,8 @@ function CareersInterestForm() {
       }
 
       setSubmitted(true)
-      form.reset()
+      form.reset(formDefaultValues)
+      setFormKey((key) => key + 1)
 
       window.setTimeout(() => {
         setSubmitted(false)
@@ -177,6 +228,7 @@ function CareersInterestForm() {
   return (
     <Form {...form}>
       <form
+        key={formKey}
         className="mt-11 rounded-md border border-mcp-prompt-card-border bg-mcp-prompt-card p-6 md:p-9"
         onSubmit={form.handleSubmit(onSubmit)}
         noValidate
@@ -184,9 +236,9 @@ function CareersInterestForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <CareersTextField
             control={form.control}
-            name="name"
-            label="Your name"
-            placeholder="Jane"
+            name="fullName"
+            label="Full Name"
+            placeholder="Jane Doe"
           />
           <CareersTextField
             control={form.control}
@@ -195,28 +247,49 @@ function CareersInterestForm() {
             placeholder="jane@email.com"
             type="email"
           />
-        </div>
-
-        <div className="mt-6 grid gap-6">
-          <CareersSelectField
+          <CareersTextField
             control={form.control}
-            name="role"
-            label="Role or area of interest"
-            placeholder="Please select"
-            options={interestOptions}
+            name="phoneNumber"
+            label="Phone number"
+            placeholder="+1 555 000 0000"
+            type="text"
           />
           <CareersTextField
             control={form.control}
-            name="link"
-            label="LinkedIn, GitHub, or portfolio"
-            placeholder="Paste your link here"
+            name="linkedInProfile"
+            label="LinkedIn profile"
+            placeholder="https://www.linkedin.com/in/jane"
             type="url"
           />
+        </div>
+
+        <div className="mt-6 grid gap-6">
+          <CareersTextField
+            control={form.control}
+            name="location"
+            label="Location (city and country)"
+            placeholder="New York, USA"
+          />
+          <CareersSelectField
+            control={form.control}
+            name="remoteAsyncExperience"
+            label="Have you previously worked in a fully remote and async company?"
+            placeholder="Please select"
+            options={["Yes", "No"]}
+          />
+          <CareersSelectField
+            control={form.control}
+            name="department"
+            label="Department"
+            placeholder="Please select"
+            options={interestOptions}
+          />
+          <CareersFileField control={form.control} name="cv" label="CV" />
           <CareersTextareaField
             control={form.control}
-            name="note"
-            label="A short note about why Novu interests you"
-            placeholder="Your company needs..."
+            name="personalNote"
+            label="Personal note"
+            placeholder="Tell us why Novu interests you..."
           />
         </div>
 

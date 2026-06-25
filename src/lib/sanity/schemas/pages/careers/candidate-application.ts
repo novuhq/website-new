@@ -6,9 +6,9 @@ export default defineType({
   title: "Candidate Application",
   fields: [
     defineField({
-      name: "name",
+      name: "fullName",
       type: "string",
-      title: "Name",
+      title: "Full Name",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -18,22 +18,56 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "role",
+      name: "phoneNumber",
       type: "string",
-      title: "Role or area of interest",
+      title: "Phone number",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "link",
+      name: "linkedInProfile",
       type: "url",
-      title: "LinkedIn, GitHub, or portfolio",
+      title: "LinkedIn profile",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "note",
+      name: "location",
+      type: "string",
+      title: "Location (city and country)",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "remoteAsyncExperience",
+      type: "boolean",
+      title: "Previously worked in a fully remote and async company?",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "cv",
+      type: "file",
+      title: "CV",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "personalNote",
       type: "text",
-      title: "Note",
+      title: "Personal note",
       rows: 5,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "department",
+      type: "string",
+      title: "Department",
+      options: {
+        list: [
+          { title: "Engineering", value: "Engineering" },
+          { title: "Product", value: "Product" },
+          { title: "Design", value: "Design" },
+          { title: "Developer relations", value: "Developer relations" },
+          { title: "Marketing", value: "Marketing" },
+          { title: "Operations", value: "Operations" },
+        ],
+      },
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -75,12 +109,12 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "name",
+      title: "fullName",
       email: "email",
-      role: "role",
+      department: "department",
       submittedAt: "submittedAt",
     },
-    prepare({ title, email, role, submittedAt }) {
+    prepare({ title, email, department, submittedAt }) {
       const date = submittedAt
         ? new Intl.DateTimeFormat("en", {
             dateStyle: "medium",
@@ -90,7 +124,7 @@ export default defineType({
 
       return {
         title,
-        subtitle: [email, role, date].filter(Boolean).join(" · "),
+        subtitle: [email, department, date].filter(Boolean).join(" · "),
       }
     },
   },

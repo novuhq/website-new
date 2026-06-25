@@ -30,6 +30,7 @@ const structure: StructureResolver = (S, context) =>
                 .title("Open roles")
                 .icon(DocumentsIcon)
                 .child(S.documentTypeList("careerJob").title("Open Roles")),
+              S.divider(),
               S.listItem()
                 .title("Candidate applications")
                 .icon(DocumentsIcon)
