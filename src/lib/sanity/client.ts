@@ -10,6 +10,9 @@ export const client = createClient({
   apiVersion,
   useCdn: process.env.NODE_ENV === "production",
 })
+export const freshClient = client.withConfig({
+  useCdn: false,
+})
 export const previewClient = createClient({
   projectId,
   dataset,
@@ -19,21 +22,33 @@ export const previewClient = createClient({
   perspective: "drafts",
 })
 
-export const getClient = (preview = false) => (preview ? previewClient : client)
+export const getClient = (preview = false, useCdn = true) =>
+  preview ? previewClient : useCdn ? client : freshClient
 
 export async function sanityFetch<QueryResponse>({
   query,
   qParams = {},
   preview = false,
   tags = [],
+  cache = "force-cache",
+  useCdn = true,
 }: {
   query: string
   qParams?: QueryParams
   preview?: boolean
   tags?: string[]
+  cache?: RequestCache
+  useCdn?: boolean
 }): Promise<QueryResponse> {
-  return getClient(preview).fetch<QueryResponse>(query, qParams, {
-    cache: "force-cache",
-    next: { tags },
-  })
+  const options: { cache: RequestCache; next?: { tags: string[] } } = { cache }
+
+  if (cache !== "no-store") {
+    options.next = { tags }
+  }
+
+  return getClient(preview, useCdn).fetch<QueryResponse>(
+    query,
+    qParams,
+    options
+  )
 }

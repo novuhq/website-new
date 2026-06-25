@@ -13,6 +13,11 @@ import { pageFromSeo, postListMarkdown } from "../page-utils"
 import { portableTextToMarkdown } from "../portable-text-to-markdown"
 import type { MarkdownPage, MarkdownResult } from "../types"
 
+const MARKDOWN_BLOG_READ_OPTIONS = {
+  cache: "no-store",
+  useCdn: false,
+} as const
+
 export async function getBlogListing(
   pathname: string
 ): Promise<MarkdownResult | null> {
@@ -24,7 +29,7 @@ export async function getBlogListing(
   }
 
   if (pathname === "/blog") {
-    const posts = await getAllPosts(false)
+    const posts = await getAllPosts(false, MARKDOWN_BLOG_READ_OPTIONS)
 
     return {
       type: "page",
@@ -44,8 +49,8 @@ export async function getBlogListing(
 
   const category = categoryMatch[1]
   const [categoryData, posts] = await Promise.all([
-    getCategoryBySlug(category, false),
-    getPostsByCategory(category, false),
+    getCategoryBySlug(category, false, MARKDOWN_BLOG_READ_OPTIONS),
+    getPostsByCategory(category, false, MARKDOWN_BLOG_READ_OPTIONS),
   ])
 
   if (!categoryData) {

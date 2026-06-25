@@ -54,6 +54,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path(.*)\\.md/",
+        destination: "/:path.md",
+        permanent: true,
+      },
+      {
         source: "/integrations",
         destination: "/integrations/channels",
         permanent: true,

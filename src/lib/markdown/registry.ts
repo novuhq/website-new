@@ -4,7 +4,6 @@ export const STATIC_MARKETING_MARKDOWN_PATHNAMES = [
   "/book-a-demo-connect",
   "/mcp",
   "/copilot",
-  "/aci",
 ] as const
 
 type MarkdownRouteFamily = {
@@ -27,6 +26,10 @@ export const MARKDOWN_ROUTE_FAMILIES: readonly MarkdownRouteFamily[] = [
   {
     name: "connect",
     pathnames: ["/connect"],
+  },
+  {
+    name: "aci",
+    pathnames: ["/aci"],
   },
   {
     name: "blog",
