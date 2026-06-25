@@ -19,6 +19,27 @@ const structure: StructureResolver = (S, context) =>
         .title("Static pages")
         .icon(DocumentsIcon)
         .child(S.documentTypeList("staticPage").title("All Pages")),
+      S.listItem()
+        .title("Careers")
+        .icon(DocumentsIcon)
+        .child(
+          S.list()
+            .title("Careers")
+            .items([
+              S.listItem()
+                .title("Open roles")
+                .icon(DocumentsIcon)
+                .child(S.documentTypeList("careerJob").title("Open Roles")),
+              S.listItem()
+                .title("Candidate applications")
+                .icon(DocumentsIcon)
+                .child(
+                  S.documentTypeList("candidateApplication").title(
+                    "Candidate Applications"
+                  )
+                ),
+            ])
+        ),
       S.divider(),
       S.listItem()
         .title("Authors")

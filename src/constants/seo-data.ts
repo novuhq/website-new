@@ -36,6 +36,11 @@ export const SEO_DATA = {
     imagePath: "/social-previews/customers.jpg",
     pathname: ROUTE.customers as string,
   },
+  careers: {
+    title: `Careers | ${config.projectName}`,
+    description: `Join the team creating open-source notification infrastructure for developers, product teams, and the millions of users they reach.`,
+    pathname: ROUTE.careers as string,
+  },
   pricing: {
     title: `Pricing | ${config.projectName}`,
     description: `Flexible pricing for companies and developers`,

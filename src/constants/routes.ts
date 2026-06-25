@@ -24,6 +24,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   blog: "/blog",
   blogCategory: "/blog/category",
   blogRss: "/blog/rss.xml",
+  careers: "/careers",
   community: "/community",
   comparisonCourier: "/comparison/courier",
   comparisonKnock: "/comparison/knock",
@@ -56,7 +57,6 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   // Other services
   connectApp: "https://connect.novu.co",
   bookMeeting: "https://novu.co/contact-us/",
-  careers: "https://careers.novu.co",
   handbook: "https://handbook.novu.co",
   roadmap: "https://roadmap.novu.co",
   statusPage: "https://novustatus.com",
