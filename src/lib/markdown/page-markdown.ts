@@ -1,4 +1,5 @@
 import { formatPage } from "./page-utils"
+import { getAci } from "./pages/aci"
 import { getBlogListing, getBlogPost } from "./pages/blog"
 import { getChangelog } from "./pages/changelog"
 import { getComparison } from "./pages/comparison"
@@ -14,6 +15,7 @@ import { normalizePathname } from "./url"
 const PAGE_BUILDERS: MarkdownPageBuilder[] = [
   getPricing,
   getConnect,
+  getAci,
   getBlogPost,
   getChangelog,
   getCustomers,
