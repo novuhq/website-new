@@ -64,6 +64,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/docs",
+        destination: "https://docs.novu.co",
+        permanent: true,
+      },
+      {
+        source: "/docs/:path*",
+        destination: "https://docs.novu.co/:path*",
+        permanent: true,
+      },
+      {
         source: "/connect/agent-onboarding.md",
         destination: "/agents.md",
         permanent: true,
