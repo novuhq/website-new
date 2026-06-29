@@ -53,7 +53,7 @@ const HOW_IT_WORKS_STEPS = [
 
 const CLI_TERMINAL_COPY = [
   "Welcome to Novu Connect",
-  "Spin up an AI SDK Agent and connect it to Slack, Telegram, MS Team and more — all from your terminal",
+  "Spin up an AI SDK Agent and connect it to Slack, Telegram, MS Teams and more — all from your terminal",
   "Press Enter to sign in or create an account →",
   "System prompt",
   "You are a Pull Request review agent focused on analyzing code changes, identifying risks, and producing concise, actionable review output for...",
@@ -219,7 +219,7 @@ export async function getConnect(
   const body = [
     [
       "Novu connect",
-      "Connect your Claude agent where your customers actually work",
+      "Connect your agent to any channel",
       SEO_DATA.connect.description,
       formatCodeFence(CONNECT_COMMAND, "bash"),
       formatMarkdownLink("Sign Up", ROUTE.dashboardV2AgentsSignUp),
