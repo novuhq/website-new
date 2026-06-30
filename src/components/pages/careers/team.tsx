@@ -1,8 +1,8 @@
 import Image, { type StaticImageData } from "next/image"
-import image1 from "@/images/pages/careers/team/1.jpg"
-import image2 from "@/images/pages/careers/team/2.jpg"
-import image3 from "@/images/pages/careers/team/3.jpg"
-import image4 from "@/images/pages/careers/team/4.jpg"
+import image1 from "@/images/pages/careers/team/1.png"
+import image2 from "@/images/pages/careers/team/2.png"
+import image3 from "@/images/pages/careers/team/3.png"
+import image4 from "@/images/pages/careers/team/4.png"
 
 import { cn } from "@/lib/utils"
 

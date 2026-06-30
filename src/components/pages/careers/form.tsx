@@ -2,7 +2,10 @@ import CareersInterestForm from "./interest-form"
 
 function CareersForm() {
   return (
-    <section className="px-5 pb-50 md:px-8">
+    <section
+      className="scroll-mt-16 px-5 pb-50 md:scroll-mt-28 md:px-8"
+      id="apply"
+    >
       <div className="mx-auto max-w-192">
         <div className="text-center">
           <h2 className="text-[2.5rem] leading-dense font-medium tracking-tighter text-white md:text-[3.25rem]">
@@ -20,7 +23,6 @@ function CareersForm() {
             </p>
           </div>
         </div>
-
         <CareersInterestForm />
       </div>
     </section>

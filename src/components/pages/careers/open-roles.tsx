@@ -1,3 +1,6 @@
+import NextLink from "next/link"
+import { ROUTE } from "@/constants/routes"
+
 import { type ICareerJob } from "@/types/careers"
 import { Button } from "@/components/ui/button"
 
@@ -34,12 +37,16 @@ function CareersOpenRoles({ jobs }: CareersOpenRolesProps) {
                   <h3 className="text-[1.5rem] leading-snug font-medium text-white">
                     {job.title}
                   </h3>
-                  <div className="mt-3.5 flex flex-wrap tems-center gap-x-2.5 gap-y-1 text-base leading-none tracking-tighter">
+                  <div className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-base leading-none tracking-tighter">
                     <span className="text-lagune-3">{job.department}</span>
                     <span className="text-gray-5" aria-hidden>
                       |
                     </span>
-                    <span className="text-gray-8">{job.employmentType}</span>
+                    <span className="text-gray-8">{job.workplaceType}</span>
+                    <span className="text-gray-5" aria-hidden>
+                      |
+                    </span>
+                    <span className="text-gray-8">{job.hours}</span>
                     <span className="text-gray-5" aria-hidden>
                       |
                     </span>
@@ -48,23 +55,13 @@ function CareersOpenRoles({ jobs }: CareersOpenRolesProps) {
                 </div>
 
                 <Button className="h-8 w-full shrink-0 px-4 md:w-27.25" asChild>
-                  <a
-                    href={job.applicationUrl}
+                  <NextLink
+                    href={`${ROUTE.careers}/${job.slug}`}
                     data-click-location="careers_open_roles"
-                    data-click-text={`apply_now_${index + 1}`}
-                    target={
-                      job.applicationUrl.startsWith("http")
-                        ? "_blank"
-                        : undefined
-                    }
-                    rel={
-                      job.applicationUrl.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
+                    data-click-text={`view_role_${index + 1}`}
                   >
                     Apply now
-                  </a>
+                  </NextLink>
                 </Button>
               </div>
             </li>

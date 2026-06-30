@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "next-sanity"
+import { CAREER_DEPARTMENTS } from "@/constants/careers"
 import { z } from "zod"
-
-const departmentOptions = [
-  "Engineering",
-  "Product",
-  "Design",
-  "Developer relations",
-  "Marketing",
-  "Operations",
-] as const
 
 const MAX_CV_FILE_SIZE = 10 * 1024 * 1024
 const MAX_MULTIPART_BODY_SIZE = MAX_CV_FILE_SIZE + 1024 * 1024
@@ -28,26 +19,91 @@ const applicationSchema = z.object({
   location: z.string().trim().min(2),
   remoteAsyncExperience: z.enum(["Yes", "No"]),
   personalNote: z.string().trim().min(20),
-  department: z.enum(departmentOptions),
+  department: z.enum(CAREER_DEPARTMENTS),
 })
 
-function getSanityClient() {
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
-  const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2025-02-19"
-  const token = process.env.SANITY_API_PREVIEW_TOKEN
+const NOTION_VERSION = "2026-03-11"
+const NOTION_API_BASE_URL = "https://api.notion.com/v1"
 
-  if (!projectId || !dataset || !apiVersion || !token) {
-    throw new Error("Missing Sanity write configuration")
+let notionDataSourceIdPromise: Promise<string> | null = null
+
+type NotionErrorResponse = {
+  code?: string
+  message?: string
+}
+
+type NotionFileUploadResponse = {
+  id: string
+}
+
+type NotionPageResponse = {
+  id: string
+}
+
+function getNotionConfig() {
+  const apiKey = process.env.NOTION_API_KEY
+  const databaseId = process.env.NOTION_DATABASE_ID
+  const dataSourceId = process.env.NOTION_DATA_SOURCE_ID
+
+  if (!apiKey || (!databaseId && !dataSourceId)) {
+    throw new Error("Missing Notion write configuration")
   }
 
-  return createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    token,
-    useCdn: false,
+  return {
+    apiKey,
+    databaseId,
+    dataSourceId,
+  }
+}
+
+async function notionFetch<T>(
+  path: string,
+  init: RequestInit = {}
+): Promise<T> {
+  const { apiKey } = getNotionConfig()
+  const headers = new Headers(init.headers)
+
+  headers.set("Authorization", `Bearer ${apiKey}`)
+  headers.set("Notion-Version", NOTION_VERSION)
+
+  const response = await fetch(`${NOTION_API_BASE_URL}${path}`, {
+    ...init,
+    headers,
   })
+  const data = await response.json()
+
+  if (!response.ok) {
+    const error = data as NotionErrorResponse
+    throw new Error(error.message || "Notion API request failed")
+  }
+
+  return data as T
+}
+
+async function getNotionDataSourceId() {
+  const { databaseId, dataSourceId } = getNotionConfig()
+
+  if (dataSourceId) {
+    return dataSourceId
+  }
+
+  if (!databaseId) {
+    throw new Error("Missing Notion write configuration")
+  }
+
+  notionDataSourceIdPromise ??= notionFetch<{
+    data_sources?: Array<{ id: string }>
+  }>(`/databases/${databaseId}`).then((database) => {
+    const firstDataSource = database.data_sources?.[0]
+
+    if (!firstDataSource) {
+      throw new Error("Notion database does not have a data source")
+    }
+
+    return firstDataSource.id
+  })
+
+  return notionDataSourceIdPromise
 }
 
 function getCvValidationIssues(cv: FormDataEntryValue | null) {
@@ -73,6 +129,120 @@ function getCvValidationIssues(cv: FormDataEntryValue | null) {
   }
 
   return []
+}
+
+function getRichText(value: string) {
+  return {
+    rich_text: [
+      {
+        text: {
+          content: value,
+        },
+      },
+    ],
+  }
+}
+
+function getPhoneNumberValue(value: string) {
+  const normalized = value.replace(/[^\d.-]/g, "")
+  const phoneNumber = Number(normalized)
+
+  return Number.isFinite(phoneNumber) ? phoneNumber : null
+}
+
+async function uploadCvToNotion(cv: File) {
+  const fileUpload = await notionFetch<NotionFileUploadResponse>(
+    "/file_uploads",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        filename: cv.name,
+        content_type: cv.type || "application/octet-stream",
+      }),
+    }
+  )
+  const formData = new FormData()
+
+  formData.append("file", cv, cv.name)
+
+  await notionFetch<NotionFileUploadResponse>(
+    `/file_uploads/${fileUpload.id}/send`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  )
+
+  return fileUpload.id
+}
+
+async function createNotionApplication(
+  application: z.infer<typeof applicationSchema>,
+  cv: File
+) {
+  const [dataSourceId, cvFileUploadId] = await Promise.all([
+    getNotionDataSourceId(),
+    uploadCvToNotion(cv),
+  ])
+  const phoneNumber = getPhoneNumberValue(application.phoneNumber)
+
+  return notionFetch<NotionPageResponse>("/pages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      parent: {
+        data_source_id: dataSourceId,
+      },
+      properties: {
+        "Full Name": {
+          title: [
+            {
+              text: {
+                content: application.fullName,
+              },
+            },
+          ],
+        },
+        Email: {
+          email: application.email,
+        },
+        ...(phoneNumber === null
+          ? {}
+          : {
+              "phone number": {
+                number: phoneNumber,
+              },
+            }),
+        Department: {
+          select: {
+            name: application.department,
+          },
+        },
+        "Location (city and country)": getRichText(application.location),
+        "LinkedIn profile": {
+          url: application.linkedInProfile,
+        },
+        CV: {
+          files: [
+            {
+              type: "file_upload",
+              file_upload: {
+                id: cvFileUploadId,
+              },
+            },
+          ],
+        },
+        "Personal note": getRichText(application.personalNote),
+        "Have you previously worked in a fully remote and async company?":
+          getRichText(application.remoteAsyncExperience),
+      },
+    }),
+  })
 }
 
 export async function POST(req: NextRequest) {
@@ -122,36 +292,16 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const now = new Date().toISOString()
-    const client = getSanityClient()
-    const cvAsset = await client.assets.upload("file", cv, {
-      filename: cv.name,
-      contentType: cv.type || undefined,
-    })
-    const application = await client.create({
-      _type: "candidateApplication",
-      ...parsed.data,
-      remoteAsyncExperience: parsed.data.remoteAsyncExperience === "Yes",
-      cv: {
-        _type: "file",
-        asset: {
-          _type: "reference",
-          _ref: cvAsset._id,
-        },
-      },
-      status: "new",
-      source: "careers",
-      submittedAt: now,
-    })
+    const application = await createNotionApplication(parsed.data, cv)
 
     return NextResponse.json(
-      { sent: true, id: application._id },
+      { sent: true, id: application.id },
       { status: 201 }
     )
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Internal server error"
-    const isConfigurationError = message.includes("Sanity write configuration")
+    const isConfigurationError = message.includes("Notion write configuration")
 
     return NextResponse.json(
       {

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { CAREER_DEPARTMENTS, isCareerDepartment } from "@/constants/careers"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,15 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
-const interestOptions = [
-  "Engineering",
-  "Product",
-  "Design",
-  "Developer relations",
-  "Marketing",
-  "Operations",
-]
 
 const labelClassName =
   "text-[0.9375rem] leading-snug font-normal tracking-tighter text-white"
@@ -42,6 +34,10 @@ const formSchema = z.object({
 
 type CareersInterestFormValues = z.infer<typeof formSchema>
 type CareersFieldName = keyof CareersInterestFormValues
+
+interface CareersInterestFormProps {
+  defaultDepartment?: string
+}
 
 const formDefaultValues: CareersInterestFormValues = {
   fullName: "",
@@ -179,13 +175,22 @@ function CareersTextareaField({
   )
 }
 
-function CareersInterestForm() {
+function CareersInterestForm({
+  defaultDepartment = "",
+}: CareersInterestFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [formKey, setFormKey] = useState(0)
+  const normalizedDefaultDepartment = isCareerDepartment(defaultDepartment)
+    ? defaultDepartment
+    : ""
+  const defaultValues = {
+    ...formDefaultValues,
+    department: normalizedDefaultDepartment,
+  }
   const form = useForm<CareersInterestFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: formDefaultValues,
+    defaultValues,
   })
 
   async function onSubmit(values: CareersInterestFormValues) {
@@ -214,7 +219,7 @@ function CareersInterestForm() {
       }
 
       setSubmitted(true)
-      form.reset(formDefaultValues)
+      form.reset(defaultValues)
       setFormKey((key) => key + 1)
 
       window.setTimeout(() => {
@@ -282,7 +287,7 @@ function CareersInterestForm() {
             name="department"
             label="Department"
             placeholder="Please select"
-            options={interestOptions}
+            options={[...CAREER_DEPARTMENTS]}
           />
           <CareersFileField control={form.control} name="cv" label="CV" />
           <CareersTextareaField

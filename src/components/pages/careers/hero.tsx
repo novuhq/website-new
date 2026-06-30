@@ -24,6 +24,12 @@ function Hero() {
           Join the team creating open-source notification infrastructure for
           developers, product teams, and the millions of users they reach.
         </p>
+        <a
+          className="mt-9 inline-flex h-9.5 items-center justify-center rounded-sm bg-white px-5 text-xs leading-none font-medium tracking-normal text-black uppercase transition-colors duration-300 hover:bg-secondary-foreground"
+          href="#apply"
+        >
+          See open roles
+        </a>
       </div>
     </section>
   )
