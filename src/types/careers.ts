@@ -1,7 +1,6 @@
 export interface ICareerJob {
   _id: string
-  jobId: string
-  jobIdNumber: number
+  jobId: number
   title: string
   department: string
   workplaceType: string

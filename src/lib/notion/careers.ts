@@ -193,18 +193,15 @@ function getPropertyUniqueId(
     return null
   }
 
-  return {
-    value: `${uniqueId.prefix ? `${uniqueId.prefix}-` : ""}${uniqueId.number}`,
-    number: uniqueId.number,
-  }
+  return uniqueId.number
 }
 
-function getCareerSlug(title: string, jobId: string) {
-  return `${getSlug(title)}-${getSlug(jobId)}`
+function getCareerSlug(title: string, jobId: number) {
+  return `${getSlug(title)}-${jobId}`
 }
 
 function getJobIdNumberFromSlug(slug: string) {
-  const match = slug.match(/(?:^|-)job-(\d+)$/i)
+  const match = slug.match(/(?:^|-)(\d+)$/)
 
   if (!match) {
     return null
@@ -232,7 +229,7 @@ function isOpenCareerPage(page: NotionPage) {
 
 function mapPageToCareerJob(page: NotionPage): ICareerJob | null {
   const title = getPageTitle(page)
-  const jobId = getPropertyUniqueId(page.properties, ["Job ID", "ID"])
+  const jobId = getPropertyUniqueId(page.properties, ["ID"])
 
   if (!title || !jobId || !isOpenCareerPage(page)) {
     return null
@@ -257,8 +254,7 @@ function mapPageToCareerJob(page: NotionPage): ICareerJob | null {
 
   return {
     _id: page.id,
-    jobId: jobId.value,
-    jobIdNumber: jobId.number,
+    jobId,
     title,
     department,
     workplaceType,
@@ -278,7 +274,7 @@ function mapPageToCareerJob(page: NotionPage): ICareerJob | null {
       page.created_time ||
       page.last_edited_time ||
       "",
-    slug: getCareerSlug(title, jobId.value),
+    slug: getCareerSlug(title, jobId),
   }
 }
 
@@ -334,7 +330,7 @@ async function getCareerPageByJobIdNumber(jobIdNumber: number) {
         },
       },
       {
-        property: "Job ID",
+        property: "ID",
         unique_id: {
           equals: jobIdNumber,
         },
