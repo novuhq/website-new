@@ -27,7 +27,7 @@ function Hero() {
 
               <div className="flex w-full flex-col items-center gap-4 lg:items-start">
                 <h1
-                  className="relative isolate w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
+                  className="relative isolate w-full text-[2.5rem] leading-dense font-medium tracking-tighter text-foreground min-[390px]:text-[2.75rem] md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
                   aria-label="Connect your agent to Slack, WhatsApp, MS Teams, Telegram, and Email"
                 >
                   <span className="relative z-10 block">Connect your</span>

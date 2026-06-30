@@ -11,85 +11,199 @@ import { cn } from "@/lib/utils"
 type HeroChannel = {
   name: string
   icon: StaticImageData
+  animationName: string
 }
 
 const HERO_CHANNELS: HeroChannel[] = [
-  { name: "Slack", icon: slackLogo },
-  { name: "WhatsApp", icon: whatsappLogo },
-  { name: "MS Teams", icon: teamsLogo },
-  { name: "Telegram", icon: telegramLogo },
-  { name: "Email", icon: emailLogo },
+  {
+    name: "Slack",
+    icon: slackLogo,
+    animationName: "connect-hero-channel-slack",
+  },
+  {
+    name: "WhatsApp",
+    icon: whatsappLogo,
+    animationName: "connect-hero-channel-whatsapp",
+  },
+  {
+    name: "MS Teams",
+    icon: teamsLogo,
+    animationName: "connect-hero-channel-teams",
+  },
+  {
+    name: "Telegram",
+    icon: telegramLogo,
+    animationName: "connect-hero-channel-telegram",
+  },
+  {
+    name: "Email",
+    icon: emailLogo,
+    animationName: "connect-hero-channel-email",
+  },
 ]
 
-const HERO_CHANNELS_LOOP = [...HERO_CHANNELS, HERO_CHANNELS[0]]
+const CHANNEL_ITEM_CLASS =
+  "absolute inset-0 flex items-center justify-center gap-2 whitespace-nowrap opacity-0 will-change-[filter,opacity] [backface-visibility:hidden] [filter:blur(12px)] lg:justify-start"
 
-const CHANNEL_TICKER_STYLE = {
-  "--connect-hero-channel-row-height": "1.45em",
-  height: "1lh",
-} as CSSProperties
+const CHANNEL_ANIMATION_STYLE = {
+  animationDuration: "9s",
+  animationIterationCount: "infinite",
+  animationTimingFunction: "linear",
+} satisfies CSSProperties
 
 const CHANNEL_TICKER_KEYFRAMES = `
-@keyframes connect-hero-channel-scroll {
+@keyframes connect-hero-channel-slack {
   0%,
   10% {
+    opacity: 1;
+    filter: blur(0.001px);
     transform: translate3d(0, 0, 0);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.25);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
-  15% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -1.06), 0);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  18%,
+  90% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes connect-hero-channel-whatsapp {
+  0%,
+  10% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   18%,
   30% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -1), 0);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.25);
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
-  35% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -2.06), 0);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  38%,
+  100% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes connect-hero-channel-teams {
+  0%,
+  30% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   38%,
   50% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -2), 0);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.25);
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
-  55% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -3.06), 0);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  58%,
+  100% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes connect-hero-channel-telegram {
+  0%,
+  50% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   58%,
   70% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -3), 0);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.25);
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
-  75% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -4.06), 0);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  78%,
+  100% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes connect-hero-channel-email {
+  0%,
+  70% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   78%,
   90% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -4), 0);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.25);
-  }
-
-  95% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -5.06), 0);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   100% {
-    transform: translate3d(0, calc(var(--connect-hero-channel-row-height) * -5), 0);
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-connect-hero-channel-item] {
+    animation: none !important;
+    opacity: 0;
+    filter: none;
+  }
+
+  [data-connect-hero-channel-item="Slack"] {
+    opacity: 1;
   }
 }
 `
+
+function ChannelItem({ channel }: { channel: HeroChannel }) {
+  return (
+    <>
+      <Image
+        className="size-[0.9em] shrink-0"
+        src={channel.icon}
+        alt=""
+        width={68}
+        height={68}
+        loading="eager"
+        aria-hidden
+      />
+      <span>{channel.name}</span>
+    </>
+  )
+}
 
 function ConnectHeroChannelTicker({ className }: { className?: string }) {
   return (
@@ -99,34 +213,21 @@ function ConnectHeroChannelTicker({ className }: { className?: string }) {
         "relative z-0 inline-block h-[1.125em] w-[6.4em] max-w-full text-center align-bottom lg:text-left",
         className
       )}
-      style={CHANNEL_TICKER_STYLE}
       aria-hidden
     >
-      <span className="absolute inset-x-0 top-1/2 h-[var(--connect-hero-channel-row-height)] -translate-y-1/2 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_88%,transparent_100%)] [mask-size:100%_100%] [mask-repeat:no-repeat] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_88%,transparent_100%)] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:100%_100%]">
+      {HERO_CHANNELS.map((channel) => (
         <span
-          data-connect-hero-channel-track
-          className="block will-change-transform motion-safe:animate-[connect-hero-channel-scroll_9s_linear_infinite] motion-reduce:will-change-auto"
+          data-connect-hero-channel-item={channel.name}
+          className={CHANNEL_ITEM_CLASS}
+          key={channel.name}
+          style={{
+            ...CHANNEL_ANIMATION_STYLE,
+            animationName: channel.animationName,
+          }}
         >
-          {HERO_CHANNELS_LOOP.map((channel, index) => (
-            <span
-              data-connect-hero-channel-item
-              className="flex h-[var(--connect-hero-channel-row-height)] items-center justify-center gap-2 whitespace-nowrap lg:justify-start"
-              key={`${channel.name}-${index}`}
-            >
-              <Image
-                className="size-[0.9em] shrink-0"
-                src={channel.icon}
-                alt=""
-                width={68}
-                height={68}
-                loading="eager"
-                aria-hidden
-              />
-              <span>{channel.name}</span>
-            </span>
-          ))}
+          <ChannelItem channel={channel} />
         </span>
-      </span>
+      ))}
     </span>
   )
 }
