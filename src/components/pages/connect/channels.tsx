@@ -2,29 +2,12 @@ import type { ReactNode } from "react"
 import Image, { StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
-import discord from "@/svgs/pages/connect/channels/discord.svg"
-import email from "@/svgs/pages/connect/channels/email.svg"
-import github from "@/svgs/pages/connect/channels/github.svg"
-import googleChat from "@/svgs/pages/connect/channels/google-chat.svg"
-import iMessage from "@/svgs/pages/connect/channels/imessage.svg"
-import linear from "@/svgs/pages/connect/channels/linear.svg"
-import messenger from "@/svgs/pages/connect/channels/messenger.svg"
-import slack from "@/svgs/pages/connect/channels/slack.svg"
-import teams from "@/svgs/pages/connect/channels/teams.png"
-import telegram from "@/svgs/pages/connect/channels/telegram.svg"
-import whatsapp from "@/svgs/pages/connect/channels/whatsapp.svg"
-import zoom from "@/svgs/pages/connect/channels/zoom.svg"
 
 import { cn } from "@/lib/utils"
 
-type ChannelState = "default" | "coming-soon"
+import { CONNECT_CHANNELS, type ConnectChannel } from "./connect-channels-data"
 
-interface IChannel {
-  name: string
-  description?: string
-  state?: ChannelState
-  icon: StaticImageData
-}
+type IChannel = ConnectChannel
 
 interface IChannelsProps {
   channels?: IChannel[]
@@ -35,69 +18,6 @@ interface IChannelsProps {
   titleClassName?: string
   trackingLocation?: string
 }
-
-const CHANNELS: IChannel[] = [
-  {
-    name: "Slack",
-    description: "Send team alerts",
-    icon: slack,
-  },
-  {
-    name: "WhatsApp",
-    description: "Reach users fast",
-    icon: whatsapp,
-  },
-  {
-    name: "Email",
-    description: "Deliver clean digests",
-    icon: email,
-  },
-  {
-    name: "Telegram",
-    description: "Push instant updates",
-    icon: telegram,
-  },
-  {
-    name: "Teams",
-    description: "Notify team channels",
-    icon: teams,
-  },
-  {
-    name: "Google Chat",
-    state: "coming-soon",
-    icon: googleChat,
-  },
-  {
-    name: "iMessage",
-    state: "coming-soon",
-    icon: iMessage,
-  },
-  {
-    name: "Linear",
-    state: "coming-soon",
-    icon: linear,
-  },
-  {
-    name: "Zoom",
-    state: "coming-soon",
-    icon: zoom,
-  },
-  {
-    name: "Discord",
-    state: "coming-soon",
-    icon: discord,
-  },
-  {
-    name: "Messenger",
-    state: "coming-soon",
-    icon: messenger,
-  },
-  {
-    name: "GitHub",
-    state: "coming-soon",
-    icon: github,
-  },
-]
 
 function ChannelIcon({ icon }: { icon: StaticImageData }) {
   return (
@@ -229,7 +149,7 @@ function ChannelCardsList({
 }
 
 function Channels({
-  channels = CHANNELS,
+  channels = CONNECT_CHANNELS,
   className,
   description = "Pick one. Or all of them. Your agent shows up everywhere at once.",
   headerClassName,

@@ -54,9 +54,9 @@ export const SEO_DATA = {
     pathname: ROUTE.integrationsChannels as string,
   },
   connect: {
-    title: `${config.projectName} Connect - Bring Claude Agents to Slack, Teams & Email`,
+    title: `${config.projectName} Connect - Connect Your Agent to Any Channel`,
     description:
-      "Connect Claude Managed Agents to Slack, Teams, WhatsApp, email, and more. Start from templates, reuse MCP tools, and launch in minutes with Novu.",
+      "Connect your agent to Slack, Teams, WhatsApp, Telegram, email, and more. Start from templates, reuse MCP tools, and launch in minutes with Novu.",
     imagePath: "/og-images/og-image-connect.jpg",
     imageAlt: `${config.projectName} Connect social preview`,
     pathname: ROUTE.connect as string,

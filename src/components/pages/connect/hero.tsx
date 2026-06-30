@@ -1,9 +1,10 @@
-import Image from "next/image"
-import claudeLogo from "@/svgs/pages/connect/hero/claude-logo.svg"
-
 import ProductHuntBadge from "@/components/ui/product-hunt-badge"
 
 import ConnectHeroActions from "./hero-actions"
+import {
+  ConnectHeroChannelTicker,
+  ConnectHeroChannelTickerStyles,
+} from "./hero-channel-ticker"
 import ConnectHeroVideo from "./hero-video"
 import ConnectPromptCopyLine from "./prompt-copy-line"
 
@@ -26,24 +27,14 @@ function Hero() {
 
               <div className="flex w-full flex-col items-center gap-4 lg:items-start">
                 <h1
-                  className="w-full text-4xl leading-dense font-medium tracking-tighter text-foreground md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
-                  aria-label="Connect your Claude agent where your customers actually work"
+                  className="relative isolate w-full text-[2.5rem] leading-dense font-medium tracking-tighter text-foreground min-[390px]:text-[2.75rem] md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]"
+                  aria-label="Connect your agent to any channel"
                 >
-                  Connect{" "}
-                  <span className="whitespace-nowrap">
-                    <span aria-hidden>your</span>
-                    <Image
-                      className="mx-2 inline-block size-[0.923em] align-[-0.12em]"
-                      src={claudeLogo}
-                      alt=""
-                      width={48}
-                      height={48}
-                      priority
-                      aria-hidden
-                    />
-                    <span aria-hidden>Claude</span>
-                  </span>{" "}
-                  agent where your customers actually work
+                  <span className="relative z-10 block">Connect your</span>
+                  <span className="flex flex-col items-center justify-center gap-y-0 lg:flex-row lg:justify-start lg:gap-x-2">
+                    <span className="relative z-10 shrink-0">agent to</span>
+                    <ConnectHeroChannelTicker />
+                  </span>
                 </h1>
 
                 <p className="max-w-[523.4609375px] text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
@@ -69,6 +60,7 @@ function Hero() {
 
         <ConnectHeroVideo />
       </div>
+      <ConnectHeroChannelTickerStyles />
     </section>
   )
 }
