@@ -5,9 +5,9 @@ import { ROUTE } from "@/constants/routes"
 
 import { cn } from "@/lib/utils"
 
-import { CONNECT_CHANNELS, type IConnectChannel } from "./connect-channels-data"
+import { CONNECT_CHANNELS, type ConnectChannel } from "./connect-channels-data"
 
-type IChannel = IConnectChannel
+type IChannel = ConnectChannel
 
 interface IChannelsProps {
   channels?: IChannel[]

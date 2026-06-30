@@ -15,47 +15,70 @@ import teamsHeroIcon from "@/svgs/pages/connect/hero/teams.svg"
 
 type ConnectChannelState = "default" | "coming-soon"
 
-interface IConnectChannel {
+interface ConnectChannel {
   name: string
   description?: string
   state?: ConnectChannelState
   icon: StaticImageData
-  heroName?: string
-  heroIcon?: StaticImageData
-  heroIconClassName?: string
 }
 
-const CONNECT_CHANNELS: IConnectChannel[] = [
+interface HeroChannelPresentation {
+  name?: string
+  icon?: StaticImageData
+  iconClassName?: string
+}
+
+type ConnectChannelItem = ConnectChannel & {
+  hero?: HeroChannelPresentation
+}
+
+type ConnectHeroChannel = {
+  name: string
+  icon: StaticImageData
+  iconClassName?: string
+}
+
+const CONNECT_CHANNEL_ITEMS = [
   {
     name: "Slack",
     description: "Send team alerts",
     icon: slackIcon,
-    heroIconClassName: "size-[75%]",
+    hero: {
+      iconClassName: "size-[75%]",
+    },
   },
   {
     name: "WhatsApp",
     description: "Reach users fast",
     icon: whatsappIcon,
-    heroIconClassName: "size-[82%]",
+    hero: {
+      iconClassName: "size-[82%]",
+    },
   },
   {
     name: "Email",
     description: "Deliver clean digests",
     icon: emailIcon,
-    heroIconClassName: "size-[86%]",
+    hero: {
+      iconClassName: "size-[86%]",
+    },
   },
   {
     name: "Telegram",
     description: "Push instant updates",
     icon: telegramIcon,
-    heroIconClassName: "size-[76.5%]",
+    hero: {
+      iconClassName: "size-[76.5%]",
+    },
   },
   {
     name: "Teams",
     description: "Notify team channels",
     icon: teamsIcon,
-    heroName: "MS Teams",
-    heroIcon: teamsHeroIcon,
+    hero: {
+      name: "MS Teams",
+      icon: teamsHeroIcon,
+    },
   },
   {
     name: "Google Chat",
@@ -92,11 +115,39 @@ const CONNECT_CHANNELS: IConnectChannel[] = [
     state: "coming-soon",
     icon: githubIcon,
   },
-]
+] satisfies ConnectChannelItem[]
 
-function isConnectChannelAvailable(channel: IConnectChannel) {
+function getConnectChannel(channel: ConnectChannelItem): ConnectChannel {
+  const connectChannel: ConnectChannel = {
+    name: channel.name,
+    icon: channel.icon,
+  }
+
+  if (channel.description) {
+    connectChannel.description = channel.description
+  }
+
+  if (channel.state) {
+    connectChannel.state = channel.state
+  }
+
+  return connectChannel
+}
+
+function isConnectChannelAvailable(channel: ConnectChannel) {
   return channel.state !== "coming-soon"
 }
 
-export { CONNECT_CHANNELS, isConnectChannelAvailable }
-export type { IConnectChannel }
+const CONNECT_CHANNELS: ConnectChannel[] =
+  CONNECT_CHANNEL_ITEMS.map(getConnectChannel)
+
+const CONNECT_HERO_CHANNELS: ConnectHeroChannel[] = CONNECT_CHANNEL_ITEMS.filter(
+  isConnectChannelAvailable
+).map((channel) => ({
+  name: channel.hero?.name ?? channel.name,
+  icon: channel.hero?.icon ?? channel.icon,
+  iconClassName: channel.hero?.iconClassName,
+}))
+
+export { CONNECT_CHANNELS, CONNECT_HERO_CHANNELS }
+export type { ConnectChannel }

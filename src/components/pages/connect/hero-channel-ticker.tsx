@@ -1,26 +1,13 @@
 import type { CSSProperties } from "react"
-import Image, { type StaticImageData } from "next/image"
+import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 
-import {
-  CONNECT_CHANNELS,
-  isConnectChannelAvailable,
-} from "./connect-channels-data"
+import { CONNECT_HERO_CHANNELS } from "./connect-channels-data"
 
-type HeroChannel = {
-  name: string
-  icon: StaticImageData
-  iconClassName?: string
-}
+type HeroChannel = (typeof CONNECT_HERO_CHANNELS)[number]
 
-const HERO_CHANNELS: HeroChannel[] = CONNECT_CHANNELS.filter(
-  isConnectChannelAvailable
-).map((channel) => ({
-  name: channel.heroName ?? channel.name,
-  icon: channel.heroIcon ?? channel.icon,
-  iconClassName: channel.heroIconClassName,
-}))
+const HERO_CHANNELS: HeroChannel[] = CONNECT_HERO_CHANNELS
 
 const CHANNEL_ITEM_CLASS =
   "absolute inset-0 flex items-center justify-center gap-2 whitespace-nowrap opacity-0 will-change-[filter,opacity] [backface-visibility:hidden] [filter:blur(12px)] lg:justify-start"
