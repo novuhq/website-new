@@ -45,6 +45,9 @@ const HERO_CHANNELS: HeroChannel[] = [
 const CHANNEL_ITEM_CLASS =
   "absolute inset-0 flex items-center justify-center gap-2 whitespace-nowrap opacity-0 will-change-[filter,opacity] [backface-visibility:hidden] [filter:blur(12px)] lg:justify-start"
 
+const CHANNEL_STATIC_CLASS =
+  "absolute inset-0 flex items-center justify-center whitespace-nowrap opacity-0 lg:justify-start"
+
 const CHANNEL_ANIMATION_STYLE = {
   animationDuration: "9s",
   animationIterationCount: "infinite",
@@ -182,7 +185,7 @@ const CHANNEL_TICKER_KEYFRAMES = `
     filter: none;
   }
 
-  [data-connect-hero-channel-item="Slack"] {
+  [data-connect-hero-channel-static] {
     opacity: 1;
   }
 }
@@ -228,6 +231,9 @@ function ConnectHeroChannelTicker({ className }: { className?: string }) {
           <ChannelItem channel={channel} />
         </span>
       ))}
+      <span data-connect-hero-channel-static className={CHANNEL_STATIC_CLASS}>
+        any channel
+      </span>
     </span>
   )
 }
