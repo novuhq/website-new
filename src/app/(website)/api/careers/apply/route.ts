@@ -4,22 +4,49 @@ import { z } from "zod"
 
 const MAX_CV_FILE_SIZE = 10 * 1024 * 1024
 const MAX_MULTIPART_BODY_SIZE = MAX_CV_FILE_SIZE + 1024 * 1024
+const NOTION_REQUEST_TIMEOUT = 8000
+const HONEYPOT_FIELD_NAME = "companyWebsite"
 const allowedCvExtensions = [".pdf", ".doc", ".docx"]
 const allowedCvMimeTypes = new Set([
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ])
+const optionalStringSchema = z.preprocess(
+  (value) => (typeof value === "string" ? value : ""),
+  z.string().trim().max(2000)
+)
+const phoneNumberSchema = z
+  .preprocess(
+    (value) => (typeof value === "string" ? value : ""),
+    z.string().trim().max(40)
+  )
+  .refine((value) => value === "" || /^\+?[\d\s().-]+$/.test(value))
+  .refine((value) => {
+    if (!value) {
+      return true
+    }
+
+    const digitCount = value.replace(/\D/g, "").length
+
+    return digitCount >= 7 && digitCount <= 15
+  })
 
 const applicationSchema = z.object({
-  fullName: z.string().trim().min(2),
-  email: z.string().trim().email(),
-  phoneNumber: z.string().trim().min(5),
-  linkedInProfile: z.string().trim().url(),
-  location: z.string().trim().min(2),
-  remoteAsyncExperience: z.enum(["Yes", "No"]),
-  personalNote: z.string().trim().min(20),
-  department: z.enum(CAREER_DEPARTMENTS),
+  fullName: z.string().trim().min(2).max(120),
+  email: z.string().trim().email().max(254),
+  phoneNumber: phoneNumberSchema,
+  linkedInProfile: z.string().trim().url().max(300),
+  location: z.string().trim().min(2).max(120),
+  remoteAsyncExperience: z.preprocess(
+    (value) => (typeof value === "string" ? value : ""),
+    z.union([z.enum(["Yes", "No"]), z.literal("")])
+  ),
+  personalNote: optionalStringSchema,
+  department: z.preprocess(
+    (value) => (typeof value === "string" ? value : ""),
+    z.union([z.enum(CAREER_DEPARTMENTS), z.literal("")])
+  ),
 })
 
 const NOTION_VERSION = "2026-03-11"
@@ -66,9 +93,15 @@ async function notionFetch<T>(
   headers.set("Authorization", `Bearer ${apiKey}`)
   headers.set("Notion-Version", NOTION_VERSION)
 
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), NOTION_REQUEST_TIMEOUT)
+
   const response = await fetch(`${NOTION_API_BASE_URL}${path}`, {
     ...init,
     headers,
+    signal: controller.signal,
+  }).finally(() => {
+    clearTimeout(timeoutId)
   })
   const data = await response.json()
 
@@ -143,13 +176,6 @@ function getRichText(value: string) {
   }
 }
 
-function getPhoneNumberValue(value: string) {
-  const normalized = value.replace(/[^\d.-]/g, "")
-  const phoneNumber = Number(normalized)
-
-  return Number.isFinite(phoneNumber) ? phoneNumber : null
-}
-
 async function uploadCvToNotion(cv: File) {
   const fileUpload = await notionFetch<NotionFileUploadResponse>(
     "/file_uploads",
@@ -187,7 +213,6 @@ async function createNotionApplication(
     getNotionDataSourceId(),
     uploadCvToNotion(cv),
   ])
-  const phoneNumber = getPhoneNumberValue(application.phoneNumber)
 
   return notionFetch<NotionPageResponse>("/pages", {
     method: "POST",
@@ -211,18 +236,22 @@ async function createNotionApplication(
         Email: {
           email: application.email,
         },
-        ...(phoneNumber === null
-          ? {}
-          : {
+        ...(application.phoneNumber
+          ? {
               "phone number": {
-                number: phoneNumber,
+                phone_number: application.phoneNumber,
               },
-            }),
-        Department: {
-          select: {
-            name: application.department,
-          },
-        },
+            }
+          : {}),
+        ...(application.department
+          ? {
+              Department: {
+                select: {
+                  name: application.department,
+                },
+              },
+            }
+          : {}),
         "Location (city and country)": getRichText(application.location),
         "LinkedIn profile": {
           url: application.linkedInProfile,
@@ -237,9 +266,17 @@ async function createNotionApplication(
             },
           ],
         },
-        "Personal note": getRichText(application.personalNote),
-        "Have you previously worked in a fully remote and async company?":
-          getRichText(application.remoteAsyncExperience),
+        ...(application.personalNote
+          ? {
+              "Personal note": getRichText(application.personalNote),
+            }
+          : {}),
+        ...(application.remoteAsyncExperience
+          ? {
+              "Have you previously worked in a fully remote and async company?":
+                getRichText(application.remoteAsyncExperience),
+            }
+          : {}),
       },
     }),
   })
@@ -247,6 +284,18 @@ async function createNotionApplication(
 
 export async function POST(req: NextRequest) {
   try {
+    const contentType = req.headers.get("content-type") || ""
+
+    if (!contentType.toLowerCase().includes("multipart/form-data")) {
+      return NextResponse.json(
+        {
+          error: true,
+          message: "Unsupported content type.",
+        },
+        { status: 415 }
+      )
+    }
+
     const contentLength = Number(req.headers.get("content-length") || 0)
 
     if (contentLength > MAX_MULTIPART_BODY_SIZE) {
@@ -260,6 +309,12 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData()
+    const honeypot = formData.get(HONEYPOT_FIELD_NAME)
+
+    if (typeof honeypot === "string" && honeypot.trim()) {
+      return NextResponse.json({ sent: true }, { status: 200 })
+    }
+
     const cv = formData.get("cv")
     const cvIssues = getCvValidationIssues(cv)
     const parsed = applicationSchema.safeParse({
@@ -302,6 +357,16 @@ export async function POST(req: NextRequest) {
     const message =
       error instanceof Error ? error.message : "Internal server error"
     const isConfigurationError = message.includes("Notion write configuration")
+
+    if (error instanceof Error && error.name === "AbortError") {
+      return NextResponse.json(
+        {
+          error: true,
+          message: "Request timeout",
+        },
+        { status: 504 }
+      )
+    }
 
     return NextResponse.json(
       {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { CAREER_DEPARTMENTS, isCareerDepartment } from "@/constants/careers"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -19,17 +19,47 @@ import { Input } from "@/components/ui/input"
 
 const labelClassName =
   "text-[0.9375rem] leading-snug font-normal tracking-tighter text-white"
+const HONEYPOT_FIELD_NAME = "companyWebsite"
+const phoneNumberSchema = z
+  .string()
+  .trim()
+  .max(40, "Please enter a valid phone number.")
+  .refine(
+    (value) => value === "" || /^\+?[\d\s().-]+$/.test(value),
+    "Please enter a valid phone number."
+  )
+  .refine((value) => {
+    if (!value) {
+      return true
+    }
+
+    const digitCount = value.replace(/\D/g, "").length
+
+    return digitCount >= 7 && digitCount <= 15
+  }, "Please enter a valid phone number.")
 
 const formSchema = z.object({
-  fullName: z.string().min(2, "Please enter your full name."),
-  email: z.string().email("Please enter a valid email address."),
-  phoneNumber: z.string().min(5, "Please enter your phone number."),
-  linkedInProfile: z.string().url("Please enter a valid LinkedIn URL."),
-  location: z.string().min(2, "Please enter your city and country."),
-  remoteAsyncExperience: z.string().min(1, "Please select one of the options."),
+  fullName: z
+    .string()
+    .min(2, "Please enter your full name.")
+    .max(120, "Full name is too long."),
+  email: z
+    .string()
+    .email("Please enter a valid email address.")
+    .max(254, "Email is too long."),
+  phoneNumber: phoneNumberSchema,
+  linkedInProfile: z
+    .string()
+    .url("Please enter a valid LinkedIn URL.")
+    .max(300, "LinkedIn URL is too long."),
+  location: z
+    .string()
+    .min(2, "Please enter your city and country.")
+    .max(120, "Location is too long."),
+  remoteAsyncExperience: z.string(),
   cv: z.any().refine((files) => files?.length === 1, "Please attach your CV."),
-  personalNote: z.string().min(20, "Please add a little more detail."),
-  department: z.string().min(1, "Please select a department."),
+  personalNote: z.string().max(2000, "Personal note is too long."),
+  department: z.string(),
 })
 
 type CareersInterestFormValues = z.infer<typeof formSchema>
@@ -56,6 +86,7 @@ type CareersFieldProps = {
   name: CareersFieldName
   label: string
   placeholder: string
+  required?: boolean
 }
 
 function CareersTextField({
@@ -63,6 +94,7 @@ function CareersTextField({
   name,
   label,
   placeholder,
+  required = false,
   type = "text",
 }: CareersFieldProps & {
   type?: "email" | "text" | "url"
@@ -75,7 +107,12 @@ function CareersTextField({
         <FormItem>
           <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} type={type} {...field} />
+            <Input
+              placeholder={placeholder}
+              required={required}
+              type={type}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -88,6 +125,7 @@ function CareersFileField({
   control,
   name,
   label,
+  required = false,
 }: Omit<CareersFieldProps, "placeholder">) {
   return (
     <FormField
@@ -102,6 +140,7 @@ function CareersFileField({
               name={name}
               type="file"
               accept=".pdf,.doc,.docx"
+              required={required}
               onChange={(event) => onChange(event.target.files)}
             />
           </FormControl>
@@ -181,6 +220,7 @@ function CareersInterestForm({
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [formKey, setFormKey] = useState(0)
+  const honeypotRef = useRef<HTMLInputElement>(null)
   const normalizedDefaultDepartment = isCareerDepartment(defaultDepartment)
     ? defaultDepartment
     : ""
@@ -207,6 +247,7 @@ function CareersInterestForm({
       formData.append("remoteAsyncExperience", values.remoteAsyncExperience)
       formData.append("personalNote", values.personalNote)
       formData.append("department", values.department)
+      formData.append(HONEYPOT_FIELD_NAME, honeypotRef.current?.value || "")
       formData.append("cv", values.cv[0])
 
       const response = await fetch("/api/careers/apply", {
@@ -238,18 +279,30 @@ function CareersInterestForm({
         onSubmit={form.handleSubmit(onSubmit)}
         noValidate
       >
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor={HONEYPOT_FIELD_NAME}>Company website</label>
+          <input
+            ref={honeypotRef}
+            id={HONEYPOT_FIELD_NAME}
+            name={HONEYPOT_FIELD_NAME}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
         <div className="grid gap-6 md:grid-cols-2">
           <CareersTextField
             control={form.control}
             name="fullName"
             label="Full Name"
             placeholder="Jane Doe"
+            required
           />
           <CareersTextField
             control={form.control}
             name="email"
             label="Your email"
             placeholder="jane@email.com"
+            required
             type="email"
           />
           <CareersTextField
@@ -264,6 +317,7 @@ function CareersInterestForm({
             name="linkedInProfile"
             label="LinkedIn profile"
             placeholder="https://www.linkedin.com/in/jane"
+            required
             type="url"
           />
         </div>
@@ -274,6 +328,7 @@ function CareersInterestForm({
             name="location"
             label="Location (city and country)"
             placeholder="New York, USA"
+            required
           />
           <CareersSelectField
             control={form.control}
@@ -289,7 +344,12 @@ function CareersInterestForm({
             placeholder="Please select"
             options={[...CAREER_DEPARTMENTS]}
           />
-          <CareersFileField control={form.control} name="cv" label="CV" />
+          <CareersFileField
+            control={form.control}
+            name="cv"
+            label="CV"
+            required
+          />
           <CareersTextareaField
             control={form.control}
             name="personalNote"

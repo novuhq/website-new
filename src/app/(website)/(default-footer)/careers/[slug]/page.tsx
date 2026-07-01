@@ -14,6 +14,8 @@ interface CareerJobRouteProps {
   }>
 }
 
+export const revalidate = 300
+
 export async function generateStaticParams() {
   const jobs = await getOpenCareerJobs()
 

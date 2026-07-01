@@ -6,6 +6,8 @@ import image4 from "@/images/pages/careers/team/4.png"
 
 import { cn } from "@/lib/utils"
 
+import CareersVideo from "./video"
+
 const stats = [
   { value: "2021", label: "Year founded" },
   { value: "$6.6M", label: "Total funding" },
@@ -47,7 +49,11 @@ function CareersTeam() {
           </p>
         </div>
 
-        <div className="mt-11 grid gap-6 md:grid-cols-2">
+        <div className="mt-11">
+          <CareersVideo />
+        </div>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
           <div className="grid gap-6">
             <TeamImage src={image1} className="aspect-[468/303]" />
             <TeamImage src={image3} className="aspect-square" />
