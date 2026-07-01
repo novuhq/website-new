@@ -3,6 +3,7 @@
 import { useRef, useState } from "react"
 import { CAREER_DEPARTMENTS, isCareerDepartment } from "@/constants/careers"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ChevronDown } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -168,17 +169,23 @@ function CareersSelectField({
         <FormItem>
           <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
-            <select
-              className="flex h-11 w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-base leading-snug tracking-tight text-foreground transition-colors duration-300 focus-visible:border-accent-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 has-[option[value='']:checked]:text-muted-foreground"
-              {...field}
-            >
-              <option value="">{placeholder}</option>
-              {options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                className="flex h-11 w-full appearance-none rounded-md border border-border bg-background py-2.5 pr-10 pl-3.5 text-base leading-snug tracking-tight text-foreground transition-colors duration-300 focus-visible:border-accent-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 has-[option[value='']:checked]:text-muted-foreground"
+                {...field}
+              >
+                <option value="">{placeholder}</option>
+                {options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              />
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>
