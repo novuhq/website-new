@@ -1,13 +1,15 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import NextLink from "next/link"
+import { usePathname } from "next/navigation"
 import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
 
 import { IMenuHeaderCard } from "@/types/common"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import SearchBar from "@/components/ui/search-bar"
 import GithubStars from "@/components/github-stars"
@@ -23,8 +25,11 @@ interface IHeaderProps {
 }
 
 function Header({ githubStars, changelog, blog }: IHeaderProps) {
-  const [, setIsIntersecting] = useState(false)
-  const triggerRef = useRef<HTMLDivElement | null>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
+  const normalizedPathname =
+    pathname && pathname !== "/" ? pathname.replace(/\/$/, "") : pathname
+  const isCareersPage = normalizedPathname === ROUTE.careers
 
   const navigationItems = MENUS.header.map((item) => {
     const content = item?.content?.map((contentItem) => {
@@ -49,27 +54,43 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
   })
 
   useEffect(() => {
-    if (!triggerRef.current) return
+    if (!isCareersPage) {
+      setIsScrolled(false)
+      return
+    }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsIntersecting(!entry.isIntersecting)
-      },
-      {
-        root: null,
-        threshold: 0,
-      }
-    )
+    const updateScrolled = () => {
+      const scrollTop =
+        window.scrollY ||
+        window.pageYOffset ||
+        document.scrollingElement?.scrollTop ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0
 
-    observer.observe(triggerRef.current)
+      setIsScrolled(scrollTop > 0)
+    }
+
+    updateScrolled()
+    window.addEventListener("scroll", updateScrolled, { passive: true })
+    document.addEventListener("scroll", updateScrolled, {
+      capture: true,
+      passive: true,
+    })
 
     return () => {
-      observer.disconnect()
+      window.removeEventListener("scroll", updateScrolled)
+      document.removeEventListener("scroll", updateScrolled, { capture: true })
     }
-  }, [])
+  }, [isCareersPage])
 
   return (
-    <header className="sticky top-0 z-50 bg-background">
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-colors duration-150",
+        !isCareersPage || isScrolled ? "bg-black" : "bg-transparent"
+      )}
+    >
       <LinkBanner />
       <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:justify-start">
         <NextLink
@@ -104,11 +125,6 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
         />
         <MobileMenu items={navigationItems} />
       </div>
-      <div
-        className="absolute top-0 h-0 w-full -translate-y-px"
-        ref={triggerRef}
-        aria-hidden="true"
-      />
     </header>
   )
 }
