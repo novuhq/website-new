@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Play } from "lucide-react"
 
 const VIDEO_SRC = "/videos/pages/careers/video.mp4"
@@ -9,15 +9,43 @@ const POSTER_SRC = "/videos/pages/careers/poster.jpg"
 
 function CareersVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const userInteracted = useRef(false)
 
   const handlePlay = () => {
+    userInteracted.current = true
     setIsPlaying(true)
     void videoRef.current?.play()
   }
 
+  useEffect(() => {
+    const container = containerRef.current
+    const video = videoRef.current
+    if (!container || !video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (userInteracted.current) return
+        if (entry.isIntersecting) {
+          setIsPlaying(true)
+          void video.play()
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.7 },
+    )
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-[12px] bg-black">
+    <div
+      ref={containerRef}
+      className="relative aspect-video w-full overflow-hidden rounded-[12px] bg-black"
+    >
       {/*
           Video optimization parameters:
             mp4: -c:v libx265 -crf 36 -vf scale=1920:-2 -preset slow -tag:v hvc1 -movflags faststart -an
@@ -28,10 +56,14 @@ function CareersVideo() {
         className="size-full object-cover"
         poster={POSTER_SRC}
         controls={isPlaying}
+        muted
         playsInline
         preload="metadata"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
+        onPointerDown={() => {
+          userInteracted.current = true
+        }}
       >
         <source src={VIDEO_SRC_WEBM} type="video/webm" />
         <source src={VIDEO_SRC} type="video/mp4" />
