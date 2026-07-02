@@ -43,11 +43,34 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  async rewrites() {
+    return [
+      {
+        source: "/:path(.*)\\.md",
+        destination: "/md/:path?format=markdown",
+      },
+    ]
+  },
   async redirects() {
     return [
       {
+        source: "/:path(.*)\\.md/",
+        destination: "/:path.md",
+        permanent: true,
+      },
+      {
         source: "/integrations",
         destination: "/integrations/channels",
+        permanent: true,
+      },
+      {
+        source: "/docs",
+        destination: "https://docs.novu.co",
+        permanent: true,
+      },
+      {
+        source: "/docs/:path*",
+        destination: "https://docs.novu.co/:path*",
         permanent: true,
       },
       {

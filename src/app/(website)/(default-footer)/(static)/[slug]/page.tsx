@@ -53,8 +53,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
     description: jsonLdDescription,
     datePublished: publishedAt || staticPage._createdAt,
     url: staticPageUrl,
-    image:
-      seo?.socialImage || `${siteUrl}/social-previews/index.jpg`,
+    image: seo?.socialImage || `${siteUrl}/social-previews/index.jpg`,
     author: {
       "@type": "Organization",
       name: "Novu",
@@ -160,6 +159,7 @@ export async function generateMetadata({
     pathname: `/${staticPage.slug.current}`,
     imagePath: seo?.socialImage,
     noIndex: seo?.noIndex,
+    markdownPathname: true,
   })
 
   return metadata

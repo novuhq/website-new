@@ -13,49 +13,49 @@
       "type": "archive",
       "description": "Author step content for Novu workflows defined in the Dashboard or generated/edited via the Novu MCP. Use when filling in step controls (subject, body, editorType, headers, body, conditions) for email, in-app, sms, push, chat, delay, digest, throttle, or HTTP Request steps.",
       "url": "/.well-known/agent-skills/novu-dashboard-workflows.tar.gz",
-      "digest": "sha256:3e37f814d097e0d5366564d9af7da112c7fbf82c3a4e5fdada801cebe15b84ea"
+      "digest": "sha256:a83e27c2c8fb3a9b8b39f9324530ac14e071ab1bdcabec2a1f8ce2f55a8d77ec"
     },
     {
       "name": "novu-design-workflow",
       "type": "archive",
       "description": "Design notification workflows the Novu way — choose channels, set severity, decide when a workflow is critical, configure digests, and route based on subscriber state. Applies to BOTH dashboard-authored and code-first (`@novu/framework`) workflows. Use when planning a new workflow, deciding which channels to include, picking severity, configuring digest behavior, or matching a use case (order confirmation, payment failed, account suspended, comment, trial expiring, password reset, webhook fan-out, fetch-then-notify) to a proven template.",
       "url": "/.well-known/agent-skills/novu-design-workflow.tar.gz",
-      "digest": "sha256:41b86d97d727b2122f45c7338219230c4745dbd39ebd929819d84b4f95be6d18"
+      "digest": "sha256:8b68da7c6c41d27f05d127809ddd022d5ebedb1647a89927830b893167b9d6a4"
     },
     {
       "name": "novu-framework-integration",
       "type": "archive",
       "description": "Build code-first notification workflows with @novu/framework. Use when defining workflows in TypeScript (Zod / JSON Schema / Class Validator), composing channel steps (email, SMS, push, chat, in-app) with action steps (delay, digest, custom), exposing Step Controls for non-technical teammates, rendering React/Vue/Svelte Email templates, hosting the Bridge Endpoint inside Next.js, Express, NestJS, Remix, Nuxt, SvelteKit, H3, or AWS Lambda, syncing to Novu Cloud via CLI / GitHub Actions, securing production with HMAC, or implementing translations, hydration, multi-channel orchestration, and LLM-powered notification logic in code.",
       "url": "/.well-known/agent-skills/novu-framework-integration.tar.gz",
-      "digest": "sha256:660a9336146ca2ef91d7dce891f9a8f218b806dbafb0814ab246270c563d5ab9"
+      "digest": "sha256:1947dd30ff9516d71de01aa16e5784eacad65351d0763effb965a2246c1c4400"
     },
     {
       "name": "novu-inbox-integration",
       "type": "archive",
       "description": "Integrate Novu's in-app notification inbox into web applications. Supports React, Next.js, and vanilla JavaScript. Includes the Inbox component (bell icon + notification feed), composable components (Bell, Notifications, InboxContent, Preferences), headless hooks, branded theming, custom render props, multi-tenancy via contexts, tabs, localization, and HMAC security. Use when adding an in-app notification center, bell icon, notification feed, real-time notification updates, or building a personalized and branded notification experience.",
       "url": "/.well-known/agent-skills/novu-inbox-integration.tar.gz",
-      "digest": "sha256:450c61c7658069532fb9dfaca4804cbb5ba1e80477eec439ee0fc06df09c4d0e"
+      "digest": "sha256:c026ca661e994a7b0a576283ad1682e5b5232f3db0e6e60babbc5315cc34ecea"
     },
     {
       "name": "novu-manage-preferences",
       "type": "archive",
       "description": "Configure notification preferences in Novu at the workflow and subscriber level. Set default channel preferences (email, SMS, push, chat, in-app), mark preferences as read-only or subscriber-editable, and manage subscriber-specific overrides. Use when setting up notification opt-in/opt-out, configuring per-channel delivery preferences, or building a preferences management UI.",
       "url": "/.well-known/agent-skills/novu-manage-preferences.tar.gz",
-      "digest": "sha256:5a8e6ba04d0cf02806e8daa94f2bfd7fdee9d3a4aec86da2916e0024b9537ffb"
+      "digest": "sha256:a988a2aae9877e0f2334a1b193e0faad696f0088fccd7fb627b222be2b8d8440"
     },
     {
       "name": "novu-manage-subscribers",
       "type": "archive",
       "description": "Create, update, search, and delete subscribers in Novu. Manage topics for group-based notification targeting. Set subscriber credentials for push and chat channels. Use when managing notification recipients, creating subscriber records, organizing subscribers into topics, or configuring channel-specific credentials.",
       "url": "/.well-known/agent-skills/novu-manage-subscribers.tar.gz",
-      "digest": "sha256:2a78d27aeed027991e659c907a352bbfc2340d1bd816dd8cde31fbe2f02ef288"
+      "digest": "sha256:686d1d12d587861230152d1a07752eb24909f1e8e51dd3849e28c02bb6524e56"
     },
     {
       "name": "novu-trigger-notification",
       "type": "archive",
       "description": "Trigger Novu notification workflows to send messages across email, SMS, push, chat, and in-app channels. Supports single triggers, bulk triggers, broadcast to all subscribers, topic-based targeting, and cancellation. Use when sending transactional notifications, alerts, or any event-driven messages.",
       "url": "/.well-known/agent-skills/novu-trigger-notification.tar.gz",
-      "digest": "sha256:51525475f23053382f5324bc78925a9105c55f938a99467740b4a0980727171e"
+      "digest": "sha256:a7c1c4f01cc711b020a58fa8bf4b0df0c6fca3e114e7a33d4db32b8448d34e53"
     }
   ]
 }

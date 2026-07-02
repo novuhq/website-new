@@ -134,6 +134,7 @@ export async function generateMetadata({
     pathname: `${ROUTE.blog}/${post.slug.current}`,
     imagePath: seo.socialImage,
     noIndex: seo.noIndex,
+    markdownPathname: true,
   })
 
   return metadata

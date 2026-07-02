@@ -152,4 +152,5 @@ export const metadata: Metadata = getMetadata({
   title: `${SEO_DATA.blog.title} | ${config.projectName}`,
   description: SEO_DATA.blog.description,
   pathname: SEO_DATA.blog.pathname,
+  markdownPathname: true,
 })

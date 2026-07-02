@@ -39,4 +39,7 @@ export default async function BookADemoPage() {
   )
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.bookADemo)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.bookADemo,
+  markdownPathname: true,
+})

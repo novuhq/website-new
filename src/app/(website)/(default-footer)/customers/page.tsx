@@ -113,4 +113,7 @@ export default async function CustomersPage() {
   )
 }
 
-export const metadata: Metadata = getMetadata(SEO_DATA.customers)
+export const metadata: Metadata = getMetadata({
+  ...SEO_DATA.customers,
+  markdownPathname: true,
+})
