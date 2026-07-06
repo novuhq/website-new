@@ -49,7 +49,7 @@ const CONNECT_CHANNEL_ITEMS = [
     icon: slackIcon,
     hero: {
       icon: slackHeroIcon,
-      iconClassName: "translate-y-[0.019em] lg:translate-y-[0.058em]",
+      iconClassName: "translate-y-[0.038em] lg:translate-y-[0.058em]",
     },
   },
   {
@@ -76,7 +76,7 @@ const CONNECT_CHANNEL_ITEMS = [
     icon: telegramIcon,
     hero: {
       icon: telegramHeroIcon,
-      iconClassName: "translate-y-[0.019em] lg:translate-y-[0.058em]",
+      iconClassName: "translate-y-[0.038em] lg:translate-y-[0.058em]",
     },
   },
   {
