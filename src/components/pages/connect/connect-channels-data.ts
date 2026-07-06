@@ -11,7 +11,11 @@ import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 import zoomIcon from "@/svgs/pages/connect/channels/zoom.svg"
+import emailHeroIcon from "@/svgs/pages/connect/hero/email.svg"
+import slackHeroIcon from "@/svgs/pages/connect/hero/slack.svg"
 import teamsHeroIcon from "@/svgs/pages/connect/hero/teams.svg"
+import telegramHeroIcon from "@/svgs/pages/connect/hero/telegram.svg"
+import whatsappHeroIcon from "@/svgs/pages/connect/hero/whatsapp.svg"
 
 type ConnectChannelState = "default" | "coming-soon"
 
@@ -44,7 +48,8 @@ const CONNECT_CHANNEL_ITEMS = [
     description: "Send team alerts",
     icon: slackIcon,
     hero: {
-      iconClassName: "size-[75%]",
+      icon: slackHeroIcon,
+      iconClassName: "translate-y-[0.038em] lg:translate-y-[0.058em]",
     },
   },
   {
@@ -52,7 +57,8 @@ const CONNECT_CHANNEL_ITEMS = [
     description: "Reach users fast",
     icon: whatsappIcon,
     hero: {
-      iconClassName: "size-[82%]",
+      icon: whatsappHeroIcon,
+      iconClassName: "translate-y-[0.019em] lg:translate-y-[0.058em]",
     },
   },
   {
@@ -60,7 +66,8 @@ const CONNECT_CHANNEL_ITEMS = [
     description: "Deliver clean digests",
     icon: emailIcon,
     hero: {
-      iconClassName: "size-[86%]",
+      icon: emailHeroIcon,
+      iconClassName: "translate-y-[0.038em] lg:translate-y-[0.058em]",
     },
   },
   {
@@ -68,7 +75,8 @@ const CONNECT_CHANNEL_ITEMS = [
     description: "Push instant updates",
     icon: telegramIcon,
     hero: {
-      iconClassName: "size-[76.5%]",
+      icon: telegramHeroIcon,
+      iconClassName: "translate-y-[0.038em] lg:translate-y-[0.058em]",
     },
   },
   {
@@ -78,6 +86,7 @@ const CONNECT_CHANNEL_ITEMS = [
     hero: {
       name: "MS Teams",
       icon: teamsHeroIcon,
+      iconClassName: "lg:translate-y-[0.058em]",
     },
   },
   {
@@ -141,13 +150,12 @@ function isConnectChannelAvailable(channel: ConnectChannel) {
 const CONNECT_CHANNELS: ConnectChannel[] =
   CONNECT_CHANNEL_ITEMS.map(getConnectChannel)
 
-const CONNECT_HERO_CHANNELS: ConnectHeroChannel[] = CONNECT_CHANNEL_ITEMS.filter(
-  isConnectChannelAvailable
-).map((channel) => ({
-  name: channel.hero?.name ?? channel.name,
-  icon: channel.hero?.icon ?? channel.icon,
-  iconClassName: channel.hero?.iconClassName,
-}))
+const CONNECT_HERO_CHANNELS: ConnectHeroChannel[] =
+  CONNECT_CHANNEL_ITEMS.filter(isConnectChannelAvailable).map((channel) => ({
+    name: channel.hero?.name ?? channel.name,
+    icon: channel.hero?.icon ?? channel.icon,
+    iconClassName: channel.hero?.iconClassName,
+  }))
 
 export { CONNECT_CHANNELS, CONNECT_HERO_CHANNELS }
 export type { ConnectChannel }

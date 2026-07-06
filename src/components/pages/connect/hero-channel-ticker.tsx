@@ -107,9 +107,9 @@ function getChannelAnimationStyle(index: number): CSSProperties {
 function ChannelItem({ channel }: { channel: HeroChannel }) {
   return (
     <>
-      <span className="flex size-[0.9em] shrink-0 items-center justify-center">
+      <span className="flex size-[1em] shrink-0 items-center justify-center">
         <Image
-          className={cn("shrink-0", channel.iconClassName ?? "size-full")}
+          className={cn("size-full shrink-0", channel.iconClassName)}
           src={channel.icon}
           alt=""
           width={68}
