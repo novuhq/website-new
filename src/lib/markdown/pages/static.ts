@@ -60,16 +60,7 @@ async function customerStoriesMarkdown() {
 const MCP_CONFIG_SNIPPET = `{
   "mcpServers": {
     "novu": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/",
-        "--header",
-        "Authorization: Bearer \${NOVU_API_KEY}"
-      ],
-      "env": {
-        "NOVU_API_KEY": "your-novu-api-key-here"
-      }
+      "url": "https://mcp.novu.co/"
     }
   }
 }`
@@ -78,7 +69,7 @@ const MCP_STEPS = [
   {
     title: "Connect your AI client",
     description:
-      "Point any MCP client — Claude, Cursor, or your app — to the Novu MCP Server.",
+      "Add the Novu MCP Server in Cursor, Claude, or any MCP client — OAuth sign-in handles authentication automatically.",
   },
   {
     title: "Discover available tools",

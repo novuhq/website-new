@@ -21,7 +21,7 @@ const STEPS: IMcpHowItWorksStep[] = [
   {
     title: "Connect your AI client",
     description:
-      "Point any MCP client — Claude, Cursor, or your app — to the Novu MCP Server.",
+      "Add the Novu MCP Server in Cursor, Claude, or any MCP client — OAuth sign-in handles authentication automatically.",
   },
   {
     title: "Discover available tools",
@@ -38,16 +38,7 @@ const STEPS: IMcpHowItWorksStep[] = [
 const BASE_JSON_SNIPPET = `{
   "mcpServers": {
     "novu": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/",
-        "--header",
-        "Authorization: Bearer \${NOVU_API_KEY}"
-      ],
-      "env": {
-        "NOVU_API_KEY": "your-novu-api-key-here"
-      }
+      "url": "https://mcp.novu.co/"
     }
   }
 }`
@@ -55,42 +46,35 @@ const BASE_JSON_SNIPPET = `{
 const VSCODE_JSON_SNIPPET = `{
   "servers": {
     "novu": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/",
-        "--header",
-        "Authorization: Bearer \${input:novu-api-key}"
-      ]
+      "type": "http",
+      "url": "https://mcp.novu.co/"
     }
-  },
-  "inputs": [
-    {
-      "id": "novu-api-key",
-      "type": "promptString",
-      "description": "Novu API key",
-      "password": true
-    }
-  ]
+  }
 }`
 
 const CODEX_TOML_SNIPPET = `[mcp_servers.novu]
-command = "npx"
-args = [
-  "mcp-remote",
-  "https://mcp.novu.co/",
-  "--header",
-  "Authorization: Bearer \${NOVU_API_KEY}",
-]
+url = "https://mcp.novu.co/"`
 
-[mcp_servers.novu.env]
-NOVU_API_KEY = "your-novu-api-key-here"`
+const CLAUDE_DESKTOP_JSON_SNIPPET = `{
+  "mcpServers": {
+    "novu": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.novu.co/"
+      ]
+    }
+  }
+}`
 
 const CLIENT_SNIPPETS: IMcpClientSnippet[] = [
   { label: "Cursor", language: "json", code: BASE_JSON_SNIPPET },
   { label: "Codex", language: "toml", code: CODEX_TOML_SNIPPET },
-  { label: "Claude Desktop", language: "json", code: BASE_JSON_SNIPPET },
+  {
+    label: "Claude Desktop",
+    language: "json",
+    code: CLAUDE_DESKTOP_JSON_SNIPPET,
+  },
   { label: "VS Code", language: "json", code: VSCODE_JSON_SNIPPET },
   { label: "Windsurf", language: "json", code: BASE_JSON_SNIPPET },
   { label: "GitHub Copilot", language: "json", code: VSCODE_JSON_SNIPPET },
