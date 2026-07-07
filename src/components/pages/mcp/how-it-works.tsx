@@ -13,7 +13,7 @@ interface IMcpHowItWorksStep {
 
 interface IMcpClientSnippet {
   label: string
-  language: "json" | "toml"
+  language: "json" | "toml" | "bash"
   code: string
 }
 
@@ -21,7 +21,7 @@ const STEPS: IMcpHowItWorksStep[] = [
   {
     title: "Connect your AI client",
     description:
-      "Add the Novu MCP Server to Cursor, Claude, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
+      "Add the Novu MCP Server to Cursor, Claude Code, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
   },
   {
     title: "Discover available tools",
@@ -55,25 +55,15 @@ const VSCODE_JSON_SNIPPET = `{
 const CODEX_TOML_SNIPPET = `[mcp_servers.novu]
 url = "https://mcp.novu.co/"`
 
-const CLAUDE_DESKTOP_JSON_SNIPPET = `{
-  "mcpServers": {
-    "novu": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/"
-      ]
-    }
-  }
-}`
+const CLAUDE_CODE_BASH_SNIPPET = `claude mcp add --transport http novu https://mcp.novu.co/`
 
 const CLIENT_SNIPPETS: IMcpClientSnippet[] = [
   { label: "Cursor", language: "json", code: BASE_JSON_SNIPPET },
   { label: "Codex", language: "toml", code: CODEX_TOML_SNIPPET },
   {
-    label: "Claude Desktop",
-    language: "json",
-    code: CLAUDE_DESKTOP_JSON_SNIPPET,
+    label: "Claude Code",
+    language: "bash",
+    code: CLAUDE_CODE_BASH_SNIPPET,
   },
   { label: "VS Code", language: "json", code: VSCODE_JSON_SNIPPET },
   { label: "Windsurf", language: "json", code: BASE_JSON_SNIPPET },
@@ -127,7 +117,7 @@ function HowItWorks() {
             aria-hidden
             className="pointer-events-none absolute top-0 left-0 h-auto w-full max-w-full -translate-y-1/2 md:w-[50%] md:max-w-[50%]"
           />
-          <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
+          <McpConfigSelect snippets={snippets} defaultLabel="Claude Code" />
 
           <div className="relative pl-12">
             <ol className="flex flex-col gap-10 md:gap-15">

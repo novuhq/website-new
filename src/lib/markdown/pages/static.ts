@@ -69,7 +69,7 @@ const MCP_STEPS = [
   {
     title: "Connect your AI client",
     description:
-      "Add the Novu MCP Server to Cursor, Claude, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
+      "Add the Novu MCP Server to Cursor, Claude Code, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
   },
   {
     title: "Discover available tools",
@@ -478,7 +478,7 @@ function mcpBody() {
     section("Trigger a workflow with your agent, and let Novu do the rest", [
       itemSections(MCP_STEPS),
       formatCodeFence(MCP_CONFIG_SNIPPET, "json"),
-      "Supported MCP clients shown on the page: Cursor, Codex, Claude Desktop, VS Code, Windsurf, GitHub Copilot, and ChatGPT.",
+      "Supported MCP clients shown on the page: Cursor, Codex, Claude Code, VS Code, Windsurf, GitHub Copilot, and ChatGPT.",
     ]),
     section(
       "Paste any prompt into your MCP client to interact with Novu in natural language",

@@ -135,7 +135,7 @@ Read the key from the environment at the moment of the call. Do not copy it into
 
 The Novu API and backend SDKs are **server-side only**. Using the secret key in browser code will fail with CORS errors and exposes the key publicly.
 
-**Novu MCP** — connect through OAuth in the user's MCP client. Point the client at `https://mcp.novu.co/` (US) or `https://eu.mcp.novu.co/` (EU) with no `Authorization` header — the client handles sign-in. Run the `whoami` tool to verify the session. OAuth sessions default to the Development environment; call `get_environments` and pass an `_id` as `environmentId` to act on Production or another environment. See `https://docs.novu.co/platform/build-with-ai/mcp` for Cursor, Codex, Claude Code, ChatGPT, and Claude Desktop examples.
+**Novu MCP** — connect through OAuth in the user's MCP client. Point the client at `https://mcp.novu.co/` (US) or `https://eu.mcp.novu.co/` (EU) with no `Authorization` header — the client handles sign-in. Run the `whoami` tool to verify the session. OAuth sessions default to the Development environment; call `get_environments` and pass an `_id` as `environmentId` to act on Production or another environment. See `https://docs.novu.co/platform/build-with-ai/mcp` for Cursor, Claude Code, ChatGPT, Codex, and other client-specific setup.
 
 Regenerating the secret key in the dashboard invalidates the previous value. Treat a `401` on a previously-working key as revocation: drop it from memory and ask the user to refresh whichever source you read it from. For MCP OAuth sessions, ask the user to reconnect through their client if a `401` appears.
 
