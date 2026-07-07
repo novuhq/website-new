@@ -9,7 +9,7 @@ Several hosts are relevant:
 - **Dashboard (US)** — `https://dashboard.novu.co` — where the user manages environments, workflows, and keys.
 - **Dashboard (EU)** — `https://eu.dashboard.novu.co` — EU Cloud dashboard.
 - **MCP (US)** — `https://mcp.novu.co/` — Novu MCP server for agent tooling.
-- **MCP (EU)** — `https://mcp.novu.co/?region=eu` — EU MCP endpoint.
+- **MCP (EU)** — `https://eu.mcp.novu.co/` — EU MCP endpoint.
 - **Documentation** — `https://docs.novu.co` — guides, API reference, and MCP setup.
 
 Match the user's region across API, dashboard, and MCP. If their dashboard is `eu.dashboard.novu.co`, use the EU API and EU MCP URLs.
@@ -78,7 +78,7 @@ Novu keys are **environment-specific** (Development vs Production). Always use t
 
 Before you do anything credential-shaped, check whether the user has already wired Novu into your environment.
 
-1. **Novu MCP server** — if you are an MCP client (Claude, Cursor, Codex, etc.), Novu ships a remote MCP server that exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments as tools. The user configures it once with their secret key; you call the tools without ever seeing the key. Setup: `https://docs.novu.co/platform/build-with-ai/mcp`. Product page: `https://novu.co/mcp/`.
+1. **Novu MCP server** — if you are an MCP client (Claude, Cursor, Codex, ChatGPT, etc.), Novu ships a remote MCP server that exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments as tools. The user connects with OAuth through their client — you call the tools without handling credentials directly. Setup: `https://docs.novu.co/platform/build-with-ai/mcp`. Product page: `https://novu.co/mcp/`.
 2. **Novu documentation** — server-side API usage, workflow design, channel providers, and Framework patterns live at `https://docs.novu.co`. Read the relevant guide before calling the API directly (especially authentication, triggers, and subscriber management).
 3. **Novu CLI** — for Framework workflows, Local Studio, and syncing workflows to Novu Cloud, prefer `npx novu@latest` over hand-rolled `curl`. It accepts `--secret-key`, `--api-url`, and region-aware `--dashboard-url`. Package: `https://www.npmjs.com/package/novu`. Docs: `https://docs.novu.co/framework/studio` and `https://docs.novu.co/framework/deployment/cli`.
 
@@ -88,7 +88,7 @@ If any of these is already configured, use it and stop. Do not ask the user for 
 
 The credential for server-side API access is a **Secret Key** from the Novu dashboard. It grants administrative access to the linked environment. The user issues it from **Developer → API Keys** (`https://dashboard.novu.co/settings/api-keys` or `https://eu.dashboard.novu.co/settings/api-keys`) and supplies it through a secure channel — never by pasting it into chat.
 
-Novu also exposes an **Application Identifier**, which is public and used only to initialize the Inbox and other client-side SDKs. It is **not** a substitute for the secret key on server-side or MCP-authenticated calls.
+Novu also exposes an **Application Identifier**, which is public and used only to initialize the Inbox and other client-side SDKs. It is **not** a substitute for the secret key on server-side API calls.
 
 ### How to pick the secret key up
 
@@ -96,16 +96,14 @@ Look for it in this order. Stop at the first one that exists:
 
 1. `--secret-key` on `npx novu@latest` commands (`dev`, `sync`, `init`), if the user passed one for this invocation.
 2. `NOVU_SECRET_KEY` in your process environment (common in SDK and backend apps).
-3. `NOVU_API_KEY` in your process environment (common in MCP client config; same secret key value).
-4. A project `.env` file the user has told you to read.
-5. `secretKey` (or equivalent) in an initialized `@novu/api` / `@novu/node` client config.
-6. The Novu MCP server's environment or headers, if you are calling through it (`Authorization: Bearer …`).
+3. A project `.env` file the user has told you to read.
+4. `secretKey` (or equivalent) in an initialized `@novu/api` / `@novu/node` client config.
 
 If none of the above is set and you genuinely need a key, do not ask the user to paste it into the conversation. Instead, tell them to:
 
 - Open **API Keys** in the dashboard for the correct environment (Development or Production).
 - Copy the **Secret Key** for that environment.
-- Put it in `NOVU_SECRET_KEY` or `NOVU_API_KEY` in their shell, `.env`, MCP client config, or pass it to the Novu CLI via `--secret-key` — whichever matches how they invoke you.
+- Put it in `NOVU_SECRET_KEY` in their shell, `.env`, or pass it to the Novu CLI via `--secret-key` — whichever matches how they invoke you.
 - Resume the task once it is set.
 
 This keeps the key out of your transcript, out of any logs the user shares, and out of the model provider's training data.
@@ -137,15 +135,9 @@ Read the key from the environment at the moment of the call. Do not copy it into
 
 The Novu API and backend SDKs are **server-side only**. Using the secret key in browser code will fail with CORS errors and exposes the key publicly.
 
-**Novu MCP** — use the same secret key value with a Bearer token (not the `ApiKey` prefix):
+**Novu MCP** — connect through OAuth in the user's MCP client. Point the client at `https://mcp.novu.co/` (US) or `https://eu.mcp.novu.co/` (EU) with no `Authorization` header — the client handles sign-in. Run the `whoami` tool to verify the session. OAuth sessions default to the Development environment; call `get_environments` and pass an `_id` as `environmentId` to act on Production or another environment. See `https://docs.novu.co/platform/build-with-ai/mcp` for Cursor, Codex, Claude Code, ChatGPT, and Claude Desktop examples.
 
-```http
-Authorization: Bearer $NOVU_API_KEY
-```
-
-Point the MCP client at `https://mcp.novu.co/` (US) or `https://mcp.novu.co/?region=eu` (EU). See `https://docs.novu.co/platform/build-with-ai/mcp` for Cursor, Codex, Claude Code, and Claude Desktop examples.
-
-Regenerating the secret key in the dashboard invalidates the previous value. Treat a `401` on a previously-working key as revocation: drop it from memory and ask the user to refresh whichever source you read it from.
+Regenerating the secret key in the dashboard invalidates the previous value. Treat a `401` on a previously-working key as revocation: drop it from memory and ask the user to refresh whichever source you read it from. For MCP OAuth sessions, ask the user to reconnect through their client if a `401` appears.
 
 ### Application identifier (public, client-side only)
 

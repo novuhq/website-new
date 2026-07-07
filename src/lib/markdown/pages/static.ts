@@ -69,12 +69,12 @@ const MCP_STEPS = [
   {
     title: "Connect your AI client",
     description:
-      "Add the Novu MCP Server in Cursor, Claude, or any MCP client — OAuth sign-in handles authentication automatically.",
+      "Add the Novu MCP Server to Cursor, Claude, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
   },
   {
     title: "Discover available tools",
     description:
-      "Your agent finds 23 tools: subscribers, preferences, workflows, triggers, notifications, integrations, and environments.",
+      "Your agent discovers 23 tools. Run whoami to confirm you're connected, then manage subscribers, workflows, triggers, and more.",
   },
   {
     title: "Novu delivers everywhere",
@@ -84,6 +84,7 @@ const MCP_STEPS = [
 ]
 
 const MCP_PROMPTS = [
+  "Run whoami to verify I'm authenticated and show my Novu region.",
   "List all failed chat notifications from the last 24 hours and show me the error details.",
   "Create a workflow that sends an order confirmation via email, an SMS with the tracking number, and an in-app notification through Novu Inbox.",
   "Check if my SendGrid and Twilio integrations are active.",
@@ -93,6 +94,18 @@ const MCP_PROMPTS = [
 ]
 
 const MCP_TOOL_GROUPS = [
+  {
+    title: "Auth",
+    bullets: [
+      "whoami: Verify the current credential and show your identity and region",
+    ],
+  },
+  {
+    title: "Environments",
+    bullets: [
+      "get_environments: List environments — use an _id as the environmentId parameter on other tools",
+    ],
+  },
   {
     title: "Subscriber management",
     bullets: [
@@ -142,13 +155,6 @@ const MCP_TOOL_GROUPS = [
       "get_active_integrations: List only the active integrations",
       "delete_integration: Delete an integration by its integrationId",
       "set_primary_integration: Mark an integration as the primary for its channel",
-    ],
-  },
-  {
-    title: "Other",
-    bullets: [
-      "get_environments: Get all environments with their details and API keys",
-      "get_api_key_status: Check the current API key status and server region configuration",
     ],
   },
 ]
@@ -472,7 +478,7 @@ function mcpBody() {
     section("Trigger a workflow with your agent, and let Novu do the rest", [
       itemSections(MCP_STEPS),
       formatCodeFence(MCP_CONFIG_SNIPPET, "json"),
-      "Supported MCP clients shown on the page: Cursor, Codex, Claude Desktop, VS Code, Windsurf, GitHub Copilot.",
+      "Supported MCP clients shown on the page: Cursor, Codex, Claude Desktop, VS Code, Windsurf, GitHub Copilot, and ChatGPT.",
     ]),
     section(
       "Paste any prompt into your MCP client to interact with Novu in natural language",
@@ -489,6 +495,7 @@ function mcpBody() {
       bulletList([
         "Claude",
         "Cursor",
+        "ChatGPT",
         "Windsurf",
         "Copilot",
         "Codex",

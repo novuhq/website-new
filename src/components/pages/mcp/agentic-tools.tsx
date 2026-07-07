@@ -19,6 +19,26 @@ interface IAgenticToolGroup {
 
 const TOOL_GROUPS: IAgenticToolGroup[] = [
   {
+    category: "Auth",
+    tools: [
+      {
+        name: "whoami",
+        description:
+          "Verify the current credential and show your identity and region",
+      },
+    ],
+  },
+  {
+    category: "Environments",
+    tools: [
+      {
+        name: "get_environments",
+        description:
+          "List environments — use an _id as the environmentId parameter on other tools",
+      },
+    ],
+  },
+  {
     category: "Subscriber management",
     tools: [
       {
@@ -134,20 +154,6 @@ const TOOL_GROUPS: IAgenticToolGroup[] = [
       {
         name: "set_primary_integration",
         description: "Mark an integration as the primary for its channel",
-      },
-    ],
-  },
-  {
-    category: "Other",
-    tools: [
-      {
-        name: "get_environments",
-        description: "Get all environments with their details and API keys",
-      },
-      {
-        name: "get_api_key_status",
-        description:
-          "Check the current API key status and server region configuration",
       },
     ],
   },

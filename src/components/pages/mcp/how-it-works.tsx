@@ -21,12 +21,12 @@ const STEPS: IMcpHowItWorksStep[] = [
   {
     title: "Connect your AI client",
     description:
-      "Add the Novu MCP Server in Cursor, Claude, or any MCP client — OAuth sign-in handles authentication automatically.",
+      "Add the Novu MCP Server to Cursor, Claude, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
   },
   {
     title: "Discover available tools",
     description:
-      "Your agent finds 23 tools: subscribers, preferences, workflows, triggers, notifications, integrations, and environments.",
+      "Your agent discovers 23 tools. Run whoami to confirm you're connected, then manage subscribers, workflows, triggers, and more.",
   },
   {
     title: "Novu delivers everywhere",

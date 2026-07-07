@@ -8,17 +8,11 @@
       "generateUrl": "https://dashboard.novu.co/settings/api-keys",
       "setup": "Create a Secret Key in the Novu dashboard for the target environment (Development or Production). Store it as NOVU_SECRET_KEY and send it as `Authorization: ApiKey <key>` on REST API calls. For EU Cloud, use https://eu.dashboard.novu.co/settings/api-keys and call https://eu.api.novu.co."
     },
-    "novu_api_key": {
-      "type": "api_key",
-      "label": "Novu API key (MCP)",
-      "generateUrl": "https://dashboard.novu.co/settings/api-keys",
-      "setup": "Use the same Secret Key value as REST access. Store it as NOVU_API_KEY in MCP client config and send it as `Authorization: Bearer <key>` to the Novu MCP server."
-    },
     "novu_application_identifier": {
       "type": "api_key",
       "label": "Novu application identifier",
       "generateUrl": "https://dashboard.novu.co/settings/api-keys",
-      "setup": "Public identifier for client-side Inbox and SDK initialization only. It is not a substitute for the secret key on server-side API or MCP calls. For keyless Inbox demos, omit it entirely."
+      "setup": "Public identifier for client-side Inbox and SDK initialization only. It is not a substitute for the secret key on server-side API calls. For keyless Inbox demos, omit it entirely."
     }
   },
   "surfaces": [
@@ -114,12 +108,11 @@
           {
             "use": [
               {
-                "id": "novu_api_key",
+                "id": "oauth",
                 "mechanics": {
-                  "source": "http",
-                  "in": "header",
-                  "headerName": "Authorization",
-                  "scheme": "Bearer"
+                  "source": "oauth",
+                  "flow": "authorization_code",
+                  "registration": "dcr"
                 }
               }
             ],
@@ -130,13 +123,13 @@
           }
         ]
       },
-      "notes": "Hosted remote MCP over Streamable HTTP. Exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments. Also reachable via `npx mcp-remote https://mcp.novu.co/ --header \"Authorization: Bearer ${NOVU_API_KEY}\"`."
+      "notes": "Hosted remote MCP over Streamable HTTP with OAuth (DCR). Exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments. Connect with the MCP URL only — your client handles sign-in."
     },
     {
       "slug": "novu-mcp-eu",
       "name": "Novu MCP server (EU)",
       "type": "mcp",
-      "url": "https://mcp.novu.co/?region=eu",
+      "url": "https://eu.mcp.novu.co/",
       "transports": ["streamable-http"],
       "docs": "https://docs.novu.co/platform/build-with-ai/mcp",
       "basis": {
@@ -149,12 +142,11 @@
           {
             "use": [
               {
-                "id": "novu_api_key",
+                "id": "oauth",
                 "mechanics": {
-                  "source": "http",
-                  "in": "header",
-                  "headerName": "Authorization",
-                  "scheme": "Bearer"
+                  "source": "oauth",
+                  "flow": "authorization_code",
+                  "registration": "dcr"
                 }
               }
             ],
@@ -165,7 +157,7 @@
           }
         ]
       },
-      "notes": "EU region endpoint. Use the EU secret key and match with eu.api.novu.co."
+      "notes": "EU region endpoint. OAuth sessions pair with eu.dashboard.novu.co and eu.api.novu.co."
     },
     {
       "slug": "novu-cli",
