@@ -16,9 +16,9 @@ Novu provides a unified platform for building, operating, and debugging notifica
 - User preferences, HMAC encryption, and customizable UI
 
 ### MCP Server
-- [MCP Overview](https://novu.co/mcp/): Give AI agents native access to Novu notification tools
+- [MCP Overview](https://novu.co/mcp/): Give AI agents native access to Novu notification tools via OAuth
 - 23+ tools for subscribers, workflows, triggers, notifications, and integrations
-- Works with Claude, Cursor, Copilot, and any MCP-compatible client
+- Works with Claude, Cursor, ChatGPT, Copilot, and any MCP-compatible client
 
 ### Copilot
 - [Copilot Overview](https://novu.co/copilot/): Generate production-ready notification workflows from plain English

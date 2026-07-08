@@ -13,7 +13,7 @@ interface IMcpHowItWorksStep {
 
 interface IMcpClientSnippet {
   label: string
-  language: "json" | "toml"
+  language: "json" | "toml" | "bash"
   code: string
 }
 
@@ -21,12 +21,12 @@ const STEPS: IMcpHowItWorksStep[] = [
   {
     title: "Connect your AI client",
     description:
-      "Point any MCP client — Claude, Cursor, or your app — to the Novu MCP Server.",
+      "Add the Novu MCP Server to Cursor, Claude Code, ChatGPT, or any MCP client — sign in with your Novu account when prompted.",
   },
   {
     title: "Discover available tools",
     description:
-      "Your agent finds 23 tools: subscribers, preferences, workflows, triggers, notifications, integrations, and environments.",
+      "Your agent discovers 23 tools. Run whoami to confirm you're connected, then manage subscribers, workflows, triggers, and more.",
   },
   {
     title: "Novu delivers everywhere",
@@ -38,16 +38,7 @@ const STEPS: IMcpHowItWorksStep[] = [
 const BASE_JSON_SNIPPET = `{
   "mcpServers": {
     "novu": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/",
-        "--header",
-        "Authorization: Bearer \${NOVU_API_KEY}"
-      ],
-      "env": {
-        "NOVU_API_KEY": "your-novu-api-key-here"
-      }
+      "url": "https://mcp.novu.co/"
     }
   }
 }`
@@ -55,42 +46,25 @@ const BASE_JSON_SNIPPET = `{
 const VSCODE_JSON_SNIPPET = `{
   "servers": {
     "novu": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.novu.co/",
-        "--header",
-        "Authorization: Bearer \${input:novu-api-key}"
-      ]
+      "type": "http",
+      "url": "https://mcp.novu.co/"
     }
-  },
-  "inputs": [
-    {
-      "id": "novu-api-key",
-      "type": "promptString",
-      "description": "Novu API key",
-      "password": true
-    }
-  ]
+  }
 }`
 
 const CODEX_TOML_SNIPPET = `[mcp_servers.novu]
-command = "npx"
-args = [
-  "mcp-remote",
-  "https://mcp.novu.co/",
-  "--header",
-  "Authorization: Bearer \${NOVU_API_KEY}",
-]
+url = "https://mcp.novu.co/"`
 
-[mcp_servers.novu.env]
-NOVU_API_KEY = "your-novu-api-key-here"`
+const CLAUDE_CODE_BASH_SNIPPET = `claude mcp add --transport http novu https://mcp.novu.co/`
 
 const CLIENT_SNIPPETS: IMcpClientSnippet[] = [
   { label: "Cursor", language: "json", code: BASE_JSON_SNIPPET },
   { label: "Codex", language: "toml", code: CODEX_TOML_SNIPPET },
-  { label: "Claude Desktop", language: "json", code: BASE_JSON_SNIPPET },
+  {
+    label: "Claude Code",
+    language: "bash",
+    code: CLAUDE_CODE_BASH_SNIPPET,
+  },
   { label: "VS Code", language: "json", code: VSCODE_JSON_SNIPPET },
   { label: "Windsurf", language: "json", code: BASE_JSON_SNIPPET },
   { label: "GitHub Copilot", language: "json", code: VSCODE_JSON_SNIPPET },
@@ -143,7 +117,7 @@ function HowItWorks() {
             aria-hidden
             className="pointer-events-none absolute top-0 left-0 h-auto w-full max-w-full -translate-y-1/2 md:w-[50%] md:max-w-[50%]"
           />
-          <McpConfigSelect snippets={snippets} defaultLabel="Claude Desktop" />
+          <McpConfigSelect snippets={snippets} defaultLabel="Claude Code" />
 
           <div className="relative pl-12">
             <ol className="flex flex-col gap-10 md:gap-15">

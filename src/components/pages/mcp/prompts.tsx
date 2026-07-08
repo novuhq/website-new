@@ -10,6 +10,10 @@ interface IMcpPromptCard {
 const PROMPT_CARDS: IMcpPromptCard[] = [
   {
     prompt:
+      "Run whoami to verify I'm authenticated and show my Novu region.",
+  },
+  {
+    prompt:
       "List all failed chat notifications from the last 24 hours and show me the error details.",
   },
   {
