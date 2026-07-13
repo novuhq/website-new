@@ -44,6 +44,7 @@ function CareersVideo() {
         ref={videoRef}
         className="size-full object-cover"
         poster={POSTER_SRC}
+        loop
         muted
         playsInline
         preload="metadata"
