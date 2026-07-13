@@ -10,6 +10,7 @@ import {
 
 const NOTION_VERSION = "2026-03-11"
 const NOTION_API_BASE_URL = "https://api.notion.com/v1"
+const NOTION_REQUEST_TIMEOUT = 8000
 
 type NotionRichText = {
   plain_text?: string
@@ -94,10 +95,16 @@ async function notionFetch<T>(
   headers.set("Authorization", `Bearer ${apiKey}`)
   headers.set("Notion-Version", NOTION_VERSION)
 
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), NOTION_REQUEST_TIMEOUT)
+
   const response = await fetch(`${NOTION_API_BASE_URL}${path}`, {
     ...init,
     headers,
+    signal: controller.signal,
     next: { tags: ["careers"] },
+  }).finally(() => {
+    clearTimeout(timeoutId)
   })
   const data = await response.json()
 
@@ -473,7 +480,7 @@ export async function getOpenCareerJobs() {
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 }
 
-export async function getCareerJobBySlug(slug: string) {
+async function getCareerPageAndJobBySlug(slug: string) {
   const jobIdNumber = getJobIdNumberFromSlug(slug)
 
   if (jobIdNumber === null) {
@@ -496,11 +503,35 @@ export async function getCareerJobBySlug(slug: string) {
     return null
   }
 
-  const blocks = await getPageContentBlocks(page.id)
+  return { job, page }
+}
+
+export async function getCareerJobReferenceBySlug(slug: string) {
+  const result = await getCareerPageAndJobBySlug(slug)
+
+  if (!result) {
+    return null
+  }
+
+  return {
+    id: result.page.id,
+    title: result.job.title,
+    slug: result.job.slug,
+  }
+}
+
+export async function getCareerJobBySlug(slug: string) {
+  const result = await getCareerPageAndJobBySlug(slug)
+
+  if (!result) {
+    return null
+  }
+
+  const blocks = await getPageContentBlocks(result.page.id)
   const content = mapBlocksToCareerContent(blocks)
 
   return {
-    ...job,
+    ...result.job,
     content,
     plainContent: getPlainContent(content),
   } satisfies ICareerJobDetail

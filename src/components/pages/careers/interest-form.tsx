@@ -1,7 +1,11 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { CAREER_DEPARTMENTS, isCareerDepartment } from "@/constants/careers"
+import {
+  CAREER_DEPARTMENTS,
+  EMPTY_CV_ERROR_MESSAGE,
+  isCareerDepartment,
+} from "@/constants/careers"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChevronDown } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -58,7 +62,13 @@ const formSchema = z.object({
     .min(2, "Please enter your city and country.")
     .max(120, "Location is too long."),
   remoteAsyncExperience: z.string(),
-  cv: z.any().refine((files) => files?.length === 1, "Please attach your CV."),
+  cv: z
+    .any()
+    .refine((files) => files?.length === 1, "Please attach your CV.")
+    .refine(
+      (files) => !files?.length || files[0]?.size > 0,
+      EMPTY_CV_ERROR_MESSAGE
+    ),
   personalNote: z.string().max(2000, "Personal note is too long."),
   department: z.string(),
 })
@@ -68,6 +78,7 @@ type CareersFieldName = keyof CareersInterestFormValues
 
 interface CareersInterestFormProps {
   defaultDepartment?: string
+  jobSlug?: string
 }
 
 const formDefaultValues: CareersInterestFormValues = {
@@ -132,22 +143,35 @@ function CareersFileField({
     <FormField
       control={control}
       name={name}
-      render={({ field: { onChange, ref, name } }) => (
-        <FormItem>
-          <FormLabel className={labelClassName}>{label}</FormLabel>
-          <FormControl>
-            <Input
-              ref={ref}
-              name={name}
-              type="file"
-              accept=".pdf,.doc,.docx"
-              required={required}
-              onChange={(event) => onChange(event.target.files)}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field: { onChange, ref, name, value } }) => {
+        const fileName = value?.[0]?.name
+
+        return (
+          <FormItem>
+            <FormLabel className={labelClassName}>{label}</FormLabel>
+            <div className="relative">
+              <FormControl>
+                <Input
+                  ref={ref}
+                  name={name}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="peer absolute inset-0 z-10 h-full cursor-pointer opacity-0"
+                  required={required}
+                  onChange={(event) => onChange(event.target.files)}
+                />
+              </FormControl>
+              <div
+                className="pointer-events-none flex h-11 w-full items-center rounded-md border border-border bg-background px-3.5 py-2.5 text-base leading-snug tracking-tight transition-colors duration-300 peer-focus-visible:border-accent-foreground"
+                aria-hidden="true"
+              >
+                <span className="truncate">{fileName || "Choose file"}</span>
+              </div>
+            </div>
+            <FormMessage />
+          </FormItem>
+        )
+      }}
     />
   )
 }
@@ -223,6 +247,7 @@ function CareersTextareaField({
 
 function CareersInterestForm({
   defaultDepartment = "",
+  jobSlug,
 }: CareersInterestFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -254,6 +279,9 @@ function CareersInterestForm({
       formData.append("remoteAsyncExperience", values.remoteAsyncExperience)
       formData.append("personalNote", values.personalNote)
       formData.append("department", values.department)
+      if (jobSlug) {
+        formData.append("jobSlug", jobSlug)
+      }
       formData.append(HONEYPOT_FIELD_NAME, honeypotRef.current?.value || "")
       formData.append("cv", values.cv[0])
 
