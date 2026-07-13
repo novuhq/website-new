@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from "next/server"
 import { CAREER_DEPARTMENTS } from "@/constants/careers"
 import { z } from "zod"
 
+import { getCareerJobReferenceBySlug } from "@/lib/notion/careers"
+
 const MAX_CV_FILE_SIZE = 10 * 1024 * 1024
 const MAX_MULTIPART_BODY_SIZE = MAX_CV_FILE_SIZE + 1024 * 1024
 const NOTION_REQUEST_TIMEOUT = 8000
 const HONEYPOT_FIELD_NAME = "companyWebsite"
+const CAREER_JOB_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*-\d+$/
 const allowedCvExtensions = [".pdf", ".doc", ".docx"]
 const allowedCvMimeTypes = new Set([
   "application/pdf",
@@ -47,6 +50,13 @@ const applicationSchema = z.object({
     (value) => (typeof value === "string" ? value : ""),
     z.union([z.enum(CAREER_DEPARTMENTS), z.literal("")])
   ),
+  jobSlug: z.preprocess(
+    (value) => (typeof value === "string" ? value : ""),
+    z.union([
+      z.string().trim().max(200).regex(CAREER_JOB_SLUG_PATTERN),
+      z.literal(""),
+    ])
+  ),
 })
 
 const NOTION_VERSION = "2026-03-11"
@@ -66,6 +76,10 @@ type NotionFileUploadResponse = {
 type NotionPageResponse = {
   id: string
 }
+
+type CareerJobReference = NonNullable<
+  Awaited<ReturnType<typeof getCareerJobReferenceBySlug>>
+>
 
 function getNotionConfig() {
   const apiKey = process.env.NOTION_API_KEY
@@ -176,6 +190,31 @@ function getRichText(value: string) {
   }
 }
 
+function getCareerJobUrl(slug: string) {
+  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+
+  return new URL(`/careers/${slug}/`, siteUrl).toString()
+}
+
+function getCareerJobProperties(jobReference: CareerJobReference | null) {
+  if (!jobReference) {
+    return {}
+  }
+
+  return {
+    "Applied for": {
+      relation: [
+        {
+          id: jobReference.id,
+        },
+      ],
+    },
+    "Job URL": {
+      url: getCareerJobUrl(jobReference.slug),
+    },
+  }
+}
+
 async function uploadCvToNotion(cv: File) {
   const fileUpload = await notionFetch<NotionFileUploadResponse>(
     "/file_uploads",
@@ -207,7 +246,8 @@ async function uploadCvToNotion(cv: File) {
 
 async function createNotionApplication(
   application: z.infer<typeof applicationSchema>,
-  cv: File
+  cv: File,
+  jobReference: CareerJobReference | null
 ) {
   const [dataSourceId, cvFileUploadId] = await Promise.all([
     getNotionDataSourceId(),
@@ -277,6 +317,7 @@ async function createNotionApplication(
                 getRichText(application.remoteAsyncExperience),
             }
           : {}),
+        ...getCareerJobProperties(jobReference),
       },
     }),
   })
@@ -326,6 +367,7 @@ export async function POST(req: NextRequest) {
       remoteAsyncExperience: formData.get("remoteAsyncExperience"),
       personalNote: formData.get("personalNote"),
       department: formData.get("department"),
+      jobSlug: formData.get("jobSlug"),
     })
 
     if (!parsed.success || cvIssues.length > 0 || !(cv instanceof File)) {
@@ -347,7 +389,25 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const application = await createNotionApplication(parsed.data, cv)
+    const jobReference = parsed.data.jobSlug
+      ? await getCareerJobReferenceBySlug(parsed.data.jobSlug)
+      : null
+
+    if (parsed.data.jobSlug && !jobReference) {
+      return NextResponse.json(
+        {
+          error: true,
+          message: "Invalid or closed career job",
+        },
+        { status: 400 }
+      )
+    }
+
+    const application = await createNotionApplication(
+      parsed.data,
+      cv,
+      jobReference
+    )
 
     return NextResponse.json(
       { sent: true, id: application.id },

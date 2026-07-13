@@ -119,7 +119,10 @@ function CareerJobPage({ job }: CareerJobPageProps) {
             >
               Apply for This Position
             </h2>
-            <CareersInterestForm defaultDepartment={job.department} />
+            <CareersInterestForm
+              defaultDepartment={job.department}
+              jobSlug={job.slug}
+            />
           </section>
         </div>
       </article>

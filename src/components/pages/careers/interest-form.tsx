@@ -68,6 +68,7 @@ type CareersFieldName = keyof CareersInterestFormValues
 
 interface CareersInterestFormProps {
   defaultDepartment?: string
+  jobSlug?: string
 }
 
 const formDefaultValues: CareersInterestFormValues = {
@@ -223,6 +224,7 @@ function CareersTextareaField({
 
 function CareersInterestForm({
   defaultDepartment = "",
+  jobSlug,
 }: CareersInterestFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -254,6 +256,9 @@ function CareersInterestForm({
       formData.append("remoteAsyncExperience", values.remoteAsyncExperience)
       formData.append("personalNote", values.personalNote)
       formData.append("department", values.department)
+      if (jobSlug) {
+        formData.append("jobSlug", jobSlug)
+      }
       formData.append(HONEYPOT_FIELD_NAME, honeypotRef.current?.value || "")
       formData.append("cv", values.cv[0])
 
