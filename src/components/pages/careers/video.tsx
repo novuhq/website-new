@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { Play } from "lucide-react"
+import { useEffect, useRef } from "react"
 
 const VIDEO_SRC = "/videos/pages/careers/video.mp4"
 const VIDEO_SRC_WEBM = "/videos/pages/careers/video.webm"
@@ -10,14 +9,6 @@ const POSTER_SRC = "/videos/pages/careers/poster.jpg"
 function CareersVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const userInteracted = useRef(false)
-
-  const handlePlay = () => {
-    userInteracted.current = true
-    setIsPlaying(true)
-    void videoRef.current?.play()
-  }
 
   useEffect(() => {
     const container = containerRef.current
@@ -26,15 +17,13 @@ function CareersVideo() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (userInteracted.current) return
         if (entry.isIntersecting) {
-          setIsPlaying(true)
           void video.play()
         } else {
           video.pause()
         }
       },
-      { threshold: 0.7 },
+      { threshold: 0.7 }
     )
 
     observer.observe(container)
@@ -55,38 +44,13 @@ function CareersVideo() {
         ref={videoRef}
         className="size-full object-cover"
         poster={POSTER_SRC}
-        controls={isPlaying}
         muted
         playsInline
         preload="metadata"
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onPointerDown={() => {
-          userInteracted.current = true
-        }}
       >
         <source src={VIDEO_SRC_WEBM} type="video/webm" />
         <source src={VIDEO_SRC} type="video/mp4" />
       </video>
-
-      {!isPlaying && (
-        <button
-          className="group absolute inset-0 flex items-center justify-center outline-none"
-          type="button"
-          aria-label="Play video"
-          onClick={handlePlay}
-        >
-          <span className="inline-flex h-14 items-center justify-center rounded-full border border-white/50 bg-[#FFFFFF38] shadow-[0_6px_24px_rgba(0,0,0,0.45)] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
-            <span className="inline-flex items-center justify-center gap-3 px-5 text-xl leading-none font-semibold tracking-normal text-white">
-              <Play
-                className="size-5 fill-current stroke-current"
-                aria-hidden
-              />
-              Play video
-            </span>
-          </span>
-        </button>
-      )}
     </div>
   )
 }
