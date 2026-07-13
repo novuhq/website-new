@@ -1,7 +1,11 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { CAREER_DEPARTMENTS, isCareerDepartment } from "@/constants/careers"
+import {
+  CAREER_DEPARTMENTS,
+  EMPTY_CV_ERROR_MESSAGE,
+  isCareerDepartment,
+} from "@/constants/careers"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChevronDown } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -58,7 +62,13 @@ const formSchema = z.object({
     .min(2, "Please enter your city and country.")
     .max(120, "Location is too long."),
   remoteAsyncExperience: z.string(),
-  cv: z.any().refine((files) => files?.length === 1, "Please attach your CV."),
+  cv: z
+    .any()
+    .refine((files) => files?.length === 1, "Please attach your CV.")
+    .refine(
+      (files) => !files?.length || files[0]?.size > 0,
+      EMPTY_CV_ERROR_MESSAGE
+    ),
   personalNote: z.string().max(2000, "Personal note is too long."),
   department: z.string(),
 })

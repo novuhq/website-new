@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { CAREER_DEPARTMENTS } from "@/constants/careers"
+import { CAREER_DEPARTMENTS, EMPTY_CV_ERROR_MESSAGE } from "@/constants/careers"
 import { z } from "zod"
 
 import { getCareerJobReferenceBySlug } from "@/lib/notion/careers"
@@ -154,8 +154,12 @@ async function getNotionDataSourceId() {
 }
 
 function getCvValidationIssues(cv: FormDataEntryValue | null) {
-  if (!(cv instanceof File) || cv.size === 0) {
+  if (!(cv instanceof File)) {
     return ["Please attach your CV."]
+  }
+
+  if (cv.size === 0) {
+    return [EMPTY_CV_ERROR_MESSAGE]
   }
 
   const fileName = cv.name.toLowerCase()
