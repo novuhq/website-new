@@ -143,22 +143,35 @@ function CareersFileField({
     <FormField
       control={control}
       name={name}
-      render={({ field: { onChange, ref, name } }) => (
-        <FormItem>
-          <FormLabel className={labelClassName}>{label}</FormLabel>
-          <FormControl>
-            <Input
-              ref={ref}
-              name={name}
-              type="file"
-              accept=".pdf,.doc,.docx"
-              required={required}
-              onChange={(event) => onChange(event.target.files)}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field: { onChange, ref, name, value } }) => {
+        const fileName = value?.[0]?.name
+
+        return (
+          <FormItem>
+            <FormLabel className={labelClassName}>{label}</FormLabel>
+            <div className="relative">
+              <FormControl>
+                <Input
+                  ref={ref}
+                  name={name}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="peer absolute inset-0 z-10 h-full cursor-pointer opacity-0"
+                  required={required}
+                  onChange={(event) => onChange(event.target.files)}
+                />
+              </FormControl>
+              <div
+                className="pointer-events-none flex h-11 w-full items-center rounded-md border border-border bg-background px-3.5 py-2.5 text-base leading-snug tracking-tight transition-colors duration-300 peer-focus-visible:border-accent-foreground"
+                aria-hidden="true"
+              >
+                <span className="truncate">{fileName || "Choose file"}</span>
+              </div>
+            </div>
+            <FormMessage />
+          </FormItem>
+        )
+      }}
     />
   )
 }
