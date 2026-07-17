@@ -45,6 +45,12 @@
   --gray-10: 0 0% 90%; /* #E6E6E6 */
   --gray-11: 0 0% 96%; /* #F5F5F5 */
   --gray-13: 0 0% 99%; /* #FCFCFC */
+  --gray-20: 230 10% 18%; /* #2A2B33 */
+  --gray-30: 230 8% 28%; /* #41434D */
+  --gray-40: 230 8% 37%; /* #575A66 */
+  --gray-50: 230 7% 47%; /* #707280 */
+  --gray-60: 230 7% 57%; /* #8A8C99 */
+  --gray-90: 230 10% 89%; /* #E0E1E5 */
 
   --integration-count-badge-from: 47 100% 70%; /* #ffdf66 */
   --integration-count-badge-to: 38 100% 60%; /* #ffb433 */
@@ -158,6 +164,12 @@
   --color-gray-10: hsl(var(--gray-10));
   --color-gray-11: hsl(var(--gray-11));
   --color-gray-13: hsl(var(--gray-13));
+  --color-gray-20: hsl(var(--gray-20));
+  --color-gray-30: hsl(var(--gray-30));
+  --color-gray-40: hsl(var(--gray-40));
+  --color-gray-50: hsl(var(--gray-50));
+  --color-gray-60: hsl(var(--gray-60));
+  --color-gray-90: hsl(var(--gray-90));
 
   --color-integration-card: hsl(var(--integration-card-surface));
   --color-integration-card-border: hsl(240 16% 24% / 0.6);

@@ -1,15 +1,15 @@
 import type { IAgentTemplatesSectionData } from "@/types/templates"
-import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
-import FinalCta from "@/components/pages/final-cta"
 import FAQ from "@/components/pages/faq"
+import FinalCta from "@/components/pages/final-cta"
+import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
 import Channels from "./channels"
 import CliSection from "./cli"
 import Compliance from "./compliance"
+import { CONNECT_FAQ } from "./faq-data"
 import Hero from "./hero"
 import HowItWorks from "./how-it-works"
 import Pricing from "./pricing"
-import { CONNECT_FAQ } from "./faq-data"
 import Templates from "./templates"
 
 interface IConnectPageContentProps {
@@ -39,7 +39,7 @@ function ConnectPageContent({ templatesSection }: IConnectPageContentProps) {
         id="faq"
         className="scroll-mt-25 pt-28 md:pt-36 lg:pt-44 xl:pt-50"
         titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
-        containerClassName="max-w-272"
+        containerClassName="max-w-272 gap-y-6 md:gap-y-[22px]"
       />
       <FinalCta />
     </div>

@@ -7,16 +7,18 @@ import { Link } from "@/components/ui/link"
 import Card from "./card"
 
 interface IDropdownProps {
+  id: string
   isOpen: boolean
   title: string
   content: IMenuHeaderContent[]
 }
 
-function Dropdown({ isOpen, title, content }: IDropdownProps) {
+function Dropdown({ id, isOpen, title, content }: IDropdownProps) {
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          id={id}
           layoutId="navigation-dropdown"
           aria-label={`${title} submenu`}
           className={cn(

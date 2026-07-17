@@ -1,9 +1,9 @@
-import Image from "next/image"
+import Image, { type ImageProps } from "next/image"
 
 import { cn } from "@/lib/utils"
 
 interface ILogo {
-  src: string
+  src: ImageProps["src"]
   alt: string
   width: number
   height: number
@@ -18,17 +18,22 @@ interface ILogosProps {
   logos: TLogoItem[]
   className?: string
   animated?: boolean
+  animationClassName?: string
   trackClassName?: string
   listClassName?: string
   duplicateListClassName?: string
+  useMask?: boolean
 }
+
 function Logos({
   logos,
   className,
   animated = true,
+  animationClassName,
   trackClassName,
   listClassName,
   duplicateListClassName,
+  useMask = false,
 }: ILogosProps) {
   const shouldAnimate = animated && logos.length > 0
 
@@ -36,6 +41,9 @@ function Logos({
     <div
       className={cn(
         "-mx-5 overflow-hidden pt-8 pb-6 md:-mx-8 lg:mx-0 lg:overflow-visible lg:pt-0 lg:pb-10.5",
+        shouldAnimate &&
+          useMask &&
+          "mask-[linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]",
         className
       )}
     >
@@ -43,7 +51,8 @@ function Logos({
         className={cn(
           "flex w-max lg:w-full",
           shouldAnimate &&
-            "animate-[logos_30s_linear_infinite] will-change-transform motion-reduce:animate-none lg:animate-none lg:will-change-auto",
+            (animationClassName ??
+              "animate-[logos_30s_linear_infinite] will-change-transform motion-reduce:animate-none lg:animate-none lg:will-change-auto"),
           trackClassName
         )}
       >

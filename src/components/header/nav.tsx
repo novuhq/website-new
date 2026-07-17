@@ -24,7 +24,7 @@ const NO_ANIMATION_DURATION = 0
 
 function Nav({ className, items }: IHeaderNavProps) {
   const pathname = usePathname()
-  const navRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLElement>(null)
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [linkRefs, setLinkRefs] = useState<
     (HTMLAnchorElement | HTMLButtonElement | null)[]
@@ -106,6 +106,7 @@ function Nav({ className, items }: IHeaderNavProps) {
           {items.map(({ title, content, href }, index) => {
             const isActive = index === activeIndex
             const hasDropdown = !href && content && content.length > 0
+            const menuId = `header-menu-${index}`
 
             return (
               <li
@@ -114,7 +115,19 @@ function Nav({ className, items }: IHeaderNavProps) {
                 onMouseEnter={hasDropdown ? handleMenuOpen(title) : undefined}
                 onMouseLeave={hasDropdown ? handleMenuOpen(null) : undefined}
                 onFocus={hasDropdown ? handleMenuOpen(title) : undefined}
-                onBlur={hasDropdown ? handleMenuOpen(null) : undefined}
+                onBlur={
+                  hasDropdown
+                    ? (event) => {
+                        if (
+                          !event.currentTarget.contains(
+                            event.relatedTarget as Node | null
+                          )
+                        ) {
+                          setOpenMenu(null)
+                        }
+                      }
+                    : undefined
+                }
               >
                 {href ? (
                   <Link
@@ -141,6 +154,19 @@ function Nav({ className, items }: IHeaderNavProps) {
                       }}
                       data-active={isActive && !isHovering}
                       onMouseEnter={() => handleItemHover(index)}
+                      onClick={() =>
+                        setOpenMenu((current) =>
+                          current === title ? null : title
+                        )
+                      }
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                          setOpenMenu(null)
+                        }
+                      }}
+                      aria-haspopup="true"
+                      aria-expanded={openMenu === title}
+                      aria-controls={menuId}
                     >
                       {title}
                       <ChevronDown
@@ -152,6 +178,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                     </Button>
                     {content && content.length > 0 && (
                       <Dropdown
+                        id={menuId}
                         isOpen={openMenu === title}
                         title={title}
                         content={content}
