@@ -2,16 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import EngageIcon from "@/images/pages/home/communication-lifecycle/engage.inline.svg"
+import EventIcon from "@/images/pages/home/communication-lifecycle/event.inline.svg"
+import NotifyIcon from "@/images/pages/home/communication-lifecycle/notify.inline.svg"
+import ResolveIcon from "@/images/pages/home/communication-lifecycle/resolve.inline.svg"
 import AgentAvatarImage from "@/images/pages/home/platform/agent-avatar.svg"
 import PlatformFlowBackground from "@/images/pages/home/platform/background.jpg"
 import imessageIcon from "@/images/pages/home/platform/imessage.svg"
-import {
-  AlertTriangle,
-  Bell,
-  Check,
-  MessageCircle,
-  Settings,
-} from "lucide-react"
+import { Check } from "lucide-react"
 import {
   AnimatePresence,
   domAnimation,
@@ -116,30 +114,26 @@ function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
         )}
       >
         {step === "event" && (
-          <AlertTriangle
-            className="size-2.5 fill-[#d6507a] text-white sm:size-3 lg:size-6"
-            strokeWidth={2.4}
+          <EventIcon
+            className="size-2.5 text-[#d6507a] sm:size-3 lg:size-6"
             aria-hidden
           />
         )}
         {step === "notify" && (
-          <Bell
-            className="size-2.5 fill-[#bd57de] text-[#bd57de] sm:size-3 lg:size-5"
-            strokeWidth={2.2}
+          <NotifyIcon
+            className="size-2.5 text-[#bd57de] sm:size-3 lg:size-5"
             aria-hidden
           />
         )}
         {step === "engage" && (
-          <MessageCircle
-            className="size-2.5 scale-x-[-1] fill-[#8d5cda] text-[#8d5cda] sm:size-3 lg:size-5"
-            strokeWidth={2.2}
+          <EngageIcon
+            className="size-2.5 text-[#8d5cda] sm:size-3 lg:size-5"
             aria-hidden
           />
         )}
         {step === "resolve" && (
-          <Settings
+          <ResolveIcon
             className="size-2.5 text-[#8767ff] sm:size-3 lg:size-4"
-            strokeWidth={2.4}
             aria-hidden
           />
         )}

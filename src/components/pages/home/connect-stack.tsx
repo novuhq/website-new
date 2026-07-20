@@ -25,7 +25,7 @@ export interface IStackOption {
   value: string
 }
 
-export interface ISectionSplitProps {
+export interface IConnectStackProps {
   aiFrameworks?: IStackOption[]
   channels?: IStackOption[]
   className?: string
@@ -206,7 +206,6 @@ function MultiSelectField({
   value,
   onValueChange,
 }: IMultiSelectFieldProps) {
-  const [hoveredOption, setHoveredOption] = useState<string | null>(null)
   const selectedOptions = value
     .map((selectedValue) =>
       options.find((option) => option.value === selectedValue)
@@ -232,11 +231,7 @@ function MultiSelectField({
   return (
     <div className="flex min-w-0 flex-col gap-2 text-sm font-medium tracking-tighter text-gray-60">
       <span className="h-4.5 leading-tight">{label}</span>
-      <DropdownMenuPrimitive.Root
-        onOpenChange={(isOpen) => {
-          if (!isOpen) setHoveredOption(null)
-        }}
-      >
+      <DropdownMenuPrimitive.Root>
         <DropdownMenuPrimitive.Trigger
           className="group relative flex h-10 w-full min-w-0 items-center justify-between gap-1.5 rounded-[0.25rem] border border-gray-20 bg-[#040406] px-[13px] text-left text-sm font-normal tracking-tighter text-foreground transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:border-foreground/30 focus-visible:ring-2 focus-visible:ring-foreground/30"
           aria-label={label}
@@ -259,14 +254,8 @@ function MultiSelectField({
 
         <DropdownMenuPrimitive.Portal>
           <DropdownMenuPrimitive.Content
-            className={cn(
-              "z-50 min-w-(--radix-dropdown-menu-trigger-width) rounded-[0.25rem] border border-gray-20 bg-black p-1.5 shadow-xl",
-              hoveredOption
-                ? "outline-none"
-                : "outline-2 outline-offset-2 outline-[#8ab4f8]"
-            )}
+            className="z-50 min-w-(--radix-dropdown-menu-trigger-width) rounded-[0.25rem] border border-gray-20 bg-black p-1.5 shadow-xl ring-0 ring-transparent outline-none"
             align="start"
-            onPointerLeave={() => setHoveredOption(null)}
             sideOffset={2}
           >
             {options.map((option) => {
@@ -274,19 +263,12 @@ function MultiSelectField({
 
               return (
                 <DropdownMenuPrimitive.CheckboxItem
-                  className={cn(
-                    "relative flex cursor-default items-center gap-1.5 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground select-none data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]",
-                    hoveredOption === option.value
-                      ? "outline-2 outline-offset-2 outline-[#8ab4f8]"
-                      : "outline-none"
-                  )}
+                  className="relative flex cursor-default items-center gap-1.5 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none data-[highlighted]:bg-[#191a1f] data-[highlighted]:ring-0 data-[highlighted]:ring-transparent data-[state=checked]:bg-[#191a1f]"
                   key={option.value}
                   checked={isSelected}
                   onCheckedChange={(checked) =>
                     handleCheckedChange(option.value, checked === true)
                   }
-                  onPointerEnter={() => setHoveredOption(option.value)}
-                  onPointerLeave={() => setHoveredOption(null)}
                   onSelect={(event) => event.preventDefault()}
                 >
                   <OptionLabel option={option} />
@@ -328,13 +310,13 @@ function formatChannelList(labels: string[]) {
   return `${labels.slice(0, -1).join(", ")}, and ${labels.at(-1)}`
 }
 
-function SectionSplit({
+function ConnectStack({
   className,
   title,
   description,
   channels: channelOptions,
   aiFrameworks: frameworkOptions,
-}: ISectionSplitProps) {
+}: IConnectStackProps) {
   const channels = channelOptions?.length ? channelOptions : DEFAULT_CHANNELS
   const frameworks = frameworkOptions?.length
     ? frameworkOptions
@@ -364,13 +346,13 @@ function SectionSplit({
   return (
     <section
       className={cn(
-        "section-split mt-24 w-full font-inter md:mt-28 lg:mt-32 xl:mt-50",
+        "connect-stack mt-24 w-full font-inter md:mt-28 lg:mt-32 xl:mt-50",
         className
       )}
     >
       <div className="mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16 2xl:grid-cols-[38rem_32rem] 2xl:gap-40">
         <header className="flex max-w-152 flex-col lg:pt-8">
-          <h2 className="text-[2.5rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.75rem] md:leading-[1.125] md:tracking-plus-tight">
+          <h2 className="text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.75rem] md:leading-[1.125] md:tracking-plus-tight">
             {title}
           </h2>
           {description && (
@@ -434,4 +416,4 @@ function SectionSplit({
   )
 }
 
-export default SectionSplit
+export default ConnectStack

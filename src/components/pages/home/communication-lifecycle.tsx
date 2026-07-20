@@ -28,7 +28,7 @@ export interface IPlatformTabItem extends IPlatformLabel {
   description: string
 }
 
-export interface ISectionTabsProps {
+export interface ICommunicationLifecycleProps {
   className?: string
   title: string
   actions: IPlatformAction[]
@@ -50,13 +50,13 @@ function PlatformLabel({ className, label, type }: IPlatformLabelProps) {
   )
 }
 
-function SectionTabs({
+function CommunicationLifecycle({
   className,
   title,
   actions,
   items,
   defaultValue,
-}: ISectionTabsProps) {
+}: ICommunicationLifecycleProps) {
   const [activeTab, setActiveTab] = useState(defaultValue ?? items[0]?.key)
 
   const handleStepComplete = useCallback(() => {
@@ -75,17 +75,17 @@ function SectionTabs({
   return (
     <section
       className={cn(
-        "section-tabs mt-24 font-inter md:mt-28 lg:mt-32 xl:mt-60",
+        "communication-lifecycle mt-24 font-inter md:mt-28 lg:mt-32 xl:mt-60",
         className
       )}
     >
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-7xl">
-        <header className="grid gap-10 xl:grid-cols-[35.875rem_35.25rem] xl:items-start xl:gap-19.5">
-          <h2 className="max-w-xl text-[2.5rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl xl:text-[3.5rem]">
+        <header className="grid gap-16 xl:grid-cols-[35.875rem_35.25rem] xl:items-start xl:gap-19.5">
+          <h2 className="max-w-xl text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl xl:text-[3.5rem]">
             {title}
           </h2>
 
-          <ul className="grid gap-8 sm:grid-cols-2 sm:gap-10 xl:gap-14 xl:pt-1.25">
+          <ul className="grid gap-14 sm:grid-cols-2 sm:gap-10 xl:gap-14 xl:pt-1.25">
             {actions.slice(0, 2).map((action) => (
               <li className="flex flex-col" key={action.title}>
                 <div className="relative inline-flex w-fit">
@@ -102,7 +102,7 @@ function SectionTabs({
                   {action.description}
                 </p>
                 <Link
-                  className="mt-5 leading-none font-medium tracking-normal hover:text-primary [&_svg]:size-3.5"
+                  className="mt-4 leading-none font-medium tracking-normal hover:text-primary xl:mt-5 [&_svg]:size-3.5"
                   href={action.linkUrl}
                   variant="white"
                 >
@@ -157,4 +157,4 @@ function SectionTabs({
   )
 }
 
-export default SectionTabs
+export default CommunicationLifecycle

@@ -159,15 +159,15 @@ function ChannelIcons() {
 
   return (
     <span
-      className="ml-2 inline-flex translate-y-px align-baseline md:ml-3 lg:ml-3"
+      className="mt-3 flex w-fit translate-y-px align-baseline md:mt-0 md:ml-3 md:inline-flex lg:ml-3"
       role="group"
       aria-label="Explore communication channels"
     >
       {CHANNELS.map(({ key, name, icon, hover }, index) => (
         <a
           className={cn(
-            "group relative flex size-8 cursor-pointer items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-foreground/60 focus-visible:outline-none md:size-10 lg:size-15",
-            index > 0 && "-ml-2 md:-ml-2.5 lg:-ml-5",
+            "group relative flex size-12 cursor-pointer items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-foreground/60 focus-visible:outline-none lg:size-15",
+            index > 0 && "-ml-2.5 lg:-ml-5",
             CHANNEL_Z_INDEX_CLASSES[index]
           )}
           href={`#${HOME_FEATURES_SECTION_ID}`}
@@ -178,7 +178,7 @@ function ChannelIcons() {
           }}
           aria-label={`Open the ${name} channel example`}
         >
-          <span className="pointer-events-none relative flex size-full items-center justify-center rounded-full border-[1.5px] border-gray-20 bg-[#05050B] shadow-[0_2.143px_5.357px_rgba(13,0,28,0.65)] transition-[border-color,translate] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:border-transparent">
+          <span className="pointer-events-none relative flex size-full items-center justify-center rounded-full border-[1.5px] border-gray-20 bg-[#05050B] shadow-[0_2px_5px_rgba(13,0,28,0.65)] transition-[border-color,translate] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:border-transparent">
             <span
               className={cn(
                 "pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100",
@@ -194,7 +194,7 @@ function ChannelIcons() {
               aria-hidden="true"
             />
             <Image
-              className="relative z-10 size-4.5 object-contain md:size-5.5 lg:size-8"
+              className="relative z-10 size-6 object-contain lg:size-8"
               src={icon}
               alt=""
               width={22}
@@ -237,7 +237,7 @@ function Hero({
       </div>
       <div className="relative z-10">
         <div className="mx-auto grid w-full max-w-352 gap-4 px-5 pt-10 md:px-8 md:pt-14 lg:grid-cols-[minmax(0,46rem)_minmax(0,30.1875rem)] lg:justify-between lg:gap-12 lg:pt-[71px]">
-          <h1 className="w-full max-w-184 shrink-0 text-[2.625rem] leading-[1.05] font-normal tracking-plus-tight text-balance text-foreground md:text-[3.375rem] lg:text-[3.25rem] lg:leading-[1.125] xl:text-[3.75rem]">
+          <h1 className="w-full max-w-184 shrink-0 text-[2.25rem] leading-[1.05] font-normal tracking-plus-tight text-balance text-foreground md:text-[3.375rem] lg:text-[3.25rem] lg:leading-[1.125] xl:text-[3.75rem]">
             {title}
             <ChannelIcons />
           </h1>
@@ -264,7 +264,7 @@ function Hero({
         </div>
 
         <div
-          className="mt-[60vw] border-y border-gray-3 bg-black lg:mt-147"
+          className="mt-[70vw] border-y border-gray-3 bg-black md:mt-[65vw] lg:mt-147"
           role="region"
           aria-label="Trusted by teams worldwide"
         >

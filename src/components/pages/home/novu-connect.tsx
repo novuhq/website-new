@@ -60,7 +60,7 @@ function NovuConnect({
                 {label}
               </Badge>
             )}
-            <h2 className="max-w-168 text-4xl leading-[1.04] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl xl:text-[3.25rem] xl:leading-[1.125]">
+            <h2 className="max-w-168 text-[2rem] leading-[1.04] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl xl:text-[3.25rem] xl:leading-[1.125]">
               {title}
             </h2>
 

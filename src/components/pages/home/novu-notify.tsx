@@ -71,7 +71,7 @@ function NovuNotify({
             </Badge>
           )}
 
-          <h2 className="max-w-168 text-4xl leading-[1.125] font-normal tracking-[-0.04em] text-balance text-foreground md:text-5xl xl:text-[3.25rem]">
+          <h2 className="max-w-168 text-[2rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-foreground md:text-5xl xl:text-[3.25rem]">
             {title}
           </h2>
 

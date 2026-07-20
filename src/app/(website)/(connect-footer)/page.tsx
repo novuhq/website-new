@@ -21,14 +21,14 @@ import remixIcon from "@/svgs/pages/home/inbox/remix.svg"
 import { getMetadata } from "@/lib/get-metadata"
 import { highlightEchoCode } from "@/lib/shiki"
 import FAQ from "@/components/pages/faq"
+import CommunicationLifecycle from "@/components/pages/home/communication-lifecycle"
 import Compliance from "@/components/pages/home/compliance"
+import ConnectStack from "@/components/pages/home/connect-stack"
 import Cta from "@/components/pages/home/cta"
 import Features from "@/components/pages/home/features"
 import Hero from "@/components/pages/home/hero"
 import NovuConnect from "@/components/pages/home/novu-connect"
 import NovuNotify from "@/components/pages/home/novu-notify"
-import SectionSplitMediaRightNarrow from "@/components/pages/home/section-split--media-right-narrow"
-import SectionTabsCasualLargeEnhanced from "@/components/pages/home/section-tabs--casual-large-enhanced"
 
 const contentData = {
   hero: {
@@ -237,12 +237,12 @@ const contentData = {
       },
     ],
   },
-  "section-split--media-right-narrow": {
+  "connect-stack": {
     title: "Opinionated about communication. Unopinionated about intelligence.",
     description:
       "We solve the communication problem so you can own the agent intelligence, where your customers actually work.",
   },
-  "section-tabs--casual-large-enhanced": {
+  "communication-lifecycle": {
     title: "One platform. Two ways to communicate.",
     actions: [
       {
@@ -510,12 +510,8 @@ export default async function HomePage() {
     <div>
       <Hero {...contentData["hero"]} />
       <Features {...contentData["features"]} />
-      <SectionSplitMediaRightNarrow
-        {...contentData["section-split--media-right-narrow"]}
-      />
-      <SectionTabsCasualLargeEnhanced
-        {...contentData["section-tabs--casual-large-enhanced"]}
-      />
+      <ConnectStack {...contentData["connect-stack"]} />
+      <CommunicationLifecycle {...contentData["communication-lifecycle"]} />
       <NovuConnect {...contentData["novu-connect"]} />
       <NovuNotify
         {...contentData["novu-notify"]}

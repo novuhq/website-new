@@ -134,7 +134,7 @@ function Features({
     >
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
         <header className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-16 xl:pr-4">
-          <h2 className="grow text-4xl leading-[1.125] font-normal tracking-plus-tight text-foreground md:text-5xl">
+          <h2 className="grow text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-foreground md:text-5xl">
             {title}
           </h2>
           <p className="w-full max-w-xl shrink-0 text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-xl md:leading-normal md:tracking-tight lg:max-w-88 lg:pt-5.75">
@@ -254,7 +254,7 @@ function Features({
                 {activeItem.description}
               </p>
               {activeItem.features?.length ? (
-                <ul className="mt-6 flex flex-col gap-1.5">
+                <ul className="mt-4.5 flex flex-col gap-1.5 md:mt-6">
                   {activeItem.features.map((feature, index) => (
                     <li
                       className="flex items-center gap-2 text-base tracking-tighter text-gray-90"
@@ -273,7 +273,7 @@ function Features({
               ) : null}
             </div>
 
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row lg:mt-10">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
               <CopyPromptButton
                 className="h-11 w-39 px-5 text-base leading-none font-medium tracking-tight normal-case [&_svg]:size-3.5"
                 key={activeItem.key}

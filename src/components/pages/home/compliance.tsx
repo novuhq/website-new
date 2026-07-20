@@ -1,12 +1,12 @@
 import Image from "next/image"
-import NextLink from "next/link"
 import gdprCertification from "@/images/pages/home/certifications/gdpr.svg"
 import hipaaCertification from "@/images/pages/home/certifications/hipaa.svg"
 import isoCertification from "@/images/pages/home/certifications/iso-27001.svg"
 import socCertification from "@/images/pages/home/certifications/soc-2-type-2.svg"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import BookADemoSchedulingButton from "@/components/pages/book-a-demo/scheduling-button"
+import { BookADemoSchedulingProvider } from "@/components/pages/book-a-demo/scheduling-provider"
 
 interface IComplianceItem {
   question: string
@@ -59,7 +59,7 @@ function Compliance({
             <header>
               <h2
                 id="enterprise-heading"
-                className="text-[2.5rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl md:leading-[1.125] xl:max-w-136 xl:text-[3.5rem]"
+                className="text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl md:leading-[1.125] xl:max-w-136 xl:text-[3.5rem]"
               >
                 {title}
               </h2>
@@ -68,13 +68,17 @@ function Compliance({
               </p>
             </header>
 
-            <Button
-              className="mt-8 h-12 rounded-md px-6 text-sm leading-none font-semibold tracking-normal uppercase"
-              size="none"
-              asChild
-            >
-              <NextLink href="/book-a-demo-connect/">Book a call</NextLink>
-            </Button>
+            <BookADemoSchedulingProvider utmCampaign="book_a_demo_connect">
+              <BookADemoSchedulingButton
+                className="mt-8 h-12 rounded-md px-6 text-sm leading-none font-semibold tracking-normal uppercase"
+                size="none"
+                clickLocation="homepage_compliance"
+                clickText="book_a_call"
+                source="book_a_demo_connect"
+              >
+                Book a call
+              </BookADemoSchedulingButton>
+            </BookADemoSchedulingProvider>
           </div>
 
           <ul
