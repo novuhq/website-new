@@ -167,7 +167,27 @@ function NovuNotify({
                     />
                   )}
 
-                  {item.image && (
+                  {item.image && item.imageContainerClassName ? (
+                    <div
+                      className={cn(
+                        "absolute overflow-hidden",
+                        item.imageContainerClassName
+                      )}
+                    >
+                      <Image
+                        className={cn(
+                          "absolute h-auto max-w-none cursor-grab active:cursor-grabbing",
+                          item.imageClassName
+                        )}
+                        src={item.image}
+                        alt=""
+                        sizes={item.imageSizes}
+                        quality={100}
+                        aria-hidden="true"
+                        draggable
+                      />
+                    </div>
+                  ) : item.image ? (
                     <Image
                       className={cn(
                         "absolute h-auto max-w-none cursor-grab active:cursor-grabbing",
@@ -180,7 +200,7 @@ function NovuNotify({
                       aria-hidden="true"
                       draggable
                     />
-                  )}
+                  ) : null}
 
                   <div className="relative z-10">
                     <h3 className="w-fit text-lg leading-none font-medium tracking-tighter text-foreground lg:text-xl">

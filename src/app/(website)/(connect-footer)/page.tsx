@@ -1,19 +1,16 @@
 import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
-import notifyDigestBackground from "@/images/pages/home/bento-notify-digest-bg.png"
 import notifyFeaturedBackground from "@/images/pages/home/bento-notify-featured-bg.png"
-import notifyPreferencesBackground from "@/images/pages/home/bento-notify-preferences-bg.png"
-import notifyWorkflowBackground from "@/images/pages/home/bento-notify-workflow-bg.png"
 import channelDemoImage from "@/images/pages/home/features/channel-demo.jpg"
 import customerFacingGraphic from "@/images/pages/home/novu-connect/customer-facing.jpg"
 import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jpg"
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
 import oneConversationGraphic from "@/images/pages/home/novu-connect/one-conversation.jpg"
-import notifyDigestGraphic from "@/images/pages/home/novu-notify/digest.png"
+import notifyDigestGraphic from "@/images/pages/home/novu-notify/digest.jpg"
 import notifyInboxGraphic from "@/images/pages/home/novu-notify/inbox.png"
-import notifyPreferencesGraphic from "@/images/pages/home/novu-notify/preferences.png"
-import notifyWorkflowGraphic from "@/images/pages/home/novu-notify/workflow.png"
+import notifyPreferencesGraphic from "@/images/pages/home/novu-notify/preferences.jpg"
+import notifyWorkflowGraphic from "@/images/pages/home/novu-notify/workflow.jpg"
 import nextjsIcon from "@/svgs/pages/home/inbox/nextjs.svg"
 import reactIcon from "@/svgs/pages/home/inbox/react.svg"
 import remixIcon from "@/svgs/pages/home/inbox/remix.svg"
@@ -363,31 +360,28 @@ const contentData = {
         title: "User-controlled preferences",
         description:
           "Let people choose what they receive, when, and where—with quiet hours and snooze built in.",
-        backgroundImage: notifyPreferencesBackground,
         image: notifyPreferencesGraphic,
         imageClassName:
-          "top-3 left-1/2 z-[1] w-[min(100%,23.75rem)] -translate-x-1/2 lg:w-[78%] xl:w-[23.75rem]",
-        imageSizes: "380px",
+          "top-0 left-1/2 z-[1] w-[51.375rem] -translate-x-1/2 lg:w-[34rem] min-[1281px]:!w-[51.375rem]",
+        imageSizes: "822px",
       },
       {
         title: "Digests & rate limits",
         description:
           "Bundle multiple notifications into one instead of five, and cap how often anyone gets pinged — no noisy inbox, no spam.",
-        backgroundImage: notifyDigestBackground,
         image: notifyDigestGraphic,
         imageClassName:
-          "top-0 left-1/2 z-[1] w-[min(100%,24.5rem)] -translate-x-1/2 lg:w-[76%] xl:w-[24.5rem]",
-        imageSizes: "392px",
+          "top-0 left-1/2 z-[1] w-[51.375rem] -translate-x-1/2 lg:w-[34rem] min-[1281px]:!w-[51.375rem]",
+        imageSizes: "822px",
       },
       {
         title: "One workflow, every channel",
         description:
           "Trigger once. Novu handles routing, conditions, delays, and fallbacks across every channel — all from a single workflow.",
-        backgroundImage: notifyWorkflowBackground,
         image: notifyWorkflowGraphic,
         imageClassName:
-          "top-0 left-1/2 z-[1] w-[min(100%,24.4375rem)] -translate-x-1/2 lg:w-[80%] xl:w-[24.4375rem]",
-        imageSizes: "391px",
+          "top-0 left-1/2 z-[1] w-[51.375rem] -translate-x-1/2 lg:w-[34rem] min-[1281px]:!w-[51.375rem]",
+        imageSizes: "822px",
       },
     ],
   },

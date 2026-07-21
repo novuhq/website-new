@@ -6,9 +6,9 @@ import EngageIcon from "@/images/pages/home/communication-lifecycle/engage.inlin
 import EventIcon from "@/images/pages/home/communication-lifecycle/event.inline.svg"
 import NotifyIcon from "@/images/pages/home/communication-lifecycle/notify.inline.svg"
 import ResolveIcon from "@/images/pages/home/communication-lifecycle/resolve.inline.svg"
-import AgentAvatarImage from "@/images/pages/home/platform/agent-avatar.svg"
 import PlatformFlowBackground from "@/images/pages/home/platform/background.jpg"
 import imessageIcon from "@/images/pages/home/platform/imessage.svg"
+import PlaneIcon from "@/images/pages/home/platform/plane.svg"
 import { Check } from "lucide-react"
 import {
   AnimatePresence,
@@ -33,6 +33,37 @@ const TRACK_CHECKPOINTS: Record<FlowStep, number> = {
 }
 
 const FLOW_STEP_DURATION = 5
+const MOBILE_BADGE_SETTLE_DELAY_MS = 200
+const MOBILE_STEP_HOLD_DURATION = 4
+const MOBILE_FINAL_STEP_HOLD_DURATION = 6
+const MOBILE_FAST_FILL_DURATION = 0.35
+const MOBILE_SLIDE_DURATION = 0.65
+const MOBILE_STEP_DURATION =
+  MOBILE_STEP_HOLD_DURATION + MOBILE_FAST_FILL_DURATION + MOBILE_SLIDE_DURATION
+const MOBILE_FINAL_STEP_DURATION =
+  MOBILE_FINAL_STEP_HOLD_DURATION + MOBILE_SLIDE_DURATION
+const MOBILE_TIMELINE_TIMES = [
+  0,
+  MOBILE_STEP_HOLD_DURATION / MOBILE_STEP_DURATION,
+  (MOBILE_STEP_HOLD_DURATION + MOBILE_FAST_FILL_DURATION) /
+    MOBILE_STEP_DURATION,
+  1,
+] as const
+const MOBILE_FINAL_TIMELINE_TIMES = [
+  0,
+  MOBILE_FINAL_STEP_HOLD_DURATION / MOBILE_FINAL_STEP_DURATION,
+  1,
+] as const
+const MOBILE_TIMELINE_SLOT_WIDTH = 20
+const MOBILE_TIMELINE_POSITIONS = [
+  "left-[10%]",
+  "left-[30%]",
+  "left-[50%]",
+  "left-[70%]",
+  "left-[90%]",
+] as const
+const MOBILE_TIMELINE_STEPS = [...FLOW_ORDER, FLOW_ORDER[0]] as const
+const MOBILE_TIMELINE_SEGMENT_INDEXES = [0, 1, 2, 4] as const
 
 const TRACK_BASE_WIDTH = 1216
 const TRACK_BASE_HEIGHT = 420
@@ -52,6 +83,17 @@ interface IPlatformFlowAnimationProps {
 interface IFlowMarkerProps {
   activeStep: FlowStep
   step: FlowStep
+}
+
+interface IFlowMarkerBadgeProps {
+  active: boolean
+  step: FlowStep
+}
+
+interface IMobileTimelineProps {
+  activeStep: FlowStep
+  onStepComplete?: () => void
+  shouldAnimate: boolean
 }
 
 interface ITrackSize {
@@ -82,65 +124,178 @@ function normalizeFlowStep(value?: string): FlowStep {
   return FLOW_ORDER.includes(value as FlowStep) ? (value as FlowStep) : "event"
 }
 
+function FlowMarkerBadge({ active, step }: IFlowMarkerBadgeProps) {
+  return (
+    <div
+      className={cn(
+        "inline-flex h-8 items-center gap-1.5 rounded-full border-[1.5px] px-3 text-base leading-none font-medium tracking-tighter transition-[color,background-color,border-color,box-shadow] duration-200 ease-out select-none motion-reduce:transition-none sm:h-6 sm:px-2.5 sm:text-[0.625rem] lg:h-[2.375rem] lg:gap-[0.4375rem] lg:px-[0.8125rem] lg:text-lg",
+        active
+          ? "border-white bg-white text-[#191a1f] shadow-[0_0_14px_rgba(255,255,255,0.12)]"
+          : "border-[#261e43] bg-black text-[#9a72df] shadow-[0_2px_5px_rgba(0,0,0,0.35)] backdrop-blur-[15px]",
+        active && step === "event" && "lg:pr-[0.9375rem]",
+        active && step === "engage" && "lg:pr-[0.9375rem]",
+        active && step === "resolve" && "lg:pr-[0.9375rem]",
+        !active && step === "notify" && "text-[#ab4bbf]",
+        !active && step === "resolve" && "text-[#9581e2]",
+        !active && step === "engage" && "text-[#a271de]"
+      )}
+    >
+      {step === "event" && (
+        <EventIcon
+          className="size-3.5 text-[#d6507a] sm:size-3 lg:size-6"
+          aria-hidden
+        />
+      )}
+      {step === "notify" && (
+        <NotifyIcon
+          className="size-3.5 text-[#bd57de] sm:size-3 lg:size-5"
+          aria-hidden
+        />
+      )}
+      {step === "engage" && (
+        <EngageIcon
+          className="size-3.5 text-[#8d5cda] sm:size-3 lg:size-5"
+          aria-hidden
+        />
+      )}
+      {step === "resolve" && (
+        <ResolveIcon
+          className="size-3.5 text-[#8767ff] sm:size-3 lg:size-4"
+          aria-hidden
+        />
+      )}
+      <span className="whitespace-nowrap">
+        {step.charAt(0).toUpperCase() + step.slice(1)}
+      </span>
+    </div>
+  )
+}
+
 function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
   const isReached = FLOW_ORDER.indexOf(step) <= FLOW_ORDER.indexOf(activeStep)
 
   return (
     <div
       className={cn(
-        "absolute z-20",
+        "absolute z-20 hidden sm:block",
         step === "event" &&
           "top-[17.14%] left-1/2 -translate-x-1/2 -translate-y-1/2",
         step === "notify" &&
-          "top-1/2 left-[93.75%] -translate-x-full -translate-y-1/2 sm:-translate-x-1/2 lg:left-[86.84%]",
+          "top-1/2 left-[93.75%] -translate-x-1/2 -translate-y-1/2 lg:left-[86.84%]",
         step === "engage" &&
           "top-[83.1%] left-1/2 -translate-x-1/2 -translate-y-1/2",
         step === "resolve" &&
-          "top-1/2 left-[6.25%] -translate-y-1/2 sm:-translate-x-1/2 lg:left-[13.16%]"
+          "top-1/2 left-[6.25%] -translate-x-1/2 -translate-y-1/2 lg:left-[13.16%]"
       )}
     >
-      <div
+      <FlowMarkerBadge active={isReached} step={step} />
+    </div>
+  )
+}
+
+function MobileTimeline({
+  activeStep,
+  onStepComplete,
+  shouldAnimate,
+}: IMobileTimelineProps) {
+  const activeIndex = FLOW_ORDER.indexOf(activeStep)
+  const [hasArrived, setHasArrived] = useState(false)
+  const startOffset = `${-activeIndex * MOBILE_TIMELINE_SLOT_WIDTH}%`
+  const targetOffset = `${-(activeIndex + 1) * MOBILE_TIMELINE_SLOT_WIDTH}%`
+  const isFinalStep = activeStep === "resolve"
+  const timelineDuration = isFinalStep
+    ? MOBILE_FINAL_STEP_DURATION
+    : MOBILE_STEP_DURATION
+  const timelineTimes = isFinalStep
+    ? MOBILE_FINAL_TIMELINE_TIMES
+    : MOBILE_TIMELINE_TIMES
+  const trackKeyframes = isFinalStep
+    ? [startOffset, startOffset, targetOffset]
+    : [startOffset, startOffset, startOffset, targetOffset]
+  const timelineTransition = {
+    duration: shouldAnimate ? timelineDuration : 0,
+    ease: "linear" as const,
+    times: timelineTimes,
+  }
+
+  useEffect(() => {
+    if (!hasArrived || !onStepComplete) {
+      return
+    }
+
+    const timer = window.setTimeout(
+      onStepComplete,
+      MOBILE_BADGE_SETTLE_DELAY_MS
+    )
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [hasArrived, onStepComplete])
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-10 z-20 h-px overflow-visible sm:hidden">
+      <m.div
         className={cn(
-          "inline-flex h-5 items-center gap-1 rounded-full border-[1.5px] px-2 text-[0.5rem] leading-none font-medium tracking-tighter transition-[color,background-color,border-color,box-shadow] duration-200 ease-out select-none motion-reduce:transition-none sm:h-6 sm:gap-1.5 sm:px-2.5 sm:text-[0.625rem] lg:h-[2.375rem] lg:gap-[0.4375rem] lg:px-[0.8125rem] lg:text-lg",
-          isReached
-            ? "border-white bg-white text-[#191a1f] shadow-[0_0_14px_rgba(255,255,255,0.12)]"
-            : "border-[#261e43] bg-black text-[#9a72df] shadow-[0_2px_5px_rgba(0,0,0,0.35)] backdrop-blur-[15px]",
-          isReached && step === "event" && "lg:pr-[0.9375rem]",
-          isReached && step === "engage" && "lg:pr-[0.9375rem]",
-          isReached && step === "resolve" && "lg:pr-[0.9375rem]",
-          !isReached && step === "notify" && "text-[#ab4bbf]",
-          !isReached && step === "resolve" && "text-[#9581e2]",
-          !isReached && step === "engage" && "text-[#a271de]"
+          "absolute top-0 left-0 h-px w-[500%]",
+          shouldAnimate && "will-change-transform"
         )}
+        initial={{ x: startOffset }}
+        animate={{
+          x: shouldAnimate ? trackKeyframes : startOffset,
+        }}
+        onAnimationComplete={() => {
+          if (shouldAnimate) {
+            setHasArrived(true)
+          }
+        }}
+        transition={timelineTransition}
       >
-        {step === "event" && (
-          <EventIcon
-            className="size-2.5 text-[#d6507a] sm:size-3 lg:size-6"
-            aria-hidden
-          />
-        )}
-        {step === "notify" && (
-          <NotifyIcon
-            className="size-2.5 text-[#bd57de] sm:size-3 lg:size-5"
-            aria-hidden
-          />
-        )}
-        {step === "engage" && (
-          <EngageIcon
-            className="size-2.5 text-[#8d5cda] sm:size-3 lg:size-5"
-            aria-hidden
-          />
-        )}
-        {step === "resolve" && (
-          <ResolveIcon
-            className="size-2.5 text-[#8767ff] sm:size-3 lg:size-4"
-            aria-hidden
-          />
-        )}
-        <span className="whitespace-nowrap">
-          {step.charAt(0).toUpperCase() + step.slice(1)}
-        </span>
-      </div>
+        {MOBILE_TIMELINE_SEGMENT_INDEXES.map((segmentIndex) => (
+          <span
+            className={cn(
+              "absolute top-0 h-px w-1/5 overflow-visible bg-[#7480ff]/60",
+              MOBILE_TIMELINE_POSITIONS[segmentIndex]
+            )}
+            key={`mobile-timeline-segment-${segmentIndex}`}
+          >
+            {segmentIndex < activeIndex && (
+              <span className="absolute inset-0 bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)]" />
+            )}
+            {segmentIndex === activeIndex && (
+              <m.span
+                className={cn(
+                  "absolute inset-0 origin-left bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)]",
+                  shouldAnimate && "will-change-transform"
+                )}
+                initial={{ scaleX: 0 }}
+                animate={{
+                  scaleX: shouldAnimate ? [0, 0, 0.8, 1] : 0,
+                }}
+                transition={timelineTransition}
+              />
+            )}
+          </span>
+        ))}
+
+        {MOBILE_TIMELINE_STEPS.map((step, index) => (
+          <div
+            className={cn(
+              "absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2",
+              MOBILE_TIMELINE_POSITIONS[index]
+            )}
+            key={`${step}-${index}`}
+          >
+            <FlowMarkerBadge
+              active={
+                index === activeIndex ||
+                (hasArrived && index === activeIndex + 1)
+              }
+              step={step}
+            />
+          </div>
+        ))}
+      </m.div>
     </div>
   )
 }
@@ -155,7 +310,7 @@ function Badge({ className, label, variant = "alert" }: IBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-full border px-1.5 py-0.5 text-[0.375rem] leading-none font-medium tracking-tighter sm:text-[0.5rem] lg:px-2.5 lg:py-1 lg:text-[0.8125rem]",
+        "inline-flex shrink-0 items-center justify-center rounded-full border px-2 py-1 text-xs leading-none font-medium tracking-tighter sm:px-1.5 sm:py-0.5 sm:text-[0.5rem] lg:px-2.5 lg:py-1 lg:text-[0.8125rem]",
         variant === "success"
           ? "border-[#008A58]/30 bg-[#008A58]/20 text-[#006943]"
           : "border-[#FF4C88]/30 bg-[#FF4C88]/20 text-[#EA3974]",
@@ -169,14 +324,14 @@ function Badge({ className, label, variant = "alert" }: IBadgeProps) {
 
 function EventCard() {
   return (
-    <div className="w-full rounded-[0.625rem] bg-white px-2.5 py-2 font-mono text-black shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:px-3 sm:py-2.5 lg:h-[7.125rem] lg:px-4 lg:pt-3 lg:pb-4">
-      <div className="flex items-center justify-between gap-2 border-b border-[#e3e4e9] pb-1.5 sm:pb-2 lg:pb-3">
-        <span className="text-[0.5rem] leading-none font-medium tracking-tighter sm:text-[0.625rem] lg:text-sm lg:leading-4">
+    <div className="h-37 w-full rounded-[0.625rem] bg-white px-4 pt-2.5 pb-4 font-mono text-black shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:h-auto sm:px-3 sm:py-2.5 lg:h-[7.125rem] lg:px-4 lg:pt-3 lg:pb-4">
+      <div className="flex items-center justify-between gap-2 border-b border-[#e3e4e9] pb-2.5 sm:pb-2 lg:pb-3">
+        <span className="text-[.8125rem] leading-none font-medium tracking-tighter sm:text-[0.625rem] lg:text-sm lg:leading-4">
           flight.delayed
         </span>
         <Badge className="font-inter" label="Received just now" />
       </div>
-      <div className="mt-1.5 grid grid-cols-2 gap-x-3 text-[0.375rem] leading-snug tracking-tight sm:text-[0.5rem] lg:mt-4 lg:gap-x-6 lg:text-sm">
+      <div className="mt-4 grid grid-cols-1 gap-y-0.5 text-[.8125rem] leading-snug tracking-tight sm:mt-1.5 sm:grid-cols-2 sm:gap-x-3 sm:text-[0.5rem] lg:mt-4 lg:gap-x-6 lg:text-sm">
         <div>
           <p className="whitespace-nowrap">
             <span className="text-black/60">Passenger:</span> Alex Morgan
@@ -186,7 +341,7 @@ function EventCard() {
             <span className="lg:ml-[1.375rem]"> BA2048</span>
           </p>
         </div>
-        <div>
+        <div className="contents sm:block">
           <p className="whitespace-nowrap">
             <span className="text-black/60">Delay:</span> 45 min
           </p>
@@ -201,10 +356,10 @@ function EventCard() {
 
 function NotifyCard() {
   return (
-    <div className="relative flex w-full items-center gap-2 rounded-[0.625rem] bg-white py-2 pr-2.5 pl-2 text-gray-20 shadow-[0_19.564px_23.912px_rgba(0,8,49,0.6)] sm:gap-3 sm:p-3 lg:h-[5.625rem] lg:gap-3 lg:py-[0.8125rem] lg:pr-[1.125rem] lg:pl-[0.8125rem]">
-      <span className="flex size-8 shrink-0 items-center justify-center sm:size-10 lg:size-16">
+    <div className="relative flex h-20 w-full items-center gap-3 rounded-[0.625rem] bg-white p-3 text-gray-20 shadow-[0_19.564px_23.912px_rgba(0,8,49,0.6)] sm:h-auto sm:gap-3 sm:p-3 lg:h-[5.625rem] lg:py-[0.8125rem] lg:pr-[1.125rem] lg:pl-[0.8125rem]">
+      <span className="flex size-13 shrink-0 items-center justify-center sm:size-10 lg:size-16">
         <Image
-          className="size-6 sm:size-8.5 lg:size-13"
+          className="size-13 sm:size-8.5 lg:size-13"
           src={imessageIcon}
           width={52}
           height={52}
@@ -212,12 +367,12 @@ function NotifyCard() {
           aria-hidden
         />
       </span>
-      <span className="flex min-w-0 flex-1 flex-col gap-1 text-left lg:gap-2">
-        <strong className="flex items-center truncate text-[0.625rem] leading-none font-medium tracking-tighter text-black/90 sm:text-xs lg:text-xl">
+      <span className="flex min-w-0 flex-1 flex-col gap-1.5 text-left sm:gap-1 lg:gap-2">
+        <strong className="flex items-center truncate text-base leading-none font-medium tracking-tighter text-black/90 sm:text-xs lg:text-xl">
           Flight delayed
           <Badge className="ml-1.5 lg:ml-2.5" label="iMessage" />
         </strong>
-        <span className="block truncate text-[0.5rem] leading-tight tracking-tighter text-gray-40 sm:text-[0.625rem] lg:text-[1.0625rem]">
+        <span className="block truncate text-sm leading-tight tracking-tighter text-gray-40 sm:text-[0.625rem] lg:text-[1.0625rem]">
           Your flight is being delayed
         </span>
       </span>
@@ -227,7 +382,7 @@ function NotifyCard() {
 
 function PersonAvatar() {
   return (
-    <span className="relative flex size-5 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-[#e7922d] sm:size-7 lg:size-[2.4375rem] lg:rounded-md">
+    <span className="relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#e7922d] sm:size-7 sm:rounded-sm lg:size-[2.4375rem] lg:rounded-md">
       <span className="absolute top-[18%] size-[35%] rounded-full bg-[#fcf4e7]" />
       <span className="absolute -bottom-[3%] h-[47%] w-[65%] rounded-t-full bg-[#fcf4e7]" />
     </span>
@@ -236,44 +391,53 @@ function PersonAvatar() {
 
 function AgentAvatar() {
   return (
-    <span className="flex size-5 shrink-0 items-center justify-center sm:size-7 lg:size-10">
-      <Image className="size-full" src={AgentAvatarImage} alt="" aria-hidden />
+    <span className="relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#AF6EFF] after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:border after:border-white/10 sm:size-7 sm:rounded-sm lg:size-10 lg:rounded-md">
+      <Image
+        className="size-5 sm:size-4.5 lg:size-6"
+        src={PlaneIcon}
+        alt=""
+        aria-hidden
+      />
     </span>
   )
 }
 
 function ConversationCard() {
   return (
-    <div className="flex w-full flex-col gap-1.5 rounded-[0.625rem] bg-white px-2.5 py-2 text-left text-gray-20 shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:gap-2 sm:px-3 sm:py-2.5 lg:h-[11.1875rem] lg:gap-3.5 lg:p-3.5">
-      <div className="flex items-start gap-2 sm:gap-2.5 lg:gap-3">
+    <div className="flex h-41 w-full flex-col gap-2.5 rounded-[0.625rem] bg-white px-3.5 py-3 text-left text-gray-20 shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:h-auto sm:gap-2 sm:px-3 sm:py-2.5 lg:h-[11.1875rem] lg:gap-3.5 lg:p-3.5">
+      <div className="flex items-start gap-3.5 sm:gap-2.5 lg:gap-3">
         <PersonAvatar />
         <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1 text-[0.5rem] leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
+          <p className="flex items-center gap-1 text-sm leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
             <strong className="font-semibold">Alex Morgan</strong>
-            <span className="text-gray-60 lg:text-[0.8125rem]">Now</span>
+            <span className="text-[0.6875rem] text-gray-60 lg:text-[0.8125rem]">
+              Now
+            </span>
           </p>
-          <p className="mt-1 truncate text-[0.4375rem] leading-snug tracking-tighter sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
+          <p className="mt-1 text-[0.8125rem] leading-snug tracking-tighter sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
             Will I miss my connection?
           </p>
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <span className="shrink-0 text-[0.375rem] leading-none tracking-tighter text-gray-60 sm:text-[0.5rem] lg:text-[0.7925rem]">
+        <span className="shrink-0 text-[0.625rem] leading-none tracking-tighter text-gray-60 sm:text-[0.5rem] lg:text-[0.7925rem]">
           1 reply
         </span>
         <span className="h-px flex-1 bg-[#e3e4e9]" />
       </div>
-      <div className="flex items-start gap-2 sm:gap-2.5 lg:gap-3">
+      <div className="flex items-start gap-3.5 sm:gap-2.5 lg:gap-3">
         <AgentAvatar />
         <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1 text-[0.5rem] leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
+          <p className="flex items-center gap-1 text-sm leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
             <strong className="font-semibold">Agent</strong>
-            <span className="rounded-[0.175rem] bg-[#f0f0f0] px-1 py-0.5 text-[0.3125rem] font-medium text-[#828282] sm:text-[0.375rem] lg:text-[0.5845rem]">
+            <span className="rounded-[0.175rem] bg-[#f0f0f0] px-1 py-0.5 text-[0.5625rem] font-medium text-[#828282] sm:text-[0.375rem] lg:text-[0.5845rem]">
               APP
             </span>
-            <span className="text-gray-60 lg:text-[0.8125rem]">Now</span>
+            <span className="text-[0.6875rem] text-gray-60 lg:text-[0.8125rem]">
+              Now
+            </span>
           </p>
-          <p className="mt-1 line-clamp-2 text-[0.4375rem] leading-snug tracking-tighter sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
+          <p className="mt-1 line-clamp-3 text-[0.8125rem] leading-snug tracking-tighter sm:line-clamp-2 sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
             Your connection is at risk. Would you like me to find another
             flight?
           </p>
@@ -285,15 +449,15 @@ function ConversationCard() {
 
 function ResolveCard() {
   return (
-    <div className="w-full rounded-[0.625rem] bg-white px-2.5 py-2 text-left text-gray-30 shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:px-3 sm:py-2.5 lg:h-[7.375rem] lg:px-4 lg:py-3.5">
-      <div className="flex items-center justify-between gap-2 border-b border-[#e3e4e9] pb-1.5 sm:pb-2 lg:pb-3">
-        <strong className="truncate text-[0.5rem] leading-none font-medium tracking-tighter text-black sm:text-[0.625rem] lg:text-base lg:leading-[1.125]">
+    <div className="h-41 w-full rounded-[0.625rem] bg-white px-4 pt-2.5 pb-4 text-left text-gray-30 shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:h-auto sm:px-3 sm:py-2.5 lg:h-[7.375rem] lg:px-4 lg:py-3.5">
+      <div className="flex items-center justify-between gap-2 border-b border-[#e3e4e9] pb-2.5 sm:pb-2 lg:pb-3">
+        <strong className="truncate text-sm leading-none font-medium tracking-tighter text-black sm:text-[0.625rem] lg:text-base lg:leading-[1.125]">
           Travel issue resolved
         </strong>
         <Badge label="Success" variant="success" />
       </div>
-      <div className="mt-1.5 grid grid-cols-2 gap-x-3 text-[0.375rem] leading-[1.5] tracking-tight sm:mt-2 sm:text-[0.5rem] lg:mt-2.5 lg:gap-x-10 lg:text-sm">
-        <div className="space-y-0.5 lg:space-y-1">
+      <div className="mt-4 grid grid-cols-1 gap-y-1 text-[0.8125rem] leading-[1.5] tracking-tight sm:mt-2 sm:grid-cols-2 sm:gap-x-3 sm:text-[0.5rem] lg:mt-2.5 lg:gap-x-10 lg:text-sm">
+        <div className="contents sm:block sm:space-y-0.5 lg:space-y-1">
           <p className="flex items-center gap-1.5 whitespace-nowrap">
             <Check className="size-3.5 shrink-0 text-gray-60" aria-hidden />
             Alternative flight found
@@ -303,7 +467,7 @@ function ResolveCard() {
             Itinerary updated
           </p>
         </div>
-        <div className="space-y-0.5 lg:space-y-1">
+        <div className="contents sm:block sm:space-y-0.5 lg:space-y-1">
           <p className="flex items-center gap-1.5 whitespace-nowrap">
             <Check className="size-3.5 shrink-0 text-gray-60" aria-hidden />
             Passenger rebooked
@@ -340,6 +504,7 @@ function PlatformFlowAnimation({
   const sceneRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sceneRef, { amount: 0.35 })
   const [isPageVisible, setIsPageVisible] = useState(true)
+  const [isMobileViewport, setIsMobileViewport] = useState(false)
   const [trackSize, setTrackSize] = useState<ITrackSize>({
     width: TRACK_BASE_WIDTH,
     height: TRACK_BASE_HEIGHT,
@@ -426,7 +591,21 @@ function PlatformFlowAnimation({
   }, [])
 
   useEffect(() => {
-    if (!shouldAnimate || !onStepComplete) {
+    const mobileMediaQuery = window.matchMedia("(max-width: 639px)")
+    const handleMobileChange = () => {
+      setIsMobileViewport(mobileMediaQuery.matches)
+    }
+
+    handleMobileChange()
+    mobileMediaQuery.addEventListener("change", handleMobileChange)
+
+    return () => {
+      mobileMediaQuery.removeEventListener("change", handleMobileChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!shouldAnimate || !onStepComplete || isMobileViewport) {
       return
     }
 
@@ -435,12 +614,12 @@ function PlatformFlowAnimation({
     return () => {
       window.clearTimeout(timer)
     }
-  }, [activeStep, onStepComplete, shouldAnimate])
+  }, [activeStep, isMobileViewport, onStepComplete, shouldAnimate])
 
   return (
     <div
       ref={sceneRef}
-      className="relative isolate aspect-4/3 w-full overflow-hidden rounded-[0.625rem] border border-gray-20 bg-[#0e0c17] sm:aspect-video lg:aspect-[1216/420]"
+      className="relative isolate h-68 w-full overflow-hidden rounded-[0.625rem] border border-gray-20 bg-[#0e0c17] sm:aspect-video sm:h-auto lg:aspect-[1216/420]"
       data-flow-step={activeStep}
       data-flow-progress-start={startProgress}
       data-flow-progress-target={targetProgress}
@@ -457,8 +636,15 @@ function PlatformFlowAnimation({
       />
 
       <LazyMotion features={domAnimation}>
+        <MobileTimeline
+          activeStep={activeStep}
+          key={activeStep}
+          onStepComplete={onStepComplete}
+          shouldAnimate={shouldAnimate}
+        />
+
         <svg
-          className="pointer-events-none absolute inset-0 size-full"
+          className="pointer-events-none absolute inset-0 hidden size-full sm:block"
           viewBox={`0 0 ${trackSize.width} ${trackSize.height}`}
           preserveAspectRatio="none"
           fill="none"
@@ -502,8 +688,11 @@ function PlatformFlowAnimation({
 
         <div
           className={cn(
-            "pointer-events-none absolute top-1/2 left-1/2 z-10 w-[60%] -translate-x-1/2 -translate-y-1/2 sm:w-[52%]",
-            activeStep === "notify" ? "max-w-[21.5rem]" : "max-w-[24.9375rem]"
+            "pointer-events-none absolute top-[58.1%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]",
+            activeStep === "event" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]",
+            activeStep === "notify" && "w-[90%] max-w-72 sm:max-w-[21.5rem]",
+            activeStep === "engage" && "w-3/4 max-w-60 sm:max-w-[24.9375rem]",
+            activeStep === "resolve" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]"
           )}
         >
           <AnimatePresence initial={false} mode="wait">
