@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useId, useRef, useState } from "react"
-import Image, { type StaticImageData } from "next/image"
+import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import checkCircleIcon from "@/svgs/pages/home/check-circle.svg"
@@ -14,17 +14,16 @@ import {
   HOME_CHANNEL_SELECT_EVENT,
   HOME_FEATURES_SECTION_ID,
   type IHomeChannelSelectDetail,
-} from "./channel-navigation"
-import CopyPromptButton from "./copy-prompt-button"
-import FeatureChannelIcon from "./feature-channel-icon"
-import ProductBadge, { type ProductBadgeType } from "./product-badge"
+} from "../channel-navigation"
+import CopyPromptButton from "../copy-prompt-button"
+import ProductBadge, { type ProductBadgeType } from "../product-badge"
+import ChannelIcon from "./channel-icon"
+import Preview, { type IPreviewData } from "./preview"
 
-export interface IFeatureChannel {
+export interface IFeatureChannel extends IPreviewData {
   badges: readonly ProductBadgeType[]
   description: string
   features?: string[]
-  image: StaticImageData | string
-  imageAlt?: string
   key: string
   label: string
   prompt: string
@@ -202,10 +201,7 @@ function Features({
                           : "border-gray-20 group-hover:border-gray-40"
                       )}
                     >
-                      <FeatureChannelIcon
-                        channel={item.key}
-                        isActive={isActive}
-                      />
+                      <ChannelIcon channel={item.key} isActive={isActive} />
                     </span>
                     <span
                       className={cn(
@@ -299,17 +295,16 @@ function Features({
             </div>
           </div>
 
-          <div className="relative aspect-5/4 overflow-hidden border-t border-gray-20 lg:aspect-auto lg:h-full lg:border-t-0 lg:border-l">
-            <Image
-              className="object-cover"
-              src={activeItem.image}
-              alt={
-                activeItem.imageAlt ??
-                `Preview of the ${activeItem.label} channel experience`
+          <div className="relative aspect-10/11 overflow-hidden border-t border-gray-20 sm:aspect-5/4 lg:aspect-auto lg:h-full lg:border-t-0 lg:border-l">
+            <Preview
+              backgroundImage={activeItem.backgroundImage}
+              channelLabel={activeItem.label}
+              clientFacingImage={activeItem.clientFacingImage}
+              implementationCode={activeItem.implementationCode}
+              implementationHighlightedHtml={
+                activeItem.implementationHighlightedHtml
               }
-              fill
-              sizes="(min-width: 1024px) 640px, 100vw"
-              quality={100}
+              key={activeItem.key}
             />
           </div>
         </div>

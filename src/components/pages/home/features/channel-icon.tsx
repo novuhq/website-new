@@ -62,17 +62,17 @@ const SLACK_ACTIVE_CLASSES = [
   "[&>path:nth-of-type(4)]:fill-[#ECB22E]",
 ]
 
-interface IFeatureChannelIconProps {
+interface IChannelIconProps {
   channel: string
   className?: string
   isActive?: boolean
 }
 
-function FeatureChannelIcon({
+function ChannelIcon({
   channel,
   className,
   isActive = false,
-}: IFeatureChannelIconProps) {
+}: IChannelIconProps) {
   if (!(channel in CHANNEL_ICONS)) return null
 
   const channelKey = channel as keyof typeof CHANNEL_ICONS
@@ -101,4 +101,4 @@ function FeatureChannelIcon({
   )
 }
 
-export default FeatureChannelIcon
+export default ChannelIcon

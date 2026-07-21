@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 import notifyFeaturedBackground from "@/images/pages/home/bento-notify-featured-bg.png"
-import channelDemoImage from "@/images/pages/home/features/channel-demo.jpg"
+import featuresBackground from "@/images/pages/home/features/bg.jpg"
+import clientFacingPreview from "@/images/pages/home/features/client-facing.png"
 import customerFacingGraphic from "@/images/pages/home/novu-connect/customer-facing.jpg"
 import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jpg"
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
@@ -43,7 +44,6 @@ const contentData = {
       {
         key: "slack",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "Slack",
         title: "Connect your AI agent to Slack",
         description:
@@ -59,7 +59,6 @@ const contentData = {
       {
         key: "whatsapp",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "WhatsApp",
         title: "Connect your AI agent to WhatsApp",
         description:
@@ -75,7 +74,6 @@ const contentData = {
       {
         key: "telegram",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "Telegram",
         title: "Connect your AI agent to Telegram",
         description:
@@ -91,7 +89,6 @@ const contentData = {
       {
         key: "teams",
         badges: ["connect", "notify"] as const,
-        image: channelDemoImage,
         label: "MS Teams",
         title: "Connect your AI agent to Microsoft Teams",
         description:
@@ -107,7 +104,6 @@ const contentData = {
       {
         key: "github",
         badges: ["notify"] as const,
-        image: channelDemoImage,
         label: "GitHub",
         title: "Connect your AI agent to GitHub workflows",
         description:
@@ -123,7 +119,6 @@ const contentData = {
       {
         key: "email",
         badges: ["notify", "connect"] as const,
-        image: channelDemoImage,
         label: "Email",
         title: "Connect your AI agent to Email",
         description:
@@ -139,7 +134,6 @@ const contentData = {
       {
         key: "imessage",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "iMessage",
         title: "Connect your AI agent to iMessage",
         description:
@@ -155,7 +149,6 @@ const contentData = {
       {
         key: "zoom",
         badges: ["notify"] as const,
-        image: channelDemoImage,
         label: "Zoom",
         title: "Connect your AI agent to Zoom",
         description:
@@ -171,7 +164,6 @@ const contentData = {
       {
         key: "linear",
         badges: ["notify"] as const,
-        image: channelDemoImage,
         label: "Linear",
         title: "Connect your AI agent to Linear",
         description:
@@ -187,7 +179,6 @@ const contentData = {
       {
         key: "discord",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "Discord",
         title: "Connect your AI agent to Discord",
         description:
@@ -203,7 +194,6 @@ const contentData = {
       {
         key: "messenger",
         badges: ["connect"] as const,
-        image: channelDemoImage,
         label: "FB Messenger",
         title: "Connect your AI agent to Facebook Messenger",
         description:
@@ -219,7 +209,6 @@ const contentData = {
       {
         key: "google-chat",
         badges: ["connect", "notify"] as const,
-        image: channelDemoImage,
         label: "Google Chat",
         title: "Connect your AI agent to Google Chat",
         description:
@@ -490,20 +479,41 @@ export function NotificationInbox() {
   },
 ]
 
+const featureImplementationCode = `import React from 'react';
+import { Notify } from '@novu/react';
+
+export function NotificationNotify() {
+  return (
+    <Notify />
+  );
+}`
+
 export const metadata: Metadata = getMetadata(SEO_DATA.index)
 
 export default async function HomePage() {
-  const highlightedNotifyCodeTabs = await Promise.all(
-    notifyCodeTabs.map(async (tab) => ({
-      ...tab,
-      highlightedHtml: await highlightEchoCode(tab.code),
-    }))
-  )
+  const [highlightedNotifyCodeTabs, featureImplementationHighlightedHtml] =
+    await Promise.all([
+      Promise.all(
+        notifyCodeTabs.map(async (tab) => ({
+          ...tab,
+          highlightedHtml: await highlightEchoCode(tab.code),
+        }))
+      ),
+      highlightEchoCode(featureImplementationCode),
+    ])
+
+  const featureItems = contentData.features.items.map((item) => ({
+    ...item,
+    backgroundImage: featuresBackground,
+    clientFacingImage: clientFacingPreview,
+    implementationCode: featureImplementationCode,
+    implementationHighlightedHtml: featureImplementationHighlightedHtml,
+  }))
 
   return (
     <div>
       <Hero {...contentData["hero"]} />
-      <Features {...contentData["features"]} />
+      <Features {...contentData["features"]} items={featureItems} />
       <ConnectStack {...contentData["connect-stack"]} />
       <CommunicationLifecycle {...contentData["communication-lifecycle"]} />
       <NovuConnect {...contentData["novu-connect"]} />
