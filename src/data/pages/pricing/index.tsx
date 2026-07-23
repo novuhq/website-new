@@ -32,7 +32,6 @@ import logoTrustflight from "@/images/pages/pricing/logos/trustflight.svg"
 import logoUnified from "@/images/pages/pricing/logos/unified.svg"
 import logoUnity from "@/images/pages/pricing/logos/unity.svg"
 import logoUnops from "@/images/pages/pricing/logos/unops.svg"
-import logoWaltonEnterprises from "@/images/pages/pricing/logos/walton-enterprises.svg"
 import logoWhoppah from "@/images/pages/pricing/logos/whoppah.svg"
 
 import type { IPricingPageData } from "@/types/pricing"
@@ -452,7 +451,6 @@ export const pricingPageData: IPricingPageData = {
       { title: "Unified", image: logoUnified },
       { title: "Unity", image: logoUnity },
       { title: "UNOPS", image: logoUnops },
-      { title: "Walton Enterprises", image: logoWaltonEnterprises },
       { title: "Whoppah", image: logoWhoppah },
     ],
     rows: 2,
