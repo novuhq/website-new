@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image, { type StaticImageData } from "next/image"
-import emailIcon from "@/svgs/pages/connect/channels/email.svg"
-import smsIcon from "@/svgs/pages/connect/channels/imessage.svg"
-import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
-import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
+import emailIcon from "@/images/pages/home/hero/email.svg"
+import slackIcon from "@/images/pages/home/hero/slack.svg"
+import smsIcon from "@/images/pages/home/hero/sms.svg"
+import whatsappIcon from "@/images/pages/home/hero/whatsapp.svg"
 import { motion, useMotionValue, type MotionValue } from "motion/react"
 
 import { getGlobeCardMotionState } from "./globe-timeline"
@@ -190,10 +190,10 @@ export default function GlobeEventCard({
                   <Image
                     alt=""
                     aria-hidden="true"
-                    className="size-4 object-contain [filter:grayscale(1)_sepia(.55)_saturate(4)_hue-rotate(210deg)_brightness(1.08)]"
-                    height={24}
+                    className="size-4.5 object-contain"
+                    height={18}
                     src={CHANNEL_ICONS[event.channel]}
-                    width={24}
+                    width={18}
                   />
                   <ScrambleText
                     progress={scrambleProgress.text}

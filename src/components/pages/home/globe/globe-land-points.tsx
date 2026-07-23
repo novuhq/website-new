@@ -178,7 +178,7 @@ export default function GlobeLandPoints({
         depthTest
         depthWrite={false}
         fragmentShader={LAND_FRAGMENT_SHADER}
-        side={THREE.DoubleSide}
+        side={THREE.FrontSide}
         transparent
         uniforms={uniforms}
         vertexShader={LAND_VERTEX_SHADER}

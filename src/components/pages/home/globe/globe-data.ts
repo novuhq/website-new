@@ -57,7 +57,7 @@ export const GLOBE_CONNECTION_NODES = {
   },
   guangzhou: {
     id: "guangzhou",
-    latitude: 23.1291,
+    latitude: 26,
     longitude: 113.2644,
     markerSize: 0.064,
   },
@@ -75,8 +75,8 @@ export const GLOBE_CONNECTION_NODES = {
   },
   chicago: {
     id: "chicago",
-    latitude: 41.8781,
-    longitude: -87.6298,
+    latitude: 39.9,
+    longitude: -85.6,
     markerSize: 0.064,
   },
   novosibirsk: {
@@ -206,7 +206,7 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     channel: "email",
     channelLabel: "Email",
     anchor: GLOBE_CONNECTION_NODES.vancouver,
-    placement: "left",
+    placement: "below-right",
     readHoldMs: 3_000,
     startMs: 2_300.134,
     lines: [
@@ -224,7 +224,7 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     channel: "slack",
     channelLabel: "Slack",
     anchor: GLOBE_CONNECTION_NODES.guangzhou,
-    placement: "above-left",
+    placement: "right",
     readHoldMs: 2_400,
     startMs: 8_600,
     lines: [
