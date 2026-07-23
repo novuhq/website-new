@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
+    "generate:agent-skills": "node scripts/generate-agent-skills-index.mjs",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "typecheck": "tsc --noEmit"

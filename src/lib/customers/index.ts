@@ -1,4 +1,9 @@
-import { ICustomerData, ICustomersPageData } from "@/types/customers"
+import type {
+  ICustomerCardData,
+  ICustomerData,
+  ICustomersPageData,
+} from "@/types/customers"
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   allCustomersLogosQuery,
@@ -7,9 +12,20 @@ import {
   customersPageQuery,
   latestCustomersQuery,
 } from "@/lib/sanity/queries/customers"
-import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 
 const REVALIDATE_CUSTOMERS_TAG = [...REVALIDATION_CONFIG.customers.tags]
+
+export function isCustomerStoryCard(
+  customer: ICustomerCardData | null | undefined
+): customer is ICustomerCardData {
+  return Boolean(
+    customer?._id &&
+      customer.slug?.current &&
+      customer.logo?.url &&
+      customer.quoteText &&
+      customer.quoteAuthorName
+  )
+}
 
 export async function getCustomersPage(
   preview = false

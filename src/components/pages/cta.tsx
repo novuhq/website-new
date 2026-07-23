@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import Image from "next/image"
 import CheckboxIcon from "@/svgs/icons/checkbox-yellow.svg"
 import bgLg from "@/svgs/shared/cta/background-lg.svg"
@@ -9,6 +10,7 @@ import { cn } from "@/lib/utils"
 import ActionGroup from "@/components/ui/action-group"
 
 interface ICTAProps extends ICtaSection {
+  actionSlot?: ReactNode
   className?: string
   containerClassName?: string
   descriptionClassName?: string
@@ -42,6 +44,7 @@ function CTA({
   containerClassName,
   titleClassName,
   descriptionClassName,
+  actionSlot,
   hint,
   title,
   description,
@@ -102,7 +105,8 @@ function CTA({
             </p>
           </div>
         )}
-        {actions && actions.length > 0 && (
+        {actionSlot}
+        {!actionSlot && actions && actions.length > 0 && (
           <ActionGroup
             className="mt-6.5 2xs:justify-center md:mt-7.75"
             actions={updatedActions as TSectionAction[]}

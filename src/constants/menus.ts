@@ -33,6 +33,8 @@ export const MENUS = {
           items: [
             { label: "Novu Copilot", href: ROUTE.copilot },
             { label: "Novu MCP", href: ROUTE.mcp },
+            { label: "Novu ACI", href: ROUTE.aci },
+            { label: "Novu Connect", href: ROUTE.connect },
           ],
         },
       ],
@@ -124,12 +126,12 @@ export const MENUS = {
           {
             label: "Novu Copilot",
             href: ROUTE.copilot,
-            isNew: true,
           },
           {
             label: "Novu MCP",
             href: ROUTE.mcp,
           },
+          { label: "Novu ACI", href: ROUTE.aci, isNew: true },
         ],
       },
       {

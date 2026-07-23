@@ -17,6 +17,8 @@ export type Link = {
   href: string
   isExternal?: boolean
   variant?: "primary" | "secondary" | "text"
+  clickLocation?: string
+  clickText?: string
 }
 
 export type NumericPrice = {
@@ -71,6 +73,8 @@ export type PlanHeading = {
   isFeatured: boolean
   buttonUrl?: string
   buttonText?: string
+  clickLocation?: string
+  clickText?: string
 }
 
 export type Headings = PlanHeading[]

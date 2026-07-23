@@ -4,6 +4,7 @@ import NextLink from "next/link"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
+import { normalizeDashboardUrl } from "@/lib/normalize-dashboard-url"
 import { cn } from "@/lib/utils"
 
 const linkVariants = cva(
@@ -54,14 +55,15 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps<string>>(
     { className, variant, size, animation, asChild = false, href, ...props },
     ref
   ) => {
+    const normalizedHref = normalizeDashboardUrl(href)
     const Comp = asChild ? Slot : "a"
-    const isInternalLink = typeof href === "string" && href.startsWith("/")
+    const isInternalLink = normalizedHref.startsWith("/")
 
     if (isInternalLink) {
       return (
         <NextLink
           className={cn(linkVariants({ variant, size, animation, className }))}
-          href={href}
+          href={normalizedHref}
           ref={ref}
           {...props}
         />
@@ -71,7 +73,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps<string>>(
     return (
       <Comp
         className={cn(linkVariants({ variant, size, animation, className }))}
-        href={href.toString()}
+        href={normalizedHref}
         ref={ref}
         target="_blank"
         rel="noopener noreferrer"

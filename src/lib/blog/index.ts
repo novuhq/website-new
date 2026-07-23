@@ -31,6 +31,11 @@ import { getTableOfContents } from "@/lib/sanity/utils/get-table-of-contents"
 const POSTS_PER_PAGE = config.blog.postsPerPage
 const REVALIDATE_BLOG_TAG = "blog"
 
+type SanityReadOptions = {
+  cache?: RequestCache
+  useCdn?: boolean
+}
+
 /**
  * Transforms a category data object from Sanity into the application's category format
  * @param category - The raw category data from Sanity
@@ -99,11 +104,16 @@ export async function getCategories(preview = false): Promise<ICategory[]> {
  *
  * @returns Array of formatted post objects
  */
-export async function getAllPosts(preview = false): Promise<IPost[]> {
+export async function getAllPosts(
+  preview = false,
+  options: SanityReadOptions = {}
+): Promise<IPost[]> {
   const posts = await sanityFetch<IPostData[]>({
     query: postsQuery,
     preview,
     tags: [REVALIDATE_BLOG_TAG],
+    cache: options.cache,
+    useCdn: options.useCdn,
   })
   return posts.map((post) => transformPost(post))
 }
@@ -174,13 +184,16 @@ export async function getLatestPosts(
  */
 export async function getPostsByCategory(
   slug: string,
-  preview = false
+  preview = false,
+  options: SanityReadOptions = {}
 ): Promise<IPost[]> {
   const posts = await sanityFetch<IPostData[]>({
     query: postsByCategoryQuery,
     qParams: { slug },
     preview,
     tags: [REVALIDATE_BLOG_TAG],
+    cache: options.cache,
+    useCdn: options.useCdn,
   })
   return posts.map((post) => transformPost(post))
 }
@@ -225,13 +238,16 @@ export async function getPostBySlug(
 
 export async function getCategoryBySlug(
   slug: string,
-  preview = false
+  preview = false,
+  options: SanityReadOptions = {}
 ): Promise<ICategory | null> {
   const category = await sanityFetch<ICategoryData>({
     query: categoryBySlugQuery,
     qParams: { slug },
     preview,
     tags: [REVALIDATE_BLOG_TAG],
+    cache: options.cache,
+    useCdn: options.useCdn,
   })
 
   if (!category) return null

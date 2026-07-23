@@ -5,13 +5,17 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   apiHubspot: "/api/hubspot",
 
   // CURRENT WEBSITE
+  bookADemo: "/book-a-demo",
+  bookADemoConnect: "/book-a-demo-connect",
   changelog: "/changelog",
   customers: "/customers",
   integrations: "/integrations",
   integrationsChannels: "/integrations/channels",
   integrationsSources: "/integrations/sources",
+  connect: "/connect",
   copilot: "/copilot",
   mcp: "/mcp",
+  aci: "/aci",
 
   // PREVIOUS WEBSITE
 
@@ -20,6 +24,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   blog: "/blog",
   blogCategory: "/blog/category",
   blogRss: "/blog/rss.xml",
+  careers: "/careers",
   community: "/community",
   comparisonCourier: "/comparison/courier",
   comparisonKnock: "/comparison/knock",
@@ -43,13 +48,15 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   // Dashboard
   dashboard: "https://dashboard.novu.co",
   dashboardV2: "https://dashboard.novu.co",
-  dashboardV2SignIn: "https://dashboard.novu.co/auth/sign-in",
-  dashboardV2SignUp: "https://dashboard.novu.co/auth/sign-up",
+  dashboardV2SignIn: "https://dashboard.novu.co",
+  dashboardV2SignUp: "https://dashboard.novu.co",
+  dashboardV2AgentsSignUp:
+    "https://dashboard.novu.co/auth/sign-up?product_type=agents",
   workflows: "https://dashboard.novu.co/workflows",
 
   // Other services
+  connectApp: "https://connect.novu.co",
   bookMeeting: "https://novu.co/contact-us/",
-  careers: "https://careers.novu.co",
   handbook: "https://handbook.novu.co",
   roadmap: "https://roadmap.novu.co",
   statusPage: "https://novustatus.com",

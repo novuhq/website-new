@@ -1,0 +1,211 @@
+{
+  "version": 3,
+  "summary": "Novu is notification and agent communication infrastructure. Exposes US and EU REST APIs, a hosted MCP server with 23+ tools, a CLI for Framework workflows and agent connect, and published agent skills for inbox, triggers, subscribers, and workflow design.",
+  "credentials": {
+    "novu_secret_key": {
+      "type": "api_key",
+      "label": "Novu secret key",
+      "generateUrl": "https://dashboard.novu.co/settings/api-keys",
+      "setup": "Create a Secret Key in the Novu dashboard for the target environment (Development or Production). Store it as NOVU_SECRET_KEY and send it as `Authorization: ApiKey <key>` on REST API calls. For EU Cloud, use https://eu.dashboard.novu.co/settings/api-keys and call https://eu.api.novu.co."
+    },
+    "novu_application_identifier": {
+      "type": "api_key",
+      "label": "Novu application identifier",
+      "generateUrl": "https://dashboard.novu.co/settings/api-keys",
+      "setup": "Public identifier for client-side Inbox and SDK initialization only. It is not a substitute for the secret key on server-side API calls. For keyless Inbox demos, omit it entirely."
+    }
+  },
+  "surfaces": [
+    {
+      "slug": "novu-api-us",
+      "name": "Novu REST API (US)",
+      "type": "http",
+      "url": "https://api.novu.co/v1",
+      "spec": "https://api.novu.co/openapi.json",
+      "specAlternates": [
+        "https://api.novu.co/openapi.yaml",
+        "https://novu.co/openapi.json"
+      ],
+      "docs": "https://docs.novu.co/api-reference",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "required",
+        "entries": [
+          {
+            "use": [
+              {
+                "id": "novu_secret_key",
+                "mechanics": {
+                  "source": "http",
+                  "in": "header",
+                  "headerName": "Authorization",
+                  "scheme": "ApiKey"
+                }
+              }
+            ],
+            "basis": {
+              "via": "declared",
+              "source": "https://novu.co/.well-known/integrations.json"
+            }
+          }
+        ]
+      },
+      "notes": "US Cloud base path is /v1. Match region with dashboard.novu.co and mcp.novu.co."
+    },
+    {
+      "slug": "novu-api-eu",
+      "name": "Novu REST API (EU)",
+      "type": "http",
+      "url": "https://eu.api.novu.co/v1",
+      "spec": "https://eu.api.novu.co/openapi.json",
+      "specAlternates": ["https://eu.api.novu.co/openapi.yaml"],
+      "docs": "https://docs.novu.co/api-reference",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "required",
+        "entries": [
+          {
+            "use": [
+              {
+                "id": "novu_secret_key",
+                "mechanics": {
+                  "source": "http",
+                  "in": "header",
+                  "headerName": "Authorization",
+                  "scheme": "ApiKey"
+                }
+              }
+            ],
+            "basis": {
+              "via": "declared",
+              "source": "https://novu.co/.well-known/integrations.json"
+            }
+          }
+        ]
+      },
+      "notes": "EU Cloud accounts use eu.api.novu.co with the same /v1 paths as US."
+    },
+    {
+      "slug": "novu-mcp-us",
+      "name": "Novu MCP server (US)",
+      "type": "mcp",
+      "url": "https://mcp.novu.co/",
+      "transports": ["streamable-http"],
+      "docs": "https://docs.novu.co/platform/build-with-ai/mcp",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "required",
+        "entries": [
+          {
+            "use": [
+              {
+                "id": "oauth",
+                "mechanics": {
+                  "source": "oauth",
+                  "flow": "authorization_code",
+                  "registration": "dcr"
+                }
+              }
+            ],
+            "basis": {
+              "via": "declared",
+              "source": "https://novu.co/.well-known/integrations.json"
+            }
+          }
+        ]
+      },
+      "notes": "Hosted remote MCP over Streamable HTTP with OAuth (DCR). Exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments. Connect with the MCP URL only — your client handles sign-in."
+    },
+    {
+      "slug": "novu-mcp-eu",
+      "name": "Novu MCP server (EU)",
+      "type": "mcp",
+      "url": "https://eu.mcp.novu.co/",
+      "transports": ["streamable-http"],
+      "docs": "https://docs.novu.co/platform/build-with-ai/mcp",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "required",
+        "entries": [
+          {
+            "use": [
+              {
+                "id": "oauth",
+                "mechanics": {
+                  "source": "oauth",
+                  "flow": "authorization_code",
+                  "registration": "dcr"
+                }
+              }
+            ],
+            "basis": {
+              "via": "declared",
+              "source": "https://novu.co/.well-known/integrations.json"
+            }
+          }
+        ]
+      },
+      "notes": "EU region endpoint. OAuth sessions pair with eu.dashboard.novu.co and eu.api.novu.co."
+    },
+    {
+      "slug": "novu-cli",
+      "name": "Novu CLI",
+      "type": "cli",
+      "url": "https://www.npmjs.com/package/novu",
+      "docs": "https://docs.novu.co/framework/deployment/cli",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "optional",
+        "entries": [
+          {
+            "use": [
+              {
+                "id": "novu_secret_key",
+                "mechanics": {
+                  "source": "cli",
+                  "flag": "--secret-key",
+                  "env": "NOVU_SECRET_KEY"
+                }
+              }
+            ],
+            "basis": {
+              "via": "declared",
+              "source": "https://novu.co/.well-known/integrations.json"
+            }
+          }
+        ]
+      },
+      "notes": "Run with `npx novu@latest`. Supports Framework workflow sync, Local Studio, and `novu connect` for managed agent onboarding. Keyless connect omits --secret-key; authenticated flows pass --secret-key or NOVU_SECRET_KEY."
+    },
+    {
+      "slug": "novu-agent-skills",
+      "name": "Novu agent skills",
+      "type": "agent-skills",
+      "url": "https://novu.co/.well-known/agent-skills/index.json",
+      "docs": "https://novu.co/llms.txt",
+      "basis": {
+        "via": "declared",
+        "source": "https://novu.co/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "none"
+      },
+      "notes": "Published skills for connect agent onboarding, inbox integration, workflow design, triggers, subscribers, and preferences."
+    }
+  ]
+}

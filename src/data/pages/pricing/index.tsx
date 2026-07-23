@@ -57,7 +57,7 @@ export const pricingPageData: IPricingPageData = {
   _updatedAt: "2026-02-12T13:59:33Z",
   cta: {
     buttonText: "Schedule a call",
-    buttonUrl: "https://dashboard-v2.novu.co/auth/sign-up",
+    buttonUrl: "https://dashboard.novu.co",
     description:
       "Schedule a call with our team to find the perfect plan for your use case",
     text: "Not sure what plan fits your needs?",
@@ -286,9 +286,11 @@ export const pricingPageData: IPricingPageData = {
         extraInfo: "No credit card required",
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_free",
+          clickText: "get_started",
         },
         price: [
           {
@@ -318,9 +320,11 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: true,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_pro",
+          clickText: "get_started",
         },
         price: [
           {
@@ -353,9 +357,11 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing",
+          href: "https://dashboard.novu.co",
           isExternal: true,
           text: "Get started",
+          clickLocation: "pricing_hero_team",
+          clickText: "get_started",
         },
         price: [
           {
@@ -453,9 +459,11 @@ export const pricingPageData: IPricingPageData = {
   pageCta: {
     actions: [
       {
-        href: "https://dashboard.novu.co/?utm_campaign=gs-website-inbox",
+        href: "https://dashboard.novu.co",
         label: "Get started",
         kind: "primary-button",
+        clickLocation: "pricing_page_cta",
+        clickText: "get_started",
       },
       {
         href: "/contact-us",
@@ -471,24 +479,27 @@ export const pricingPageData: IPricingPageData = {
     headings: [
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_free",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_free",
+        clickText: "get_started",
         id: "free",
         label: "Free",
         isFeatured: false,
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_pro",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_pro",
+        clickText: "get_started",
         id: "pro",
         isFeatured: true,
         label: "Pro",
       },
       {
         buttonText: "Get started",
-        buttonUrl:
-          "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_pricing_table_team",
+        buttonUrl: "https://dashboard.novu.co",
+        clickLocation: "pricing_table_team",
+        clickText: "get_started",
         id: "team",
         label: "Team",
         isFeatured: false,
@@ -1729,37 +1740,6 @@ export const pricingPageData: IPricingPageData = {
             provider integrations, custom environments, branding removal, and
             priority support. Extends open-source capabilities with consumable,
             scalable infrastructure.
-          </p>
-        ),
-      },
-      {
-        enterprise: {
-          booleanValue: true,
-        },
-        free: {
-          booleanValue: true,
-        },
-        isGroupTitle: false,
-        pro: {
-          booleanValue: true,
-        },
-        team: {
-          booleanValue: true,
-        },
-        title: "Self-hosted (OSS)",
-        tooltip: (
-          <p>
-            <strong>Open-source, self-deployable version</strong> (MIT licensed)
-            that runs on your own infrastructure, giving you complete control
-            over your notification system and data.
-            {"\n\n"}
-            Deploy via{" "}
-            <strong>
-              Docker Compose, Kubernetes/Helm, or manual installation
-            </strong>
-            . Ideal for organizations with strict data residency requirements,
-            compliance needs, or avoiding vendor lock-in. Includes unlimited
-            retention and community-driven support.
           </p>
         ),
       },

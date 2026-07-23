@@ -128,6 +128,14 @@ export type TSectionAction =
       openInNewTab?: boolean
     }
   | {
+      kind: "scheduling-button"
+      label: string
+      source: string
+      clickLocation?: string
+      clickText?: string
+      variant?: "primary" | "secondary"
+    }
+  | {
       kind: "link"
       label: string
       href: Route<string> | URL

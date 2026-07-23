@@ -12,9 +12,10 @@ import Card from "./card"
 interface IMobileProps {
   title: string
   content: IMenuHeaderContent[]
+  onNavigate?: () => void
 }
 
-function MobileItem({ title, content }: IMobileProps) {
+function MobileItem({ title, content, onNavigate }: IMobileProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -69,6 +70,7 @@ function MobileItem({ title, content }: IMobileProps) {
                           className="!leading-none font-light"
                           href={href}
                           variant="muted"
+                          onClick={onNavigate}
                         >
                           {label}
                         </Link>

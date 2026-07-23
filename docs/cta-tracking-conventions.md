@@ -36,7 +36,9 @@ The location must be globally unique across the site so events from different pa
 | Comparison (Courier) | Banner       | `comparison_courier_banner`       |
 | Comparison (Courier) | Bottom CTA   | `comparison_courier_cta`          |
 | Comparison (Knock)   | Hero         | `comparison_knock_hero`           |
-| Pricing              | Hero         | `pricing_hero`                    |
+| Pricing              | Hero Free    | `pricing_hero_free`               |
+| Pricing              | Hero Pro     | `pricing_hero_pro`                |
+| Pricing              | Hero Team    | `pricing_hero_team`               |
 | Pricing              | FAQ          | `pricing_faq`                     |
 | Homepage             | Hero         | `home_hero`                       |
 | Homepage             | Bottom CTA   | `home_cta`                        |
@@ -91,7 +93,7 @@ Set the values in the page data file:
 // src/data/pages/comparison/courier.tsx
 primaryCta: {
   label: "Start for Free",
-  href: "https://dashboard.novu.co/auth/sign-up",
+  href: "https://dashboard.novu.co",
   clickLocation: "comparison_courier_hero",
   clickText: "start_for_free",
 },
@@ -120,9 +122,7 @@ Adding hardcoded UTMs like `utm_source=internal` to CTA links causes Google Anal
 **Bad -- hardcoded internal UTMs that overwrite acquisition attribution:**
 
 ```html
-<a
-  href="https://dashboard.novu.co/auth/sign-up?utm_source=internal&utm_campaign=comparison"
->
+<a href="https://dashboard.novu.co?utm_source=internal&utm_campaign=comparison">
   Start for Free
 </a>
 ```
@@ -131,7 +131,7 @@ Adding hardcoded UTMs like `utm_source=internal` to CTA links causes Google Anal
 
 ```html
 <a
-  href="https://dashboard.novu.co/auth/sign-up"
+  href="https://dashboard.novu.co"
   data-click-location="comparison_courier_hero"
   data-click-text="start_for_free"
 >
@@ -141,7 +141,7 @@ Adding hardcoded UTMs like `utm_source=internal` to CTA links causes Google Anal
 
 ## Acquisition UTM forwarding (UtmForwarder component)
 
-The `UtmForwarder` component (`src/components/utm-forwarder.tsx`) automatically forwards the visitor's **original acquisition UTMs** (from the URL they landed on, e.g. from a Google Ad) to dashboard.novu.co links. This is different from hardcoding internal UTMs -- it preserves the original paid campaign attribution through to signup.
+The `UtmForwarder` component (`src/components/utm-forwarder.tsx`) automatically forwards the visitor's **original acquisition UTMs** (from the URL they landed on, e.g. from a Google Ad) to dashboard.novu.co links. This is different from hardcoding internal UTMs -- it preserves the original paid campaign attribution through to the dashboard.
 
 - It only appends params that are NOT already present on the link
 - It only targets links where `url.hostname === "dashboard.novu.co"`
@@ -151,12 +151,14 @@ The `UtmForwarder` component (`src/components/utm-forwarder.tsx`) automatically 
 
 The following components already support `clickLocation` / `clickText`:
 
-| Component                 | File                                               |
-| ------------------------- | -------------------------------------------------- |
-| Comparison Hero           | `src/components/pages/comparison/hero.tsx`         |
-| Comparison Intro          | `src/components/pages/comparison/intro.tsx`        |
-| Comparison Frustrations   | `src/components/pages/comparison/frustrations.tsx` |
-| Comparison Difference     | `src/components/pages/comparison/difference.tsx`   |
-| Banner                    | `src/components/pages/banner.tsx`                  |
-| ActionGroup (CTA section) | `src/components/ui/action-group.tsx`               |
-| Content CTA               | `src/components/content/cta.tsx`                   |
+| Component                 | File                                                        |
+| ------------------------- | ----------------------------------------------------------- |
+| Comparison Hero           | `src/components/pages/comparison/hero.tsx`                  |
+| Comparison Intro          | `src/components/pages/comparison/intro.tsx`                 |
+| Comparison Frustrations   | `src/components/pages/comparison/frustrations.tsx`          |
+| Comparison Difference     | `src/components/pages/comparison/difference.tsx`            |
+| Pricing Cards             | `src/components/pages/pricing/pricing-plans-cards/card.tsx` |
+| Pricing Table             | `src/components/pages/pricing/comparison-table.tsx`         |
+| Banner                    | `src/components/pages/banner.tsx`                           |
+| ActionGroup (CTA section) | `src/components/ui/action-group.tsx`                        |
+| Content CTA               | `src/components/content/cta.tsx`                            |

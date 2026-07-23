@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import type { Route } from "next"
 import NextLink from "next/link"
 import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
@@ -22,9 +23,29 @@ import MobileItem from "./mobile-item"
 
 interface MobileMenuProps {
   items: IMenuHeaderItem[]
+  actions?: {
+    secondary: MobileMenuAction
+    primary: MobileMenuAction
+  }
 }
 
-function MobileMenu({ items }: MobileMenuProps) {
+interface MobileMenuAction {
+  href: Route<string> | URL
+  label: string
+}
+
+const DEFAULT_ACTIONS: Required<MobileMenuProps>["actions"] = {
+  secondary: {
+    href: ROUTE.dashboardV2SignIn,
+    label: "Login",
+  },
+  primary: {
+    href: ROUTE.dashboardV2SignUp,
+    label: "Get Started",
+  },
+}
+
+function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const [isBanner, setIsBanner] = useState(false)
   const pathname = usePathname()
@@ -35,14 +56,15 @@ function MobileMenu({ items }: MobileMenuProps) {
   }, [pathname])
 
   useEffect(() => {
-    const linkBanner = document.querySelector(".link-banner")
-    if (linkBanner) {
-      setIsBanner(true)
-    }
-  }, [])
+    setIsBanner(Boolean(document.querySelector(".link-banner")))
+  }, [pathname])
 
   const onOpenChange = useCallback((open: boolean) => {
     setOpen(open)
+  }, [])
+
+  const closeMenu = useCallback(() => {
+    setOpen(false)
   }, [])
 
   if (!items || items.length === 0) {
@@ -91,13 +113,18 @@ function MobileMenu({ items }: MobileMenuProps) {
                       className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
                       href={href}
                       variant="foreground"
+                      onClick={closeMenu}
                     >
                       {title}
                     </Link>
                   ) : (
                     content &&
                     content.length > 0 && (
-                      <MobileItem title={title} content={content} />
+                      <MobileItem
+                        title={title}
+                        content={content}
+                        onNavigate={closeMenu}
+                      />
                     )
                   )}
                 </li>
@@ -117,10 +144,14 @@ function MobileMenu({ items }: MobileMenuProps) {
 
           <div className="mt-auto flex gap-3.5 px-5 py-6 max-2xs:flex-col 2xs:gap-5 2xs:py-7 md:px-8">
             <Button className="w-full" variant="outline" asChild>
-              <NextLink href={ROUTE.dashboardV2SignIn}>Login</NextLink>
+              <NextLink href={actions.secondary.href} onClick={closeMenu}>
+                {actions.secondary.label}
+              </NextLink>
             </Button>
             <Button className="w-full" asChild>
-              <NextLink href={ROUTE.dashboardV2SignUp}>Get Started</NextLink>
+              <NextLink href={actions.primary.href} onClick={closeMenu}>
+                {actions.primary.label}
+              </NextLink>
             </Button>
           </div>
         </div>

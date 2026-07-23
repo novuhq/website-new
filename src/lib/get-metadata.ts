@@ -14,10 +14,14 @@ type Metadata = {
   pathname: string
   /** Path to social sharing image (defaults to site config) */
   imagePath?: string
+  /** Alternative text for social sharing image */
+  imageAlt?: string
   /** OpenGraph content type (defaults to "website") */
   type?: string
   /** Whether search engines should index this page */
   noIndex?: boolean
+  /** Pathname for the markdown alternate. Set true to derive pathname + ".md". */
+  markdownPathname?: string | true | false
 }
 
 function withTrailingSlash(pathname: string) {
@@ -28,6 +32,15 @@ function withTrailingSlash(pathname: string) {
   return pathname.endsWith("/") ? pathname : `${pathname}/`
 }
 
+function withMarkdownExtension(pathname: string) {
+  if (!pathname || pathname === "/") {
+    return "/index.md"
+  }
+
+  const normalized = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname
+  return `${normalized}.md`
+}
+
 /**
  * Generates metadata for Next.js pages including OpenGraph and Twitter card data
  *
@@ -36,6 +49,7 @@ function withTrailingSlash(pathname: string) {
  * @param {string} options.description - Page description
  * @param {string} options.pathname - URL pathname (without domain)
  * @param {string} [options.imagePath=config.defaultSocialImage] - Path to social sharing image
+ * @param {string} [options.imageAlt] - Alternative text for social sharing image
  * @param {string} [options.type="website"] - OpenGraph content type
  * @param {boolean} [options.noIndex=false] - Whether search engines should index this page
  *
@@ -46,11 +60,20 @@ export function getMetadata({
   description = config.defaultDescription,
   pathname,
   imagePath = config.defaultSocialImage,
+  imageAlt,
   type = "website",
   noIndex = false,
+  markdownPathname,
 }: Metadata) {
   const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
   const canonicalUrl = SITE_URL + withTrailingSlash(pathname)
+  const markdownUrl =
+    !noIndex && markdownPathname
+      ? SITE_URL +
+        (markdownPathname === true
+          ? withMarkdownExtension(pathname)
+          : markdownPathname)
+      : null
   const resolvedImagePath = imagePath || config.defaultSocialImage
   const imageUrl = resolvedImagePath.startsWith("http")
     ? resolvedImagePath
@@ -61,6 +84,13 @@ export function getMetadata({
     description,
     alternates: {
       canonical: canonicalUrl,
+      ...(markdownUrl
+        ? {
+            types: {
+              "text/markdown": markdownUrl,
+            },
+          }
+        : {}),
     },
     manifest: `${SITE_URL}/manifest.json`,
     icons: {
@@ -119,12 +149,16 @@ export function getMetadata({
           url: imageUrl,
           width: 1200,
           height: 630,
+          ...(imageAlt ? { alt: imageAlt } : {}),
         },
       ],
       type,
     },
     twitter: {
       card: "summary_large_image",
+      title,
+      description,
+      images: imageAlt ? { url: imageUrl, alt: imageAlt } : imageUrl,
     },
     robots: noIndex ? "noindex" : null,
   } as NextMetadata
