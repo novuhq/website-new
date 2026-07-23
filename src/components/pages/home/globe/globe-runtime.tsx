@@ -10,14 +10,34 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react"
 import { Canvas, useThree } from "@react-three/fiber"
-import { motion, useMotionValue, useReducedMotion } from "motion/react"
+import {
+  motion,
+  motionValue,
+  useMotionValue,
+  useReducedMotion,
+  type MotionValue,
+} from "motion/react"
 
 import { cn } from "@/lib/utils"
 
-import { GLOBE_INITIAL_TIME_MS } from "./globe-data"
+import {
+  GLOBE_CARD_EVENTS,
+  GLOBE_INITIAL_TIME_MS,
+  GLOBE_ROUTES,
+  GLOBE_STORY_CARD_DELAY_MS,
+  GLOBE_STORY_REENTRY_DELAY_MS,
+  GLOBE_STORY_SETTLE_MS,
+} from "./globe-data"
 import GlobeEventCard from "./globe-event-card"
 import GlobeScene from "./globe-scene"
-import { getActiveCardEvent } from "./globe-timeline"
+import { pickGlobeCardEvents } from "./globe-scheduler"
+import {
+  advanceGlobeRotation,
+  getActiveCardEvent,
+  getGlobeCardDurationMs,
+  getGlobeCycleStartMs,
+  getGlobeRotation,
+} from "./globe-timeline"
 import type {
   IGlobeCardEvent,
   IGlobeInteractionState,
@@ -31,10 +51,22 @@ interface IGlobeRuntimeProps {
   onUnavailable: () => void
 }
 
-interface ILastPointer {
-  time: number
-  x: number
-  y: number
+interface IActivePointer {
+  id: number
+  lastMoveTime: number
+  lastTime: number
+  lastX: number
+  lastY: number
+  startX: number
+  startY: number
+}
+
+interface IActiveCardPlayback {
+  anchorOpacity: MotionValue<number>
+  anchorX: MotionValue<number>
+  anchorY: MotionValue<number>
+  event: IGlobeCardEvent
+  startedAtMs: number
 }
 
 interface IGlobeCanvasErrorBoundaryProps {
@@ -45,6 +77,11 @@ interface IGlobeCanvasErrorBoundaryProps {
 interface IGlobeContextMonitorProps {
   onContextLost: () => void
 }
+
+const POINTER_DRAG_THRESHOLD_PX = 6
+const POINTER_VELOCITY_STALE_MS = 80
+const MAX_INTERACTION_STEP_MS = 16
+const MAX_CONCURRENT_CARD_PLAYBACKS = 3
 
 class GlobeCanvasErrorBoundary extends Component<
   IGlobeCanvasErrorBoundaryProps,
@@ -104,6 +141,49 @@ function getLowerQuality(quality: TGlobeQuality): TGlobeQuality {
   return "low"
 }
 
+function advanceGlobeInteraction(
+  interaction: IGlobeInteractionState,
+  deltaMs: number,
+  frameTimeMs: number
+) {
+  if (interaction.dragging || deltaMs <= 0) return
+
+  let remainingMs = deltaMs
+  let stepTimeMs = frameTimeMs - deltaMs
+
+  while (remainingMs > 0) {
+    const stepMs = Math.min(MAX_INTERACTION_STEP_MS, remainingMs)
+    remainingMs -= stepMs
+    stepTimeMs += stepMs
+
+    interaction.rotation += interaction.velocityYaw * stepMs
+    interaction.pitch = Math.max(
+      -0.28,
+      Math.min(0.28, interaction.pitch + interaction.velocityPitch * stepMs)
+    )
+
+    const damping = Math.pow(0.88, stepMs * 0.06)
+    interaction.velocityYaw *= damping
+    interaction.velocityPitch *= damping
+
+    const settleProgress = Math.min(
+      1,
+      Math.max(
+        0,
+        (stepTimeMs - interaction.releasedAtMs) / GLOBE_STORY_SETTLE_MS
+      )
+    )
+    interaction.autoBlend =
+      interaction.releasedAtMs === -Infinity
+        ? 1
+        : settleProgress * settleProgress * (3 - 2 * settleProgress)
+    interaction.rotation = advanceGlobeRotation(
+      interaction.rotation,
+      stepMs * interaction.autoBlend
+    )
+  }
+}
+
 function getDebugTimeMs() {
   if (process.env.NODE_ENV === "production" || typeof window === "undefined") {
     return null
@@ -116,6 +196,19 @@ function getDebugTimeMs() {
   return Number.isFinite(value) && value >= 0 ? value : null
 }
 
+function createCardPlayback(
+  event: IGlobeCardEvent,
+  startedAtMs: number
+): IActiveCardPlayback {
+  return {
+    anchorOpacity: motionValue(0),
+    anchorX: motionValue(-1000),
+    anchorY: motionValue(-1000),
+    event,
+    startedAtMs,
+  }
+}
+
 export default function GlobeRuntime({
   interactionMode = "rotate",
   onUnavailable,
@@ -124,21 +217,69 @@ export default function GlobeRuntime({
   const rootRef = useRef<HTMLDivElement>(null)
   const debugTimeMsRef = useRef(getDebugTimeMs())
   const initialTimeMs = debugTimeMsRef.current ?? GLOBE_INITIAL_TIME_MS
+  const debugCycleStartMs = getGlobeCycleStartMs(initialTimeMs)
   const elapsedRef = useRef(initialTimeMs)
   const interactionRef = useRef<IGlobeInteractionState>({
+    autoBlend: 1,
     dragging: false,
     pitch: 0,
+    releasedAtMs: -Infinity,
+    rotation: getGlobeRotation(initialTimeMs),
     velocityPitch: 0,
     velocityYaw: 0,
-    yaw: 0,
   })
-  const lastPointerRef = useRef<ILastPointer | null>(null)
-  const activeCardIdRef = useRef<string | null>(
-    getActiveCardEvent(initialTimeMs)?.id ?? null
+  const activePointerRef = useRef<IActivePointer | null>(null)
+  const previousScheduleRotationRef = useRef<number | null>(
+    interactionRef.current.rotation
   )
-  const [activeCard, setActiveCard] = useState<IGlobeCardEvent | null>(() =>
-    getActiveCardEvent(initialTimeMs)
+  const debugCard = getActiveCardEvent(initialTimeMs)
+  const bootstrapEvents =
+    debugTimeMsRef.current === null
+      ? GLOBE_CARD_EVENTS.filter((event) => (event.initialRouteLeadMs ?? 0) > 0)
+      : []
+  const routePlaybackRef = useRef<Record<string, number>>(
+    debugTimeMsRef.current === null
+      ? Object.fromEntries(
+          bootstrapEvents.map((event) => [
+            event.routeId,
+            -(event.initialRouteLeadMs ?? 0),
+          ])
+        )
+      : Object.fromEntries(
+          GLOBE_ROUTES.map((route) => [
+            route.id,
+            debugCycleStartMs + route.startMs,
+          ])
+        )
   )
+  const lastCardStartedAtRef = useRef<Record<string, number>>(
+    Object.fromEntries(
+      bootstrapEvents.map((event) => [
+        event.id,
+        -(event.initialRouteLeadMs ?? 0),
+      ])
+    )
+  )
+  const reentryReadyAtRef = useRef(0)
+  const hasStartedPlaybackRef = useRef(false)
+  const initialCardPlaybacksRef = useRef<IActiveCardPlayback[] | null>(null)
+  if (initialCardPlaybacksRef.current === null) {
+    initialCardPlaybacksRef.current = debugCard
+      ? [createCardPlayback(debugCard, debugCycleStartMs + debugCard.startMs)]
+      : bootstrapEvents.map((event) =>
+          createCardPlayback(
+            event,
+            GLOBE_STORY_CARD_DELAY_MS - (event.initialRouteLeadMs ?? 0)
+          )
+        )
+  }
+  const [activeCardPlaybacks, setActiveCardPlaybacks] = useState<
+    IActiveCardPlayback[]
+  >(initialCardPlaybacksRef.current)
+  const activeCardPlaybacksRef = useRef<IActiveCardPlayback[]>(
+    initialCardPlaybacksRef.current
+  )
+  const activeCards = activeCardPlaybacks.map(({ event }) => event)
   const [documentVisible, setDocumentVisible] = useState(true)
   const [failed, setFailed] = useState(false)
   // Hero is above the fold. Start immediately, then let IntersectionObserver
@@ -146,11 +287,9 @@ export default function GlobeRuntime({
   const [inView, setInView] = useState(true)
   const [quality, setQuality] = useState<TGlobeQuality>(getInitialQuality)
   const [sceneReady, setSceneReady] = useState(false)
-  const anchorX = useMotionValue(-1000)
-  const anchorY = useMotionValue(-1000)
-  const anchorOpacity = useMotionValue(0)
   const timelineTime = useMotionValue(initialTimeMs)
   const active = inView && documentVisible
+  const playbackActive = active && sceneReady
 
   useEffect(() => {
     const handleResize = () => {
@@ -172,8 +311,9 @@ export default function GlobeRuntime({
     if (!root) return
 
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: "180px 0px", threshold: 0.04 }
+      ([entry]) =>
+        setInView(entry.isIntersecting && entry.intersectionRatio >= 0.45),
+      { threshold: [0, 0.45, 1] }
     )
 
     observer.observe(root)
@@ -198,9 +338,18 @@ export default function GlobeRuntime({
   }, [failed, onUnavailable, shouldReduceMotion])
 
   useEffect(() => {
+    if (!playbackActive) return
+
+    reentryReadyAtRef.current = hasStartedPlaybackRef.current
+      ? performance.now() + GLOBE_STORY_REENTRY_DELAY_MS
+      : performance.now()
+    hasStartedPlaybackRef.current = true
+  }, [playbackActive])
+
+  useEffect(() => {
     if (
       debugTimeMsRef.current !== null ||
-      !active ||
+      !playbackActive ||
       shouldReduceMotion ||
       failed
     ) {
@@ -213,53 +362,96 @@ export default function GlobeRuntime({
     const updateTimeline = (time: number) => {
       const delta = Math.max(0, time - lastFrameTime)
       lastFrameTime = time
-      elapsedRef.current += delta
-      timelineTime.set(elapsedRef.current)
 
-      const nextCard = getActiveCardEvent(elapsedRef.current)
-      const nextCardId = nextCard?.id ?? null
-      if (nextCardId !== activeCardIdRef.current) {
-        activeCardIdRef.current = nextCardId
-        setActiveCard(nextCard)
+      const interaction = interactionRef.current
+      advanceGlobeInteraction(interaction, delta, time)
+
+      const storyPlaybackPaused =
+        interaction.dragging ||
+        interaction.autoBlend < 0.98 ||
+        Math.abs(interaction.velocityYaw) >= 0.00002 ||
+        Math.abs(interaction.velocityPitch) >= 0.00002
+
+      // Route geometry and every popup motion track share this clock. Freezing
+      // it during drag/inertia keeps the current route and readable card on the
+      // exact frame where the user started manipulating the globe.
+      if (!storyPlaybackPaused) {
+        elapsedRef.current += delta
+        timelineTime.set(elapsedRef.current)
       }
+      const storyTime = elapsedRef.current
+
+      const currentCardPlaybacks = activeCardPlaybacksRef.current
+      const remainingCardPlaybacks = currentCardPlaybacks.filter(
+        (playback) =>
+          storyTime <
+          playback.startedAtMs + getGlobeCardDurationMs(playback.event)
+      )
+      if (remainingCardPlaybacks.length !== currentCardPlaybacks.length) {
+        activeCardPlaybacksRef.current = remainingCardPlaybacks
+        setActiveCardPlaybacks(remainingCardPlaybacks)
+      }
+
+      const interactionSettled =
+        !storyPlaybackPaused && time >= reentryReadyAtRef.current
+
+      if (interactionSettled) {
+        const availableCardSlots =
+          MAX_CONCURRENT_CARD_PLAYBACKS - activeCardPlaybacksRef.current.length
+
+        if (availableCardSlots > 0) {
+          const events = pickGlobeCardEvents({
+            events: GLOBE_CARD_EVENTS,
+            lastStartedAt: lastCardStartedAtRef.current,
+            limit: availableCardSlots,
+            nowMs: storyTime,
+            previousRotationRadians: previousScheduleRotationRef.current,
+            rotationRadians: interaction.rotation,
+          })
+
+          if (events.length > 0) {
+            const cardStartedAtMs = storyTime + GLOBE_STORY_CARD_DELAY_MS
+            const newPlaybacks = events.map((event) => {
+              routePlaybackRef.current[event.routeId] = storyTime
+              lastCardStartedAtRef.current[event.id] = storyTime
+
+              return createCardPlayback(event, cardStartedAtMs)
+            })
+            const nextPlaybacks = [
+              ...activeCardPlaybacksRef.current,
+              ...newPlaybacks,
+            ]
+
+            activeCardPlaybacksRef.current = nextPlaybacks
+            setActiveCardPlaybacks(nextPlaybacks)
+          }
+        }
+      }
+
+      // Updating this even while scheduling is gated prevents a drag or
+      // viewport re-entry from being mistaken for an automatic longitude
+      // crossing and replaying a story immediately.
+      previousScheduleRotationRef.current = interaction.rotation
 
       animationFrame = requestAnimationFrame(updateTimeline)
     }
 
     animationFrame = requestAnimationFrame(updateTimeline)
     return () => cancelAnimationFrame(animationFrame)
-  }, [active, failed, shouldReduceMotion, timelineTime])
+  }, [failed, playbackActive, quality, shouldReduceMotion, timelineTime])
 
   const handleAnchorUpdate = useCallback(
-    ({ visible, x, y }: IProjectedAnchor) => {
-      const root = rootRef.current
-      const width = root?.clientWidth ?? 0
-      const height = root?.clientHeight ?? 0
-      let resolvedX = x
-
-      if (activeCard && width > 0) {
-        if (activeCard.placement === "right") {
-          resolvedX = Math.min(width - activeCard.widthPx - 20, Math.max(20, x))
-        } else if (activeCard.placement === "left") {
-          resolvedX = Math.min(width - 20, Math.max(activeCard.widthPx + 20, x))
-        } else {
-          resolvedX = Math.min(width - 150, Math.max(150, x))
-        }
-      }
-
-      const minimumY =
-        activeCard?.placement === "above" ||
-        activeCard?.placement === "above-left"
-          ? 650
-          : 330
-
-      anchorX.set(resolvedX)
-      anchorY.set(
-        height > 0 ? Math.min(height - 230, Math.max(minimumY, y)) : y
+    (eventId: string, { visible, x, y }: IProjectedAnchor) => {
+      const playback = activeCardPlaybacksRef.current.find(
+        ({ event }) => event.id === eventId
       )
-      anchorOpacity.set(visible && sceneReady ? 1 : 0)
+      if (!playback) return
+
+      playback.anchorX.set(x)
+      playback.anchorY.set(y)
+      playback.anchorOpacity.set(visible && sceneReady ? 1 : 0)
     },
-    [activeCard, anchorOpacity, anchorX, anchorY, sceneReady]
+    [sceneReady]
   )
 
   const handleSceneReady = useCallback(() => {
@@ -274,16 +466,26 @@ export default function GlobeRuntime({
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (interactionMode !== "rotate" || shouldReduceMotion) return
+      if (
+        interactionMode !== "rotate" ||
+        shouldReduceMotion ||
+        !event.isPrimary ||
+        event.button !== 0 ||
+        activePointerRef.current
+      ) {
+        return
+      }
 
       event.currentTarget.setPointerCapture(event.pointerId)
-      interactionRef.current.dragging = true
-      interactionRef.current.velocityPitch = 0
-      interactionRef.current.velocityYaw = 0
-      lastPointerRef.current = {
-        time: performance.now(),
-        x: event.clientX,
-        y: event.clientY,
+      const now = performance.now()
+      activePointerRef.current = {
+        id: event.pointerId,
+        lastMoveTime: now,
+        lastTime: now,
+        lastX: event.clientX,
+        lastY: event.clientY,
+        startX: event.clientX,
+        startY: event.clientY,
       }
     },
     [interactionMode, shouldReduceMotion]
@@ -291,29 +493,74 @@ export default function GlobeRuntime({
 
   const handlePointerMove = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
+      const pointer = activePointerRef.current
+      if (!pointer || pointer.id !== event.pointerId) return
+
       const interaction = interactionRef.current
-      const previousPointer = lastPointerRef.current
-      if (!interaction.dragging || !previousPointer) return
+      const totalDistance = Math.hypot(
+        event.clientX - pointer.startX,
+        event.clientY - pointer.startY
+      )
+
+      if (!interaction.dragging) {
+        if (totalDistance < POINTER_DRAG_THRESHOLD_PX) return
+
+        interaction.autoBlend = 0
+        interaction.dragging = true
+        interaction.velocityPitch = 0
+        interaction.velocityYaw = 0
+      }
 
       const now = performance.now()
-      const deltaTime = Math.max(8, now - previousPointer.time)
-      const deltaX = event.clientX - previousPointer.x
-      const deltaY = event.clientY - previousPointer.y
+      const deltaTime = Math.max(8, now - pointer.lastTime)
+      const deltaX = event.clientX - pointer.lastX
+      const deltaY = event.clientY - pointer.lastY
       const yawDelta = deltaX * 0.0042
       const pitchDelta = deltaY * 0.0024
-      const velocityScale = 16 / deltaTime
+      const velocityWeight = 0.65
 
-      interaction.yaw += yawDelta
+      interaction.rotation += yawDelta
       interaction.pitch = Math.max(
         -0.28,
         Math.min(0.28, interaction.pitch + pitchDelta)
       )
-      interaction.velocityYaw = yawDelta * velocityScale
-      interaction.velocityPitch = pitchDelta * velocityScale
-      lastPointerRef.current = {
-        time: now,
-        x: event.clientX,
-        y: event.clientY,
+      interaction.velocityYaw =
+        interaction.velocityYaw * (1 - velocityWeight) +
+        (yawDelta / deltaTime) * velocityWeight
+      interaction.velocityPitch =
+        interaction.velocityPitch * (1 - velocityWeight) +
+        (pitchDelta / deltaTime) * velocityWeight
+      pointer.lastMoveTime = now
+      pointer.lastTime = now
+      pointer.lastX = event.clientX
+      pointer.lastY = event.clientY
+    },
+    []
+  )
+
+  const finishPointerGesture = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>, allowInertia: boolean) => {
+      const pointer = activePointerRef.current
+      if (!pointer || pointer.id !== event.pointerId) return
+
+      const now = performance.now()
+      const interaction = interactionRef.current
+      const wasDragging = interaction.dragging
+
+      if (
+        !allowInertia ||
+        now - pointer.lastMoveTime > POINTER_VELOCITY_STALE_MS
+      ) {
+        interaction.velocityPitch = 0
+        interaction.velocityYaw = 0
+      }
+
+      interaction.dragging = false
+      if (wasDragging) interaction.releasedAtMs = now
+      activePointerRef.current = null
+
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.releasePointerCapture(event.pointerId)
       }
     },
     []
@@ -321,13 +568,16 @@ export default function GlobeRuntime({
 
   const handlePointerEnd = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-        event.currentTarget.releasePointerCapture(event.pointerId)
-      }
-      interactionRef.current.dragging = false
-      lastPointerRef.current = null
+      finishPointerGesture(event, true)
     },
-    []
+    [finishPointerGesture]
+  )
+
+  const handlePointerCancel = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      finishPointerGesture(event, false)
+    },
+    [finishPointerGesture]
   )
 
   if (shouldReduceMotion || failed) return null
@@ -341,7 +591,8 @@ export default function GlobeRuntime({
         "absolute inset-0 z-10 select-none",
         interactionMode === "rotate" && "cursor-grab active:cursor-grabbing"
       )}
-      onPointerCancel={handlePointerEnd}
+      onLostPointerCapture={handlePointerCancel}
+      onPointerCancel={handlePointerCancel}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerEnd}
@@ -372,7 +623,7 @@ export default function GlobeRuntime({
             <GlobeContextMonitor onContextLost={handleLoadError} />
             <GlobeScene
               active={active}
-              activeCard={activeCard}
+              activeCards={activeCards}
               elapsedRef={elapsedRef}
               interactionRef={interactionRef}
               onAnchorUpdate={handleAnchorUpdate}
@@ -380,18 +631,23 @@ export default function GlobeRuntime({
               onReady={handleSceneReady}
               onSlowFrame={handleSlowFrame}
               quality={quality}
+              routePlaybackRef={routePlaybackRef}
             />
           </Canvas>
         </motion.div>
       </GlobeCanvasErrorBoundary>
 
-      <GlobeEventCard
-        event={activeCard}
-        opacity={anchorOpacity}
-        timeMs={timelineTime}
-        x={anchorX}
-        y={anchorY}
-      />
+      {activeCardPlaybacks.map((playback) => (
+        <GlobeEventCard
+          event={playback.event}
+          key={playback.event.id}
+          opacity={playback.anchorOpacity}
+          startedAtMs={playback.startedAtMs}
+          timeMs={timelineTime}
+          x={playback.anchorX}
+          y={playback.anchorY}
+        />
+      ))}
 
       <motion.div
         animate={{ opacity: sceneReady ? 1 : 0, y: sceneReady ? 0 : 6 }}

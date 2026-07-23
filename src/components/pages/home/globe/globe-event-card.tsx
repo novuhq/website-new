@@ -18,6 +18,7 @@ import type {
 interface IGlobeEventCardProps {
   event: IGlobeCardEvent | null
   opacity: MotionValue<number>
+  startedAtMs: number
   timeMs: MotionValue<number>
   x: MotionValue<number>
   y: MotionValue<number>
@@ -42,11 +43,14 @@ const CHANNEL_ICONS: Record<TGlobeChannel, StaticImageData | string> = {
 }
 
 const PLACEMENT_CLASSES: Record<TCardPlacement, string> = {
-  above: "-translate-x-1/2 -translate-y-[calc(100%+1.5rem)]",
+  above: "-translate-x-1/2 -translate-y-[calc(100%+0.75rem)]",
   "above-left":
-    "-translate-x-[calc(100%-2rem)] -translate-y-[calc(100%+1.5rem)]",
-  left: "-translate-x-[calc(100%+1.25rem)] -translate-y-3",
-  right: "translate-x-5 -translate-y-3",
+    "-translate-x-[calc(100%-0.5rem)] -translate-y-[calc(100%+0.75rem)]",
+  "above-right": "translate-x-2 -translate-y-[calc(100%+0.75rem)]",
+  "below-left": "-translate-x-[calc(100%-0.5rem)] translate-y-3",
+  "below-right": "translate-x-2 translate-y-3",
+  left: "-translate-x-[calc(100%+0.5rem)] -translate-y-2",
+  right: "translate-x-2 -translate-y-2",
 }
 
 const SCRAMBLE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*"
@@ -85,6 +89,7 @@ function ScrambleText({ progress, seed, value }: IScrambleTextProps) {
 export default function GlobeEventCard({
   event,
   opacity,
+  startedAtMs,
   timeMs,
   x,
   y,
@@ -111,7 +116,7 @@ export default function GlobeEventCard({
         return
       }
 
-      const state = getGlobeCardMotionState(event, currentTimeMs)
+      const state = getGlobeCardMotionState(event, currentTimeMs, startedAtMs)
       popupOpacity.set(state.popupOpacity)
       backgroundOpacity.set(state.backgroundOpacity)
       headerOpacity.set(state.headerOpacity)
@@ -140,6 +145,7 @@ export default function GlobeEventCard({
     event,
     headerOpacity,
     popupOpacity,
+    startedAtMs,
     statusOpacity,
     textOpacity,
     timeMs,
@@ -172,7 +178,7 @@ export default function GlobeEventCard({
               />
             </motion.div>
 
-            <div className="relative px-4 pt-4 pb-4">
+            <div className="relative px-3.5 pt-3.5 pb-3.5">
               <motion.div
                 aria-hidden="true"
                 className="absolute inset-0 border border-white/10 bg-[#130C3D]/70 backdrop-blur-xl"
@@ -180,7 +186,7 @@ export default function GlobeEventCard({
               />
 
               <motion.div className="relative" style={{ opacity: textOpacity }}>
-                <div className="flex items-center gap-2 text-sm leading-none tracking-tighter text-[#D0BEFF] uppercase">
+                <div className="flex items-center gap-2 text-[.8125rem] leading-none tracking-tighter text-[#D0BEFF] uppercase">
                   <Image
                     alt=""
                     aria-hidden="true"
@@ -196,7 +202,7 @@ export default function GlobeEventCard({
                   />
                 </div>
 
-                <dl className="mt-2.5 grid grid-cols-[4rem_minmax(0,1fr)] gap-x-0 text-sm leading-snug tracking-tighter uppercase">
+                <dl className="mt-2 grid grid-cols-[4rem_minmax(0,1fr)] gap-x-0 text-[.8125rem] leading-snug tracking-tighter uppercase">
                   {event.lines.map((line, index) => (
                     <div className="contents" key={`${event.id}-${line.label}`}>
                       <dt className="text-white/94">
@@ -219,7 +225,7 @@ export default function GlobeEventCard({
               </motion.div>
 
               <motion.div
-                className="relative mt-2.5 text-sm leading-snug tracking-tight text-[#D0BEFF]/60 uppercase"
+                className="relative mt-2 text-[.8125rem] leading-snug tracking-tight text-[#D0BEFF]/60 uppercase"
                 style={{ opacity: statusOpacity }}
               >
                 [ {event.status} ]

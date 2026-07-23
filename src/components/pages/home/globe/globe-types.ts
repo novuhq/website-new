@@ -3,7 +3,14 @@ import type { MutableRefObject } from "react"
 export type TGlobeQuality = "high" | "medium" | "low"
 export type TGlobeInteractionMode = "none" | "rotate" | "place-pin"
 export type TGlobeChannel = "email" | "slack" | "sms" | "whatsapp"
-export type TCardPlacement = "above" | "above-left" | "left" | "right"
+export type TCardPlacement =
+  | "above"
+  | "above-left"
+  | "above-right"
+  | "below-left"
+  | "below-right"
+  | "left"
+  | "right"
 export type TGlobeRouteTier = "narrative" | "supporting" | "detail"
 
 export interface IGeoPoint {
@@ -38,7 +45,9 @@ export interface IGlobeCardEvent {
   channel: TGlobeChannel
   channelLabel: string
   anchor: IGeoPoint
+  initialRouteLeadMs?: number
   placement: TCardPlacement
+  readHoldMs: number
   startMs: number
   lines: IGlobeCardLine[]
   status: string
@@ -64,15 +73,18 @@ export interface IGlobeCardMotionState {
 }
 
 export interface IGlobeInteractionState {
+  autoBlend: number
   dragging: boolean
   pitch: number
+  releasedAtMs: number
+  rotation: number
   velocityPitch: number
   velocityYaw: number
-  yaw: number
 }
 
 export type TElapsedTimeRef = MutableRefObject<number>
 export type TInteractionRef = MutableRefObject<IGlobeInteractionState>
+export type TRoutePlaybackRef = MutableRefObject<Record<string, number>>
 
 export interface IProjectedAnchor {
   visible: boolean

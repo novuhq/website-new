@@ -13,33 +13,33 @@ import GlobeLandPoints from "./globe-land-points"
 import { geoPointToVector3 } from "./globe-math"
 import GlobeRoutes from "./globe-routes"
 import { SURFACE_FRAGMENT_SHADER, SURFACE_VERTEX_SHADER } from "./globe-shaders"
-import { getGlobeRotation } from "./globe-timeline"
 import type {
   IGlobeCardEvent,
   IProjectedAnchor,
   TElapsedTimeRef,
   TGlobeQuality,
   TInteractionRef,
+  TRoutePlaybackRef,
 } from "./globe-types"
 
 interface IGlobeSceneProps {
   active: boolean
-  activeCard: IGlobeCardEvent | null
+  activeCards: IGlobeCardEvent[]
   elapsedRef: TElapsedTimeRef
   interactionRef: TInteractionRef
-  onAnchorUpdate: (anchor: IProjectedAnchor) => void
+  onAnchorUpdate: (eventId: string, anchor: IProjectedAnchor) => void
   onLoadError: () => void
   onReady: () => void
   onSlowFrame: () => void
   quality: TGlobeQuality
+  routePlaybackRef: TRoutePlaybackRef
 }
 
-const HIDDEN_ANCHOR: IProjectedAnchor = { visible: false, x: -1000, y: -1000 }
 const FIGMA_SURFACE_BLUR_WORLD = GLOBE_RADIUS * (0.9210256338119507 / 511.4805)
 
 export default function GlobeScene({
   active,
-  activeCard,
+  activeCards,
   elapsedRef,
   interactionRef,
   onAnchorUpdate,
@@ -47,21 +47,23 @@ export default function GlobeScene({
   onReady,
   onSlowFrame,
   quality,
+  routePlaybackRef,
 }: IGlobeSceneProps) {
   const groupRef = useRef<THREE.Group>(null)
   const slowFrameReportedRef = useRef(false)
   const frameSampleRef = useRef({ count: 0, total: 0 })
   const camera = useThree((state) => state.camera)
   const size = useThree((state) => state.size)
-  const anchorPosition = useMemo(
+  const anchorPositions = useMemo(
     () =>
-      activeCard
-        ? geoPointToVector3(
-            activeCard.anchor,
-            GLOBE_RADIUS + GLOBE_POINT_SURFACE_OFFSET
-          )
-        : null,
-    [activeCard]
+      activeCards.map((event) => ({
+        eventId: event.id,
+        position: geoPointToVector3(
+          event.anchor,
+          GLOBE_RADIUS + GLOBE_POINT_SURFACE_OFFSET
+        ),
+      })),
+    [activeCards]
   )
   const projectedPosition = useMemo(() => new THREE.Vector3(), [])
   const worldNormal = useMemo(() => new THREE.Vector3(), [])
@@ -96,40 +98,21 @@ export default function GlobeScene({
     if (!group) return
 
     const interaction = interactionRef.current
-    if (!interaction.dragging) {
-      const frameScale = Math.min(2, delta * 60)
-      interaction.yaw += interaction.velocityYaw * frameScale
-      interaction.pitch = THREE.MathUtils.clamp(
-        interaction.pitch + interaction.velocityPitch * frameScale,
-        -0.28,
-        0.28
-      )
-      const damping = Math.pow(0.88, frameScale)
-      interaction.velocityYaw *= damping
-      interaction.velocityPitch *= damping
-    }
-
-    group.rotation.set(
-      interaction.pitch,
-      getGlobeRotation(elapsedRef.current) + interaction.yaw,
-      0
-    )
+    group.rotation.set(interaction.pitch, interaction.rotation, 0)
     group.updateMatrixWorld()
 
-    if (!anchorPosition || !activeCard) {
-      onAnchorUpdate(HIDDEN_ANCHOR)
-    } else {
-      projectedPosition.copy(anchorPosition)
+    for (const { eventId, position } of anchorPositions) {
+      projectedPosition.copy(position)
       group.localToWorld(projectedPosition)
       worldNormal
-        .copy(anchorPosition)
+        .copy(position)
         .normalize()
         .applyQuaternion(group.getWorldQuaternion(worldQuaternion))
       cameraDirection.copy(camera.position).sub(projectedPosition).normalize()
       const isFrontFacing = worldNormal.dot(cameraDirection) > 0.06
 
       projectedPosition.project(camera)
-      onAnchorUpdate({
+      onAnchorUpdate(eventId, {
         visible:
           isFrontFacing && projectedPosition.z > -1 && projectedPosition.z < 1,
         x: (projectedPosition.x * 0.5 + 0.5) * size.width,
@@ -175,7 +158,11 @@ export default function GlobeScene({
           vertexShader={SURFACE_VERTEX_SHADER}
         />
       </mesh>
-      <GlobeRoutes elapsedRef={elapsedRef} quality={quality} />
+      <GlobeRoutes
+        elapsedRef={elapsedRef}
+        quality={quality}
+        routePlaybackRef={routePlaybackRef}
+      />
       <GlobeLandPoints
         onLoadError={onLoadError}
         onReady={handleLandReady}

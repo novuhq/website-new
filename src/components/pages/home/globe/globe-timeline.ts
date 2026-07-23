@@ -1,8 +1,8 @@
 import {
   GLOBE_CARD_BACKGROUND_ENTER_MS,
+  GLOBE_CARD_CONTENT_READY_MS,
   GLOBE_CARD_EVENTS,
   GLOBE_CARD_EXIT_MS,
-  GLOBE_CARD_EXIT_START_MS,
   GLOBE_CARD_HEADER_ENTER_MS,
   GLOBE_CARD_HEADER_SCRAMBLE_MS,
   GLOBE_CARD_STATUS_DELAY_MS,
@@ -27,49 +27,18 @@ const DOT_ENTER_DURATION = 0.08
 const DOT_EXIT_DURATION = 0.06
 const END_DOT_EXIT_START = 0.94 - 200 / GLOBE_ROUTE_CYCLE_MS
 
-const ROTATION_START_DEGREES = 100
-const ROTATION_END_DEGREES = ROTATION_START_DEGREES + 360
+// Start with North America entering from the left horizon. Its first route is
+// therefore armed on the opening frames instead of waiting for Eurasia.
+const ROTATION_START_DEGREES = 50
 const PACIFIC_ACCELERATION_MULTIPLIER = 1.5
-const PACIFIC_ACCELERATION_START_MS = 3_137.097
-const PACIFIC_RAMP_DURATION_MS = 1_054.839
-const PACIFIC_CRUISE_DURATION_MS = 1_582.258
-const PACIFIC_CRUISE_START_MS =
-  PACIFIC_ACCELERATION_START_MS + PACIFIC_RAMP_DURATION_MS
-const PACIFIC_CRUISE_END_MS =
-  PACIFIC_CRUISE_START_MS + PACIFIC_CRUISE_DURATION_MS
-const PACIFIC_ACCELERATION_END_MS =
-  PACIFIC_CRUISE_END_MS + PACIFIC_RAMP_DURATION_MS
-
-// A smoothstep ramp averages the base and peak multipliers. Expressing the
-// whole cycle as equivalent base-speed time preserves the established
-// acceleration window, the 16.35 s loop, and an exact 360-degree turn.
-const PACIFIC_RAMP_AVERAGE_MULTIPLIER =
-  (1 + PACIFIC_ACCELERATION_MULTIPLIER) / 2
-const PACIFIC_EXTRA_EQUIVALENT_MS =
-  PACIFIC_RAMP_DURATION_MS * (PACIFIC_RAMP_AVERAGE_MULTIPLIER - 1) * 2 +
-  PACIFIC_CRUISE_DURATION_MS * (PACIFIC_ACCELERATION_MULTIPLIER - 1)
-const ROTATION_BASE_DEGREES_PER_MS =
-  (ROTATION_END_DEGREES - ROTATION_START_DEGREES) /
-  (GLOBE_CYCLE_MS + PACIFIC_EXTRA_EQUIVALENT_MS)
-const PACIFIC_ACCELERATION_START_DEGREES =
-  ROTATION_START_DEGREES +
-  ROTATION_BASE_DEGREES_PER_MS * PACIFIC_ACCELERATION_START_MS
-const PACIFIC_CRUISE_START_DEGREES =
-  PACIFIC_ACCELERATION_START_DEGREES +
-  ROTATION_BASE_DEGREES_PER_MS *
-    PACIFIC_RAMP_DURATION_MS *
-    PACIFIC_RAMP_AVERAGE_MULTIPLIER
-const PACIFIC_CRUISE_END_DEGREES =
-  PACIFIC_CRUISE_START_DEGREES +
-  ROTATION_BASE_DEGREES_PER_MS *
-    PACIFIC_CRUISE_DURATION_MS *
-    PACIFIC_ACCELERATION_MULTIPLIER
-const PACIFIC_ACCELERATION_END_DEGREES =
-  PACIFIC_CRUISE_END_DEGREES +
-  ROTATION_BASE_DEGREES_PER_MS *
-    PACIFIC_RAMP_DURATION_MS *
-    PACIFIC_RAMP_AVERAGE_MULTIPLIER
+const PACIFIC_ACCELERATION_START_DEGREES = 163.91894161537945
+const PACIFIC_CRUISE_START_DEGREES = 190.78462047971854
+const PACIFIC_CRUISE_END_DEGREES = 239.1428271541378
+const PACIFIC_ACCELERATION_END_DEGREES = 266.00850601847685
 const DEGREES_TO_RADIANS = Math.PI / 180
+const RADIANS_TO_DEGREES = 180 / Math.PI
+const FULL_ROTATION_RADIANS = Math.PI * 2
+const ROTATION_LOOKUP_STEPS = 1_440
 
 function clamp01(value: number) {
   return Math.min(1, Math.max(0, value))
@@ -120,14 +89,9 @@ const easePopup = (progress: number) =>
 const easeHeaderOpacity = (progress: number) =>
   cubicBezier(progress, 0.17, 0.17, 0.67, 1)
 
-// Integral of smoothstep from 0 to progress. At 1 it equals 0.5, which keeps
-// the angular distance of the acceleration and deceleration ramps symmetric.
-function integratedSmoothstep(progress: number) {
+function smoothstep(progress: number) {
   const clampedProgress = clamp01(progress)
-  return (
-    clampedProgress * clampedProgress * clampedProgress -
-    0.5 * clampedProgress * clampedProgress * clampedProgress * clampedProgress
-  )
+  return clampedProgress * clampedProgress * (3 - 2 * clampedProgress)
 }
 
 function phaseProgress(timeMs: number, startMs: number, durationMs: number) {
@@ -142,26 +106,8 @@ function getMarkerExitScale(progress: number, start: number) {
   return 1 - easeInOut(clamp01((progress - start) / DOT_EXIT_DURATION))
 }
 
-function getRouteElapsedMs(
-  cycleTime: number,
-  routeStartMs: number,
-  absoluteTimeMs: number
-) {
-  const elapsedMs = cycleTime - routeStartMs
-  const previousCycleElapsedMs = elapsedMs + GLOBE_CYCLE_MS
-
-  // Late routes are allowed to finish after the master timeline loops. The
-  // globe itself ends one full turn from where it started, so carrying only an
-  // unfinished route across this boundary is visually continuous.
-  if (
-    absoluteTimeMs >= GLOBE_CYCLE_MS &&
-    elapsedMs < -GLOBE_ROUTE_DOT_LEAD_MS &&
-    previousCycleElapsedMs < GLOBE_ROUTE_CYCLE_MS
-  ) {
-    return previousCycleElapsedMs
-  }
-
-  return elapsedMs
+function normalizeDegrees(degrees: number) {
+  return ((degrees % 360) + 360) % 360
 }
 
 export function normalizeCycleTime(timeMs: number) {
@@ -172,66 +118,143 @@ export function normalizeCycleTime(timeMs: number) {
   return Math.round(normalizedTime * 1000) / 1000
 }
 
-export function getGlobeRotation(timeMs: number) {
-  const cycleTime = normalizeCycleTime(timeMs)
-  let rotationDegrees: number
+export function getGlobeCycleStartMs(timeMs: number) {
+  return timeMs - normalizeCycleTime(timeMs)
+}
 
-  if (cycleTime <= PACIFIC_ACCELERATION_START_MS) {
-    rotationDegrees =
-      ROTATION_START_DEGREES + ROTATION_BASE_DEGREES_PER_MS * cycleTime
-  } else if (cycleTime <= PACIFIC_CRUISE_START_MS) {
+/** Returns the geographic speed profile for the globe's actual orientation. */
+export function getGlobeSpeedMultiplier(rotationRadians: number) {
+  const degrees = normalizeDegrees(rotationRadians * RADIANS_TO_DEGREES)
+
+  if (
+    degrees >= PACIFIC_ACCELERATION_START_DEGREES &&
+    degrees < PACIFIC_CRUISE_START_DEGREES
+  ) {
     const progress =
-      (cycleTime - PACIFIC_ACCELERATION_START_MS) / PACIFIC_RAMP_DURATION_MS
-    const baseDistance =
-      ROTATION_BASE_DEGREES_PER_MS * PACIFIC_RAMP_DURATION_MS * progress
-    const accelerationDistance =
-      ROTATION_BASE_DEGREES_PER_MS *
-      PACIFIC_RAMP_DURATION_MS *
-      (PACIFIC_ACCELERATION_MULTIPLIER - 1) *
-      integratedSmoothstep(progress)
-
-    rotationDegrees =
-      PACIFIC_ACCELERATION_START_DEGREES + baseDistance + accelerationDistance
-  } else if (cycleTime <= PACIFIC_CRUISE_END_MS) {
-    rotationDegrees =
-      PACIFIC_CRUISE_START_DEGREES +
-      ROTATION_BASE_DEGREES_PER_MS *
-        PACIFIC_ACCELERATION_MULTIPLIER *
-        (cycleTime - PACIFIC_CRUISE_START_MS)
-  } else if (cycleTime <= PACIFIC_ACCELERATION_END_MS) {
-    const progress =
-      (cycleTime - PACIFIC_CRUISE_END_MS) / PACIFIC_RAMP_DURATION_MS
-    const acceleratedDistance =
-      ROTATION_BASE_DEGREES_PER_MS *
-      PACIFIC_RAMP_DURATION_MS *
-      PACIFIC_ACCELERATION_MULTIPLIER *
-      progress
-    const decelerationDistance =
-      ROTATION_BASE_DEGREES_PER_MS *
-      PACIFIC_RAMP_DURATION_MS *
-      (PACIFIC_ACCELERATION_MULTIPLIER - 1) *
-      integratedSmoothstep(progress)
-
-    rotationDegrees =
-      PACIFIC_CRUISE_END_DEGREES + acceleratedDistance - decelerationDistance
-  } else {
-    rotationDegrees =
-      PACIFIC_ACCELERATION_END_DEGREES +
-      ROTATION_BASE_DEGREES_PER_MS * (cycleTime - PACIFIC_ACCELERATION_END_MS)
+      (degrees - PACIFIC_ACCELERATION_START_DEGREES) /
+      (PACIFIC_CRUISE_START_DEGREES - PACIFIC_ACCELERATION_START_DEGREES)
+    return 1 + (PACIFIC_ACCELERATION_MULTIPLIER - 1) * smoothstep(progress)
   }
 
-  // Positive Y rotation moves land from left to right. North America is
-  // centered at t=0. Rotation is linear over land, eases up to 1.5x while the
-  // Pacific crosses the viewport, then returns smoothly to the base speed.
-  return rotationDegrees * DEGREES_TO_RADIANS
+  if (
+    degrees >= PACIFIC_CRUISE_START_DEGREES &&
+    degrees < PACIFIC_CRUISE_END_DEGREES
+  ) {
+    return PACIFIC_ACCELERATION_MULTIPLIER
+  }
+
+  if (
+    degrees >= PACIFIC_CRUISE_END_DEGREES &&
+    degrees < PACIFIC_ACCELERATION_END_DEGREES
+  ) {
+    const progress =
+      (degrees - PACIFIC_CRUISE_END_DEGREES) /
+      (PACIFIC_ACCELERATION_END_DEGREES - PACIFIC_CRUISE_END_DEGREES)
+    return (
+      PACIFIC_ACCELERATION_MULTIPLIER -
+      (PACIFIC_ACCELERATION_MULTIPLIER - 1) * smoothstep(progress)
+    )
+  }
+
+  return 1
+}
+
+const rotationLookup = (() => {
+  const rotations = new Float64Array(ROTATION_LOOKUP_STEPS + 1)
+  const rawTimes = new Float64Array(ROTATION_LOOKUP_STEPS + 1)
+  const angleStep = 360 / ROTATION_LOOKUP_STEPS
+
+  rotations[0] = ROTATION_START_DEGREES * DEGREES_TO_RADIANS
+
+  for (let index = 1; index <= ROTATION_LOOKUP_STEPS; index += 1) {
+    const midpointDegrees = ROTATION_START_DEGREES + (index - 0.5) * angleStep
+    const multiplier = getGlobeSpeedMultiplier(
+      midpointDegrees * DEGREES_TO_RADIANS
+    )
+    rawTimes[index] = rawTimes[index - 1] + angleStep / multiplier
+    rotations[index] =
+      (ROTATION_START_DEGREES + index * angleStep) * DEGREES_TO_RADIANS
+  }
+
+  const rawDuration = rawTimes[ROTATION_LOOKUP_STEPS]
+  const times = Array.from(
+    rawTimes,
+    (time) => (time / rawDuration) * GLOBE_CYCLE_MS
+  )
+
+  return { rotations, times }
+})()
+
+function getRotationPhaseTimeMs(rotationRadians: number) {
+  const offsetTurns =
+    (rotationRadians - ROTATION_START_DEGREES * DEGREES_TO_RADIANS) /
+    FULL_ROTATION_RADIANS
+  const completedTurns = Math.floor(offsetTurns)
+  const phase = offsetTurns - completedTurns
+  const lookupPosition = phase * ROTATION_LOOKUP_STEPS
+  const lower = Math.floor(lookupPosition)
+  const upper = Math.min(ROTATION_LOOKUP_STEPS, lower + 1)
+  const progress = lookupPosition - lower
+
+  return {
+    completedTurns,
+    phaseTimeMs:
+      rotationLookup.times[lower] +
+      (rotationLookup.times[upper] - rotationLookup.times[lower]) * progress,
+  }
+}
+
+/** Deterministic reference rotation used by debug time and initial render. */
+export function getGlobeRotation(timeMs: number) {
+  const cycleTime = normalizeCycleTime(timeMs)
+  let lower = 0
+  let upper = ROTATION_LOOKUP_STEPS
+
+  while (lower + 1 < upper) {
+    const midpoint = Math.floor((lower + upper) / 2)
+    if (rotationLookup.times[midpoint] <= cycleTime) lower = midpoint
+    else upper = midpoint
+  }
+
+  const segmentDuration =
+    rotationLookup.times[upper] - rotationLookup.times[lower]
+  const progress =
+    segmentDuration > 0
+      ? (cycleTime - rotationLookup.times[lower]) / segmentDuration
+      : 0
+
+  return (
+    rotationLookup.rotations[lower] +
+    (rotationLookup.rotations[upper] - rotationLookup.rotations[lower]) *
+      progress
+  )
+}
+
+/**
+ * Advances an arbitrary, unwrapped globe orientation through the same
+ * geographic speed profile as the deterministic reference timeline.
+ */
+export function advanceGlobeRotation(
+  rotationRadians: number,
+  durationMs: number
+) {
+  if (durationMs <= 0) return rotationRadians
+
+  const { completedTurns, phaseTimeMs } =
+    getRotationPhaseTimeMs(rotationRadians)
+  const targetTimeMs =
+    completedTurns * GLOBE_CYCLE_MS + phaseTimeMs + durationMs
+  const targetTurn = Math.floor(targetTimeMs / GLOBE_CYCLE_MS)
+
+  return targetTurn * FULL_ROTATION_RADIANS + getGlobeRotation(targetTimeMs)
 }
 
 export function getRouteVisualState(
   route: IGlobeRoute,
-  timeMs: number
+  timeMs: number,
+  startedAtMs = route.startMs
 ): IRouteVisualState {
-  const cycleTime = normalizeCycleTime(timeMs)
-  const routeElapsedMs = getRouteElapsedMs(cycleTime, route.startMs, timeMs)
+  const routeElapsedMs = timeMs - startedAtMs
   const lineProgress = routeElapsedMs / GLOBE_ROUTE_CYCLE_MS
   const dotProgress =
     (routeElapsedMs + GLOBE_ROUTE_DOT_LEAD_MS) / GLOBE_ROUTE_CYCLE_MS
@@ -276,10 +299,12 @@ export function getRouteVisualState(
 
 export function getGlobeCardMotionState(
   event: IGlobeCardEvent,
-  timeMs: number
+  timeMs: number,
+  startedAtMs = event.startMs
 ): IGlobeCardMotionState {
-  const localTime = normalizeCycleTime(timeMs) - event.startMs
-  const endTime = GLOBE_CARD_EXIT_START_MS + GLOBE_CARD_EXIT_MS
+  const localTime = timeMs - startedAtMs
+  const exitStartMs = getGlobeCardExitStartMs(event)
+  const endTime = exitStartMs + GLOBE_CARD_EXIT_MS
 
   if (localTime < 0 || localTime >= endTime) {
     return {
@@ -293,11 +318,7 @@ export function getGlobeCardMotionState(
     }
   }
 
-  const exitProgress = phaseProgress(
-    localTime,
-    GLOBE_CARD_EXIT_START_MS,
-    GLOBE_CARD_EXIT_MS
-  )
+  const exitProgress = phaseProgress(localTime, exitStartMs, GLOBE_CARD_EXIT_MS)
 
   return {
     backgroundOpacity: easePopup(
@@ -334,12 +355,19 @@ export function getGlobeCardMotionState(
   }
 }
 
+export function getGlobeCardExitStartMs(event: IGlobeCardEvent) {
+  return GLOBE_CARD_CONTENT_READY_MS + event.readHoldMs
+}
+
+export function getGlobeCardDurationMs(event: IGlobeCardEvent) {
+  return getGlobeCardExitStartMs(event) + GLOBE_CARD_EXIT_MS
+}
+
 export function getActiveCardEvent(timeMs: number): IGlobeCardEvent | null {
   const cycleTime = normalizeCycleTime(timeMs)
   return (
     GLOBE_CARD_EVENTS.find((candidate) => {
-      const endTime =
-        candidate.startMs + GLOBE_CARD_EXIT_START_MS + GLOBE_CARD_EXIT_MS
+      const endTime = candidate.startMs + getGlobeCardDurationMs(candidate)
       return cycleTime >= candidate.startMs && cycleTime < endTime
     }) ?? null
   )

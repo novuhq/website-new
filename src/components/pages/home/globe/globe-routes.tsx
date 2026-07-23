@@ -11,6 +11,7 @@ import {
   GLOBE_ROUTES,
 } from "./globe-data"
 import { createGeodesicRoutePoints, geoPointToVector3 } from "./globe-math"
+import { isRouteEnabledForQuality } from "./globe-scheduler"
 import {
   MARKER_FRAGMENT_SHADER,
   MARKER_VERTEX_SHADER,
@@ -19,15 +20,16 @@ import {
 } from "./globe-shaders"
 import { getRouteVisualState } from "./globe-timeline"
 import type {
-  IGlobeRoute,
   IRouteVisualState,
   TElapsedTimeRef,
   TGlobeQuality,
+  TRoutePlaybackRef,
 } from "./globe-types"
 
 interface IGlobeRoutesProps {
   elapsedRef: TElapsedTimeRef
   quality: TGlobeQuality
+  routePlaybackRef: TRoutePlaybackRef
 }
 
 interface IRouteAsset {
@@ -52,17 +54,10 @@ const ROUTE_TUBULAR_SEGMENTS = 96
 const ROUTE_RADIAL_SEGMENTS = 4
 const ROUTE_INDICES_PER_SEGMENT = ROUTE_RADIAL_SEGMENTS * 6
 
-function isRouteEnabled(route: IGlobeRoute, quality: TGlobeQuality) {
-  return (
-    quality === "high" ||
-    (quality === "medium" && route.tier !== "detail") ||
-    (quality === "low" && route.tier === "narrative")
-  )
-}
-
 export default function GlobeRoutes({
   elapsedRef,
   quality,
+  routePlaybackRef,
 }: IGlobeRoutesProps) {
   const routeAssets = useMemo<IRouteAsset[]>(
     () =>
@@ -218,8 +213,13 @@ export default function GlobeRoutes({
 
     GLOBE_ROUTES.forEach((route, routeIndex) => {
       const asset = routeAssets[routeIndex]
-      const isEnabled = isRouteEnabled(route, quality)
-      const visualState = getRouteVisualState(route, elapsedRef.current)
+      const isEnabled = isRouteEnabledForQuality(route, quality)
+      const startedAtMs = routePlaybackRef.current[route.id]
+      const visualState = getRouteVisualState(
+        route,
+        elapsedRef.current,
+        startedAtMs ?? Infinity
+      )
       routeVisualStatesRef.current[routeIndex] = visualState
       const startIndex =
         Math.floor(ROUTE_TUBULAR_SEGMENTS * visualState.startProgress) *
@@ -248,7 +248,9 @@ export default function GlobeRoutes({
       let markerScale = 0
 
       nodeRouteBindings[nodeIndex].forEach(({ endpoint, routeIndex }) => {
-        if (!isRouteEnabled(GLOBE_ROUTES[routeIndex], quality)) return
+        if (!isRouteEnabledForQuality(GLOBE_ROUTES[routeIndex], quality)) {
+          return
+        }
 
         const visualState = routeVisualStatesRef.current[routeIndex]
         if (!visualState) return

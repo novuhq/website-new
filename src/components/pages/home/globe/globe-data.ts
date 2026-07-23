@@ -22,32 +22,31 @@ export const GLOBE_CARD_TEXT_DELAY_MS = 330
 export const GLOBE_CARD_TEXT_ENTER_MS = 670
 export const GLOBE_CARD_STATUS_DELAY_MS = 530
 export const GLOBE_CARD_STATUS_ENTER_MS = 670
-export const GLOBE_CARD_EXIT_START_MS = 1_533.334
+export const GLOBE_CARD_CONTENT_READY_MS = 1_200
 export const GLOBE_CARD_EXIT_MS = 670
 
+export const GLOBE_ROUTE_REVEAL_MS = GLOBE_ROUTE_CYCLE_MS * 0.35
+export const GLOBE_ROUTE_HOLD_MS = GLOBE_ROUTE_CYCLE_MS * 0.2
+export const GLOBE_ROUTE_EXIT_MS = GLOBE_ROUTE_CYCLE_MS * 0.35
+
+// The popup is a delivery result, so it starts only once the route reaches
+// its destination marker instead of racing ahead of the line reveal.
+export const GLOBE_STORY_CARD_DELAY_MS = GLOBE_ROUTE_REVEAL_MS
+export const GLOBE_STORY_GAP_MS = 700
+export const GLOBE_STORY_SETTLE_MS = 650
+export const GLOBE_STORY_REENTRY_DELAY_MS = 400
+
 export const GLOBE_CONNECTION_NODES = {
-  arkhangelsk: {
-    id: "arkhangelsk",
-    latitude: 64.5399,
-    longitude: 40.515,
-    markerSize: 0.062,
-  },
-  baghdad: {
-    id: "baghdad",
-    latitude: 33.3152,
-    longitude: 44.3661,
-    markerSize: 0.074,
-  },
   centralSahara: {
     id: "central-sahara",
     latitude: 23,
     longitude: 15,
     markerSize: 0.062,
   },
-  saskatchewan: {
-    id: "saskatchewan",
-    latitude: 53.2033,
-    longitude: -105.7531,
+  centralCanada: {
+    id: "central-canada",
+    latitude: 57.5,
+    longitude: -106,
     markerSize: 0.064,
   },
   dubai: {
@@ -62,29 +61,23 @@ export const GLOBE_CONNECTION_NODES = {
     longitude: 113.2644,
     markerSize: 0.064,
   },
+  voronezh: {
+    id: "voronezh",
+    latitude: 51.6608,
+    longitude: 39.2003,
+    markerSize: 0.064,
+  },
   kamchatka: {
     id: "kamchatka",
     latitude: 53.037,
     longitude: 158.6559,
     markerSize: 0.074,
   },
-  highArctic: {
-    id: "high-arctic",
-    latitude: 82,
-    longitude: 30,
-    markerSize: 0.06,
-  },
-  newMexico: {
-    id: "new-mexico",
-    latitude: 35.687,
-    longitude: -105.9378,
-    markerSize: 0.06,
-  },
-  minneapolis: {
-    id: "minneapolis",
-    latitude: 44.9778,
-    longitude: -93.265,
-    markerSize: 0.062,
+  chicago: {
+    id: "chicago",
+    latitude: 41.8781,
+    longitude: -87.6298,
+    markerSize: 0.064,
   },
   novosibirsk: {
     id: "novosibirsk",
@@ -97,12 +90,6 @@ export const GLOBE_CONNECTION_NODES = {
     latitude: 64.1835,
     longitude: -51.7216,
     markerSize: 0.074,
-  },
-  qaanaaq: {
-    id: "qaanaaq",
-    latitude: 77.4667,
-    longitude: -69.2306,
-    markerSize: 0.06,
   },
   maliBurkinaBorder: {
     id: "mali-burkina-border",
@@ -129,20 +116,18 @@ export const GLOBE_ROUTE_NODES: IGlobeRouteNode[] = Object.values(
 )
 
 const GLOBE_EURASIA_WAVE_ADVANCE_MS = 1_000
-const GLOBE_GREENLAND_ROUTE_START_MS = 9_726.883 - GLOBE_EURASIA_WAVE_ADVANCE_MS
-const GLOBE_FINAL_AMERICA_ROUTE_STAGGER_MS = 750
-const GLOBE_FINAL_AMERICA_ROUTE_START_MS =
-  GLOBE_GREENLAND_ROUTE_START_MS + GLOBE_FINAL_AMERICA_ROUTE_STAGGER_MS
-const GLOBE_FINAL_AMERICA_CARD_DELAY_MS = 12_363.059 - 9_921.283
+const GLOBE_GREENLAND_AMBIENT_ROUTE_START_MS =
+  9_726.883 - GLOBE_EURASIA_WAVE_ADVANCE_MS
+const GLOBE_INITIAL_CENTRAL_AMERICA_ROUTE_LEAD_MS = 1_730
 
 // Route starts follow the continuous Pacific rotation profile. The Eurasian
 // wave is additionally advanced by one second so connections are already
 // active as the continent enters the visible hemisphere.
 export const GLOBE_ROUTES: IGlobeRoute[] = [
   {
-    id: "saskatchewan-new-mexico",
-    from: GLOBE_CONNECTION_NODES.saskatchewan,
-    to: GLOBE_CONNECTION_NODES.newMexico,
+    id: "central-canada-chicago",
+    from: GLOBE_CONNECTION_NODES.centralCanada,
+    to: GLOBE_CONNECTION_NODES.chicago,
     altitude: 0.24,
     startMs: 383.844,
     tier: "narrative",
@@ -163,16 +148,16 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
     to: GLOBE_CONNECTION_NODES.guangzhou,
     altitude: 0.31,
     startMs: 7_915.432 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
-    tier: "supporting",
+    tier: "narrative",
     wave: 2,
   },
   {
-    id: "arkhangelsk-dubai",
-    from: GLOBE_CONNECTION_NODES.arkhangelsk,
-    to: GLOBE_CONNECTION_NODES.dubai,
-    altitude: 0.34,
+    id: "dubai-voronezh",
+    from: GLOBE_CONNECTION_NODES.dubai,
+    to: GLOBE_CONNECTION_NODES.voronezh,
+    altitude: 0.3,
     startMs: 8_109.832 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
-    tier: "supporting",
+    tier: "narrative",
     wave: 2,
   },
   {
@@ -181,15 +166,6 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
     to: GLOBE_CONNECTION_NODES.centralSahara,
     altitude: 0.45,
     startMs: 8_304.232 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
-    tier: "detail",
-    wave: 2,
-  },
-  {
-    id: "arctic-baghdad",
-    from: GLOBE_CONNECTION_NODES.highArctic,
-    to: GLOBE_CONNECTION_NODES.baghdad,
-    altitude: 0.43,
-    startMs: 8_498.631 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
     tier: "narrative",
     wave: 2,
   },
@@ -198,16 +174,7 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
     from: GLOBE_CONNECTION_NODES.maliBurkinaBorder,
     to: GLOBE_CONNECTION_NODES.nuuk,
     altitude: 0.49,
-    startMs: GLOBE_GREENLAND_ROUTE_START_MS,
-    tier: "supporting",
-    wave: 2,
-  },
-  {
-    id: "qaanaaq-minneapolis",
-    from: GLOBE_CONNECTION_NODES.qaanaaq,
-    to: GLOBE_CONNECTION_NODES.minneapolis,
-    altitude: 0.31,
-    startMs: GLOBE_FINAL_AMERICA_ROUTE_START_MS,
+    startMs: GLOBE_GREENLAND_AMBIENT_ROUTE_START_MS,
     tier: "narrative",
     wave: 2,
   },
@@ -216,12 +183,14 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
 export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
   {
     id: "product-event",
-    routeId: "saskatchewan-new-mexico",
+    routeId: "central-canada-chicago",
     label: "Product event",
     channel: "whatsapp",
     channelLabel: "WhatsApp",
-    anchor: GLOBE_CONNECTION_NODES.newMexico,
+    anchor: GLOBE_CONNECTION_NODES.chicago,
+    initialRouteLeadMs: GLOBE_INITIAL_CENTRAL_AMERICA_ROUTE_LEAD_MS,
     placement: "right",
+    readHoldMs: 2_400,
     startMs: 1_289.247,
     lines: [
       { label: "Event", value: "order.shipped" },
@@ -237,7 +206,8 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     channel: "email",
     channelLabel: "Email",
     anchor: GLOBE_CONNECTION_NODES.vancouver,
-    placement: "right",
+    placement: "left",
+    readHoldMs: 3_000,
     startMs: 2_300.134,
     lines: [
       { label: "Agent", value: "research agent" },
@@ -248,38 +218,72 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     widthPx: 280,
   },
   {
-    id: "fallback",
-    routeId: "arctic-baghdad",
-    label: "Fallback",
+    id: "customer-sync",
+    routeId: "novosibirsk-guangzhou",
+    label: "Customer sync",
+    channel: "slack",
+    channelLabel: "Slack",
+    anchor: GLOBE_CONNECTION_NODES.guangzhou,
+    placement: "above-left",
+    readHoldMs: 2_400,
+    startMs: 8_600,
+    lines: [
+      { label: "Event", value: "customer.updated" },
+      { label: "Action", value: "sync crm profile" },
+    ],
+    status: "Delivered in 72ms",
+    widthPx: 250,
+  },
+  {
+    id: "workflow-run",
+    routeId: "warsaw-central-sahara",
+    label: "Workflow run",
+    channel: "email",
+    channelLabel: "Email",
+    anchor: GLOBE_CONNECTION_NODES.centralSahara,
+    placement: "above-right",
+    readHoldMs: 2_600,
+    startMs: 9_400,
+    lines: [
+      { label: "Agent", value: "support agent" },
+      { label: "Task", value: "send renewal reminder" },
+      { label: "To", value: "enterprise account" },
+    ],
+    status: "Delivered in 88ms",
+    widthPx: 270,
+  },
+  {
+    id: "security-event",
+    routeId: "dubai-voronezh",
+    label: "Security event",
     channel: "sms",
     channelLabel: "SMS",
-    anchor: GLOBE_CONNECTION_NODES.baghdad,
-    placement: "left",
-    startMs: 9_800.519 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
+    anchor: GLOBE_CONNECTION_NODES.voronezh,
+    placement: "right",
+    readHoldMs: 2_400,
+    startMs: 9_000,
     lines: [
       { label: "Event", value: "login.suspicious" },
-      { label: "Failed", value: "push delivery" },
-      { label: "Action", value: "send sms" },
+      { label: "Action", value: "send verification code" },
     ],
-    status: "Delivered in 203ms",
+    status: "Delivered in 112ms",
     widthPx: 260,
   },
   {
-    id: "agent-event",
-    routeId: "qaanaaq-minneapolis",
-    label: "Agent event",
-    channel: "slack",
-    channelLabel: "Slack",
-    anchor: GLOBE_CONNECTION_NODES.minneapolis,
-    placement: "above",
-    startMs:
-      GLOBE_FINAL_AMERICA_ROUTE_START_MS + GLOBE_FINAL_AMERICA_CARD_DELAY_MS,
+    id: "fallback",
+    routeId: "mali-burkina-border-nuuk",
+    label: "Fallback",
+    channel: "whatsapp",
+    channelLabel: "WhatsApp",
+    anchor: GLOBE_CONNECTION_NODES.nuuk,
+    placement: "below-right",
+    readHoldMs: 2_800,
+    startMs: 10_000,
     lines: [
-      { label: "Agent", value: "claude code" },
-      { label: "Event", value: "deploy.finished" },
-      { label: "To", value: "on-call engineer" },
+      { label: "Failed", value: "push delivery" },
+      { label: "Action", value: "send whatsapp" },
     ],
-    status: "Delivered in 90ms",
+    status: "Delivered in 203ms",
     widthPx: 260,
   },
 ]
