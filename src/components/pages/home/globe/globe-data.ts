@@ -33,8 +33,10 @@ export const GLOBE_ROUTE_EXIT_MS = GLOBE_ROUTE_CYCLE_MS * 0.35
 // its destination marker instead of racing ahead of the line reveal.
 export const GLOBE_STORY_CARD_DELAY_MS = GLOBE_ROUTE_REVEAL_MS
 export const GLOBE_STORY_GAP_MS = 700
-export const GLOBE_STORY_SETTLE_MS = 650
-export const GLOBE_STORY_REENTRY_DELAY_MS = 400
+// How quickly auto-rotation blends back in after the user releases a drag.
+// Kept short so the globe resumes moving promptly instead of stalling.
+export const GLOBE_STORY_SETTLE_MS = 250
+export const GLOBE_STORY_REENTRY_DELAY_MS = 150
 
 export const GLOBE_CONNECTION_NODES = {
   centralSahara: {
@@ -180,21 +182,27 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
   },
 ]
 
+// Synthetic but pattern-faithful: every event name and story is modeled on real
+// Novu workflow patterns (Mixpanel, hero-safe rows only), never a customer name.
+// The dialect mix (dot.notation, Title Case, kebab-case) is intentional; uniform
+// naming reads as fake. Latencies are illustrative until product supplies real p50s.
+// The approval card ("Needs approval") is Novu Connect's differentiator: agents
+// ask, a human decides, the answer returns. Keep at least one per loop.
 export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
   {
     id: "product-event",
     routeId: "central-canada-chicago",
-    label: "Product event",
-    channel: "whatsapp",
-    channelLabel: "WhatsApp",
+    label: "Agent event",
+    channel: "slack",
+    channelLabel: "Slack",
     anchor: GLOBE_CONNECTION_NODES.chicago,
     initialRouteLeadMs: GLOBE_INITIAL_CENTRAL_AMERICA_ROUTE_LEAD_MS,
     placement: "right",
     readHoldMs: 2_400,
     startMs: 1_289.247,
     lines: [
-      { label: "Event", value: "order.shipped" },
-      { label: "Action", value: "send tracking link" },
+      { label: "Event", value: "deploy.finished" },
+      { label: "Action", value: "notify on-call" },
     ],
     status: "Delivered in 84ms",
     widthPx: 250,
@@ -211,7 +219,7 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     startMs: 2_300.134,
     lines: [
       { label: "Agent", value: "research agent" },
-      { label: "Task", value: "weekly competitor report" },
+      { label: "Task", value: "weekly summary" },
       { label: "To", value: "3 stakeholders" },
     ],
     status: "Delivered in 96ms",
@@ -220,34 +228,34 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
   {
     id: "customer-sync",
     routeId: "novosibirsk-guangzhou",
-    label: "Customer sync",
+    label: "Needs approval",
     channel: "slack",
     channelLabel: "Slack",
     anchor: GLOBE_CONNECTION_NODES.guangzhou,
     placement: "right",
-    readHoldMs: 2_400,
+    readHoldMs: 3_000,
     startMs: 8_600,
     lines: [
-      { label: "Event", value: "customer.updated" },
-      { label: "Action", value: "sync crm profile" },
+      { label: "Agent", value: "refund agent" },
+      { label: "Asks", value: "approve $12,000 refund?" },
+      { label: "To", value: "CFO" },
     ],
-    status: "Delivered in 72ms",
-    widthPx: 250,
+    status: "Awaiting decision",
+    widthPx: 280,
   },
   {
     id: "workflow-run",
     routeId: "warsaw-central-sahara",
-    label: "Workflow run",
-    channel: "email",
-    channelLabel: "Email",
+    label: "Lifecycle",
+    channel: "whatsapp",
+    channelLabel: "WhatsApp",
     anchor: GLOBE_CONNECTION_NODES.centralSahara,
     placement: "above-right",
     readHoldMs: 2_600,
     startMs: 9_400,
     lines: [
-      { label: "Agent", value: "support agent" },
-      { label: "Task", value: "send renewal reminder" },
-      { label: "To", value: "enterprise account" },
+      { label: "Event", value: "account.expires_soon" },
+      { label: "Action", value: "send renewal nudge" },
     ],
     status: "Delivered in 88ms",
     widthPx: 270,
@@ -255,7 +263,7 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
   {
     id: "security-event",
     routeId: "dubai-voronezh",
-    label: "Security event",
+    label: "Security alert",
     channel: "sms",
     channelLabel: "SMS",
     anchor: GLOBE_CONNECTION_NODES.voronezh,

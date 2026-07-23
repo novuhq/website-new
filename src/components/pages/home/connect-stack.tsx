@@ -28,6 +28,7 @@ export interface IStackOption {
 export interface IConnectStackProps {
   aiFrameworks?: IStackOption[]
   channels?: IStackOption[]
+  defaultChannelValues?: string[]
   className?: string
   description?: string
   title: string
@@ -315,6 +316,7 @@ function ConnectStack({
   title,
   description,
   channels: channelOptions,
+  defaultChannelValues,
   aiFrameworks: frameworkOptions,
 }: IConnectStackProps) {
   const channels = channelOptions?.length ? channelOptions : DEFAULT_CHANNELS
@@ -322,10 +324,18 @@ function ConnectStack({
     ? frameworkOptions
     : DEFAULT_FRAMEWORKS
 
-  const [channelValues, setChannelValues] = useState<string[]>([
-    channels.find((option) => option.value === "slack")?.value ??
-      channels[0].value,
-  ])
+  const initialChannelValues = defaultChannelValues?.filter((value) =>
+    channels.some((option) => option.value === value)
+  )
+
+  const [channelValues, setChannelValues] = useState<string[]>(
+    initialChannelValues?.length
+      ? initialChannelValues
+      : [
+          channels.find((option) => option.value === "slack")?.value ??
+            channels[0].value,
+        ]
+  )
   const [frameworkValue, setFrameworkValue] = useState(
     frameworks.find((option) => option.value === "vercel-ai-sdk")?.value ??
       frameworks[0].value

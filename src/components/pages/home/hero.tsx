@@ -10,7 +10,6 @@ import medvolLogo from "@/images/pages/pricing/logos/medvol.svg"
 import mongodbLogo from "@/images/pages/pricing/logos/mongodb.svg"
 import trustflightLogo from "@/images/pages/pricing/logos/trustflight.svg"
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
-import githubIcon from "@/svgs/pages/connect/channels/github.svg"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
 import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
@@ -87,12 +86,6 @@ const CHANNELS: Array<{
     name: "Slack",
     icon: slackIcon,
     hover: CHANNEL_HOVER_STYLES.slack,
-  },
-  {
-    key: "github",
-    name: "GitHub",
-    icon: githubIcon,
-    hover: CHANNEL_HOVER_STYLES.monochrome,
   },
   {
     key: "email",

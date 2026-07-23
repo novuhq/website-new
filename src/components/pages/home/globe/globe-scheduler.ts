@@ -23,10 +23,18 @@ const AMBIENT_WINDOW_MIN_DEGREES = -105
 const AMBIENT_WINDOW_MAX_DEGREES = -48
 const AMBIENT_IDEAL_DEGREES = -78
 
+// Front-face band for the timed (ignoreTrigger) spawn path. The globe drifts in
+// slow motion, so a node barely moves during a card's life: any node currently
+// on the visible front hemisphere reads fine, and this wide band keeps two or
+// three events eligible at all times so the ~1s cadence never starves.
+const TIMED_SPAWN_MIN_DEGREES = -100
+const TIMED_SPAWN_MAX_DEGREES = 30
+const TIMED_SPAWN_IDEAL_DEGREES = -40
+
 // Longitude is the primary replay guard. This cooldown only prevents a manual
 // drag from retriggering the same story repeatedly within one geographic pass,
 // while still allowing every story to become eligible on the next auto turn.
-export const GLOBE_CARD_COOLDOWN_MS = 10_000
+export const GLOBE_CARD_COOLDOWN_MS = 3_500
 export const GLOBE_AMBIENT_ROUTE_COOLDOWN_MS = 16_000
 export const GLOBE_AMBIENT_ROUTE_GAP_MS = 950
 
@@ -136,6 +144,7 @@ function compareLastStartedAt(
 
 export function pickGlobeCardEvents({
   events,
+  ignoreTrigger = false,
   lastStartedAt,
   limit,
   nowMs,
@@ -143,6 +152,10 @@ export function pickGlobeCardEvents({
   rotationRadians,
 }: {
   events: IGlobeCardEvent[]
+  // When true, spawn is driven by a timer rather than a rotation-window
+  // crossing: any event whose node is currently readable is eligible. Used for
+  // the steady "new event every second" cadence on the slow-drifting globe.
+  ignoreTrigger?: boolean
   lastStartedAt: Readonly<Record<string, number>>
   limit: number
   nowMs: number
@@ -160,25 +173,33 @@ export function pickGlobeCardEvents({
         rotationRadians
       ),
     }))
-    .filter(({ event }) => {
+    .filter(({ event, relativeLongitude }) => {
       const lastStart = lastStartedAt[event.id] ?? -Infinity
-      return (
-        nowMs - lastStart >= GLOBE_CARD_COOLDOWN_MS &&
-        wasCardTriggerReached(
-          event.anchor.longitude,
-          previousRotationRadians,
-          rotationRadians
-        ) &&
-        isCardReadableThroughExit(event, rotationRadians)
+      if (nowMs - lastStart < GLOBE_CARD_COOLDOWN_MS) return false
+      if (ignoreTrigger) {
+        return (
+          relativeLongitude >= TIMED_SPAWN_MIN_DEGREES &&
+          relativeLongitude <= TIMED_SPAWN_MAX_DEGREES
+        )
+      }
+      if (!isCardReadableThroughExit(event, rotationRadians)) return false
+      return wasCardTriggerReached(
+        event.anchor.longitude,
+        previousRotationRadians,
+        rotationRadians
       )
     })
-    .sort(
-      (first, second) =>
+    .sort((first, second) => {
+      const idealDegrees = ignoreTrigger
+        ? TIMED_SPAWN_IDEAL_DEGREES
+        : CARD_TRIGGER_IDEAL_DEGREES
+      return (
         compareLastStartedAt(first.event.id, second.event.id, lastStartedAt) ||
         first.order - second.order ||
-        Math.abs(first.relativeLongitude - CARD_TRIGGER_IDEAL_DEGREES) -
-          Math.abs(second.relativeLongitude - CARD_TRIGGER_IDEAL_DEGREES)
-    )
+        Math.abs(first.relativeLongitude - idealDegrees) -
+          Math.abs(second.relativeLongitude - idealDegrees)
+      )
+    })
     .slice(0, limit)
     .map(({ event }) => event)
 }

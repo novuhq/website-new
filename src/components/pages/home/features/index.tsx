@@ -1,9 +1,14 @@
 "use client"
 
-import { useCallback, useEffect, useId, useRef, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react"
 import Image from "next/image"
-import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 import checkCircleIcon from "@/svgs/pages/home/check-circle.svg"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -18,10 +23,14 @@ import {
 import CopyPromptButton from "../copy-prompt-button"
 import ProductBadge, { type ProductBadgeType } from "../product-badge"
 import ChannelIcon from "./channel-icon"
+import CliCommand from "./cli-command"
+import NotifyMe from "./notify-me"
 import Preview, { type IPreviewData } from "./preview"
 
 export interface IFeatureChannel extends IPreviewData {
+  availability: "live" | "upcoming"
   badges: readonly ProductBadgeType[]
+  cliCommand?: string
   description: string
   features?: string[]
   key: string
@@ -33,9 +42,9 @@ export interface IFeatureChannel extends IPreviewData {
 export interface IFeaturesProps {
   className?: string
   defaultKey?: string
-  description: string
+  description?: string
   items: IFeatureChannel[]
-  title: string
+  title: ReactNode
 }
 
 function Features({
@@ -48,6 +57,7 @@ function Features({
   const initialKey =
     items.find(({ key }) => key === defaultKey)?.key ?? items[0]?.key ?? ""
   const [activeKey, setActiveKey] = useState(initialKey)
+  const [notifyFocusToken, setNotifyFocusToken] = useState(0)
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
   const tabListRef = useRef<HTMLDivElement | null>(null)
   const hasCenteredInitialTab = useRef(false)
@@ -90,10 +100,15 @@ function Features({
 
   useEffect(() => {
     const handleChannelSelect = (event: Event) => {
-      const { key } = (event as CustomEvent<IHomeChannelSelectDetail>).detail
+      const { key, focusNotify } = (
+        event as CustomEvent<IHomeChannelSelectDetail>
+      ).detail
       if (!items.some((item) => item.key === key)) return
 
       setActiveKey(key)
+      if (focusNotify) {
+        setNotifyFocusToken((token) => token + 1)
+      }
     }
 
     window.addEventListener(HOME_CHANNEL_SELECT_EVENT, handleChannelSelect)
@@ -136,9 +151,11 @@ function Features({
           <h2 className="grow text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-foreground md:text-5xl">
             {title}
           </h2>
-          <p className="w-full max-w-xl shrink-0 text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-xl md:leading-normal md:tracking-tight lg:max-w-88 lg:pt-5.75">
-            {description}
-          </p>
+          {description && (
+            <p className="w-full max-w-xl shrink-0 text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-xl md:leading-normal md:tracking-tight lg:max-w-88 lg:pt-5.75">
+              {description}
+            </p>
+          )}
         </header>
 
         <div className="relative mt-10 md:mt-18">
@@ -270,28 +287,30 @@ function Features({
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
-              <CopyPromptButton
-                className="h-11 w-39 px-5 text-base leading-none font-medium tracking-tight normal-case [&_svg]:size-3.5"
-                key={activeItem.key}
-                size="none"
-                resetInterval={2000}
-                value={activeItem.prompt}
-                copiedMessage={`${activeItem.label} prompt copied to clipboard`}
-              />
-              <Button
-                className="h-11 min-w-44 px-5 text-base leading-none font-medium tracking-tight normal-case"
-                variant="outline-transparent"
-                size="none"
-                asChild
-              >
-                <NextLink
-                  href={ROUTE.docsProviders}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Explore {activeItem.label.toLowerCase()} docs
-                </NextLink>
-              </Button>
+              {activeItem.availability === "live" ? (
+                <>
+                  <CopyPromptButton
+                    className="h-11 w-39 px-5 text-base leading-none font-medium tracking-tight normal-case [&_svg]:size-3.5"
+                    key={activeItem.key}
+                    size="none"
+                    resetInterval={2000}
+                    value={activeItem.prompt}
+                    copiedMessage={`${activeItem.label} prompt copied to clipboard`}
+                  />
+                  {activeItem.cliCommand ? (
+                    <CliCommand
+                      command={activeItem.cliCommand}
+                      className="sm:min-w-72"
+                    />
+                  ) : null}
+                </>
+              ) : (
+                <NotifyMe
+                  channelLabel={activeItem.label}
+                  className="sm:max-w-md"
+                  focusSignal={notifyFocusToken}
+                />
+              )}
             </div>
           </div>
 
@@ -300,10 +319,8 @@ function Features({
               backgroundImage={activeItem.backgroundImage}
               channelLabel={activeItem.label}
               clientFacingImage={activeItem.clientFacingImage}
-              implementationCode={activeItem.implementationCode}
-              implementationHighlightedHtml={
-                activeItem.implementationHighlightedHtml
-              }
+              clientFacingVideo={activeItem.clientFacingVideo}
+              company={activeItem.company}
               key={activeItem.key}
             />
           </div>

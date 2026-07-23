@@ -5,7 +5,9 @@
  * breaking out of the `<script>` context via crafted strings like
  * `</script>` in title/description fields.
  */
-export function safeJsonLdStringify(data: Record<string, unknown>): string {
+export function safeJsonLdStringify(
+  data: Record<string, unknown> | Array<Record<string, unknown>>
+): string {
   return JSON.stringify(data)
     .replace(/</g, "\\u003c")
     .replace(/>/g, "\\u003e")

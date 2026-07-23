@@ -2,6 +2,7 @@ import { formatPage } from "./page-utils"
 import { getAci } from "./pages/aci"
 import { getBlogListing, getBlogPost } from "./pages/blog"
 import { getChangelog } from "./pages/changelog"
+import { getChannels } from "./pages/channels"
 import { getComparison } from "./pages/comparison"
 import { getConnect } from "./pages/connect"
 import { getCustomers } from "./pages/customers"
@@ -20,6 +21,7 @@ const PAGE_BUILDERS: MarkdownPageBuilder[] = [
   getChangelog,
   getCustomers,
   getComparison,
+  getChannels,
   getStaticSanityPage,
 ]
 

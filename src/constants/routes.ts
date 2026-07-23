@@ -17,6 +17,13 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   mcp: "/mcp",
   aci: "/aci",
 
+  // Per-channel Novu Connect landing pages
+  channelSlack: "/channels/slack",
+  channelWhatsApp: "/channels/whatsapp",
+  channelTelegram: "/channels/telegram",
+  channelMicrosoftTeams: "/channels/microsoft-teams",
+  channelEmail: "/channels/email",
+
   // PREVIOUS WEBSITE
 
   // Pages

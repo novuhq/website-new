@@ -60,6 +60,10 @@ export const MARKDOWN_ROUTE_FAMILIES: readonly MarkdownRouteFamily[] = [
     name: "comparison",
     dynamicPatterns: [/^\/comparison\/[^/]+$/],
   },
+  {
+    name: "channels",
+    dynamicPatterns: [/^\/channels\/[^/]+$/],
+  },
 ] as const
 
 export function isUnsupportedMarkdownPathname(pathname: string) {

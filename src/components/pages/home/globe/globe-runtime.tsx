@@ -81,7 +81,15 @@ interface IGlobeContextMonitorProps {
 const POINTER_DRAG_THRESHOLD_PX = 6
 const POINTER_VELOCITY_STALE_MS = 80
 const MAX_INTERACTION_STEP_MS = 16
-const MAX_CONCURRENT_CARD_PLAYBACKS = 3
+const MAX_CONCURRENT_CARD_PLAYBACKS = 5
+// Target cadence for a new event (story-clock ms). ~1 new event per second.
+const GLOBE_CARD_SPAWN_INTERVAL_MS = 1_000
+
+// Vertical tilt limits (radians). Widened from the original +/-0.28 so the user
+// can drag the globe up far enough to bring the southern cards into view. The
+// downward-tilt range (negative, produced by dragging up) is the generous side.
+const PITCH_MIN = -0.62
+const PITCH_MAX = 0.34
 
 class GlobeCanvasErrorBoundary extends Component<
   IGlobeCanvasErrorBoundaryProps,
@@ -158,8 +166,8 @@ function advanceGlobeInteraction(
 
     interaction.rotation += interaction.velocityYaw * stepMs
     interaction.pitch = Math.max(
-      -0.28,
-      Math.min(0.28, interaction.pitch + interaction.velocityPitch * stepMs)
+      PITCH_MIN,
+      Math.min(PITCH_MAX, interaction.pitch + interaction.velocityPitch * stepMs)
     )
 
     const damping = Math.pow(0.88, stepMs * 0.06)
@@ -261,6 +269,7 @@ export default function GlobeRuntime({
     )
   )
   const reentryReadyAtRef = useRef(0)
+  const lastCardSpawnAtRef = useRef(-Infinity)
   const hasStartedPlaybackRef = useRef(false)
   const initialCardPlaybacksRef = useRef<IActiveCardPlayback[] | null>(null)
   if (initialCardPlaybacksRef.current === null) {
@@ -359,12 +368,23 @@ export default function GlobeRuntime({
     let animationFrame = 0
     let lastFrameTime = performance.now()
 
+    // The globe rotation and the event/card timeline run on separate clocks so
+    // the globe can drift in slow-motion while notifications still animate at a
+    // lively pace. ROTATION is the slow one; the STORY clock (route reveal, card
+    // scramble + hold + exit) runs faster. Because actual rotation stays slower
+    // than the scheduler's nominal prediction, cards only ever end up MORE
+    // readable, never less, so the choreography stays safe. 1 = real-time.
+    const ROTATION_TIME_SCALE = 0.45
+    const STORY_TIME_SCALE = 0.9
+
     const updateTimeline = (time: number) => {
-      const delta = Math.max(0, time - lastFrameTime)
+      const rawDelta = Math.max(0, time - lastFrameTime)
       lastFrameTime = time
+      const rotationDelta = rawDelta * ROTATION_TIME_SCALE
+      const storyDelta = rawDelta * STORY_TIME_SCALE
 
       const interaction = interactionRef.current
-      advanceGlobeInteraction(interaction, delta, time)
+      advanceGlobeInteraction(interaction, rotationDelta, time)
 
       const storyPlaybackPaused =
         interaction.dragging ||
@@ -376,7 +396,7 @@ export default function GlobeRuntime({
       // it during drag/inertia keeps the current route and readable card on the
       // exact frame where the user started manipulating the globe.
       if (!storyPlaybackPaused) {
-        elapsedRef.current += delta
+        elapsedRef.current += storyDelta
         timelineTime.set(elapsedRef.current)
       }
       const storyTime = elapsedRef.current
@@ -399,17 +419,28 @@ export default function GlobeRuntime({
         const availableCardSlots =
           MAX_CONCURRENT_CARD_PLAYBACKS - activeCardPlaybacksRef.current.length
 
-        if (availableCardSlots > 0) {
+        // Spawn a new event on a steady ~1s cadence instead of waiting for a
+        // node to cross the rotation window. With the globe drifting in slow
+        // motion, crossings are rare, so the cadence is driven by this timer and
+        // the event pool is picked purely by which node is currently readable
+        // (ignoreTrigger). One per tick keeps a lively "new event every second"
+        // stream without flooding.
+        const spawnDue =
+          storyTime - lastCardSpawnAtRef.current >= GLOBE_CARD_SPAWN_INTERVAL_MS
+
+        if (availableCardSlots > 0 && spawnDue) {
           const events = pickGlobeCardEvents({
             events: GLOBE_CARD_EVENTS,
+            ignoreTrigger: true,
             lastStartedAt: lastCardStartedAtRef.current,
-            limit: availableCardSlots,
+            limit: 1,
             nowMs: storyTime,
             previousRotationRadians: previousScheduleRotationRef.current,
             rotationRadians: interaction.rotation,
           })
 
           if (events.length > 0) {
+            lastCardSpawnAtRef.current = storyTime
             const cardStartedAtMs = storyTime + GLOBE_STORY_CARD_DELAY_MS
             const newPlaybacks = events.map((event) => {
               routePlaybackRef.current[event.routeId] = storyTime
@@ -521,8 +552,8 @@ export default function GlobeRuntime({
 
       interaction.rotation += yawDelta
       interaction.pitch = Math.max(
-        -0.28,
-        Math.min(0.28, interaction.pitch + pitchDelta)
+        PITCH_MIN,
+        Math.min(PITCH_MAX, interaction.pitch + pitchDelta)
       )
       interaction.velocityYaw =
         interaction.velocityYaw * (1 - velocityWeight) +
@@ -657,7 +688,9 @@ export default function GlobeRuntime({
       >
         <div className="relative flex h-7.5 items-center justify-center border border-gray-20 bg-[#0B0C0E] px-3 font-mono text-sm leading-none tracking-tighter text-white uppercase">
           <span className="absolute inset-x-8 -top-16 h-20 bg-[radial-gradient(ellipse_at_center,rgba(159,74,255,0.24),transparent_70%)] blur-lg" />
-          <span className="relative">2.5m messages just sent out today</span>
+          <span className="relative">
+            1.5b messages just sent out in the last month
+          </span>
         </div>
       </motion.div>
     </div>

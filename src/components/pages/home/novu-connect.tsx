@@ -6,9 +6,13 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
+import ConnectChannelArc from "./connect-channel-arc"
 import CopyPromptButton from "./copy-prompt-button"
+import MagicBento from "./magic-bento"
 
 export interface INovuConnectItem {
+  /** render the interactive channel arc instead of a static image */
+  channelRing?: boolean
   description: string
   image?: StaticImageData
   imageClassName?: string
@@ -86,52 +90,56 @@ function NovuConnect({
           </div>
         </header>
 
-        <ul className="mt-12 flex flex-col flex-wrap gap-5 md:mt-16 lg:flex-row">
-          {items.map((item, index) => {
-            const isWide = index % 3 === 0
+        <MagicBento>
+          <ul className="mt-12 flex flex-col flex-wrap gap-5 md:mt-16 lg:flex-row">
+            {items.map((item, index) => {
+              const isWide = index % 3 === 0
 
-            return (
-              <li
-                className={cn(
-                  "relative flex h-96 w-full min-w-0 grow flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-6 md:p-7 lg:h-auto lg:w-auto lg:min-w-0 lg:grow-0",
-                  isWide
-                    ? "lg:aspect-[744/472] lg:basis-[calc(62.2074%_-_13px)]"
-                    : "lg:aspect-[452/472] lg:basis-[calc(37.7926%_-_8px)]"
-                )}
-                key={`${item.title}-${index}`}
-              >
-                <div className={cn("relative z-10", isWide && "max-w-152")}>
-                  {item.label && (
-                    <Badge className="mb-4" size="sm" variant="outline-muted">
-                      {item.label}
-                    </Badge>
+              return (
+                <li
+                  className={cn(
+                    "magic-bento-card relative flex h-96 w-full min-w-0 grow flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-6 md:p-7 lg:h-auto lg:w-auto lg:min-w-0 lg:grow-0",
+                    isWide
+                      ? "lg:aspect-[744/472] lg:basis-[calc(62.2074%_-_13px)]"
+                      : "lg:aspect-[452/472] lg:basis-[calc(37.7926%_-_8px)]"
                   )}
-                  <h3 className="w-fit text-base leading-tight font-medium tracking-tighter text-foreground md:text-lg/tight xl:text-xl/tight">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-normal font-light tracking-tighter text-gray-50 md:text-base">
-                    {item.description}
-                  </p>
-                </div>
-
-                {item.image && (
-                  <Image
-                    className={cn(
-                      "absolute h-auto cursor-grab active:cursor-grabbing",
-                      item.imageClassName
+                  key={`${item.title}-${index}`}
+                >
+                  <div className={cn("relative z-10", isWide && "max-w-152")}>
+                    {item.label && (
+                      <Badge className="mb-4" size="sm" variant="outline-muted">
+                        {item.label}
+                      </Badge>
                     )}
-                    src={item.image}
-                    alt=""
-                    sizes={item.imageSizes}
-                    quality={100}
-                    aria-hidden="true"
-                    draggable
-                  />
-                )}
-              </li>
-            )
-          })}
-        </ul>
+                    <h3 className="w-fit text-base leading-tight font-medium tracking-tighter text-foreground md:text-lg/tight xl:text-xl/tight">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-normal font-light tracking-tighter text-gray-50 md:text-base">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {item.channelRing ? (
+                    <ConnectChannelArc className="bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[43%] 2xl:w-[61.25rem]" />
+                  ) : item.image ? (
+                    <Image
+                      className={cn(
+                        "absolute h-auto cursor-grab active:cursor-grabbing",
+                        item.imageClassName
+                      )}
+                      src={item.image}
+                      alt=""
+                      sizes={item.imageSizes}
+                      quality={100}
+                      aria-hidden="true"
+                      draggable
+                    />
+                  ) : null}
+                </li>
+              )
+            })}
+          </ul>
+        </MagicBento>
       </div>
     </section>
   )

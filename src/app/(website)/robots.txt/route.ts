@@ -4,6 +4,7 @@ const CONTENT_SIGNAL = "Content-Signal: ai-train=yes, search=yes, ai-input=yes"
 
 function buildRobotsTxt() {
   return [
+    "# AI agents: see /llms.txt and /agents.md",
     "User-agent: *",
     "Allow: /",
     CONTENT_SIGNAL,

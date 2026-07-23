@@ -9,8 +9,8 @@ export const SEO_DATA = {
     pathname: "",
   },
   index: {
-    title: `${config.projectName} - Open-source notifications infrastructure for devs and product teams`,
-    description: `${config.projectName} is an open-source notification platform that empowers developers to create robust, multi-channel notifications for web and mobile apps. With powerful workflows, seamless integrations, and a flexible API-first approach, ${config.projectName} enables product teams to manage notifications without breaking production.`,
+    title: `${config.projectName} - Connect your AI agents and products to customers`,
+    description: `${config.projectName} is the open-source notification and agent communication infrastructure. Connect AI agents and products to customers across in-app, email, SMS, push, WhatsApp, Slack, Microsoft Teams, and Telegram with one API. Start with npx novu connect.`,
     pathname: "",
   },
   bookADemo: {
