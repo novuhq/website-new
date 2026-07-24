@@ -8,7 +8,6 @@ import NotifyIcon from "@/images/pages/home/communication-lifecycle/notify.inlin
 import ResolveIcon from "@/images/pages/home/communication-lifecycle/resolve.inline.svg"
 import PlatformFlowBackground from "@/images/pages/home/platform/background.jpg"
 import imessageIcon from "@/images/pages/home/platform/imessage.svg"
-import PlaneIcon from "@/images/pages/home/platform/plane.svg"
 import { Check } from "lucide-react"
 import {
   AnimatePresence,
@@ -380,68 +379,39 @@ function NotifyCard() {
   )
 }
 
-function PersonAvatar() {
-  return (
-    <span className="relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#e7922d] sm:size-7 sm:rounded-sm lg:size-[2.4375rem] lg:rounded-md">
-      <span className="absolute top-[18%] size-[35%] rounded-full bg-[#fcf4e7]" />
-      <span className="absolute -bottom-[3%] h-[47%] w-[65%] rounded-t-full bg-[#fcf4e7]" />
-    </span>
-  )
-}
-
-function AgentAvatar() {
-  return (
-    <span className="relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#AF6EFF] after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:border after:border-white/10 sm:size-7 sm:rounded-sm lg:size-10 lg:rounded-md">
-      <Image
-        className="size-5 sm:size-4.5 lg:size-6"
-        src={PlaneIcon}
-        alt=""
-        aria-hidden
-      />
-    </span>
-  )
-}
-
 function ConversationCard() {
   return (
-    <div className="flex h-41 w-full flex-col gap-2.5 rounded-[0.625rem] bg-white px-3.5 py-3 text-left text-gray-20 shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] sm:h-auto sm:gap-2 sm:px-3 sm:py-2.5 lg:h-[11.1875rem] lg:gap-3.5 lg:p-3.5">
-      <div className="flex items-start gap-3.5 sm:gap-2.5 lg:gap-3">
-        <PersonAvatar />
-        <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1 text-sm leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
-            <strong className="font-semibold">Alex Morgan</strong>
-            <span className="text-[0.6875rem] text-gray-60 lg:text-[0.8125rem]">
-              Now
-            </span>
-          </p>
-          <p className="mt-1 text-[0.8125rem] leading-snug tracking-tighter sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
-            Will I miss my connection?
-          </p>
-        </div>
+    <div className="flex aspect-[415/166] w-full flex-col justify-between rounded-[0.625rem] bg-white p-[4.819%] text-left font-inter shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)]">
+      <div className="relative flex aspect-[260/45] w-[70%] shrink-0 items-center self-end rounded-[1.375rem] bg-[#1995FD] px-3 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-white sm:px-3.5 sm:text-sm md:px-4 lg:px-4.25 lg:text-[1.1875rem]">
+        Will I miss my connection?
+        <svg
+          className="pointer-events-none absolute right-[2.05%] -bottom-1.5 h-[30.29%] w-[6.54%] text-[#1995FD] sm:-bottom-1.5 lg:-bottom-2"
+          viewBox="420.492 88.381 14.949 11.903"
+          fill="none"
+          aria-hidden
+        >
+          <path
+            d="M434.555 88.3809C431.319 90.2527 425.594 92.6112 421.587 92.6112H420.492C424.178 95.7191 429.177 98.5552 432.881 100.284C434.509 101.044 435.441 99.6278 434.393 98.169C433.597 97.0626 432.923 95.9494 432.766 95.1688C432.366 93.1688 431.417 91.4187 434.555 88.3809Z"
+            fill="currentColor"
+          />
+        </svg>
       </div>
-      <div className="flex items-center gap-2">
-        <span className="shrink-0 text-[0.625rem] leading-none tracking-tighter text-gray-60 sm:text-[0.5rem] lg:text-[0.7925rem]">
-          1 reply
+
+      <div className="relative flex aspect-[329/68] w-[87.734%] shrink-0 items-center self-start rounded-[1.375rem] bg-[#E9E9EA] px-3 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-[#040406] sm:px-3.5 sm:text-sm md:px-4 lg:px-4.25 lg:text-[1.1875rem]">
+        <span>
+          Your connection is at risk. Would you like me to find another flight?
         </span>
-        <span className="h-px flex-1 bg-[#e3e4e9]" />
-      </div>
-      <div className="flex items-start gap-3.5 sm:gap-2.5 lg:gap-3">
-        <AgentAvatar />
-        <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1 text-sm leading-none tracking-tighter sm:text-[0.625rem] lg:gap-[0.4375rem] lg:text-base">
-            <strong className="font-semibold">Agent</strong>
-            <span className="rounded-[0.175rem] bg-[#f0f0f0] px-1 py-0.5 text-[0.5625rem] font-medium text-[#828282] sm:text-[0.375rem] lg:text-[0.5845rem]">
-              APP
-            </span>
-            <span className="text-[0.6875rem] text-gray-60 lg:text-[0.8125rem]">
-              Now
-            </span>
-          </p>
-          <p className="mt-1 line-clamp-3 text-[0.8125rem] leading-snug tracking-tighter sm:line-clamp-2 sm:text-[0.5625rem] lg:mt-1.5 lg:text-base">
-            Your connection is at risk. Would you like me to find another
-            flight?
-          </p>
-        </div>
+        <svg
+          className="pointer-events-none absolute -bottom-1.5 left-[2.05%] h-[30.29%] w-[5.17%] text-[#E9E9EA] sm:-bottom-2 lg:-bottom-2.5"
+          viewBox="76.086 169.381 14.062 11.903"
+          fill="none"
+          aria-hidden
+        >
+          <path
+            d="M76.0859 169.381C79.3218 171.253 85.0463 173.611 89.0535 173.611H90.1484C86.4627 176.719 81.4638 179.555 77.7599 181.284C76.1319 182.044 75.1994 180.628 76.2481 179.169C77.0435 178.063 77.718 176.949 77.8741 176.169C78.2741 174.169 79.2235 172.419 76.0859 169.381Z"
+            fill="currentColor"
+          />
+        </svg>
       </div>
     </div>
   )
@@ -691,7 +661,7 @@ function PlatformFlowAnimation({
             "pointer-events-none absolute top-[58.1%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]",
             activeStep === "event" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]",
             activeStep === "notify" && "w-[90%] max-w-72 sm:max-w-[21.5rem]",
-            activeStep === "engage" && "w-3/4 max-w-60 sm:max-w-[24.9375rem]",
+            activeStep === "engage" && "w-4/5 max-w-xs sm:w-[52%] sm:max-w-104",
             activeStep === "resolve" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]"
           )}
         >

@@ -1,9 +1,9 @@
 /* Magic Bento effects (adapted from reactbits.dev/components/magic-bento):
-   cursor spotlight, proximity border glow, hover star particles, click ripple.
-   Glow color derives from the brand purple (--purple-3: 290 60% 60%). */
+   cursor spotlight, proximity border glow, hover star particles, click ripple. */
 
-.magic-bento {
-  --mb-glow-rgb: 194 92 214;
+.magic-bento,
+.magic-bento-spotlight {
+  --mb-glow-rgb: 115 89 231;
 }
 
 .magic-bento-card {
@@ -14,26 +14,30 @@
   transition: box-shadow 0.3s ease;
 }
 
-/* Border glow: a radial gradient masked to the 1px border ring so it lights
-   the card edge around the cursor, driven by --glow-* vars set from JS. */
+/* Use a real border and mask only its visibility. This keeps the glow's curve
+   identical to the card's own border instead of reconstructing the ring with
+   a content-box mask. */
 .magic-bento-card::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
+  border: 1px solid rgb(var(--mb-glow-rgb) / 0.9);
+  opacity: var(--glow-intensity);
+  mask-image: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.9)) 0%,
-    rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.5)) 30%,
+    #000 0%,
+    rgb(0 0 0 / 0.55) 30%,
     transparent 60%
   );
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
+  -webkit-mask-image: radial-gradient(
+    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+    #000 0%,
+    rgb(0 0 0 / 0.55) 30%,
+    transparent 60%
+  );
   pointer-events: none;
+  transition: opacity 0.2s ease;
   z-index: 20;
 }
 
@@ -68,11 +72,11 @@
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgb(194 92 214 / 0.12) 0%,
-    rgb(184 76 214 / 0.06) 15%,
-    rgb(170 60 210 / 0.03) 25%,
-    rgb(150 40 200 / 0.015) 40%,
-    rgb(120 20 180 / 0.008) 65%,
+    rgb(var(--mb-glow-rgb) / 0.12) 0%,
+    rgb(var(--mb-glow-rgb) / 0.06) 15%,
+    rgb(var(--mb-glow-rgb) / 0.03) 25%,
+    rgb(var(--mb-glow-rgb) / 0.015) 40%,
+    rgb(var(--mb-glow-rgb) / 0.008) 65%,
     transparent 70%
   );
   mix-blend-mode: screen;
@@ -146,71 +150,72 @@
   }
 }
 
-/* Channel arc: a faithful vector rebuild of the customer-facing.jpg icon
-   scatter. Large near-black app tiles, each slightly rotated, over a soft
-   purple glow, with a gentle idle float. Hover lifts a tile and lights it. */
+/* The customer-facing card uses two independently rotating channel orbits.
+   Each icon remains a real interactive element instead of being baked into
+   the artwork. */
 .mb-arc {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-.mb-arc-glow {
+.mb-channel-orbit {
   position: absolute;
-  border-radius: 50%;
+  left: 50%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
   pointer-events: none;
 }
 
-.mb-arc-glow-primary {
-  inset: 24% 14% -8% 14%;
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    hsl(266 70% 58% / 0.55) 0%,
-    hsl(272 68% 46% / 0.28) 32%,
-    hsl(275 60% 34% / 0.12) 52%,
-    transparent 72%
-  );
-  filter: blur(28px);
+.mb-channel-orbit-outer {
+  top: 164%;
+  width: 128.571%;
 }
 
-.mb-arc-glow-secondary {
-  inset: 40% 30% 4% 30%;
-  background: radial-gradient(
-    ellipse at 50% 55%,
-    hsl(258 90% 66% / 0.4) 0%,
-    transparent 68%
-  );
-  filter: blur(20px);
+.mb-channel-orbit-inner {
+  top: 164%;
+  width: 101.224%;
 }
 
-.mb-arc-spoke {
+.mb-channel-orbit-rotator {
   position: absolute;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  animation: mb-channel-orbit-spin 48s linear infinite;
+  pointer-events: none;
 }
 
-.mb-arc-float {
-  animation: mb-arc-float var(--mb-float-dur, 6s) ease-in-out
-    var(--mb-float-delay, 0s) infinite alternate;
+.mb-channel-orbit-rotator-reverse {
+  animation-direction: reverse;
 }
 
 .mb-arc-tile {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 26%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 28.18%;
   border: 1px solid rgb(255 255 255 / 0.06);
   background: linear-gradient(158deg, #17181d 0%, #0a0a0d 48%, #060608 100%);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.07),
     0 14px 34px rgb(0 0 0 / 0.55);
   cursor: pointer;
-  transform: rotate(var(--mb-rot, 0deg));
+  transform: rotate(var(--mb-tile-rot, 0deg));
   transition:
     box-shadow 0.25s ease,
     border-color 0.25s ease,
     transform 0.25s ease;
+  pointer-events: auto;
+}
+
+.mb-channel-orbit-outer .mb-arc-tile {
+  width: 8.73%;
+}
+
+.mb-channel-orbit-inner .mb-arc-tile {
+  width: 11.09%;
 }
 
 .mb-arc-tile:hover,
@@ -222,38 +227,22 @@
     0 0 0 1px hsl(var(--purple-3) / 0.55),
     0 0 26px hsl(var(--purple-3) / 0.5),
     0 18px 40px rgb(0 0 0 / 0.6);
-  transform: rotate(var(--mb-rot, 0deg)) scale(1.07);
+  transform: rotate(var(--mb-tile-rot, 0deg)) scale(1.07);
 }
 
-@keyframes mb-arc-float {
-  from {
-    transform: translateY(3px);
-  }
+@keyframes mb-channel-orbit-spin {
   to {
-    transform: translateY(-5px);
+    transform: rotate(360deg);
   }
+}
+
+.mb-channel-orbit:hover .mb-channel-orbit-rotator,
+.mb-channel-orbit:focus-within .mb-channel-orbit-rotator {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mb-arc-float {
+  .mb-channel-orbit-rotator {
     animation: none;
   }
-}
-
-/* Live channels read at full strength and sit in front; upcoming channels
-   recede until hovered, so the actionable tiles lead. */
-.mb-arc-tile-dim {
-  opacity: 0.5;
-  filter: saturate(0.8);
-}
-
-.mb-arc-tile-dim:hover,
-.mb-arc-tile-dim:focus-visible {
-  opacity: 1;
-  filter: none;
-}
-
-/* Hold the idle float steady while a tile is being dragged. */
-.mb-arc-spoke-dragging .mb-arc-float {
-  animation-play-state: paused;
 }

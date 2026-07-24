@@ -59,25 +59,27 @@ function NotifyMe({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("flex w-full flex-col gap-3 sm:flex-row", className)}
+      className={cn("relative h-11 w-[22.1875rem] max-w-full", className)}
     >
       <input
         ref={inputRef}
         type="email"
+        name="email"
+        autoComplete="email"
         required
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         placeholder="you@company.com"
         aria-label={`Email to be notified when ${channelLabel} is live`}
-        className="h-11 min-w-0 flex-1 rounded-[0.625rem] border border-gray-20 bg-transparent px-4 text-base text-foreground placeholder:text-gray-50 focus-visible:border-gray-40 focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
+        className="h-11 w-full rounded-md border border-gray-20 bg-transparent pr-32 pl-4 text-base text-foreground placeholder:text-gray-50 focus-visible:border-gray-40 focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
       />
       <Button
         type="submit"
-        variant="outline-transparent"
+        variant="default"
         size="none"
-        className="h-11 shrink-0 px-5 text-base leading-none font-medium tracking-tight normal-case"
+        className="absolute inset-y-1 right-1 h-auto rounded px-5 text-base leading-none font-medium tracking-tight normal-case"
       >
-        Notify me when it&apos;s live
+        Notify Me
       </Button>
     </form>
   )

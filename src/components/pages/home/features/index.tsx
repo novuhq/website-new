@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react"
 import Image from "next/image"
-import checkCircleIcon from "@/svgs/pages/home/check-circle.svg"
+import checkCircleIcon from "@/svgs/pages/home/check.svg"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -147,8 +147,8 @@ function Features({
       )}
     >
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
-        <header className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-16 xl:pr-4">
-          <h2 className="grow text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-foreground md:text-5xl">
+        <header className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+          <h2 className="max-w-3xl grow text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-pretty text-foreground md:text-5xl">
             {title}
           </h2>
           {description && (
@@ -267,14 +267,14 @@ function Features({
                 {activeItem.description}
               </p>
               {activeItem.features?.length ? (
-                <ul className="mt-4.5 flex flex-col gap-1.5 md:mt-6">
+                <ul className="mt-4.5 flex flex-col gap-2.5 md:mt-5">
                   {activeItem.features.map((feature, index) => (
                     <li
-                      className="flex items-center gap-2 text-base tracking-tighter text-gray-90"
+                      className="flex items-center gap-2 text-[.9375rem] tracking-tighter text-gray-80"
                       key={`${feature}-${index}`}
                     >
                       <Image
-                        className="size-4.5 shrink-0"
+                        className="size-4 shrink-0"
                         src={checkCircleIcon}
                         alt=""
                         aria-hidden
@@ -286,7 +286,7 @@ function Features({
               ) : null}
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-7">
               {activeItem.availability === "live" ? (
                 <>
                   <CopyPromptButton
@@ -300,7 +300,7 @@ function Features({
                   {activeItem.cliCommand ? (
                     <CliCommand
                       command={activeItem.cliCommand}
-                      className="sm:min-w-72"
+                      className="rounded-md sm:min-w-72"
                     />
                   ) : null}
                 </>
