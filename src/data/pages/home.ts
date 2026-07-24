@@ -294,9 +294,11 @@ export const HOME_NOVU_NOTIFY_ITEMS = [
 export const HOME_FEATURED_CUSTOMERS = {
   title: "How engineering teams ship faster with Novu",
   linkText: "See all customers",
+  caseStudyLinkText: "Read case study",
   items: [
     {
       company: "Unified",
+      href: "/customers/unified/",
       quote:
         "Novu’s UI lets us handle configuration without reinventing the wheel, that's a huge savings on development and maintenance",
       authorName: "Tin Nguyen",
@@ -305,6 +307,7 @@ export const HOME_FEATURED_CUSTOMERS = {
     },
     {
       company: "Veritext AI Partners",
+      href: "/customers/veritext/",
       quote: "Novu is already working successfully across multiple teams",
       authorName: "Jared Millman",
       authorPosition: "Software Engineer",
@@ -312,6 +315,7 @@ export const HOME_FEATURED_CUSTOMERS = {
     },
     {
       company: "Deriv",
+      href: "/customers/deriv/",
       quote:
         "Implementing new notifications is centralized, secure, and straightforward. It helps us focus on our core business and ship fast",
       authorName: "Denis Safiullin",

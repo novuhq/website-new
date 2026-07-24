@@ -4,6 +4,7 @@ import { useId } from "react"
 import { Copy } from "lucide-react"
 
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
+import { cn } from "@/lib/utils"
 import { Button, type ButtonProps } from "@/components/ui/button"
 
 import AnimatedCopyCheck from "./animated-copy-check"
@@ -25,6 +26,7 @@ function CopyPromptButton({
   resetInterval = 2500,
   showCopyIcon = true,
   value,
+  textClassName,
   ...buttonProps
 }: ICopyPromptButtonProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(resetInterval)
@@ -37,6 +39,7 @@ function CopyPromptButton({
       onClick={() => handleCopy(value)}
       aria-label={isCopied ? copiedLabel || "Copied" : label}
       aria-describedby={statusId}
+      textClassName={cn("gap-2", textClassName)}
     >
       {isCopied ? copiedLabel : label}
       {isCopied ? (

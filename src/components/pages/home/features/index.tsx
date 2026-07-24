@@ -160,7 +160,7 @@ function Features({
 
         <div className="relative mt-10 md:mt-18">
           <Button
-            className="absolute top-2.5 left-0 z-10 size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 [&_svg]:size-3.5"
+            className="absolute top-2.5 left-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 md:flex [&_svg]:size-3.5"
             variant="outline-transparent"
             size="icon"
             type="button"
@@ -171,7 +171,7 @@ function Features({
           </Button>
 
           <div
-            className="scrollbar-hidden -mx-5 overflow-x-auto mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
+            className="scrollbar-hidden -mx-5 touch-pan-x overscroll-x-contain overflow-x-auto pr-14 pl-8 mask-[linear-gradient(to_right,transparent_0%,black_2rem,black_calc(100%_-_3rem),transparent_100%)] md:mx-0 md:px-18 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))]"
             ref={tabListRef}
             role="tablist"
             aria-label="Communication channels"
@@ -182,7 +182,7 @@ function Features({
 
                 return (
                   <button
-                    className="group flex w-12 shrink-0 flex-col items-center gap-2 rounded-[10px] text-sm leading-[1.125] tracking-tighter text-gray-50 outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-16 lg:w-23"
+                    className="group flex w-14 shrink-0 flex-col items-center gap-2 rounded-[10px] text-sm leading-[1.125] tracking-tighter text-gray-50 outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-16 lg:w-23"
                     id={`${tabsId}-tab-${item.key}`}
                     key={item.key}
                     ref={(node) => {
@@ -212,7 +212,7 @@ function Features({
                   >
                     <span
                       className={cn(
-                        "flex size-12 items-center justify-center rounded-[0.375rem] border bg-background transition-[border-color,filter] md:size-16 md:rounded-[10px]",
+                        "flex size-14 items-center justify-center rounded-[0.375rem] border bg-background transition-[border-color,filter] md:size-16 md:rounded-[10px]",
                         isActive
                           ? "border-gray-40"
                           : "border-gray-20 group-hover:border-gray-40"
@@ -236,7 +236,7 @@ function Features({
           </div>
 
           <Button
-            className="absolute top-2.5 right-0 z-10 size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 [&_svg]:size-3.5"
+            className="absolute top-2.5 right-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 md:flex [&_svg]:size-3.5"
             variant="outline-transparent"
             size="icon"
             type="button"

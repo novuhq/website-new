@@ -3,6 +3,7 @@ import { ROUTE } from "@/constants/routes"
 import derivLogo from "@/images/pages/home/featured-customers/deriv.svg"
 import unifiedLogo from "@/images/pages/home/featured-customers/unified.svg"
 import veritextLogo from "@/images/pages/home/featured-customers/veritext.svg"
+import { ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -14,11 +15,13 @@ interface IFeaturedCustomerTestimonial {
   authorName: string
   authorPosition: string
   company: string
+  href: string
   logo: CustomerLogo
   quote: string
 }
 
 interface IFeaturedCustomersProps {
+  caseStudyLinkText: string
   className?: string
   items: IFeaturedCustomerTestimonial[]
   linkText: string
@@ -47,6 +50,7 @@ function FeaturedCustomers({
   className,
   title,
   linkText,
+  caseStudyLinkText,
   items,
 }: IFeaturedCustomersProps) {
   return (
@@ -82,19 +86,10 @@ function FeaturedCustomers({
 
             return (
               <li
-                className="flex min-w-0 flex-col justify-between gap-12 md:min-h-65.25"
+                className="flex min-w-0 flex-col justify-between gap-10 md:h-63.75"
                 key={item.company}
               >
-                <blockquote className="text-lg leading-normal font-normal tracking-tighter text-gray-80">
-                  “{item.quote}”
-                </blockquote>
-
-                <div className="flex flex-col gap-4">
-                  <p className="text-sm leading-[1.375] font-normal tracking-tighter text-gray-60">
-                    {item.authorName},
-                    <br />
-                    {item.authorPosition}
-                  </p>
+                <div className="flex flex-col gap-4.5">
                   <Image
                     src={logo.image}
                     alt={item.company}
@@ -103,7 +98,29 @@ function FeaturedCustomers({
                       logo.className
                     )}
                   />
+
+                  <div className="flex flex-col gap-2.5">
+                    <blockquote className="text-lg leading-normal font-normal tracking-tighter text-gray-80">
+                      “{item.quote}”
+                    </blockquote>
+                    <p className="text-sm leading-[1.375] font-normal tracking-tighter text-gray-60">
+                      {item.authorName}, {item.authorPosition}
+                    </p>
+                  </div>
                 </div>
+
+                <Link
+                  className="w-fit text-sm leading-none font-medium tracking-normal text-white hover:text-gray-80 [&_svg]:size-4"
+                  href={item.href}
+                  size="none"
+                  variant="clean"
+                  animation="arrow-right"
+                  data-click-location="featured_customers"
+                  data-click-text={`read_${item.logo}_case_study`}
+                >
+                  {caseStudyLinkText}
+                  <ChevronRight aria-hidden />
+                </Link>
               </li>
             )
           })}
