@@ -2,8 +2,8 @@
 
 import { Check, Copy } from "lucide-react"
 
-import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { cn } from "@/lib/utils"
+import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 
 interface ICliCommandProps {
   command: string
@@ -23,8 +23,10 @@ function CliCommand({ command, className }: ICliCommandProps) {
         className
       )}
     >
-      <span className="shrink-0 select-none text-gray-50">$</span>
-      <span className="truncate">{command}</span>
+      <span className="shrink-0 text-gray-50 select-none">$</span>
+      <span className="inline-flex w-[calc(100vw-12rem)] min-w-0 justify-start truncate sm:inline sm:w-auto">
+        {command}
+      </span>
       <span className="ml-auto shrink-0 text-gray-50 transition-colors group-hover:text-foreground">
         {isCopied ? (
           <Check className="size-3.5" aria-hidden />

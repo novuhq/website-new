@@ -320,7 +320,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
             </p>
 
             <div className="mt-5.5 flex h-10 min-w-0 items-center rounded-md border border-[#534b5d] bg-[#040406] p-1 focus-within:ring-2 focus-within:ring-foreground/30">
-              <code className="min-w-0 flex-1 truncate px-2 font-mono text-xs text-foreground md:text-sm">
+              <code className="min-w-0 flex-1 truncate px-2 font-mono text-sm text-foreground">
                 {prompt}
               </code>
               <CopyPromptButton

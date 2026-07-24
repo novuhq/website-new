@@ -160,7 +160,7 @@ function Features({
 
         <div className="relative mt-10 md:mt-18">
           <Button
-            className="absolute top-2.5 left-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 md:flex [&_svg]:size-3.5"
+            className="absolute top-2.5 left-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 sm:flex md:top-4 [&_svg]:size-3.5"
             variant="outline-transparent"
             size="icon"
             type="button"
@@ -171,7 +171,7 @@ function Features({
           </Button>
 
           <div
-            className="scrollbar-hidden -mx-5 touch-pan-x overscroll-x-contain overflow-x-auto pr-14 pl-8 mask-[linear-gradient(to_right,transparent_0%,black_2rem,black_calc(100%_-_3rem),transparent_100%)] md:mx-0 md:px-18 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))]"
+            className="scrollbar-hidden -mx-5 touch-pan-x overscroll-x-contain overflow-x-auto mask-[linear-gradient(to_right,transparent,black_1.25rem,black_calc(100%_-_1.25rem),transparent)] px-5 sm:mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] sm:px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
             ref={tabListRef}
             role="tablist"
             aria-label="Communication channels"
@@ -236,7 +236,7 @@ function Features({
           </div>
 
           <Button
-            className="absolute top-2.5 right-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 md:top-4 md:flex [&_svg]:size-3.5"
+            className="absolute top-2.5 right-0 z-10 hidden size-8 rounded-[0.5rem] border-gray-20 p-0 before:-inset-1.5 sm:flex md:top-4 [&_svg]:size-3.5"
             variant="outline-transparent"
             size="icon"
             type="button"
@@ -290,7 +290,7 @@ function Features({
               {activeItem.availability === "live" ? (
                 <>
                   <CopyPromptButton
-                    className="h-11 w-39 px-5 text-base leading-none font-medium tracking-tight normal-case [&_svg]:size-3.5"
+                    className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-39 [&_svg]:size-3.5"
                     key={activeItem.key}
                     size="none"
                     resetInterval={2000}
@@ -300,7 +300,7 @@ function Features({
                   {activeItem.cliCommand ? (
                     <CliCommand
                       command={activeItem.cliCommand}
-                      className="rounded-md sm:min-w-72"
+                      className="min-w-0 rounded-md"
                     />
                   ) : null}
                 </>

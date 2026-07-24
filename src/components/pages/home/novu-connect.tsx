@@ -71,7 +71,7 @@ function NovuConnect({
               {title}
             </h2>
 
-            <p className="mt-4 text-base leading-normal font-light tracking-tighter text-pretty text-gray-60 md:text-lg lg:max-w-sm xl:text-xl xl:leading-[1.875rem]">
+            <p className="mt-4 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-60 md:text-lg lg:max-w-sm xl:text-xl xl:leading-[1.875rem]">
               {description}
             </p>
           </div>
@@ -101,7 +101,7 @@ function NovuConnect({
               return (
                 <li
                   className={cn(
-                    "magic-bento-card relative flex h-96 w-full min-w-0 grow flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-6 md:p-7 lg:h-auto lg:w-auto lg:min-w-0 lg:grow-0",
+                    "magic-bento-card relative flex h-96 w-full min-w-0 grow flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 md:p-7 lg:h-auto lg:w-auto lg:min-w-0 lg:grow-0",
                     isWide
                       ? "lg:aspect-[744/472] lg:basis-[calc(62.2074%_-_13px)]"
                       : "lg:aspect-[452/472] lg:basis-[calc(37.7926%_-_8px)]"
@@ -117,7 +117,7 @@ function NovuConnect({
                     <h3 className="w-fit text-base leading-tight font-medium tracking-tighter text-foreground md:text-lg/tight xl:text-xl/tight">
                       {item.title}
                     </h3>
-                    <p className="mt-2.5 text-sm leading-normal font-light tracking-tighter text-gray-50 md:text-base">
+                    <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-gray-50 md:text-base">
                       {item.description}
                     </p>
                   </div>

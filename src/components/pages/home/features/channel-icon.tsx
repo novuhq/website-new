@@ -84,7 +84,7 @@ function ChannelIcon({
   return (
     <Icon
       className={cn(
-        "size-5 shrink-0 text-gray-50 transition-colors duration-200 group-hover:text-[var(--channel-color)] group-focus-visible:text-[var(--channel-color)] md:size-7 [&>path]:transition-[fill] [&>path]:duration-200",
+        "size-6 shrink-0 text-gray-50 transition-colors duration-200 group-hover:text-[var(--channel-color)] group-focus-visible:text-[var(--channel-color)] md:size-7 [&>path]:transition-[fill] [&>path]:duration-200",
         isActive && "text-[var(--channel-color)]",
         channel === "slack" &&
           (isActive ? SLACK_ACTIVE_CLASSES : SLACK_HOVER_CLASSES),

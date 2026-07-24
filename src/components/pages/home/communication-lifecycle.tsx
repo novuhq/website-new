@@ -80,12 +80,12 @@ function CommunicationLifecycle({
       )}
     >
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-7xl">
-        <header className="grid gap-16 xl:grid-cols-[35.875rem_35.25rem] xl:items-start xl:gap-19.5">
+        <header className="grid gap-9 md:gap-12 xl:grid-cols-[35.875rem_35.25rem] xl:items-start xl:gap-19.5">
           <h2 className="max-w-xl text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl xl:text-[3.5rem]">
             {title}
           </h2>
 
-          <ul className="grid gap-14 sm:grid-cols-2 sm:gap-10 xl:gap-14 xl:pt-1.25">
+          <ul className="grid gap-10 sm:grid-cols-2 xl:gap-14 xl:pt-1.25">
             {actions.slice(0, 2).map((action) => (
               <li className="flex flex-col" key={action.title}>
                 <div className="relative inline-flex w-fit">
@@ -117,7 +117,7 @@ function CommunicationLifecycle({
           </ul>
         </header>
 
-        <div className="mt-18">
+        <div className="mt-12 md:mt-14 lg:mt-18">
           <PlatformFlowAnimation
             activeTab={activeTab}
             onStepComplete={handleStepComplete}

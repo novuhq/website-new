@@ -118,7 +118,7 @@ function NovuNotify({
             )}
             <div className="relative flex min-w-0 flex-col md:contents">
               <div className="relative z-30 max-w-[26.5625rem] md:absolute md:top-[27px] md:left-[27px]">
-                <h3 className="text-lg leading-tight font-normal tracking-tighter text-foreground md:text-xl md:leading-none">
+                <h3 className="text-base leading-tight font-normal tracking-tighter text-foreground md:text-xl md:leading-none">
                   {featuredItem.title}
                 </h3>
                 <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50 md:w-80 md:text-base xl:w-114">
@@ -210,10 +210,10 @@ function NovuNotify({
                   ) : null}
 
                   <div className="relative z-10">
-                    <h3 className="w-fit text-lg leading-none font-medium tracking-tighter text-foreground lg:text-xl">
+                    <h3 className="w-fit text-base/tight font-medium tracking-tighter text-foreground md:text-lg/tight lg:text-xl">
                       {item.title}
                     </h3>
-                    <p className="mt-2.5 text-base font-normal tracking-tighter text-pretty text-gray-50">
+                    <p className="mt-2.5 text-sm/normal font-normal tracking-tighter text-pretty text-gray-50 md:text-base">
                       {item.description}
                     </p>
                   </div>

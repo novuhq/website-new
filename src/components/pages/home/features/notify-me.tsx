@@ -59,7 +59,7 @@ function NotifyMe({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("relative h-11 w-[22.1875rem] max-w-full", className)}
+      className={cn("relative h-11 w-full max-w-full sm:w-89", className)}
     >
       <input
         ref={inputRef}

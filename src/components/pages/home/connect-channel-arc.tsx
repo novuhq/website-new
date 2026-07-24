@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react"
 import Image, { type StaticImageData } from "next/image"
+import mascotIcon from "@/images/pages/home/novu-connect/mascot.svg"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -75,6 +76,10 @@ const CHANNEL_TILES = {
     key: "zoom",
     label: "Zoom",
   },
+  mascot: {
+    key: "mascot",
+    label: "Novu mascot",
+  },
 } satisfies Record<string, IOrbitTile>
 
 type ChannelTileKey = keyof typeof CHANNEL_TILES
@@ -90,7 +95,7 @@ const OUTER_ORBIT_KEYS: ChannelTileKey[] = [
   "zoom",
   "imessage",
   "google-chat",
-  "discord",
+  "mascot",
   "telegram",
   "whatsapp",
   "teams",
@@ -101,12 +106,12 @@ const OUTER_ORBIT_KEYS: ChannelTileKey[] = [
   "zoom",
   "linear",
   "teams",
-  "whatsapp",
+  "slack",
   "telegram",
-  "discord",
+  "mascot",
   "google-chat",
   "imessage",
-  "slack",
+  "whatsapp",
 ]
 
 const INNER_ORBIT_KEYS: ChannelTileKey[] = [
@@ -192,6 +197,24 @@ function OrbitTile({
     top: `${50 + Math.sin(radians) * radius}%`,
     "--mb-tile-rot": `${angle + 90}deg`,
   } as CSSProperties
+
+  if (tile.key === "mascot") {
+    return (
+      <div
+        className="mb-arc-mascot rounded-full shadow-[0_0_28px_4px_rgba(0,14,49,0.10)]"
+        style={style}
+        aria-hidden
+      >
+        <Image
+          className="size-full"
+          src={mascotIcon}
+          alt=""
+          draggable={false}
+          aria-hidden
+        />
+      </div>
+    )
+  }
 
   const activeTile = { ...tile, id, orbit }
 
@@ -390,14 +413,13 @@ function ConnectChannelArc({
         <div className="mb-arc">
           {backgroundImage && (
             <Image
-              className="object-cover"
+              className="pointer-events-none object-cover"
               src={backgroundImage}
               alt=""
               fill
               sizes={backgroundSizes}
               quality={100}
-              aria-hidden
-              draggable={false}
+              aria-hidden="true"
             />
           )}
 

@@ -194,6 +194,14 @@
   pointer-events: auto;
 }
 
+.mb-arc-mascot {
+  position: absolute;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  transform: rotate(var(--mb-tile-rot, 0deg));
+  pointer-events: none;
+}
+
 .mb-arc-tile-base-bg,
 .mb-arc-tile-hover-bg,
 .mb-arc-tile-hover-border {
@@ -217,11 +225,13 @@
   opacity: 0;
 }
 
-.mb-channel-orbit-outer .mb-arc-tile {
+.mb-channel-orbit-outer .mb-arc-tile,
+.mb-channel-orbit-outer .mb-arc-mascot {
   width: 8.73%;
 }
 
-.mb-channel-orbit-inner .mb-arc-tile {
+.mb-channel-orbit-inner .mb-arc-tile,
+.mb-channel-orbit-inner .mb-arc-mascot {
   width: 11.09%;
 }
 
