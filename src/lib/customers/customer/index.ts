@@ -14,6 +14,8 @@ export async function getCustomerBySlug(
     qParams: { slug },
     preview,
     tags: REVALIDATE_CUSTOMER_TAG,
+    // Drafts must always be fetched fresh so preview reflects the latest edits
+    cache: preview ? "no-store" : "force-cache",
   })
 
   if (!customer) {

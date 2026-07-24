@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 import ConnectChannelArc from "./connect-channel-arc"
+import ConnectMascotEyes from "./connect-mascot-eyes"
 import CopyPromptButton from "./copy-prompt-button"
 import MagicBento from "./magic-bento"
 
@@ -18,6 +19,8 @@ export interface INovuConnectItem {
   imageClassName?: string
   imageSizes?: string
   label?: string
+  /** overlay cursor-following eyes on the mascot in the image */
+  mascotEyes?: boolean
   title: string
 }
 
@@ -122,18 +125,23 @@ function NovuConnect({
                   {item.channelRing ? (
                     <ConnectChannelArc className="bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[43%] 2xl:w-[61.25rem]" />
                   ) : item.image ? (
-                    <Image
-                      className={cn(
-                        "absolute h-auto cursor-grab active:cursor-grabbing",
-                        item.imageClassName
+                    <>
+                      <Image
+                        className={cn(
+                          "absolute h-auto cursor-grab active:cursor-grabbing",
+                          item.imageClassName
+                        )}
+                        src={item.image}
+                        alt=""
+                        sizes={item.imageSizes}
+                        quality={100}
+                        aria-hidden="true"
+                        draggable
+                      />
+                      {item.mascotEyes && (
+                        <ConnectMascotEyes className={item.imageClassName} />
                       )}
-                      src={item.image}
-                      alt=""
-                      sizes={item.imageSizes}
-                      quality={100}
-                      aria-hidden="true"
-                      draggable
-                    />
+                    </>
                   ) : null}
                 </li>
               )

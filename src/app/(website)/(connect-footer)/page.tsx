@@ -8,6 +8,7 @@ import {
   HOME_CONNECT_STACK,
   HOME_CTA,
   HOME_FAQ,
+  HOME_FEATURED_CUSTOMERS,
   HOME_HERO,
   HOME_LIVE_CHANNEL_KEYS,
   HOME_NOVU_CONNECT_INTRO,
@@ -28,13 +29,13 @@ import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jp
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
 import oneConversationGraphic from "@/images/pages/home/novu-connect/one-conversation.jpg"
 import notifyDigestGraphic from "@/images/pages/home/novu-notify/digest.jpg"
-import notifyInboxGraphic from "@/images/pages/home/novu-notify/inbox.png"
 import notifyPreferencesGraphic from "@/images/pages/home/novu-notify/preferences.jpg"
 import notifyWorkflowGraphic from "@/images/pages/home/novu-notify/workflow.jpg"
 import nextjsIcon from "@/svgs/pages/home/inbox/nextjs.svg"
 import reactIcon from "@/svgs/pages/home/inbox/react.svg"
 import remixIcon from "@/svgs/pages/home/inbox/remix.svg"
 
+import { getFeaturedCustomerCards } from "@/lib/customers"
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { highlightEchoCode } from "@/lib/shiki"
@@ -44,6 +45,7 @@ import Compliance from "@/components/pages/home/compliance"
 import ConnectStack from "@/components/pages/home/connect-stack"
 import Cta from "@/components/pages/home/cta"
 import Features from "@/components/pages/home/features"
+import FeaturedCustomers from "@/components/pages/home/featured-customers"
 import TimeOfDay from "@/components/pages/home/features/time-of-day"
 import Hero from "@/components/pages/home/hero"
 import NovuConnect from "@/components/pages/home/novu-connect"
@@ -146,6 +148,7 @@ const contentData = {
         imageClassName:
           "bottom-0 left-1/2 z-[1] w-[min(150%,46rem)] max-w-none -translate-x-1/2 md:w-[105%] 2xl:w-[61.0625rem]",
         imageSizes: "977px",
+        mascotEyes: true,
       },
     ],
   },
@@ -155,10 +158,7 @@ const contentData = {
       {
         ...HOME_NOVU_NOTIFY_ITEMS[0],
         backgroundImage: notifyFeaturedBackground,
-        image: notifyInboxGraphic,
-        imageClassName:
-          "left-105 z-20 w-140 bottom-0 lg:w-[41.875rem] lg:left-120 xl:left-130",
-        imageSizes: "(min-width: 768px) 670px, 1px",
+        liveInbox: true,
       },
       {
         ...HOME_NOVU_NOTIFY_ITEMS[1],
@@ -273,16 +273,35 @@ const softwareApplicationJsonLd = {
 }
 
 export default async function HomePage() {
-  const [highlightedNotifyCodeTabs, featureImplementationHighlightedHtml] =
-    await Promise.all([
-      Promise.all(
-        notifyCodeTabs.map(async (tab) => ({
-          ...tab,
-          highlightedHtml: await highlightEchoCode(tab.code),
-        }))
-      ),
-      highlightEchoCode(featureImplementationCode),
-    ])
+  const [
+    highlightedNotifyCodeTabs,
+    featureImplementationHighlightedHtml,
+    featuredCustomerCards,
+  ] = await Promise.all([
+    Promise.all(
+      notifyCodeTabs.map(async (tab) => ({
+        ...tab,
+        highlightedHtml: await highlightEchoCode(tab.code),
+      }))
+    ),
+    highlightEchoCode(featureImplementationCode),
+    getFeaturedCustomerCards(),
+  ])
+
+  const featuredCustomersJsonLd =
+    featuredCustomerCards.length === 4
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: HOME_FEATURED_CUSTOMERS.title,
+          itemListElement: featuredCustomerCards.map((card, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: card.name,
+            url: `${SITE_URL}${ROUTE.customers}/${card.slug.current}`,
+          })),
+        }
+      : null
 
   const LIVE_CHANNELS = new Set<string>(HOME_LIVE_CHANNEL_KEYS)
   const cliSlugs = HOME_CLI_SLUGS
@@ -445,6 +464,10 @@ export default async function HomePage() {
         {...contentData["novu-notify"]}
         codeTabs={highlightedNotifyCodeTabs}
       />
+      <FeaturedCustomers
+        {...HOME_FEATURED_CUSTOMERS}
+        cards={featuredCustomerCards}
+      />
       <Compliance {...contentData["compliance"]} />
       <FAQ
         {...contentData["faq"]}
@@ -458,7 +481,11 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: safeJsonLdStringify([faqJsonLd, softwareApplicationJsonLd]),
+          __html: safeJsonLdStringify(
+            featuredCustomersJsonLd
+              ? [faqJsonLd, softwareApplicationJsonLd, featuredCustomersJsonLd]
+              : [faqJsonLd, softwareApplicationJsonLd]
+          ),
         }}
       />
     </div>

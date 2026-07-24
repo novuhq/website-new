@@ -10,6 +10,7 @@ import {
   allCustomersQuery,
   customersGridQuery,
   customersPageQuery,
+  featuredCustomerCardsQuery,
   latestCustomersQuery,
 } from "@/lib/sanity/queries/customers"
 
@@ -49,6 +50,18 @@ export async function getCustomersPage(
     ...page,
     customersGrid: customersGrid || [],
   }
+}
+
+export async function getFeaturedCustomerCards(
+  preview = false
+): Promise<ICustomerCardData[]> {
+  const cards = await sanityFetch<Array<ICustomerCardData | null>>({
+    query: featuredCustomerCardsQuery,
+    preview,
+    tags: REVALIDATE_CUSTOMERS_TAG,
+  })
+
+  return (cards || []).filter(isCustomerStoryCard)
 }
 
 export async function getAllCustomers(

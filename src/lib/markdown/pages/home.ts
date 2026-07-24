@@ -7,6 +7,7 @@ import {
   HOME_COMPLIANCE_CERTIFICATIONS,
   HOME_CONNECT_STACK,
   HOME_FAQ,
+  HOME_FEATURED_CUSTOMERS,
   HOME_HERO,
   HOME_LIVE_CHANNEL_KEYS,
   HOME_NOVU_CONNECT_INTRO,
@@ -15,8 +16,10 @@ import {
   HOME_NOVU_NOTIFY_ITEMS,
 } from "@/data/pages/home"
 
+import { getFeaturedCustomerCards } from "@/lib/customers"
+
 import { escapeMarkdownText, formatMarkdownLink } from "../markdown-format"
-import { bulletList, faqMarkdown } from "../page-utils"
+import { bulletList, faqMarkdown, linkList } from "../page-utils"
 import { absoluteUrl, toCanonicalPathname } from "../url"
 
 function section(title: string, content: Array<string | undefined | null>) {
@@ -49,7 +52,30 @@ function channelLine(channel: (typeof HOME_CHANNELS)[number]) {
   return `- ${label}: ${escapeMarkdownText(channel.description)} ${status}`
 }
 
-export function getHomeBody() {
+export async function getHomeBody() {
+  // Mirrors the page rule: the section renders only with the complete set of
+  // 4 curated story cards.
+  const featuredCustomerCards = await getFeaturedCustomerCards()
+  const featuredCustomersSection =
+    featuredCustomerCards.length === 4
+      ? section(HOME_FEATURED_CUSTOMERS.title, [
+          HOME_FEATURED_CUSTOMERS.description,
+          linkList(
+            featuredCustomerCards.map((customer) => ({
+              title: customer.name,
+              href: absoluteUrl(
+                toCanonicalPathname(`/customers/${customer.slug.current}`)
+              ),
+              description: customer.quoteText,
+            }))
+          ),
+          formatMarkdownLink(
+            HOME_FEATURED_CUSTOMERS.linkText,
+            absoluteUrl(toCanonicalPathname("/customers"))
+          ),
+        ])
+      : ""
+
   return [
     HOME_HERO.description,
     `Connect command: \`${HOME_HERO.command}\``,
@@ -66,6 +92,7 @@ export function getHomeBody() {
       HOME_NOVU_NOTIFY_INTRO.description,
       itemSections(HOME_NOVU_NOTIFY_ITEMS),
     ]),
+    featuredCustomersSection,
     section(HOME_COMPLIANCE.title, [
       HOME_COMPLIANCE.description,
       itemSections(
@@ -89,5 +116,7 @@ export function getHomeBody() {
         .map((item) => `- ${item}`)
         .join("\n"),
     ]),
-  ].join("\n\n")
+  ]
+    .filter(Boolean)
+    .join("\n\n")
 }

@@ -3,16 +3,16 @@
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import Image from "next/image"
+import defaultThemeIcon from "@/svgs/pages/home/inbox/default-theme.svg"
+import linearThemeIcon from "@/svgs/pages/home/inbox/linear-theme.svg"
+import notionThemeIcon from "@/svgs/pages/home/inbox/notion-theme.svg"
 import { AnimatePresence, domAnimation, LazyMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
+
+import AdaptiveStatic from "./adaptive-static"
 import inboxData from "./data"
 import InboxContainer from "./inbox-container"
-import AdaptiveStatic from "./adaptive-static"
-
-import defaultThemeIcon from "@/svgs/pages/home/inbox/default-theme.svg"
-import notionThemeIcon from "@/svgs/pages/home/inbox/notion-theme.svg"
-import linearThemeIcon from "@/svgs/pages/home/inbox/linear-theme.svg"
 
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -21,12 +21,17 @@ const SlickSlider = dynamic(() => import("react-slick"), { ssr: false })
 
 function getThemeIcon(theme: string) {
   if (theme === "novuDark" || theme === "novuLight") return defaultThemeIcon
-  if (theme === "notionDark" || theme === "notionLight")
-    return notionThemeIcon
+  if (theme === "notionDark" || theme === "notionLight") return notionThemeIcon
   return linearThemeIcon
 }
 
-function InboxComponent({ className }: { className?: string }) {
+function InboxComponent({
+  className,
+  showThemeSwitcher = true,
+}: {
+  className?: string
+  showThemeSwitcher?: boolean
+}) {
   const [activeTheme, setActiveTheme] = useState(0)
   const [isSliderInitialized, setIsSliderInitialized] = useState(false)
 
@@ -73,30 +78,32 @@ function InboxComponent({ className }: { className?: string }) {
           </AnimatePresence>
         ))}
       </LazyMotion>
-      <div className="absolute top-[calc(100%+30px)] flex items-center justify-center md:top-[calc(100%+22px)] lg:top-[calc(100%+26px)] xl:top-[calc(100%+30px)]">
-        <SlickSlider
-          className={cn(
-            "mx-auto flex max-w-[398px] self-center transition-opacity duration-300 md:max-w-[512px] lg:max-w-[531px] xl:max-w-[608px]",
-            !isSliderInitialized && "opacity-0"
-          )}
-          {...settings}
-        >
-          {inboxData.map((data, index) => (
-            <div
-              key={index}
-              className="!flex items-center gap-x-1.5 text-[14px] uppercase text-gray-9 transition-colors duration-200 hover:text-gray-10"
-            >
-              <Image
-                src={getThemeIcon(data.theme)}
-                alt=""
-                width={16}
-                height={16}
-              />
-              {data.title}
-            </div>
-          ))}
-        </SlickSlider>
-      </div>
+      {showThemeSwitcher && (
+        <div className="absolute top-[calc(100%+30px)] flex items-center justify-center md:top-[calc(100%+22px)] lg:top-[calc(100%+26px)] xl:top-[calc(100%+30px)]">
+          <SlickSlider
+            className={cn(
+              "mx-auto flex max-w-[398px] self-center transition-opacity duration-300 md:max-w-[512px] lg:max-w-[531px] xl:max-w-[608px]",
+              !isSliderInitialized && "opacity-0"
+            )}
+            {...settings}
+          >
+            {inboxData.map((data, index) => (
+              <div
+                key={index}
+                className="!flex items-center gap-x-1.5 text-[14px] text-gray-9 uppercase transition-colors duration-200 hover:text-gray-10"
+              >
+                <Image
+                  src={getThemeIcon(data.theme)}
+                  alt=""
+                  width={16}
+                  height={16}
+                />
+                {data.title}
+              </div>
+            ))}
+          </SlickSlider>
+        </div>
+      )}
     </div>
   )
 }

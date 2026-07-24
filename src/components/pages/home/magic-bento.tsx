@@ -15,9 +15,16 @@ const PARTICLE_COUNT = 12
 export interface IMagicBentoProps {
   children: ReactNode
   className?: string
+  /** spawn hover star particles and click ripples (spotlight + border glow
+   * always run). Turn off for content-heavy cards. */
+  particles?: boolean
 }
 
-function MagicBento({ children, className }: IMagicBentoProps) {
+function MagicBento({
+  children,
+  className,
+  particles = true,
+}: IMagicBentoProps) {
   const rootRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -131,86 +138,88 @@ function MagicBento({ children, className }: IMagicBentoProps) {
     document.addEventListener("mousemove", handleMouseMove)
     document.documentElement.addEventListener("mouseleave", resetGlow)
 
-    const cardCleanups = cards.map((card) => {
-      let timeouts: number[] = []
-      let particles: HTMLElement[] = []
+    const cardCleanups = !particles
+      ? []
+      : cards.map((card) => {
+          let timeouts: number[] = []
+          let spawned: HTMLElement[] = []
 
-      const clearParticles = () => {
-        timeouts.forEach((id) => window.clearTimeout(id))
-        particles.forEach((particle) => particle.remove())
-        timeouts = []
-        particles = []
-      }
+          const clearParticles = () => {
+            timeouts.forEach((id) => window.clearTimeout(id))
+            spawned.forEach((particle) => particle.remove())
+            timeouts = []
+            spawned = []
+          }
 
-      const handleEnter = () => {
-        if (reducedMotion) {
-          return
-        }
+          const handleEnter = () => {
+            if (reducedMotion) {
+              return
+            }
 
-        clearParticles()
+            clearParticles()
 
-        for (let index = 0; index < PARTICLE_COUNT; index++) {
-          timeouts.push(
-            window.setTimeout(() => {
-              const particle = document.createElement("div")
-              particle.className = "magic-bento-particle"
-              particle.style.left = `${10 + Math.random() * 80}%`
-              particle.style.top = `${10 + Math.random() * 80}%`
-              particle.style.setProperty(
-                "--mb-tx",
-                `${(Math.random() - 0.5) * 90}px`
+            for (let index = 0; index < PARTICLE_COUNT; index++) {
+              timeouts.push(
+                window.setTimeout(() => {
+                  const particle = document.createElement("div")
+                  particle.className = "magic-bento-particle"
+                  particle.style.left = `${10 + Math.random() * 80}%`
+                  particle.style.top = `${10 + Math.random() * 80}%`
+                  particle.style.setProperty(
+                    "--mb-tx",
+                    `${(Math.random() - 0.5) * 90}px`
+                  )
+                  particle.style.setProperty(
+                    "--mb-ty",
+                    `${(Math.random() - 0.5) * 90}px`
+                  )
+                  particle.style.setProperty(
+                    "--mb-dur",
+                    `${2 + Math.random() * 2}s`
+                  )
+                  card.appendChild(particle)
+                  spawned.push(particle)
+                }, index * 100)
               )
-              particle.style.setProperty(
-                "--mb-ty",
-                `${(Math.random() - 0.5) * 90}px`
-              )
-              particle.style.setProperty(
-                "--mb-dur",
-                `${2 + Math.random() * 2}s`
-              )
-              card.appendChild(particle)
-              particles.push(particle)
-            }, index * 100)
-          )
-        }
-      }
+            }
+          }
 
-      const handleClick = (event: MouseEvent) => {
-        if (reducedMotion) {
-          return
-        }
+          const handleClick = (event: MouseEvent) => {
+            if (reducedMotion) {
+              return
+            }
 
-        const rect = card.getBoundingClientRect()
-        const x = event.clientX - rect.left
-        const y = event.clientY - rect.top
-        const maxDistance = Math.max(
-          Math.hypot(x, y),
-          Math.hypot(rect.width - x, y),
-          Math.hypot(x, rect.height - y),
-          Math.hypot(rect.width - x, rect.height - y)
-        )
+            const rect = card.getBoundingClientRect()
+            const x = event.clientX - rect.left
+            const y = event.clientY - rect.top
+            const maxDistance = Math.max(
+              Math.hypot(x, y),
+              Math.hypot(rect.width - x, y),
+              Math.hypot(x, rect.height - y),
+              Math.hypot(rect.width - x, rect.height - y)
+            )
 
-        const ripple = document.createElement("div")
-        ripple.className = "magic-bento-ripple"
-        ripple.style.width = `${maxDistance * 2}px`
-        ripple.style.height = `${maxDistance * 2}px`
-        ripple.style.left = `${x - maxDistance}px`
-        ripple.style.top = `${y - maxDistance}px`
-        card.appendChild(ripple)
-        window.setTimeout(() => ripple.remove(), 800)
-      }
+            const ripple = document.createElement("div")
+            ripple.className = "magic-bento-ripple"
+            ripple.style.width = `${maxDistance * 2}px`
+            ripple.style.height = `${maxDistance * 2}px`
+            ripple.style.left = `${x - maxDistance}px`
+            ripple.style.top = `${y - maxDistance}px`
+            card.appendChild(ripple)
+            window.setTimeout(() => ripple.remove(), 800)
+          }
 
-      card.addEventListener("mouseenter", handleEnter)
-      card.addEventListener("mouseleave", clearParticles)
-      card.addEventListener("click", handleClick)
+          card.addEventListener("mouseenter", handleEnter)
+          card.addEventListener("mouseleave", clearParticles)
+          card.addEventListener("click", handleClick)
 
-      return () => {
-        clearParticles()
-        card.removeEventListener("mouseenter", handleEnter)
-        card.removeEventListener("mouseleave", clearParticles)
-        card.removeEventListener("click", handleClick)
-      }
-    })
+          return () => {
+            clearParticles()
+            card.removeEventListener("mouseenter", handleEnter)
+            card.removeEventListener("mouseleave", clearParticles)
+            card.removeEventListener("click", handleClick)
+          }
+        })
 
     return () => {
       cancelAnimationFrame(rafId)
@@ -219,7 +228,7 @@ function MagicBento({ children, className }: IMagicBentoProps) {
       spotlight.remove()
       cardCleanups.forEach((cleanup) => cleanup())
     }
-  }, [])
+  }, [particles])
 
   return (
     <div className={cn("magic-bento", className)} ref={rootRef}>

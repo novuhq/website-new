@@ -257,3 +257,10 @@
 .mb-arc-spoke-dragging .mb-arc-float {
   animation-play-state: paused;
 }
+
+/* The live inbox lives inside a magic-bento-card, so the card's hover
+   text-brighten would recolor the inbox header. Keep the inbox styling intact. */
+.magic-bento-card:hover .notify-live-inbox h3,
+.magic-bento-card:hover .notify-live-inbox p {
+  color: revert-layer;
+}

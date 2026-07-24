@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { draftMode } from "next/headers"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
@@ -27,8 +28,9 @@ interface CustomerStoryPageProps {
 export async function generateMetadata({
   params,
 }: CustomerStoryPageProps): Promise<Metadata> {
+  const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
-  const customerData = await getCustomerBySlug(slug)
+  const customerData = await getCustomerBySlug(slug, isDraftMode)
 
   if (!customerData) {
     return {}
@@ -55,8 +57,9 @@ export async function generateStaticParams() {
 export default async function CustomerStoryPage({
   params,
 }: CustomerStoryPageProps) {
+  const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
-  const postData = await getCustomerBySlug(slug)
+  const postData = await getCustomerBySlug(slug, isDraftMode)
 
   if (!postData) {
     notFound()
@@ -80,7 +83,9 @@ export default async function CustomerStoryPage({
   } = customer
 
   const relatedCustomers =
-    related && related.length > 0 ? related : await getLatestCustomers(slug)
+    related && related.length > 0
+      ? related
+      : await getLatestCustomers(slug, isDraftMode)
 
   const customerPathname = pathname || `${ROUTE.customers}/${slug}`
 

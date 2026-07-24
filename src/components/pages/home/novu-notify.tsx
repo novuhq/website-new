@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button"
 import BentoCardBackground, {
   type BentoCardBackgroundImage,
 } from "./bento-card-background"
+import InboxComponent from "./code-with-inbox/inbox/inbox-component"
 import CopyPromptButton from "./copy-prompt-button"
+import MagicBento from "./magic-bento"
 import NotifyCodeTabs, { type INotifyCodeTab } from "./notify-code-tabs"
 
 export interface INovuNotifyItem {
@@ -20,6 +22,8 @@ export interface INovuNotifyItem {
   imageContainerClassName?: string
   imageSizes?: string
   label?: string
+  /** render the live, interactive Inbox instead of a static screenshot */
+  liveInbox?: boolean
   title: string
 }
 
@@ -104,8 +108,8 @@ function NovuNotify({
           </div>
         </header>
 
-        <div className="mt-12 md:mt-16">
-          <article className="relative flex w-full flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 pb-0 md:block md:h-118 md:p-0">
+        <MagicBento className="mt-12 md:mt-16" particles={false}>
+          <article className="magic-bento-card relative flex w-full flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 pb-0 md:block md:h-118 md:p-0">
             {featuredItem.backgroundImage && (
               <BentoCardBackground
                 backgroundClassName="opacity-80"
@@ -129,7 +133,14 @@ function NovuNotify({
               />
             </div>
 
-            {featuredItem.image && (
+            {featuredItem.liveInbox ? (
+              <div className="notify-live-inbox hidden md:absolute md:inset-0 md:z-20 md:block">
+                <InboxComponent
+                  className="absolute top-11 left-[24.5rem] lg:top-9 lg:left-[27rem] xl:top-8 xl:left-[30.5rem]"
+                  showThemeSwitcher={false}
+                />
+              </div>
+            ) : featuredItem.image ? (
               <div
                 className={cn(
                   "pointer-events-none hidden md:absolute md:inset-0 md:z-20 md:block",
@@ -150,14 +161,14 @@ function NovuNotify({
                   draggable
                 />
               </div>
-            )}
+            ) : null}
           </article>
 
           {supportingItems.length > 0 && (
             <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
               {supportingItems.map((item, index) => (
                 <article
-                  className="relative flex min-h-112 flex-col justify-end overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] px-5 pb-5 lg:h-auto lg:min-h-96 lg:px-6 lg:pb-6 xl:aspect-392/472 xl:min-h-0"
+                  className="magic-bento-card relative flex min-h-112 flex-col justify-end overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] px-5 pb-5 lg:h-auto lg:min-h-96 lg:px-6 lg:pb-6 xl:aspect-392/472 xl:min-h-0"
                   key={`${item.title}-${index}`}
                 >
                   {item.backgroundImage && (
@@ -214,7 +225,7 @@ function NovuNotify({
               ))}
             </div>
           )}
-        </div>
+        </MagicBento>
       </div>
     </section>
   )

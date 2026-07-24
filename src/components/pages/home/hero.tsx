@@ -12,12 +12,18 @@ import trustflightLogo from "@/images/pages/pricing/logos/trustflight.svg"
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
 import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
+import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
 import Logos from "@/components/ui/logos"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 import AnimatedCopyCheck from "./animated-copy-check"
 import {
@@ -47,6 +53,11 @@ const CHANNEL_HOVER_STYLES = {
     border:
       "bg-[linear-gradient(220deg,rgba(46,182,125,0.17)_0%,rgba(224,30,90,0.17)_100%),linear-gradient(213deg,rgba(46,182,125,0.3)_0%,rgba(46,182,125,0)_28.082%,rgba(224,30,90,0)_79.624%,rgba(224,30,90,0.3)_100%)]",
   },
+  teams: {
+    glow: "bg-[radial-gradient(49.9437%_49.9437%_at_80.7327%_8.6316%,rgba(98,100,167,0.25)_0%,rgba(98,100,167,0)_100%),radial-gradient(65.2802%_65.2802%_at_4.4785%_107.1865%,rgba(98,100,167,0.25)_0%,rgba(98,100,167,0)_100%)]",
+    border:
+      "bg-[linear-gradient(220deg,rgba(98,100,167,0.2)_0%,rgba(98,100,167,0.2)_100%),linear-gradient(213deg,rgba(98,100,167,0.35)_0%,rgba(98,100,167,0)_28.082%,rgba(98,100,167,0)_79.624%,rgba(98,100,167,0.35)_100%)]",
+  },
   monochrome: {
     glow: "bg-[radial-gradient(49.9437%_49.9437%_at_80.7327%_8.6316%,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0)_100%),radial-gradient(65.2802%_65.2802%_at_4.4785%_107.1865%,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0)_100%)]",
     border:
@@ -68,36 +79,49 @@ const CHANNELS: Array<{
   name: string
   icon: StaticImageData | string
   hover: (typeof CHANNEL_HOVER_STYLES)[keyof typeof CHANNEL_HOVER_STYLES]
+  command: string
 }> = [
-  {
-    key: "telegram",
-    name: "Telegram",
-    icon: telegramIcon,
-    hover: CHANNEL_HOVER_STYLES.telegram,
-  },
-  {
-    key: "whatsapp",
-    name: "WhatsApp",
-    icon: whatsappIcon,
-    hover: CHANNEL_HOVER_STYLES.green,
-  },
   {
     key: "slack",
     name: "Slack",
     icon: slackIcon,
     hover: CHANNEL_HOVER_STYLES.slack,
+    command: "npx novu connect --channel slack",
   },
   {
-    key: "email",
-    name: "Email",
-    icon: emailIcon,
-    hover: CHANNEL_HOVER_STYLES.monochrome,
+    key: "teams",
+    name: "Microsoft Teams",
+    icon: teamsIcon,
+    hover: CHANNEL_HOVER_STYLES.teams,
+    command: "npx novu connect --channel teams",
   },
   {
     key: "imessage",
     name: "iMessage",
     icon: imessageIcon,
     hover: CHANNEL_HOVER_STYLES.green,
+    command: "npx novu connect --channel sendblue",
+  },
+  {
+    key: "email",
+    name: "Email",
+    icon: emailIcon,
+    hover: CHANNEL_HOVER_STYLES.monochrome,
+    command: "npx novu connect --channel email",
+  },
+  {
+    key: "whatsapp",
+    name: "WhatsApp",
+    icon: whatsappIcon,
+    hover: CHANNEL_HOVER_STYLES.green,
+    command: "npx novu connect --channel whatsapp",
+  },
+  {
+    key: "telegram",
+    name: "Telegram",
+    icon: telegramIcon,
+    hover: CHANNEL_HOVER_STYLES.telegram,
+    command: "npx novu connect --channel telegram",
   },
 ]
 
@@ -156,47 +180,53 @@ function ChannelIcons() {
       role="group"
       aria-label="Explore communication channels"
     >
-      {CHANNELS.map(({ key, name, icon, hover }, index) => (
-        <a
-          className={cn(
-            "group relative flex size-12 cursor-pointer items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-foreground/60 focus-visible:outline-none lg:size-15",
-            index > 0 && "-ml-2.5 lg:-ml-5",
-            CHANNEL_Z_INDEX_CLASSES[index]
-          )}
-          href={`#${HOME_FEATURES_SECTION_ID}`}
-          key={name}
-          onClick={(event) => {
-            event.preventDefault()
-            selectChannel(key)
-          }}
-          aria-label={`Open the ${name} channel example`}
-        >
-          <span className="pointer-events-none relative flex size-full items-center justify-center rounded-full border-[1.5px] border-gray-20 bg-[#05050B] shadow-[0_2px_5px_rgba(13,0,28,0.65)] transition-[border-color,translate] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:border-transparent">
-            <span
+      {CHANNELS.map(({ key, name, icon, hover, command }, index) => (
+        <Tooltip key={name}>
+          <TooltipTrigger asChild>
+            <a
               className={cn(
-                "pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100",
-                hover.glow
+                "group relative flex size-12 cursor-pointer items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-foreground/60 focus-visible:outline-none lg:size-15",
+                index > 0 && "-ml-2.5 lg:-ml-5",
+                CHANNEL_Z_INDEX_CLASSES[index]
               )}
-              aria-hidden="true"
-            />
-            <span
-              className={cn(
-                "pointer-events-none absolute -inset-px rounded-full border-gradient border-[1.5px] opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100",
-                hover.border
-              )}
-              aria-hidden="true"
-            />
-            <Image
-              className="relative z-10 size-6 object-contain lg:size-8"
-              src={icon}
-              alt=""
-              width={22}
-              height={22}
-              loading="eager"
-              aria-hidden="true"
-            />
-          </span>
-        </a>
+              href={`#${HOME_FEATURES_SECTION_ID}`}
+              onClick={(event) => {
+                event.preventDefault()
+                selectChannel(key)
+              }}
+              aria-label={`Open the ${name} channel example`}
+            >
+              <span className="pointer-events-none relative flex size-full items-center justify-center rounded-full border-[1.5px] border-gray-20 bg-[#05050B] shadow-[0_2px_5px_rgba(13,0,28,0.65)] transition-[border-color,translate] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:border-transparent">
+                <span
+                  className={cn(
+                    "pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100",
+                    hover.glow
+                  )}
+                  aria-hidden="true"
+                />
+                <span
+                  className={cn(
+                    "pointer-events-none absolute -inset-px rounded-full border-gradient border-[1.5px] opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100",
+                    hover.border
+                  )}
+                  aria-hidden="true"
+                />
+                <Image
+                  className="relative z-10 size-6 object-contain lg:size-8"
+                  src={icon}
+                  alt=""
+                  width={22}
+                  height={22}
+                  loading="eager"
+                  aria-hidden="true"
+                />
+              </span>
+            </a>
+          </TooltipTrigger>
+          <TooltipContent className="font-mono text-xs whitespace-nowrap">
+            {command}
+          </TooltipContent>
+        </Tooltip>
       ))}
     </span>
   )

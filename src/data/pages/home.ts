@@ -291,6 +291,13 @@ export const HOME_NOVU_NOTIFY_ITEMS = [
   },
 ]
 
+export const HOME_FEATURED_CUSTOMERS = {
+  title: "Featured customer stories",
+  description:
+    "How engineering teams use Novu to ship faster and simplify their communication workflows.",
+  linkText: "See all customers",
+}
+
 export const HOME_COMPLIANCE = {
   title: "Built for enterprise environments",
   description:
@@ -327,34 +334,56 @@ export const HOME_FAQ = {
   accordion: {
     items: [
       {
-        question: "What are Claude Managed Agents?",
+        question: "What is Novu?",
         answer:
-          "Claude Managed Agents are Anthropic’s fully managed infrastructure for building and running autonomous AI agents. You define what the agent should do, the tools it can use, and the guardrails it should follow, while Anthropic handles the managed runtime behind it. Novu Connect then brings that agent into the channels where people already work, such as Slack, WhatsApp, email, Telegram, and Discord.",
+          "Novu is open-source communication infrastructure for products and AI agents. Use Novu Notify to orchestrate product notifications across Inbox, email, SMS, push, and chat. Use Novu Connect to bring AI agents into the channels where users already communicate.",
       },
       {
-        question: "Does Novu manage or host my Claude agent?",
+        question:
+          "What is the difference between Novu Notify and Novu Connect?",
         answer:
-          "No. Your Claude agent remains in your own Anthropic environment. Novu provides the communication layer that connects it to users across supported channels.",
+          "Novu Notify handles workflow-driven notifications from your product to your users. Novu Connect handles two-way conversations between AI agents and people. Both use Novu's channel, identity, and delivery infrastructure.",
       },
       {
-        question: "Can I use a Claude agent I've already built?",
+        question: "Can I connect an AI agent I have already built?",
         answer:
-          "Yes. Connect an existing agent without rebuilding its prompts, tools, or business logic. Novu handles the channel integration around it.",
+          "Yes. You keep your model, prompts, tools, business logic, keys, and runtime. Novu Connect provides the communication layer that receives messages, preserves the conversation, and delivers responses through the selected channels.",
       },
       {
-        question: "Can I share my agent with my team?",
+        question: "Which agent frameworks and runtimes can I use?",
         answer:
-          "Yes. You can expose the same agent in shared team channels and keep conversations available where your team already collaborates.",
+          "Novu Connect works with popular agent frameworks and runtimes, including Claude Managed Agents, AWS Claude Managed Agents, Vercel AI SDK, Chat SDK, LangChain, and custom code. The homepage prompt generator shows the runtimes the CLI currently supports.",
       },
       {
-        question: "How many channels can I connect to a single agent?",
+        question: "Which channels does Novu support?",
         answer:
-          "A single agent can be connected to multiple supported channels, so users can reach it from the channel that fits their workflow.",
+          "Availability depends on the product. Novu Notify supports Inbox and external notification channels such as email, SMS, push, and chat through provider integrations. Novu Connect supports two-way agent conversations on its live channels. Each channel card shows separate Novu Notify and Novu Connect badges so you can see what is available today.",
       },
       {
-        question: "Novu Connect vs Novu Platform",
+        question: "Can one agent communicate across multiple channels?",
         answer:
-          "Novu Connect focuses on two-way conversations between agents and people. The Novu Platform also includes notification workflows, in-app inboxes, email, push, and user preferences.",
+          "Yes. You can connect the same agent to multiple supported channels without rebuilding its core logic for each one. Novu Connect handles communication concerns such as channel delivery, conversation persistence, threading, and user identity while your agent keeps its existing intelligence and tools.",
+      },
+      {
+        question: "Can I use my existing push, SMS, and chat providers?",
+        answer:
+          "Yes. Connect your provider accounts through the Novu Integration Store. Novu gives your application one workflow and API layer while the configured provider handles delivery. You can also configure multiple integrations and use provider-specific settings where required.",
+      },
+      {
+        question: "How do I connect my agent to a channel?",
+        answer:
+          "Choose a channel and your agent framework. The website generates a prompt containing the complete Novu CLI command. Run the command in your project, complete the interactive channel setup, and approve the required dependencies. When the CLI returns a continuation prompt, paste it into your coding agent to finish the integration.",
+      },
+      {
+        question:
+          "Do I need to paste API keys or provider credentials into my coding agent?",
+        answer:
+          "No. Complete authorization and credential entry through the Novu CLI or the provider's secure flow. The generated prompt explicitly tells the coding agent not to request secrets in chat or hardcode them in the project.",
+      },
+      {
+        question: "Can I self-host Novu?",
+        answer:
+          "Novu Community Edition can be self-hosted for core notification infrastructure, including Inbox, email, SMS, push, and chat. Novu Cloud adds managed and enterprise capabilities.",
       },
     ],
   },
