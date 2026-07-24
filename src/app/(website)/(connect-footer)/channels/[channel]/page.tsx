@@ -3,35 +3,18 @@ import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 import { getAllChannelSlugs, getChannelBySlug } from "@/data/pages/channels"
 
-import type { IAgentTemplateData } from "@/types/templates"
 import { getMetadata } from "@/lib/get-metadata"
-import { getAgentTemplates } from "@/lib/templates"
+import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
+import { getStarterAgentTemplates } from "@/lib/templates/starter-templates"
+import { getAgentTemplateUrl } from "@/lib/templates/url"
 import ChannelConnect from "@/components/pages/channels/channel-connect"
 import ChannelConnectStack from "@/components/pages/channels/channel-connect-stack"
 import ChannelHero from "@/components/pages/channels/channel-hero"
 import ChannelTemplates from "@/components/pages/channels/channel-templates"
 import ChannelUseCase from "@/components/pages/channels/channel-use-case"
-import CTA from "@/components/pages/cta"
 import FAQ from "@/components/pages/faq"
-
-// Select the curated starter templates for a channel, in the order listed on
-// the channel's data file. Resilient: if Sanity is unreachable the section is
-// simply omitted, the page still renders.
-async function getStarterTemplates(
-  ids: string[]
-): Promise<IAgentTemplateData[]> {
-  if (!ids.length) return []
-
-  try {
-    const all = await getAgentTemplates()
-    const byId = new Map(all.map((template) => [template.id, template]))
-    return ids
-      .map((id) => byId.get(id))
-      .filter((template): template is IAgentTemplateData => Boolean(template))
-  } catch {
-    return []
-  }
-}
+import CTA from "@/components/pages/home/cta"
 
 type PageProps = {
   params: Promise<{ channel: string }>
@@ -68,34 +51,39 @@ async function ChannelPage({ params }: PageProps) {
     notFound()
   }
 
-  const templates = await getStarterTemplates(channel.starterTemplateIds)
+  const templates = await getStarterAgentTemplates(channel.starterTemplateIds)
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const pageUrl = `${siteUrl}/channels/${channel.slug}`
-  const imageUrl = `${siteUrl}/api/og?template=default&title=${encodeURIComponent(channel.hero.heading)}`
+  const siteUrl = absoluteUrl("/")
+  const pageUrl = absoluteUrl(toCanonicalPathname(`/channels/${channel.slug}`))
+  const connectUrl = absoluteUrl(toCanonicalPathname(String(ROUTE.connect)))
+  const imageUrl = absoluteUrl(
+    `/api/og?template=default&title=${encodeURIComponent(channel.hero.heading)}`
+  )
+  const organizationId = `${siteUrl}#organization`
+  const websiteId = `${siteUrl}#website`
+  const webPageId = `${pageUrl}#webpage`
+  const faqId = `${pageUrl}#faq`
+  const breadcrumbId = `${pageUrl}#breadcrumb`
+  const howToId = `${pageUrl}#howto`
+  const templatesId = `${pageUrl}#starter-templates`
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: channel.seoTitle,
+  const webPageJsonLd = {
+    "@type": "WebPage",
+    "@id": webPageId,
+    name: channel.seoTitle,
     description: channel.seoDescription,
     url: pageUrl,
     image: imageUrl,
-    author: { "@type": "Organization", name: "Novu", url: "https://novu.co" },
-    publisher: {
-      "@type": "Organization",
-      name: "Novu",
-      url: "https://novu.co",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
-      },
-    },
+    isPartOf: { "@id": websiteId },
+    publisher: { "@id": organizationId },
+    breadcrumb: { "@id": breadcrumbId },
+    mainEntity: [{ "@id": faqId }, { "@id": howToId }],
+    ...(templates.length ? { hasPart: { "@id": templatesId } } : {}),
   }
 
   const faqJsonLd = {
-    "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": faqId,
     mainEntity: channel.faq.map((item) => ({
       "@type": "Question",
       name: item.question,
@@ -107,20 +95,20 @@ async function ChannelPage({ params }: PageProps) {
   }
 
   const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": breadcrumbId,
     itemListElement: [
       {
         "@type": "ListItem",
         position: 1,
         name: "Novu",
-        item: siteUrl || "https://novu.co",
+        item: siteUrl,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Novu Connect",
-        item: `${siteUrl}${ROUTE.connect}`,
+        item: connectUrl,
       },
       {
         "@type": "ListItem",
@@ -133,22 +121,22 @@ async function ChannelPage({ params }: PageProps) {
 
   const templatesItemListJsonLd = templates.length
     ? {
-        "@context": "https://schema.org",
         "@type": "ItemList",
+        "@id": templatesId,
         name: `Starter AI agent templates for ${channel.channelName}`,
         itemListElement: templates.map((template, index) => ({
           "@type": "ListItem",
           position: index + 1,
           name: `${template.name} agent`,
           description: template.summary,
-          url: `${ROUTE.connectApp}?agentTemplateId=${template.id}`,
+          url: getAgentTemplateUrl(template.id),
         })),
       }
     : null
 
   const howToJsonLd = {
-    "@context": "https://schema.org",
     "@type": "HowTo",
+    "@id": howToId,
     name: `How to connect an AI agent to ${channel.channelName} with Novu Connect`,
     description: channel.citation,
     step: [
@@ -173,13 +161,16 @@ async function ChannelPage({ params }: PageProps) {
     ],
   }
 
-  const jsonLdGraph = [
-    articleJsonLd,
-    faqJsonLd,
-    breadcrumbJsonLd,
-    howToJsonLd,
-    ...(templatesItemListJsonLd ? [templatesItemListJsonLd] : []),
-  ]
+  const jsonLdGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      webPageJsonLd,
+      faqJsonLd,
+      breadcrumbJsonLd,
+      howToJsonLd,
+      ...(templatesItemListJsonLd ? [templatesItemListJsonLd] : []),
+    ],
+  }
 
   return (
     <div className="overflow-clip">
@@ -189,8 +180,12 @@ async function ChannelPage({ params }: PageProps) {
       <ChannelConnect channel={channel} />
       <ChannelConnectStack channel={channel} />
       <FAQ
-        className="relative z-10"
+        className="relative z-10 mt-18 pt-0 pb-0 sm:pb-0 md:pt-0 md:pb-0 lg:pb-0"
         title={`${channel.channelName} and Novu Connect, common questions`}
+        titleClassName="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] md:text-[2rem]"
+        containerClassName="max-w-176 gap-y-8 lg:max-w-176 lg:px-0"
+        defaultOpenFirst
+        variant="minimal"
         accordion={{
           items: channel.faq.map((item) => ({
             question: item.question,
@@ -211,7 +206,7 @@ async function ChannelPage({ params }: PageProps) {
           },
           {
             kind: "secondary-button",
-            label: "Book a demo",
+            label: "Book a Demo",
             href: ROUTE.bookADemoConnect,
             clickLocation: `channel_${channel.slug}_cta`,
             clickText: "book_a_demo",
@@ -221,7 +216,7 @@ async function ChannelPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLdGraph).replace(/</g, "\\u003c"),
+          __html: safeJsonLdStringify(jsonLdGraph),
         }}
       />
     </div>

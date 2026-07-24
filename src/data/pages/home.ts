@@ -292,10 +292,33 @@ export const HOME_NOVU_NOTIFY_ITEMS = [
 ]
 
 export const HOME_FEATURED_CUSTOMERS = {
-  title: "Featured customer stories",
-  description:
-    "How engineering teams use Novu to ship faster and simplify their communication workflows.",
+  title: "How engineering teams ship faster with Novu",
   linkText: "See all customers",
+  items: [
+    {
+      company: "Unified",
+      quote:
+        "Novu’s UI lets us handle configuration without reinventing the wheel, that's a huge savings on development and maintenance",
+      authorName: "Tin Nguyen",
+      authorPosition: "Lead Engineer",
+      logo: "unified" as const,
+    },
+    {
+      company: "Veritext AI Partners",
+      quote: "Novu is already working successfully across multiple teams",
+      authorName: "Jared Millman",
+      authorPosition: "Software Engineer",
+      logo: "veritext" as const,
+    },
+    {
+      company: "Deriv",
+      quote:
+        "Implementing new notifications is centralized, secure, and straightforward. It helps us focus on our core business and ship fast",
+      authorName: "Denis Safiullin",
+      authorPosition: "Deriv Backend Team Lead",
+      logo: "deriv" as const,
+    },
+  ],
 }
 
 export const HOME_COMPLIANCE = {

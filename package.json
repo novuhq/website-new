@@ -9,6 +9,7 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
+    "test": "tsx --test tests/*.test.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
@@ -117,6 +118,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.1.7",
     "tw-animate-css": "^1.3.0",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "typescript-eslint": "^8.32.1"
   }

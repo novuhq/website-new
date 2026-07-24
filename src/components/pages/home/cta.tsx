@@ -1,4 +1,6 @@
+import type { TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
+import ActionGroup from "@/components/ui/action-group"
 import { CopyCommand } from "@/components/ui/copy-command"
 import { FinalCtaVideo } from "@/components/pages/final-cta"
 
@@ -6,6 +8,7 @@ import AnimatedCopyCheck from "./animated-copy-check"
 import CopyPromptButton from "./copy-prompt-button"
 
 interface ICTAProps {
+  actions?: TSectionAction[]
   className?: string
   command?: string
   description: string
@@ -17,6 +20,7 @@ const DEFAULT_PROMPT =
   "Connect my app or AI agent to customers with Novu. Set up reliable delivery, channel routing, and user preferences."
 
 function Cta({
+  actions,
   className,
   title,
   description,
@@ -40,22 +44,29 @@ function Cta({
         <p className="mt-4 max-w-151.5 text-base font-normal tracking-tighter text-balance text-gray-60 lg:text-xl/normal">
           {description}
         </p>
-        <div className="mt-8 flex w-full flex-col items-center justify-center gap-5 sm:w-auto sm:flex-row">
-          <CopyCommand
-            className="w-full max-w-xs sm:w-70.5"
-            controlClassName="pl-3"
-            command={command}
-            variant="highlighted"
-            copiedContent={<AnimatedCopyCheck />}
+        {actions?.length ? (
+          <ActionGroup
+            className="mt-8 gap-x-5 max-sm:w-full max-sm:flex-col md:gap-x-5 [&_[data-slot=button]]:h-11 [&_[data-slot=button]]:min-w-0 [&_[data-slot=button]]:rounded-md [&_[data-slot=button]]:px-5 [&_[data-slot=button]]:text-base [&_[data-slot=button]]:tracking-[-0.025em] [&_[data-slot=button]]:normal-case max-sm:[&_[data-slot=button]]:w-full"
+            actions={actions}
           />
-          <CopyPromptButton
-            className="h-11 w-full max-w-xs px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
-            variant="outline-transparent"
-            size="none"
-            resetInterval={2000}
-            value={prompt}
-          />
-        </div>
+        ) : (
+          <div className="mt-8 flex w-full flex-col items-center justify-center gap-5 sm:w-auto sm:flex-row">
+            <CopyCommand
+              className="w-full max-w-xs sm:w-70.5"
+              controlClassName="pl-3"
+              command={command}
+              variant="highlighted"
+              copiedContent={<AnimatedCopyCheck />}
+            />
+            <CopyPromptButton
+              className="h-11 w-full max-w-xs px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
+              variant="outline-transparent"
+              size="none"
+              resetInterval={2000}
+              value={prompt}
+            />
+          </div>
+        )}
       </div>
 
       <FinalCtaVideo className="relative -mt-20 aspect-auto h-65 md:-mt-40 md:h-100 lg:-mt-54 lg:aspect-1920/742 lg:h-184" />

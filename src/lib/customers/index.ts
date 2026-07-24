@@ -87,6 +87,7 @@ export async function getLatestCustomers(
     qParams: { currentSlug },
     preview,
     tags: REVALIDATE_CUSTOMERS_TAG,
+    cache: preview ? "no-store" : "force-cache",
   })
   return customers || []
 }

@@ -1,33 +1,54 @@
+import Image, { type StaticImageData } from "next/image"
 import { ROUTE } from "@/constants/routes"
+import derivLogo from "@/images/pages/home/featured-customers/deriv.svg"
+import unifiedLogo from "@/images/pages/home/featured-customers/unified.svg"
+import veritextLogo from "@/images/pages/home/featured-customers/veritext.svg"
 
-import { ICustomerCardData } from "@/types/customers"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
-import HeroCard from "@/components/pages/customers/hero-card"
+
+type CustomerLogo = "deriv" | "unified" | "veritext"
+
+interface IFeaturedCustomerTestimonial {
+  authorName: string
+  authorPosition: string
+  company: string
+  logo: CustomerLogo
+  quote: string
+}
 
 interface IFeaturedCustomersProps {
   className?: string
-  title: string
-  description: string
+  items: IFeaturedCustomerTestimonial[]
   linkText: string
-  cards: ICustomerCardData[]
+  title: string
 }
 
-// HeroCard's CARDS_CONFIG is position-dependent (big/small/small/big), so the
-// section only renders with the complete set of 4 curated story cards.
-const REQUIRED_CARDS_COUNT = 4
+const CUSTOMER_LOGOS: Record<
+  CustomerLogo,
+  { className: string; image: StaticImageData }
+> = {
+  unified: {
+    image: unifiedLogo,
+    className: "w-25.5",
+  },
+  veritext: {
+    image: veritextLogo,
+    className: "w-23.75",
+  },
+  deriv: {
+    image: derivLogo,
+    className: "w-21.5",
+  },
+}
 
 function FeaturedCustomers({
   className,
   title,
-  description,
   linkText,
-  cards,
+  items,
 }: IFeaturedCustomersProps) {
-  if (cards.length !== REQUIRED_CARDS_COUNT) {
-    return null
-  }
-
   return (
     <section
       className={cn(
@@ -36,28 +57,56 @@ function FeaturedCustomers({
       )}
       aria-labelledby="featured-customers-heading"
     >
-      <div className="mx-auto flex w-full max-w-3xl flex-col px-5 md:px-8 lg:max-w-288">
-        <header className="flex flex-col items-start">
+      <div className="section-container">
+        <header className="flex flex-col items-start justify-between gap-6 md:flex-row md:gap-12">
           <h2
             id="featured-customers-heading"
-            className="text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl md:leading-[1.125] xl:max-w-136 xl:text-[3.5rem]"
+            className="max-w-134.5 text-[2rem] leading-[1.125] font-normal tracking-plus-tight text-balance text-foreground md:text-5xl"
           >
             {title}
           </h2>
-          <p className="mt-4 max-w-xl text-base font-normal tracking-tighter text-gray-60 md:text-lg md:leading-normal xl:text-xl xl:leading-normal">
-            {description}
-          </p>
-          <Link
-            className="mt-4 text-base leading-none tracking-tight text-lagune-3 transition-colors duration-200 hover:text-lagune-2"
-            href={ROUTE.customers}
+          <Button
+            asChild
+            className="h-10.5 shrink-0 px-5 text-base leading-none tracking-tight normal-case md:mb-3 md:self-end"
+            size="none"
           >
-            {linkText}
-          </Link>
+            <Link href={ROUTE.customers} size="none" variant="clean">
+              {linkText}
+            </Link>
+          </Button>
         </header>
-        <ul className="relative mt-10 flex w-full flex-row flex-wrap gap-4 md:mt-12 md:gap-7 lg:mt-14 lg:gap-8">
-          {cards.map((card, index) => (
-            <HeroCard key={card._id} {...card} index={index} />
-          ))}
+
+        <ul className="mt-12 grid grid-cols-1 gap-12 border-t border-gray-20 pt-12 md:grid-cols-3 md:gap-8 lg:gap-16">
+          {items.map((item) => {
+            const logo = CUSTOMER_LOGOS[item.logo]
+
+            return (
+              <li
+                className="flex min-w-0 flex-col justify-between gap-12 md:min-h-65.25"
+                key={item.company}
+              >
+                <blockquote className="text-lg leading-normal font-normal tracking-tighter text-gray-80">
+                  “{item.quote}”
+                </blockquote>
+
+                <div className="flex flex-col gap-4">
+                  <p className="text-sm leading-[1.375] font-normal tracking-tighter text-gray-60">
+                    {item.authorName},
+                    <br />
+                    {item.authorPosition}
+                  </p>
+                  <Image
+                    src={logo.image}
+                    alt={item.company}
+                    className={cn(
+                      "h-7 object-contain object-left",
+                      logo.className
+                    )}
+                  />
+                </div>
+              </li>
+            )
+          })}
         </ul>
       </div>
     </section>

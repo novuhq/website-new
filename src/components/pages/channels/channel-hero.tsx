@@ -1,4 +1,3 @@
-import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 
@@ -8,33 +7,24 @@ import CliCommand from "@/components/pages/home/features/cli-command"
 
 function ChannelHero({ channel }: { channel: IChannelPageData }) {
   return (
-    <section className="relative pt-16 pb-10 md:pt-24 md:pb-14 lg:pt-36 xl:pt-45">
-      <div className="container mx-auto flex max-w-208 flex-col items-center px-5 text-center md:px-8">
-        <div className="flex items-center gap-3">
-          <Image
-            src={channel.icon}
-            alt=""
-            width={32}
-            height={32}
-            className="size-8"
-            aria-hidden
-            unoptimized
-          />
-          <span className="bg-[linear-gradient(238deg,#FFBA33_32%,#FF006A_71%,#FF4CE1_103%)] bg-clip-text text-sm font-medium tracking-tighter text-transparent uppercase">
+    <section className="relative pt-20 md:pt-24 lg:pt-32">
+      <div className="container mx-auto flex max-w-176 flex-col items-start px-5 md:px-8 lg:px-0">
+        <div className="flex flex-col items-start gap-3.5">
+          <span className="rounded-full border border-purple-3/40 bg-purple-3/30 px-2.5 py-1.25 text-sm leading-none font-normal tracking-tighter text-purple-1">
             {channel.hero.eyebrow}
           </span>
+          <h1 className="max-w-full text-[2.25rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-5xl">
+            {channel.hero.heading}
+          </h1>
         </div>
-        <h1 className="mt-5 text-[1.75rem] leading-dense font-medium tracking-tighter text-white md:text-[2.25rem] lg:text-[2.75rem]">
-          {channel.hero.heading}
-        </h1>
-        <p className="mt-4 max-w-176 text-base font-book tracking-tighter text-gray-8 md:text-lg">
+        <p className="mt-4 max-w-168.5 text-base leading-normal font-normal tracking-tighter text-gray-70 md:text-xl md:leading-normal">
           {channel.hero.subheading}
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
           <Button
-            size="lg"
+            size="none"
             variant="default"
-            className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full"
+            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
             asChild
           >
             <NextLink
@@ -47,6 +37,7 @@ function ChannelHero({ channel }: { channel: IChannelPageData }) {
           </Button>
           <CliCommand
             command={`npx novu connect --channel ${channel.cliSlug}`}
+            className="w-full rounded-md border-[#25262c] bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-97.5"
           />
         </div>
       </div>

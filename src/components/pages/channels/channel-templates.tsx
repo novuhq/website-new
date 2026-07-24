@@ -1,24 +1,63 @@
 /* eslint-disable @next/next/no-img-element */
 import NextLink from "next/link"
-import { ROUTE } from "@/constants/routes"
 
 import type { IChannelPageData } from "@/types/channel"
-import type { IAgentTemplateData } from "@/types/templates"
+import type {
+  IAgentTemplateData,
+  ITemplateIconReferenceData,
+} from "@/types/templates"
+import { getAgentTemplateUrl } from "@/lib/templates/url"
 
-function TemplateSkillChip({ label }: { label: string }) {
+function TemplateBadge({ item }: { item: ITemplateIconReferenceData }) {
   return (
-    <span className="flex min-h-7 items-center rounded border border-[rgba(51,51,71,0.5)] px-2.5 py-1 text-[0.8125rem] leading-none tracking-normal text-gray-10">
-      {label}
+    <span className="flex min-h-8 max-w-full items-center gap-1 rounded border border-[rgba(51,51,71,0.5)] py-1.5 pr-2.5 pl-1.5">
+      {item.icon?.url ? (
+        <img
+          src={item.icon.url}
+          alt=""
+          width={20}
+          height={20}
+          className="size-5 shrink-0 object-contain"
+          aria-hidden
+        />
+      ) : null}
+      <span className="truncate text-[0.9375rem] leading-none font-normal tracking-normal text-gray-10">
+        {item.name}
+      </span>
     </span>
+  )
+}
+
+function TemplateBadgeRow({
+  items,
+  title,
+}: {
+  items: ITemplateIconReferenceData[]
+  title: string
+}) {
+  if (!items.length) {
+    return null
+  }
+
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <p className="text-[0.9375rem] leading-none font-light tracking-tighter text-gray-50">
+        {title}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item, index) => (
+          <TemplateBadge key={`${item.id || item.name}-${index}`} item={item} />
+        ))}
+      </div>
+    </div>
   )
 }
 
 function ChannelTemplateCard({ template }: { template: IAgentTemplateData }) {
   const avatarUrl = template.avatar?.darkImage?.url
-  const skills = (template.skillsList ?? []).slice(0, 4)
 
   return (
-    <article className="group/card relative flex h-full w-full flex-col items-start overflow-hidden rounded-xl border border-[rgba(51,51,71,0.5)] bg-[rgba(15,15,21,0.8)] p-6">
+    <article className="relative flex min-h-119 w-full flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0b0c0e] p-7">
       <div className="flex w-full items-start justify-between gap-4">
         {avatarUrl ? (
           <img
@@ -26,49 +65,52 @@ function ChannelTemplateCard({ template }: { template: IAgentTemplateData }) {
             alt=""
             width={44}
             height={44}
-            className="size-11 rounded-lg object-cover"
+            className="size-11 rounded-lg object-contain"
             aria-hidden
           />
         ) : (
           <span className="size-11 rounded-lg bg-gray-3" aria-hidden />
         )}
         {template.category?.title ? (
-          <span className="flex shrink-0 items-center rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 py-1 text-[0.8125rem] leading-none tracking-tighter text-gray-10">
+          <span className="flex min-h-6.25 shrink-0 items-center rounded-xl border border-[#333347] bg-[rgba(38,38,52,0.8)] px-2.5 py-1.5 text-[0.8125rem] leading-none font-normal tracking-tighter text-gray-10">
             {template.category.title}
           </span>
         ) : null}
       </div>
 
-      <div className="mt-5 flex items-baseline gap-1.5">
-        <h3 className="text-lg leading-tight font-medium tracking-tighter text-white">
+      <div className="mt-5 flex min-w-0 items-baseline gap-2">
+        <h3 className="min-w-0 text-lg leading-none font-medium tracking-tighter text-white">
           {template.name}
         </h3>
-        <span className="text-base leading-none text-gray-7" aria-hidden>
+        <span
+          className="shrink-0 text-base leading-none text-gray-50"
+          aria-hidden
+        >
           &bull;
         </span>
-        <p className="text-base leading-none font-book tracking-normal text-gray-7">
+        <p className="truncate text-base leading-none font-normal tracking-normal text-gray-50">
           {template.agentName}
         </p>
       </div>
 
-      <p className="mt-3 w-full text-base leading-snug font-light tracking-normal text-gray-9">
+      <p className="mt-3 min-h-22 w-full text-base leading-snug font-light tracking-normal text-gray-80">
         {template.summary}
       </p>
 
-      {skills.length > 0 ? (
-        <div className="mt-5 flex w-full flex-wrap gap-2">
-          {skills.map((skill) => (
-            <TemplateSkillChip key={skill} label={skill} />
-          ))}
-        </div>
-      ) : null}
+      <div className="mt-5 flex w-full flex-col gap-6">
+        <TemplateBadgeRow
+          title="MCP connectors"
+          items={template.mcpServerList ?? []}
+        />
+        <TemplateBadgeRow title="Channels" items={template.channels ?? []} />
+      </div>
 
       <div className="mt-auto w-full pt-6">
         <NextLink
-          href={`${ROUTE.connectApp}?agentTemplateId=${template.id}`}
+          href={getAgentTemplateUrl(template.id)}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 w-full items-center justify-center rounded border border-[#534b5d] px-5 text-xs leading-none font-medium tracking-normal text-white uppercase transition-colors hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:outline-none"
+          className="flex h-11 w-full items-center justify-center rounded-md border border-gray-40 px-5 text-base leading-none font-medium tracking-[-0.025em] text-white transition-colors hover:border-gray-50 focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:outline-none"
           data-click-location="channel_templates"
           data-click-text={`use_${template.id}_template`}
           aria-label={`Use the ${template.name} template`}
@@ -91,20 +133,20 @@ function ChannelTemplates({ channel, templates }: IChannelTemplatesProps) {
   }
 
   return (
-    <section className="safe-paddings py-14 md:py-20">
-      <div className="container mx-auto max-w-320 px-5 md:px-8">
-        <div className="max-w-208">
-          <h2 className="text-[28px] leading-dense font-medium tracking-tighter text-white md:text-[32px]">
+    <section className="safe-paddings mt-18">
+      <div className="container mx-auto max-w-176 px-5 md:px-8 lg:px-0">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-white md:text-[2rem]">
             Start with a ready-made agent for {channel.channelName}
           </h2>
-          <p className="mt-3 text-base font-book tracking-tighter text-gray-8">
-            Pick a starter agent with its prompt, tools, and skills already wired
-            up, then connect it to {channel.channelName}. Template to a live agent
-            in about two minutes.
+          <p className="text-base leading-normal font-normal tracking-tighter text-gray-80">
+            Pick a starter agent with its prompt, tools, and skills already
+            wired up, then connect it to {channel.channelName}. Template to a
+            live agent in about two minutes.
           </p>
         </div>
 
-        <div className="mt-9 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
           {templates.map((template) => (
             <ChannelTemplateCard key={template.id} template={template} />
           ))}

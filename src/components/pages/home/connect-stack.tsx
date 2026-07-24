@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import Image, { type StaticImageData } from "next/image"
-import aiSdkIcon from "@/images/pages/home/ai-sdk-icon.png"
-import langchainIcon from "@/images/pages/home/langchain-icon.svg"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
+import chatSdkIcon from "@/svgs/pages/home/stack/chat-sdk.svg"
+import customCodeIcon from "@/svgs/pages/home/stack/custom-code.svg"
 import emailIcon from "@/svgs/pages/home/stack/email.svg"
+import langChainIcon from "@/svgs/pages/home/stack/lang-chain.svg"
 import slackIcon from "@/svgs/pages/home/stack/slack.svg"
 import teamsIcon from "@/svgs/pages/home/stack/teams.svg"
 import telegramIcon from "@/svgs/pages/home/stack/telegram.svg"
@@ -31,6 +32,7 @@ export interface IConnectStackProps {
   defaultChannelValue?: string
   description?: string
   title: string
+  variant?: "compact" | "default"
 }
 
 const DEFAULT_CHANNELS: IStackOption[] = [
@@ -70,20 +72,22 @@ const DEFAULT_FRAMEWORKS: IStackOption[] = [
   {
     value: "ai-sdk",
     label: "Vercel AI SDK",
-    icon: aiSdkIcon,
+    icon: chatSdkIcon,
   },
   {
     value: "langchain",
     label: "LangChain",
-    icon: langchainIcon,
+    icon: langChainIcon,
   },
   {
     value: "custom-code",
     label: "Custom code",
+    icon: customCodeIcon,
   },
   {
     value: "chat-sdk",
     label: "Chat SDK",
+    icon: chatSdkIcon,
   },
 ]
 
@@ -152,7 +156,7 @@ function SelectField({
 
         <SelectPrimitive.Portal>
           <SelectPrimitive.Content
-            className="z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black shadow-xl"
+            className="z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black font-inter shadow-xl"
             position="popper"
             sideOffset={2}
           >
@@ -198,7 +202,9 @@ function ConnectStack({
   channels: channelOptions,
   defaultChannelValue,
   aiFrameworks: frameworkOptions,
+  variant = "default",
 }: IConnectStackProps) {
+  const isCompact = variant === "compact"
   const channels = channelOptions?.length ? channelOptions : DEFAULT_CHANNELS
   const frameworks = frameworkOptions?.length
     ? frameworkOptions
@@ -231,23 +237,57 @@ I will complete the interactive CLI and approve dependency installs when asked. 
     <section
       className={cn(
         "connect-stack mt-24 w-full font-inter md:mt-28 lg:mt-32 xl:mt-50",
+        isCompact && "mt-18 md:mt-18 lg:mt-18 xl:mt-18",
         className
       )}
     >
-      <div className="mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16 2xl:grid-cols-[38rem_32rem] 2xl:gap-40">
-        <header className="flex max-w-152 flex-col lg:pt-8">
-          <h2 className="text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.75rem] md:leading-[1.125] md:tracking-plus-tight">
+      <div
+        className={cn(
+          "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16 2xl:grid-cols-[38rem_32rem] 2xl:gap-40",
+          isCompact &&
+            "max-w-176 gap-8 lg:max-w-176 lg:grid-cols-1 lg:gap-8 lg:px-0 2xl:grid-cols-1 2xl:gap-8"
+        )}
+      >
+        <header
+          className={cn(
+            "flex max-w-152 flex-col lg:pt-8",
+            isCompact && "max-w-full lg:pt-0"
+          )}
+        >
+          <h2
+            className={cn(
+              "text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.75rem] md:leading-[1.125] md:tracking-plus-tight",
+              isCompact &&
+                "md:text-[2rem] md:leading-[1.125] md:tracking-[-0.04em]"
+            )}
+          >
             {title}
           </h2>
           {description && (
-            <p className="mt-4 max-w-152 text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-xl md:leading-normal">
+            <p
+              className={cn(
+                "mt-4 max-w-152 text-base leading-normal tracking-tight text-pretty text-gray-70 md:text-xl md:leading-normal",
+                isCompact &&
+                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base md:leading-normal"
+              )}
+            >
               {description}
             </p>
           )}
         </header>
 
-        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:h-102">
-          <div className="border-b border-gray-20 p-5 md:p-8 lg:h-55.5">
+        <div
+          className={cn(
+            "w-full overflow-hidden rounded-xl border border-gray-20 lg:h-102",
+            isCompact && "lg:h-101.75"
+          )}
+        >
+          <div
+            className={cn(
+              "border-b border-gray-20 p-5 md:p-8 lg:h-55.5",
+              isCompact && "lg:h-55.5"
+            )}
+          >
             <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground md:text-[1.375rem]">
               Connect your stack
             </h3>

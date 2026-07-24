@@ -5,6 +5,7 @@ import Script from "next/script"
 import { Providers } from "@/contexts"
 
 import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import DemoBookingTracker from "@/components/demo-booking-tracker"
 import Fonts from "@/components/fonts"
@@ -36,6 +37,9 @@ async function WebsiteLayoutShell({
   wrapperClassName,
 }: WebsiteLayoutShellProps) {
   const { isEnabled: isDraftMode } = await draftMode()
+  const siteUrl = absoluteUrl("/")
+  const organizationId = `${siteUrl}#organization`
+  const websiteId = `${siteUrl}#website`
 
   return (
     <>
@@ -81,9 +85,10 @@ async function WebsiteLayoutShell({
             __html: safeJsonLdStringify({
               "@context": "https://schema.org",
               "@type": "Organization",
+              "@id": organizationId,
               name: "Novu",
-              url: "https://novu.co",
-              logo: "https://novu.co/images/logo.svg",
+              url: siteUrl,
+              logo: absoluteUrl("/images/logo.svg"),
               sameAs: [
                 "https://github.com/novuhq/novu",
                 "https://twitter.com/novuhq",
@@ -101,8 +106,12 @@ async function WebsiteLayoutShell({
             __html: safeJsonLdStringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": websiteId,
               name: "Novu",
-              url: "https://novu.co",
+              url: siteUrl,
+              publisher: {
+                "@id": organizationId,
+              },
               description:
                 "Novu is the open-source notification and agent communication infrastructure that connects AI agents and products to customers across every channel.",
             }),

@@ -16,10 +16,8 @@ import {
   HOME_NOVU_NOTIFY_ITEMS,
 } from "@/data/pages/home"
 
-import { getFeaturedCustomerCards } from "@/lib/customers"
-
 import { escapeMarkdownText, formatMarkdownLink } from "../markdown-format"
-import { bulletList, faqMarkdown, linkList } from "../page-utils"
+import { bulletList, faqMarkdown } from "../page-utils"
 import { absoluteUrl, toCanonicalPathname } from "../url"
 
 function section(title: string, content: Array<string | undefined | null>) {
@@ -53,28 +51,18 @@ function channelLine(channel: (typeof HOME_CHANNELS)[number]) {
 }
 
 export async function getHomeBody() {
-  // Mirrors the page rule: the section renders only with the complete set of
-  // 4 curated story cards.
-  const featuredCustomerCards = await getFeaturedCustomerCards()
-  const featuredCustomersSection =
-    featuredCustomerCards.length === 4
-      ? section(HOME_FEATURED_CUSTOMERS.title, [
-          HOME_FEATURED_CUSTOMERS.description,
-          linkList(
-            featuredCustomerCards.map((customer) => ({
-              title: customer.name,
-              href: absoluteUrl(
-                toCanonicalPathname(`/customers/${customer.slug.current}`)
-              ),
-              description: customer.quoteText,
-            }))
-          ),
-          formatMarkdownLink(
-            HOME_FEATURED_CUSTOMERS.linkText,
-            absoluteUrl(toCanonicalPathname("/customers"))
-          ),
-        ])
-      : ""
+  const featuredCustomersSection = section(HOME_FEATURED_CUSTOMERS.title, [
+    bulletList(
+      HOME_FEATURED_CUSTOMERS.items.map(
+        (item) =>
+          `“${item.quote}” — ${item.authorName}, ${item.authorPosition} at ${item.company}`
+      )
+    ),
+    formatMarkdownLink(
+      HOME_FEATURED_CUSTOMERS.linkText,
+      absoluteUrl(toCanonicalPathname("/customers"))
+    ),
+  ])
 
   return [
     HOME_HERO.description,

@@ -16,31 +16,36 @@ interface ExtendedSanityDocument extends SanityDocument {
   }
 }
 
-const host = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
+function getPreviewPath(
+  doc: ExtendedSanityDocument | null,
+  schemaType: string
+) {
+  const route = PREVIEW_ROUTES[schemaType as DraftsSchemaTypes]
+  if (!route) {
+    return new Error(`Preview route is not configured for ${schemaType}`)
+  }
 
-/**
- * Get preview url with api/preview
- * @param doc
- * @param schemaType
- */
-const getPreviewUrl = (doc: ExtendedSanityDocument, schemaType: string) => {
-  const url = new URL("/api/preview", host)
-  const redirectUrl = PREVIEW_ROUTES?.[schemaType as DraftsSchemaTypes] ?? ""
+  if (schemaType === DraftsSchemaTypes.CUSTOMER && !doc?.slug?.current) {
+    return new Error("A customer story needs a slug before it can be previewed")
+  }
 
-  url.searchParams.append(
-    "secret",
-    process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET!
-  )
+  const slug = doc?.slug?.current
+  return `${String(route)}${slug ? `/${encodeURIComponent(slug)}` : ""}`
+}
 
-  url.searchParams.append(
-    "redirect_url",
-    new URL(
-      `${redirectUrl}${doc?.slug?.current ? `/${doc.slug.current}` : ""}`,
-      host
-    ).toString()
-  )
-
-  return url.toString()
+function getIframeOptions(schemaType: string) {
+  return {
+    url: {
+      origin: "same-origin" as const,
+      preview: (doc: ExtendedSanityDocument | null) =>
+        getPreviewPath(doc, schemaType),
+      draftMode: "/api/preview",
+    },
+    showDisplayUrl: false,
+    reload: {
+      button: true,
+    },
+  }
 }
 
 /**
@@ -58,21 +63,20 @@ export const getStructureDocumentViews = (
   if (draftsSchemaTypesArr.includes(schemaType as DraftsSchemaTypes)) {
     // For customer schema, only show preview if link.type === "story"
     if (schemaType === DraftsSchemaTypes.CUSTOMER) {
+      const iframeOptions = getIframeOptions(schemaType)
+
       return [
         S.view.form(),
         S.view
           .component(Iframe)
           .options({
-            url: (doc: ExtendedSanityDocument) => {
-              // Only return preview URL if this is a customer story
-              if (doc?.link?.type === "story") {
-                return getPreviewUrl(doc, schemaType)
-              }
-              return ""
-            },
-            showDisplayUrl: false,
-            reload: {
-              button: true,
+            ...iframeOptions,
+            url: {
+              ...iframeOptions.url,
+              preview: (doc: ExtendedSanityDocument | null) =>
+                doc?.link?.type === "story"
+                  ? getPreviewPath(doc, schemaType)
+                  : new Error("Preview is only available for customer stories"),
             },
           })
           .title("Preview"),
@@ -83,13 +87,7 @@ export const getStructureDocumentViews = (
       S.view.form(),
       S.view
         .component(Iframe)
-        .options({
-          url: (doc: ExtendedSanityDocument) => getPreviewUrl(doc, schemaType),
-          showDisplayUrl: false,
-          reload: {
-            button: true,
-          },
-        })
+        .options(getIframeOptions(schemaType))
         .title("Preview"),
     ]
   }

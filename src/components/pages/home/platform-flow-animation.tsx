@@ -31,7 +31,14 @@ const TRACK_CHECKPOINTS: Record<FlowStep, number> = {
   resolve: 0.75,
 }
 
-const FLOW_STEP_DURATION = 5
+const FLOW_LINE_DURATION = 3.5
+const FLOW_STAGE_HOLD_DURATION = 1.25
+const FLOW_STEP_DURATION = FLOW_STAGE_HOLD_DURATION + FLOW_LINE_DURATION
+const FLOW_TIMELINE_TIMES = [
+  0,
+  FLOW_STAGE_HOLD_DURATION / FLOW_STEP_DURATION,
+  1,
+] as const
 const MOBILE_BADGE_SETTLE_DELAY_MS = 200
 const MOBILE_STEP_HOLD_DURATION = 4
 const MOBILE_FINAL_STEP_HOLD_DURATION = 6
@@ -72,7 +79,9 @@ const TRACK_BASE_TOP = 72
 const TRACK_BASE_BOTTOM = 349
 const TRACK_COMPACT_SIDE_INSET = 0.0625
 
-const EASE_OUT = [0.215, 0.61, 0.355, 1] as const
+const CARD_TRANSITION_DURATION = 0.36
+const CARD_EASE_OUT = [0, 0, 0.2, 1] as const
+const LINE_EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const
 
 interface IPlatformFlowAnimationProps {
   activeTab?: string
@@ -485,13 +494,16 @@ function PlatformFlowAnimation({
   const startProgress = TRACK_CHECKPOINTS[activeStep]
   const targetProgress = nextStep === "event" ? 1 : TRACK_CHECKPOINTS[nextStep]
   const shouldAnimate = isInView && isPageVisible && !prefersReducedMotion
-  const progress = shouldAnimate ? targetProgress : startProgress
+  const progress = shouldAnimate
+    ? [startProgress, startProgress, targetProgress]
+    : startProgress
   const progressKey = `${activeStep}-${shouldAnimate ? "playing" : "paused"}`
   const activeTitle = activeStep.charAt(0).toUpperCase() + activeStep.slice(1)
   const trackPath = createTrackPath(trackSize)
   const pathTransition = {
     duration: shouldAnimate ? FLOW_STEP_DURATION : 0,
-    ease: "linear" as const,
+    ease: ["linear", LINE_EASE_OUT],
+    times: FLOW_TIMELINE_TIMES,
   }
 
   useEffect(() => {
@@ -656,18 +668,20 @@ function PlatformFlowAnimation({
           <FlowMarker activeStep={activeStep} step={step} key={step} />
         ))}
 
-        <div
-          className={cn(
-            "pointer-events-none absolute top-[58.1%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]",
-            activeStep === "event" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]",
-            activeStep === "notify" && "w-[90%] max-w-72 sm:max-w-[21.5rem]",
-            activeStep === "engage" && "w-4/5 max-w-xs sm:w-[52%] sm:max-w-104",
-            activeStep === "resolve" && "w-4/5 max-w-64 sm:max-w-[24.9375rem]"
-          )}
-        >
+        <div className="pointer-events-none absolute top-[58.1%] left-1/2 z-10 w-[90%] max-w-104 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]">
           <AnimatePresence initial={false} mode="wait">
             <m.div
-              className="w-full will-change-transform"
+              className={cn(
+                "mx-auto w-full will-change-transform",
+                activeStep === "event" &&
+                  "w-[88.8889%] max-w-64 sm:w-full sm:max-w-[24.9375rem]",
+                activeStep === "notify" && "max-w-72 sm:max-w-[21.5rem]",
+                activeStep === "engage" &&
+                  "w-[88.8889%] max-w-xs sm:w-full sm:max-w-104",
+                activeStep === "resolve" &&
+                  "w-[88.8889%] max-w-64 sm:w-full sm:max-w-[24.9375rem]"
+              )}
+              data-flow-card={activeStep}
               key={activeStep}
               initial={
                 prefersReducedMotion
@@ -690,8 +704,8 @@ function PlatformFlowAnimation({
                     }
               }
               transition={{
-                duration: prefersReducedMotion ? 0 : 0.26,
-                ease: EASE_OUT,
+                duration: prefersReducedMotion ? 0 : CARD_TRANSITION_DURATION,
+                ease: CARD_EASE_OUT,
               }}
             >
               <FlowCard step={activeStep} />

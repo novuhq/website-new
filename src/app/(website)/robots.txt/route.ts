@@ -1,18 +1,20 @@
-const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
 
 const CONTENT_SIGNAL = "Content-Signal: ai-train=yes, search=yes, ai-input=yes"
 
 function buildRobotsTxt() {
+  const siteUrl = getSiteUrl()
+
   return [
     "# AI agents: see /llms.txt and /agents.md",
     "User-agent: *",
     "Allow: /",
     CONTENT_SIGNAL,
     "",
-    `Host: ${SITE_URL}`,
+    `Host: ${siteUrl}`,
     "",
-    `Sitemap: ${SITE_URL}/next-sitemap.xml`,
-    `Sitemap: ${SITE_URL}/sitemap-index.xml`,
+    `Sitemap: ${absoluteUrl("/next-sitemap.xml")}`,
+    `Sitemap: ${absoluteUrl("/sitemap-index.xml")}`,
     "",
   ].join("\n")
 }

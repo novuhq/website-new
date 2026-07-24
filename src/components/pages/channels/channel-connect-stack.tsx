@@ -23,11 +23,11 @@ const LIVE_CHANNEL_OPTIONS: IStackOption[] = [
 function ChannelConnectStack({ channel }: { channel: IChannelPageData }) {
   return (
     <ConnectStack
-      className="mt-0 py-14 md:mt-0 md:py-20 lg:mt-0 xl:mt-0"
       title={`Generate your ${channel.channelName} integration prompt`}
       description={`Pick your AI framework and copy a ready-to-use prompt to connect your agent to ${channel.channelName} with Novu Connect.`}
       channels={LIVE_CHANNEL_OPTIONS}
       defaultChannelValue={channel.cliSlug}
+      variant="compact"
     />
   )
 }

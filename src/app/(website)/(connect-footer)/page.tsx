@@ -36,10 +36,10 @@ import nextjsIcon from "@/svgs/pages/home/inbox/nextjs.svg"
 import reactIcon from "@/svgs/pages/home/inbox/react.svg"
 import remixIcon from "@/svgs/pages/home/inbox/remix.svg"
 
-import { getFeaturedCustomerCards } from "@/lib/customers"
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { highlightEchoCode } from "@/lib/shiki"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import FAQ from "@/components/pages/faq"
 import CommunicationLifecycle from "@/components/pages/home/communication-lifecycle"
 import Compliance from "@/components/pages/home/compliance"
@@ -245,11 +245,16 @@ export const metadata: Metadata = getMetadata({
   markdownPathname: true,
 })
 
-const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+const SITE_URL = absoluteUrl("/")
+const ORGANIZATION_ID = `${SITE_URL}#organization`
+const WEBSITE_ID = `${SITE_URL}#website`
+const FAQ_ID = `${SITE_URL}#faq`
+const SOFTWARE_APPLICATION_ID = `${SITE_URL}#software`
+const FEATURED_CUSTOMERS_ID = `${SITE_URL}#featured-customers`
 
 const faqJsonLd = {
-  "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": FAQ_ID,
   mainEntity: HOME_FAQ.accordion.items.map((item) => ({
     "@type": "Question",
     name: item.question,
@@ -261,13 +266,16 @@ const faqJsonLd = {
 }
 
 const softwareApplicationJsonLd = {
-  "@context": "https://schema.org",
   "@type": "SoftwareApplication",
+  "@id": SOFTWARE_APPLICATION_ID,
   name: "Novu",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Web",
   url: SITE_URL,
   description: SEO_DATA.index.description,
+  publisher: {
+    "@id": ORGANIZATION_ID,
+  },
   offers: {
     "@type": "Offer",
     price: "0",
@@ -277,35 +285,39 @@ const softwareApplicationJsonLd = {
 }
 
 export default async function HomePage() {
-  const [
-    highlightedNotifyCodeTabs,
-    featureImplementationHighlightedHtml,
-    featuredCustomerCards,
-  ] = await Promise.all([
-    Promise.all(
-      notifyCodeTabs.map(async (tab) => ({
-        ...tab,
-        highlightedHtml: await highlightEchoCode(tab.code),
-      }))
-    ),
-    highlightEchoCode(featureImplementationCode),
-    getFeaturedCustomerCards(),
-  ])
+  const [highlightedNotifyCodeTabs, featureImplementationHighlightedHtml] =
+    await Promise.all([
+      Promise.all(
+        notifyCodeTabs.map(async (tab) => ({
+          ...tab,
+          highlightedHtml: await highlightEchoCode(tab.code),
+        }))
+      ),
+      highlightEchoCode(featureImplementationCode),
+    ])
 
-  const featuredCustomersJsonLd =
-    featuredCustomerCards.length === 4
-      ? {
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          name: HOME_FEATURED_CUSTOMERS.title,
-          itemListElement: featuredCustomerCards.map((card, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: card.name,
-            url: `${SITE_URL}${ROUTE.customers}/${card.slug.current}`,
-          })),
-        }
-      : null
+  const featuredCustomersJsonLd = {
+    "@type": "ItemList",
+    "@id": FEATURED_CUSTOMERS_ID,
+    name: HOME_FEATURED_CUSTOMERS.title,
+    itemListElement: HOME_FEATURED_CUSTOMERS.items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Review",
+        reviewBody: item.quote,
+        author: {
+          "@type": "Person",
+          name: item.authorName,
+          jobTitle: item.authorPosition,
+        },
+        itemReviewed: {
+          "@type": "Organization",
+          name: item.company,
+        },
+      },
+    })),
+  }
 
   const LIVE_CHANNELS = new Set<string>(HOME_LIVE_CHANNEL_KEYS)
   const cliSlugs = HOME_CLI_SLUGS
@@ -468,10 +480,7 @@ export default async function HomePage() {
         {...contentData["novu-notify"]}
         codeTabs={highlightedNotifyCodeTabs}
       />
-      <FeaturedCustomers
-        {...HOME_FEATURED_CUSTOMERS}
-        cards={featuredCustomerCards}
-      />
+      <FeaturedCustomers {...HOME_FEATURED_CUSTOMERS} />
       <Compliance {...contentData["compliance"]} />
       <FAQ
         {...contentData["faq"]}
@@ -485,11 +494,32 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: safeJsonLdStringify(
-            featuredCustomersJsonLd
-              ? [faqJsonLd, softwareApplicationJsonLd, featuredCustomersJsonLd]
-              : [faqJsonLd, softwareApplicationJsonLd]
-          ),
+          __html: safeJsonLdStringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": `${SITE_URL}#webpage`,
+                url: SITE_URL,
+                name: SEO_DATA.index.title,
+                description: SEO_DATA.index.description,
+                isPartOf: {
+                  "@id": WEBSITE_ID,
+                },
+                publisher: {
+                  "@id": ORGANIZATION_ID,
+                },
+                mainEntity: [
+                  { "@id": FAQ_ID },
+                  { "@id": SOFTWARE_APPLICATION_ID },
+                ],
+                hasPart: { "@id": FEATURED_CUSTOMERS_ID },
+              },
+              faqJsonLd,
+              softwareApplicationJsonLd,
+              featuredCustomersJsonLd,
+            ],
+          }),
         }}
       />
     </div>

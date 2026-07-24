@@ -1,11 +1,14 @@
+import { cache } from "react"
+
 import { ICustomerData } from "@/types/customers"
+import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
 import { sanityFetch } from "@/lib/sanity/client"
 import { customerBySlugQuery } from "@/lib/sanity/queries/customers"
-import { REVALIDATION_CONFIG } from "@/lib/revalidation/config"
+import { absoluteUrl } from "@/lib/site-url"
 
 const REVALIDATE_CUSTOMER_TAG = [...REVALIDATION_CONFIG.customer.tags]
 
-export async function getCustomerBySlug(
+async function fetchCustomerBySlug(
   slug: string,
   preview = false
 ): Promise<{ customer: ICustomerData } | null> {
@@ -29,7 +32,9 @@ export async function getCustomerBySlug(
           ...customer.seo,
           socialImage:
             customer.seo.socialImage ??
-            `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?template=customer&title=${customer.seo.title}`,
+            absoluteUrl(
+              `/api/og?template=customer&title=${encodeURIComponent(customer.seo.title)}`
+            ),
         }
       : undefined,
   }
@@ -38,3 +43,5 @@ export async function getCustomerBySlug(
     customer: customerWithSeo,
   }
 }
+
+export const getCustomerBySlug = cache(fetchCustomerBySlug)

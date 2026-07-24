@@ -84,6 +84,12 @@ export const agentTemplatesQuery = groq`
   }
 `
 
+export const agentTemplatesByIdsQuery = groq`
+  *[_type == "agentTemplate" && id.current in $ids] {
+    ${agentTemplateFields}
+  }
+`
+
 export const agentTemplatesSectionQuery = groq`
   {
     "categories": *[_type == "templateCategory"] | order(orderRank asc) {

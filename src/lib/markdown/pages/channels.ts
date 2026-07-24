@@ -1,32 +1,21 @@
-import { ROUTE } from "@/constants/routes"
 import { getChannelBySlug } from "@/data/pages/channels"
 
-import type { IAgentTemplateData } from "@/types/templates"
-import { getAgentTemplates } from "@/lib/templates"
+import { getStarterAgentTemplates } from "@/lib/templates/starter-templates"
+import { getAgentTemplateUrl } from "@/lib/templates/url"
 
+import { escapeMarkdownText, formatMarkdownLink } from "../markdown-format"
 import { bulletList } from "../page-utils"
 import type { MarkdownPage } from "../types"
 
 async function getStarterTemplatesMarkdown(ids: string[]): Promise<string> {
-  if (!ids.length) return ""
-
-  let selected: IAgentTemplateData[] = []
-  try {
-    const all = await getAgentTemplates()
-    const byId = new Map(all.map((template) => [template.id, template]))
-    selected = ids
-      .map((id) => byId.get(id))
-      .filter((template): template is IAgentTemplateData => Boolean(template))
-  } catch {
-    return ""
-  }
+  const selected = await getStarterAgentTemplates(ids)
 
   if (!selected.length) return ""
 
   const items = selected
     .map(
       (template) =>
-        `- ${template.name} (${template.agentName}): ${template.summary} Start it at ${ROUTE.connectApp}?agentTemplateId=${template.id}`
+        `- ${escapeMarkdownText(template.name)} (${escapeMarkdownText(template.agentName)}): ${escapeMarkdownText(template.summary)} ${formatMarkdownLink("Start it", getAgentTemplateUrl(template.id))}`
     )
     .join("\n")
 
@@ -47,28 +36,34 @@ export async function getChannels(
   )
 
   const transcript = channel.useCase.transcript
-    .map((line) => `- ${line.from}: ${line.text}`)
+    .map(
+      (line) =>
+        `- ${escapeMarkdownText(line.from)}: ${escapeMarkdownText(line.text)}`
+    )
     .join("\n")
 
   const faq = channel.faq
-    .map((item) => `### ${item.question}\n\n${item.answer}`)
+    .map(
+      (item) =>
+        `### ${escapeMarkdownText(item.question)}\n\n${escapeMarkdownText(item.answer)}`
+    )
     .join("\n\n")
 
   const body = [
-    channel.hero.subheading,
-    channel.citation,
-    `Connect command: npx novu connect --channel ${channel.cliSlug}`,
-    `## What your agent can do in ${channel.channelName}`,
+    escapeMarkdownText(channel.hero.subheading),
+    escapeMarkdownText(channel.citation),
+    `Connect command: npx novu connect --channel ${escapeMarkdownText(channel.cliSlug)}`,
+    `## What your agent can do in ${escapeMarkdownText(channel.channelName)}`,
     bulletList(channel.capabilities),
     `## Example use case`,
-    `Agent: ${channel.useCase.company}. Talking to: ${channel.useCase.audience}.`,
-    channel.useCase.summary,
+    `Agent: ${escapeMarkdownText(channel.useCase.company)}. Talking to: ${escapeMarkdownText(channel.useCase.audience)}.`,
+    escapeMarkdownText(channel.useCase.summary),
     transcript,
     templatesMarkdown,
     `## How to connect`,
-    channel.onRamp.note,
-    `Prompt for your coding agent: ${channel.prompt}`,
-    `## ${channel.channelName} and Novu Connect, common questions`,
+    escapeMarkdownText(channel.onRamp.note),
+    `Prompt for your coding agent: ${escapeMarkdownText(channel.prompt)}`,
+    `## ${escapeMarkdownText(channel.channelName)} and Novu Connect, common questions`,
     faq,
   ]
     .filter(Boolean)
