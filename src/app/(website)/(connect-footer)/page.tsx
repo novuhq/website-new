@@ -327,34 +327,37 @@ export default async function HomePage() {
     { webm: string; mp4: string; poster: string }
   > = {
     slack: {
-      webm: "/videos/channels/slack-client-facing.webm",
-      mp4: "/videos/channels/slack-client-facing.hevc.mp4",
-      poster: "/videos/channels/slack-client-facing-poster.png",
+      webm: "/videos/pages/home/features/slack-client-facing.webm",
+      mp4: "/videos/pages/home/features/slack-client-facing.mp4",
+      poster: "/videos/pages/home/features/slack-client-facing-poster.webp",
     },
     whatsapp: {
-      webm: "/videos/channels/whatsapp-client-facing.webm",
-      mp4: "/videos/channels/whatsapp-client-facing.hevc.mp4",
-      poster: "/videos/channels/whatsapp-client-facing-poster.png",
+      webm: "/videos/pages/home/features/whatsapp-client-facing.webm",
+      mp4: "/videos/pages/home/features/whatsapp-client-facing.mp4",
+      poster:
+        "/videos/pages/home/features/whatsapp-client-facing-poster.webp",
     },
     telegram: {
-      webm: "/videos/channels/telegram-client-facing.webm",
-      mp4: "/videos/channels/telegram-client-facing.hevc.mp4",
-      poster: "/videos/channels/telegram-client-facing-poster.png",
+      webm: "/videos/pages/home/features/telegram-client-facing.webm",
+      mp4: "/videos/pages/home/features/telegram-client-facing.mp4",
+      poster:
+        "/videos/pages/home/features/telegram-client-facing-poster.webp",
     },
     email: {
-      webm: "/videos/channels/email-client-facing.webm",
-      mp4: "/videos/channels/email-client-facing.hevc.mp4",
-      poster: "/videos/channels/email-client-facing-poster.png",
+      webm: "/videos/pages/home/features/email-client-facing.webm",
+      mp4: "/videos/pages/home/features/email-client-facing.mp4",
+      poster: "/videos/pages/home/features/email-client-facing-poster.webp",
     },
     teams: {
-      webm: "/videos/channels/teams-client-facing.webm",
-      mp4: "/videos/channels/teams-client-facing.hevc.mp4",
-      poster: "/videos/channels/teams-client-facing-poster.png",
+      webm: "/videos/pages/home/features/teams-client-facing.webm",
+      mp4: "/videos/pages/home/features/teams-client-facing.mp4",
+      poster: "/videos/pages/home/features/teams-client-facing-poster.webp",
     },
     imessage: {
-      webm: "/videos/channels/imessage-client-facing.webm",
-      mp4: "/videos/channels/imessage-client-facing.hevc.mp4",
-      poster: "/videos/channels/imessage-client-facing-poster.png",
+      webm: "/videos/pages/home/features/imessage-client-facing.webm",
+      mp4: "/videos/pages/home/features/imessage-client-facing.mp4",
+      poster:
+        "/videos/pages/home/features/imessage-client-facing-poster.webp",
     },
   }
 

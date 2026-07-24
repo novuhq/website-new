@@ -50,11 +50,15 @@ function Preview({
       <div className="relative z-10 px-6 py-8 sm:px-4 lg:px-8">
         <div
           className="relative mx-auto aspect-[1118/850] w-full max-w-xl sm:w-[92%] sm:max-w-none"
-          style={{ filter: "drop-shadow(0 22px 55px rgba(0,8,49,0.5))" }}
+          style={
+            clientFacingVideo
+              ? undefined
+              : { filter: "drop-shadow(0 22px 55px rgba(0,8,49,0.5))" }
+          }
         >
           {clientFacingVideo ? (
             <video
-              className="size-full object-contain"
+              className="absolute top-1/2 left-1/2 h-[88.7%] w-[91.4%] -translate-1/2 rounded-xl object-cover shadow-[0_30px_65px_rgba(24,24,48,0.18)]"
               poster={clientFacingVideo.poster}
               autoPlay
               loop
@@ -64,10 +68,7 @@ function Preview({
               aria-label={`${channelLabel} client-facing preview`}
             >
               <source src={clientFacingVideo.webm} type="video/webm" />
-              <source
-                src={clientFacingVideo.mp4}
-                type='video/mp4; codecs="hvc1"'
-              />
+              <source src={clientFacingVideo.mp4} type="video/mp4" />
             </video>
           ) : (
             <Image
