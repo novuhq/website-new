@@ -1,15 +1,17 @@
 import type { Metadata } from "next"
+import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 import notifyFeaturedBackground from "@/images/pages/home/bento-notify-featured-bg.png"
 import featuresBackground from "@/images/pages/home/features/bg.jpg"
 import clientFacingPreview from "@/images/pages/home/features/client-facing.png"
+import customerFacingLogosInside from "@/images/pages/home/novu-connect/customer-facing-logos-inside.svg"
+import customerFacingLogosOutside from "@/images/pages/home/novu-connect/customer-facing-logos-outside.svg"
 import customerFacingGraphic from "@/images/pages/home/novu-connect/customer-facing.jpg"
 import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jpg"
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
 import oneConversationGraphic from "@/images/pages/home/novu-connect/one-conversation.jpg"
 import notifyDigestGraphic from "@/images/pages/home/novu-notify/digest.jpg"
-import notifyInboxGraphic from "@/images/pages/home/novu-notify/inbox.png"
 import notifyPreferencesGraphic from "@/images/pages/home/novu-notify/preferences.jpg"
 import notifyWorkflowGraphic from "@/images/pages/home/novu-notify/workflow.jpg"
 import nextjsIcon from "@/svgs/pages/home/inbox/nextjs.svg"
@@ -299,6 +301,18 @@ const contentData = {
         imageClassName:
           "bottom-0 left-1/2 z-[1] w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:left-[43%] lg:-bottom-1 2xl:w-[61.25rem]",
         imageSizes: "980px",
+        graphicGroup: {
+          image: customerFacingLogosOutside,
+          className:
+            "bottom-0 left-1/2 z-[2] w-[min(193%,57.875rem)] -translate-x-1/2 translate-y-[74%] md:w-[135%] 2xl:w-[78.75rem]",
+          imageClassName:
+            "will-change-transform motion-safe:animate-[spin_48s_linear_infinite]",
+          imageSizes: "1260px",
+          overlayImage: customerFacingLogosInside,
+          overlayImageClassName:
+            "z-[1] w-[78.73%] will-change-transform motion-safe:animate-[spin_48s_linear_infinite_reverse]",
+          overlayImageSizes: "992px",
+        },
       },
       {
         title: "Full context, every message",
@@ -340,10 +354,6 @@ const contentData = {
         description:
           "Deliver a rich in-app notification experience that completely mirrors your existing UX, not an afterthought or a bolt-on.",
         backgroundImage: notifyFeaturedBackground,
-        image: notifyInboxGraphic,
-        imageClassName:
-          "left-105 z-20 w-140 bottom-0 lg:w-[41.875rem] lg:left-120 xl:left-130",
-        imageSizes: "(min-width: 768px) 670px, 1px",
       },
       {
         title: "User-controlled preferences",
@@ -401,34 +411,165 @@ const contentData = {
     accordion: {
       items: [
         {
-          question: "What are Claude Managed Agents?",
-          answer:
-            "Claude Managed Agents are Anthropic’s fully managed infrastructure for building and running autonomous AI agents. You define what the agent should do, the tools it can use, and the guardrails it should follow, while Anthropic handles the managed runtime behind it. Novu Connect then brings that agent into the channels where people already work, such as Slack, WhatsApp, email, Telegram, and Discord.",
+          question: "What is Novu?",
+          answer: (
+            <p>
+              Novu is open-source communication infrastructure for products and
+              AI agents. Use Novu Notify to send product notifications across
+              Inbox, email, SMS, push, and chat. Use Novu Connect to let AI
+              agents hold two-way conversations on the channels your users
+              already use. Learn more in the{" "}
+              <NextLink href="https://docs.novu.co/">docs</NextLink>.
+            </p>
+          ),
         },
         {
-          question: "Does Novu manage or host my Claude agent?",
-          answer:
-            "No. Your Claude agent remains in your own Anthropic environment. Novu provides the communication layer that connects it to users across supported channels.",
+          question:
+            "What is the difference between Novu Notify and Novu Connect?",
+          answer: (
+            <p>
+              Notify is for outbound notifications from your product —
+              workflows, digests, preferences, and Inbox. Connect is for two-way
+              agent conversations — a user messages your agent in Slack,
+              WhatsApp, email, and so on, and the agent replies in the same
+              thread. See{" "}
+              <NextLink href="https://docs.novu.co/platform">
+                Novu Notify
+              </NextLink>{" "}
+              and{" "}
+              <NextLink href="https://docs.novu.co/agents">
+                Novu Connect
+              </NextLink>
+              .
+            </p>
+          ),
         },
         {
-          question: "Can I use a Claude agent I've already built?",
-          answer:
-            "Yes. Connect an existing agent without rebuilding its prompts, tools, or business logic. Novu handles the channel integration around it.",
+          question: "Can I connect an AI agent I have already built?",
+          answer: (
+            <p>
+              Yes. Keep your model, prompts, tools, and code. Novu gets messages
+              from the channel to your agent and sends replies back, with
+              conversation context preserved. Prefer not to run your own agent
+              server? Use{" "}
+              <NextLink href="https://docs.novu.co/agents/managed-agent/overview">
+                Claude Managed Agents
+              </NextLink>{" "}
+              instead.
+            </p>
+          ),
         },
         {
-          question: "Can I share my agent with my team?",
-          answer:
-            "Yes. You can expose the same agent in shared team channels and keep conversations available where your team already collaborates.",
+          question: "Which agent frameworks can I use?",
+          answer: (
+            <p>
+              Vercel AI SDK, LangChain, Chat SDK, Claude Managed Agents
+              (including on AWS), or your own custom code. When you run{" "}
+              <code>npx novu connect</code>, the CLI asks which one you’re
+              using. Guides:{" "}
+              <NextLink href="https://docs.novu.co/agents/get-started/ai-sdk">
+                AI SDK
+              </NextLink>
+              ,{" "}
+              <NextLink href="https://docs.novu.co/agents/get-started/langchain">
+                LangChain
+              </NextLink>
+              ,{" "}
+              <NextLink href="https://docs.novu.co/agents/managed-agent/quickstart">
+                Claude Managed Agents
+              </NextLink>
+              .
+            </p>
+          ),
         },
         {
-          question: "How many channels can I connect to a single agent?",
-          answer:
-            "A single agent can be connected to multiple supported channels, so users can reach it from the channel that fits their workflow.",
+          question: "Which channels does Novu support?",
+          answer: (
+            <p>
+              Send notifications with Novu Notify to Inbox, email, SMS, push,
+              and chat — with 50+ provider integrations. Connect your agent with
+              Novu Connect to Slack, Microsoft Teams, WhatsApp, Telegram, email,
+              and iMessage for two-way conversations. Browse{" "}
+              <NextLink href="https://docs.novu.co/platform/integrations">
+                integrations
+              </NextLink>{" "}
+              or{" "}
+              <NextLink href="https://docs.novu.co/agents">
+                Connect docs
+              </NextLink>
+              .
+            </p>
+          ),
         },
         {
-          question: "Novu Connect vs Novu Platform",
+          question: "Can one agent work across multiple channels?",
           answer:
-            "Novu Connect focuses on two-way conversations between agents and people. The Novu Platform also includes notification workflows, in-app inboxes, email, push, and user preferences.",
+            "Yes. Connect the same agent to as many channels as you need. You don’t rebuild the agent for each one — Novu handles delivery, threading, and identity per channel.",
+        },
+        {
+          question: "Can I use my existing push, SMS, and chat providers?",
+          answer: (
+            <p>
+              Yes. Add them in the Integration Store and keep using the
+              providers you already have. See the{" "}
+              <NextLink href="https://docs.novu.co/platform/integrations">
+                integrations directory
+              </NextLink>
+              .
+            </p>
+          ),
+        },
+        {
+          question: "How do I get started?",
+          answer: (
+            <p>
+              From your project root, run <code>npx novu connect</code>. The CLI
+              walks you through picking a channel, choosing your framework, and
+              connecting. Or{" "}
+              <NextLink href="https://dashboard.novu.co/">
+                create a free account
+              </NextLink>{" "}
+              — no credit card required. Prefer a walkthrough?{" "}
+              <NextLink href="https://go.novu.co/intro-call">
+                Book a demo
+              </NextLink>
+              .
+            </p>
+          ),
+        },
+        {
+          question: "Is Novu free to start?",
+          answer: (
+            <p>
+              Yes. Novu Cloud has a free plan with 10,000 workflow runs per
+              month and no credit card required. You can also self-host the
+              open-source Community Edition. See{" "}
+              <NextLink href={ROUTE.pricing}>pricing</NextLink>.
+            </p>
+          ),
+        },
+        {
+          question: "Do I need to paste API keys into ChatGPT or Cursor?",
+          answer:
+            "No. Sign in and enter credentials in the Novu CLI or the provider’s own auth flow (Slack, Meta, etc.). Don’t paste secrets into chat.",
+        },
+        {
+          question: "Can I self-host Novu?",
+          answer: (
+            <p>
+              Yes. Community Edition is open source and free to self-host — see
+              the{" "}
+              <NextLink href="https://docs.novu.co/community/self-hosting-novu/overview">
+                self-hosting guide
+              </NextLink>
+              . Enterprise Edition is available for on-premises deployments that
+              need SSO, RBAC, compliance, and Cloud-parity features.{" "}
+              <NextLink href="https://go.novu.co/intro-call">
+                Book a demo
+              </NextLink>{" "}
+              to talk through Enterprise self-hosting.
+            </p>
+          ),
         },
       ],
     },

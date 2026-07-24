@@ -3,22 +3,21 @@
 import { useState } from "react"
 import Image, { type StaticImageData } from "next/image"
 import aiSdkIcon from "@/images/pages/home/ai-sdk-icon.png"
-import claudeIcon from "@/images/pages/home/claude-agent.svg"
 import langchainIcon from "@/images/pages/home/langchain-icon.svg"
+import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
 import emailIcon from "@/svgs/pages/home/stack/email.svg"
-import googleChatIcon from "@/svgs/pages/home/stack/google-chat.svg"
 import slackIcon from "@/svgs/pages/home/stack/slack.svg"
 import teamsIcon from "@/svgs/pages/home/stack/teams.svg"
 import telegramIcon from "@/svgs/pages/home/stack/telegram.svg"
 import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
 import CopyPromptButton from "./copy-prompt-button"
 
 export interface IStackOption {
+  cliSlug?: string
   icon?: StaticImageData | string
   label: string
   promptLabel?: string
@@ -60,28 +59,30 @@ const DEFAULT_CHANNELS: IStackOption[] = [
     icon: whatsappIcon,
   },
   {
-    value: "google-chat",
-    label: "Google Chat",
-    icon: googleChatIcon,
+    value: "sendblue",
+    label: "iMessage",
+    icon: imessageIcon,
   },
 ]
 
 const DEFAULT_FRAMEWORKS: IStackOption[] = [
   {
-    value: "vercel-ai-sdk",
+    value: "ai-sdk",
     label: "Vercel AI SDK",
     icon: aiSdkIcon,
-  },
-  {
-    value: "claude-agent",
-    label: "Claude Agent",
-    promptLabel: "Claude agent",
-    icon: claudeIcon,
   },
   {
     value: "langchain",
     label: "LangChain",
     icon: langchainIcon,
+  },
+  {
+    value: "custom-code",
+    label: "Custom code",
+  },
+  {
+    value: "chat-sdk",
+    label: "Chat SDK",
   },
 ]
 
@@ -91,11 +92,7 @@ function OptionLabel({ option }: { option: IStackOption }) {
       {option.icon && (
         <span className="relative size-4 shrink-0">
           <Image
-            className={cn(
-              "size-4 object-contain",
-              option.value === "claude-agent" &&
-                "absolute -inset-[6.666px] size-[29.333px] max-w-none"
-            )}
+            className="size-4 object-contain"
             src={option.icon}
             alt=""
             width={16}
@@ -193,123 +190,6 @@ function SelectField({
   )
 }
 
-interface IMultiSelectFieldProps {
-  label: string
-  onValueChange: (value: string[]) => void
-  options: IStackOption[]
-  value: string[]
-}
-
-function MultiSelectField({
-  label,
-  options,
-  value,
-  onValueChange,
-}: IMultiSelectFieldProps) {
-  const selectedOptions = value
-    .map((selectedValue) =>
-      options.find((option) => option.value === selectedValue)
-    )
-    .filter((option): option is IStackOption => Boolean(option))
-  const current = selectedOptions[0] ?? options[0]
-
-  const handleCheckedChange = (optionValue: string, checked: boolean) => {
-    if (checked) {
-      if (!value.includes(optionValue)) {
-        onValueChange([...value, optionValue])
-      }
-      return
-    }
-
-    if (value.length > 1) {
-      onValueChange(
-        value.filter((selectedValue) => selectedValue !== optionValue)
-      )
-    }
-  }
-
-  return (
-    <div className="flex min-w-0 flex-col gap-2 text-sm font-medium tracking-tighter text-gray-60">
-      <span className="h-4.5 leading-tight">{label}</span>
-      <DropdownMenuPrimitive.Root>
-        <DropdownMenuPrimitive.Trigger
-          className="group relative flex h-10 w-full min-w-0 items-center justify-between gap-1.5 rounded-[0.25rem] border border-gray-20 bg-[#040406] px-[13px] text-left text-sm font-normal tracking-tighter text-foreground transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:border-foreground/30 focus-visible:ring-2 focus-visible:ring-foreground/30"
-          aria-label={label}
-        >
-          <OptionLabel option={current} />
-          <svg
-            className="relative -mr-0.5 w-2.5 shrink-0 text-gray-60 transition-transform group-data-[state=open]:rotate-180"
-            viewBox="0 0 8 5"
-            fill="none"
-            aria-hidden
-          >
-            <path
-              d="M1 1L4 4L7 1"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </DropdownMenuPrimitive.Trigger>
-
-        <DropdownMenuPrimitive.Portal>
-          <DropdownMenuPrimitive.Content
-            className="z-50 min-w-(--radix-dropdown-menu-trigger-width) rounded-[0.25rem] border border-gray-20 bg-black p-1.5 shadow-xl ring-0 ring-transparent outline-none"
-            align="start"
-            sideOffset={2}
-          >
-            {options.map((option) => {
-              const isSelected = value.includes(option.value)
-
-              return (
-                <DropdownMenuPrimitive.CheckboxItem
-                  className="relative flex cursor-default items-center gap-1.5 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none data-[highlighted]:bg-[#191a1f] data-[highlighted]:ring-0 data-[highlighted]:ring-transparent data-[state=checked]:bg-[#191a1f]"
-                  key={option.value}
-                  checked={isSelected}
-                  onCheckedChange={(checked) =>
-                    handleCheckedChange(option.value, checked === true)
-                  }
-                  onSelect={(event) => event.preventDefault()}
-                >
-                  <OptionLabel option={option} />
-                  <span
-                    className={cn(
-                      "ml-auto flex size-4 shrink-0 items-center justify-center rounded-[2px] border",
-                      isSelected
-                        ? "border-white bg-white text-black"
-                        : "border-gray-20 bg-transparent"
-                    )}
-                    aria-hidden
-                  >
-                    {isSelected && (
-                      <svg className="size-3" viewBox="0 0 16 16" fill="none">
-                        <path
-                          d="M3.5 8L6.5 11L12.5 5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="square"
-                        />
-                      </svg>
-                    )}
-                  </span>
-                </DropdownMenuPrimitive.CheckboxItem>
-              )
-            })}
-          </DropdownMenuPrimitive.Content>
-        </DropdownMenuPrimitive.Portal>
-      </DropdownMenuPrimitive.Root>
-    </div>
-  )
-}
-
-function formatChannelList(labels: string[]) {
-  if (labels.length < 2) return labels[0] ?? "your selected channel"
-  if (labels.length === 2) return labels.join(" and ")
-
-  return `${labels.slice(0, -1).join(", ")}, and ${labels.at(-1)}`
-}
-
 function ConnectStack({
   className,
   title,
@@ -322,26 +202,27 @@ function ConnectStack({
     ? frameworkOptions
     : DEFAULT_FRAMEWORKS
 
-  const [channelValues, setChannelValues] = useState<string[]>([
+  const [channelValue, setChannelValue] = useState(
     channels.find((option) => option.value === "slack")?.value ??
-      channels[0].value,
-  ])
+      channels[0].value
+  )
   const [frameworkValue, setFrameworkValue] = useState(
-    frameworks.find((option) => option.value === "vercel-ai-sdk")?.value ??
+    frameworks.find((option) => option.value === "ai-sdk")?.value ??
       frameworks[0].value
   )
-  const selectedChannels = channelValues
-    .map((selectedValue) =>
-      channels.find((option) => option.value === selectedValue)
-    )
-    .filter((option): option is IStackOption => Boolean(option))
+  const channel =
+    channels.find((option) => option.value === channelValue) ?? channels[0]
   const framework =
     frameworks.find((option) => option.value === frameworkValue) ??
     frameworks[0]
-  const channelList = formatChannelList(
-    selectedChannels.map((channel) => channel.label)
-  )
-  const prompt = `Prompt example: Connect this ${framework.promptLabel ?? framework.label} to ${channelList} with Novu Connect. Configure secure two-way messaging, identify each user, and route agent replies back to ${selectedChannels.length === 1 ? `the same ${channelList} conversation` : "their originating channel conversations"}.`
+  const frameworkLabel = framework.promptLabel ?? framework.label
+  const channelLabel = channel.promptLabel ?? channel.label
+  const command = `npx novu connect --channel ${channel.cliSlug ?? channel.value} --runtime ${framework.cliSlug ?? framework.value}`
+  const prompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu Connect. Inspect the repo (agent entry point, how ${frameworkLabel} is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
+
+${command}
+
+I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`
 
   return (
     <section
@@ -372,11 +253,11 @@ function ConnectStack({
             </p>
 
             <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <MultiSelectField
+              <SelectField
                 label="Communication channel"
                 options={channels}
-                value={channelValues}
-                onValueChange={setChannelValues}
+                value={channel.value}
+                onValueChange={setChannelValue}
               />
               <SelectField
                 label="AI Framework"

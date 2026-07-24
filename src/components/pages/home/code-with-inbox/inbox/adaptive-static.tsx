@@ -23,17 +23,22 @@ const THEME_IMAGES: Record<InboxTheme, StaticImageData> = {
 }
 
 interface IAdaptiveStaticProps {
+  animateEntrance?: boolean
   theme: InboxTheme
   className?: string
 }
 
-function AdaptiveStatic({ theme, className }: IAdaptiveStaticProps) {
+function AdaptiveStatic({
+  animateEntrance = true,
+  theme,
+  className,
+}: IAdaptiveStaticProps) {
   const image = THEME_IMAGES[theme]
 
   return (
     <m.div
       className={cn(className, "absolute top-0 left-0 h-full w-full shrink-0")}
-      initial={{ opacity: 0 }}
+      initial={animateEntrance ? { opacity: 0 } : false}
       animate={{ opacity: 1, transition: { delay: 0.3 } }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}

@@ -8,8 +8,19 @@ import { Button } from "@/components/ui/button"
 
 import CopyPromptButton from "./copy-prompt-button"
 
+export interface INovuConnectGraphicGroup {
+  className?: string
+  image: StaticImageData
+  imageClassName?: string
+  imageSizes?: string
+  overlayImage: StaticImageData
+  overlayImageClassName?: string
+  overlayImageSizes?: string
+}
+
 export interface INovuConnectItem {
   description: string
+  graphicGroup?: INovuConnectGraphicGroup
   image?: StaticImageData
   imageClassName?: string
   imageSizes?: string
@@ -127,6 +138,39 @@ function NovuConnect({
                     aria-hidden="true"
                     draggable
                   />
+                )}
+
+                {item.graphicGroup && (
+                  <div
+                    className={cn(
+                      "pointer-events-none absolute grid",
+                      item.graphicGroup.className
+                    )}
+                    aria-hidden="true"
+                  >
+                    <Image
+                      className={cn(
+                        "col-start-1 row-start-1 h-auto w-full max-w-none",
+                        item.graphicGroup.imageClassName
+                      )}
+                      src={item.graphicGroup.image}
+                      alt=""
+                      sizes={item.graphicGroup.imageSizes}
+                      quality={100}
+                      draggable={false}
+                    />
+                    <Image
+                      className={cn(
+                        "col-start-1 row-start-1 h-auto max-w-none place-self-center",
+                        item.graphicGroup.overlayImageClassName
+                      )}
+                      src={item.graphicGroup.overlayImage}
+                      alt=""
+                      sizes={item.graphicGroup.overlayImageSizes}
+                      quality={100}
+                      draggable={false}
+                    />
+                  </div>
                 )}
               </li>
             )

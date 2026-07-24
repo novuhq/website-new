@@ -130,7 +130,10 @@ function Preview({
             ref={tabsListRef}
             className="relative mx-auto inline-flex h-11.5 w-fit gap-1 rounded-full bg-transparent p-1.5"
           >
-            <span className="absolute inset-0 rounded-full border border-white/70 bg-[linear-gradient(0deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.20)_100%),radial-gradient(120.1%_175.96%_at_54.41%_-35.58%,rgba(42,93,194,0.50)_2.53%,rgba(38,25,51,0)_100%)] mix-blend-overlay backdrop-blur-md" />
+            <span
+              className="absolute inset-0 rounded-full border border-white/70 bg-[linear-gradient(0deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.20)_100%),radial-gradient(120.1%_175.96%_at_54.41%_-35.58%,rgba(42,93,194,0.50)_2.53%,rgba(38,25,51,0)_100%)] mix-blend-overlay backdrop-blur-md"
+              aria-hidden="true"
+            />
             {indicatorRect && (
               <m.span
                 className="pointer-events-none absolute left-0 z-10 h-8.5 rounded-full border border-white bg-white/90"

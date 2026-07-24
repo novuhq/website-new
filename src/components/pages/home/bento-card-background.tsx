@@ -19,7 +19,7 @@ function BentoCardBackground({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 isolate overflow-hidden"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       {isExportedImage ? (
         <Image

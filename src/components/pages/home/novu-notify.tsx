@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import BentoCardBackground, {
   type BentoCardBackgroundImage,
 } from "./bento-card-background"
+import InboxComponent from "./code-with-inbox/inbox/inbox-component"
 import CopyPromptButton from "./copy-prompt-button"
 import NotifyCodeTabs, { type INotifyCodeTab } from "./notify-code-tabs"
 
@@ -112,13 +113,12 @@ function NovuNotify({
                 backgroundImage={featuredItem.backgroundImage}
               />
             )}
-
             <div className="relative flex min-w-0 flex-col md:contents">
               <div className="relative z-30 max-w-[26.5625rem] md:absolute md:top-[27px] md:left-[27px]">
                 <h3 className="text-lg leading-tight font-normal tracking-tighter text-foreground md:text-xl md:leading-none">
                   {featuredItem.title}
                 </h3>
-                <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50 md:w-[26rem] md:text-base">
+                <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50 md:w-80 md:text-base xl:w-114">
                   {featuredItem.description}
                 </p>
               </div>
@@ -129,28 +129,12 @@ function NovuNotify({
               />
             </div>
 
-            {featuredItem.image && (
-              <div
-                className={cn(
-                  "pointer-events-none hidden md:absolute md:inset-0 md:z-20 md:block",
-                  featuredItem.imageContainerClassName
-                )}
-                aria-hidden="true"
-              >
-                <Image
-                  className={cn(
-                    "absolute h-auto max-w-none active:cursor-grabbing",
-                    featuredItem.imageClassName
-                  )}
-                  src={featuredItem.image}
-                  alt=""
-                  quality={100}
-                  sizes={featuredItem.imageSizes}
-                  aria-hidden="true"
-                  draggable
-                />
-              </div>
-            )}
+            <InboxComponent
+              animateEntrance={false}
+              className="zoom-[0.965] md:zoom-[0.10] lg:zoom-[1.111] xl:zoom-[0.98] absolute top-13 left-104 m-0 lg:right-14 lg:left-auto lg:max-[68rem]:left-112 xl:left-137"
+              themeTabsClassName="absolute top-13 left-104 m-0 hidden md:flex lg:right-14 lg:left-auto lg:max-[68rem]:left-112 xl:left-137"
+              variant="home"
+            />
           </article>
 
           {supportingItems.length > 0 && (
