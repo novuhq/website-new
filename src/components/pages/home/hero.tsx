@@ -2,7 +2,6 @@
 
 import Image, { type StaticImageData } from "next/image"
 import gangverkLogo from "@/images/pages/home/gangverk.svg"
-import heroBg from "@/images/pages/home/hero/hero-bg.jpg"
 import checkpointLogo from "@/images/pages/pricing/logos/checkpoint.svg"
 import cloudSoftwareLogo from "@/images/pages/pricing/logos/cloud-software-group.svg"
 import eburyLogo from "@/images/pages/pricing/logos/ebury.svg"
@@ -28,6 +27,7 @@ import {
   type IHomeChannelSelectDetail,
 } from "./channel-navigation"
 import CopyPromptButton from "./copy-prompt-button"
+import HeroGlobe from "./hero-globe"
 
 const DEFAULT_PROMPT =
   "Connect my AI agent to customers across their preferred channels with Novu."
@@ -218,24 +218,13 @@ function Hero({
 }: IHeroProps) {
   return (
     <section
-      className={cn("hero relative overflow-hidden font-inter", className)}
+      className={cn(
+        "hero relative overflow-hidden bg-black font-inter",
+        className
+      )}
     >
-      <div
-        className="absolute bottom-22 left-1/2 aspect-[1920/931] w-[180%] max-w-480 -translate-x-1/2 lg:-top-16 lg:bottom-auto lg:w-480"
-        aria-hidden="true"
-      >
-        <Image
-          className="mx-auto w-full max-w-none"
-          src={heroBg}
-          alt=""
-          width={1920}
-          height={931}
-          quality={100}
-          loading="eager"
-          sizes="100vw"
-        />
-      </div>
-      <div className="relative z-10">
+      <HeroGlobe />
+      <div className="pointer-events-none relative z-10 [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <div className="mx-auto grid w-full max-w-352 gap-4 px-5 pt-10 md:px-8 md:pt-14 lg:grid-cols-[minmax(0,46rem)_minmax(0,30.1875rem)] lg:justify-between lg:gap-12 lg:pt-[71px]">
           <h1 className="w-full max-w-184 shrink-0 text-[2.25rem] leading-[1.05] font-normal tracking-plus-tight text-balance text-foreground md:text-[3.375rem] lg:text-[3.25rem] lg:leading-[1.125] xl:text-[3.75rem]">
             {title}

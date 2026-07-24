@@ -58,6 +58,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  transpilePackages: ["three"],
   turbopack: {
     rules: {
       "*.inline.svg": {
