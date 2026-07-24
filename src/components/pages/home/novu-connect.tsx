@@ -132,7 +132,7 @@ function NovuConnect({
                     <>
                       <Image
                         className={cn(
-                          "absolute h-auto cursor-grab active:cursor-grabbing",
+                          "pointer-events-none absolute h-auto",
                           item.imageClassName
                         )}
                         src={item.image}
@@ -140,7 +140,6 @@ function NovuConnect({
                         sizes={item.imageSizes}
                         quality={100}
                         aria-hidden="true"
-                        draggable
                       />
                       {item.mascotEyes && (
                         <ConnectMascotEyes className={item.imageClassName} />
