@@ -45,8 +45,8 @@ import CommunicationLifecycle from "@/components/pages/home/communication-lifecy
 import Compliance from "@/components/pages/home/compliance"
 import ConnectStack from "@/components/pages/home/connect-stack"
 import Cta from "@/components/pages/home/cta"
-import Features from "@/components/pages/home/features"
 import FeaturedCustomers from "@/components/pages/home/featured-customers"
+import Features from "@/components/pages/home/features"
 import TimeOfDay from "@/components/pages/home/features/time-of-day"
 import Hero from "@/components/pages/home/hero"
 import NovuConnect from "@/components/pages/home/novu-connect"
@@ -129,7 +129,7 @@ const contentData = {
         channelRing: true,
         image: customerFacingGraphic,
         imageClassName:
-          "bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[43%] 2xl:w-[61.25rem]",
+          "bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[45%] 2xl:w-[61.25rem]",
         imageSizes: "980px",
       },
       {

@@ -11,34 +11,18 @@
   --glow-y: 50%;
   --glow-intensity: 0;
   --glow-radius: 12.5rem;
+  border-color: transparent;
+  background:
+    linear-gradient(#0b0c0e, #0b0c0e) padding-box,
+    radial-gradient(
+        var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+        rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.9)) 0%,
+        rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.5)) 30%,
+        transparent 60%
+      )
+      border-box,
+    linear-gradient(rgb(41 43 50), rgb(41 43 50)) border-box;
   transition: box-shadow 0.3s ease;
-}
-
-/* Use a real border and mask only its visibility. This keeps the glow's curve
-   identical to the card's own border instead of reconstructing the ring with
-   a content-box mask. */
-.magic-bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid rgb(var(--mb-glow-rgb) / 0.9);
-  opacity: var(--glow-intensity);
-  mask-image: radial-gradient(
-    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    #000 0%,
-    rgb(0 0 0 / 0.55) 30%,
-    transparent 60%
-  );
-  -webkit-mask-image: radial-gradient(
-    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    #000 0%,
-    rgb(0 0 0 / 0.55) 30%,
-    transparent 60%
-  );
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 20;
 }
 
 .magic-bento-card.is-glowing {
@@ -195,19 +179,42 @@
   justify-content: center;
   aspect-ratio: 1;
   translate: -50% -50%;
+  isolation: isolate;
+  overflow: hidden;
   border-radius: 28.18%;
-  border: 1px solid rgb(255 255 255 / 0.06);
-  background: linear-gradient(158deg, #17181d 0%, #0a0a0d 48%, #060608 100%);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.07),
-    0 14px 34px rgb(0 0 0 / 0.55);
+  border: 0;
+  background: transparent;
+  box-shadow: 0 14px 34px rgb(0 0 0 / 0.55);
   cursor: pointer;
   transform: rotate(var(--mb-tile-rot, 0deg));
   transition:
     box-shadow 0.25s ease,
-    border-color 0.25s ease,
     transform 0.25s ease;
+  will-change: transform;
   pointer-events: auto;
+}
+
+.mb-arc-tile-base-bg,
+.mb-arc-tile-hover-bg,
+.mb-arc-tile-hover-border {
+  transition: opacity 0.25s ease;
+}
+
+.mb-arc-tile-base-bg {
+  z-index: 0;
+  background: linear-gradient(158deg, #17181d 0%, #0a0a0d 48%, #060608 100%);
+  opacity: 1;
+}
+
+.mb-arc-tile-hover-bg {
+  z-index: 1;
+  background: linear-gradient(194deg, #000 9.88%, rgb(0 0 0 / 0.1) 102.69%);
+  opacity: 0;
+}
+
+.mb-arc-tile-hover-border {
+  z-index: 20;
+  opacity: 0;
 }
 
 .mb-channel-orbit-outer .mb-arc-tile {
@@ -221,13 +228,20 @@
 .mb-arc-tile:hover,
 .mb-arc-tile:focus-visible {
   outline: none;
-  border-color: hsl(var(--purple-3) / 0.7);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    0 0 0 1px hsl(var(--purple-3) / 0.55),
-    0 0 26px hsl(var(--purple-3) / 0.5),
-    0 18px 40px rgb(0 0 0 / 0.6);
-  transform: rotate(var(--mb-tile-rot, 0deg)) scale(1.07);
+  box-shadow: 0 6px 24px rgb(0 8 49 / 0.7);
+  transform: rotate(var(--mb-tile-rot, 0deg)) scale(1.090909);
+}
+
+.mb-arc-tile:hover .mb-arc-tile-base-bg,
+.mb-arc-tile:focus-visible .mb-arc-tile-base-bg {
+  opacity: 0;
+}
+
+.mb-arc-tile:hover .mb-arc-tile-hover-bg,
+.mb-arc-tile:hover .mb-arc-tile-hover-border,
+.mb-arc-tile:focus-visible .mb-arc-tile-hover-bg,
+.mb-arc-tile:focus-visible .mb-arc-tile-hover-border {
+  opacity: 1;
 }
 
 @keyframes mb-channel-orbit-spin {
@@ -236,8 +250,7 @@
   }
 }
 
-.mb-channel-orbit:hover .mb-channel-orbit-rotator,
-.mb-channel-orbit:focus-within .mb-channel-orbit-rotator {
+.mb-channel-orbit[data-paused="true"] .mb-channel-orbit-rotator {
   animation-play-state: paused;
 }
 

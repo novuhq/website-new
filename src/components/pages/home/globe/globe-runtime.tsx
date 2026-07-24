@@ -13,7 +13,6 @@ import { Canvas, useThree } from "@react-three/fiber"
 import {
   motion,
   motionValue,
-  useMotionValue,
   useReducedMotion,
   type MotionValue,
 } from "motion/react"
@@ -21,20 +20,32 @@ import {
 import { cn } from "@/lib/utils"
 
 import {
+  GLOBE_AUTO_ROTATION_TIME_SCALE,
+  GLOBE_CARD_CONTENT_READY_MS,
   GLOBE_CARD_EVENTS,
   GLOBE_INITIAL_TIME_MS,
+  GLOBE_ROUTE_EXIT_MS,
+  GLOBE_ROUTE_HOLD_MS,
+  GLOBE_ROUTE_REVEAL_MS,
   GLOBE_ROUTES,
   GLOBE_STORY_CARD_DELAY_MS,
+  GLOBE_STORY_GAP_MS,
   GLOBE_STORY_REENTRY_DELAY_MS,
   GLOBE_STORY_SETTLE_MS,
 } from "./globe-data"
 import GlobeEventCard from "./globe-event-card"
+import GlobeMetric from "./globe-metric"
 import GlobeScene from "./globe-scene"
-import { pickGlobeCardEvents } from "./globe-scheduler"
+import {
+  GLOBE_AMBIENT_ROUTE_GAP_MS,
+  pickAmbientGlobeRoute,
+  pickGlobeCardEvents,
+} from "./globe-scheduler"
 import {
   advanceGlobeRotation,
   getActiveCardEvent,
   getGlobeCardDurationMs,
+  getGlobeCardExitStartMs,
   getGlobeCycleStartMs,
   getGlobeRotation,
 } from "./globe-timeline"
@@ -65,8 +76,9 @@ interface IActiveCardPlayback {
   anchorOpacity: MotionValue<number>
   anchorX: MotionValue<number>
   anchorY: MotionValue<number>
+  cardTime: MotionValue<number>
   event: IGlobeCardEvent
-  startedAtMs: number
+  id: string
 }
 
 interface IGlobeCanvasErrorBoundaryProps {
@@ -81,15 +93,16 @@ interface IGlobeContextMonitorProps {
 const POINTER_DRAG_THRESHOLD_PX = 6
 const POINTER_VELOCITY_STALE_MS = 80
 const MAX_INTERACTION_STEP_MS = 16
-const MAX_CONCURRENT_CARD_PLAYBACKS = 5
-// Target cadence for a new event (story-clock ms). ~1 new event per second.
-const GLOBE_CARD_SPAWN_INTERVAL_MS = 1_000
-
-// Vertical tilt limits (radians). Widened from the original +/-0.28 so the user
-// can drag the globe up far enough to bring the southern cards into view. The
-// downward-tilt range (negative, produced by dragging up) is the generous side.
-const PITCH_MIN = -0.62
-const PITCH_MAX = 0.34
+const MAX_CONCURRENT_CARD_PLAYBACKS = 3
+const MAX_CONCURRENT_AMBIENT_ROUTES = 4
+const ROUTE_RESUME_EASE_MS = 240
+const SCHEDULER_INTERVAL_MS = 100
+const PITCH_MIN = -0.28
+const PITCH_MAX = 0.28
+const ACTIVE_ROUTE_DURATION_MS =
+  GLOBE_ROUTE_REVEAL_MS + GLOBE_ROUTE_HOLD_MS + GLOBE_ROUTE_EXIT_MS
+const STORY_ROUTE_IDS = new Set(GLOBE_CARD_EVENTS.map(({ routeId }) => routeId))
+const AMBIENT_ROUTES = GLOBE_ROUTES.filter(({ id }) => !STORY_ROUTE_IDS.has(id))
 
 class GlobeCanvasErrorBoundary extends Component<
   IGlobeCanvasErrorBoundaryProps,
@@ -167,7 +180,10 @@ function advanceGlobeInteraction(
     interaction.rotation += interaction.velocityYaw * stepMs
     interaction.pitch = Math.max(
       PITCH_MIN,
-      Math.min(PITCH_MAX, interaction.pitch + interaction.velocityPitch * stepMs)
+      Math.min(
+        PITCH_MAX,
+        interaction.pitch + interaction.velocityPitch * stepMs
+      )
     )
 
     const damping = Math.pow(0.88, stepMs * 0.06)
@@ -187,7 +203,7 @@ function advanceGlobeInteraction(
         : settleProgress * settleProgress * (3 - 2 * settleProgress)
     interaction.rotation = advanceGlobeRotation(
       interaction.rotation,
-      stepMs * interaction.autoBlend
+      stepMs * interaction.autoBlend * GLOBE_AUTO_ROTATION_TIME_SCALE
     )
   }
 }
@@ -206,14 +222,16 @@ function getDebugTimeMs() {
 
 function createCardPlayback(
   event: IGlobeCardEvent,
-  startedAtMs: number
+  id: string,
+  initialCardTimeMs: number
 ): IActiveCardPlayback {
   return {
     anchorOpacity: motionValue(0),
     anchorX: motionValue(-1000),
     anchorY: motionValue(-1000),
+    cardTime: motionValue(initialCardTimeMs),
     event,
-    startedAtMs,
+    id,
   }
 }
 
@@ -260,25 +278,35 @@ export default function GlobeRuntime({
           ])
         )
   )
-  const lastCardStartedAtRef = useRef<Record<string, number>>(
-    Object.fromEntries(
-      bootstrapEvents.map((event) => [
-        event.id,
-        -(event.initialRouteLeadMs ?? 0),
-      ])
-    )
+  const lastCardCompletedAtRef = useRef<Record<string, number>>({})
+  const lastAmbientRouteStartedAtRef = useRef<Record<string, number>>({})
+  const lastAmbientRouteSpawnAtRef = useRef(-Infinity)
+  const lastStoryRouteSpawnAtRef = useRef(
+    bootstrapEvents.length > 0
+      ? Math.max(
+          ...bootstrapEvents.map((event) => -(event.initialRouteLeadMs ?? 0))
+        )
+      : -Infinity
   )
+  const lastScheduleCheckAtRef = useRef(-Infinity)
+  const playbackSequenceRef = useRef(bootstrapEvents.length)
   const reentryReadyAtRef = useRef(0)
-  const lastCardSpawnAtRef = useRef(-Infinity)
   const hasStartedPlaybackRef = useRef(false)
   const initialCardPlaybacksRef = useRef<IActiveCardPlayback[] | null>(null)
   if (initialCardPlaybacksRef.current === null) {
     initialCardPlaybacksRef.current = debugCard
-      ? [createCardPlayback(debugCard, debugCycleStartMs + debugCard.startMs)]
-      : bootstrapEvents.map((event) =>
+      ? [
+          createCardPlayback(
+            debugCard,
+            `${debugCard.id}:debug`,
+            initialTimeMs - (debugCycleStartMs + debugCard.startMs)
+          ),
+        ]
+      : bootstrapEvents.map((event, index) =>
           createCardPlayback(
             event,
-            GLOBE_STORY_CARD_DELAY_MS - (event.initialRouteLeadMs ?? 0)
+            `${event.id}:bootstrap-${index}`,
+            (event.initialRouteLeadMs ?? 0) - GLOBE_STORY_CARD_DELAY_MS
           )
         )
   }
@@ -296,7 +324,6 @@ export default function GlobeRuntime({
   const [inView, setInView] = useState(true)
   const [quality, setQuality] = useState<TGlobeQuality>(getInitialQuality)
   const [sceneReady, setSceneReady] = useState(false)
-  const timelineTime = useMotionValue(initialTimeMs)
   const active = inView && documentVisible
   const playbackActive = active && sceneReady
 
@@ -368,93 +395,150 @@ export default function GlobeRuntime({
     let animationFrame = 0
     let lastFrameTime = performance.now()
 
-    // The globe rotation and the event/card timeline run on separate clocks so
-    // the globe can drift in slow-motion while notifications still animate at a
-    // lively pace. ROTATION is the slow one; the STORY clock (route reveal, card
-    // scramble + hold + exit) runs faster. Because actual rotation stays slower
-    // than the scheduler's nominal prediction, cards only ever end up MORE
-    // readable, never less, so the choreography stays safe. 1 = real-time.
-    const ROTATION_TIME_SCALE = 0.45
-    const STORY_TIME_SCALE = 0.9
-
     const updateTimeline = (time: number) => {
-      const rawDelta = Math.max(0, time - lastFrameTime)
+      const delta = Math.max(0, time - lastFrameTime)
       lastFrameTime = time
-      const rotationDelta = rawDelta * ROTATION_TIME_SCALE
-      const storyDelta = rawDelta * STORY_TIME_SCALE
 
       const interaction = interactionRef.current
-      advanceGlobeInteraction(interaction, rotationDelta, time)
+      advanceGlobeInteraction(interaction, delta, time)
 
-      const storyPlaybackPaused =
-        interaction.dragging ||
-        interaction.autoBlend < 0.98 ||
-        Math.abs(interaction.velocityYaw) >= 0.00002 ||
-        Math.abs(interaction.velocityPitch) >= 0.00002
-
-      // Route geometry and every popup motion track share this clock. Freezing
-      // it during drag/inertia keeps the current route and readable card on the
-      // exact frame where the user started manipulating the globe.
-      if (!storyPlaybackPaused) {
-        elapsedRef.current += storyDelta
-        timelineTime.set(elapsedRef.current)
-      }
-      const storyTime = elapsedRef.current
+      const routeResumeProgress =
+        interaction.releasedAtMs === -Infinity
+          ? 1
+          : Math.min(
+              1,
+              Math.max(
+                0,
+                (time - interaction.releasedAtMs) / ROUTE_RESUME_EASE_MS
+              )
+            )
+      const routePlaybackRate = interaction.dragging
+        ? 0
+        : routeResumeProgress * routeResumeProgress
+      const routeDelta = delta * routePlaybackRate
+      elapsedRef.current += routeDelta
+      const routeTime = elapsedRef.current
 
       const currentCardPlaybacks = activeCardPlaybacksRef.current
+      currentCardPlaybacks.forEach((playback) => {
+        const localTime = playback.cardTime.get()
+
+        if (localTime < 0) {
+          playback.cardTime.set(Math.min(0, localTime + routeDelta))
+          return
+        }
+
+        const exitStartMs = getGlobeCardExitStartMs(playback.event)
+        const holdPaused =
+          interaction.dragging &&
+          localTime >= GLOBE_CARD_CONTENT_READY_MS &&
+          localTime < exitStartMs
+
+        if (!holdPaused) playback.cardTime.set(localTime + delta)
+      })
+
       const remainingCardPlaybacks = currentCardPlaybacks.filter(
         (playback) =>
-          storyTime <
-          playback.startedAtMs + getGlobeCardDurationMs(playback.event)
+          playback.cardTime.get() < getGlobeCardDurationMs(playback.event)
       )
       if (remainingCardPlaybacks.length !== currentCardPlaybacks.length) {
+        currentCardPlaybacks.forEach((playback) => {
+          if (!remainingCardPlaybacks.includes(playback)) {
+            lastCardCompletedAtRef.current[playback.event.id] = routeTime
+          }
+        })
         activeCardPlaybacksRef.current = remainingCardPlaybacks
         setActiveCardPlaybacks(remainingCardPlaybacks)
       }
 
       const interactionSettled =
-        !storyPlaybackPaused && time >= reentryReadyAtRef.current
+        !interaction.dragging &&
+        interaction.autoBlend >= 0.85 &&
+        time >= reentryReadyAtRef.current
+      const schedulerDue =
+        time - lastScheduleCheckAtRef.current >= SCHEDULER_INTERVAL_MS
 
-      if (interactionSettled) {
+      if (interactionSettled && schedulerDue) {
+        lastScheduleCheckAtRef.current = time
         const availableCardSlots =
           MAX_CONCURRENT_CARD_PLAYBACKS - activeCardPlaybacksRef.current.length
+        const storySpawnDue =
+          routeTime - lastStoryRouteSpawnAtRef.current >= GLOBE_STORY_GAP_MS
 
-        // Spawn a new event on a steady ~1s cadence instead of waiting for a
-        // node to cross the rotation window. With the globe drifting in slow
-        // motion, crossings are rare, so the cadence is driven by this timer and
-        // the event pool is picked purely by which node is currently readable
-        // (ignoreTrigger). One per tick keeps a lively "new event every second"
-        // stream without flooding.
-        const spawnDue =
-          storyTime - lastCardSpawnAtRef.current >= GLOBE_CARD_SPAWN_INTERVAL_MS
-
-        if (availableCardSlots > 0 && spawnDue) {
+        if (availableCardSlots > 0 && storySpawnDue) {
+          const activeEventIds = new Set(
+            activeCardPlaybacksRef.current.map(({ event }) => event.id)
+          )
           const events = pickGlobeCardEvents({
-            events: GLOBE_CARD_EVENTS,
-            ignoreTrigger: true,
-            lastStartedAt: lastCardStartedAtRef.current,
+            events: GLOBE_CARD_EVENTS.filter(
+              (event) => !activeEventIds.has(event.id)
+            ),
+            lastCompletedAt: lastCardCompletedAtRef.current,
             limit: 1,
-            nowMs: storyTime,
+            nowMs: routeTime,
             previousRotationRadians: previousScheduleRotationRef.current,
             rotationRadians: interaction.rotation,
+            rotationTimeScale: GLOBE_AUTO_ROTATION_TIME_SCALE,
+            triggerMode: "visible",
           })
 
           if (events.length > 0) {
-            lastCardSpawnAtRef.current = storyTime
-            const cardStartedAtMs = storyTime + GLOBE_STORY_CARD_DELAY_MS
             const newPlaybacks = events.map((event) => {
-              routePlaybackRef.current[event.routeId] = storyTime
-              lastCardStartedAtRef.current[event.id] = storyTime
+              routePlaybackRef.current[event.routeId] = routeTime
+              playbackSequenceRef.current += 1
 
-              return createCardPlayback(event, cardStartedAtMs)
+              return createCardPlayback(
+                event,
+                `${event.id}:${playbackSequenceRef.current}`,
+                -GLOBE_STORY_CARD_DELAY_MS
+              )
             })
             const nextPlaybacks = [
               ...activeCardPlaybacksRef.current,
               ...newPlaybacks,
             ]
 
+            lastStoryRouteSpawnAtRef.current = routeTime
             activeCardPlaybacksRef.current = nextPlaybacks
             setActiveCardPlaybacks(nextPlaybacks)
+          }
+        }
+
+        const activeStoryRouteIds = new Set(
+          activeCardPlaybacksRef.current.map(({ event }) => event.routeId)
+        )
+        const activeAmbientRouteIds = Object.entries(
+          lastAmbientRouteStartedAtRef.current
+        )
+          .filter(
+            ([, startedAtMs]) =>
+              routeTime - startedAtMs < ACTIVE_ROUTE_DURATION_MS
+          )
+          .map(([routeId]) => routeId)
+        const ambientSpawnDue =
+          routeTime - lastAmbientRouteSpawnAtRef.current >=
+          GLOBE_AMBIENT_ROUTE_GAP_MS
+
+        if (
+          ambientSpawnDue &&
+          activeAmbientRouteIds.length < MAX_CONCURRENT_AMBIENT_ROUTES
+        ) {
+          const ambientRoute = pickAmbientGlobeRoute({
+            blockedRouteIds: new Set([
+              ...activeStoryRouteIds,
+              ...activeAmbientRouteIds,
+            ]),
+            lastStartedAt: lastAmbientRouteStartedAtRef.current,
+            nowMs: routeTime,
+            quality,
+            rotationRadians: interaction.rotation,
+            routes: AMBIENT_ROUTES,
+          })
+
+          if (ambientRoute) {
+            routePlaybackRef.current[ambientRoute.id] = routeTime
+            lastAmbientRouteStartedAtRef.current[ambientRoute.id] = routeTime
+            lastAmbientRouteSpawnAtRef.current = routeTime
           }
         }
       }
@@ -469,7 +553,7 @@ export default function GlobeRuntime({
 
     animationFrame = requestAnimationFrame(updateTimeline)
     return () => cancelAnimationFrame(animationFrame)
-  }, [failed, playbackActive, quality, shouldReduceMotion, timelineTime])
+  }, [failed, playbackActive, quality, shouldReduceMotion])
 
   const handleAnchorUpdate = useCallback(
     (eventId: string, { visible, x, y }: IProjectedAnchor) => {
@@ -671,10 +755,10 @@ export default function GlobeRuntime({
       {activeCardPlaybacks.map((playback) => (
         <GlobeEventCard
           event={playback.event}
-          key={playback.event.id}
+          key={playback.id}
           opacity={playback.anchorOpacity}
-          startedAtMs={playback.startedAtMs}
-          timeMs={timelineTime}
+          startedAtMs={0}
+          timeMs={playback.cardTime}
           x={playback.anchorX}
           y={playback.anchorY}
         />
@@ -686,12 +770,7 @@ export default function GlobeRuntime({
         initial={false}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="relative flex h-7.5 items-center justify-center border border-gray-20 bg-[#0B0C0E] px-3 font-mono text-sm leading-none tracking-tighter text-white uppercase">
-          <span className="absolute inset-x-8 -top-16 h-20 bg-[radial-gradient(ellipse_at_center,rgba(159,74,255,0.24),transparent_70%)] blur-lg" />
-          <span className="relative">
-            1.5b messages just sent out in the last month
-          </span>
-        </div>
+        <GlobeMetric />
       </motion.div>
     </div>
   )

@@ -1,4 +1,8 @@
-import { GLOBE_ROUTE_REVEAL_MS, GLOBE_STORY_CARD_DELAY_MS } from "./globe-data"
+import {
+  GLOBE_AUTO_ROTATION_TIME_SCALE,
+  GLOBE_ROUTE_REVEAL_MS,
+  GLOBE_STORY_CARD_DELAY_MS,
+} from "./globe-data"
 import {
   advanceGlobeRotation,
   getGlobeCardDurationMs,
@@ -18,25 +22,20 @@ const CARD_START_MIN_DEGREES = -72
 const CARD_START_MAX_DEGREES = 8
 const CARD_READ_END_MAX_DEGREES = 76
 const CARD_EXIT_END_MAX_DEGREES = 96
+const VISIBLE_CARD_MIN_DEGREES = -120
+const VISIBLE_CARD_MAX_DEGREES = -8
+const VISIBLE_CARD_IDEAL_DEGREES = -72
 
 const AMBIENT_WINDOW_MIN_DEGREES = -105
 const AMBIENT_WINDOW_MAX_DEGREES = -48
 const AMBIENT_IDEAL_DEGREES = -78
 
-// Front-face band for the timed (ignoreTrigger) spawn path. The globe drifts in
-// slow motion, so a node barely moves during a card's life: any node currently
-// on the visible front hemisphere reads fine, and this wide band keeps two or
-// three events eligible at all times so the ~1s cadence never starves.
-const TIMED_SPAWN_MIN_DEGREES = -100
-const TIMED_SPAWN_MAX_DEGREES = 30
-const TIMED_SPAWN_IDEAL_DEGREES = -40
-
-// Longitude is the primary replay guard. This cooldown only prevents a manual
-// drag from retriggering the same story repeatedly within one geographic pass,
-// while still allowing every story to become eligible on the next auto turn.
+// Runtime records completion, not start, so this is a true post-playback rest.
 export const GLOBE_CARD_COOLDOWN_MS = 3_500
 export const GLOBE_AMBIENT_ROUTE_COOLDOWN_MS = 16_000
-export const GLOBE_AMBIENT_ROUTE_GAP_MS = 950
+export const GLOBE_AMBIENT_ROUTE_GAP_MS = 1_100
+
+type TCardTriggerMode = "crossing" | "visible"
 
 export function normalizeSignedDegrees(degrees: number) {
   return ((((degrees + 180) % 360) + 360) % 360) - 180
@@ -94,19 +93,22 @@ function wasCardTriggerReached(
 
 function isCardReadableThroughExit(
   event: IGlobeCardEvent,
-  rotationRadians: number
+  rotationRadians: number,
+  rotationTimeScale: number
 ) {
   const cardStartRotation = advanceGlobeRotation(
     rotationRadians,
-    GLOBE_STORY_CARD_DELAY_MS
+    GLOBE_STORY_CARD_DELAY_MS * rotationTimeScale
   )
   const readEndRotation = advanceGlobeRotation(
     rotationRadians,
-    GLOBE_STORY_CARD_DELAY_MS + getGlobeCardExitStartMs(event)
+    (GLOBE_STORY_CARD_DELAY_MS + getGlobeCardExitStartMs(event)) *
+      rotationTimeScale
   )
   const exitEndRotation = advanceGlobeRotation(
     rotationRadians,
-    GLOBE_STORY_CARD_DELAY_MS + getGlobeCardDurationMs(event)
+    (GLOBE_STORY_CARD_DELAY_MS + getGlobeCardDurationMs(event)) *
+      rotationTimeScale
   )
   const startLongitude = getRelativeLongitude(
     event.anchor.longitude,
@@ -129,13 +131,13 @@ function isCardReadableThroughExit(
   )
 }
 
-function compareLastStartedAt(
+function compareLastActivityAt(
   firstId: string,
   secondId: string,
-  lastStartedAt: Readonly<Record<string, number>>
+  lastActivityAt: Readonly<Record<string, number>>
 ) {
-  const first = lastStartedAt[firstId]
-  const second = lastStartedAt[secondId]
+  const first = lastActivityAt[firstId]
+  const second = lastActivityAt[secondId]
 
   if (first === undefined && second !== undefined) return -1
   if (first !== undefined && second === undefined) return 1
@@ -144,23 +146,22 @@ function compareLastStartedAt(
 
 export function pickGlobeCardEvents({
   events,
-  ignoreTrigger = false,
-  lastStartedAt,
+  lastCompletedAt,
   limit,
   nowMs,
   previousRotationRadians,
   rotationRadians,
+  rotationTimeScale = 1,
+  triggerMode = "crossing",
 }: {
   events: IGlobeCardEvent[]
-  // When true, spawn is driven by a timer rather than a rotation-window
-  // crossing: any event whose node is currently readable is eligible. Used for
-  // the steady "new event every second" cadence on the slow-drifting globe.
-  ignoreTrigger?: boolean
-  lastStartedAt: Readonly<Record<string, number>>
+  lastCompletedAt: Readonly<Record<string, number>>
   limit: number
   nowMs: number
   previousRotationRadians: number | null
   rotationRadians: number
+  rotationTimeScale?: number
+  triggerMode?: TCardTriggerMode
 }) {
   if (limit <= 0) return []
 
@@ -174,30 +175,38 @@ export function pickGlobeCardEvents({
       ),
     }))
     .filter(({ event, relativeLongitude }) => {
-      const lastStart = lastStartedAt[event.id] ?? -Infinity
-      if (nowMs - lastStart < GLOBE_CARD_COOLDOWN_MS) return false
-      if (ignoreTrigger) {
-        return (
-          relativeLongitude >= TIMED_SPAWN_MIN_DEGREES &&
-          relativeLongitude <= TIMED_SPAWN_MAX_DEGREES
-        )
+      const lastCompletion = lastCompletedAt[event.id] ?? -Infinity
+      if (nowMs - lastCompletion < GLOBE_CARD_COOLDOWN_MS) return false
+      if (
+        !isCardReadableThroughExit(event, rotationRadians, rotationTimeScale)
+      ) {
+        return false
       }
-      if (!isCardReadableThroughExit(event, rotationRadians)) return false
-      return wasCardTriggerReached(
-        event.anchor.longitude,
-        previousRotationRadians,
-        rotationRadians
-      )
+
+      return triggerMode === "visible"
+        ? relativeLongitude >= VISIBLE_CARD_MIN_DEGREES &&
+            relativeLongitude <= VISIBLE_CARD_MAX_DEGREES
+        : wasCardTriggerReached(
+            event.anchor.longitude,
+            previousRotationRadians,
+            rotationRadians
+          )
     })
     .sort((first, second) => {
-      const idealDegrees = ignoreTrigger
-        ? TIMED_SPAWN_IDEAL_DEGREES
-        : CARD_TRIGGER_IDEAL_DEGREES
+      const idealDegrees =
+        triggerMode === "visible"
+          ? VISIBLE_CARD_IDEAL_DEGREES
+          : CARD_TRIGGER_IDEAL_DEGREES
+
       return (
-        compareLastStartedAt(first.event.id, second.event.id, lastStartedAt) ||
-        first.order - second.order ||
+        compareLastActivityAt(
+          first.event.id,
+          second.event.id,
+          lastCompletedAt
+        ) ||
         Math.abs(first.relativeLongitude - idealDegrees) -
-          Math.abs(second.relativeLongitude - idealDegrees)
+          Math.abs(second.relativeLongitude - idealDegrees) ||
+        first.order - second.order
       )
     })
     .slice(0, limit)
@@ -262,7 +271,10 @@ export function pickAmbientGlobeRoute({
         const lastStart = lastStartedAt[route.id] ?? -Infinity
         const revealEndLongitude = getRelativeLongitude(
           centerLongitude,
-          advanceGlobeRotation(rotationRadians, GLOBE_ROUTE_REVEAL_MS)
+          advanceGlobeRotation(
+            rotationRadians,
+            GLOBE_ROUTE_REVEAL_MS * GLOBE_AUTO_ROTATION_TIME_SCALE
+          )
         )
 
         return (
@@ -276,7 +288,7 @@ export function pickAmbientGlobeRoute({
       })
       .sort(
         (first, second) =>
-          compareLastStartedAt(
+          compareLastActivityAt(
             first.route.id,
             second.route.id,
             lastStartedAt

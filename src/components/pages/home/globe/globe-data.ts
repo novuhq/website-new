@@ -7,6 +7,7 @@ import type {
 export const GLOBE_CYCLE_MS = 16_350
 export const GLOBE_ROTATION_MS = GLOBE_CYCLE_MS
 export const GLOBE_INITIAL_TIME_MS = 0
+export const GLOBE_AUTO_ROTATION_TIME_SCALE = 0.6
 export const GLOBE_RADIUS = 2.5536
 export const GLOBE_POINT_SURFACE_OFFSET = 0.012
 export const GLOBE_CENTER_Y = -2.2536
@@ -32,11 +33,9 @@ export const GLOBE_ROUTE_EXIT_MS = GLOBE_ROUTE_CYCLE_MS * 0.35
 // The popup is a delivery result, so it starts only once the route reaches
 // its destination marker instead of racing ahead of the line reveal.
 export const GLOBE_STORY_CARD_DELAY_MS = GLOBE_ROUTE_REVEAL_MS
-export const GLOBE_STORY_GAP_MS = 700
-// How quickly auto-rotation blends back in after the user releases a drag.
-// Kept short so the globe resumes moving promptly instead of stalling.
-export const GLOBE_STORY_SETTLE_MS = 250
-export const GLOBE_STORY_REENTRY_DELAY_MS = 150
+export const GLOBE_STORY_GAP_MS = 2_200
+export const GLOBE_STORY_SETTLE_MS = 300
+export const GLOBE_STORY_REENTRY_DELAY_MS = 0
 
 export const GLOBE_CONNECTION_NODES = {
   centralSahara: {
@@ -111,6 +110,90 @@ export const GLOBE_CONNECTION_NODES = {
     longitude: 21.0122,
     markerSize: 0.064,
   },
+  sanFrancisco: {
+    id: "san-francisco",
+    latitude: 37.7749,
+    longitude: -122.4194,
+    markerSize: 0.058,
+  },
+  tokyo: {
+    id: "tokyo",
+    latitude: 35.6762,
+    longitude: 139.6503,
+    markerSize: 0.06,
+  },
+  saoPaulo: {
+    id: "sao-paulo",
+    latitude: -23.5505,
+    longitude: -46.6333,
+    markerSize: 0.058,
+  },
+  lisbon: {
+    id: "lisbon",
+    latitude: 38.7223,
+    longitude: -9.1393,
+    markerSize: 0.058,
+  },
+  capeTown: {
+    id: "cape-town",
+    latitude: -33.9249,
+    longitude: 18.4241,
+    markerSize: 0.058,
+  },
+  singapore: {
+    id: "singapore",
+    latitude: 1.3521,
+    longitude: 103.8198,
+    markerSize: 0.058,
+  },
+  sydney: {
+    id: "sydney",
+    latitude: -33.8688,
+    longitude: 151.2093,
+    markerSize: 0.058,
+  },
+  jakarta: {
+    id: "jakarta",
+    latitude: -6.2088,
+    longitude: 106.8456,
+    markerSize: 0.058,
+  },
+  mumbai: {
+    id: "mumbai",
+    latitude: 19.076,
+    longitude: 72.8777,
+    markerSize: 0.058,
+  },
+  berlin: {
+    id: "berlin",
+    latitude: 52.52,
+    longitude: 13.405,
+    markerSize: 0.058,
+  },
+  honolulu: {
+    id: "honolulu",
+    latitude: 21.3069,
+    longitude: -157.8583,
+    markerSize: 0.058,
+  },
+  auckland: {
+    id: "auckland",
+    latitude: -36.8509,
+    longitude: 174.7645,
+    markerSize: 0.058,
+  },
+  mexicoCity: {
+    id: "mexico-city",
+    latitude: 19.4326,
+    longitude: -99.1332,
+    markerSize: 0.058,
+  },
+  bogota: {
+    id: "bogota",
+    latitude: 4.711,
+    longitude: -74.0721,
+    markerSize: 0.058,
+  },
 } as const satisfies Record<string, IGlobeRouteNode>
 
 export const GLOBE_ROUTE_NODES: IGlobeRouteNode[] = Object.values(
@@ -145,9 +228,9 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
     wave: 1,
   },
   {
-    id: "novosibirsk-guangzhou",
-    from: GLOBE_CONNECTION_NODES.novosibirsk,
-    to: GLOBE_CONNECTION_NODES.guangzhou,
+    id: "guangzhou-novosibirsk",
+    from: GLOBE_CONNECTION_NODES.guangzhou,
+    to: GLOBE_CONNECTION_NODES.novosibirsk,
     altitude: 0.31,
     startMs: 7_915.432 - GLOBE_EURASIA_WAVE_ADVANCE_MS,
     tier: "narrative",
@@ -179,6 +262,69 @@ export const GLOBE_ROUTES: IGlobeRoute[] = [
     startMs: GLOBE_GREENLAND_AMBIENT_ROUTE_START_MS,
     tier: "narrative",
     wave: 2,
+  },
+  {
+    id: "san-francisco-tokyo",
+    from: GLOBE_CONNECTION_NODES.sanFrancisco,
+    to: GLOBE_CONNECTION_NODES.tokyo,
+    altitude: 0.44,
+    startMs: 1_200,
+    tier: "narrative",
+    wave: 1,
+  },
+  {
+    id: "lisbon-sao-paulo",
+    from: GLOBE_CONNECTION_NODES.lisbon,
+    to: GLOBE_CONNECTION_NODES.saoPaulo,
+    altitude: 0.4,
+    startMs: 3_800,
+    tier: "supporting",
+    wave: 1,
+  },
+  {
+    id: "cape-town-singapore",
+    from: GLOBE_CONNECTION_NODES.capeTown,
+    to: GLOBE_CONNECTION_NODES.singapore,
+    altitude: 0.48,
+    startMs: 6_200,
+    tier: "detail",
+    wave: 2,
+  },
+  {
+    id: "sydney-jakarta",
+    from: GLOBE_CONNECTION_NODES.sydney,
+    to: GLOBE_CONNECTION_NODES.jakarta,
+    altitude: 0.31,
+    startMs: 8_200,
+    tier: "supporting",
+    wave: 2,
+  },
+  {
+    id: "berlin-mumbai",
+    from: GLOBE_CONNECTION_NODES.berlin,
+    to: GLOBE_CONNECTION_NODES.mumbai,
+    altitude: 0.36,
+    startMs: 10_200,
+    tier: "narrative",
+    wave: 2,
+  },
+  {
+    id: "honolulu-auckland",
+    from: GLOBE_CONNECTION_NODES.honolulu,
+    to: GLOBE_CONNECTION_NODES.auckland,
+    altitude: 0.41,
+    startMs: 12_400,
+    tier: "detail",
+    wave: 1,
+  },
+  {
+    id: "mexico-city-bogota",
+    from: GLOBE_CONNECTION_NODES.mexicoCity,
+    to: GLOBE_CONNECTION_NODES.bogota,
+    altitude: 0.28,
+    startMs: 14_400,
+    tier: "detail",
+    wave: 1,
   },
 ]
 
@@ -227,11 +373,11 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
   },
   {
     id: "customer-sync",
-    routeId: "novosibirsk-guangzhou",
+    routeId: "guangzhou-novosibirsk",
     label: "Needs approval",
     channel: "slack",
     channelLabel: "Slack",
-    anchor: GLOBE_CONNECTION_NODES.guangzhou,
+    anchor: GLOBE_CONNECTION_NODES.novosibirsk,
     placement: "right",
     readHoldMs: 3_000,
     startMs: 8_600,
@@ -293,5 +439,39 @@ export const GLOBE_CARD_EVENTS: IGlobeCardEvent[] = [
     ],
     status: "Delivered in 203ms",
     widthPx: 260,
+  },
+  {
+    id: "pacific-product-event",
+    routeId: "san-francisco-tokyo",
+    label: "Product event",
+    channel: "whatsapp",
+    channelLabel: "WhatsApp",
+    anchor: GLOBE_CONNECTION_NODES.tokyo,
+    placement: "below-right",
+    readHoldMs: 2_600,
+    startMs: 3_825,
+    lines: [
+      { label: "Event", value: "order.shipped" },
+      { label: "Action", value: "send tracking link" },
+    ],
+    status: "Delivered in 84ms",
+    widthPx: 270,
+  },
+  {
+    id: "india-workflow-run",
+    routeId: "berlin-mumbai",
+    label: "Workflow run",
+    channel: "email",
+    channelLabel: "Email",
+    anchor: GLOBE_CONNECTION_NODES.mumbai,
+    placement: "above-right",
+    readHoldMs: 2_800,
+    startMs: 12_825,
+    lines: [
+      { label: "Event", value: "invoice.paid" },
+      { label: "Action", value: "send payment receipt" },
+    ],
+    status: "Delivered in 92ms",
+    widthPx: 270,
   },
 ]

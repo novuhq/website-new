@@ -1,16 +1,11 @@
 "use client"
 
-import { useState, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 import Image, { type StaticImageData } from "next/image"
-import { Check } from "lucide-react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 import {
   HOME_CHANNEL_SELECT_EVENT,
@@ -160,22 +155,35 @@ function goToChannel(key: string) {
 }
 
 interface IOrbitTileProps {
+  id: string
   index: number
+  onActivate: (tile: IActiveOrbitTile) => void
+  onCopy: (tile: IActiveOrbitTile) => void
+  onDeactivate: (id: string) => void
+  orbit: IActiveOrbitTile["orbit"]
   radius: number
   startAngle: number
   tile: IOrbitTile
   total: number
 }
 
+interface IActiveOrbitTile extends IOrbitTile {
+  id: string
+  orbit: "inner" | "outer"
+}
+
 function OrbitTile({
+  id,
   tile,
   index,
+  onActivate,
+  onCopy,
+  onDeactivate,
+  orbit,
   radius,
   startAngle,
   total,
 }: IOrbitTileProps) {
-  const { isCopied, handleCopy } = useCopyToClipboard(2400)
-  const [open, setOpen] = useState(false)
   const isLive = Boolean(tile.command)
   const angle = startAngle + (360 / total) * index
   const radians = (angle * Math.PI) / 180
@@ -185,10 +193,11 @@ function OrbitTile({
     "--mb-tile-rot": `${angle + 90}deg`,
   } as CSSProperties
 
+  const activeTile = { ...tile, id, orbit }
+
   const handleClick = () => {
     if (tile.command) {
-      handleCopy(tile.command)
-      setOpen(true)
+      onCopy(activeTile)
       return
     }
 
@@ -200,57 +209,63 @@ function OrbitTile({
     : `Get notified when ${tile.label} is live`
 
   return (
-    <Tooltip open={open || isCopied} onOpenChange={setOpen}>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className="mb-arc-tile group"
-          style={style}
-          onClick={handleClick}
-          aria-label={ariaLabel}
-        >
-          <ChannelIcon
-            channel={tile.key}
-            className={cn(
-              "size-[52%] md:size-[52%]",
-              tile.key === "email" && "!text-white"
-            )}
-            isActive
-          />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side="top">
-        {isCopied ? (
-          <span className="flex items-center gap-1.5 text-foreground">
-            <Check className="size-3.5 shrink-0 text-[#3ac47d]" aria-hidden />
-            Command copied. Paste it in your terminal.
-          </span>
-        ) : isLive ? (
-          <code className="font-mono text-[13px] tracking-tight text-foreground">
-            {tile.command}
-          </code>
-        ) : (
-          `Notify me when ${tile.label} is live`
+    <button
+      type="button"
+      className="mb-arc-tile group"
+      style={style}
+      onClick={handleClick}
+      onPointerEnter={() => onActivate(activeTile)}
+      onPointerLeave={() => onDeactivate(id)}
+      onFocus={() => onActivate(activeTile)}
+      onBlur={() => onDeactivate(id)}
+      aria-label={ariaLabel}
+    >
+      <span
+        className="mb-arc-tile-base-bg pointer-events-none absolute inset-0 rounded-[inherit]"
+        aria-hidden
+      />
+      <span
+        className="mb-arc-tile-hover-bg pointer-events-none absolute inset-0 rounded-[inherit] backdrop-blur-[2.1818px]"
+        aria-hidden
+      />
+      <span
+        className="mb-arc-tile-hover-border pointer-events-none absolute inset-0 rounded-[inherit] border-gradient bg-white/15 mix-blend-overlay"
+        aria-hidden
+      />
+      <ChannelIcon
+        channel={tile.key}
+        className={cn(
+          "relative z-10 size-[52%] md:size-[52%]",
+          tile.key === "email" && "!text-white"
         )}
-      </TooltipContent>
-    </Tooltip>
+        isActive
+      />
+    </button>
   )
 }
 
 interface IChannelOrbitProps {
   direction: "clockwise" | "counter-clockwise"
   position: "inner" | "outer"
+  paused: boolean
   radius: number
   startAngle: number
   tiles: IOrbitTile[]
+  onActivate: (tile: IActiveOrbitTile) => void
+  onCopy: (tile: IActiveOrbitTile) => void
+  onDeactivate: (id: string) => void
 }
 
 function ChannelOrbit({
   direction,
   position,
+  paused,
   radius,
   startAngle,
   tiles,
+  onActivate,
+  onCopy,
+  onDeactivate,
 }: IChannelOrbitProps) {
   return (
     <div
@@ -260,6 +275,7 @@ function ChannelOrbit({
           ? "mb-channel-orbit-inner"
           : "mb-channel-orbit-outer"
       )}
+      data-paused={paused || undefined}
     >
       <div
         className={cn(
@@ -271,8 +287,13 @@ function ChannelOrbit({
         {tiles.map((tile, index) => (
           <OrbitTile
             key={`${tile.key}-${index}`}
+            id={`${position}-${tile.key}-${index}`}
             tile={tile}
             index={index}
+            onActivate={onActivate}
+            onCopy={onCopy}
+            onDeactivate={onDeactivate}
+            orbit={position}
             radius={radius}
             startAngle={startAngle}
             total={tiles.length}
@@ -294,37 +315,149 @@ function ConnectChannelArc({
   backgroundSizes,
   className,
 }: IConnectChannelArcProps) {
-  return (
-    <div className={cn("absolute aspect-[1960/944]", className)}>
-      <div className="mb-arc">
-        {backgroundImage && (
-          <Image
-            className="object-cover"
-            src={backgroundImage}
-            alt=""
-            fill
-            sizes={backgroundSizes}
-            quality={100}
-            aria-hidden
-            draggable={false}
-          />
-        )}
+  const { isCopied, handleCopy } = useCopyToClipboard(2400)
+  const prefersReducedMotion = useReducedMotion()
+  const [hoveredTile, setHoveredTile] = useState<IActiveOrbitTile | null>(null)
+  const [copiedTile, setCopiedTile] = useState<IActiveOrbitTile | null>(null)
+  const [copyPausedOrbit, setCopyPausedOrbit] = useState<
+    IActiveOrbitTile["orbit"] | null
+  >(null)
+  const [resumedOrbit, setResumedOrbit] = useState<
+    IActiveOrbitTile["orbit"] | null
+  >(null)
+  const copyPauseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const activeTile = isCopied && copiedTile ? copiedTile : hoveredTile
+  const pausedOrbit =
+    copyPausedOrbit ??
+    (hoveredTile?.orbit === resumedOrbit ? null : hoveredTile?.orbit)
 
-        <ChannelOrbit
-          direction="clockwise"
-          position="outer"
-          radius={43.856}
-          startAngle={-90}
-          tiles={OUTER_ORBIT_TILES}
-        />
-        <ChannelOrbit
-          direction="counter-clockwise"
-          position="inner"
-          radius={41.818}
-          startAngle={-94.42}
-          tiles={INNER_ORBIT_TILES}
-        />
+  useEffect(
+    () => () => {
+      if (copyPauseTimeoutRef.current) {
+        clearTimeout(copyPauseTimeoutRef.current)
+      }
+    },
+    []
+  )
+
+  const handleTileActivate = (tile: IActiveOrbitTile) => {
+    const isSameResumedTile =
+      resumedOrbit === tile.orbit && hoveredTile?.id === tile.id
+
+    setHoveredTile(tile)
+    if (!isSameResumedTile) {
+      setResumedOrbit(null)
+    }
+  }
+
+  const handleTileCopy = (tile: IActiveOrbitTile) => {
+    if (!tile.command) return
+
+    if (copyPauseTimeoutRef.current) {
+      clearTimeout(copyPauseTimeoutRef.current)
+    }
+
+    setCopiedTile(tile)
+    setCopyPausedOrbit(tile.orbit)
+    setResumedOrbit(null)
+    handleCopy(tile.command)
+
+    copyPauseTimeoutRef.current = setTimeout(() => {
+      setCopyPausedOrbit(null)
+      setResumedOrbit(tile.orbit)
+      copyPauseTimeoutRef.current = null
+    }, 1000)
+  }
+
+  const handleTileDeactivate = (id: string) => {
+    if (hoveredTile?.id !== id) return
+
+    setHoveredTile(null)
+    setResumedOrbit(null)
+  }
+
+  const notice = isCopied
+    ? "Command copied!"
+    : activeTile?.command
+      ? "Click to copy command"
+      : activeTile
+        ? "Notify me when it's live"
+        : ""
+
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <div className={cn("absolute aspect-[1960/944]", className)}>
+        <div className="mb-arc">
+          {backgroundImage && (
+            <Image
+              className="object-cover"
+              src={backgroundImage}
+              alt=""
+              fill
+              sizes={backgroundSizes}
+              quality={100}
+              aria-hidden
+              draggable={false}
+            />
+          )}
+
+          <ChannelOrbit
+            direction="clockwise"
+            position="outer"
+            paused={pausedOrbit === "outer"}
+            radius={43.856}
+            startAngle={-90}
+            tiles={OUTER_ORBIT_TILES}
+            onActivate={handleTileActivate}
+            onCopy={handleTileCopy}
+            onDeactivate={handleTileDeactivate}
+          />
+          <ChannelOrbit
+            direction="counter-clockwise"
+            position="inner"
+            paused={pausedOrbit === "inner"}
+            radius={41.818}
+            startAngle={-94.42}
+            tiles={INNER_ORBIT_TILES}
+            onActivate={handleTileActivate}
+            onCopy={handleTileCopy}
+            onDeactivate={handleTileDeactivate}
+          />
+        </div>
       </div>
+
+      <AnimatePresence>
+        {activeTile && (
+          <motion.div
+            className="absolute bottom-3.5 left-1/2 isolate z-40 max-w-90 -translate-x-1/2 overflow-hidden rounded-md shadow-[0_0_14px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 6 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.32,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            role="status"
+            aria-live="polite"
+          >
+            <span
+              className="pointer-events-none absolute inset-0 -z-20 rounded-[inherit] bg-[linear-gradient(90deg,rgba(66,28,180,.50)_0%,rgba(27,37,138,.50)_100%)]"
+              aria-hidden
+            />
+            <span
+              className="pointer-events-none absolute inset-0 z-20 rounded-[inherit] bg-black/20"
+              aria-hidden
+            />
+            <span
+              className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] border-gradient bg-[linear-gradient(90deg,rgba(171,92,255,0.7),rgba(105,46,255,0.7))]"
+              aria-hidden
+            />
+            <div className="relative z-10 px-2.5 pt-[5px] pb-1.5 text-sm leading-[1.2] font-medium tracking-tighter whitespace-nowrap text-white">
+              {notice}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
