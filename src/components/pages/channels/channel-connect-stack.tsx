@@ -27,7 +27,7 @@ function ChannelConnectStack({ channel }: { channel: IChannelPageData }) {
       title={`Generate your ${channel.channelName} integration prompt`}
       description={`Pick your AI framework and copy a ready-to-use prompt to connect your agent to ${channel.channelName} with Novu Connect.`}
       channels={LIVE_CHANNEL_OPTIONS}
-      defaultChannelValues={[channel.cliSlug]}
+      defaultChannelValue={channel.cliSlug}
     />
   )
 }

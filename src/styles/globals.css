@@ -50,6 +50,7 @@
   --gray-40: 230 8% 37%; /* #575A66 */
   --gray-50: 230 7% 47%; /* #707280 */
   --gray-60: 230 7% 57%; /* #8A8C99 */
+  --gray-80: 230 9% 78%; /* #C2C4CC */
   --gray-90: 230 10% 89%; /* #E0E1E5 */
 
   --integration-count-badge-from: 47 100% 70%; /* #ffdf66 */
@@ -169,6 +170,8 @@
   --color-gray-40: hsl(var(--gray-40));
   --color-gray-50: hsl(var(--gray-50));
   --color-gray-60: hsl(var(--gray-60));
+  --color-gray-60: hsl(var(--gray-60));
+  --color-gray-80: hsl(var(--gray-80));
   --color-gray-90: hsl(var(--gray-90));
 
   --color-integration-card: hsl(var(--integration-card-surface));

@@ -116,13 +116,12 @@ function NovuNotify({
                 backgroundImage={featuredItem.backgroundImage}
               />
             )}
-
             <div className="relative flex min-w-0 flex-col md:contents">
               <div className="relative z-30 max-w-[26.5625rem] md:absolute md:top-[27px] md:left-[27px]">
                 <h3 className="text-lg leading-tight font-normal tracking-tighter text-foreground md:text-xl md:leading-none">
                   {featuredItem.title}
                 </h3>
-                <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50 md:w-[26rem] md:text-base">
+                <p className="mt-2.5 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50 md:w-80 md:text-base xl:w-114">
                   {featuredItem.description}
                 </p>
               </div>
@@ -136,6 +135,7 @@ function NovuNotify({
             {featuredItem.liveInbox ? (
               <div className="notify-live-inbox hidden md:absolute md:inset-0 md:z-20 md:block">
                 <InboxComponent
+                  animateEntrance={false}
                   className="absolute top-11 left-[24.5rem] lg:top-9 lg:left-[27rem] xl:top-8 xl:left-[30.5rem]"
                   showThemeSwitcher={false}
                 />

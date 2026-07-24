@@ -123,7 +123,11 @@ function NovuConnect({
                   </div>
 
                   {item.channelRing ? (
-                    <ConnectChannelArc className="bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[43%] 2xl:w-[61.25rem]" />
+                    <ConnectChannelArc
+                      className={item.imageClassName}
+                      backgroundImage={item.image}
+                      backgroundSizes={item.imageSizes}
+                    />
                   ) : item.image ? (
                     <>
                       <Image

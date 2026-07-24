@@ -6,6 +6,7 @@ import Image from "next/image"
 import defaultThemeIcon from "@/svgs/pages/home/inbox/default-theme.svg"
 import linearThemeIcon from "@/svgs/pages/home/inbox/linear-theme.svg"
 import notionThemeIcon from "@/svgs/pages/home/inbox/notion-theme.svg"
+import { cva, type VariantProps } from "class-variance-authority"
 import { AnimatePresence, domAnimation, LazyMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -13,11 +14,28 @@ import { cn } from "@/lib/utils"
 import AdaptiveStatic from "./adaptive-static"
 import inboxData from "./data"
 import InboxContainer from "./inbox-container"
+import ThemeTabs from "./theme-tabs"
 
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 const SlickSlider = dynamic(() => import("react-slick"), { ssr: false })
+
+const inboxComponentVariants = cva(
+  "inbox-component relative order-last h-auto w-full shrink-0 md:order-none",
+  {
+    variants: {
+      variant: {
+        comparison:
+          "aspect-[380/387] max-w-[398px] md:aspect-auto md:h-[529px] md:w-[512px] md:max-w-none lg:h-[546px] lg:w-[531px] xl:h-[619px] xl:w-[608px]",
+        home: "h-[556px] w-[531px] max-w-none xl:h-[629px] xl:w-[608px]",
+      },
+    },
+    defaultVariants: {
+      variant: "comparison",
+    },
+  }
+)
 
 function getThemeIcon(theme: string) {
   if (theme === "novuDark" || theme === "novuLight") return defaultThemeIcon
@@ -25,13 +43,21 @@ function getThemeIcon(theme: string) {
   return linearThemeIcon
 }
 
+interface IInboxComponentProps
+  extends VariantProps<typeof inboxComponentVariants> {
+  animateEntrance?: boolean
+  className?: string
+  themeTabsClassName?: string
+  showThemeSwitcher?: boolean
+}
+
 function InboxComponent({
+  animateEntrance = true,
   className,
   showThemeSwitcher = true,
-}: {
-  className?: string
-  showThemeSwitcher?: boolean
-}) {
+  themeTabsClassName,
+  variant = "comparison",
+}: IInboxComponentProps) {
   const [activeTheme, setActiveTheme] = useState(0)
   const [isSliderInitialized, setIsSliderInitialized] = useState(false)
 
@@ -53,59 +79,71 @@ function InboxComponent({
   }
 
   return (
-    <div
-      className={cn(
-        "inbox-component relative order-last aspect-[380/387] h-auto w-full max-w-[398px] shrink-0 md:order-none md:aspect-auto md:h-[529px] md:w-[512px] md:max-w-none lg:h-[546px] lg:w-[531px] xl:h-[619px] xl:w-[608px]",
-        className
+    <>
+      {showThemeSwitcher && variant === "home" && (
+        <ThemeTabs
+          className={themeTabsClassName}
+          activeTheme={activeTheme}
+          items={inboxData}
+          onThemeChange={setActiveTheme}
+        />
       )}
-    >
-      <LazyMotion features={domAnimation}>
-        {inboxData.map((data, index) => (
-          <AnimatePresence mode="wait" key={data.theme}>
-            {index === activeTheme && (
-              <>
-                <InboxContainer
-                  theme={data.theme}
-                  categories={data.categories}
-                  messages={data.messages}
-                />
-                <AdaptiveStatic
-                  className="block lg:hidden"
-                  theme={data.theme}
-                />
-              </>
-            )}
-          </AnimatePresence>
-        ))}
-      </LazyMotion>
-      {showThemeSwitcher && (
-        <div className="absolute top-[calc(100%+30px)] flex items-center justify-center md:top-[calc(100%+22px)] lg:top-[calc(100%+26px)] xl:top-[calc(100%+30px)]">
-          <SlickSlider
-            className={cn(
-              "mx-auto flex max-w-[398px] self-center transition-opacity duration-300 md:max-w-[512px] lg:max-w-[531px] xl:max-w-[608px]",
-              !isSliderInitialized && "opacity-0"
-            )}
-            {...settings}
-          >
-            {inboxData.map((data, index) => (
-              <div
-                key={index}
-                className="!flex items-center gap-x-1.5 text-[14px] text-gray-9 uppercase transition-colors duration-200 hover:text-gray-10"
-              >
-                <Image
-                  src={getThemeIcon(data.theme)}
-                  alt=""
-                  width={16}
-                  height={16}
-                />
-                {data.title}
-              </div>
-            ))}
-          </SlickSlider>
-        </div>
-      )}
-    </div>
+
+      <div className={cn(inboxComponentVariants({ variant }), className)}>
+        <LazyMotion features={domAnimation}>
+          {inboxData.map((data, index) => (
+            <AnimatePresence mode="wait" key={data.theme}>
+              {index === activeTheme && (
+                <>
+                  <InboxContainer
+                    animateEntrance={animateEntrance}
+                    theme={data.theme}
+                    categories={data.categories}
+                    messages={data.messages}
+                    variant={variant ?? "comparison"}
+                  />
+                  {variant === "comparison" && (
+                    <AdaptiveStatic
+                      animateEntrance={animateEntrance}
+                      className="block lg:hidden"
+                      theme={data.theme}
+                    />
+                  )}
+                </>
+              )}
+            </AnimatePresence>
+          ))}
+        </LazyMotion>
+        {showThemeSwitcher && variant === "comparison" && (
+          <div className="absolute top-[calc(100%+30px)] flex items-center justify-center md:top-[calc(100%+22px)] lg:top-[calc(100%+26px)] xl:top-[calc(100%+30px)]">
+            <SlickSlider
+              className={cn(
+                "mx-auto flex max-w-[398px] self-center transition-opacity duration-300 md:max-w-[512px] lg:max-w-[531px] xl:max-w-[608px]",
+                !isSliderInitialized && "opacity-0"
+              )}
+              {...settings}
+            >
+              {inboxData.map((data, index) => (
+                <div
+                  key={index}
+                  className="!flex items-center gap-x-1.5 text-[14px] text-gray-9 uppercase transition-colors duration-200 hover:text-gray-10"
+                >
+                  <Image
+                    src={getThemeIcon(data.theme)}
+                    alt=""
+                    width={16}
+                    height={16}
+                  />
+                  {data.title}
+                </div>
+              ))}
+            </SlickSlider>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
 export default InboxComponent
+export { inboxComponentVariants }

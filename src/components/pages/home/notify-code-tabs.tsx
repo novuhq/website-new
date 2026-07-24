@@ -69,7 +69,7 @@ function NotifyCodeTabs({ className, tabs }: INotifyCodeTabsProps) {
       </div>
 
       <button
-        className="absolute top-12 right-4 z-20 grid size-7 shrink-0 place-items-center rounded border border-gray-20 text-gray-50 transition-colors hover:border-gray-50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/70 focus-visible:outline-none md:right-9 lg:right-7"
+        className="absolute top-12 right-4 z-20 grid size-7 shrink-0 place-items-center rounded border border-gray-20 text-gray-50 transition-colors hover:border-gray-50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/70 focus-visible:outline-none md:right-15 lg:max-[72rem]:right-22 xl:right-7"
         type="button"
         onClick={() => handleCopy(activeCode)}
         aria-label={isCopied ? "Code copied" : "Copy code"}

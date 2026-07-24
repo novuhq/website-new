@@ -26,7 +26,7 @@ function Cta({
   return (
     <section
       className={cn(
-        "cta px-safe relative mt-20 overflow-hidden md:mt-32 lg:mt-44",
+        "cta px-safe relative mt-20 overflow-hidden font-inter md:mt-32 lg:mt-44",
         className
       )}
     >

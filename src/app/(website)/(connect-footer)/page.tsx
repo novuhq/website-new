@@ -25,6 +25,7 @@ import googleChatPreview from "@/images/pages/home/features/google-chat-preview.
 import linearPreview from "@/images/pages/home/features/linear-preview.png"
 import messengerPreview from "@/images/pages/home/features/messenger-preview.png"
 import zoomPreview from "@/images/pages/home/features/zoom-preview.png"
+import customerFacingGraphic from "@/images/pages/home/novu-connect/customer-facing.jpg"
 import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jpg"
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
 import oneConversationGraphic from "@/images/pages/home/novu-connect/one-conversation.jpg"
@@ -125,8 +126,11 @@ const contentData = {
     items: [
       {
         ...HOME_NOVU_CONNECT_ITEMS[0],
-        // Rolling ring of channel icons; each shows its npx command on hover.
         channelRing: true,
+        image: customerFacingGraphic,
+        imageClassName:
+          "bottom-0 left-1/2 w-[min(150%,45rem)] max-w-none -translate-x-1/2 md:w-[105%] lg:-bottom-1 lg:left-[43%] 2xl:w-[61.25rem]",
+        imageSizes: "980px",
       },
       {
         ...HOME_NOVU_CONNECT_ITEMS[1],
