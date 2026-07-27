@@ -324,18 +324,25 @@ export default async function HomePage() {
 
   const clientFacingVideos: Record<
     string,
-    { webm: string; mp4: string; poster: string }
+    {
+      webm: string
+      mp4: string
+      poster: string
+      displaySize?: { width: number; height: number }
+    }
   > = {
     slack: {
       webm: "/videos/pages/home/features/slack-client-facing.webm",
       mp4: "/videos/pages/home/features/slack-client-facing.mp4",
       poster: "/videos/pages/home/features/slack-client-facing-poster.webp",
+      displaySize: { width: 504, height: 348 },
     },
     whatsapp: {
       webm: "/videos/pages/home/features/whatsapp-client-facing.webm",
       mp4: "/videos/pages/home/features/whatsapp-client-facing.mp4",
       poster:
         "/videos/pages/home/features/whatsapp-client-facing-poster.webp",
+      displaySize: { width: 504, height: 348 },
     },
     telegram: {
       webm: "/videos/pages/home/features/telegram-client-facing.webm",

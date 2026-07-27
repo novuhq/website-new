@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 export interface IPreviewData {
   backgroundImage: StaticImageData | string
@@ -15,6 +16,10 @@ export interface IPreviewData {
     webm: string
     mp4: string
     poster: string
+    displaySize?: {
+      width: number
+      height: number
+    }
   }
   company?: {
     name: string
@@ -58,7 +63,19 @@ function Preview({
         >
           {clientFacingVideo ? (
             <video
-              className="absolute top-1/2 left-1/2 h-[88.7%] w-[91.4%] -translate-1/2 rounded-xl object-cover shadow-[0_30px_65px_rgba(24,24,48,0.18)]"
+              className={cn(
+                "absolute top-1/2 left-1/2 -translate-1/2 rounded-xl shadow-[0_30px_65px_rgba(24,24,48,0.18)]",
+                clientFacingVideo.displaySize
+                  ? "h-auto max-h-full max-w-full object-contain"
+                  : "h-[88.7%] w-[91.4%] object-cover"
+              )}
+              width={clientFacingVideo.displaySize?.width}
+              height={clientFacingVideo.displaySize?.height}
+              style={
+                clientFacingVideo.displaySize
+                  ? { width: clientFacingVideo.displaySize.width }
+                  : undefined
+              }
               poster={clientFacingVideo.poster}
               autoPlay
               loop
