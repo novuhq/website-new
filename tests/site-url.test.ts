@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { afterEach, describe, it } from "node:test"
+import { afterEach, beforeEach, describe, it } from "node:test"
 
 import { getMetadata } from "@/lib/get-metadata"
 import {
@@ -10,13 +10,29 @@ import {
 } from "@/lib/site-url"
 
 const originalSiteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
+const originalVercelEnv = process.env.VERCEL_ENV
+const originalVercelBranchUrl = process.env.VERCEL_BRANCH_URL
+const originalVercelUrl = process.env.VERCEL_URL
+
+function restoreEnv(name: string, value: string | undefined) {
+  if (value === undefined) {
+    delete process.env[name]
+  } else {
+    process.env[name] = value
+  }
+}
+
+beforeEach(() => {
+  delete process.env.VERCEL_ENV
+  delete process.env.VERCEL_BRANCH_URL
+  delete process.env.VERCEL_URL
+})
 
 afterEach(() => {
-  if (originalSiteUrl === undefined) {
-    delete process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
-  } else {
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = originalSiteUrl
-  }
+  restoreEnv("NEXT_PUBLIC_DEFAULT_SITE_URL", originalSiteUrl)
+  restoreEnv("VERCEL_ENV", originalVercelEnv)
+  restoreEnv("VERCEL_BRANCH_URL", originalVercelBranchUrl)
+  restoreEnv("VERCEL_URL", originalVercelUrl)
 })
 
 describe("site URL helpers", () => {
@@ -36,6 +52,30 @@ describe("site URL helpers", () => {
     assert.equal(getSiteUrl(), "http://localhost:3007")
     assert.equal(toCanonicalPathname("channels/slack"), "/channels/slack/")
     assert.equal(toMarkdownPathname("/channels/slack/"), "/channels/slack.md")
+  })
+
+  it("uses the branch URL for Vercel preview deployments", () => {
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = "https://novu.co"
+    process.env.VERCEL_ENV = "preview"
+    process.env.VERCEL_BRANCH_URL =
+      "website-new-git-hero-local-novuhq.vercel.app"
+
+    assert.equal(
+      getSiteUrl(),
+      "https://website-new-git-hero-local-novuhq.vercel.app"
+    )
+    assert.equal(
+      absoluteUrl("/social-previews/index.jpg"),
+      "https://website-new-git-hero-local-novuhq.vercel.app/social-previews/index.jpg"
+    )
+  })
+
+  it("keeps the configured public URL for Vercel production deployments", () => {
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = "https://novu.co"
+    process.env.VERCEL_ENV = "production"
+    process.env.VERCEL_BRANCH_URL = "website-new-git-main-novuhq.vercel.app"
+
+    assert.equal(getSiteUrl(), "https://novu.co")
   })
 
   it("rejects non-http site URLs", () => {
