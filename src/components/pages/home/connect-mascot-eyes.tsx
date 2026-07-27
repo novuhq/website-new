@@ -2,17 +2,14 @@
 
 import { useEffect, useRef } from "react"
 import eyesImg from "@/images/pages/home/novu-connect/mascot-eyes.png"
-import visorImg from "@/images/pages/home/novu-connect/mascot-visor.png"
 
 import { cn } from "@/lib/utils"
 
-// Brand mascot eyes (exported from Figma) that move freely. The dark visor
-// asset covers the baked eyes in one-conversation.jpg, and the eyes asset floats
-// on top and follows the cursor. All positions are percentages of the image box
-// so they track the mascot across breakpoints.
-const VISOR = { left: 16.99, top: 50.0, width: 19.96 }
-const EYES = { left: 23.7, top: 64.3, width: 8.6 }
-const MAX_OFFSET_RATIO = 0.014 // of the image width
+// The transparent eyes asset shares the 1954 × 944 coordinate system of the
+// card artwork. Percentage positioning keeps it aligned with the mascot as the
+// artwork scales and gets clipped across breakpoints.
+const EYES = { left: 23.75, top: 60.4, width: 9.8 }
+const MAX_OFFSET_RATIO = 0.011 // of the image width
 const EASING = 0.16
 
 export interface IConnectMascotEyesProps {
@@ -105,17 +102,6 @@ function ConnectMascotEyes({ className }: IConnectMascotEyesProps) {
       )}
       aria-hidden="true"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={visorImg.src}
-        alt=""
-        className="absolute"
-        style={{
-          left: `${VISOR.left}%`,
-          top: `${VISOR.top}%`,
-          width: `${VISOR.width}%`,
-        }}
-      />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={eyesRef}

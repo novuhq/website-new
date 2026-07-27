@@ -180,7 +180,6 @@
   aspect-ratio: 1;
   translate: -50% -50%;
   isolation: isolate;
-  overflow: hidden;
   border-radius: 28.18%;
   border: 0;
   background: transparent;
@@ -192,6 +191,14 @@
     transform 0.25s ease;
   will-change: transform;
   pointer-events: auto;
+}
+
+/* Bridge the narrow gaps between neighboring icons so the orbit stays paused
+   while the pointer travels from one tile to the next. */
+.mb-arc-tile::before {
+  position: absolute;
+  inset: -12.5%;
+  content: "";
 }
 
 .mb-arc-mascot {
