@@ -1,10 +1,12 @@
 import changeBlock from "./change-block"
 import codeBlock from "./code-block"
 import codeTabs from "./code-tabs"
+import connectedMcpBlock from "./connected-mcp-block"
 import content from "./content"
 import ctaBlock from "./cta-block"
 import detailsToggleBlock from "./details-toggle-block"
 import dividerBlock from "./divider"
+import faqBlock from "./faq-block"
 import iframeBlock from "./iframe-block"
 import noteBlock from "./note-block"
 import quoteBlock from "./quote-block"
@@ -30,6 +32,8 @@ const CONTENT_TYPES = [
   twitterEmbed,
   staticContent,
   ctaBlock,
+  faqBlock,
+  ...connectedMcpBlock,
   ...codeTabs,
   ...stepBlock,
 ]

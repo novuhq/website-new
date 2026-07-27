@@ -16,8 +16,10 @@ import {
   IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
+  IContentConnectedMcpBlock,
   IContentCtaBlock,
   IContentDetailsToggle,
+  IContentFaqBlock,
   IContentIframeBlock,
   IContentNote,
   IContentPicture,
@@ -35,6 +37,12 @@ import {
   generateHeadingSlug,
   parseMdxTable,
 } from "@/lib/utils"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
@@ -50,6 +58,86 @@ import { Step, Steps } from "@/components/content/steps"
 import Table from "@/components/content/table"
 import Video from "@/components/content/video"
 import YouTubeEmbed from "@/components/content/youtube-embed"
+
+const FAQ_BLOCK_TITLE = "Frequently asked questions"
+
+function ContentFaqBlock({ items }: IContentFaqBlock) {
+  if (!items?.length) {
+    return null
+  }
+
+  return (
+    <section className="not-prose mt-20 mb-14 lg:mt-24">
+      <h2 className="text-content-faq-heading leading-dense font-medium tracking-tighter text-white md:text-content-faq-heading-lg">
+        {FAQ_BLOCK_TITLE}
+      </h2>
+      <Accordion type="single" collapsible className="mt-6 md:mt-5.5">
+        {items.map((item) => (
+          <AccordionItem
+            key={item._key}
+            value={item._key}
+            className="border-b border-gray-3"
+          >
+            <AccordionTrigger className="tracking-snug pt-6 pb-5 text-start text-xl leading-snug font-medium hover:no-underline sm:pt-5 sm:pb-4 sm:text-lg">
+              {item.question}
+            </AccordionTrigger>
+            <AccordionContent className="pt-2 pb-8 sm:mr-7 sm:pb-6 md:mr-14">
+              <Content
+                className="max-w-[47rem] text-lg leading-relaxed font-book tracking-normal text-gray-8 sm:text-base sm:leading-normal [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_br]:mb-3 [&_br]:block [&_p]:text-gray-8 [&>*:first-child]:mt-0! [&>*:last-child]:mb-0!"
+                content={item.answer}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </section>
+  )
+}
+
+function ConnectedMcpBlock({ items }: IContentConnectedMcpBlock) {
+  if (!items?.length) {
+    return null
+  }
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-3" role="list">
+      {items.map(({ _key, connector, description }) => {
+        if (!connector) {
+          return null
+        }
+
+        return (
+          <article
+            key={_key}
+            className="flex flex-col gap-4 rounded-lg border border-connect-card-border bg-connect-content-card px-4 py-4 md:flex-row md:items-center md:gap-4 md:pr-5"
+            role="listitem"
+          >
+            <div className="flex min-w-0 items-center gap-4 md:w-64 md:shrink-0">
+              <span className="relative flex size-11 shrink-0 items-center justify-center rounded-md border border-connect-card-border-subtle">
+                {connector.icon?.url && (
+                  <Image
+                    src={connector.icon.url}
+                    alt={connector.icon.alt ?? ""}
+                    aria-hidden={connector.icon.alt ? undefined : true}
+                    width={connector.icon.width}
+                    height={connector.icon.height}
+                    className="size-6 object-contain"
+                  />
+                )}
+              </span>
+              <span className="min-w-0 text-xl leading-[1.125] font-medium tracking-tighter text-white">
+                {connector.name}
+              </span>
+            </div>
+            <p className="min-w-0 flex-1 text-base leading-[1.375] font-book tracking-tighter text-gray-9">
+              {description}
+            </p>
+          </article>
+        )
+      })}
+    </section>
+  )
+}
 
 function getComponents(
   uniqueHeadingMap: Record<string, number>,
@@ -293,6 +381,16 @@ function getComponents(
       }: PortableTextComponentProps<IContentChangeBlock>) => {
         return <ChangeBlock type={type} items={items} />
       },
+      faqBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentFaqBlock>) => (
+        <ContentFaqBlock items={items} />
+      ),
+      connectedMcpBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentConnectedMcpBlock>) => (
+        <ConnectedMcpBlock items={items} />
+      ),
     },
     block: {
       h2: ({ children }: { children: ReactNode }) => {

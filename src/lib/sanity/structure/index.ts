@@ -4,6 +4,7 @@ import type { StructureResolver } from "sanity/structure"
 import blogStructure from "./blog"
 import changelogStructure from "./changelog"
 import customersStructure from "./customers"
+import howToStructure from "./how-to"
 import templatesStructure from "./templates"
 
 const structure: StructureResolver = (S, context) =>
@@ -11,6 +12,7 @@ const structure: StructureResolver = (S, context) =>
     .title("Base")
     .items([
       templatesStructure(S, context),
+      howToStructure(S, context),
       blogStructure(S, context),
       changelogStructure(S, context),
       customersStructure(S, context),

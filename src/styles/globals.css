@@ -94,6 +94,8 @@
   /* Custom project variables */
   --sticky-header-height: 3.25rem;
   --footer-safe-area-spacing: 0rem;
+  --connect-card-border: 240 16% 24%;
+  --connect-content-card-surface: 240 19% 6%;
   --connect-footer-background-color: #05050b;
   --connect-footer-background-image: radial-gradient(
     62.51% 116.04% at 50% -37.62%,
@@ -161,6 +163,9 @@
 
   --color-integration-card: hsl(var(--integration-card-surface));
   --color-integration-card-border: hsl(240 16% 24% / 0.6);
+  --color-connect-card-border: hsl(var(--connect-card-border) / 0.5);
+  --color-connect-card-border-subtle: hsl(var(--connect-card-border) / 0.4);
+  --color-connect-content-card: hsl(var(--connect-content-card-surface));
   --color-integration-card-category-border: var(
     --integration-card-category-border
   );
@@ -193,6 +198,9 @@
     var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --font-weight-book: 350;
+
+  --text-content-faq-heading: 2rem;
+  --text-content-faq-heading-lg: 2.5rem;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;

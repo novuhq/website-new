@@ -32,9 +32,22 @@ export const REVALIDATION_TYPES = {
     types: ["agentTemplate"],
     tags: ["agentTemplate"],
   },
+  howToPost: {
+    types: ["howToPost"],
+    tags: ["howTo"],
+    paths: [
+      "/app/(connect)/connect/how-to",
+      "/app/(connect)/connect/how-to/[slug]",
+    ],
+  },
+  howToCategory: {
+    types: ["howToCategory"],
+    tags: ["howTo"],
+    paths: ["/app/(connect)/connect/how-to"],
+  },
   templateAvatar: {
     types: ["templateAvatar"],
-    tags: ["agentTemplate", "templateAvatar"],
+    tags: ["agentTemplate", "templateAvatar", "howTo"],
   },
   templateCategory: {
     types: ["templateCategory"],
@@ -42,11 +55,11 @@ export const REVALIDATION_TYPES = {
   },
   templateChannel: {
     types: ["templateChannel"],
-    tags: ["agentTemplate", "templateChannel"],
+    tags: ["agentTemplate", "templateChannel", "howTo"],
   },
   templateMcpServer: {
     types: ["templateMcpServer"],
-    tags: ["agentTemplate", "templateMcpServer"],
+    tags: ["agentTemplate", "templateMcpServer", "howTo"],
   },
   templateTool: {
     types: ["templateTool"],
