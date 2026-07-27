@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import Image, { type StaticImageData } from "next/image"
 
 import {
@@ -30,6 +31,7 @@ export interface IPreviewData {
 
 interface IPreviewProps extends IPreviewData {
   channelLabel: string
+  isActive: boolean
 }
 
 function Preview({
@@ -38,7 +40,26 @@ function Preview({
   clientFacingVideo,
   company,
   channelLabel,
+  isActive,
 }: IPreviewProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    if (!isActive) {
+      video.pause()
+      return
+    }
+
+    void video.play().catch(() => undefined)
+
+    return () => {
+      video.pause()
+    }
+  }, [isActive])
+
   return (
     <div className="relative flex size-full flex-col justify-center">
       <Image
@@ -63,6 +84,7 @@ function Preview({
         >
           {clientFacingVideo ? (
             <video
+              ref={videoRef}
               className={cn(
                 "absolute top-1/2 left-1/2 -translate-1/2 rounded-xl shadow-[0_30px_65px_rgba(24,24,48,0.18)]",
                 clientFacingVideo.displaySize
@@ -77,11 +99,11 @@ function Preview({
                   : undefined
               }
               poster={clientFacingVideo.poster}
-              autoPlay
+              autoPlay={isActive}
               loop
               muted
               playsInline
-              preload="auto"
+              preload={isActive ? "auto" : "metadata"}
               aria-label={`${channelLabel} client-facing preview`}
             >
               <source src={clientFacingVideo.webm} type="video/webm" />

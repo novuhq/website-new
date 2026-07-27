@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Activity,
   useCallback,
   useEffect,
   useId,
@@ -315,14 +316,30 @@ function Features({
           </div>
 
           <div className="relative aspect-10/11 overflow-hidden border-t border-gray-20 sm:aspect-5/4 lg:aspect-auto lg:h-full lg:border-t-0 lg:border-l">
-            <Preview
-              backgroundImage={activeItem.backgroundImage}
-              channelLabel={activeItem.label}
-              clientFacingImage={activeItem.clientFacingImage}
-              clientFacingVideo={activeItem.clientFacingVideo}
-              company={activeItem.company}
-              key={activeItem.key}
-            />
+            {items.map((item) => {
+              const isActive = item.key === activeItem.key
+
+              return (
+                <Activity
+                  key={item.key}
+                  mode={isActive ? "visible" : "hidden"}
+                >
+                  <div
+                    className="absolute inset-0"
+                    aria-hidden={!isActive}
+                  >
+                    <Preview
+                      backgroundImage={item.backgroundImage}
+                      channelLabel={item.label}
+                      clientFacingImage={item.clientFacingImage}
+                      clientFacingVideo={item.clientFacingVideo}
+                      company={item.company}
+                      isActive={isActive}
+                    />
+                  </div>
+                </Activity>
+              )
+            })}
           </div>
         </div>
       </div>
