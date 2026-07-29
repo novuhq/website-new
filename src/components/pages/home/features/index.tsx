@@ -256,7 +256,7 @@ function Features({
         </div>
 
         <div
-          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-128 lg:grid-cols-2"
+          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-136 lg:grid-cols-2"
           id={`${tabsId}-panel`}
           role="tabpanel"
           aria-labelledby={`${tabsId}-tab-${activeItem.key}`}
@@ -338,6 +338,7 @@ function Features({
                 </>
               ) : (
                 <NotifyMe
+                  key={activeItem.key}
                   channelLabel={activeItem.label}
                   className="sm:max-w-md"
                   focusSignal={notifyFocusToken}
