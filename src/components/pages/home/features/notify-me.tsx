@@ -149,7 +149,7 @@ function NotifyMe({
           disabled={isSubmitting}
           className="absolute inset-y-1 right-1 h-auto rounded px-5 text-base leading-none font-medium tracking-tight normal-case"
         >
-          {isSubmitting ? "Submitting…" : "Notify Me"}
+          {isSubmitting ? "Submitting…" : "Notify me"}
         </Button>
         {errorMessage ? (
           <p

@@ -256,18 +256,13 @@ function Features({
         </div>
 
         <div
-          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-136 lg:grid-cols-2"
+          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-134 lg:grid-cols-2"
           id={`${tabsId}-panel`}
           role="tabpanel"
           aria-labelledby={`${tabsId}-tab-${activeItem.key}`}
         >
-          <div
-            className={cn(
-              "flex flex-col p-6 md:p-10 lg:h-full",
-              activeItem.action ? "lg:px-20 lg:py-18" : "lg:p-20"
-            )}
-          >
-            <div className="max-w-lg lg:max-w-112">
+          <div className="flex flex-col p-6 md:p-10 lg:h-full lg:px-20 lg:pt-18 lg:pb-0">
+            <div className="max-w-lg lg:max-w-116">
               <div className="flex flex-wrap gap-2">
                 {activeItem.badges.map((badge, index) => (
                   <ProductBadge key={`${badge}-${index}`} type={badge} />
@@ -363,6 +358,7 @@ function Features({
                       }
                       clientFacingImageSizes={item.clientFacingImageSizes}
                       clientFacingLabel={item.clientFacingLabel}
+                      clientFacingUnderlayVideo={item.clientFacingUnderlayVideo}
                       clientFacingVideo={item.clientFacingVideo}
                       company={item.company}
                       isActive={isActive}

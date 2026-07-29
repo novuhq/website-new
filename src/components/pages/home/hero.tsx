@@ -128,8 +128,7 @@ const CUSTOMER_LOGOS = [
   width: image.width,
   height: image.height,
   wrapperClassName: "flex h-6 w-36 items-center justify-center md:h-8",
-  imageClassName:
-    "h-auto max-h-6 w-auto max-w-full object-contain md:max-h-8",
+  imageClassName: "h-auto max-h-6 w-auto max-w-full object-contain md:max-h-8",
 }))
 
 export interface IHeroProps {
@@ -238,13 +237,14 @@ function Hero({
           </h1>
 
           <div className="flex max-w-121 flex-col lg:justify-self-end lg:pt-[37px]">
-            <p className="text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-lg md:leading-normal">
+            <p className="pointer-events-auto text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] select-text md:text-lg md:leading-normal">
               {description}
             </p>
             <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
               <CopyCommand
                 command={command}
                 variant="highlighted"
+                commandClassName="pointer-events-auto select-text"
                 copiedContent={<AnimatedCopyCheck />}
               />
               <CopyPromptButton

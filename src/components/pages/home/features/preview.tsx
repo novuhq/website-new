@@ -16,6 +16,12 @@ export interface IPreviewData {
   clientFacingImageClassName?: string
   clientFacingImageSizes?: string
   clientFacingLabel?: string
+  clientFacingUnderlayVideo?: {
+    webm: string
+    mp4: string
+    poster: string
+    className?: string
+  }
   clientFacingVideo?: {
     webm: string
     mp4: string
@@ -43,6 +49,7 @@ function Preview({
   clientFacingImageClassName,
   clientFacingImageSizes,
   clientFacingLabel,
+  clientFacingUnderlayVideo,
   clientFacingVideo,
   company,
   channelLabel,
@@ -80,19 +87,37 @@ function Preview({
       />
 
       {clientFacingImageClassName && !clientFacingVideo ? (
-        <Image
-          className={cn(
-            "absolute z-10 h-auto object-contain",
-            clientFacingImageClassName
-          )}
-          src={clientFacingImage}
-          alt={`${channelLabel} client-facing preview`}
-          sizes={clientFacingImageSizes}
-          quality={90}
-          loading="eager"
-          fetchPriority={isActive ? "high" : "low"}
-          draggable={false}
-        />
+        <div className={cn("absolute z-10", clientFacingImageClassName)}>
+          {clientFacingUnderlayVideo ? (
+            <video
+              ref={videoRef}
+              className={cn(
+                "absolute z-0 block object-cover",
+                clientFacingUnderlayVideo.className
+              )}
+              poster={clientFacingUnderlayVideo.poster}
+              autoPlay={isActive}
+              loop
+              muted
+              playsInline
+              preload={isActive ? "auto" : "metadata"}
+              aria-hidden
+            >
+              <source src={clientFacingUnderlayVideo.mp4} type="video/mp4" />
+              <source src={clientFacingUnderlayVideo.webm} type="video/webm" />
+            </video>
+          ) : null}
+          <Image
+            className="relative z-10 block h-auto w-full object-contain"
+            src={clientFacingImage}
+            alt={`${channelLabel} client-facing preview`}
+            sizes={clientFacingImageSizes}
+            quality={90}
+            loading="eager"
+            fetchPriority={isActive ? "high" : "low"}
+            draggable={false}
+          />
+        </div>
       ) : (
         <div className="relative z-10 px-6 py-8 sm:px-4 lg:px-8">
           <div

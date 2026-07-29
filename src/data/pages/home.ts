@@ -10,7 +10,7 @@ import type { IFaqSection } from "@/types/common"
 export const HOME_HERO = {
   command: "npx novu connect",
   description:
-    "Novu is the open-source infrastructure to send notifications and connect agents to anyone: in-app, email, SMS, push, WhatsApp, Slack, voice, and more.",
+    "Open-source infrastructure to notify your users and let your agents talk with them, on the channels they already use.",
   title: "Connect your AI agents and products to customers",
 }
 

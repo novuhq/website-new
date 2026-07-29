@@ -443,6 +443,16 @@ export default async function HomePage() {
     },
   }
 
+  const clientFacingUnderlayVideos = {
+    push: {
+      webm: "/videos/pages/home/features/push-client-facing.webm",
+      mp4: "/videos/pages/home/features/push-client-facing.mp4",
+      poster: "/videos/pages/home/features/push-client-facing-poster.webp",
+      className:
+        "top-[2.5825%] left-[4.3732%] h-[95.9828%] w-[92.1283%] object-top [border-radius:13.2911%_/_6.278%]",
+    },
+  }
+
   const clientFacingLabels: Record<string, string> = {
     github: "Coming Soon",
     discord: "Coming Soon",
@@ -550,6 +560,10 @@ export default async function HomePage() {
       clientFacingImageClassName: imagePresentation?.className,
       clientFacingImageSizes: imagePresentation?.sizes,
       clientFacingLabel: clientFacingLabels[item.key],
+      clientFacingUnderlayVideo:
+        clientFacingUnderlayVideos[
+          item.key as keyof typeof clientFacingUnderlayVideos
+        ],
       clientFacingVideo: clientFacingVideos[item.key],
       implementationCode: featureImplementationCode,
       implementationHighlightedHtml: featureImplementationHighlightedHtml,
