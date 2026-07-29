@@ -62,7 +62,7 @@ export const MARKDOWN_ROUTE_FAMILIES: readonly MarkdownRouteFamily[] = [
   },
   {
     name: "channels",
-    dynamicPatterns: [/^\/channels\/[^/]+$/],
+    dynamicPatterns: [/^\/channels\/[^/]+$/, /^\/channels\/[^/]+\/[^/]+$/],
   },
 ] as const
 

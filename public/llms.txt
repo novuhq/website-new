@@ -42,6 +42,14 @@ Novu provides a unified platform for building, operating, and debugging notifica
 - [AI agent on Microsoft Teams](https://novu.co/channels/microsoft-teams/): Bring an AI agent into Microsoft Teams with channel awareness, Adaptive Cards, and human handoff. Connect from the Novu dashboard.
 - [AI agent on Email](https://novu.co/channels/email/): Reach users in their inbox with rich, actionable agent notifications and secure action links. Connect with `npx novu connect --channel email`.
 
+### Connect a framework's agent to a channel (Novu Connect)
+How to connect an agent built with a specific framework to a specific channel. The custom-code bridge keeps your agent running in your app. Each page has a Markdown version at the same path with `.md`.
+- [LangChain agent on Slack](https://novu.co/channels/slack/langchain/): Connect a LangChain agent to Slack. Connect with `npx novu connect --runtime langchain --channel slack`. Markdown: https://novu.co/channels/slack/langchain.md
+- [LangChain agent on Microsoft Teams](https://novu.co/channels/microsoft-teams/langchain/): Connect a LangChain agent to Microsoft Teams. Connect with `npx novu connect --runtime langchain --channel teams`. Markdown: https://novu.co/channels/microsoft-teams/langchain.md
+- [LangChain agent on WhatsApp](https://novu.co/channels/whatsapp/langchain/): Connect a LangChain agent to WhatsApp. Connect with `npx novu connect --runtime langchain --channel whatsapp`. Markdown: https://novu.co/channels/whatsapp/langchain.md
+- [LangChain agent on Telegram](https://novu.co/channels/telegram/langchain/): Connect a LangChain agent to Telegram. Connect with `npx novu connect --runtime langchain --channel telegram`. Markdown: https://novu.co/channels/telegram/langchain.md
+- [LangChain agent on Email](https://novu.co/channels/email/langchain/): Connect a LangChain agent to Email. Connect with `npx novu connect --runtime langchain --channel email`. Markdown: https://novu.co/channels/email/langchain.md
+
 ## Key Pages
 
 - [Homepage](https://novu.co/): Connect your AI agents and products to customers. Start with `npx novu connect`. Markdown version: https://novu.co/index.md
