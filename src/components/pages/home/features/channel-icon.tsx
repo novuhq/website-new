@@ -1,12 +1,16 @@
 import type { CSSProperties } from "react"
+import ChatIcon from "@/images/pages/home/features/chat.inline.svg"
 import DiscordIcon from "@/images/pages/home/features/discord.inline.svg"
 import EmailIcon from "@/images/pages/home/features/email.inline.svg"
 import GithubIcon from "@/images/pages/home/features/github.inline.svg"
 import GoogleChatIcon from "@/images/pages/home/features/google-chat.inline.svg"
 import ImessageIcon from "@/images/pages/home/features/imessage.inline.svg"
+import InboxIcon from "@/images/pages/home/features/inbox.inline.svg"
 import LinearIcon from "@/images/pages/home/features/linear.inline.svg"
 import MessengerIcon from "@/images/pages/home/features/messenger.inline.svg"
+import PushIcon from "@/images/pages/home/features/push.inline.svg"
 import SlackIcon from "@/images/pages/home/features/slack.inline.svg"
+import SmsIcon from "@/images/pages/home/features/sms.inline.svg"
 import TeamsIcon from "@/images/pages/home/features/teams.inline.svg"
 import TelegramIcon from "@/images/pages/home/features/telegram.inline.svg"
 import WhatsappIcon from "@/images/pages/home/features/whatsapp.inline.svg"
@@ -21,6 +25,10 @@ const CHANNEL_ICONS = {
   teams: TeamsIcon,
   github: GithubIcon,
   email: EmailIcon,
+  inbox: InboxIcon,
+  push: PushIcon,
+  chat: ChatIcon,
+  sms: SmsIcon,
   imessage: ImessageIcon,
   zoom: ZoomIcon,
   linear: LinearIcon,
@@ -36,6 +44,10 @@ const CHANNEL_COLORS: Record<keyof typeof CHANNEL_ICONS, string> = {
   teams: "#6264A7",
   github: "#FFFFFF",
   email: "#E18CF2",
+  inbox: "#4B73EC",
+  push: "#C25CD6",
+  chat: "#4B73EC",
+  sms: "#C25CD6",
   imessage: "#34C759",
   zoom: "#2D8CFF",
   linear: "#F7F8F8",

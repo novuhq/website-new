@@ -18,13 +18,16 @@ import {
 } from "@/data/pages/home"
 import notifyFeaturedBackground from "@/images/pages/home/bento-notify-featured-bg.png"
 import featuresBackground from "@/images/pages/home/features/bg.jpg"
+import chatPreview from "@/images/pages/home/features/chat-preview.jpg"
 import clientFacingPreview from "@/images/pages/home/features/client-facing.png"
-import discordPreview from "@/images/pages/home/features/discord-preview.png"
-import githubPreview from "@/images/pages/home/features/github-preview.png"
-import googleChatPreview from "@/images/pages/home/features/google-chat-preview.png"
-import linearPreview from "@/images/pages/home/features/linear-preview.png"
-import messengerPreview from "@/images/pages/home/features/messenger-preview.png"
-import zoomPreview from "@/images/pages/home/features/zoom-preview.png"
+import discordPreview from "@/images/pages/home/features/discord-preview.jpg"
+import githubPreview from "@/images/pages/home/features/github-preview.jpg"
+import googleChatPreview from "@/images/pages/home/features/google-chat-preview.jpg"
+import linearPreview from "@/images/pages/home/features/linear-preview.jpg"
+import messengerPreview from "@/images/pages/home/features/messenger-preview.jpg"
+import pushPreview from "@/images/pages/home/features/push-preview.png"
+import smsPreview from "@/images/pages/home/features/sms-preview.jpg"
+import zoomPreview from "@/images/pages/home/features/zoom-preview.jpg"
 import customerFacingGraphic from "@/images/pages/home/novu-connect/customer-facing.jpg"
 import fullContextGraphic from "@/images/pages/home/novu-connect/full-context.jpg"
 import humanApprovalGraphic from "@/images/pages/home/novu-connect/human-approval.jpg"
@@ -340,43 +343,113 @@ export default async function HomePage() {
     whatsapp: {
       webm: "/videos/pages/home/features/whatsapp-client-facing.webm",
       mp4: "/videos/pages/home/features/whatsapp-client-facing.mp4",
-      poster:
-        "/videos/pages/home/features/whatsapp-client-facing-poster.webp",
+      poster: "/videos/pages/home/features/whatsapp-client-facing-poster.webp",
       displaySize: { width: 504, height: 348 },
     },
     telegram: {
       webm: "/videos/pages/home/features/telegram-client-facing.webm",
       mp4: "/videos/pages/home/features/telegram-client-facing.mp4",
-      poster:
-        "/videos/pages/home/features/telegram-client-facing-poster.webp",
+      poster: "/videos/pages/home/features/telegram-client-facing-poster.webp",
+      displaySize: { width: 504, height: 436 },
     },
     email: {
       webm: "/videos/pages/home/features/email-client-facing.webm",
       mp4: "/videos/pages/home/features/email-client-facing.mp4",
       poster: "/videos/pages/home/features/email-client-facing-poster.webp",
+      displaySize: { width: 504, height: 414 },
     },
     teams: {
       webm: "/videos/pages/home/features/teams-client-facing.webm",
       mp4: "/videos/pages/home/features/teams-client-facing.mp4",
       poster: "/videos/pages/home/features/teams-client-facing-poster.webp",
+      displaySize: { width: 504, height: 332 },
     },
     imessage: {
       webm: "/videos/pages/home/features/imessage-client-facing.webm",
       mp4: "/videos/pages/home/features/imessage-client-facing.mp4",
-      poster:
-        "/videos/pages/home/features/imessage-client-facing-poster.webp",
+      poster: "/videos/pages/home/features/imessage-client-facing-poster.webp",
+      displaySize: { width: 504, height: 332 },
+    },
+    inbox: {
+      webm: "/videos/pages/home/features/inbox-client-facing.webm",
+      mp4: "/videos/pages/home/features/inbox-client-facing.mp4",
+      poster: "/videos/pages/home/features/inbox-client-facing-poster.webp",
+      displaySize: { width: 425, height: 373 },
     },
   }
 
-  // Per-channel static preview image for coming-soon channels; falls back to the
-  // shared placeholder until a channel-specific still is added.
+  // Per-channel static preview image; falls back to the shared placeholder
+  // until a channel-specific still is added.
   const clientFacingImages: Record<string, typeof clientFacingPreview> = {
+    push: pushPreview,
+    chat: chatPreview,
+    sms: smsPreview,
     github: githubPreview,
     zoom: zoomPreview,
     linear: linearPreview,
     discord: discordPreview,
     messenger: messengerPreview,
     "google-chat": googleChatPreview,
+  }
+
+  const clientFacingImagePresentation: Record<
+    string,
+    { className: string; sizes: string }
+  > = {
+    push: {
+      className:
+        "top-[10.84%] left-1/2 w-[53.594%] max-w-[343px] -translate-x-1/2",
+      sizes: "(min-width: 1024px) 343px, 54vw",
+    },
+    chat: {
+      className:
+        "top-1/2 left-1/2 w-[78.75%] max-w-[504px] -translate-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 504px, 79vw",
+    },
+    sms: {
+      className:
+        "top-1/2 left-1/2 w-[68.75%] max-w-[440px] -translate-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 440px, 69vw",
+    },
+    github: {
+      className:
+        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 504px, 79vw",
+    },
+    discord: {
+      className:
+        "top-[9.35%] left-1/2 w-[71.5625%] max-w-[458px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 458px, 72vw",
+    },
+    linear: {
+      className:
+        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 504px, 79vw",
+    },
+    zoom: {
+      className:
+        "top-[9.35%] left-1/2 w-[71.5625%] max-w-[458px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 458px, 72vw",
+    },
+    messenger: {
+      className:
+        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 504px, 79vw",
+    },
+    "google-chat": {
+      className:
+        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
+      sizes: "(min-width: 1024px) 504px, 79vw",
+    },
+  }
+
+  const clientFacingLabels: Record<string, string> = {
+    github: "Coming Soon",
+    discord: "Coming Soon",
+    linear: "Coming Soon",
+    zoom: "Coming Soon",
+    messenger: "Coming Soon",
+    "google-chat": "Coming Soon",
   }
 
   // 2-sentence company + use-case blurb, shown on hover over the company in each demo.
@@ -463,6 +536,7 @@ export default async function HomePage() {
 
   const featureItems = contentData.features.items.map((item) => {
     const slug = cliSlugs[item.key]
+    const imagePresentation = clientFacingImagePresentation[item.key]
 
     return {
       ...item,
@@ -473,6 +547,9 @@ export default async function HomePage() {
       cliCommand: slug ? `npx novu connect --channel ${slug}` : undefined,
       backgroundImage: featuresBackground,
       clientFacingImage: clientFacingImages[item.key] ?? clientFacingPreview,
+      clientFacingImageClassName: imagePresentation?.className,
+      clientFacingImageSizes: imagePresentation?.sizes,
+      clientFacingLabel: clientFacingLabels[item.key],
       clientFacingVideo: clientFacingVideos[item.key],
       implementationCode: featureImplementationCode,
       implementationHighlightedHtml: featureImplementationHighlightedHtml,

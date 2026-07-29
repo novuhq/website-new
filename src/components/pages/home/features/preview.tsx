@@ -3,16 +3,19 @@
 import { useEffect, useRef } from "react"
 import Image, { type StaticImageData } from "next/image"
 
+import { cn } from "@/lib/utils"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
 
 export interface IPreviewData {
   backgroundImage: StaticImageData | string
   clientFacingImage: StaticImageData | string
+  clientFacingImageClassName?: string
+  clientFacingImageSizes?: string
+  clientFacingLabel?: string
   clientFacingVideo?: {
     webm: string
     mp4: string
@@ -37,6 +40,9 @@ interface IPreviewProps extends IPreviewData {
 function Preview({
   backgroundImage,
   clientFacingImage,
+  clientFacingImageClassName,
+  clientFacingImageSizes,
+  clientFacingLabel,
   clientFacingVideo,
   company,
   channelLabel,
@@ -73,85 +79,123 @@ function Preview({
         draggable={false}
       />
 
-      <div className="relative z-10 px-6 py-8 sm:px-4 lg:px-8">
-        <div
-          className="relative mx-auto aspect-[1118/850] w-full max-w-xl sm:w-[92%] sm:max-w-none"
-          style={
-            clientFacingVideo
-              ? undefined
-              : { filter: "drop-shadow(0 22px 55px rgba(0,8,49,0.5))" }
-          }
-        >
-          {clientFacingVideo ? (
-            <video
-              ref={videoRef}
-              className={cn(
-                "absolute top-1/2 left-1/2 -translate-1/2 rounded-xl shadow-[0_30px_65px_rgba(24,24,48,0.18)]",
-                clientFacingVideo.displaySize
-                  ? "h-auto max-h-full max-w-full object-contain"
-                  : "h-[88.7%] w-[91.4%] object-cover"
-              )}
-              width={clientFacingVideo.displaySize?.width}
-              height={clientFacingVideo.displaySize?.height}
-              style={
-                clientFacingVideo.displaySize
-                  ? { width: clientFacingVideo.displaySize.width }
-                  : undefined
-              }
-              poster={clientFacingVideo.poster}
-              autoPlay={isActive}
-              loop
-              muted
-              playsInline
-              preload={isActive ? "auto" : "metadata"}
-              aria-label={`${channelLabel} client-facing preview`}
-            >
-              <source src={clientFacingVideo.webm} type="video/webm" />
-              <source src={clientFacingVideo.mp4} type="video/mp4" />
-            </video>
-          ) : (
-            <Image
-              className="size-full object-contain"
-              src={clientFacingImage}
-              alt={`${channelLabel} client-facing preview`}
-              sizes="(min-width: 1024px) 559px, 87vw"
-              quality={100}
-              draggable={false}
-            />
+      {clientFacingImageClassName && !clientFacingVideo ? (
+        <Image
+          className={cn(
+            "absolute z-10 h-auto object-contain",
+            clientFacingImageClassName
           )}
-
-          {company ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  aria-label={`About ${company.name}`}
-                  className="absolute top-[6%] left-[6%] h-[8%] w-[42%] cursor-help rounded-md focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
-                />
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                align="start"
-                sideOffset={12}
-                avoidCollisions={false}
-                className="max-w-[min(22rem,80vw)] px-3.5 py-2.5 before:hidden after:hidden"
+          src={clientFacingImage}
+          alt={`${channelLabel} client-facing preview`}
+          sizes={clientFacingImageSizes}
+          quality={90}
+          loading="eager"
+          fetchPriority={isActive ? "high" : "low"}
+          draggable={false}
+        />
+      ) : (
+        <div className="relative z-10 px-6 py-8 sm:px-4 lg:px-8">
+          <div
+            className="relative mx-auto aspect-[1118/850] w-full max-w-xl sm:w-[92%] sm:max-w-none"
+            style={
+              clientFacingVideo
+                ? undefined
+                : { filter: "drop-shadow(0 22px 55px rgba(0,8,49,0.5))" }
+            }
+          >
+            {clientFacingVideo ? (
+              <div
+                className={cn(
+                  "absolute top-1/2 left-1/2 -translate-1/2 overflow-hidden rounded-xl shadow-[0_30px_65px_rgba(24,24,48,0.18)]",
+                  clientFacingVideo.displaySize
+                    ? "max-w-full"
+                    : "h-[88.7%] w-[91.4%]"
+                )}
+                style={
+                  clientFacingVideo.displaySize
+                    ? {
+                        width: clientFacingVideo.displaySize.width,
+                        aspectRatio: `${clientFacingVideo.displaySize.width} / ${clientFacingVideo.displaySize.height}`,
+                      }
+                    : undefined
+                }
               >
-                <span className="flex flex-col gap-1.5 text-left">
-                  <span className="text-[13px] font-semibold tracking-tight text-foreground">
-                    {company.name}
+                <video
+                  ref={videoRef}
+                  className={cn(
+                    "block size-full",
+                    clientFacingVideo.displaySize
+                      ? "object-contain"
+                      : "object-cover"
+                  )}
+                  width={clientFacingVideo.displaySize?.width}
+                  height={clientFacingVideo.displaySize?.height}
+                  poster={clientFacingVideo.poster}
+                  autoPlay={isActive}
+                  loop
+                  muted
+                  playsInline
+                  preload={isActive ? "auto" : "metadata"}
+                  aria-label={`${channelLabel} client-facing preview`}
+                >
+                  <source src={clientFacingVideo.mp4} type="video/mp4" />
+                  <source src={clientFacingVideo.webm} type="video/webm" />
+                </video>
+              </div>
+            ) : (
+              <Image
+                className="size-full object-contain"
+                src={clientFacingImage}
+                alt={`${channelLabel} client-facing preview`}
+                sizes="(min-width: 1024px) 559px, 87vw"
+                quality={100}
+                draggable={false}
+              />
+            )}
+
+            {company ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label={`About ${company.name}`}
+                    className="absolute top-[6%] left-[6%] h-[8%] w-[42%] cursor-help rounded-md focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
+                  />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  align="start"
+                  sideOffset={12}
+                  avoidCollisions={false}
+                  className="max-w-[min(22rem,80vw)] px-3.5 py-2.5 before:hidden after:hidden"
+                >
+                  <span className="flex flex-col gap-1.5 text-left">
+                    <span className="text-[13px] font-semibold tracking-tight text-foreground">
+                      {company.name}
+                    </span>
+                    <span className="text-[12.5px] leading-snug text-gray-60">
+                      {company.about}
+                    </span>
+                    <span className="mt-1 border-t border-white/10 pt-2 text-[12.5px] leading-snug text-foreground/90">
+                      {company.useCase}
+                    </span>
                   </span>
-                  <span className="text-[12.5px] leading-snug text-gray-60">
-                    {company.about}
-                  </span>
-                  <span className="mt-1 border-t border-white/10 pt-2 text-[12.5px] leading-snug text-foreground/90">
-                    {company.useCase}
-                  </span>
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          ) : null}
+                </TooltipContent>
+              </Tooltip>
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
+
+      {clientFacingLabel ? (
+        <span className="absolute top-[5.05%] left-1/2 z-20 flex h-9 w-29 -translate-x-1/2 items-center justify-center rounded-full bg-black/80 px-4 text-sm leading-none font-medium tracking-[-0.04em] whitespace-nowrap text-white backdrop-blur-[6px]">
+          <span
+            className="pointer-events-none absolute inset-0 rounded-full border border-white mix-blend-overlay"
+            aria-hidden
+          />
+          <span className="relative">{clientFacingLabel}</span>
+        </span>
+      ) : null}
     </div>
   )
 }

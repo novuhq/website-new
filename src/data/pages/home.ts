@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import type { IFaqSection } from "@/types/common"
 
 // Single source of truth for homepage copy. The homepage
@@ -12,9 +14,9 @@ export const HOME_HERO = {
   title: "Connect your AI agents and products to customers",
 }
 
-// Live Novu Connect channels (video card + npx CLI command) vs coming-soon
-// (static preview + notify-me). Source of truth: the "Novu Communication
-// Channels" Notion page. iMessage is live via the `sendblue` CLI slug.
+// Live feature tabs (available integration + primary action) vs coming-soon
+// tabs (static preview + notify-me). iMessage is live via the `sendblue` CLI
+// slug.
 export const HOME_LIVE_CHANNEL_KEYS = [
   "slack",
   "teams",
@@ -22,6 +24,10 @@ export const HOME_LIVE_CHANNEL_KEYS = [
   "telegram",
   "email",
   "imessage",
+  "inbox",
+  "push",
+  "chat",
+  "sms",
 ] as const
 
 export const HOME_CLI_SLUGS: Record<string, string> = {
@@ -33,13 +39,14 @@ export const HOME_CLI_SLUGS: Record<string, string> = {
   imessage: "sendblue",
 }
 
-// Pathnames of the channels that have a dedicated /channels/<slug> page.
+// Pathnames of feature tabs that have a dedicated product or channel page.
 export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
   slack: "/channels/slack",
   whatsapp: "/channels/whatsapp",
   telegram: "/channels/telegram",
   teams: "/channels/microsoft-teams",
   email: "/channels/email",
+  inbox: String(ROUTE.inbox),
 }
 
 export const HOME_CHANNELS = [
@@ -134,6 +141,80 @@ export const HOME_CHANNELS = [
     ],
   },
   {
+    key: "inbox",
+    badges: ["notify"] as const,
+    label: "Inbox",
+    title: "Connect your AI agent to Inbox",
+    description:
+      "Give users one place inside your product to see and manage the updates that matter to them.",
+    features: [
+      "Prebuilt and composable Inbox components",
+      "Real-time notifications and unread counts",
+      "Built-in notification preferences",
+      "Tabs, filters, and flexible layouts",
+      "Custom styling, localization, and snoozing",
+    ],
+    action: {
+      label: "Explore Inbox",
+      href: String(ROUTE.inbox),
+    },
+  },
+  {
+    key: "push",
+    badges: ["notify"] as const,
+    label: "Push",
+    title: "Connect your AI agent to Push",
+    description:
+      "Reach users on mobile, desktop, and web when they are away from your product.",
+    features: [
+      "One workflow layer across push providers",
+      "Multiple provider integrations",
+      "Subscriber device-token management",
+      "Provider-specific delivery overrides",
+      "Selected providers: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
+    ],
+    action: {
+      label: "Explore Push Providers",
+      href: String(ROUTE.docsProviders),
+    },
+  },
+  {
+    key: "chat",
+    badges: ["notify"] as const,
+    label: "Chat",
+    title: "Send notifications to chat platforms",
+    description:
+      "Deliver personalized notifications through Slack, Microsoft Teams, WhatsApp, Telegram, Discord, and other supported chat providers, all managed through Novu workflows.",
+    features: [
+      "Slack, Teams, WhatsApp, and more",
+      "Personalized workflow messages",
+      "Multiple provider integrations",
+    ],
+    action: {
+      label: "Explore Chat Providers",
+      href: String(ROUTE.docsProviders),
+    },
+  },
+  {
+    key: "sms",
+    badges: ["notify"] as const,
+    label: "SMS",
+    title: "Connect your AI agent to SMS",
+    description:
+      "Deliver urgent and transactional updates directly to users' phones.",
+    features: [
+      "Workflow-driven SMS delivery",
+      "Dynamic message content",
+      "Multiple provider integrations",
+      "Runtime recipient, sender, and content overrides",
+      "Selected providers: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
+    ],
+    action: {
+      label: "Explore SMS Providers",
+      href: String(ROUTE.docsProviders),
+    },
+  },
+  {
     key: "github",
     badges: ["notify"] as const,
     label: "GitHub",
@@ -150,78 +231,55 @@ export const HOME_CHANNELS = [
   },
   {
     key: "zoom",
-    badges: ["notify"] as const,
+    badges: ["connect"] as const,
+    statusBadge: "Coming Soon",
     label: "Zoom",
     title: "Connect your AI agent to Zoom",
     description:
-      "Coordinate meeting updates, reminders, and follow-ups while keeping every participant informed.",
-    prompt:
-      "Connect my AI agent to Zoom with Novu for meeting reminders, participant updates, and follow-up messages.",
-    features: [
-      "Meeting reminders",
-      "Participant status updates",
-      "Automated follow-up messages",
-    ],
+      "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
   },
   {
     key: "linear",
-    badges: ["notify"] as const,
+    badges: ["connect"] as const,
+    statusBadge: "Coming Soon",
     label: "Linear",
     title: "Connect your AI agent to Linear",
     description:
-      "Turn issue activity into focused notifications and route agent follow-ups to the right teammates.",
-    prompt:
-      "Connect my AI agent to Linear with Novu for issue updates, assignments, and contextual follow-ups.",
-    features: [
-      "Issue activity notifications",
-      "Assignment and status updates",
-      "Contextual agent follow-ups",
-    ],
+      "Let teams work with your agent from the issue and project workflows they already manage in Linear.",
   },
   {
     key: "discord",
-    badges: ["connect"] as const,
+    badges: ["notify", "connect"] as const,
+    statusBadge: "Coming Soon",
     label: "Discord",
     title: "Connect your AI agent to Discord",
     description:
-      "Send community updates and let users continue the conversation without leaving Discord.",
-    prompt:
-      "Connect my AI agent to Discord with Novu and enable replies in the originating channel.",
-    features: [
-      "Two-way community conversations",
-      "Channel-aware reply routing",
-      "Rich messages and attachments",
-    ],
+      "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
   },
   {
     key: "messenger",
-    badges: ["connect"] as const,
+    badges: ["notify", "connect"] as const,
+    statusBadge: "Coming Soon",
     label: "FB Messenger",
     title: "Connect your AI agent to Facebook Messenger",
     description:
-      "Bring automated support and timely updates into the Messenger conversations customers already use.",
-    prompt:
-      "Connect my AI agent to Facebook Messenger with Novu and enable secure two-way customer conversations.",
+      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
     features: [
-      "Secure customer conversations",
-      "Automated support handoffs",
-      "Reliable message delivery",
+      "Conversation context across replies",
+      "Adaptive Cards that update in place",
+      "Buttons for actions and approvals",
+      "Rich text and reactions",
+      "Ordered message processing",
     ],
   },
   {
     key: "google-chat",
-    badges: ["connect", "notify"] as const,
+    badges: ["connect"] as const,
+    statusBadge: "Coming Soon",
     label: "Google Chat",
     title: "Connect your AI agent to Google Chat",
     description:
-      "Deliver agent updates and team handoffs in Google Chat spaces without adding new workflow friction.",
-    prompt:
-      "Connect my AI agent to Google Chat with Novu and route updates and replies to the correct space.",
-    features: [
-      "Space-aware notifications",
-      "Team handoff workflows",
-      "Replies routed to the right space",
-    ],
+      "Bring your agent into Google Chat for conversations inside Google Workspace.",
   },
 ]
 
