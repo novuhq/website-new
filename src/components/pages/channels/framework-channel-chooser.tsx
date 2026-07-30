@@ -11,7 +11,7 @@ function FrameworkChannelChooser({ combo }: { combo: IChannelFrameworkCombo }) {
   const siblings = getSiblingChannels(combo)
 
   return (
-    <section className="safe-paddings mt-18">
+    <section className="safe-paddings mt-18 pb-50">
       <div className="container mx-auto max-w-176 px-5 md:px-8 lg:px-0">
         <div className="flex flex-col gap-3">
           <h2 className="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-white md:text-[2rem]">
@@ -24,19 +24,22 @@ function FrameworkChannelChooser({ combo }: { combo: IChannelFrameworkCombo }) {
         </div>
 
         {siblings.length > 0 && (
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <ul className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
             {siblings.map((channel) => (
-              <li key={channel.slug}>
+              <li key={channel.slug} className="min-w-0">
                 <NextLink
                   href={`/channels/${channel.slug}/${framework.slug}`}
-                  className="group flex flex-col items-center gap-3 rounded-xl border border-gray-20 bg-[#05050b] px-4 py-6 transition-colors hover:border-purple-3/50 focus-visible:border-purple-3/50 focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:outline-none"
+                  className="group flex h-32 min-w-0 flex-col items-center justify-center gap-3 rounded-xl border border-integration-card-border bg-integration-card px-3 text-center outline-none hover:border-gray-30 focus-visible:border-gray-40 focus-visible:ring-2 focus-visible:ring-lagune-3/40"
+                  aria-label={`Connect ${framework.name} to ${channel.channelName}`}
                   data-click-location={`framework_${framework.slug}_channel_chooser`}
                   data-click-text={`connect_${channel.cliSlug}`}
                 >
-                  <span className="flex size-12 items-center justify-center rounded-lg border border-gray-20 bg-black transition-colors group-hover:border-gray-40">
-                    <ChannelIcon channel={channel.cliSlug} />
-                  </span>
-                  <span className="text-center text-sm leading-tight font-medium tracking-tighter text-gray-80 transition-colors group-hover:text-white">
+                  <ChannelIcon
+                    channel={channel.cliSlug}
+                    className="size-9 md:size-9"
+                    isActive
+                  />
+                  <span className="text-sm leading-tight font-medium tracking-tighter text-gray-70 transition-colors duration-200 group-hover:text-white group-focus-visible:text-white">
                     {channel.channelName}
                   </span>
                 </NextLink>
@@ -62,8 +65,8 @@ function FrameworkChannelChooser({ combo }: { combo: IChannelFrameworkCombo }) {
           </Button>
           <Button
             size="none"
-            variant="outline"
-            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+            variant="outline-transparent"
+            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case hover:bg-white/10"
             asChild
           >
             <NextLink

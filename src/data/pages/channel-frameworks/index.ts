@@ -90,7 +90,7 @@ export function getSiblingChannels(
 
 /** Public path to a combo's rendered cover image. */
 export function getCoverImagePath(combo: IChannelFrameworkCombo): string {
-  return `/images/covers/${combo.framework.slug}-${combo.channel.slug}.png`
+  return `/images/covers/${combo.framework.slug}-${combo.channel.slug}.jpg`
 }
 
 export interface IFrameworkCommand {

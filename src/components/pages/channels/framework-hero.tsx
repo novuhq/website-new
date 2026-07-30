@@ -23,6 +23,7 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
             width={1200}
             height={630}
             className="h-auto w-full"
+            quality={100}
             priority
           />
         </div>
@@ -51,7 +52,7 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
           <Button
             size="none"
             variant="default"
-            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-normal tracking-[-0.025em] normal-case"
             asChild
           >
             <NextLink

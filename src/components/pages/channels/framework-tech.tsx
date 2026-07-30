@@ -32,7 +32,7 @@ function FrameworkTech({ combo }: { combo: IChannelFrameworkCombo }) {
         </ul>
 
         <div className="mt-10 flex flex-col gap-4">
-          <h3 className="text-xl leading-[1.2] font-normal tracking-[-0.03em] text-white">
+          <h3 className="text-2xl leading-[1.2] font-normal tracking-[-0.03em] text-white">
             {framework.name} in {channel.channelName}
           </h3>
           <p className="text-base leading-normal font-normal tracking-tighter text-gray-80">
