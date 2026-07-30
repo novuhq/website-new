@@ -1,8 +1,10 @@
 import type { ComponentType, SVGProps } from "react"
 import Image from "next/image"
+import aiAciIcon from "@/svgs/header/menu/ai-aci.inline.svg"
 import aiClaudeIcon from "@/svgs/header/menu/ai-claude.inline.svg"
 import aiCodexIcon from "@/svgs/header/menu/ai-codex.inline.svg"
 import aiConsoleIcon from "@/svgs/header/menu/ai-console.inline.svg"
+import aiCopilotIcon from "@/svgs/header/menu/ai-copilot.inline.svg"
 import aiCursorIcon from "@/svgs/header/menu/ai-cursor.inline.svg"
 import aiMcpIcon from "@/svgs/header/menu/ai-mcp.inline.svg"
 import aiSkillsIcon from "@/svgs/header/menu/ai-skills.inline.svg"
@@ -41,8 +43,8 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   builders: solutionsBuildersIcon,
   enterprise: solutionsEnterpriseIcon,
   mcp: aiMcpIcon,
-  copilot: aiConsoleIcon,
-  aci: aiConsoleIcon,
+  copilot: aiCopilotIcon,
+  aci: aiAciIcon,
   prompt: aiConsoleIcon,
   skills: aiSkillsIcon,
   claude: aiClaudeIcon,

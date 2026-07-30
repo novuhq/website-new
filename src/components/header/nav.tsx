@@ -17,9 +17,17 @@ interface IHeaderNavProps {
   items: IMenuHeaderItem[]
 }
 
+interface IOpenMenuState {
+  title: string | null
+  animateIn: boolean
+}
+
 function Nav({ className, items }: IHeaderNavProps) {
   const pathname = usePathname()
-  const [openMenu, setOpenMenu] = useState<string | null>(null)
+  const [openMenu, setOpenMenu] = useState<IOpenMenuState>({
+    title: null,
+    animateIn: false,
+  })
 
   const activeIndex = useMemo(
     () =>
@@ -32,7 +40,11 @@ function Nav({ className, items }: IHeaderNavProps) {
   )
 
   const handleMenuOpen = useCallback(
-    (title: string | null) => () => setOpenMenu(title),
+    (title: string | null) => () =>
+      setOpenMenu((current) => ({
+        title,
+        animateIn: title !== null && current.title === null,
+      })),
     []
   )
 
@@ -40,6 +52,7 @@ function Nav({ className, items }: IHeaderNavProps) {
     <nav
       className={cn("relative flex font-inter xl:mt-1", className)}
       aria-label="Main navigation"
+      onMouseLeave={handleMenuOpen(null)}
     >
       <ul className="flex items-center">
         {items.map(({ title, content, href, variant }, index) => {
@@ -53,8 +66,7 @@ function Nav({ className, items }: IHeaderNavProps) {
             <li
               className="relative"
               key={index}
-              onMouseEnter={hasDropdown ? handleMenuOpen(title) : undefined}
-              onMouseLeave={hasDropdown ? handleMenuOpen(null) : undefined}
+              onMouseEnter={handleMenuOpen(hasDropdown ? title : null)}
               onBlur={
                 hasDropdown
                   ? (event) => {
@@ -63,7 +75,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                           event.relatedTarget as Node | null
                         )
                       ) {
-                        setOpenMenu(null)
+                        setOpenMenu({ title: null, animateIn: false })
                       }
                     }
                   : undefined
@@ -82,22 +94,28 @@ function Nav({ className, items }: IHeaderNavProps) {
               ) : (
                 <>
                   <Button
-                    className="relative z-10 text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
+                    className="relative z-10 cursor-pointer text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
                     size="md"
                     variant="link"
                     data-active={isActive}
                     onClick={() =>
-                      setOpenMenu((current) =>
-                        current === title ? null : title
-                      )
+                      setOpenMenu((current) => {
+                        const nextTitle = current.title === title ? null : title
+
+                        return {
+                          title: nextTitle,
+                          animateIn:
+                            nextTitle !== null && current.title === null,
+                        }
+                      })
                     }
                     onKeyDown={(event) => {
                       if (event.key === "Escape") {
-                        setOpenMenu(null)
+                        setOpenMenu({ title: null, animateIn: false })
                       }
                     }}
                     aria-haspopup="true"
-                    aria-expanded={openMenu === title}
+                    aria-expanded={openMenu.title === title}
                     aria-controls={menuId}
                   >
                     {title}
@@ -106,7 +124,8 @@ function Nav({ className, items }: IHeaderNavProps) {
                   {content && content.length > 0 && variant && (
                     <Dropdown
                       id={menuId}
-                      isOpen={openMenu === title}
+                      isOpen={openMenu.title === title}
+                      animateIn={openMenu.title === title && openMenu.animateIn}
                       title={title}
                       variant={variant}
                       content={content}

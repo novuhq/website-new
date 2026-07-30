@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
 import { ChevronRight } from "lucide-react"
-import { AnimatePresence, motion } from "motion/react"
+import { motion } from "motion/react"
 
 import type {
   IMenuHeaderContent,
@@ -16,6 +16,7 @@ import MenuIcon from "./menu-icon"
 interface IDropdownProps {
   id: string
   isOpen: boolean
+  animateIn: boolean
   title: string
   variant: THeaderMenuVariant
   content: IMenuHeaderContent[]
@@ -88,24 +89,24 @@ function MenuLinks({ items, variant }: IMenuLinksProps) {
   return (
     <ul
       className={cn(
-        variant === "solutions" && "flex flex-col gap-y-5 p-6",
+        variant === "solutions" && "flex flex-col p-3.5",
         variant === "channels" &&
-          "grid auto-cols-max grid-flow-col grid-rows-5 gap-x-6 gap-y-5 p-6",
+          "grid auto-cols-max grid-flow-col grid-rows-5 gap-x-6 p-3.5",
         variant === "ai" &&
-          "grid auto-cols-max grid-flow-col grid-rows-4 gap-x-6 gap-y-5 p-6"
+          "grid auto-cols-max grid-flow-col grid-rows-4 gap-x-6 p-3.5"
       )}
     >
       {items.map(({ label, href, menuIcon }) => (
         <li
           className={cn(
             variant === "solutions" && "min-w-45",
-            variant === "channels" && "min-w-35",
-            variant === "ai" && "min-w-35"
+            variant === "channels" && "min-w-37.5",
+            variant === "ai" && "min-w-37.5"
           )}
           key={label}
         >
           <Link
-            className="group flex min-h-4 w-full items-center gap-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:text-white"
+            className="group flex w-full items-center gap-2.5 rounded-[.5rem] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:bg-[#121417] hover:text-white"
             href={href}
             variant="clean"
           >
@@ -120,20 +121,20 @@ function MenuLinks({ items, variant }: IMenuLinksProps) {
 
 function ResourcesMenu({ content }: { content: IMenuHeaderContent[] }) {
   return (
-    <div className="grid auto-cols-max grid-flow-col gap-x-6 p-6">
+    <div className="grid auto-cols-max grid-flow-col gap-x-6 p-3.5 pt-6">
       {content.map(({ subtitle, items }, index) => (
-        <div className="w-[206px]" key={subtitle ?? index}>
+        <div className="w-52.5" key={subtitle ?? index}>
           {subtitle && (
-            <span className="mb-5.5 block text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+            <span className="mb-3.5 ml-2.5 block text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
               {subtitle}
             </span>
           )}
           {items && (
-            <ul className="flex flex-col gap-y-5">
+            <ul className="flex flex-col">
               {items.map(({ label, href, menuIcon }) => (
                 <li key={label}>
                   <Link
-                    className="group flex min-h-4 items-center gap-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-[#E0E1E5] hover:text-white"
+                    className="group flex min-h-4 items-center gap-2.5 rounded-[.5rem] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:bg-[#121417] hover:text-white"
                     href={href}
                     variant="clean"
                   >
@@ -150,33 +151,39 @@ function ResourcesMenu({ content }: { content: IMenuHeaderContent[] }) {
   )
 }
 
-function Dropdown({ id, isOpen, title, variant, content }: IDropdownProps) {
+function Dropdown({
+  id,
+  isOpen,
+  animateIn,
+  title,
+  variant,
+  content,
+}: IDropdownProps) {
   const items = content.flatMap((group) => group.items ?? [])
 
+  if (!isOpen) return null
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          id={id}
-          aria-label={`${title} submenu`}
-          className={cn(
-            "absolute top-[calc(100%+20px)] z-50 rounded-[22px] border border-[#2A2B33] bg-black shadow-[0_3px_26px_4px_rgba(0,0,0,0.54)]",
-            "after:absolute after:-top-6 after:left-0 after:h-6 after:w-full after:bg-transparent",
-            DROPDOWN_POSITION[variant]
-          )}
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.16, ease: "easeOut" }}
-        >
-          {variant === "product" && <ProductMenu content={content} />}
-          {(variant === "solutions" ||
-            variant === "channels" ||
-            variant === "ai") && <MenuLinks items={items} variant={variant} />}
-          {variant === "resources" && <ResourcesMenu content={content} />}
-        </motion.div>
+    <motion.div
+      id={id}
+      aria-label={`${title} submenu`}
+      initial={animateIn ? { opacity: 0, y: -4 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        animateIn ? { duration: 0.16, ease: "easeOut" } : { duration: 0 }
+      }
+      className={cn(
+        "absolute top-[calc(100%+1.25rem)] z-50 rounded-[22px] border border-[#2A2B33] bg-black shadow-[0_3px_26px_4px_rgba(0,0,0,0.54)]",
+        "after:absolute after:-top-6 after:left-0 after:h-6 after:w-full after:bg-transparent",
+        DROPDOWN_POSITION[variant]
       )}
-    </AnimatePresence>
+    >
+      {variant === "product" && <ProductMenu content={content} />}
+      {(variant === "solutions" ||
+        variant === "channels" ||
+        variant === "ai") && <MenuLinks items={items} variant={variant} />}
+      {variant === "resources" && <ResourcesMenu content={content} />}
+    </motion.div>
   )
 }
 
