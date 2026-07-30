@@ -31,7 +31,7 @@ function ChannelConnect({ channel }: { channel: IChannelPageData }) {
 
         <CliCommand
           command={`npx novu connect --channel ${channel.cliSlug}`}
-          className="mt-8 w-full rounded-md border-[#25262c] bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-97.5"
+          className="mt-8 w-full rounded-md border-gray-30 bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-97.5"
         />
       </div>
     </section>

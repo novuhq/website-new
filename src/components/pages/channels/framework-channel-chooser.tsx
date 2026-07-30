@@ -52,7 +52,7 @@ function FrameworkChannelChooser({ combo }: { combo: IChannelFrameworkCombo }) {
           <Button
             size="none"
             variant="default"
-            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+            className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-fit"
             asChild
           >
             <NextLink
@@ -66,7 +66,7 @@ function FrameworkChannelChooser({ combo }: { combo: IChannelFrameworkCombo }) {
           <Button
             size="none"
             variant="outline-transparent"
-            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case hover:bg-white/10"
+            className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case hover:bg-white/10 sm:w-fit"
             asChild
           >
             <NextLink

@@ -101,8 +101,7 @@ export interface IFrameworkCommand {
 
 /**
  * Every published connect command for a framework, one per channel, in matrix
- * order. Powers the "all commands at a glance" reference shown next to the CLI
- * command CTA.
+ * order. Powers the channel command picker shown next to the CLI command CTA.
  */
 export function getFrameworkCommands(
   frameworkSlug: string

@@ -78,12 +78,14 @@ interface IChannelIconProps {
   channel: string
   className?: string
   isActive?: boolean
+  isMonochrome?: boolean
 }
 
 function ChannelIcon({
   channel,
   className,
   isActive = false,
+  isMonochrome = false,
 }: IChannelIconProps) {
   if (!(channel in CHANNEL_ICONS)) return null
 
@@ -96,10 +98,15 @@ function ChannelIcon({
   return (
     <Icon
       className={cn(
-        "size-6 shrink-0 text-gray-50 transition-colors duration-200 group-hover:text-[var(--channel-color)] group-focus-visible:text-[var(--channel-color)] md:size-7 [&>path]:transition-[fill] [&>path]:duration-200",
+        "size-6 shrink-0 text-gray-50 transition-colors duration-200 md:size-7 [&>path]:transition-[fill] [&>path]:duration-200",
+        isMonochrome
+          ? "group-hover:text-white group-focus-visible:text-white"
+          : "group-hover:text-[var(--channel-color)] group-focus-visible:text-[var(--channel-color)]",
         isActive && "text-[var(--channel-color)]",
         channel === "slack" &&
-          (isActive ? SLACK_ACTIVE_CLASSES : SLACK_HOVER_CLASSES),
+          (isActive
+            ? SLACK_ACTIVE_CLASSES
+            : !isMonochrome && SLACK_HOVER_CLASSES),
         channel === "imessage" &&
           (isActive
             ? "[&>path:nth-of-type(2)]:fill-white"

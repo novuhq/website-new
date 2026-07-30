@@ -162,7 +162,7 @@ async function ChannelFrameworkPage({ params }: PageProps) {
   }
 
   return (
-    <div className="overflow-clip">
+    <div className="overflow-clip font-inter">
       <FrameworkHero combo={combo} />
       <FrameworkTech combo={combo} />
       <ChannelUseCase channel={channel} />

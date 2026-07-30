@@ -14,19 +14,8 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
   const { channel, framework } = combo
 
   return (
-    <section className="relative pt-20 md:pt-24 lg:pt-32">
+    <section className="relative pt-18">
       <div className="container mx-auto flex max-w-176 flex-col items-start px-5 md:px-8 lg:px-0">
-        <div className="mb-9 w-full overflow-hidden rounded-2xl border border-gray-20 bg-[#05050b] md:mb-10">
-          <Image
-            src={getCoverImagePath(combo)}
-            alt={`Connect your ${framework.name} agent to ${channel.channelName} with Novu Connect`}
-            width={1200}
-            height={630}
-            className="h-auto w-full"
-            quality={100}
-            priority
-          />
-        </div>
         <div className="flex flex-col items-start gap-3.5">
           <span className="flex items-center gap-2 rounded-full border border-purple-3/40 bg-purple-3/30 px-2.5 py-1.25 text-sm leading-none font-normal tracking-tighter text-purple-1">
             <Image
@@ -52,7 +41,7 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
           <Button
             size="none"
             variant="default"
-            className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-normal tracking-[-0.025em] normal-case"
+            className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-normal tracking-tight normal-case sm:w-fit"
             asChild
           >
             <NextLink
@@ -65,7 +54,18 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
           </Button>
           <CliCommand
             command={getConnectCommand(combo)}
-            className="w-full rounded-md border-[#25262c] bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-auto sm:max-w-full"
+            className="w-full rounded-md border-gray-30 bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-auto sm:max-w-full"
+          />
+        </div>
+        <div className="mt-9 w-full overflow-hidden rounded-2xl border border-gray-20 bg-[#05050b] md:mt-10">
+          <Image
+            src={getCoverImagePath(combo)}
+            alt={`Connect your ${framework.name} agent to ${channel.channelName} with Novu Connect`}
+            width={1200}
+            height={630}
+            className="w-full"
+            quality={100}
+            loading="eager"
           />
         </div>
       </div>

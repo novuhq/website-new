@@ -8,6 +8,8 @@ import {
 
 import CliCommand from "@/components/pages/home/features/cli-command"
 
+import FrameworkCommandPicker from "./framework-command-picker"
+
 const DOCS_URL = "https://docs.novu.co"
 
 function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
@@ -28,7 +30,7 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
           {framework.steps.map((step, index) => (
             <li key={step.title} className="flex items-start gap-4">
               <span
-                className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border border-purple-3/40 bg-purple-3/20 text-sm leading-none font-medium text-purple-1"
+                className="-mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border border-purple-3/40 bg-purple-3/20 text-sm leading-none font-medium text-purple-1"
                 aria-hidden
               >
                 {index + 1}
@@ -47,34 +49,22 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
 
         <CliCommand
           command={getConnectCommand(combo)}
-          className="mt-8 w-full rounded-md border-[#25262c] bg-[#05050b] text-base tracking-normal text-gray-80 sm:w-auto sm:max-w-full"
+          className="mt-8 w-full rounded-md border-gray-30 bg-[#05050b] text-base tracking-normal text-gray-80"
         />
 
         {allCommands.length > 1 && (
-          <div className="mt-8 flex flex-col gap-3 rounded-xl border border-gray-20 bg-[#05050b]/60 p-5 md:p-6">
-            <h3 className="mb-3 text-base leading-none tracking-tighter text-white">
+          <div className="mt-8 flex flex-col gap-4">
+            <h3 className="text-sm leading-none tracking-tighter text-white">
               Every {framework.name} connect command
             </h3>
-            <ul className="flex flex-col gap-2.5">
-              {allCommands.map((item) => (
-                <li
-                  key={item.channelSlug}
-                  className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-4"
-                >
-                  <span className="w-28 shrink-0 text-sm leading-none font-normal tracking-tighter text-gray-80">
-                    {item.channelName}
-                  </span>
-                  <CliCommand
-                    command={item.command}
-                    className="w-full rounded-md border-[#25262c] bg-black text-sm tracking-normal text-gray-80"
-                  />
-                </li>
-              ))}
-            </ul>
+            <FrameworkCommandPicker
+              commands={allCommands}
+              defaultChannelSlug={channel.slug}
+            />
           </div>
         )}
 
-        <div className="mt-10 flex flex-col gap-3 rounded-xl border border-gray-20 bg-[#05050b] p-5 md:p-6">
+        <div className="mt-10 flex flex-col gap-3 rounded-xl border border-gray-30 bg-[#05050b] p-5 md:p-6">
           <h3 className="text-base leading-none tracking-tighter text-white">
             Prompt for your coding agent
           </h3>
