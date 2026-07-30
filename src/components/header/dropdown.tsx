@@ -1,83 +1,179 @@
+import Image from "next/image"
+import { ROUTE } from "@/constants/routes"
+import { ChevronRight } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 
-import { IMenuHeaderContent } from "@/types/common"
+import type {
+  IMenuHeaderContent,
+  IMenuItem,
+  THeaderMenuVariant,
+} from "@/types/common"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
-import Card from "./card"
+import MenuIcon from "./menu-icon"
 
 interface IDropdownProps {
   id: string
   isOpen: boolean
   title: string
+  variant: THeaderMenuVariant
   content: IMenuHeaderContent[]
 }
 
-function Dropdown({ id, isOpen, title, content }: IDropdownProps) {
+interface IMenuLinksProps {
+  items: IMenuItem[]
+  variant: "solutions" | "channels" | "ai"
+}
+
+const DROPDOWN_POSITION: Record<THeaderMenuVariant, string> = {
+  product: "-left-3",
+  solutions: "-left-2",
+  channels: "-left-2",
+  ai: "-left-2",
+  resources: "-left-60 xl:translate-x-0 xl:-left-20 2xl:-left-2",
+}
+
+function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
+  const items = content[0]?.items ?? []
+
+  return (
+    <div className="flex gap-3 p-3">
+      <div className="flex w-74 shrink-0 flex-col">
+        <ul className="flex flex-col gap-y-0.5">
+          {items.map(({ label, description, href }) => (
+            <li key={label}>
+              <Link
+                className="flex w-full flex-col items-start gap-1 rounded-[10px] px-3 py-2.5 transition-colors hover:bg-[#121417]"
+                href={href}
+                variant="clean"
+              >
+                <span className="block text-base leading-none font-normal tracking-tighter text-white">
+                  {label}
+                </span>
+                {description && (
+                  <span className="block text-sm leading-snug font-normal tracking-tighter text-[#A3A6B2]">
+                    {description}
+                  </span>
+                )}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <Link
+          className="mt-auto mb-3 w-fit gap-1 px-3 text-sm leading-none font-medium tracking-normal text-white hover:text-gray-80"
+          href={ROUTE.dashboardV2SignUp}
+          variant="clean"
+        >
+          Start for free
+          <ChevronRight className="size-4" aria-hidden="true" />
+        </Link>
+      </div>
+
+      <Image
+        className="w-81.25 shrink-0 rounded-[0.625rem] border border-[#23242A] object-cover"
+        src="/images/header/menu/product-banner.jpg"
+        width={325}
+        height={275}
+        alt="Novu Inbox notification center preview"
+        loading="eager"
+        unoptimized
+      />
+    </div>
+  )
+}
+
+function MenuLinks({ items, variant }: IMenuLinksProps) {
+  return (
+    <ul
+      className={cn(
+        variant === "solutions" && "flex flex-col gap-y-5 p-6",
+        variant === "channels" &&
+          "grid auto-cols-max grid-flow-col grid-rows-5 gap-x-6 gap-y-5 p-6",
+        variant === "ai" &&
+          "grid auto-cols-max grid-flow-col grid-rows-4 gap-x-6 gap-y-5 p-6"
+      )}
+    >
+      {items.map(({ label, href, menuIcon }) => (
+        <li
+          className={cn(
+            variant === "solutions" && "min-w-45",
+            variant === "channels" && "min-w-35",
+            variant === "ai" && "min-w-35"
+          )}
+          key={label}
+        >
+          <Link
+            className="group flex min-h-4 w-full items-center gap-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:text-white"
+            href={href}
+            variant="clean"
+          >
+            <MenuIcon icon={menuIcon} />
+            {label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function ResourcesMenu({ content }: { content: IMenuHeaderContent[] }) {
+  return (
+    <div className="grid auto-cols-max grid-flow-col gap-x-6 p-6">
+      {content.map(({ subtitle, items }, index) => (
+        <div className="w-[206px]" key={subtitle ?? index}>
+          {subtitle && (
+            <span className="mb-5.5 block text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+              {subtitle}
+            </span>
+          )}
+          {items && (
+            <ul className="flex flex-col gap-y-5">
+              {items.map(({ label, href, menuIcon }) => (
+                <li key={label}>
+                  <Link
+                    className="group flex min-h-4 items-center gap-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-[#E0E1E5] hover:text-white"
+                    href={href}
+                    variant="clean"
+                  >
+                    <MenuIcon icon={menuIcon} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function Dropdown({ id, isOpen, title, variant, content }: IDropdownProps) {
+  const items = content.flatMap((group) => group.items ?? [])
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
           id={id}
-          layoutId="navigation-dropdown"
           aria-label={`${title} submenu`}
           className={cn(
-            "absolute top-10.5 -left-5 rounded-[14px] border-gray-2 bg-gray-1 shadow-header-dropdown transition-[left,min-width] ease-in-out will-change-transform",
-            "before:absolute before:-top-1.5 before:z-10 before:h-3.5 before:w-3.5 before:rotate-45 before:rounded-[1px] before:border before:border-gray-2 before:bg-gray-1",
-            "after:absolute after:-top-5 after:h-5 after:w-full after:bg-transparent",
-            title === "Product" &&
-              "min-w-[515px] before:left-[59px] lg:-left-[22px] lg:before:left-[60px]",
-            title === "Resources" &&
-              "min-w-[515px] before:left-[53px] lg:-left-1.5 lg:before:left-[54px]",
-            title === "AI" && "min-w-[190px] before:left-[31px]",
-            title === "Docs" && "min-w-[434px] before:left-[50px]"
+            "absolute top-[calc(100%+20px)] z-50 rounded-[22px] border border-[#2A2B33] bg-black shadow-[0_3px_26px_4px_rgba(0,0,0,0.54)]",
+            "after:absolute after:-top-6 after:left-0 after:h-6 after:w-full after:bg-transparent",
+            DROPDOWN_POSITION[variant]
           )}
-          exit={{
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.4,
-          }}
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.16, ease: "easeOut" }}
         >
-          <div className="relative z-10 flex gap-x-3.5 rounded-[14px] bg-gray-1 px-8 pt-6 pb-7">
-            {content.map(({ subtitle, items, card, type }, index) => (
-              <div
-                className={cn(
-                  "min-w-0",
-                  index === 0 && "-ml-px grow",
-                  index === 1 && "w-[220px]"
-                )}
-                key={index}
-              >
-                {title !== "AI" && (
-                  <p
-                    className={cn(
-                      "mb-6 text-sm leading-none -tracking-[0.01em] text-[#909090]",
-                      title === "Product" && "mb-5"
-                    )}
-                  >
-                    {subtitle}
-                  </p>
-                )}
-                {items && items.length > 0 && (
-                  <ul className="flex flex-col gap-y-4">
-                    {items.map(({ label, href }, itemIndex) => (
-                      <li key={itemIndex}>
-                        <Link
-                          className="!leading-none font-light"
-                          href={href}
-                          variant="ghost-intense"
-                        >
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {card && <Card type={type} {...card} />}
-              </div>
-            ))}
-          </div>
+          {variant === "product" && <ProductMenu content={content} />}
+          {(variant === "solutions" ||
+            variant === "channels" ||
+            variant === "ai") && <MenuLinks items={items} variant={variant} />}
+          {variant === "resources" && <ResourcesMenu content={content} />}
         </motion.div>
       )}
     </AnimatePresence>

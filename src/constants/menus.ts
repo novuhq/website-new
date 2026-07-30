@@ -1,103 +1,214 @@
 import { ROUTE } from "@/constants/routes"
 
-import { IMenuSocialItem } from "@/types/common"
+import { IMenuHeaderItem, IMenuSocialItem } from "@/types/common"
 
 export const MENUS = {
   header: [
     {
       title: "Product",
+      variant: "product",
       content: [
         {
-          subtitle: "Features",
           items: [
-            { label: "Inbox Component", href: ROUTE.inbox },
-            { label: "User Preference", href: ROUTE.docsUserPreferences },
-            { label: "Workflows", href: ROUTE.docsWorkflow },
-            { label: "Framework", href: ROUTE.framework },
-            { label: "Digest", href: ROUTE.digest },
-            { label: "Content Management", href: ROUTE.docsContentManagement },
-            { label: "Integrations", href: ROUTE.integrations },
+            {
+              label: "Novu Notify",
+              description: "Notification center for your app",
+              href: ROUTE.inbox,
+            },
+            {
+              label: "Novu Connect",
+              description: "Connect AI agents with customers",
+              href: ROUTE.connect,
+            },
           ],
         },
+      ],
+    },
+    {
+      title: "Solutions",
+      variant: "solutions",
+      content: [
         {
-          subtitle: "Changelog news",
-          type: "changelog" as const,
+          items: [
+            {
+              label: "For AI Agents",
+              href: ROUTE.connect,
+              menuIcon: "agents",
+            },
+            {
+              label: "For App Notifications",
+              href: ROUTE.inbox,
+              menuIcon: "notifications",
+            },
+            {
+              label: "For Builders",
+              href: ROUTE.docsOverview,
+              menuIcon: "builders",
+            },
+            {
+              label: "For Enterprise",
+              href: ROUTE.contactUs,
+              menuIcon: "enterprise",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Channels",
+      variant: "channels",
+      content: [
+        {
+          items: [
+            {
+              label: "Slack",
+              href: ROUTE.channelSlack,
+              menuIcon: "slack",
+            },
+            {
+              label: "WhatsApp",
+              href: ROUTE.channelWhatsApp,
+              menuIcon: "whatsapp",
+            },
+            {
+              label: "Telegram",
+              href: ROUTE.channelTelegram,
+              menuIcon: "telegram",
+            },
+            {
+              label: "MS Teams",
+              href: ROUTE.channelMicrosoftTeams,
+              menuIcon: "teams",
+            },
+            {
+              label: "iMessage",
+              href: ROUTE.connect,
+              menuIcon: "imessage",
+            },
+            { label: "Email", href: ROUTE.channelEmail, menuIcon: "email" },
+            { label: "Inbox", href: ROUTE.inbox, menuIcon: "inbox" },
+            {
+              label: "Push",
+              href: ROUTE.integrationsChannels,
+              menuIcon: "push",
+            },
+            {
+              label: "Chat",
+              href: ROUTE.integrationsChannels,
+              menuIcon: "chat",
+            },
+            {
+              label: "SMS",
+              href: ROUTE.integrationsChannels,
+              menuIcon: "sms",
+            },
+          ],
         },
       ],
     },
     {
       title: "AI",
+      variant: "ai",
       content: [
         {
-          subtitle: "AI",
           items: [
-            { label: "Novu Copilot", href: ROUTE.copilot },
-            { label: "Novu MCP", href: ROUTE.mcp },
-            { label: "Novu ACI", href: ROUTE.aci },
-            { label: "Novu Connect", href: ROUTE.connect },
+            { label: "MCP", href: ROUTE.mcp, menuIcon: "mcp" },
+            {
+              label: "Novu Copilot",
+              href: ROUTE.copilot,
+              menuIcon: "copilot",
+            },
+            { label: "Novu ACI", href: ROUTE.aci, menuIcon: "aci" },
+            { label: "Prompt", href: ROUTE.mcp, menuIcon: "prompt" },
+            {
+              label: "Skills",
+              href: ROUTE.githubSkills,
+              menuIcon: "skills",
+            },
+            { label: "Claude", href: ROUTE.docsMcp, menuIcon: "claude" },
+            { label: "Codex", href: ROUTE.docsMcp, menuIcon: "codex" },
+            { label: "Cursor", href: ROUTE.docsMcp, menuIcon: "cursor" },
           ],
         },
       ],
     },
     {
       title: "Resources",
+      variant: "resources",
       content: [
         {
-          subtitle: "Explore",
+          subtitle: "Discover",
           items: [
-            { label: "Use Cases", href: ROUTE.useCases },
-            { label: "Blog", href: ROUTE.blog },
-            { label: "Changelog", href: ROUTE.changelog },
-            { label: "Roadmap", href: ROUTE.roadmap },
-            { label: "Support", href: ROUTE.contactUs },
-            { label: "Discord", href: ROUTE.discord },
+            { label: "Blog", href: ROUTE.blog, menuIcon: "blog" },
+            {
+              label: "Customers",
+              href: ROUTE.customers,
+              menuIcon: "customers",
+            },
+            {
+              label: "Community",
+              href: ROUTE.community,
+              menuIcon: "community",
+            },
+            {
+              label: "Changelog",
+              href: ROUTE.changelog,
+              menuIcon: "changelog",
+            },
+            {
+              label: "History of Notification",
+              href: ROUTE.blog,
+              menuIcon: "history",
+            },
           ],
         },
         {
-          subtitle: "Latest post",
-          type: "blog" as const,
-        },
-      ],
-    },
-    {
-      title: "Docs",
-      content: [
-        {
-          subtitle: "Topics",
+          subtitle: "Developers",
           items: [
-            { label: "Documentation", href: ROUTE.docs },
-            { label: "Guides", href: ROUTE.docsGuides },
-            { label: "Framework", href: ROUTE.docsFramework },
-            { label: "API Reference", href: ROUTE.docsApis },
-            { label: "SDKs", href: ROUTE.docsSdks },
+            {
+              label: "Documentation",
+              href: ROUTE.docs,
+              menuIcon: "documentation",
+            },
+            { label: "API Reference", href: ROUTE.docsApis, menuIcon: "api" },
+            {
+              label: "SDKs & Frameworks",
+              href: ROUTE.docsSdks,
+              menuIcon: "sdks",
+            },
+            {
+              label: "Integrations",
+              href: ROUTE.integrations,
+              menuIcon: "integrations",
+            },
+            { label: "Github", href: ROUTE.github, menuIcon: "github" },
           ],
         },
         {
-          subtitle: "Quickstart",
-          type: "link" as const,
-          card: {
-            title: "Getting started",
-            description:
-              "This guide walks you through integrating Novu's Inbox",
-            image: "/images/header/illustration-docs.jpg",
-            href: ROUTE.docsOverview,
-          },
+          subtitle: "Company",
+          items: [
+            { label: "About", href: ROUTE.handbook, menuIcon: "about" },
+            { label: "Careers", href: ROUTE.careers, menuIcon: "careers" },
+            {
+              label: "Brand Assets",
+              href: ROUTE.github,
+              menuIcon: "brand",
+            },
+            { label: "Status", href: ROUTE.statusPage, menuIcon: "status" },
+            {
+              label: "Contact us",
+              href: ROUTE.contactUs,
+              menuIcon: "contact",
+            },
+          ],
         },
       ],
-    },
-    {
-      title: "Customers",
-      href: ROUTE.customers,
     },
     {
       title: "Pricing",
       href: ROUTE.pricing,
     },
-    {
-      title: "Contact Us",
-      href: ROUTE.contactUs,
-    },
-  ],
+  ] satisfies IMenuHeaderItem[],
   footer: {
     main: [
       {

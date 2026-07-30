@@ -8,6 +8,7 @@ import { Link } from "@/components/ui/link"
 
 import { Button } from "../ui/button"
 import Card from "./card"
+import MenuIcon from "./menu-icon"
 
 interface IMobileProps {
   title: string
@@ -57,25 +58,37 @@ function MobileItem({ title, content, onNavigate }: IMobileProps) {
           }}
         >
           <div className="grid gap-8 pb-5">
-            {content.map(({ items, card, type }, index) => (
-              <div
-                className="w-3xs min-w-0 first:-mt-1.5 sm:first:-mt-2.5"
-                key={index}
-              >
+            {content.map(({ subtitle, items, card, type }, index) => (
+              <div className="min-w-0" key={index}>
+                {subtitle && (
+                  <p className="mb-3 text-xs font-medium text-gray-60 uppercase">
+                    {subtitle}
+                  </p>
+                )}
                 {items && items.length > 0 && (
                   <ul className="mt-1 flex flex-col gap-y-3">
-                    {items.map(({ label, href }, itemIndex) => (
-                      <li key={itemIndex}>
-                        <Link
-                          className="!leading-none font-light"
-                          href={href}
-                          variant="muted"
-                          onClick={onNavigate}
-                        >
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
+                    {items.map(
+                      ({ label, href, menuIcon, description }, itemIndex) => (
+                        <li key={itemIndex}>
+                          <Link
+                            className="flex w-full items-start gap-3 !leading-none font-light"
+                            href={href}
+                            variant="muted"
+                            onClick={onNavigate}
+                          >
+                            <MenuIcon className="mt-px" icon={menuIcon} />
+                            <span>
+                              <span className="block">{label}</span>
+                              {description && (
+                                <span className="mt-1.5 block text-sm leading-4 text-gray-60">
+                                  {description}
+                                </span>
+                              )}
+                            </span>
+                          </Link>
+                        </li>
+                      )
+                    )}
                   </ul>
                 )}
                 {card && <Card type={type} {...card} />}

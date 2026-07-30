@@ -10,7 +10,55 @@ export interface IMenuItem {
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
+  description?: string
+  menuIcon?: TMenuIcon
 }
+
+export type TMenuIcon =
+  | "agents"
+  | "notifications"
+  | "builders"
+  | "enterprise"
+  | "slack"
+  | "whatsapp"
+  | "telegram"
+  | "teams"
+  | "imessage"
+  | "email"
+  | "inbox"
+  | "push"
+  | "chat"
+  | "sms"
+  | "mcp"
+  | "copilot"
+  | "aci"
+  | "prompt"
+  | "skills"
+  | "claude"
+  | "codex"
+  | "cursor"
+  | "blog"
+  | "customers"
+  | "community"
+  | "changelog"
+  | "history"
+  | "documentation"
+  | "api"
+  | "sdks"
+  | "integrations"
+  | "github"
+  | "about"
+  | "careers"
+  | "brand"
+  | "status"
+  | "contact"
+
+export type THeaderMenuVariant =
+  | "product"
+  | "solutions"
+  | "channels"
+  | "ai"
+  | "resources"
 
 export interface IMenuSocialItem extends IMenuItem {
   icon: TSocialIcons
@@ -24,7 +72,7 @@ export interface IMenuHeaderCard {
 }
 
 export interface IMenuHeaderContent {
-  subtitle: string
+  subtitle?: string
   type?: "changelog" | "blog" | "link"
   items?: IMenuItem[]
   card?: IMenuHeaderCard
@@ -34,6 +82,7 @@ export interface IMenuHeaderItem {
   title: string
   href?: Route<string> | URL
   content?: IMenuHeaderContent[]
+  variant?: THeaderMenuVariant
 }
 
 export interface IMenuFooterItem {
