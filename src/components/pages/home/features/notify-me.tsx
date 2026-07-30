@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState, type FormEvent } from "react"
+import { useEffect, useId, useRef, useState, type FormEvent } from "react"
 import { Check } from "lucide-react"
+import { z } from "zod"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-
-const NOTIFY_EMAIL = "hello@novu.co"
 
 interface INotifyMeProps {
   channelLabel: string
@@ -15,13 +14,36 @@ interface INotifyMeProps {
   focusSignal?: number
 }
 
+const emailSchema = z
+  .string()
+  .trim()
+  .email("Please enter a valid email address.")
+  .max(254, "Email is too long.")
+
+function getUtmSource() {
+  const currentUtmSource = new URLSearchParams(window.location.search).get(
+    "utm_source"
+  )
+
+  if (currentUtmSource) return currentUtmSource
+
+  try {
+    return sessionStorage.getItem("utm_source") || ""
+  } catch {
+    return ""
+  }
+}
+
 function NotifyMe({
   channelLabel,
   className,
   focusSignal = 0,
 }: INotifyMeProps) {
   const [email, setEmail] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const errorId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -30,16 +52,48 @@ function NotifyMe({
     }
   }, [focusSignal])
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!email) return
+    if (isSubmitting) return
 
-    const subject = encodeURIComponent(`Notify me when ${channelLabel} is live`)
-    const body = encodeURIComponent(
-      `Please notify me when the ${channelLabel} channel is live on Novu Connect.\n\nMy email: ${email}`
-    )
-    window.location.href = `mailto:${NOTIFY_EMAIL}?subject=${subject}&body=${body}`
-    setSubmitted(true)
+    const parsedEmail = emailSchema.safeParse(email)
+
+    if (!parsedEmail.success) {
+      setErrorMessage(parsedEmail.error.issues[0]?.message || "Invalid email.")
+      inputRef.current?.focus()
+      return
+    }
+
+    setErrorMessage("")
+    setIsSubmitting(true)
+
+    const formData = new FormData(event.currentTarget)
+
+    try {
+      const response = await fetch("/api/channel-waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          channel: channelLabel,
+          companyWebsite: formData.get("companyWebsite"),
+          email: parsedEmail.data,
+          sourcePage: window.location.href,
+          utmSource: getUtmSource(),
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Unable to submit waitlist registration")
+      }
+
+      setSubmitted(true)
+    } catch {
+      setErrorMessage("Something went wrong. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -49,6 +103,8 @@ function NotifyMe({
           "flex items-center gap-2 text-base tracking-tight text-gray-90",
           className
         )}
+        role="status"
+        aria-live="polite"
       >
         <Check className="size-4.5 shrink-0 text-[#3ac47d]" aria-hidden />
         Thanks. We&apos;ll email you when {channelLabel} is live.
@@ -57,31 +113,55 @@ function NotifyMe({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={cn("relative h-11 w-full max-w-full sm:w-89", className)}
-    >
-      <input
-        ref={inputRef}
-        type="email"
-        name="email"
-        autoComplete="email"
-        required
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        placeholder="you@company.com"
-        aria-label={`Email to be notified when ${channelLabel} is live`}
-        className="h-11 w-full rounded-md border border-gray-20 bg-transparent pr-32 pl-4 text-base text-foreground placeholder:text-gray-50 focus-visible:border-gray-40 focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
-      />
-      <Button
-        type="submit"
-        variant="default"
-        size="none"
-        className="absolute inset-y-1 right-1 h-auto rounded px-5 text-base leading-none font-medium tracking-tight normal-case"
-      >
-        Notify Me
-      </Button>
-    </form>
+    <div className={cn("w-full max-w-full sm:w-89", className)}>
+      <form onSubmit={handleSubmit} className="relative h-11 w-full" noValidate>
+        <input
+          ref={inputRef}
+          type="email"
+          name="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value)
+            setErrorMessage("")
+          }}
+          placeholder="you@company.com"
+          aria-describedby={errorMessage ? errorId : undefined}
+          aria-invalid={Boolean(errorMessage)}
+          aria-label={`Email to be notified when ${channelLabel} is live`}
+          className="h-11 w-full rounded-md border border-gray-20 bg-transparent pr-32 pl-4 text-base text-foreground placeholder:text-gray-50 focus-visible:border-gray-40 focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
+        />
+        <div className="sr-only" aria-hidden="true">
+          <label htmlFor={`${errorId}-company-website`}>Company website</label>
+          <input
+            id={`${errorId}-company-website`}
+            name="companyWebsite"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="default"
+          size="none"
+          disabled={isSubmitting}
+          className="absolute inset-y-1 right-1 h-auto rounded px-5 text-base leading-none font-medium tracking-tight normal-case"
+        >
+          {isSubmitting ? "Submitting…" : "Notify me"}
+        </Button>
+        {errorMessage ? (
+          <p
+            className="absolute top-full translate-y-1.5 text-sm tracking-tight text-destructive"
+            id={errorId}
+            role="alert"
+          >
+            {errorMessage}
+          </p>
+        ) : null}
+      </form>
+    </div>
   )
 }
 

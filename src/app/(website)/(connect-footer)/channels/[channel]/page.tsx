@@ -20,6 +20,10 @@ type PageProps = {
   params: Promise<{ channel: string }>
 }
 
+function getChannelOgImagePath(channel: string) {
+  return `/og-images/channels/${channel}.jpg`
+}
+
 export function generateStaticParams() {
   return getAllChannelSlugs().map((channel) => ({ channel }))
 }
@@ -38,7 +42,8 @@ export async function generateMetadata({
     title: channel.seoTitle,
     description: channel.seoDescription,
     pathname: `/channels/${slug}`,
-    imagePath: `/api/og?template=default&title=${encodeURIComponent(channel.hero.heading)}`,
+    imagePath: getChannelOgImagePath(slug),
+    imageAlt: channel.hero.heading,
     markdownPathname: true,
   })
 }
@@ -56,9 +61,7 @@ async function ChannelPage({ params }: PageProps) {
   const siteUrl = absoluteUrl("/")
   const pageUrl = absoluteUrl(toCanonicalPathname(`/channels/${channel.slug}`))
   const connectUrl = absoluteUrl(toCanonicalPathname(String(ROUTE.connect)))
-  const imageUrl = absoluteUrl(
-    `/api/og?template=default&title=${encodeURIComponent(channel.hero.heading)}`
-  )
+  const imageUrl = absoluteUrl(getChannelOgImagePath(channel.slug))
   const organizationId = `${siteUrl}#organization`
   const websiteId = `${siteUrl}#website`
   const webPageId = `${pageUrl}#webpage`

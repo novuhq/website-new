@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Activity,
   useCallback,
   useEffect,
   useId,
@@ -9,10 +10,12 @@ import {
   type ReactNode,
 } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import checkCircleIcon from "@/svgs/pages/home/check.svg"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -28,6 +31,10 @@ import NotifyMe from "./notify-me"
 import Preview, { type IPreviewData } from "./preview"
 
 export interface IFeatureChannel extends IPreviewData {
+  action?: {
+    href: string
+    label: string
+  }
   availability: "live" | "upcoming"
   badges: readonly ProductBadgeType[]
   cliCommand?: string
@@ -35,7 +42,8 @@ export interface IFeatureChannel extends IPreviewData {
   features?: string[]
   key: string
   label: string
-  prompt: string
+  prompt?: string
+  statusBadge?: string
   title: string
 }
 
@@ -171,7 +179,7 @@ function Features({
           </Button>
 
           <div
-            className="scrollbar-hidden -mx-5 touch-pan-x overscroll-x-contain overflow-x-auto mask-[linear-gradient(to_right,transparent,black_1.25rem,black_calc(100%_-_1.25rem),transparent)] px-5 sm:mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] sm:px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
+            className="scrollbar-hidden -mx-5 touch-pan-x overflow-x-auto overscroll-x-contain mask-[linear-gradient(to_right,transparent,black_1.25rem,black_calc(100%_-_1.25rem),transparent)] px-5 sm:mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] sm:px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
             ref={tabListRef}
             role="tablist"
             aria-label="Communication channels"
@@ -248,17 +256,26 @@ function Features({
         </div>
 
         <div
-          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-128 lg:grid-cols-2"
+          className="mt-10 grid overflow-hidden rounded-[10px] border border-gray-20 lg:h-134 lg:grid-cols-2"
           id={`${tabsId}-panel`}
           role="tabpanel"
           aria-labelledby={`${tabsId}-tab-${activeItem.key}`}
         >
-          <div className="flex flex-col p-6 md:p-10 lg:h-full lg:p-20">
-            <div className="max-w-lg lg:max-w-112">
+          <div className="flex flex-col p-6 md:p-10 lg:h-full lg:px-20 lg:pt-18 lg:pb-0">
+            <div className="max-w-lg lg:max-w-116">
               <div className="flex flex-wrap gap-2">
                 {activeItem.badges.map((badge, index) => (
                   <ProductBadge key={`${badge}-${index}`} type={badge} />
                 ))}
+                {activeItem.statusBadge ? (
+                  <Badge
+                    className="h-6 border-gray-30 px-2.5 text-sm leading-none tracking-tighter whitespace-nowrap text-gray-80"
+                    variant="outline-muted"
+                    size="md"
+                  >
+                    {activeItem.statusBadge}
+                  </Badge>
+                ) : null}
               </div>
               <h3 className="mt-3 text-[1.75rem] leading-tight font-normal tracking-tighter text-balance text-foreground">
                 {activeItem.title}
@@ -287,7 +304,17 @@ function Features({
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-7">
-              {activeItem.availability === "live" ? (
+              {activeItem.action ? (
+                <Button
+                  className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-auto"
+                  size="none"
+                  asChild
+                >
+                  <Link href={activeItem.action.href}>
+                    {activeItem.action.label}
+                  </Link>
+                </Button>
+              ) : activeItem.availability === "live" && activeItem.prompt ? (
                 <>
                   <CopyPromptButton
                     className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-39 [&_svg]:size-3.5"
@@ -306,6 +333,7 @@ function Features({
                 </>
               ) : (
                 <NotifyMe
+                  key={activeItem.key}
                   channelLabel={activeItem.label}
                   className="sm:max-w-md"
                   focusSignal={notifyFocusToken}
@@ -315,14 +343,30 @@ function Features({
           </div>
 
           <div className="relative aspect-10/11 overflow-hidden border-t border-gray-20 sm:aspect-5/4 lg:aspect-auto lg:h-full lg:border-t-0 lg:border-l">
-            <Preview
-              backgroundImage={activeItem.backgroundImage}
-              channelLabel={activeItem.label}
-              clientFacingImage={activeItem.clientFacingImage}
-              clientFacingVideo={activeItem.clientFacingVideo}
-              company={activeItem.company}
-              key={activeItem.key}
-            />
+            {items.map((item) => {
+              const isActive = item.key === activeItem.key
+
+              return (
+                <Activity key={item.key} mode={isActive ? "visible" : "hidden"}>
+                  <div className="absolute inset-0" aria-hidden={!isActive}>
+                    <Preview
+                      backgroundImage={item.backgroundImage}
+                      channelLabel={item.label}
+                      clientFacingImage={item.clientFacingImage}
+                      clientFacingImageClassName={
+                        item.clientFacingImageClassName
+                      }
+                      clientFacingImageSizes={item.clientFacingImageSizes}
+                      clientFacingLabel={item.clientFacingLabel}
+                      clientFacingUnderlayVideo={item.clientFacingUnderlayVideo}
+                      clientFacingVideo={item.clientFacingVideo}
+                      company={item.company}
+                      isActive={isActive}
+                    />
+                  </div>
+                </Activity>
+              )
+            })}
           </div>
         </div>
       </div>

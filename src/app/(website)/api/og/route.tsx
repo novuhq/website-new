@@ -2,6 +2,8 @@ import { ImageResponse } from "next/og"
 import { NextRequest } from "next/server"
 import config from "@/configs/website-config"
 
+import { getSiteUrl } from "@/lib/site-url"
+
 export const runtime = "edge"
 export const preferredRegion = "auto"
 
@@ -34,8 +36,7 @@ export async function GET(request: NextRequest) {
 
     const imageUrl = getTemplateImage(templateKey)
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "http://localhost:3000"
+    const siteUrl = getSiteUrl()
     const background = fetch(`${siteUrl}${imageUrl}`).then((res) =>
       res.arrayBuffer()
     )

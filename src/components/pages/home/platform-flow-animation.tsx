@@ -13,7 +13,6 @@ import {
   AnimatePresence,
   domAnimation,
   LazyMotion,
-  useInView,
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
@@ -79,9 +78,27 @@ const TRACK_BASE_TOP = 72
 const TRACK_BASE_BOTTOM = 349
 const TRACK_COMPACT_SIDE_INSET = 0.0625
 
-const CARD_TRANSITION_DURATION = 0.36
+const CARD_ENTER_DURATION = 0.35
+const CARD_EXIT_DURATION = 0.2
+const CARD_EASE_IN = [0.4, 0, 1, 1] as const
 const CARD_EASE_OUT = [0, 0, 0.2, 1] as const
 const LINE_EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const
+
+const ENGAGE_CONTENT_DELAY = 0.42
+const ENGAGE_QUESTION_DURATION = 0.38
+const ENGAGE_TYPING_DELAY = ENGAGE_CONTENT_DELAY + 0.4
+const ENGAGE_TYPING_DURATION = 1.15
+const ENGAGE_TYPING_DOT_DURATION = 0.28
+const ENGAGE_TYPING_DOT_STAGGER = 0.12
+const ENGAGE_TYPING_DOT_REPEAT_DELAY = ENGAGE_TYPING_DOT_STAGGER * 2
+const ENGAGE_REPLY_DELAY = ENGAGE_CONTENT_DELAY + 1.55
+const ENGAGE_WORD_DELAY = ENGAGE_CONTENT_DELAY + 1.63
+const ENGAGE_WORD_DURATION = 0.16
+const ENGAGE_WORD_STAGGER = 0.07
+const ENGAGE_RESPONSE_WORDS =
+  "Your connection is at risk. Would you like me to find another flight?".split(
+    " "
+  )
 
 interface IPlatformFlowAnimationProps {
   activeTab?: string
@@ -101,7 +118,6 @@ interface IFlowMarkerBadgeProps {
 interface IMobileTimelineProps {
   activeStep: FlowStep
   onStepComplete?: () => void
-  shouldAnimate: boolean
 }
 
 interface ITrackSize {
@@ -201,11 +217,7 @@ function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
   )
 }
 
-function MobileTimeline({
-  activeStep,
-  onStepComplete,
-  shouldAnimate,
-}: IMobileTimelineProps) {
+function MobileTimeline({ activeStep, onStepComplete }: IMobileTimelineProps) {
   const activeIndex = FLOW_ORDER.indexOf(activeStep)
   const [hasArrived, setHasArrived] = useState(false)
   const startOffset = `${-activeIndex * MOBILE_TIMELINE_SLOT_WIDTH}%`
@@ -221,7 +233,7 @@ function MobileTimeline({
     ? [startOffset, startOffset, targetOffset]
     : [startOffset, startOffset, startOffset, targetOffset]
   const timelineTransition = {
-    duration: shouldAnimate ? timelineDuration : 0,
+    duration: timelineDuration,
     ease: "linear" as const,
     times: timelineTimes,
   }
@@ -244,18 +256,11 @@ function MobileTimeline({
   return (
     <div className="pointer-events-none absolute inset-x-0 top-10 z-20 h-px overflow-visible sm:hidden">
       <m.div
-        className={cn(
-          "absolute top-0 left-0 h-px w-[500%]",
-          shouldAnimate && "will-change-transform"
-        )}
+        className="absolute top-0 left-0 h-px w-[500%] will-change-transform"
         initial={{ x: startOffset }}
-        animate={{
-          x: shouldAnimate ? trackKeyframes : startOffset,
-        }}
+        animate={{ x: trackKeyframes }}
         onAnimationComplete={() => {
-          if (shouldAnimate) {
-            setHasArrived(true)
-          }
+          setHasArrived(true)
         }}
         transition={timelineTransition}
       >
@@ -272,14 +277,9 @@ function MobileTimeline({
             )}
             {segmentIndex === activeIndex && (
               <m.span
-                className={cn(
-                  "absolute inset-0 origin-left bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)]",
-                  shouldAnimate && "will-change-transform"
-                )}
+                className="absolute inset-0 origin-left bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)] will-change-transform"
                 initial={{ scaleX: 0 }}
-                animate={{
-                  scaleX: shouldAnimate ? [0, 0, 0.8, 1] : 0,
-                }}
+                animate={{ scaleX: [0, 0, 0.8, 1] }}
                 transition={timelineTransition}
               />
             )}
@@ -377,7 +377,7 @@ function NotifyCard() {
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1.5 text-left sm:gap-1 lg:gap-2">
         <strong className="flex items-center truncate text-base leading-none font-medium tracking-tighter text-black/90 sm:text-xs lg:text-xl">
-          Flight delayed
+          Flight Agent
           <Badge className="ml-1.5 lg:ml-2.5" label="iMessage" />
         </strong>
         <span className="block truncate text-sm leading-tight tracking-tighter text-gray-40 sm:text-[0.625rem] lg:text-[1.0625rem]">
@@ -390,11 +390,20 @@ function NotifyCard() {
 
 function ConversationCard() {
   return (
-    <div className="flex aspect-[415/166] w-full flex-col justify-between rounded-[0.625rem] bg-white p-[4.819%] text-left font-inter shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)]">
-      <div className="relative flex aspect-[260/45] w-[70%] shrink-0 items-center self-end rounded-[1.375rem] bg-[#1995FD] px-3 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-white sm:px-3.5 sm:text-sm md:px-4 lg:px-4.25 lg:text-[1.1875rem]">
+    <div className="flex aspect-[400/174] w-full max-w-100 flex-col justify-between rounded-[0.625rem] bg-white p-[4.819%] text-left font-inter shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] md:py-3 lg:aspect-[400/160] xl:aspect-[400/174] xl:p-4.5">
+      <m.div
+        className="relative flex w-[75%] shrink-0 items-center self-end rounded-[1.375rem] bg-[#1995FD] px-3 py-2 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-white sm:px-3.5 sm:text-sm md:px-3.5 lg:px-4.25 lg:text-base/[1.1] xl:text-[1.1875rem]"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: ENGAGE_QUESTION_DURATION,
+          delay: ENGAGE_CONTENT_DELAY,
+          ease: CARD_EASE_OUT,
+        }}
+      >
         Will I miss my connection?
         <svg
-          className="pointer-events-none absolute right-[2.05%] -bottom-1.5 h-[30.29%] w-[6.54%] text-[#1995FD] sm:-bottom-1.5 lg:-bottom-2"
+          className="pointer-events-none absolute right-[-1%] bottom-0 h-[30.29%] w-[6.54%] text-[#1995FD]"
           viewBox="420.492 88.381 14.949 11.903"
           fill="none"
           aria-hidden
@@ -404,23 +413,99 @@ function ConversationCard() {
             fill="currentColor"
           />
         </svg>
-      </div>
+        <m.span
+          className="absolute top-[calc(100%+0.25rem)] right-0 text-xs leading-[1.1] font-[510] tracking-[0.005rem] whitespace-nowrap text-[#3C3C43]/60 lg:top-[calc(100%+0.5rem)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: ENGAGE_QUESTION_DURATION,
+            delay: ENGAGE_TYPING_DELAY,
+            ease: CARD_EASE_OUT,
+          }}
+        >
+          Read 10:02
+        </m.span>
+      </m.div>
 
-      <div className="relative flex aspect-[329/68] w-[87.734%] shrink-0 items-center self-start rounded-[1.375rem] bg-[#E9E9EA] px-3 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-[#040406] sm:px-3.5 sm:text-sm md:px-4 lg:px-4.25 lg:text-[1.1875rem]">
-        <span>
-          Your connection is at risk. Would you like me to find another flight?
-        </span>
-        <svg
-          className="pointer-events-none absolute -bottom-1.5 left-[2.05%] h-[30.29%] w-[5.17%] text-[#E9E9EA] sm:-bottom-2 lg:-bottom-2.5"
-          viewBox="76.086 169.381 14.062 11.903"
-          fill="none"
+      <div className="relative aspect-[329/68] w-[89%] shrink-0 self-start">
+        <m.div
+          className="absolute top-0 left-0 flex h-8 items-center gap-1 rounded-full bg-[#E9E9EB] px-3.5 lg:h-10"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{
+            opacity: [0, 1, 1, 0],
+            y: [4, 0, 0, 0],
+          }}
+          transition={{
+            duration: ENGAGE_TYPING_DURATION,
+            delay: ENGAGE_TYPING_DELAY,
+            ease: CARD_EASE_OUT,
+            times: [0, 0.16, 0.84, 1],
+          }}
           aria-hidden
         >
-          <path
-            d="M76.0859 169.381C79.3218 171.253 85.0463 173.611 89.0535 173.611H90.1484C86.4627 176.719 81.4638 179.555 77.7599 181.284C76.1319 182.044 75.1994 180.628 76.2481 179.169C77.0435 178.063 77.718 176.949 77.8741 176.169C78.2741 174.169 79.2235 172.419 76.0859 169.381Z"
-            fill="currentColor"
-          />
-        </svg>
+          {[0, 1, 2].map((dotIndex) => (
+            <m.span
+              className="size-2 rounded-full bg-[#AEADAE] lg:size-2.5"
+              initial={{ opacity: 0.3 }}
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{
+                duration: ENGAGE_TYPING_DOT_DURATION,
+                delay:
+                  ENGAGE_TYPING_DELAY +
+                  0.05 +
+                  dotIndex * ENGAGE_TYPING_DOT_STAGGER,
+                ease: "easeInOut",
+                times: [0, 0.5, 1],
+                repeat: 1,
+                repeatDelay: ENGAGE_TYPING_DOT_REPEAT_DELAY,
+              }}
+              key={dotIndex}
+            />
+          ))}
+          <span className="absolute bottom-0 -left-0.5 size-3 rounded-full bg-[#E9E9EB] lg:size-3.5" />
+          <span className="absolute bottom-0 left-0 size-1.5 -translate-x-[150%] translate-y-1/2 rounded-full bg-[#E9E9EB] lg:bottom-0" />
+        </m.div>
+
+        <m.div
+          className="absolute inset-0 flex items-center rounded-[1.375rem] bg-[#E9E9EA] px-3 text-[0.8125rem] leading-[1.2] font-normal tracking-tighter text-[#040406] sm:px-3.5 sm:text-sm md:px-4 lg:px-4.25 lg:text-base/[1.1] xl:text-[1.1875rem]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.01,
+            delay: ENGAGE_REPLY_DELAY,
+          }}
+        >
+          <span aria-label={ENGAGE_RESPONSE_WORDS.join(" ")}>
+            {ENGAGE_RESPONSE_WORDS.map((word, index) => (
+              <m.span
+                className="inline"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: ENGAGE_WORD_DURATION,
+                  delay: ENGAGE_WORD_DELAY + index * ENGAGE_WORD_STAGGER,
+                  ease: "easeOut",
+                }}
+                aria-hidden
+                key={`${word}-${index}`}
+              >
+                {word}
+                {index < ENGAGE_RESPONSE_WORDS.length - 1 ? " " : null}
+              </m.span>
+            ))}
+          </span>
+          <svg
+            className="pointer-events-none absolute -bottom-0.5 left-0.5 h-[30.29%] w-[5.17%] text-[#E9E9EA] lg:left-[-0.5%]"
+            viewBox="76.086 169.381 14.062 11.903"
+            fill="none"
+            aria-hidden
+          >
+            <path
+              d="M76.0859 169.381C79.3218 171.253 85.0463 173.611 89.0535 173.611H90.1484C86.4627 176.719 81.4638 179.555 77.7599 181.284C76.1319 182.044 75.1994 180.628 76.2481 179.169C77.0435 178.063 77.718 176.949 77.8741 176.169C78.2741 174.169 79.2235 172.419 76.0859 169.381Z"
+              fill="currentColor"
+            />
+          </svg>
+        </m.div>
       </div>
     </div>
   )
@@ -481,8 +566,6 @@ function PlatformFlowAnimation({
   const activeStep = normalizeFlowStep(activeTab)
   const prefersReducedMotion = useReducedMotion()
   const sceneRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(sceneRef, { amount: 0.35 })
-  const [isPageVisible, setIsPageVisible] = useState(true)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
   const [trackSize, setTrackSize] = useState<ITrackSize>({
     width: TRACK_BASE_WIDTH,
@@ -493,15 +576,11 @@ function PlatformFlowAnimation({
   const nextStep = FLOW_ORDER[(activeIndex + 1) % FLOW_ORDER.length]
   const startProgress = TRACK_CHECKPOINTS[activeStep]
   const targetProgress = nextStep === "event" ? 1 : TRACK_CHECKPOINTS[nextStep]
-  const shouldAnimate = isInView && isPageVisible && !prefersReducedMotion
-  const progress = shouldAnimate
-    ? [startProgress, startProgress, targetProgress]
-    : startProgress
-  const progressKey = `${activeStep}-${shouldAnimate ? "playing" : "paused"}`
+  const progress = [startProgress, startProgress, targetProgress]
   const activeTitle = activeStep.charAt(0).toUpperCase() + activeStep.slice(1)
   const trackPath = createTrackPath(trackSize)
   const pathTransition = {
-    duration: shouldAnimate ? FLOW_STEP_DURATION : 0,
+    duration: FLOW_STEP_DURATION,
     ease: ["linear", LINE_EASE_OUT],
     times: FLOW_TIMELINE_TIMES,
   }
@@ -560,19 +639,6 @@ function PlatformFlowAnimation({
   }, [])
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      setIsPageVisible(!document.hidden)
-    }
-
-    handleVisibilityChange()
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange)
-    }
-  }, [])
-
-  useEffect(() => {
     const mobileMediaQuery = window.matchMedia("(max-width: 639px)")
     const handleMobileChange = () => {
       setIsMobileViewport(mobileMediaQuery.matches)
@@ -587,7 +653,7 @@ function PlatformFlowAnimation({
   }, [])
 
   useEffect(() => {
-    if (!shouldAnimate || !onStepComplete || isMobileViewport) {
+    if (!onStepComplete || isMobileViewport) {
       return
     }
 
@@ -596,7 +662,7 @@ function PlatformFlowAnimation({
     return () => {
       window.clearTimeout(timer)
     }
-  }, [activeStep, isMobileViewport, onStepComplete, shouldAnimate])
+  }, [activeStep, isMobileViewport, onStepComplete])
 
   return (
     <div
@@ -622,7 +688,6 @@ function PlatformFlowAnimation({
           activeStep={activeStep}
           key={activeStep}
           onStepComplete={onStepComplete}
-          shouldAnimate={shouldAnimate}
         />
 
         <svg
@@ -640,7 +705,7 @@ function PlatformFlowAnimation({
             className="mix-blend-overlay"
           />
           <m.path
-            key={`${progressKey}-glow`}
+            key={`${activeStep}-glow`}
             d={trackPath}
             stroke="white"
             strokeWidth="4"
@@ -652,7 +717,7 @@ function PlatformFlowAnimation({
             transition={pathTransition}
           />
           <m.path
-            key={`${progressKey}-line`}
+            key={`${activeStep}-line`}
             d={trackPath}
             stroke="white"
             strokeWidth="1.5"
@@ -694,19 +759,23 @@ function PlatformFlowAnimation({
               animate={{
                 opacity: 1,
                 transform: "translate3d(0,0,0)",
+                transition: {
+                  duration: prefersReducedMotion ? 0 : CARD_ENTER_DURATION,
+                  ease: CARD_EASE_OUT,
+                },
               }}
               exit={
                 prefersReducedMotion
-                  ? { opacity: 1 }
+                  ? { opacity: 1, transition: { duration: 0 } }
                   : {
                       opacity: 0,
                       transform: "translate3d(0,12px,0)",
+                      transition: {
+                        duration: CARD_EXIT_DURATION,
+                        ease: CARD_EASE_IN,
+                      },
                     }
               }
-              transition={{
-                duration: prefersReducedMotion ? 0 : CARD_TRANSITION_DURATION,
-                ease: CARD_EASE_OUT,
-              }}
             >
               <FlowCard step={activeStep} />
             </m.div>

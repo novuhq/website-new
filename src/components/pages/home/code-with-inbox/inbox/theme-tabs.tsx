@@ -58,14 +58,14 @@ function ThemeTabs({
     <LazyMotion features={domAnimation}>
       <div
         className={cn(
-          "absolute top-0 left-0 z-10 flex h-10.5 w-133 overflow-hidden rounded-full border border-white/70 bg-[linear-gradient(0deg,rgba(255,255,255,.20)_0%,rgba(255,255,255,.20)_100%),radial-gradient(120%_176%_at_54%_-36%,rgba(110,42,194,.30)_2.53%,rgba(38,25,51,.00)_100%)] mix-blend-overlay backdrop-blur-md xl:w-153",
+          "absolute top-0 left-0 z-10 flex h-10.5 w-[10.75rem] overflow-hidden rounded-full border border-white/70 bg-[linear-gradient(0deg,rgba(255,255,255,.20)_0%,rgba(255,255,255,.20)_100%),radial-gradient(120%_176%_at_54%_-36%,rgba(110,42,194,.30)_2.53%,rgba(38,25,51,.00)_100%)] mix-blend-overlay backdrop-blur-md xl:w-50",
           className
         )}
         aria-hidden="true"
       />
       <div
         className={cn(
-          "absolute top-0 left-0 z-10 flex h-10.5 items-center justify-between gap-0.75 overflow-hidden rounded-full px-1.5 lg:gap-1 2xl:gap-0.75",
+          "absolute top-0 left-0 z-10 flex h-10.5 w-[10.75rem] items-center justify-between gap-0.75 overflow-hidden rounded-full px-1.5 lg:gap-1 xl:w-50 2xl:gap-0.75",
           className
         )}
         ref={tabsListRef}

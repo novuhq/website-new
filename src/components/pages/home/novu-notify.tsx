@@ -136,7 +136,7 @@ function NovuNotify({
               <InboxComponent
                 animateEntrance={false}
                 className="notify-live-inbox zoom-[0.965] md:zoom-[0.9] lg:zoom-[1.111] xl:zoom-[0.98] absolute top-13 left-104 m-0 hidden md:block lg:right-14 lg:left-auto lg:max-[68rem]:left-112 xl:left-137"
-                themeTabsClassName="absolute top-13 left-104 m-0 hidden md:flex lg:right-14 lg:left-auto lg:max-[68rem]:left-112 xl:left-137"
+                themeTabsClassName="absolute top-13 left-104 m-0 hidden md:flex lg:right-14 lg:left-auto lg:max-[68rem]:left-112 xl:right-14 xl:left-auto"
                 variant="home"
               />
             ) : featuredItem.image ? (

@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 const SlickSlider = dynamic(() => import("react-slick"), { ssr: false })
+const homeInboxData = inboxData.slice(0, 2)
 
 const inboxComponentVariants = cva(
   "inbox-component relative order-last h-auto w-full shrink-0 md:order-none",
@@ -84,7 +85,7 @@ function InboxComponent({
         <ThemeTabs
           className={themeTabsClassName}
           activeTheme={activeTheme}
-          items={inboxData}
+          items={homeInboxData}
           onThemeChange={setActiveTheme}
         />
       )}
