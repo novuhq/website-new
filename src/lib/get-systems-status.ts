@@ -78,6 +78,10 @@ export type SystemStatusType = {
 }
 
 export async function getSystemsStatus(): Promise<SystemStatusType[]> {
+  if (process.env.CRITICAL_FLOW_TESTING === "1") {
+    return []
+  }
+
   if (!process.env.BETTERSTACK_API_KEY) {
     throw new Error("Missing BETTERSTACK_API_KEY environment variable")
   }
