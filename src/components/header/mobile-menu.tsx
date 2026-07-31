@@ -187,7 +187,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
               <ul>
                 {items.map(({ title, content, href, variant }, index) => (
                   <li
-                    className="border-b border-b-foreground/10 last:border-b-0"
+                    className="border-b border-b-foreground/10 font-inter last:border-b-0"
                     key={index}
                   >
                     {href ? (
@@ -222,7 +222,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
             )}
           </div>
 
-          <div className="mt-auto flex shrink-0 gap-3.5 px-5 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] max-2xs:flex-col 2xs:gap-5 2xs:pt-7 2xs:pb-[max(1.75rem,env(safe-area-inset-bottom))] md:px-8">
+          <div className="mt-auto flex shrink-0 gap-3.5 px-5 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] font-inter max-2xs:flex-col 2xs:gap-5 2xs:pt-7 2xs:pb-[max(1.75rem,env(safe-area-inset-bottom))] md:px-8">
             <Button className="w-full" variant="outline" asChild>
               <NextLink href={actions.secondary.href} onClick={closeMenu}>
                 {actions.secondary.label}
