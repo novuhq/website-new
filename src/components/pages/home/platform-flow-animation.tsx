@@ -102,6 +102,7 @@ const ENGAGE_RESPONSE_WORDS =
 
 interface IPlatformFlowAnimationProps {
   activeTab?: string
+  isPlaying?: boolean
   onStepComplete?: () => void
 }
 
@@ -117,7 +118,7 @@ interface IFlowMarkerBadgeProps {
 
 interface IMobileTimelineProps {
   activeStep: FlowStep
-  onStepComplete?: () => void
+  isPlaying: boolean
 }
 
 interface ITrackSize {
@@ -217,7 +218,7 @@ function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
   )
 }
 
-function MobileTimeline({ activeStep, onStepComplete }: IMobileTimelineProps) {
+function MobileTimeline({ activeStep, isPlaying }: IMobileTimelineProps) {
   const activeIndex = FLOW_ORDER.indexOf(activeStep)
   const [hasArrived, setHasArrived] = useState(false)
   const startOffset = `${-activeIndex * MOBILE_TIMELINE_SLOT_WIDTH}%`
@@ -233,34 +234,21 @@ function MobileTimeline({ activeStep, onStepComplete }: IMobileTimelineProps) {
     ? [startOffset, startOffset, targetOffset]
     : [startOffset, startOffset, startOffset, targetOffset]
   const timelineTransition = {
-    duration: timelineDuration,
+    duration: isPlaying ? timelineDuration : 0,
     ease: "linear" as const,
     times: timelineTimes,
   }
-
-  useEffect(() => {
-    if (!hasArrived || !onStepComplete) {
-      return
-    }
-
-    const timer = window.setTimeout(
-      onStepComplete,
-      MOBILE_BADGE_SETTLE_DELAY_MS
-    )
-
-    return () => {
-      window.clearTimeout(timer)
-    }
-  }, [hasArrived, onStepComplete])
 
   return (
     <div className="pointer-events-none absolute inset-x-0 top-10 z-20 h-px overflow-visible sm:hidden">
       <m.div
         className="absolute top-0 left-0 h-px w-[500%] will-change-transform"
         initial={{ x: startOffset }}
-        animate={{ x: trackKeyframes }}
+        animate={{ x: isPlaying ? trackKeyframes : startOffset }}
         onAnimationComplete={() => {
-          setHasArrived(true)
+          if (isPlaying) {
+            setHasArrived(true)
+          }
         }}
         transition={timelineTransition}
       >
@@ -279,7 +267,7 @@ function MobileTimeline({ activeStep, onStepComplete }: IMobileTimelineProps) {
               <m.span
                 className="absolute inset-0 origin-left bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)] will-change-transform"
                 initial={{ scaleX: 0 }}
-                animate={{ scaleX: [0, 0, 0.8, 1] }}
+                animate={{ scaleX: isPlaying ? [0, 0, 0.8, 1] : 0 }}
                 transition={timelineTransition}
               />
             )}
@@ -388,7 +376,7 @@ function NotifyCard() {
   )
 }
 
-function ConversationCard() {
+function ConversationCard({ isPlaying }: { isPlaying: boolean }) {
   return (
     <div className="flex aspect-[400/174] w-full max-w-100 flex-col justify-between rounded-[0.625rem] bg-white p-[4.819%] text-left font-inter shadow-[0_19.564px_47.824px_rgba(0,8,49,0.6)] md:py-3 lg:aspect-[400/160] xl:aspect-[400/174] xl:p-4.5">
       <m.div
@@ -396,8 +384,8 @@ function ConversationCard() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          duration: ENGAGE_QUESTION_DURATION,
-          delay: ENGAGE_CONTENT_DELAY,
+          duration: isPlaying ? ENGAGE_QUESTION_DURATION : 0,
+          delay: isPlaying ? ENGAGE_CONTENT_DELAY : 0,
           ease: CARD_EASE_OUT,
         }}
       >
@@ -418,8 +406,8 @@ function ConversationCard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
-            duration: ENGAGE_QUESTION_DURATION,
-            delay: ENGAGE_TYPING_DELAY,
+            duration: isPlaying ? ENGAGE_QUESTION_DURATION : 0,
+            delay: isPlaying ? ENGAGE_TYPING_DELAY : 0,
             ease: CARD_EASE_OUT,
           }}
         >
@@ -436,8 +424,8 @@ function ConversationCard() {
             y: [4, 0, 0, 0],
           }}
           transition={{
-            duration: ENGAGE_TYPING_DURATION,
-            delay: ENGAGE_TYPING_DELAY,
+            duration: isPlaying ? ENGAGE_TYPING_DURATION : 0,
+            delay: isPlaying ? ENGAGE_TYPING_DELAY : 0,
             ease: CARD_EASE_OUT,
             times: [0, 0.16, 0.84, 1],
           }}
@@ -449,14 +437,15 @@ function ConversationCard() {
               initial={{ opacity: 0.3 }}
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{
-                duration: ENGAGE_TYPING_DOT_DURATION,
-                delay:
-                  ENGAGE_TYPING_DELAY +
-                  0.05 +
-                  dotIndex * ENGAGE_TYPING_DOT_STAGGER,
+                duration: isPlaying ? ENGAGE_TYPING_DOT_DURATION : 0,
+                delay: isPlaying
+                  ? ENGAGE_TYPING_DELAY +
+                    0.05 +
+                    dotIndex * ENGAGE_TYPING_DOT_STAGGER
+                  : 0,
                 ease: "easeInOut",
                 times: [0, 0.5, 1],
-                repeat: 1,
+                repeat: isPlaying ? 1 : 0,
                 repeatDelay: ENGAGE_TYPING_DOT_REPEAT_DELAY,
               }}
               key={dotIndex}
@@ -471,8 +460,8 @@ function ConversationCard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
-            duration: 0.01,
-            delay: ENGAGE_REPLY_DELAY,
+            duration: isPlaying ? 0.01 : 0,
+            delay: isPlaying ? ENGAGE_REPLY_DELAY : 0,
           }}
         >
           <span aria-label={ENGAGE_RESPONSE_WORDS.join(" ")}>
@@ -482,8 +471,10 @@ function ConversationCard() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  duration: ENGAGE_WORD_DURATION,
-                  delay: ENGAGE_WORD_DELAY + index * ENGAGE_WORD_STAGGER,
+                  duration: isPlaying ? ENGAGE_WORD_DURATION : 0,
+                  delay: isPlaying
+                    ? ENGAGE_WORD_DELAY + index * ENGAGE_WORD_STAGGER
+                    : 0,
                   ease: "easeOut",
                 }}
                 aria-hidden
@@ -546,14 +537,14 @@ function ResolveCard() {
   )
 }
 
-function FlowCard({ step }: { step: FlowStep }) {
+function FlowCard({ isPlaying, step }: { isPlaying: boolean; step: FlowStep }) {
   switch (step) {
     case "event":
       return <EventCard />
     case "notify":
       return <NotifyCard />
     case "engage":
-      return <ConversationCard />
+      return <ConversationCard isPlaying={isPlaying} />
     case "resolve":
       return <ResolveCard />
   }
@@ -561,6 +552,7 @@ function FlowCard({ step }: { step: FlowStep }) {
 
 function PlatformFlowAnimation({
   activeTab,
+  isPlaying = true,
   onStepComplete,
 }: IPlatformFlowAnimationProps) {
   const activeStep = normalizeFlowStep(activeTab)
@@ -580,7 +572,7 @@ function PlatformFlowAnimation({
   const activeTitle = activeStep.charAt(0).toUpperCase() + activeStep.slice(1)
   const trackPath = createTrackPath(trackSize)
   const pathTransition = {
-    duration: FLOW_STEP_DURATION,
+    duration: isPlaying ? FLOW_STEP_DURATION : 0,
     ease: ["linear", LINE_EASE_OUT],
     times: FLOW_TIMELINE_TIMES,
   }
@@ -653,22 +645,32 @@ function PlatformFlowAnimation({
   }, [])
 
   useEffect(() => {
-    if (!onStepComplete || isMobileViewport) {
+    if (!isPlaying || !onStepComplete) {
       return
     }
 
-    const timer = window.setTimeout(onStepComplete, FLOW_STEP_DURATION * 1000)
+    const stepDuration = isMobileViewport
+      ? activeStep === "resolve"
+        ? MOBILE_FINAL_STEP_DURATION
+        : MOBILE_STEP_DURATION
+      : FLOW_STEP_DURATION
+    const settleDelay = isMobileViewport ? MOBILE_BADGE_SETTLE_DELAY_MS : 0
+    const timer = window.setTimeout(
+      onStepComplete,
+      stepDuration * 1000 + settleDelay
+    )
 
     return () => {
       window.clearTimeout(timer)
     }
-  }, [activeStep, isMobileViewport, onStepComplete])
+  }, [activeStep, isMobileViewport, isPlaying, onStepComplete])
 
   return (
     <div
       ref={sceneRef}
       className="relative isolate h-68 w-full overflow-hidden rounded-[0.625rem] border border-gray-20 bg-[#0e0c17] sm:aspect-video sm:h-auto lg:aspect-[1216/420]"
       data-flow-step={activeStep}
+      data-flow-playing={isPlaying}
       data-flow-progress-start={startProgress}
       data-flow-progress-target={targetProgress}
       role="img"
@@ -683,11 +685,14 @@ function PlatformFlowAnimation({
         aria-hidden
       />
 
-      <LazyMotion features={domAnimation}>
+      <LazyMotion
+        features={domAnimation}
+        key={isPlaying ? "flow-playing" : "flow-paused"}
+      >
         <MobileTimeline
           activeStep={activeStep}
-          key={activeStep}
-          onStepComplete={onStepComplete}
+          isPlaying={isPlaying && isMobileViewport}
+          key={`${activeStep}-${isPlaying && isMobileViewport ? "playing" : "paused"}`}
         />
 
         <svg
@@ -705,7 +710,7 @@ function PlatformFlowAnimation({
             className="mix-blend-overlay"
           />
           <m.path
-            key={`${activeStep}-glow`}
+            key={`${activeStep}-${isPlaying ? "playing" : "paused"}-glow`}
             d={trackPath}
             stroke="white"
             strokeWidth="4"
@@ -713,18 +718,18 @@ function PlatformFlowAnimation({
             vectorEffect="non-scaling-stroke"
             className="opacity-20 blur-[2.5px]"
             initial={{ pathLength: startProgress }}
-            animate={{ pathLength: progress }}
+            animate={{ pathLength: isPlaying ? progress : startProgress }}
             transition={pathTransition}
           />
           <m.path
-            key={`${activeStep}-line`}
+            key={`${activeStep}-${isPlaying ? "playing" : "paused"}-line`}
             d={trackPath}
             stroke="white"
             strokeWidth="1.5"
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: startProgress }}
-            animate={{ pathLength: progress }}
+            animate={{ pathLength: isPlaying ? progress : startProgress }}
             transition={pathTransition}
           />
         </svg>
@@ -747,7 +752,7 @@ function PlatformFlowAnimation({
                   "w-[88.8889%] max-w-64 sm:w-full sm:max-w-[24.9375rem]"
               )}
               data-flow-card={activeStep}
-              key={activeStep}
+              key={`${activeStep}-${isPlaying ? "playing" : "paused"}`}
               initial={
                 prefersReducedMotion
                   ? false
@@ -756,14 +761,24 @@ function PlatformFlowAnimation({
                       transform: "translate3d(0,-16px,0)",
                     }
               }
-              animate={{
-                opacity: 1,
-                transform: "translate3d(0,0,0)",
-                transition: {
-                  duration: prefersReducedMotion ? 0 : CARD_ENTER_DURATION,
-                  ease: CARD_EASE_OUT,
-                },
-              }}
+              animate={
+                !isPlaying && !prefersReducedMotion
+                  ? {
+                      opacity: 0,
+                      transform: "translate3d(0,-16px,0)",
+                      transition: { duration: 0 },
+                    }
+                  : {
+                      opacity: 1,
+                      transform: "translate3d(0,0,0)",
+                      transition: {
+                        duration: prefersReducedMotion
+                          ? 0
+                          : CARD_ENTER_DURATION,
+                        ease: CARD_EASE_OUT,
+                      },
+                    }
+              }
               exit={
                 prefersReducedMotion
                   ? { opacity: 1, transition: { duration: 0 } }
@@ -777,7 +792,7 @@ function PlatformFlowAnimation({
                     }
               }
             >
-              <FlowCard step={activeStep} />
+              <FlowCard isPlaying={isPlaying} step={activeStep} />
             </m.div>
           </AnimatePresence>
         </div>

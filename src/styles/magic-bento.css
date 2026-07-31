@@ -267,6 +267,10 @@
   animation-play-state: paused;
 }
 
+.connect-channel-arc[data-in-view="false"] .mb-channel-orbit-rotator {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mb-channel-orbit-rotator {
     animation: none;

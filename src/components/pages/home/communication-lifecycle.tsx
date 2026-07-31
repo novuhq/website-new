@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -58,6 +58,31 @@ function CommunicationLifecycle({
   defaultValue,
 }: ICommunicationLifecycleProps) {
   const [activeTab, setActiveTab] = useState(defaultValue ?? items[0]?.key)
+  const [isAnimationInView, setIsAnimationInView] = useState(false)
+  const animationContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const animationContainer = animationContainerRef.current
+
+    if (!animationContainer) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAnimationInView(
+          Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.4)
+        )
+      },
+      { threshold: [0, 0.5, 1] }
+    )
+
+    observer.observe(animationContainer)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   const handleStepComplete = useCallback(() => {
     setActiveTab((currentTab) => {
@@ -117,9 +142,14 @@ function CommunicationLifecycle({
           </ul>
         </header>
 
-        <div className="mt-12 md:mt-14 lg:mt-18">
+        <div
+          ref={animationContainerRef}
+          className="mt-12 md:mt-14 lg:mt-18"
+          data-animation-in-view={isAnimationInView}
+        >
           <PlatformFlowAnimation
             activeTab={activeTab}
+            isPlaying={isAnimationInView}
             onStepComplete={handleStepComplete}
           />
         </div>

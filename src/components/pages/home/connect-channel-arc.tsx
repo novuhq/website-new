@@ -333,6 +333,8 @@ function ConnectChannelArc({
 }: IConnectChannelArcProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(2400)
   const prefersReducedMotion = useReducedMotion()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
   const [hoveredTile, setHoveredTile] = useState<IActiveOrbitTile | null>(null)
   const [copiedTile, setCopiedTile] = useState<IActiveOrbitTile | null>(null)
   const [copyPausedOrbit, setCopyPausedOrbit] = useState<
@@ -355,6 +357,29 @@ function ConnectChannelArc({
     },
     []
   )
+
+  useEffect(() => {
+    const container = containerRef.current
+
+    if (!container) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(
+          Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.2)
+        )
+      },
+      { threshold: [0, 0.5, 1] }
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   const handleTileActivate = (tile: IActiveOrbitTile) => {
     const isSameResumedTile =
@@ -401,7 +426,11 @@ function ConnectChannelArc({
         : ""
 
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div
+      ref={containerRef}
+      className="connect-channel-arc pointer-events-none absolute inset-0"
+      data-in-view={isInView}
+    >
       <div className={cn("absolute aspect-[1960/944]", className)}>
         <div className="mb-arc">
           {backgroundImage && (
