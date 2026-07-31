@@ -59,16 +59,16 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
             },
           }}
         >
-          <div className="grid gap-8 pb-5">
+          <div className="grid gap-8 pt-2.5 pb-6">
             {content.map(({ subtitle, items, card, type }, index) => (
               <div className="min-w-0" key={index}>
                 {subtitle && (
-                  <p className="mb-3 text-xs font-medium text-gray-60 uppercase">
+                  <p className="mb-4 text-xs font-medium text-gray-60 uppercase">
                     {subtitle}
                   </p>
                 )}
                 {items && items.length > 0 && (
-                  <ul className="mt-1 flex flex-col gap-y-5">
+                  <ul className="flex flex-col gap-y-5">
                     {items.map(
                       ({ label, href, menuIcon, description }, itemIndex) => (
                         <li key={itemIndex}>

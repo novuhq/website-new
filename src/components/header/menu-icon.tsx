@@ -1,5 +1,4 @@
 import type { ComponentType, SVGProps } from "react"
-import Image from "next/image"
 import aiAciIcon from "@/svgs/header/menu/ai-aci.inline.svg"
 import aiClaudeIcon from "@/svgs/header/menu/ai-claude.inline.svg"
 import aiCodexIcon from "@/svgs/header/menu/ai-codex.inline.svg"
@@ -8,6 +7,16 @@ import aiCopilotIcon from "@/svgs/header/menu/ai-copilot.inline.svg"
 import aiCursorIcon from "@/svgs/header/menu/ai-cursor.inline.svg"
 import aiMcpIcon from "@/svgs/header/menu/ai-mcp.inline.svg"
 import aiSkillsIcon from "@/svgs/header/menu/ai-skills.inline.svg"
+import channelsChatIcon from "@/svgs/header/menu/channels-chat.inline.svg"
+import channelsEmailIcon from "@/svgs/header/menu/channels-email.inline.svg"
+import channelsImessageIcon from "@/svgs/header/menu/channels-imessage.inline.svg"
+import channelsInboxIcon from "@/svgs/header/menu/channels-inbox.inline.svg"
+import channelsMsTeamsIcon from "@/svgs/header/menu/channels-ms-teams.inline.svg"
+import channelsPushIcon from "@/svgs/header/menu/channels-push.inline.svg"
+import channelsSlackIcon from "@/svgs/header/menu/channels-slack.inline.svg"
+import channelsSmsIcon from "@/svgs/header/menu/channels-sms.inline.svg"
+import channelsTelegramIcon from "@/svgs/header/menu/channels-telegram.inline.svg"
+import channelsWhatsappIcon from "@/svgs/header/menu/channels-whatsapp.inline.svg"
 import resourcesAboutIcon from "@/svgs/header/menu/resources-about.inline.svg"
 import resourcesApiIcon from "@/svgs/header/menu/resources-api.inline.svg"
 import resourcesBlogIcon from "@/svgs/header/menu/resources-blog.inline.svg"
@@ -67,21 +76,32 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   contact: resourcesContactIcon,
 }
 
-const IMAGE_ICON_PATHS: Partial<Record<TMenuIcon, string>> = {
-  slack: "/images/header/menu/channels-slack.svg",
-  whatsapp: "/images/header/menu/channels-whatsapp.svg",
-  telegram: "/images/header/menu/channels-telegram.svg",
-  teams: "/images/header/menu/channels-ms-teams.svg",
-  imessage: "/images/header/menu/channels-imessage.svg",
-  email: "/images/header/menu/channels-email.svg",
-  inbox: "/images/header/menu/channels-inbox.svg",
-  push: "/images/header/menu/channels-push.svg",
-  chat: "/images/header/menu/channels-chat.svg",
-  sms: "/images/header/menu/channels-sms.svg",
+const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
+  slack: channelsSlackIcon,
+  whatsapp: channelsWhatsappIcon,
+  telegram: channelsTelegramIcon,
+  teams: channelsMsTeamsIcon,
+  imessage: channelsImessageIcon,
+  email: channelsEmailIcon,
+  inbox: channelsInboxIcon,
+  push: channelsPushIcon,
+  chat: channelsChatIcon,
+  sms: channelsSmsIcon,
 }
 
 function MenuIcon({ icon, className }: IMenuIconProps) {
   if (!icon) return null
+
+  const ColorInlineIcon = COLOR_INLINE_ICONS[icon]
+  if (ColorInlineIcon) {
+    return (
+      <ColorInlineIcon
+        className={cn("size-4 shrink-0", className)}
+        aria-hidden="true"
+        focusable="false"
+      />
+    )
+  }
 
   const InlineIcon = INLINE_ICONS[icon]
   if (InlineIcon) {
@@ -97,20 +117,7 @@ function MenuIcon({ icon, className }: IMenuIconProps) {
     )
   }
 
-  const imagePath = IMAGE_ICON_PATHS[icon]
-  if (!imagePath) return null
-
-  return (
-    <Image
-      className={cn("size-4 shrink-0 object-contain", className)}
-      src={imagePath}
-      width={16}
-      height={16}
-      alt=""
-      aria-hidden="true"
-      unoptimized
-    />
-  )
+  return null
 }
 
 export default MenuIcon
