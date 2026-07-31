@@ -103,7 +103,7 @@ const contentData = {
         labelType: "notify" as const,
         title: "Notify",
         description:
-          "The app notify users or agents when something happens through push, email, or in-app notifications.",
+          "The app notifies users or agents when something happens through push, email, or in-app notifications.",
         key: "notify",
       },
       {
