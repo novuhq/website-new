@@ -14,6 +14,7 @@ import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
 import { cn } from "@/lib/utils"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import CopyPromptButton from "./copy-prompt-button"
 
@@ -127,8 +128,10 @@ function SelectField({
   const current = options.find((option) => option.value === value) ?? options[0]
 
   return (
-    <label className="flex min-w-0 flex-col gap-2 text-sm font-medium tracking-tighter text-gray-60">
-      <span className="h-4.5 leading-tight">{label}</span>
+    <label className="flex min-w-0 flex-col gap-2">
+      <span className="h-4.5 text-sm leading-tight font-medium tracking-tighter text-gray-60">
+        {label}
+      </span>
       <SelectPrimitive.Root value={current.value} onValueChange={onValueChange}>
         <SelectPrimitive.Trigger
           className="group relative flex h-10 w-full min-w-0 items-center justify-between gap-1.5 rounded-[0.25rem] border border-gray-20 bg-[#040406] px-[13px] text-left text-sm font-normal tracking-tighter text-foreground transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:border-foreground/30 focus-visible:ring-2 focus-visible:ring-foreground/30"
@@ -219,6 +222,7 @@ function ConnectStack({
     frameworks.find((option) => option.value === "ai-sdk")?.value ??
       frameworks[0].value
   )
+  const [activeMethod, setActiveMethod] = useState("prompt")
   const channel =
     channels.find((option) => option.value === channelValue) ?? channels[0]
   const framework =
@@ -243,7 +247,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
     >
       <div
         className={cn(
-          "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16 2xl:grid-cols-[38rem_32rem] 2xl:gap-40",
+          "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)] lg:gap-16 2xl:grid-cols-[38rem_36rem] 2xl:gap-24",
           isCompact &&
             "max-w-176 gap-8 lg:max-w-176 lg:grid-cols-1 lg:gap-8 lg:px-0 2xl:grid-cols-1 2xl:gap-8"
         )}
@@ -266,9 +270,9 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           {description && (
             <p
               className={cn(
-                "mt-4 max-w-152 text-base leading-normal tracking-tight text-pretty text-gray-70 md:text-xl md:leading-normal",
+                "mt-4 max-w-152 text-base leading-snug tracking-tight text-pretty text-gray-70 md:text-xl/snug",
                 isCompact &&
-                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base md:leading-normal"
+                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base"
               )}
             >
               {description}
@@ -276,26 +280,16 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           )}
         </header>
 
-        <div
-          className={cn(
-            "w-full overflow-hidden rounded-xl border border-gray-20 lg:h-102",
-            isCompact && "lg:h-101.75"
-          )}
-        >
-          <div
-            className={cn(
-              "border-b border-gray-20 p-5 md:p-8 lg:h-55.5",
-              isCompact && "lg:h-55.5"
-            )}
-          >
-            <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground md:text-[1.375rem]">
-              Connect your stack
+        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:min-h-124">
+          <div className="border-b border-gray-20 p-5 md:p-8">
+            <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
+              1. Choose your setup
             </h3>
-            <p className="mt-2 text-sm leading-normal tracking-tighter text-gray-60 md:text-base md:leading-snug">
-              Generate a ready-to-use integration prompt for your agent.
+            <p className="mt-1 text-base/snug tracking-tighter text-gray-60">
+              Select the channel and framework your agent uses.
             </p>
 
-            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2">
               <SelectField
                 label="Communication channel"
                 options={channels}
@@ -311,28 +305,82 @@ I will complete the interactive CLI and approve dependency installs when asked. 
             </div>
           </div>
 
-          <div className="bg-[#0b0c0e] p-5 md:p-8 lg:h-46.5">
-            <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground md:text-[1.375rem]">
-              Generated prompt
+          <div className="p-5 md:p-8">
+            <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
+              2. Connect your agent
             </h3>
-            <p className="mt-2 text-sm leading-normal tracking-tighter text-gray-60 md:text-base md:leading-snug">
-              Copy this prompt to connect your agent.
+            <p className="mt-1 text-base/snug tracking-tighter text-gray-60">
+              {activeMethod === "prompt" ? (
+                <>
+                  Generated for {channelLabel} + {frameworkLabel}.
+                  <br />
+                  Use the prompt or CLI command to connect your agent.
+                </>
+              ) : (
+                <>
+                  Copy the prompt or run the CLI command to connect your agent.
+                  <br />
+                  Generated for {channelLabel} and {frameworkLabel}.
+                </>
+              )}
             </p>
 
-            <div className="mt-5.5 flex h-10 min-w-0 items-center rounded-md border border-[#534b5d] bg-[#040406] p-1 focus-within:ring-2 focus-within:ring-foreground/30">
-              <code className="min-w-0 flex-1 truncate px-2 font-mono text-sm text-foreground">
-                {prompt}
-              </code>
-              <CopyPromptButton
-                className="h-8 w-16.25 shrink-0 rounded-[0.25rem] px-0 text-sm normal-case before:-inset-y-1.5"
-                size="sm"
-                label="Copy"
-                copiedLabel=""
-                showCopyIcon={false}
-                value={prompt}
-                copiedMessage="Generated prompt copied to clipboard"
-              />
-            </div>
+            <Tabs
+              className="mt-7 w-full overflow-hidden rounded-sm border border-gray-20 bg-[#0B0C0E]"
+              value={activeMethod}
+              onValueChange={setActiveMethod}
+            >
+              <TabsList className="grid h-10 w-full grid-cols-2 rounded-none border-b border-gray-20 bg-black p-0">
+                <TabsTrigger
+                  className="h-full rounded-none border-r border-gray-20 bg-[#0B0C0E] px-3 text-[.8125rem] font-normal tracking-tighter text-gray-60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none focus-visible:ring-inset data-[state=active]:bg-gray-12 data-[state=active]:text-foreground"
+                  value="prompt"
+                >
+                  AI prompt
+                </TabsTrigger>
+                <TabsTrigger
+                  className="h-full rounded-none bg-[#0B0C0E] px-3 text-[.8125rem] font-normal tracking-tighter text-gray-60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none focus-visible:ring-inset data-[state=active]:bg-gray-12 data-[state=active]:text-foreground"
+                  value="cli"
+                >
+                  CLI command
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent className="mt-0 h-14" value="prompt">
+                <div className="flex h-full min-w-0 items-center gap-3 px-3">
+                  <code className="min-w-0 flex-1 truncate px-1 font-mono text-sm text-foreground">
+                    {prompt}
+                  </code>
+                  <CopyPromptButton
+                    className="size-8 shrink-0 rounded-[0.25rem] border border-gray-20 p-0 text-gray-60 before:hidden hover:border-gray-50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
+                    variant="none"
+                    size="none"
+                    label="Copy AI prompt"
+                    copiedLabel="Copied AI prompt"
+                    showLabel={false}
+                    value={prompt}
+                    copiedMessage="Generated prompt copied to clipboard"
+                  />
+                </div>
+              </TabsContent>
+
+              <TabsContent className="mt-0 h-14" value="cli">
+                <div className="flex h-full min-w-0 items-center gap-3 px-3">
+                  <code className="min-w-0 flex-1 truncate px-1 font-mono text-sm text-foreground">
+                    {command}
+                  </code>
+                  <CopyPromptButton
+                    className="size-8 shrink-0 rounded-[0.25rem] border border-gray-20 p-0 text-gray-60 before:hidden hover:border-gray-50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none"
+                    variant="none"
+                    size="none"
+                    label="Copy CLI command"
+                    copiedLabel="Copied CLI command"
+                    showLabel={false}
+                    value={command}
+                    copiedMessage="npx command copied to clipboard"
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
