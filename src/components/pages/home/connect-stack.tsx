@@ -310,19 +310,9 @@ I will complete the interactive CLI and approve dependency installs when asked. 
               2. Connect your agent
             </h3>
             <p className="mt-1 text-base/snug tracking-tighter text-gray-60">
-              {activeMethod === "prompt" ? (
-                <>
-                  Generated for {channelLabel} + {frameworkLabel}.
-                  <br />
-                  Use the prompt or CLI command to connect your agent.
-                </>
-              ) : (
-                <>
-                  Copy the prompt or run the CLI command to connect your agent.
-                  <br />
-                  Generated for {channelLabel} and {frameworkLabel}.
-                </>
-              )}
+              Copy the prompt or run the CLI command to connect your agent.
+              <br />
+              Generated for {channelLabel} and {frameworkLabel}.
             </p>
 
             <Tabs
