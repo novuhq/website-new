@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test"
 import { navigationContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectReactHandlerReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -23,7 +24,9 @@ test.describe("critical responsive navigation", () => {
     ).toBeVisible()
 
     if (isMobile) {
-      await page.getByRole("button", { name: "Toggle menu" }).click()
+      const menuButton = page.getByRole("button", { name: "Open menu" })
+      await expectReactHandlerReady(menuButton, "onClick")
+      await menuButton.click()
       await expect(
         page.getByRole("navigation", { name: "Mobile navigation" })
       ).toBeVisible()
@@ -32,8 +35,11 @@ test.describe("critical responsive navigation", () => {
     const navigationRoot = isMobile
       ? page.getByRole("dialog", { name: "Menu" })
       : page.locator("header")
+    const authLinks = isMobile
+      ? navigationContract.authLinks.mobile
+      : navigationContract.authLinks.desktop
 
-    for (const authLink of navigationContract.authLinks) {
+    for (const authLink of authLinks) {
       await expect(
         navigationRoot.getByRole("link", {
           name: authLink.name,

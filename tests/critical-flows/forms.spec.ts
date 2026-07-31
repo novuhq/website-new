@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test"
 import { careersContract, subscriptionContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectReactHandlerReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -39,6 +40,7 @@ test.describe("critical submission journeys", () => {
       .first()
     const form = emailInput.locator("xpath=ancestor::form")
     const submitButton = form.getByRole("button", { name: "Subscribe" })
+    await expectReactHandlerReady(form, "onSubmit")
 
     await emailInput.fill("not-an-email")
     await submitButton.click()
@@ -102,6 +104,7 @@ test.describe("critical submission journeys", () => {
       .getByRole("heading", { level: 2, name: "Want to work with us?" })
       .locator("xpath=ancestor::section")
       .locator("form")
+    await expectReactHandlerReady(form, "onSubmit")
 
     await form.getByRole("button", { name: "Submit" }).click()
     await expect(form).toContainText("Please enter your full name.")

@@ -19,10 +19,13 @@ export const navigationContract = {
   heading: "Connect your AI agents and products to customers",
   destination: destinations.pricing,
   destinationHeading: "Flexible pricing for companies and developers",
-  authLinks: [
-    { name: "Login", href: destinations.dashboard },
-    { name: "Get Started", href: destinations.dashboard },
-  ],
+  authLinks: {
+    desktop: [{ name: "Sign up now", href: destinations.dashboard }],
+    mobile: [
+      { name: "Login", href: destinations.dashboard },
+      { name: "Get Started", href: destinations.dashboard },
+    ],
+  },
 } as const
 
 export const liveChannelContract = {
