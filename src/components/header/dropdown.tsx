@@ -39,7 +39,7 @@ function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
   const items = content[0]?.items ?? []
 
   return (
-    <div className="flex gap-3 p-3">
+    <div className="flex w-max gap-3 p-3">
       <div className="flex w-74 shrink-0 flex-col">
         <ul className="flex flex-col gap-y-0.5">
           {items.map(({ label, description, href }) => (
@@ -73,7 +73,7 @@ function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
       </div>
 
       <Image
-        className="w-81.25 shrink-0 rounded-[0.625rem] border border-[#23242A] object-cover"
+        className="w-81.25 max-w-none shrink-0 rounded-[0.625rem] border border-[#23242A] object-cover"
         src="/images/header/menu/product-banner.jpg"
         width={325}
         height={275}
