@@ -49,6 +49,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const [isBanner, setIsBanner] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const drawerRef = useRef<HTMLDivElement>(null)
   const navigationRef = useRef<HTMLElement>(null)
   const interactionWasKeyboardRef = useRef(false)
   const pathname = usePathname()
@@ -79,7 +80,17 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
       return
     }
 
-    const preventBackgroundScroll = (event: Event) => {
+    const preventBackgroundTouchMove = (event: TouchEvent) => {
+      const target = event.target
+      const isInsideDrawer =
+        target instanceof Node && drawerRef.current?.contains(target)
+
+      if (!isInsideDrawer) {
+        event.preventDefault()
+      }
+    }
+
+    const preventBackgroundWheel = (event: WheelEvent) => {
       const navigation = navigationRef.current
       const target = event.target
       const canScrollNavigation =
@@ -97,20 +108,20 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
 
     document.addEventListener(
       "touchmove",
-      preventBackgroundScroll,
+      preventBackgroundTouchMove,
       listenerOptions
     )
-    document.addEventListener("wheel", preventBackgroundScroll, listenerOptions)
+    document.addEventListener("wheel", preventBackgroundWheel, listenerOptions)
 
     return () => {
       document.removeEventListener(
         "touchmove",
-        preventBackgroundScroll,
+        preventBackgroundTouchMove,
         listenerOptions
       )
       document.removeEventListener(
         "wheel",
-        preventBackgroundScroll,
+        preventBackgroundWheel,
         listenerOptions
       )
     }
@@ -142,6 +153,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
       open={open}
       onOpenChange={onOpenChange}
       shouldScaleBackground={false}
+      scrollLockTimeout={0}
       preventScrollRestoration
       modal={false}
       noBodyStyles
@@ -161,6 +173,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
+        ref={drawerRef}
         className={cn(
           "flex min-h-0 flex-col overflow-hidden overscroll-none rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
           isBanner
