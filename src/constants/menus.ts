@@ -181,7 +181,7 @@ export const MENUS = {
               href: ROUTE.integrations,
               menuIcon: "integrations",
             },
-            { label: "Github", href: ROUTE.github, menuIcon: "github" },
+            { label: "GitHub", href: ROUTE.github, menuIcon: "github" },
           ],
         },
         {

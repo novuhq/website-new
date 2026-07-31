@@ -81,68 +81,70 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
     >
       <DrawerTrigger
         className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden"
-        aria-label="Toggle menu"
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open}
       >
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
         className={cn(
-          "flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
-          isBanner ? "top-25" : "top-16"
+          "flex min-h-0 flex-col overflow-hidden rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
+          isBanner
+            ? "top-25 bottom-auto h-[calc(100dvh-6.25rem)]"
+            : "top-16 bottom-auto h-[calc(100dvh-4rem)]"
         )}
         withTopLine={false}
       >
         <DrawerTitle className="sr-only">Menu</DrawerTitle>
         <div
-          className="flex flex-1 flex-col"
+          className="flex min-h-0 flex-1 flex-col"
           data-disable-document-scroll={open}
         >
-          <nav
-            className="max-h-[calc(100vh-208px)] overflow-x-auto px-5 2xs:max-h-[calc(100vh-162px)] md:px-8"
-            ref={scrollRef}
-            aria-label="Mobile navigation"
-          >
-            <ul>
-              {items.map(({ title, content, href }, index) => (
-                <li
-                  className="border-b border-b-foreground/10 last:border-b-0"
-                  key={index}
-                >
-                  {href ? (
-                    <Link
-                      className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
-                      href={href}
-                      variant="foreground"
-                      onClick={closeMenu}
-                    >
-                      {title}
-                    </Link>
-                  ) : (
-                    content &&
-                    content.length > 0 && (
-                      <MobileItem
-                        title={title}
-                        content={content}
-                        onNavigate={closeMenu}
-                      />
-                    )
-                  )}
-                </li>
-              ))}
-            </ul>
-            <div
-              className={cn(
-                hasScroll &&
-                  !isScrolledToBottom &&
-                  cn(
-                    "after:pointer-events-none after:fixed after:inset-x-0 after:bottom-35.5 after:z-50 after:bg-[linear-gradient(180deg,#05050B00_86.18%,#05050B_100%)] 2xs:after:bottom-24",
-                    isBanner ? "after:top-25" : "after:top-16"
-                  )
-              )}
-            />
-          </nav>
+          <div className="relative min-h-0 flex-1">
+            <nav
+              className="h-full overflow-y-auto overscroll-contain px-5 pb-10 md:px-8"
+              ref={scrollRef}
+              aria-label="Mobile navigation"
+            >
+              <ul>
+                {items.map(({ title, content, href, variant }, index) => (
+                  <li
+                    className="border-b border-b-foreground/10 last:border-b-0"
+                    key={index}
+                  >
+                    {href ? (
+                      <Link
+                        className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
+                        href={href}
+                        variant="foreground"
+                        onClick={closeMenu}
+                      >
+                        {title}
+                      </Link>
+                    ) : (
+                      content &&
+                      content.length > 0 && (
+                        <MobileItem
+                          title={title}
+                          variant={variant}
+                          content={content}
+                          onNavigate={closeMenu}
+                        />
+                      )
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            {hasScroll && !isScrolledToBottom && (
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-linear-to-b from-transparent to-background"
+                aria-hidden="true"
+              />
+            )}
+          </div>
 
-          <div className="mt-auto flex gap-3.5 px-5 py-6 max-2xs:flex-col 2xs:gap-5 2xs:py-7 md:px-8">
+          <div className="mt-auto flex shrink-0 gap-3.5 px-5 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] max-2xs:flex-col 2xs:gap-5 2xs:pt-7 2xs:pb-[max(1.75rem,env(safe-area-inset-bottom))] md:px-8">
             <Button className="w-full" variant="outline" asChild>
               <NextLink href={actions.secondary.href} onClick={closeMenu}>
                 {actions.secondary.label}
