@@ -1,7 +1,9 @@
-import React from "react"
 import { domAnimation, LazyMotion, m } from "motion/react"
 
-const ANIMATION_DURATION = 0.2
+const TRANSITION = {
+  duration: 0.2,
+  ease: "easeOut",
+} as const
 
 interface IBurgerProps {
   isToggled: boolean
@@ -9,97 +11,32 @@ interface IBurgerProps {
 
 const Burger = ({ isToggled }: IBurgerProps) => (
   <LazyMotion features={domAnimation}>
-    <m.div className="relative size-6">
+    <div className="relative size-6" aria-hidden="true">
       <m.span
-        className="absolute top-1 left-0 block h-px w-4.5 rounded-full bg-white"
-        animate={isToggled ? "toggled" : "initial"}
-        variants={{
-          initial: {
-            top: 6,
-            display: "block",
-            transition: {
-              duration: ANIMATION_DURATION,
-              delay: ANIMATION_DURATION,
-            },
-          },
-          toggled: {
-            top: 12,
-            transition: { duration: ANIMATION_DURATION },
-            transitionEnd: { display: "none" },
-          },
+        className="absolute top-1.5 left-0 block h-px w-4.5 origin-center rounded-full bg-white"
+        initial={false}
+        animate={{
+          y: isToggled ? 6 : 0,
+          rotate: isToggled ? 45 : 0,
         }}
+        transition={TRANSITION}
       />
       <m.span
         className="absolute top-3 left-0 block h-px w-3 rounded-full bg-white"
-        animate={isToggled ? "toggled" : "initial"}
-        variants={{
-          initial: {
-            display: "block",
-          },
-          toggled: {
-            display: "none",
-          },
-        }}
+        initial={false}
+        animate={{ opacity: isToggled ? 0 : 1 }}
+        transition={TRANSITION}
       />
       <m.span
-        className="absolute bottom-1 left-0 block h-px w-4.5 rounded-full bg-white"
-        animate={isToggled ? "toggled" : "initial"}
-        variants={{
-          initial: {
-            bottom: 6,
-            display: "block",
-            transition: {
-              duration: ANIMATION_DURATION,
-              delay: ANIMATION_DURATION,
-            },
-          },
-          toggled: {
-            bottom: 12,
-            transition: { duration: ANIMATION_DURATION },
-            transitionEnd: { display: "none" },
-          },
+        className="absolute top-4.5 left-0 block h-px w-4.5 origin-center rounded-full bg-white"
+        initial={false}
+        animate={{
+          y: isToggled ? -6 : 0,
+          rotate: isToggled ? -45 : 0,
         }}
+        transition={TRANSITION}
       />
-      <m.span
-        className="absolute top-3 left-0 hidden h-px w-4.5 rounded-full bg-white"
-        animate={isToggled ? "toggled" : "initial"}
-        variants={{
-          initial: {
-            rotate: "0deg",
-            transition: { duration: ANIMATION_DURATION },
-            transitionEnd: { display: "none" },
-          },
-          toggled: {
-            display: "block",
-            rotate: "45deg",
-            transition: {
-              duration: ANIMATION_DURATION,
-              delay: ANIMATION_DURATION,
-            },
-          },
-        }}
-      />
-      <m.span
-        className="absolute top-3 left-0 hidden h-px w-4.5 rounded-full bg-white"
-        animate={isToggled ? "toggled" : "initial"}
-        variants={{
-          initial: {
-            rotate: "0deg",
-            transition: { duration: ANIMATION_DURATION },
-            transitionEnd: { display: "none" },
-          },
-          toggled: {
-            display: "block",
-            rotate: "-45deg",
-            transition: {
-              duration: ANIMATION_DURATION,
-              delay: ANIMATION_DURATION,
-            },
-          },
-        }}
-      />
-      <span className="sr-only">{isToggled ? "Close menu" : "Open menu"}</span>
-    </m.div>
+    </div>
   </LazyMotion>
 )
 

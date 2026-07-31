@@ -1,11 +1,9 @@
 "use client"
 
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 import { ChevronDown } from "lucide-react"
-import { domAnimation, LazyMotion } from "motion/react"
-import * as m from "motion/react-m"
 
 import { IMenuHeaderItem } from "@/types/common"
 import { cn } from "@/lib/utils"
@@ -19,23 +17,17 @@ interface IHeaderNavProps {
   items: IMenuHeaderItem[]
 }
 
-const ANIMATION_DURATION = 0.2
-const NO_ANIMATION_DURATION = 0
+interface IOpenMenuState {
+  title: string | null
+  animateIn: boolean
+}
 
 function Nav({ className, items }: IHeaderNavProps) {
   const pathname = usePathname()
-  const navRef = useRef<HTMLElement>(null)
-  const [openMenu, setOpenMenu] = useState<string | null>(null)
-  const [linkRefs, setLinkRefs] = useState<
-    (HTMLAnchorElement | HTMLButtonElement | null)[]
-  >([])
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [isHovering, setIsHovering] = useState(false)
-  const [hasAnimated, setHasAnimated] = useState(false)
-
-  useLayoutEffect(() => {
-    setLinkRefs((prev) => prev.slice(0, items.length))
-  }, [items.length])
+  const [openMenu, setOpenMenu] = useState<IOpenMenuState>({
+    title: null,
+    animateIn: false,
+  })
 
   const activeIndex = useMemo(
     () =>
@@ -47,161 +39,104 @@ function Nav({ className, items }: IHeaderNavProps) {
     [pathname, items]
   )
 
-  const motionData = useMemo(() => {
-    const navRect = navRef.current?.getBoundingClientRect()
-    const hoveredRect =
-      hoveredIndex !== null
-        ? linkRefs[hoveredIndex]?.getBoundingClientRect()
-        : null
-
-    if (!navRect || !hoveredRect) return null
-
-    return {
-      navRect,
-      hoveredRect,
-      x: hoveredRect.left - navRect.left,
-      width: hoveredRect.width,
-    }
-  }, [linkRefs, hoveredIndex])
-
-  // No animation for first hover on active item, otherwise animate
-  const animationDuration =
-    !hasAnimated && hoveredIndex === activeIndex
-      ? NO_ANIMATION_DURATION
-      : ANIMATION_DURATION
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false)
-    setHoveredIndex(null)
-    setHasAnimated(false)
-  }, [])
-
-  const handleItemHover = useCallback(
-    (index: number) => {
-      setHoveredIndex(index)
-
-      // Start animations if hovering on non-active item
-      if (!hasAnimated && index !== activeIndex) {
-        setHasAnimated(true)
-      }
-    },
-    [hasAnimated, activeIndex]
-  )
-
   const handleMenuOpen = useCallback(
-    (title: string | null) => () => setOpenMenu(title),
+    (title: string | null) => () =>
+      setOpenMenu((current) => ({
+        title,
+        animateIn: title !== null && current.title === null,
+      })),
     []
   )
 
   return (
     <nav
-      className={cn("relative flex justify-center px-4 xl:mt-1", className)}
+      className={cn("relative flex font-inter xl:mt-1", className)}
       aria-label="Main navigation"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={handleMouseLeave}
-      ref={navRef}
+      onMouseLeave={handleMenuOpen(null)}
     >
-      <LazyMotion features={domAnimation}>
-        <ul className="flex items-center xl:-ml-5.5 2xl:ml-[15%]">
-          {items.map(({ title, content, href }, index) => {
-            const isActive = index === activeIndex
-            const hasDropdown = !href && content && content.length > 0
-            const menuId = `header-menu-${index}`
+      <ul className="flex items-center">
+        {items.map(({ title, content, href, variant }, index) => {
+          const isActive = index === activeIndex
+          const hasDropdown = Boolean(
+            !href && variant && content && content.length > 0
+          )
+          const menuId = `header-menu-${index}`
 
-            return (
-              <li
-                className="relative px-px xl:px-1.25"
-                key={index}
-                onMouseEnter={hasDropdown ? handleMenuOpen(title) : undefined}
-                onMouseLeave={hasDropdown ? handleMenuOpen(null) : undefined}
-                onFocus={hasDropdown ? handleMenuOpen(title) : undefined}
-                onBlur={
-                  hasDropdown
-                    ? (event) => {
-                        if (
-                          !event.currentTarget.contains(
-                            event.relatedTarget as Node | null
-                          )
-                        ) {
-                          setOpenMenu(null)
-                        }
+          return (
+            <li
+              className="relative"
+              key={index}
+              onMouseEnter={handleMenuOpen(hasDropdown ? title : null)}
+              onBlur={
+                hasDropdown
+                  ? (event) => {
+                      if (
+                        !event.currentTarget.contains(
+                          event.relatedTarget as Node | null
+                        )
+                      ) {
+                        setOpenMenu({ title: null, animateIn: false })
                       }
-                    : undefined
-                }
-              >
-                {href ? (
-                  <Link
-                    className="relative z-10 whitespace-nowrap lg:!px-2 xl:!px-3.5"
-                    href={href}
+                    }
+                  : undefined
+              }
+            >
+              {href ? (
+                <Link
+                  className="relative z-10 text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
+                  href={href}
+                  size="md"
+                  variant="muted"
+                  data-active={isActive}
+                >
+                  {title}
+                </Link>
+              ) : (
+                <>
+                  <Button
+                    className="relative z-10 cursor-pointer text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
                     size="md"
-                    variant="muted"
-                    ref={(el: HTMLAnchorElement | null) => {
-                      linkRefs[index] = el
+                    variant="link"
+                    data-active={isActive}
+                    onClick={() =>
+                      setOpenMenu((current) => {
+                        const nextTitle = current.title === title ? null : title
+
+                        return {
+                          title: nextTitle,
+                          animateIn:
+                            nextTitle !== null && current.title === null,
+                        }
+                      })
+                    }
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setOpenMenu({ title: null, animateIn: false })
+                      }
                     }}
-                    data-active={isActive && !isHovering}
-                    onMouseEnter={() => handleItemHover(index)}
+                    aria-haspopup="true"
+                    aria-expanded={openMenu.title === title}
+                    aria-controls={menuId}
                   >
                     {title}
-                  </Link>
-                ) : (
-                  <>
-                    <Button
-                      className="relative z-10 whitespace-nowrap lg:!px-2 xl:!px-3"
-                      size="md"
-                      variant="link"
-                      ref={(el: HTMLButtonElement | null) => {
-                        linkRefs[index] = el
-                      }}
-                      data-active={isActive && !isHovering}
-                      onMouseEnter={() => handleItemHover(index)}
-                      onClick={() =>
-                        setOpenMenu((current) =>
-                          current === title ? null : title
-                        )
-                      }
-                      onKeyDown={(event) => {
-                        if (event.key === "Escape") {
-                          setOpenMenu(null)
-                        }
-                      }}
-                      aria-haspopup="true"
-                      aria-expanded={openMenu === title}
-                      aria-controls={menuId}
-                    >
-                      {title}
-                      <ChevronDown
-                        className={cn(
-                          "mt-1 !size-3 transition-transform duration-200",
-                          openMenu === title && "rotate-180"
-                        )}
-                      />
-                    </Button>
-                    {content && content.length > 0 && (
-                      <Dropdown
-                        id={menuId}
-                        isOpen={openMenu === title}
-                        title={title}
-                        content={content}
-                      />
-                    )}
-                  </>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-
-        {isHovering && hoveredIndex !== null && motionData && (
-          <m.span
-            aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-[#17171f]/85 will-change-transform"
-            initial={{ opacity: 0, x: motionData.x, width: motionData.width }}
-            animate={{ opacity: 1, x: motionData.x, width: motionData.width }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: animationDuration }}
-          />
-        )}
-      </LazyMotion>
+                    <ChevronDown className="mt-1 ml-px size-3!" />
+                  </Button>
+                  {content && content.length > 0 && variant && (
+                    <Dropdown
+                      id={menuId}
+                      isOpen={openMenu.title === title}
+                      animateIn={openMenu.title === title && openMenu.animateIn}
+                      title={title}
+                      variant={variant}
+                      content={content}
+                    />
+                  )}
+                </>
+              )}
+            </li>
+          )
+        })}
+      </ul>
     </nav>
   )
 }

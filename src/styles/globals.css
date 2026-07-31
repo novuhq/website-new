@@ -380,10 +380,6 @@
     font-family: var(--font-sans);
   }
 
-  body:has([data-disable-document-scroll="true"]) {
-    @apply overflow-hidden;
-  }
-
   .scrollbar-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
