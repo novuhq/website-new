@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { Route } from "next"
 import NextLink from "next/link"
 import { usePathname } from "next/navigation"
@@ -48,8 +48,23 @@ const DEFAULT_ACTIONS: Required<MobileMenuProps>["actions"] = {
 function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const [isBanner, setIsBanner] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const navigationRef = useRef<HTMLElement>(null)
+  const interactionWasKeyboardRef = useRef(false)
   const pathname = usePathname()
-  const { ref: scrollRef, isScrolledToBottom, hasScroll } = useScrollStatus()
+  const {
+    ref: setScrollStatusRef,
+    isScrolledToBottom,
+    hasScroll,
+  } = useScrollStatus()
+
+  const setNavigationRef = useCallback(
+    (node: HTMLElement | null) => {
+      navigationRef.current = node
+      setScrollStatusRef(node)
+    },
+    [setScrollStatusRef]
+  )
 
   useEffect(() => {
     setOpen(false)
@@ -59,12 +74,63 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
     setIsBanner(Boolean(document.querySelector(".link-banner")))
   }, [pathname])
 
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    const preventBackgroundScroll = (event: Event) => {
+      const navigation = navigationRef.current
+      const target = event.target
+      const canScrollNavigation =
+        navigation &&
+        target instanceof Node &&
+        navigation.contains(target) &&
+        navigation.scrollHeight > navigation.clientHeight
+
+      if (!canScrollNavigation) {
+        event.preventDefault()
+      }
+    }
+
+    const listenerOptions = { capture: false, passive: false } as const
+
+    document.addEventListener(
+      "touchmove",
+      preventBackgroundScroll,
+      listenerOptions
+    )
+    document.addEventListener("wheel", preventBackgroundScroll, listenerOptions)
+
+    return () => {
+      document.removeEventListener(
+        "touchmove",
+        preventBackgroundScroll,
+        listenerOptions
+      )
+      document.removeEventListener(
+        "wheel",
+        preventBackgroundScroll,
+        listenerOptions
+      )
+    }
+  }, [open])
+
   const onOpenChange = useCallback((open: boolean) => {
     setOpen(open)
   }, [])
 
   const closeMenu = useCallback(() => {
     setOpen(false)
+  }, [])
+
+  const onCloseAutoFocus = useCallback((event: Event) => {
+    if (interactionWasKeyboardRef.current) {
+      return
+    }
+
+    event.preventDefault()
+    triggerRef.current?.blur()
   }, [])
 
   if (!items || items.length === 0) {
@@ -78,32 +144,44 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
       shouldScaleBackground={false}
       preventScrollRestoration
       modal={false}
+      noBodyStyles
     >
       <DrawerTrigger
         className="relative ml-6 flex size-6 text-foreground outline-hidden lg:hidden"
+        ref={triggerRef}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
+        onPointerDown={() => {
+          interactionWasKeyboardRef.current = false
+        }}
+        onKeyDown={() => {
+          interactionWasKeyboardRef.current = true
+        }}
       >
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
         className={cn(
-          "flex min-h-0 flex-col overflow-hidden rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
+          "flex min-h-0 flex-col overflow-hidden overscroll-none rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
           isBanner
             ? "top-25 bottom-auto h-[calc(100dvh-6.25rem)]"
             : "top-16 bottom-auto h-[calc(100dvh-4rem)]"
         )}
+        onCloseAutoFocus={onCloseAutoFocus}
+        onPointerDownCapture={() => {
+          interactionWasKeyboardRef.current = false
+        }}
+        onKeyDownCapture={() => {
+          interactionWasKeyboardRef.current = true
+        }}
         withTopLine={false}
       >
         <DrawerTitle className="sr-only">Menu</DrawerTitle>
-        <div
-          className="flex min-h-0 flex-1 flex-col"
-          data-disable-document-scroll={open}
-        >
+        <div className="flex min-h-0 flex-1 flex-col">
           <div className="relative min-h-0 flex-1">
             <nav
               className="h-full overflow-y-auto overscroll-contain px-5 pb-10 md:px-8"
-              ref={scrollRef}
+              ref={setNavigationRef}
               aria-label="Mobile navigation"
             >
               <ul>
