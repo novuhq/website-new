@@ -193,9 +193,9 @@ function OrbitTile({
   const angle = startAngle + (360 / total) * index
   const radians = (angle * Math.PI) / 180
   const style = {
-    left: `${50 + Math.cos(radians) * radius}%`,
-    top: `${50 + Math.sin(radians) * radius}%`,
-    "--mb-tile-rot": `${angle + 90}deg`,
+    left: `${(50 + Math.cos(radians) * radius).toFixed(4)}%`,
+    top: `${(50 + Math.sin(radians) * radius).toFixed(4)}%`,
+    "--mb-tile-rot": `${(angle + 90).toFixed(4)}deg`,
   } as CSSProperties
 
   if (tile.key === "mascot") {
@@ -234,8 +234,9 @@ function OrbitTile({
   return (
     <button
       type="button"
-      className="mb-arc-tile group"
+      className="mb-arc-tile group shadow-[0_14px_34px_rgba(0,0,0,.55)] hover:shadow-[0_6px_24px_rgba(0,8,49,.7)]"
       style={style}
+      tabIndex={-1}
       onClick={handleClick}
       onPointerEnter={() => onActivate(activeTile)}
       onPointerLeave={() => onDeactivate(id)}
@@ -244,21 +245,13 @@ function OrbitTile({
       aria-label={ariaLabel}
     >
       <span
-        className="mb-arc-tile-base-bg pointer-events-none absolute inset-0 rounded-[inherit]"
-        aria-hidden
-      />
-      <span
-        className="mb-arc-tile-hover-bg pointer-events-none absolute inset-0 rounded-[inherit] backdrop-blur-[2.1818px]"
-        aria-hidden
-      />
-      <span
-        className="mb-arc-tile-hover-border pointer-events-none absolute inset-0 rounded-[inherit] border-gradient bg-white/15 mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 z-0 rounded-[inherit] border-gradient bg-white/15 opacity-0 mix-blend-overlay transition-opacity duration-250 group-hover:opacity-100"
         aria-hidden
       />
       <ChannelIcon
         channel={tile.key}
         className={cn(
-          "relative z-10 size-[52%] md:size-[52%]",
+          "relative z-20 size-[52%] md:size-[52%]",
           tile.key === "email" && "!text-white"
         )}
         isActive

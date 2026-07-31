@@ -54,6 +54,16 @@ function ThemeTabs({
     return () => resizeObserver.disconnect()
   }, [activeTheme])
 
+  const focusTheme = (nextIndex: number) => {
+    if (!items.length) return
+
+    const normalizedIndex = (nextIndex + items.length) % items.length
+    const triggers =
+      tabsListRef.current?.querySelectorAll<HTMLButtonElement>("[role=tab]")
+
+    triggers?.[normalizedIndex]?.focus({ preventScroll: true })
+  }
+
   return (
     <LazyMotion features={domAnimation}>
       <div
@@ -98,15 +108,30 @@ function ThemeTabs({
           return (
             <button
               className={cn(
-                "relative z-10 h-7.5 shrink-0 rounded-full px-2.5 text-xs leading-none font-medium tracking-tighter text-[#C9ABFF] transition-colors xl:px-3 xl:text-sm",
+                "relative z-10 h-7.5 shrink-0 rounded-full px-2.5 text-xs leading-none font-medium tracking-tighter text-[#C9ABFF] transition-colors focus-visible:ring-1 focus-visible:ring-white/80 focus-visible:ring-offset-0 focus-visible:outline-none xl:px-3 xl:text-sm",
                 isActive && "text-[#00217C]"
               )}
               key={item.theme}
               type="button"
               role="tab"
               aria-selected={isActive}
-              tabIndex={isActive ? 0 : -1}
+              tabIndex={0}
               onClick={() => onThemeChange(index)}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowLeft") {
+                  event.preventDefault()
+                  focusTheme(index - 1)
+                } else if (event.key === "ArrowRight") {
+                  event.preventDefault()
+                  focusTheme(index + 1)
+                } else if (event.key === "Home") {
+                  event.preventDefault()
+                  focusTheme(0)
+                } else if (event.key === "End") {
+                  event.preventDefault()
+                  focusTheme(items.length - 1)
+                }
+              }}
             >
               {item.title}
             </button>

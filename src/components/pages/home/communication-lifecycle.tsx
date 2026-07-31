@@ -102,7 +102,7 @@ function CommunicationLifecycle({
                   {action.description}
                 </p>
                 <Link
-                  className="mt-4 leading-none font-medium tracking-normal hover:text-primary xl:mt-5 [&_svg]:size-3.5"
+                  className="mt-4 w-fit leading-none font-medium tracking-normal hover:text-primary xl:mt-5 [&_svg]:size-3.5"
                   href={action.linkUrl}
                   variant="white"
                 >
@@ -125,6 +125,7 @@ function CommunicationLifecycle({
         </div>
 
         <Tabs
+          activationMode="manual"
           className="mt-8 w-full"
           value={activeTab}
           onValueChange={setActiveTab}
@@ -135,8 +136,9 @@ function CommunicationLifecycle({
           >
             {items.map((item) => (
               <TabsTrigger
-                className="group h-full w-full min-w-0 flex-col items-start justify-start gap-1 rounded-[0.625rem] border-0 px-4.5 pt-4 pb-4.5 text-left whitespace-normal text-foreground opacity-50 transition-[opacity,box-shadow,background-color] hover:opacity-75 data-[state=active]:border-gray-20 data-[state=active]:bg-[#0B0C0E] data-[state=active]:opacity-100 data-[state=active]:ring-1 data-[state=active]:ring-gray-3 data-[state=active]:ring-inset"
+                className="group h-full w-full min-w-0 flex-col items-start justify-start gap-1 rounded-[0.625rem] border-0 px-4.5 pt-4 pb-4.5 text-left whitespace-normal text-foreground opacity-50 transition-[opacity,box-shadow,background-color] hover:opacity-75 focus-visible:bg-[#0B0C0E] focus-visible:opacity-75 focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-0 focus-visible:outline-none data-[state=active]:border-gray-20 data-[state=active]:bg-[#0B0C0E] data-[state=active]:opacity-100 data-[state=active]:ring-1 data-[state=active]:ring-gray-3 data-[state=active]:ring-inset"
                 key={item.key}
+                tabIndex={0}
                 value={item.key}
               >
                 <span className="inline-flex w-full flex-wrap items-center gap-2.5">

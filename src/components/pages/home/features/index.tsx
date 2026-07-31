@@ -150,7 +150,7 @@ function Features({
     <section
       id={HOME_FEATURES_SECTION_ID}
       className={cn(
-        "features mt-24 scroll-mt-16 overflow-hidden font-inter md:mt-28 lg:mt-32 xl:mt-49",
+        "features mt-24 scroll-mt-32 overflow-hidden font-inter md:mt-28 lg:mt-32 xl:mt-49",
         className
       )}
     >
@@ -179,7 +179,7 @@ function Features({
           </Button>
 
           <div
-            className="scrollbar-hidden -mx-5 touch-pan-x overflow-x-auto overscroll-x-contain mask-[linear-gradient(to_right,transparent,black_1.25rem,black_calc(100%_-_1.25rem),transparent)] px-5 sm:mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] sm:px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
+            className="scrollbar-hidden -mx-5 -mt-1 touch-pan-x overflow-x-auto overscroll-x-contain mask-[linear-gradient(to_right,transparent,black_1.25rem,black_calc(100%_-_1.25rem),transparent)] px-5 pt-1 sm:mask-[linear-gradient(to_right,transparent_2.5rem,black_4rem,black_calc(100%_-_4rem),transparent_calc(100%_-_2.5rem))] sm:px-20 md:mx-0 md:mask-[linear-gradient(to_right,transparent_3rem,black_5rem,black_calc(100%_-_5rem),transparent_calc(100%_-_3rem))] md:px-18"
             ref={tabListRef}
             role="tablist"
             aria-label="Communication channels"
@@ -190,7 +190,7 @@ function Features({
 
                 return (
                   <button
-                    className="group flex w-14 shrink-0 flex-col items-center gap-2 rounded-[10px] text-sm leading-[1.125] tracking-tighter text-gray-50 outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-16 lg:w-23"
+                    className="group flex w-14 shrink-0 flex-col items-center gap-2 rounded-[10px] text-sm leading-[1.125] tracking-tighter text-gray-50 outline-none focus-within:ring-0 focus-within:ring-transparent md:w-16 lg:w-23"
                     id={`${tabsId}-tab-${item.key}`}
                     key={item.key}
                     ref={(node) => {
@@ -198,7 +198,7 @@ function Features({
                     }}
                     type="button"
                     role="tab"
-                    tabIndex={isActive ? 0 : -1}
+                    tabIndex={0}
                     aria-controls={`${tabsId}-panel`}
                     aria-selected={isActive}
                     onClick={() => selectIndex(index)}
@@ -220,7 +220,7 @@ function Features({
                   >
                     <span
                       className={cn(
-                        "flex size-14 items-center justify-center rounded-[0.375rem] border bg-background transition-[border-color,filter] md:size-16 md:rounded-[10px]",
+                        "flex size-14 items-center justify-center rounded-[0.375rem] border bg-background transition-[border-color,filter] group-focus-visible:ring-2 group-focus-visible:ring-ring md:size-16 md:rounded-[10px]",
                         isActive
                           ? "border-gray-40"
                           : "border-gray-20 group-hover:border-gray-40"

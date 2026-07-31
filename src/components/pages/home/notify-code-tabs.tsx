@@ -36,6 +36,7 @@ function NotifyCodeTabs({ className, tabs }: INotifyCodeTabsProps) {
 
   return (
     <Tabs
+      activationMode="manual"
       className={cn(
         "relative h-52 w-full overflow-hidden rounded-t-xl border border-b-0 border-gray-20 bg-black/95 shadow-[0_6px_22px_rgba(0,8,49,0.7)] backdrop-blur-2xl",
         className
@@ -50,8 +51,9 @@ function NotifyCodeTabs({ className, tabs }: INotifyCodeTabsProps) {
         <TabsList className="h-full flex-1 items-start justify-start rounded-none bg-transparent p-0">
           {tabs.map((tab) => (
             <TabsTrigger
-              className="relative h-8.75 gap-1 rounded-none px-4 py-2 text-xs leading-none font-normal text-gray-60 transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-foreground after:opacity-0 after:transition-transform hover:text-foreground data-[state=active]:text-foreground data-[state=active]:after:opacity-100 sm:px-5 sm:text-sm"
+              className="relative h-8.75 gap-1 rounded-none px-4 py-2 text-xs leading-none font-normal text-gray-60 transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-foreground after:opacity-0 after:transition-transform hover:text-foreground focus-visible:ring-1 focus-visible:ring-foreground/70 focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:ring-inset data-[state=active]:text-foreground data-[state=active]:after:opacity-100 sm:px-5 sm:text-sm"
               key={tab.title}
+              tabIndex={0}
               value={tab.title}
             >
               <Image

@@ -137,6 +137,18 @@
 /* The customer-facing card uses two independently rotating channel orbits.
    Each icon remains a real interactive element instead of being baked into
    the artwork. */
+@property --mb-arc-hover-progress {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --mb-arc-hover-blur {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 .mb-arc {
   position: relative;
   width: 100%;
@@ -173,6 +185,9 @@
 }
 
 .mb-arc-tile {
+  --mb-arc-hover-blur: 0px;
+  --mb-arc-hover-progress: 0;
+
   position: absolute;
   display: flex;
   align-items: center;
@@ -182,11 +197,25 @@
   isolation: isolate;
   border-radius: 28.18%;
   border: 0;
-  background: transparent;
-  box-shadow: 0 14px 34px rgb(0 0 0 / 0.55);
+  background:
+    linear-gradient(
+      194deg,
+      rgb(0 0 0 / var(--mb-arc-hover-progress)) 9.88%,
+      rgb(0 0 0 / calc(var(--mb-arc-hover-progress) * 0.1)) 102.69%
+    ),
+    linear-gradient(
+      158deg,
+      rgb(23 24 29 / calc(1 - var(--mb-arc-hover-progress))) 0%,
+      rgb(10 10 13 / calc(1 - var(--mb-arc-hover-progress))) 48%,
+      rgb(6 6 8 / calc(1 - var(--mb-arc-hover-progress))) 100%
+    );
+  -webkit-backdrop-filter: blur(var(--mb-arc-hover-blur));
+  backdrop-filter: blur(var(--mb-arc-hover-blur));
   cursor: pointer;
   transform: rotate(var(--mb-tile-rot, 0deg));
   transition:
+    --mb-arc-hover-blur 0.25s ease,
+    --mb-arc-hover-progress 0.25s ease,
     box-shadow 0.25s ease,
     transform 0.25s ease;
   will-change: transform;
@@ -209,29 +238,6 @@
   pointer-events: none;
 }
 
-.mb-arc-tile-base-bg,
-.mb-arc-tile-hover-bg,
-.mb-arc-tile-hover-border {
-  transition: opacity 0.25s ease;
-}
-
-.mb-arc-tile-base-bg {
-  z-index: 0;
-  background: linear-gradient(158deg, #17181d 0%, #0a0a0d 48%, #060608 100%);
-  opacity: 1;
-}
-
-.mb-arc-tile-hover-bg {
-  z-index: 1;
-  background: linear-gradient(194deg, #000 9.88%, rgb(0 0 0 / 0.1) 102.69%);
-  opacity: 0;
-}
-
-.mb-arc-tile-hover-border {
-  z-index: 20;
-  opacity: 0;
-}
-
 .mb-channel-orbit-outer .mb-arc-tile,
 .mb-channel-orbit-outer .mb-arc-mascot {
   width: 8.73%;
@@ -244,21 +250,11 @@
 
 .mb-arc-tile:hover,
 .mb-arc-tile:focus-visible {
+  --mb-arc-hover-blur: 2px;
+  --mb-arc-hover-progress: 1;
+
   outline: none;
-  box-shadow: 0 6px 24px rgb(0 8 49 / 0.7);
   transform: rotate(var(--mb-tile-rot, 0deg)) scale(1.090909);
-}
-
-.mb-arc-tile:hover .mb-arc-tile-base-bg,
-.mb-arc-tile:focus-visible .mb-arc-tile-base-bg {
-  opacity: 0;
-}
-
-.mb-arc-tile:hover .mb-arc-tile-hover-bg,
-.mb-arc-tile:hover .mb-arc-tile-hover-border,
-.mb-arc-tile:focus-visible .mb-arc-tile-hover-bg,
-.mb-arc-tile:focus-visible .mb-arc-tile-hover-border {
-  opacity: 1;
 }
 
 @keyframes mb-channel-orbit-spin {

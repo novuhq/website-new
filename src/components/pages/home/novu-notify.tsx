@@ -109,7 +109,7 @@ function NovuNotify({
         </header>
 
         <MagicBento className="mt-12 md:mt-16" particles={false}>
-          <article className="magic-bento-card relative flex w-full flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 pb-0 md:block md:h-118 md:p-0">
+          <article className="magic-bento-card relative flex w-full flex-col overflow-clip rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 pb-0 md:block md:h-118 md:p-0">
             {featuredItem.backgroundImage && (
               <BentoCardBackground
                 backgroundClassName="opacity-80"

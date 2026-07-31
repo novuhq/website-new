@@ -3,7 +3,7 @@ html .shiki:not(.echo-code) {
   --shiki-removed-line-background: hsla(1, 41%, 20%, 0.9);
   --shiki-added-line-background: hsla(124, 24%, 23%, 0.9);
 
-  @apply !bg-black;
+  @apply bg-black!;
   & span.line {
     @apply bg-[hsl(240,37%,3%)];
   }

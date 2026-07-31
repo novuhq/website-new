@@ -34,18 +34,51 @@ function ConnectMascotEyes({ className }: IConnectMascotEyesProps) {
     let currentY = 0
     let targetX = 0
     let targetY = 0
-    let rafId = 0
-    let running = true
+    let rafId: number | null = null
+    let isInViewport = false
+    let isDisposed = false
 
     const tick = () => {
+      if (!isInViewport || isDisposed) {
+        rafId = null
+        return
+      }
+
       currentX += (targetX - currentX) * EASING
       currentY += (targetY - currentY) * EASING
       eyes.style.translate = `${currentX.toFixed(2)}px ${currentY.toFixed(2)}px`
-      if (running) {
-        rafId = requestAnimationFrame(tick)
-      }
+
+      rafId = requestAnimationFrame(tick)
     }
-    rafId = requestAnimationFrame(tick)
+
+    const startAnimation = () => {
+      if (rafId !== null || isDisposed) {
+        return
+      }
+
+      rafId = requestAnimationFrame(tick)
+    }
+
+    const stopAnimation = () => {
+      if (rafId === null) {
+        return
+      }
+
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isInViewport = entry?.isIntersecting ?? false
+
+      if (isInViewport) {
+        startAnimation()
+      } else {
+        stopAnimation()
+      }
+    })
+
+    observer.observe(root)
 
     const handleMouseMove = (event: MouseEvent) => {
       const cardRect = card.getBoundingClientRect()
@@ -85,8 +118,9 @@ function ConnectMascotEyes({ className }: IConnectMascotEyesProps) {
     document.documentElement.addEventListener("mouseleave", handleLeave)
 
     return () => {
-      running = false
-      cancelAnimationFrame(rafId)
+      isDisposed = true
+      observer.disconnect()
+      stopAnimation()
       document.removeEventListener("mousemove", handleMouseMove)
       document.documentElement.removeEventListener("mouseleave", handleLeave)
     }
