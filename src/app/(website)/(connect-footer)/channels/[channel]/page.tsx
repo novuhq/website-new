@@ -176,7 +176,7 @@ async function ChannelPage({ params }: PageProps) {
   }
 
   return (
-    <div className="overflow-clip">
+    <div className="overflow-clip font-inter">
       <ChannelHero channel={channel} />
       <ChannelUseCase channel={channel} />
       <ChannelTemplates channel={channel} templates={templates} />
