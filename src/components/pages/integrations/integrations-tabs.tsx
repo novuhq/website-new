@@ -173,15 +173,17 @@ function IntegrationsTabs({
               "md:text-[2rem]"
             )}
           >
-            <span className="block">Connect your</span>
-            <span className="block">notification stack to Novu</span>
+            <span className="block">Connect your communication</span>
+            <span className="block">stack to Novu</span>
           </h2>
           <div className="max-w-2xl text-base leading-normal font-book tracking-tight text-gray-8">
             <p className="mb-0">
-              Connect 50+ providers across email, SMS, push, chat, and in-app.
-              Use one API to send notifications and switch providers without
-              rebuilding. Need a provider not listed here? Novu is open source,
-              so you can contribute a new provider.
+              Use Novu Notify to connect 80+ providers across email, SMS, push,
+              and chat, and add an in-app Inbox to your product. Use Novu
+              Connect to bring AI agents into Slack, Microsoft Teams, WhatsApp
+              Business, Telegram, email, and iMessage. Need an integration that
+              is not listed? Novu is open source, so you can contribute a new
+              provider or channel.
             </p>
           </div>
         </div>
@@ -215,11 +217,11 @@ function IntegrationsTabs({
             ))}
           </TabsList>
         </nav>
-        <div className="flex w-full min-w-0 max-w-full flex-col gap-8 border-b border-gray-2 px-5 pb-6 md:-mx-8 md:w-[calc(100%+4rem)] md:flex-row md:items-center md:justify-between md:px-0 lg:mt-4 lg:max-w-[960px]">
+        <div className="flex w-full max-w-full min-w-0 flex-col gap-8 border-b border-gray-2 px-5 pb-6 md:-mx-8 md:w-[calc(100%+4rem)] md:flex-row md:items-center md:justify-between md:px-0 lg:mt-4 lg:max-w-[960px]">
           <Suspense
             fallback={
               <div
-                className="categories-list h-9 min-w-0 w-full max-w-full flex-1"
+                className="categories-list h-9 w-full max-w-full min-w-0 flex-1"
                 aria-hidden
               />
             }

@@ -1,0 +1,40 @@
+---
+slug: "email-agent"
+title: "Email"
+tab: "channels"
+category: "agent-channels"
+badge: "Novu Connect"
+detailBadge: "Agent channel"
+availability: "live"
+product: "connect"
+tagline: "Give your agent an email presence for detailed, asynchronous conversations."
+shortDescription: "Give your agent an email presence for conversations that require more detail, asynchronous follow-up, and a durable communication history."
+helpText: "Check our documentation for a step-by-step guide to connecting an agent to email with Novu Connect."
+icon: "/images/logo.svg"
+order: 4
+docsUrl: "https://docs.novu.co/agents/get-started/what-is-aci"
+primaryCtaLabel: "Connect email"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Email supports conversations that need more space, asynchronous follow-up, and
+  a durable record. Novu Connect lets users communicate with your existing agent
+  through email while preserving the conversation thread across replies.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect receives inbound emails, associates replies with the correct
+  conversation, and routes the message history to your agent. It sends the
+  agent's response back by email with support for threaded history, rich HTML,
+  read tracking, ordered processing, and action links for approvals or tool
+  access.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+From your agent project, run:
+
+`npx novu connect --channel email`
+
+Send a test message to the inbound email address printed by the CLI, then follow the remaining prompts to verify the connection.
+
+</IntegrationSection>

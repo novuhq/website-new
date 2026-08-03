@@ -11,10 +11,16 @@ export const integrationFrontmatterSchema = z.object({
   title: z.string().min(1),
   tab: z.enum(["channels", "sources"]),
   category: z.string().min(1),
+  categories: z.array(z.string().min(1)).optional(),
   badge: z.string().optional(),
+  detailBadge: z.string().optional(),
+  availability: z.enum(["live", "coming-soon"]).default("live"),
+  product: z.enum(["notify", "connect"]).default("notify"),
+  detailPage: z.boolean().default(true),
   icon: z.string().optional(),
   tagline: z.string().min(1),
   shortDescription: z.string().min(1),
+  helpText: z.string().min(1).optional(),
   docsUrl: z
     .union([z.string().url(), z.literal("")])
     .optional()

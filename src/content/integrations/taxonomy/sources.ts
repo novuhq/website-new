@@ -29,11 +29,20 @@ export const SOURCE_CATEGORY_TAXONOMY: ISourceCategoryTaxonomy[] = [
     defaultBadge: "AI",
   },
   {
+    slug: "agent-runtimes",
+    title: "Agent runtimes",
+    description:
+      "Connect an existing agent to supported communication channels without changing its core application logic.",
+    order: 2,
+    tab: "sources",
+    defaultBadge: "Agent runtime",
+  },
+  {
     slug: "feature-flags",
     title: "Feature Flags",
     description:
       "Evaluate feature flags in your workflows to control logic and personalize user experiences.",
-    order: 2,
+    order: 3,
     tab: "sources",
     defaultBadge: "Flags",
   },

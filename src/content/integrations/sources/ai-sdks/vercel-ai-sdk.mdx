@@ -3,25 +3,42 @@ slug: "vercel-ai-sdk"
 title: "Vercel AI SDK"
 tab: "sources"
 category: "ai-sdks"
-tagline: "Use the AI SDK in Novu code steps to generate or transform workflow content."
-shortDescription: "Use the AI SDK in Novu code steps to generate or transform workflow content."
+categories:
+  - "agent-runtimes"
+detailBadge: "AI SDK · Agent runtime"
+tagline: "Use the Vercel AI SDK with Novu Notify workflows or connect an AI SDK agent to communication channels with Novu Connect."
+shortDescription: "Use the Vercel AI SDK in Novu code steps or connect an AI SDK agent to supported channels with Novu Connect."
+helpText: "Check our documentation for using the Vercel AI SDK with Novu Notify and Novu Connect."
 icon: "/images/integration-icons/ai/ai-sdk-icon.png"
-order: 1
-docsUrl: "https://docs.novu.co/platform/additional-resources/agent-toolkit"
+order: 0
+docsUrl: "https://docs.novu.co/agents/get-started/what-is-aci"
+primaryCtaLabel: "Integrate Vercel AI SDK"
 ---
 
 <IntegrationSection title="Overview" icon="eye">
   The Vercel AI SDK is a TypeScript toolkit for building AI-powered applications
-  and agents. It supports text generation, structured outputs, tool calls, and
-  more.
+  and agents. It supports text generation, structured outputs, streaming, and
+  tool calls.
 </IntegrationSection>
 
-<IntegrationSection title="How it works" icon="refresh-cw">
-  Use the AI SDK inside Novu code steps to generate or transform workflow
-  content, including structured outputs when you need predictable JSON.
+<IntegrationSection title="Use it with Novu Notify" icon="refresh-cw">
+  Use the AI SDK inside a Novu code step to generate, transform, classify, or
+  summarize workflow content. You can also return structured output when later
+  workflow steps require predictable data.
+</IntegrationSection>
+
+<IntegrationSection title="Use it with Novu Connect" icon="refresh-cw">
+  Connect an agent built with the Vercel AI SDK to supported Novu Connect
+  channels without replacing its models, tools, or application logic.
 </IntegrationSection>
 
 <IntegrationSection title="Configure" icon="settings">
-  Install the ai package, connect your model provider, and call functions such
-  as generateText from your Novu workflow code step.
+For Novu Notify, install the `ai` package and your model-provider package, then call the required AI SDK functions from a workflow code step.
+
+For Novu Connect, run:
+
+`npx novu connect --runtime ai-sdk`
+
+Select a supported channel and follow the CLI prompts to connect your agent.
+
 </IntegrationSection>

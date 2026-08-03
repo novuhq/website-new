@@ -10,20 +10,22 @@ import type {
 
 import IntegrationChannelCategory from "./integration-channel-category"
 
-function countIntegrationsInCategory(
+function integrationToCards(
   integrations: IIntegration[],
-  categorySlug: string
-): number {
-  return integrations.filter((i) => i.category === categorySlug).length
-}
-
-function integrationToCards(integrations: IIntegration[]) {
+  selectedCategory?: string
+) {
   return integrations.map((i) => ({
     title: i.title,
     description: i.description,
     iconSrc: i.icon,
-    category: i.badge,
-    href: i.pathname,
+    category: selectedCategory === "agent-runtimes" ? "Agent runtime" : i.badge,
+    status:
+      i.product === "connect" || selectedCategory === "agent-runtimes"
+        ? i.availability === "live"
+          ? "Live"
+          : "Coming soon"
+        : undefined,
+    href: i.hasDedicatedPage ? i.pathname : undefined,
   }))
 }
 
@@ -41,24 +43,35 @@ function IntegrationsSections({
   const searchParams = useSearchParams()
   const query = searchParams.get("q") ?? ""
   const normalizedQuery = query.trim().toLowerCase()
+  const requestedCategory = searchParams.get("category") ?? ""
+  const categorySlugSet = new Set(categories.map((category) => category.slug))
+  const selectedCategory = categorySlugSet.has(requestedCategory)
+    ? requestedCategory
+    : ""
   const categoryTitleBySlug = new Map(categories.map((c) => [c.slug, c.title]))
+  const categoryScopedIntegrations = selectedCategory
+    ? integrations.filter((integration) =>
+        integration.categories.includes(selectedCategory)
+      )
+    : integrations
 
   const filteredIntegrations = normalizedQuery
-    ? integrations.filter((integration) => {
-        const categoryTitle =
-          categoryTitleBySlug.get(integration.category) ?? ""
+    ? categoryScopedIntegrations.filter((integration) => {
+        const categoryTitles = integration.categories.map(
+          (category) => categoryTitleBySlug.get(category) ?? ""
+        )
         const searchTarget = [
           integration.title,
           integration.badge,
-          integration.category,
-          categoryTitle,
+          ...integration.categories,
+          ...categoryTitles,
         ]
           .join(" ")
           .toLowerCase()
 
         return searchTarget.includes(normalizedQuery)
       })
-    : integrations
+    : categoryScopedIntegrations
   const resultCount = filteredIntegrations.length
   const liveRegionText = normalizedQuery
     ? resultCount > 0
@@ -103,8 +116,16 @@ function IntegrationsSections({
       </h2>
       <div className="flex flex-col gap-17">
         {categories.map((cat) => {
+          if (selectedCategory && cat.slug !== selectedCategory) {
+            return null
+          }
+
           const items = filteredIntegrations
-            .filter((i) => i.category === cat.slug)
+            .filter((i) =>
+              selectedCategory
+                ? i.categories.includes(cat.slug)
+                : i.category === cat.slug
+            )
             .sort((a, b) => {
               if (a.order !== b.order) {
                 return a.order - b.order
@@ -120,12 +141,9 @@ function IntegrationsSections({
               key={cat.slug}
               sectionId={`integration-category-${cat.slug}`}
               title={cat.title}
-              count={countIntegrationsInCategory(
-                filteredIntegrations,
-                cat.slug
-              )}
+              count={items.length}
               description={cat.description}
-              cards={integrationToCards(items)}
+              cards={integrationToCards(items, selectedCategory || undefined)}
               className="mt-0"
             />
           )

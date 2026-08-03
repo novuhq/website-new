@@ -1,0 +1,31 @@
+---
+slug: "sms-webhook"
+title: "SMS Webhook"
+tab: "channels"
+category: "sms"
+badge: "SMS"
+tagline: "Route SMS notifications from Novu to a webhook endpoint that you control."
+shortDescription: "Send SMS notifications to a webhook endpoint that you control using Novu."
+helpText: "Check our documentation for configuring the SMS Webhook provider."
+icon: "/images/integration-icons/sms/sms-webhook-icon.svg"
+order: 60
+docsUrl: "https://docs.novu.co/platform/integrations/sms"
+primaryCtaLabel: "Integrate SMS Webhook"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  SMS Webhook is a flexible provider for connecting Novu to an SMS service or
+  internal delivery system that does not have a built-in integration.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When an SMS step runs, Novu sends the recipient, sender, message content, and
+  related delivery data to your configured webhook endpoint. Your service can
+  then transform or forward the request to the SMS gateway you use.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Enter the webhook URL and the authentication values required by your endpoint.
+  Ensure the endpoint accepts the request format sent by Novu and returns a
+  successful response after processing the message.
+</IntegrationSection>

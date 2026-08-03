@@ -1,0 +1,30 @@
+---
+slug: "chat-webhook"
+title: "Chat Webhook"
+tab: "channels"
+category: "chat"
+badge: "Chat"
+tagline: "Route chat notifications from Novu to a webhook endpoint that you control."
+shortDescription: "Send chat notifications to a webhook endpoint that you control using Novu."
+helpText: "Check our documentation for configuring the Chat Webhook provider."
+icon: "/images/integration-icons/chat/chat-webhook-icon.svg"
+order: 60
+docsUrl: "https://docs.novu.co/platform/integrations/chat"
+primaryCtaLabel: "Integrate Chat Webhook"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Chat Webhook is a flexible provider for connecting Novu to a chat service or
+  internal messaging system that does not have a built-in integration.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When a chat step runs, Novu sends the message content and delivery context to
+  the webhook URL stored for the subscriber. Your endpoint can then transform or
+  forward the request to the destination you use.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Add the Chat Webhook provider in Novu, then store the destination webhook URL
+  in the subscriber's channel credentials.
+</IntegrationSection>

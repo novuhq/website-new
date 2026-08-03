@@ -27,7 +27,9 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const items = await getAllIntegrations()
-  return items.map((i) => ({ slug: i.slug }))
+  return items
+    .filter((item) => item.hasDedicatedPage)
+    .map((item) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata({
@@ -102,14 +104,14 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
         content={content}
       />
       <CTA
-        title={`Send notifications with\nthe providers you already use`}
+        title={`Connect your communication\nstack to Novu`}
         titleClassName="whitespace-pre-line"
         className="!pt-24 md:!pt-46"
         description={
           <>
-            Start with one provider or connect multiple channels, and
-            <br className="hidden md:block" />
-            manage them in one place with Novu.
+            Use Novu Notify for multi-channel notifications and Novu Connect
+            <br className="hidden md:block" /> for contextual agent
+            conversations, actions, and approvals.
           </>
         }
         actions={[

@@ -56,4 +56,13 @@ export const CHANNEL_CATEGORY_TAXONOMY: IChannelCategoryTaxonomy[] = [
     tab: "channels",
     defaultBadge: "Chat",
   },
+  {
+    slug: "agent-channels",
+    title: "Agent channels",
+    description:
+      "Bring your AI agent into the channels where your customers and teams already communicate, with support for contextual conversations, actions, and approvals.",
+    order: 5,
+    tab: "channels",
+    defaultBadge: "Novu Connect",
+  },
 ]

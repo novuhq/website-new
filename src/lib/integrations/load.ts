@@ -71,6 +71,9 @@ async function fileToIntegration(
   const fm: IntegrationFrontmatter = parsed.data
 
   const badge = fm.badge?.trim() || defaultBadge(fm.tab, fm.category)
+  const categories = Array.from(
+    new Set([fm.category, ...(fm.categories ?? [])])
+  )
 
   const relativePath = path
     .relative(INTEGRATIONS_DIR, filePath)
@@ -81,10 +84,16 @@ async function fileToIntegration(
     title: fm.title,
     tab: fm.tab,
     category: fm.category,
+    categories,
     badge,
+    detailBadge: fm.detailBadge?.trim() || badge,
+    availability: fm.availability,
+    product: fm.product,
+    hasDedicatedPage: fm.detailPage,
     icon: fm.icon?.trim() || PLACEHOLDER_ICON,
     tagline: fm.tagline,
     description: fm.shortDescription,
+    helpText: fm.helpText,
     docsUrl: fm.docsUrl,
     order: fm.order ?? 0,
     features: fm.features,
@@ -138,7 +147,7 @@ export async function getIntegrationBySlug(
   slug: string
 ): Promise<IIntegration | null> {
   const all = await getAllIntegrations()
-  return all.find((i) => i.slug === slug) ?? null
+  return all.find((i) => i.slug === slug && i.hasDedicatedPage) ?? null
 }
 
 export async function getIntegrationsByTab(
@@ -152,7 +161,7 @@ export async function getIntegrationCategories(
   tab: IntegrationTabType
 ): Promise<IIntegrationCategoryMeta[]> {
   const inTab = await getIntegrationsByTab(tab)
-  const slugs = new Set(inTab.map((i) => i.category))
+  const slugs = new Set(inTab.flatMap((i) => i.categories))
 
   const meta: IIntegrationCategoryMeta[] = []
   for (const slug of slugs) {
@@ -171,14 +180,14 @@ export async function getIntegrationsByCategory(
   categorySlug: string
 ): Promise<IIntegration[]> {
   const list = await getIntegrationsByTab(tab)
-  return list.filter((i) => i.category === categorySlug)
+  return list.filter((i) => i.categories.includes(categorySlug))
 }
 
 export async function getRelatedIntegrations(
   slug: string
 ): Promise<IIntegration[]> {
   const entry = await getIntegrationBySlug(slug)
-  if (!entry || entry.relatedProviders.length === 0) {
+  if (!entry) {
     return []
   }
 
@@ -186,12 +195,23 @@ export async function getRelatedIntegrations(
   const bySlug = new Map(all.map((i) => [i.slug, i]))
   const out: IIntegration[] = []
 
-  for (const ref of entry.relatedProviders) {
-    const item = bySlug.get(ref)
-    if (item && out.length < 6) {
-      out.push(item)
+  if (entry.relatedProviders.length > 0) {
+    for (const ref of entry.relatedProviders) {
+      const item = bySlug.get(ref)
+      if (item?.hasDedicatedPage && out.length < 6) {
+        out.push(item)
+      }
     }
+
+    return out
   }
 
-  return out
+  return all
+    .filter(
+      (item) =>
+        item.slug !== entry.slug &&
+        item.hasDedicatedPage &&
+        item.category === entry.category
+    )
+    .slice(0, 6)
 }

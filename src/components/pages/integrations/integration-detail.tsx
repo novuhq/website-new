@@ -36,6 +36,12 @@ function IntegrationDetail({
 
   const relatedSlice = relatedIntegrations.slice(0, 6)
   const relatedArticles = integration.relatedArticles.slice(0, 4)
+  const relatedHeading =
+    integration.category === "agent-channels"
+      ? "Other agent channels"
+      : integration.tab === "sources"
+        ? "Other integrations"
+        : `Other ${integration.detailBadge.toLowerCase()} providers`
 
   return (
     <article
@@ -62,6 +68,7 @@ function IntegrationDetail({
                 src={integration.icon}
                 alt=""
                 fill
+                sizes="40px"
                 className="object-contain"
               />
             </div>
@@ -74,11 +81,11 @@ function IntegrationDetail({
                   {integration.title}
                 </h1>
                 <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
-                  {integration.badge}
+                  {integration.detailBadge}
                 </span>
               </div>
               <p className="mt-3 max-w-[22.6875rem] text-lg leading-normal font-book tracking-tight text-gray-8">
-                {integration.description}
+                {integration.tagline}
               </p>
             </div>
 
@@ -117,8 +124,8 @@ function IntegrationDetail({
               Need help?
             </h3>
             <p className="relative mt-2 text-sm leading-tight font-book tracking-tight text-gray-8">
-              Check our docs for step-by-step guide for integrating{" "}
-              {integration.title}.
+              {integration.helpText ??
+                `Check our docs for a step-by-step guide to integrating ${integration.title}.`}
             </p>
             <Link
               href={
@@ -147,7 +154,7 @@ function IntegrationDetail({
           {relatedSlice.length > 0 ? (
             <div>
               <h3 className="font-display text-base tracking-tight text-white">
-                Other {integration.badge.toLowerCase()} providers
+                {relatedHeading}
               </h3>
               <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
                 {relatedSlice.map((rel) => (

@@ -1,11 +1,12 @@
 ---
-slug: "azure"
+slug: "azure-sms"
 title: "Azure SMS"
 tab: "channels"
 category: "sms"
 badge: "SMS"
-tagline: "Integrate Azure Communication Services SMS with Novu."
+tagline: "Send SMS notifications through Azure Communication Services using Novu."
 shortDescription: "Send SMS notifications through Azure Communication Services using Novu."
+helpText: "Check our documentation for a step-by-step guide to integrating Azure SMS."
 icon: "/images/integration-icons/sms/azure-icon.svg"
 order: 37
 docsUrl: "https://docs.novu.co/platform/integrations/sms/azure"
@@ -19,13 +20,16 @@ relatedArticles: []
 ---
 
 <IntegrationSection title="Overview" icon="eye">
-Azure SMS provides SMS capabilities through Microsoft Azure Communication Services.
+  Azure SMS is part of Azure Communication Services and provides APIs for
+  sending text messages from applications.
 </IntegrationSection>
 
 <IntegrationSection title="How it works" icon="refresh-cw">
-Novu sends SMS through Azure Communication Services.
+  Novu sends the content from your SMS workflow step through Azure Communication
+  Services to the phone number stored on the subscriber profile.
 </IntegrationSection>
 
 <IntegrationSection title="Configure" icon="settings">
-Add your Azure connection string.
+  Enter your Azure Communication Services connection string and the phone number
+  used as the sender.
 </IntegrationSection>

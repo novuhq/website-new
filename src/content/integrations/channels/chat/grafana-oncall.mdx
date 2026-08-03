@@ -1,0 +1,30 @@
+---
+slug: "grafana-oncall"
+title: "Grafana OnCall Webhook"
+tab: "channels"
+category: "chat"
+badge: "Chat"
+tagline: "Send workflow notifications to Grafana OnCall through Novu."
+shortDescription: "Route workflow notifications to Grafana OnCall through a webhook using Novu."
+helpText: "Check our documentation for a step-by-step guide to integrating Grafana OnCall."
+icon: "/images/integration-icons/chat/grafana-oncall-icon.svg"
+order: 61
+docsUrl: "https://docs.novu.co/platform/integrations/chat"
+primaryCtaLabel: "Integrate Grafana OnCall"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Grafana OnCall is an on-call management system for routing alerts and
+  coordinating incident response.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu sends the content from your chat workflow step to a Grafana OnCall
+  webhook URL, where it can be routed through your configured escalation and
+  response workflows.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Create an incoming webhook in Grafana OnCall, add the Grafana OnCall provider
+  in Novu, and store the webhook URL in the subscriber's channel credentials.
+</IntegrationSection>

@@ -1,0 +1,41 @@
+---
+slug: "slack-agent"
+title: "Slack"
+tab: "channels"
+category: "agent-channels"
+badge: "Novu Connect"
+detailBadge: "Agent channel"
+availability: "live"
+product: "connect"
+tagline: "Bring your agent into Slack for contextual conversations, approvals, and operational work."
+shortDescription: "Bring your agent into Slack to answer questions, investigate issues, request approvals, and take action within threaded conversations."
+helpText: "Check our documentation for a step-by-step guide to connecting an agent to Slack with Novu Connect."
+icon: "/images/integration-icons/chat/slack-icon.svg"
+order: 0
+docsUrl: "https://docs.novu.co/agents/get-started/what-is-aci"
+primaryCtaLabel: "Connect Slack"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Slack is a team communication platform for conversations, coordination, and
+  collaborative work. Novu Connect gives your existing agent a presence in Slack
+  without requiring you to build and maintain Slack-specific conversation
+  infrastructure.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect receives Slack messages and threaded replies, normalizes the
+  conversation context, and routes them to your agent. It then sends the agent's
+  response back to the correct conversation with support for Block Kit messages,
+  actions, approvals, typing states, read states, and messages that update in
+  place.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+From your agent project, run:
+
+`npx novu connect --channel slack`
+
+Complete the Slack authorization flow, then follow the CLI prompt to connect your existing agent runtime.
+
+</IntegrationSection>

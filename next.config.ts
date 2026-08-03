@@ -88,6 +88,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/integrations/azure",
+        destination: "/integrations/azure-sms",
+        permanent: true,
+      },
+      {
         source: "/docs",
         destination: "https://docs.novu.co",
         permanent: true,
