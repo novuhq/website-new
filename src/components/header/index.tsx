@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import SearchBar from "@/components/ui/search-bar"
 import GithubStars from "@/components/github-stars"
-import LinkBanner from "@/components/link-banner"
 
 import MobileMenu from "./mobile-menu"
 import Nav from "./nav"
@@ -91,7 +90,6 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
         !isCareersPage || isScrolled ? "bg-black" : "bg-transparent"
       )}
     >
-      <LinkBanner />
       <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:justify-start">
         <NextLink
           className="mr-5 inline-flex shrink-0 rounded lg:mr-7"

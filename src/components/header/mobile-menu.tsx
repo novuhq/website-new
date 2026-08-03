@@ -47,16 +47,11 @@ const DEFAULT_ACTIONS: Required<MobileMenuProps>["actions"] = {
 
 function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
-  const [isBanner, setIsBanner] = useState(false)
   const pathname = usePathname()
   const { ref: scrollRef, isScrolledToBottom, hasScroll } = useScrollStatus()
 
   useEffect(() => {
     setOpen(false)
-  }, [pathname])
-
-  useEffect(() => {
-    setIsBanner(Boolean(document.querySelector(".link-banner")))
   }, [pathname])
 
   const onOpenChange = useCallback((open: boolean) => {
@@ -86,10 +81,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
         <Burger isToggled={open} />
       </DrawerTrigger>
       <DrawerContent
-        className={cn(
-          "flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
-          isBanner ? "top-25" : "top-16"
-        )}
+        className="top-16 flex h-auto flex-col rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden"
         withTopLine={false}
       >
         <DrawerTitle className="sr-only">Menu</DrawerTitle>
@@ -134,10 +126,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
               className={cn(
                 hasScroll &&
                   !isScrolledToBottom &&
-                  cn(
-                    "after:pointer-events-none after:fixed after:inset-x-0 after:bottom-35.5 after:z-50 after:bg-[linear-gradient(180deg,#05050B00_86.18%,#05050B_100%)] 2xs:after:bottom-24",
-                    isBanner ? "after:top-25" : "after:top-16"
-                  )
+                  "after:pointer-events-none after:fixed after:inset-x-0 after:top-16 after:bottom-35.5 after:z-50 after:bg-[linear-gradient(180deg,#05050B00_86.18%,#05050B_100%)] 2xs:after:bottom-24"
               )}
             />
           </nav>
