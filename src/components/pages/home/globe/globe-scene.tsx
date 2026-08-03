@@ -23,14 +23,12 @@ import type {
 } from "./globe-types"
 
 interface IGlobeSceneProps {
-  active: boolean
   activeCards: IGlobeCardEvent[]
   elapsedRef: TElapsedTimeRef
   interactionRef: TInteractionRef
   onAnchorUpdate: (eventId: string, anchor: IProjectedAnchor) => void
   onLoadError: () => void
   onReady: () => void
-  onSlowFrame: () => void
   quality: TGlobeQuality
   routePlaybackRef: TRoutePlaybackRef
 }
@@ -38,20 +36,16 @@ interface IGlobeSceneProps {
 const FIGMA_SURFACE_BLUR_WORLD = GLOBE_RADIUS * (0.9210256338119507 / 511.4805)
 
 export default function GlobeScene({
-  active,
   activeCards,
   elapsedRef,
   interactionRef,
   onAnchorUpdate,
   onLoadError,
   onReady,
-  onSlowFrame,
   quality,
   routePlaybackRef,
 }: IGlobeSceneProps) {
   const groupRef = useRef<THREE.Group>(null)
-  const slowFrameReportedRef = useRef(false)
-  const frameSampleRef = useRef({ count: 0, total: 0 })
   const camera = useThree((state) => state.camera)
   const size = useThree((state) => state.size)
   const anchorPositions = useMemo(
@@ -81,11 +75,6 @@ export default function GlobeScene({
   )
   const handleLandReady = useCallback(onReady, [onReady])
 
-  useEffect(() => {
-    slowFrameReportedRef.current = false
-    frameSampleRef.current = { count: 0, total: 0 }
-  }, [quality])
-
   useEffect(
     () => () => {
       depthMaskMaterial.dispose()
@@ -93,7 +82,7 @@ export default function GlobeScene({
     [depthMaskMaterial]
   )
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     const group = groupRef.current
     if (!group) return
 
@@ -118,26 +107,6 @@ export default function GlobeScene({
         x: (projectedPosition.x * 0.5 + 0.5) * size.width,
         y: (-projectedPosition.y * 0.5 + 0.5) * size.height,
       })
-    }
-
-    if (
-      active &&
-      quality !== "low" &&
-      !slowFrameReportedRef.current &&
-      delta < 0.1
-    ) {
-      frameSampleRef.current.count += 1
-      frameSampleRef.current.total += delta
-
-      if (frameSampleRef.current.count >= 180) {
-        const averageFrameDuration =
-          frameSampleRef.current.total / frameSampleRef.current.count
-        if (averageFrameDuration > 0.027) {
-          slowFrameReportedRef.current = true
-          onSlowFrame()
-        }
-        frameSampleRef.current = { count: 0, total: 0 }
-      }
     }
   })
 

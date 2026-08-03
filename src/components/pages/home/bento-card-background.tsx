@@ -1,5 +1,5 @@
 import Image, { type StaticImageData } from "next/image"
-import noiseLight from "@/images/pages/home/bento-noise-light.webp"
+import noiseLight from "@/images/pages/home/surface-noise.webp"
 
 import { cn } from "@/lib/utils"
 
@@ -43,7 +43,7 @@ function BentoCardBackground({
           backgroundImage: `url("${noiseLight.src}")`,
           backgroundPosition: "top left",
           backgroundRepeat: "repeat",
-          backgroundSize: "1024px 1024px",
+          backgroundSize: "256px 256px",
         }}
       />
     </div>

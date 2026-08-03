@@ -10,15 +10,11 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react"
 import { Canvas, useThree } from "@react-three/fiber"
-import {
-  motion,
-  motionValue,
-  useReducedMotion,
-  type MotionValue,
-} from "motion/react"
+import { motionValue, useReducedMotion, type MotionValue } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
+import { getPreferredGlobeQuality } from "./globe-assets"
 import {
   GLOBE_AUTO_ROTATION_TIME_SCALE,
   GLOBE_CARD_CONTENT_READY_MS,
@@ -59,7 +55,9 @@ import type {
 
 interface IGlobeRuntimeProps {
   interactionMode?: TGlobeInteractionMode
+  onReady: () => void
   onUnavailable: () => void
+  playbackEnabled: boolean
 }
 
 interface IActivePointer {
@@ -99,6 +97,8 @@ const ROUTE_RESUME_EASE_MS = 240
 const SCHEDULER_INTERVAL_MS = 100
 const PITCH_MIN = -0.28
 const PITCH_MAX = 0.28
+const MIN_STABLE_COMPOSITE_MS = 500
+const STABLE_COMPOSITE_FRAMES = 30
 const ACTIVE_ROUTE_DURATION_MS =
   GLOBE_ROUTE_REVEAL_MS + GLOBE_ROUTE_HOLD_MS + GLOBE_ROUTE_EXIT_MS
 const STORY_ROUTE_IDS = new Set(GLOBE_CARD_EVENTS.map(({ routeId }) => routeId))
@@ -140,26 +140,8 @@ function GlobeContextMonitor({ onContextLost }: IGlobeContextMonitorProps) {
   return null
 }
 
-function getPreferredQuality(): TGlobeQuality {
-  const navigatorWithMemory = navigator as Navigator & {
-    deviceMemory?: number
-  }
-  const memory = navigatorWithMemory.deviceMemory ?? 8
-  const cores = navigator.hardwareConcurrency ?? 8
-  const width = window.innerWidth
-
-  if (width < 768 || memory <= 4 || cores <= 4) return "low"
-  if (width < 1440 || memory <= 8 || cores <= 8) return "medium"
-  return "high"
-}
-
 function getInitialQuality(): TGlobeQuality {
-  return typeof window === "undefined" ? "medium" : getPreferredQuality()
-}
-
-function getLowerQuality(quality: TGlobeQuality): TGlobeQuality {
-  if (quality === "high") return "medium"
-  return "low"
+  return typeof window === "undefined" ? "medium" : getPreferredGlobeQuality()
 }
 
 function advanceGlobeInteraction(
@@ -237,7 +219,9 @@ function createCardPlayback(
 
 export default function GlobeRuntime({
   interactionMode = "rotate",
+  onReady,
   onUnavailable,
+  playbackEnabled,
 }: IGlobeRuntimeProps) {
   const shouldReduceMotion = useReducedMotion()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -322,25 +306,10 @@ export default function GlobeRuntime({
   // Hero is above the fold. Start immediately, then let IntersectionObserver
   // pause the renderer after the user scrolls it out of view.
   const [inView, setInView] = useState(true)
-  const [quality, setQuality] = useState<TGlobeQuality>(getInitialQuality)
+  const [quality] = useState<TGlobeQuality>(getInitialQuality)
   const [sceneReady, setSceneReady] = useState(false)
   const active = inView && documentVisible
-  const playbackActive = active && sceneReady
-
-  useEffect(() => {
-    const handleResize = () => {
-      setQuality((currentQuality) => {
-        const preferredQuality = getPreferredQuality()
-        if (currentQuality === "low" || preferredQuality === "high") {
-          return currentQuality
-        }
-        return preferredQuality
-      })
-    }
-
-    window.addEventListener("resize", handleResize, { passive: true })
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  const playbackActive = active && sceneReady && playbackEnabled
 
   useEffect(() => {
     const root = rootRef.current
@@ -372,6 +341,34 @@ export default function GlobeRuntime({
       onUnavailable()
     }
   }, [failed, onUnavailable, shouldReduceMotion])
+
+  useEffect(() => {
+    if (!sceneReady) return
+
+    let animationFrame = 0
+    let stableFrameCount = 0
+    let stableStartedAt = 0
+
+    // A compiled WebGL scene can still produce transient compositor frames on
+    // a cold reload. Keep it fully covered until it has remained mounted and
+    // visible for a sustained run of real browser frames.
+    const waitForStableComposite = (frameTime: number) => {
+      if (stableStartedAt === 0) stableStartedAt = frameTime
+      stableFrameCount += 1
+      if (
+        stableFrameCount >= STABLE_COMPOSITE_FRAMES &&
+        frameTime - stableStartedAt >= MIN_STABLE_COMPOSITE_MS
+      ) {
+        onReady()
+        return
+      }
+      animationFrame = requestAnimationFrame(waitForStableComposite)
+    }
+
+    animationFrame = requestAnimationFrame(waitForStableComposite)
+
+    return () => cancelAnimationFrame(animationFrame)
+  }, [onReady, sceneReady])
 
   useEffect(() => {
     if (!playbackActive) return
@@ -574,10 +571,6 @@ export default function GlobeRuntime({
   }, [])
 
   const handleLoadError = useCallback(() => setFailed(true), [])
-  const handleSlowFrame = useCallback(() => {
-    setSceneReady(false)
-    setQuality((currentQuality) => getLowerQuality(currentQuality))
-  }, [])
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -715,12 +708,9 @@ export default function GlobeRuntime({
       style={{ touchAction: "pan-y" }}
     >
       <GlobeCanvasErrorBoundary onError={handleLoadError}>
-        <motion.div
-          animate={{ opacity: sceneReady ? 1 : 0 }}
-          className="absolute inset-0 opacity-0"
-          initial={{ opacity: 0 }}
+        <div
+          className="absolute inset-0"
           style={{ visibility: sceneReady ? "visible" : "hidden" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <Canvas
             camera={{ far: 40, fov: 40, near: 0.1, position: [0, 0, 6.85] }}
@@ -737,19 +727,17 @@ export default function GlobeRuntime({
           >
             <GlobeContextMonitor onContextLost={handleLoadError} />
             <GlobeScene
-              active={active}
               activeCards={activeCards}
               elapsedRef={elapsedRef}
               interactionRef={interactionRef}
               onAnchorUpdate={handleAnchorUpdate}
               onLoadError={handleLoadError}
               onReady={handleSceneReady}
-              onSlowFrame={handleSlowFrame}
               quality={quality}
               routePlaybackRef={routePlaybackRef}
             />
           </Canvas>
-        </motion.div>
+        </div>
       </GlobeCanvasErrorBoundary>
 
       {activeCardPlaybacks.map((playback) => (
@@ -764,14 +752,9 @@ export default function GlobeRuntime({
         />
       ))}
 
-      <motion.div
-        animate={{ opacity: sceneReady ? 1 : 0, y: sceneReady ? 0 : 6 }}
-        className="absolute right-0 bottom-5 left-0 flex justify-center"
-        initial={false}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div className="absolute right-0 bottom-5 left-0 flex justify-center">
         <GlobeMetric />
-      </motion.div>
+      </div>
     </div>
   )
 }

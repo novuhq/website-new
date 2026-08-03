@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
+import { loadGlobeLandPoints } from "./globe-assets"
 import { GLOBE_POINT_SURFACE_OFFSET, GLOBE_RADIUS } from "./globe-data"
 import { geoPointToVector3 } from "./globe-math"
 import { LAND_FRAGMENT_SHADER, LAND_VERTEX_SHADER } from "./globe-shaders"
@@ -91,19 +92,12 @@ export default function GlobeLandPoints({
   )
 
   useEffect(() => {
-    const abortController = new AbortController()
     let active = true
     let pendingGeometry: THREE.InstancedBufferGeometry | null = null
 
     async function loadPoints() {
       try {
-        const response = await fetch(`/globe/land-points-${quality}.bin`, {
-          signal: abortController.signal,
-        })
-
-        if (!response.ok) throw new Error("Unable to load globe land points")
-
-        pendingGeometry = parseLandPoints(await response.arrayBuffer())
+        pendingGeometry = parseLandPoints(await loadGlobeLandPoints(quality))
 
         if (!active) {
           pendingGeometry.dispose()
@@ -113,9 +107,8 @@ export default function GlobeLandPoints({
 
         setResource({ geometry: pendingGeometry, quality })
         pendingGeometry = null
-      } catch (error) {
-        if (!active || abortController.signal.aborted) return
-        if (error instanceof DOMException && error.name === "AbortError") return
+      } catch {
+        if (!active) return
         onLoadError()
       }
     }
@@ -124,7 +117,6 @@ export default function GlobeLandPoints({
 
     return () => {
       active = false
-      abortController.abort()
       pendingGeometry?.dispose()
     }
   }, [onLoadError, quality])
@@ -145,10 +137,13 @@ export default function GlobeLandPoints({
       try {
         // Loading the binary only prepares CPU-side buffers. On a cold reload,
         // Safari can still be compiling the instanced shader when React reveals
-        // the canvas. Compile the complete scene first, then leave two frames for
-        // the uploaded buffers to be drawn before starting the DOM cross-fade.
+        // the canvas. Compile and draw the complete scene while it is still
+        // hidden, then wait for the GPU before starting the DOM cross-fade.
         await gl.compileAsync(scene, camera)
         if (cancelled) return
+
+        gl.render(scene, camera)
+        gl.getContext().finish()
 
         firstFrame = requestAnimationFrame(() => {
           secondFrame = requestAnimationFrame(() => {
