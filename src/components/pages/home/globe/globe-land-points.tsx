@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
 import { loadGlobeLandPoints } from "./globe-assets"
@@ -11,8 +10,8 @@ import { LAND_FRAGMENT_SHADER, LAND_VERTEX_SHADER } from "./globe-shaders"
 import type { TGlobeQuality } from "./globe-types"
 
 interface IGlobeLandPointsProps {
+  onGeometryReady: () => void
   onLoadError: () => void
-  onReady: () => void
   quality: TGlobeQuality
 }
 
@@ -74,16 +73,13 @@ function parseLandPoints(buffer: ArrayBuffer) {
 }
 
 export default function GlobeLandPoints({
+  onGeometryReady,
   onLoadError,
-  onReady,
   quality,
 }: IGlobeLandPointsProps) {
   const [resource, setResource] = useState<ILandPointsGeometryResource | null>(
     null
   )
-  const camera = useThree((state) => state.camera)
-  const gl = useThree((state) => state.gl)
-  const scene = useThree((state) => state.scene)
   const pointScale = quality === "high" ? 1 : quality === "medium" ? 0.9 : 0.78
   const geometry = resource?.quality === quality ? resource.geometry : null
   const uniforms = useMemo(
@@ -128,40 +124,8 @@ export default function GlobeLandPoints({
 
   useEffect(() => {
     if (!geometry) return
-
-    let cancelled = false
-    let firstFrame = 0
-    let secondFrame = 0
-
-    async function prepareScene() {
-      try {
-        // Loading the binary only prepares CPU-side buffers. On a cold reload,
-        // Safari can still be compiling the instanced shader when React reveals
-        // the canvas. Compile and draw the complete scene while it is still
-        // hidden, then give the browser two frames to present it before the
-        // DOM cross-fade starts.
-        await gl.compileAsync(scene, camera)
-        if (cancelled) return
-
-        gl.render(scene, camera)
-        firstFrame = requestAnimationFrame(() => {
-          secondFrame = requestAnimationFrame(() => {
-            if (!cancelled) onReady()
-          })
-        })
-      } catch {
-        if (!cancelled) onLoadError()
-      }
-    }
-
-    void prepareScene()
-
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(firstFrame)
-      cancelAnimationFrame(secondFrame)
-    }
-  }, [camera, geometry, gl, onLoadError, onReady, scene])
+    onGeometryReady()
+  }, [geometry, onGeometryReady])
 
   if (!geometry) return null
 

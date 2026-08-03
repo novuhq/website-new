@@ -460,9 +460,6 @@ export default function GlobeRuntime({
       rootRef.current?.style.removeProperty("opacity")
     }
 
-    window.addEventListener("beforeunload", hideRuntimeBeforePageExit, {
-      capture: true,
-    })
     window.addEventListener("pagehide", hideRuntimeBeforePageExit, {
       capture: true,
     })
@@ -470,9 +467,6 @@ export default function GlobeRuntime({
     window.addEventListener("keydown", handleReloadKey, { capture: true })
 
     return () => {
-      window.removeEventListener("beforeunload", hideRuntimeBeforePageExit, {
-        capture: true,
-      })
       window.removeEventListener("pagehide", hideRuntimeBeforePageExit, {
         capture: true,
       })
@@ -699,6 +693,10 @@ export default function GlobeRuntime({
   }, [])
 
   const handleLoadError = useCallback(() => setFailed(true), [])
+  const handleContextLost = useCallback(() => {
+    rootRef.current?.style.setProperty("opacity", "0")
+    setFailed(true)
+  }, [])
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -845,7 +843,7 @@ export default function GlobeRuntime({
               camera={{ far: 40, fov: 40, near: 0.1, position: [0, 0, 6.85] }}
               dpr={dpr}
               fallback={null}
-              frameloop={active && playbackEnabled ? "always" : "demand"}
+              frameloop={active && sceneReady ? "always" : "demand"}
               gl={{
                 alpha: true,
                 antialias: false,
@@ -863,7 +861,7 @@ export default function GlobeRuntime({
                 }
                 onSustainedSlowFrames={handleSustainedSlowFrames}
               />
-              <GlobeContextMonitor onContextLost={handleLoadError} />
+              <GlobeContextMonitor onContextLost={handleContextLost} />
               <GlobeScene
                 activeCards={activeCards}
                 elapsedRef={elapsedRef}
