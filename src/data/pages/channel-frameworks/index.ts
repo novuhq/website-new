@@ -16,6 +16,31 @@ export const publishedCombos: Array<{ channel: string; framework: string }> = [
   { channel: "whatsapp", framework: "langchain" },
   { channel: "telegram", framework: "langchain" },
   { channel: "email", framework: "langchain" },
+  { channel: "slack", framework: "ai-sdk" },
+  { channel: "microsoft-teams", framework: "ai-sdk" },
+  { channel: "whatsapp", framework: "ai-sdk" },
+  { channel: "telegram", framework: "ai-sdk" },
+  { channel: "email", framework: "ai-sdk" },
+  { channel: "slack", framework: "chat-sdk" },
+  { channel: "microsoft-teams", framework: "chat-sdk" },
+  { channel: "whatsapp", framework: "chat-sdk" },
+  { channel: "telegram", framework: "chat-sdk" },
+  { channel: "email", framework: "chat-sdk" },
+  { channel: "slack", framework: "custom-code" },
+  { channel: "microsoft-teams", framework: "custom-code" },
+  { channel: "whatsapp", framework: "custom-code" },
+  { channel: "telegram", framework: "custom-code" },
+  { channel: "email", framework: "custom-code" },
+  { channel: "slack", framework: "claude" },
+  { channel: "microsoft-teams", framework: "claude" },
+  { channel: "whatsapp", framework: "claude" },
+  { channel: "telegram", framework: "claude" },
+  { channel: "email", framework: "claude" },
+  { channel: "slack", framework: "claude-aws" },
+  { channel: "microsoft-teams", framework: "claude-aws" },
+  { channel: "whatsapp", framework: "claude-aws" },
+  { channel: "telegram", framework: "claude-aws" },
+  { channel: "email", framework: "claude-aws" },
 ]
 
 export interface IChannelFrameworkCombo {
@@ -51,13 +76,14 @@ export function getAllComboParams(): Array<{
 }
 
 /**
- * The connect command for a combo. Bridge frameworks pass `--runtime`;
- * managed frameworks connect the channel directly.
+ * The connect command for a combo. Any framework with a runtime flag
+ * (bridge or managed) passes `--runtime`, in the canonical
+ * channel-then-runtime order from the channels source of truth.
  */
 export function getConnectCommand(combo: IChannelFrameworkCombo): string {
   const { channel, framework } = combo
-  if (framework.connectPath === "bridge" && framework.runtimeFlag) {
-    return `npx novu connect --runtime ${framework.runtimeFlag} --channel ${channel.cliSlug}`
+  if (framework.runtimeFlag) {
+    return `npx novu connect --channel ${channel.cliSlug} --runtime ${framework.runtimeFlag}`
   }
   return `npx novu connect --channel ${channel.cliSlug}`
 }
@@ -123,6 +149,11 @@ export function getFrameworkCommands(
  */
 export const FRAMEWORK_COVER_LOGO: Record<string, string> = {
   langchain: "images/integration-icons/ai/langchain-icon.svg",
+  "ai-sdk": "images/integration-icons/ai/ai-sdk-icon.png",
+  "chat-sdk": "images/integration-icons/ai/chat-sdk-icon.svg",
+  "custom-code": "images/integration-icons/ai/custom-code-icon.svg",
+  claude: "images/integration-icons/ai/claude-icon.svg",
+  "claude-aws": "images/integration-icons/ai/aws-icon.svg",
 }
 
 export const CHANNEL_COVER_LOGO: Record<string, string> = {
