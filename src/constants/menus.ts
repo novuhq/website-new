@@ -26,36 +26,6 @@ export const MENUS = {
       ],
     },
     {
-      title: "Solutions",
-      variant: "solutions",
-      content: [
-        {
-          items: [
-            {
-              label: "For AI Agents",
-              href: ROUTE.connect,
-              menuIcon: "agents",
-            },
-            {
-              label: "For App Notifications",
-              href: ROUTE.inbox,
-              menuIcon: "notifications",
-            },
-            {
-              label: "For Builders",
-              href: ROUTE.docsOverview,
-              menuIcon: "builders",
-            },
-            {
-              label: "For Enterprise",
-              href: ROUTE.contactUs,
-              menuIcon: "enterprise",
-            },
-          ],
-        },
-      ],
-    },
-    {
       title: "Channels",
       variant: "channels",
       content: [
@@ -67,10 +37,10 @@ export const MENUS = {
               menuIcon: "slack",
               children: [
                 {
-                  label: "Connect LangChain agent",
+                  label: "LangChain",
                   href: ROUTE.channelSlackLangchain,
+                  menuIcon: "langchain",
                 },
-                { label: "Connect AI agent", href: ROUTE.channelSlack },
               ],
             },
             {
@@ -79,10 +49,10 @@ export const MENUS = {
               menuIcon: "whatsapp",
               children: [
                 {
-                  label: "Connect LangChain agent",
+                  label: "LangChain",
                   href: ROUTE.channelWhatsAppLangchain,
+                  menuIcon: "langchain",
                 },
-                { label: "Connect AI agent", href: ROUTE.channelWhatsApp },
               ],
             },
             {
@@ -91,10 +61,10 @@ export const MENUS = {
               menuIcon: "telegram",
               children: [
                 {
-                  label: "Connect LangChain agent",
+                  label: "LangChain",
                   href: ROUTE.channelTelegramLangchain,
+                  menuIcon: "langchain",
                 },
-                { label: "Connect AI agent", href: ROUTE.channelTelegram },
               ],
             },
             {
@@ -103,12 +73,9 @@ export const MENUS = {
               menuIcon: "teams",
               children: [
                 {
-                  label: "Connect LangChain agent",
+                  label: "LangChain",
                   href: ROUTE.channelMicrosoftTeamsLangchain,
-                },
-                {
-                  label: "Connect AI agent",
-                  href: ROUTE.channelMicrosoftTeams,
+                  menuIcon: "langchain",
                 },
               ],
             },
@@ -118,10 +85,10 @@ export const MENUS = {
               menuIcon: "email",
               children: [
                 {
-                  label: "Connect LangChain agent",
+                  label: "LangChain",
                   href: ROUTE.channelEmailLangchain,
+                  menuIcon: "langchain",
                 },
-                { label: "Connect AI agent", href: ROUTE.channelEmail },
               ],
             },
           ],
@@ -150,19 +117,10 @@ export const MENUS = {
               menuIcon: "copilot",
             },
             { label: "Novu ACI", href: ROUTE.aci, menuIcon: "aci" },
-            { label: "Prompt", href: ROUTE.mcp, menuIcon: "prompt" },
             {
               label: "Skills",
               href: ROUTE.githubSkills,
               menuIcon: "skills",
-            },
-            { label: "Claude", href: ROUTE.docsMcp, menuIcon: "claude" },
-            { label: "Codex", href: ROUTE.docsMcp, menuIcon: "codex" },
-            { label: "Cursor", href: ROUTE.docsMcp, menuIcon: "cursor" },
-            {
-              label: "Custom Code",
-              href: ROUTE.docsCustomCode,
-              menuIcon: "custom-code",
             },
           ],
         },
@@ -190,11 +148,6 @@ export const MENUS = {
               label: "Changelog",
               href: ROUTE.changelog,
               menuIcon: "changelog",
-            },
-            {
-              label: "History of Notification",
-              href: ROUTE.blog,
-              menuIcon: "history",
             },
           ],
         },

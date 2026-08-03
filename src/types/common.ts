@@ -5,13 +5,15 @@ import { type BundledLanguage } from "shiki/langs"
 
 import { type TSocialIcons } from "@/components/icons"
 
+import type { TIntegrationMenuIcon } from "./integration-menu"
+
 export interface IMenuItem {
   label: string
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
   description?: string
-  iconSrc?: string
+  integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
   remainingCount?: number
 }
@@ -31,6 +33,7 @@ export type TMenuIcon =
   | "push"
   | "chat"
   | "sms"
+  | "langchain"
   | "mcp"
   | "copilot"
   | "aci"

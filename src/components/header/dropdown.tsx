@@ -14,6 +14,7 @@ import type {
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
+import IntegrationMenuIcon from "./integration-menu-icon"
 import MenuIcon from "./menu-icon"
 
 interface IDropdownProps {
@@ -121,8 +122,7 @@ function MenuLinks({ items, variant }: IMenuLinksProps) {
     <ul
       className={cn(
         variant === "solutions" && "flex flex-col p-3.5",
-        variant === "ai" &&
-          "grid auto-cols-max grid-flow-col grid-rows-5 gap-x-6 p-3.5"
+        variant === "ai" && "flex flex-col p-3.5"
       )}
     >
       {items.map(({ label, href, menuIcon }) => (
@@ -159,12 +159,7 @@ function NestedMenu({
 
   return (
     <div className="flex font-inter">
-      <ul
-        className={cn(
-          "shrink-0 rounded-l-[1.375rem] bg-[#0B0C0E] p-3.5",
-          variant === "channels" ? "min-w-66" : "min-w-50"
-        )}
-      >
+      <ul className="shrink-0 rounded-l-[1.375rem] bg-[#0B0C0E] p-3.5">
         {items.map(({ label, href, menuIcon }, index) => {
           const isActive = activeIndex === index
 
@@ -172,7 +167,7 @@ function NestedMenu({
             <li key={label}>
               <Link
                 className={cn(
-                  "group flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white",
+                  "group flex min-h-9 w-full min-w-42.5 items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white",
                   isActive && "bg-[#121417] text-white"
                 )}
                 href={href}
@@ -189,47 +184,42 @@ function NestedMenu({
       </ul>
 
       {activeItem && (
-        <ul
-          className={cn(
-            "shrink-0 border-l border-gray-20 p-3.5",
-            variant === "channels" ? "min-w-80" : "min-w-72"
+        <div className="min-w-64 shrink-0 border-l border-gray-20 p-3.5">
+          {variant === "channels" && (
+            <p className="mx-2.5 mt-2.5 mb-3.5 text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+              {activeItem.label} Agent Frameworks
+            </p>
           )}
-          aria-label={`${activeItem.label} links`}
-        >
-          {activeItem.children?.map(({ label, href, iconSrc }) => (
-            <li key={label}>
-              <Link
-                className="flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 transition-colors hover:bg-[#121417] hover:text-white"
-                href={href}
-                variant="clean"
-              >
-                {iconSrc && (
-                  <Image
-                    className="size-4 shrink-0 object-contain"
-                    src={iconSrc}
-                    width={16}
-                    height={16}
-                    alt=""
-                    aria-hidden
-                  />
-                )}
-                {label}
-              </Link>
-            </li>
-          ))}
-          {Boolean(activeItem.remainingCount) && (
-            <li>
-              <Link
-                className="flex min-h-9 w-full items-center gap-1 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white"
-                href={activeItem.href}
-                variant="clean"
-              >
-                +{activeItem.remainingCount} more
-                <ChevronRight className="size-4" aria-hidden="true" />
-              </Link>
-            </li>
-          )}
-        </ul>
+          <ul aria-label={`${activeItem.label} links`}>
+            {activeItem.children?.map(
+              ({ label, href, menuIcon, integrationIcon }) => (
+                <li key={label}>
+                  <Link
+                    className="group flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 transition-colors hover:bg-[#121417] hover:text-white"
+                    href={href}
+                    variant="clean"
+                  >
+                    <MenuIcon icon={menuIcon} />
+                    <IntegrationMenuIcon icon={integrationIcon} />
+                    {label}
+                  </Link>
+                </li>
+              )
+            )}
+            {Boolean(activeItem.remainingCount) && (
+              <li>
+                <Link
+                  className="flex min-h-9 w-full items-center gap-1 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white"
+                  href={activeItem.href}
+                  variant="clean"
+                >
+                  +{activeItem.remainingCount} more
+                  <ChevronRight className="size-4" aria-hidden="true" />
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       )}
     </div>
   )

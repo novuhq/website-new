@@ -12,6 +12,7 @@ import channelsChatIcon from "@/svgs/header/menu/channels-chat.inline.svg"
 import channelsEmailIcon from "@/svgs/header/menu/channels-email.inline.svg"
 import channelsImessageIcon from "@/svgs/header/menu/channels-imessage.inline.svg"
 import channelsInboxIcon from "@/svgs/header/menu/channels-inbox.inline.svg"
+import channelsLangchainIcon from "@/svgs/header/menu/channels-langchain.inline.svg"
 import channelsMsTeamsIcon from "@/svgs/header/menu/channels-ms-teams.inline.svg"
 import channelsPushIcon from "@/svgs/header/menu/channels-push.inline.svg"
 import channelsSlackIcon from "@/svgs/header/menu/channels-slack.inline.svg"
@@ -89,6 +90,7 @@ const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   push: channelsPushIcon,
   chat: channelsChatIcon,
   sms: channelsSmsIcon,
+  langchain: channelsLangchainIcon,
 }
 
 function MenuIcon({ icon, className }: IMenuIconProps) {

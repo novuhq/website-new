@@ -1,5 +1,4 @@
 import { useState } from "react"
-import Image from "next/image"
 import { ChevronRight } from "lucide-react"
 import { domAnimation, LazyMotion, m } from "motion/react"
 
@@ -9,6 +8,7 @@ import { Link } from "@/components/ui/link"
 
 import { Button } from "../ui/button"
 import Card from "./card"
+import IntegrationMenuIcon from "./integration-menu-icon"
 import MenuIcon from "./menu-icon"
 
 interface IMobileProps {
@@ -103,16 +103,10 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                                       variant="clean"
                                       onClick={onNavigate}
                                     >
-                                      {child.iconSrc && (
-                                        <Image
-                                          className="size-4 shrink-0 object-contain"
-                                          src={child.iconSrc}
-                                          width={16}
-                                          height={16}
-                                          alt=""
-                                          aria-hidden
-                                        />
-                                      )}
+                                      <MenuIcon icon={child.menuIcon} />
+                                      <IntegrationMenuIcon
+                                        icon={child.integrationIcon}
+                                      />
                                       {child.label}
                                     </Link>
                                   </li>
