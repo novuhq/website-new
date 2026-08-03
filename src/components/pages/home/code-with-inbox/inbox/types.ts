@@ -8,6 +8,8 @@ export type InboxTheme =
   | "linearDark"
   | "linearLight"
 
+export type InboxVariant = "comparison" | "home"
+
 export type IconComponent = ComponentType<SVGProps<SVGSVGElement>>
 
 // Novu message

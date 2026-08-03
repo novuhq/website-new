@@ -35,7 +35,9 @@ export function useScrollStatus() {
 
     updateScrollStatus(element)
 
-    element.addEventListener("scroll", () => updateScrollStatus(element))
+    const handleScroll = () => updateScrollStatus(element)
+
+    element.addEventListener("scroll", handleScroll)
 
     if (typeof ResizeObserver !== "undefined") {
       resizeObserverRef.current = new ResizeObserver(() => {
@@ -63,7 +65,7 @@ export function useScrollStatus() {
     }, 100)
 
     return () => {
-      element.removeEventListener("scroll", () => updateScrollStatus(element))
+      element.removeEventListener("scroll", handleScroll)
 
       if (resizeObserverRef.current) {
         resizeObserverRef.current.disconnect()

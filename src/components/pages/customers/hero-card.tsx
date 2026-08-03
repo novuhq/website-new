@@ -101,7 +101,7 @@ function HeroCard({
           href={`${ROUTE.customers}/${slug.current}`}
           className="group absolute top-0 left-0 z-20 h-full w-full rounded-[inherit]"
         >
-          <span className="sr-only">Read the story of ${name}</span>
+          <span className="sr-only">Read the story of {name}</span>
         </Link>
         <Image
           className="pointer-events-none relative z-10 h-10 w-auto"

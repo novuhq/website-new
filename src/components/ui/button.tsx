@@ -14,6 +14,8 @@ const buttonVariants = cva(
         default: "bg-white text-black hover:bg-secondary-foreground",
         outline:
           "border border-[#534B5D] button-gradient bg-opacity-50 hover:text-accent-foreground",
+        "outline-transparent":
+          "border border-[#534B5D] bg-transparent text-white before:hidden hover:bg-transparent hover:text-white",
         "outline-faded":
           "border border-accent bg-[#15151b] text-gray-9 hover:bg-accent hover:text-foreground",
         link: "text-gray-9 hover:text-foreground",

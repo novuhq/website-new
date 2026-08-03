@@ -8,7 +8,6 @@ import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
 
-import { IMenuHeaderCard } from "@/types/common"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import SearchBar from "@/components/ui/search-bar"
@@ -19,38 +18,16 @@ import Nav from "./nav"
 
 interface IHeaderProps {
   githubStars: number
-  changelog: IMenuHeaderCard
-  blog: IMenuHeaderCard
 }
 
-function Header({ githubStars, changelog, blog }: IHeaderProps) {
+function Header({ githubStars }: IHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const normalizedPathname =
     pathname && pathname !== "/" ? pathname.replace(/\/$/, "") : pathname
   const isCareersPage = normalizedPathname === ROUTE.careers
 
-  const navigationItems = MENUS.header.map((item) => {
-    const content = item?.content?.map((contentItem) => {
-      if (contentItem.type === "changelog") {
-        return {
-          ...contentItem,
-          card: changelog,
-        }
-      } else if (contentItem.type === "blog") {
-        return {
-          ...contentItem,
-          card: blog,
-        }
-      }
-      return contentItem
-    })
-
-    return {
-      ...item,
-      content,
-    }
-  })
+  const navigationItems = MENUS.header
 
   useEffect(() => {
     if (!isCareersPage) {
@@ -86,13 +63,13 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 transition-colors duration-150",
+        "sticky top-0 z-50 font-inter transition-colors duration-150",
         !isCareersPage || isScrolled ? "bg-black" : "bg-transparent"
       )}
     >
-      <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:justify-start">
+      <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <NextLink
-          className="mr-5 inline-flex shrink-0 rounded lg:mr-7"
+          className="mr-5 inline-flex shrink-0 rounded lg:mr-0 lg:justify-self-start"
           href={ROUTE.index}
         >
           <Image
@@ -105,14 +82,20 @@ function Header({ githubStars, changelog, blog }: IHeaderProps) {
           />
           <span className="sr-only">{config.projectName}</span>
         </NextLink>
-        <Nav className="hidden grow lg:flex" items={navigationItems} />
-        <div className="ml-auto hidden items-center justify-end gap-x-5 lg:flex">
-          <GithubStars className="hidden xl:flex" stars={githubStars} />
-          <Button variant="outline" asChild>
-            <NextLink href={ROUTE.dashboardV2SignIn}>Login</NextLink>
-          </Button>
-          <Button asChild>
-            <NextLink href={ROUTE.dashboardV2SignUp}>Get Started</NextLink>
+        <Nav
+          className="hidden lg:flex lg:justify-self-center"
+          items={navigationItems}
+        />
+        <div className="ml-auto hidden items-center justify-end gap-x-5 lg:ml-0 lg:flex lg:justify-self-end">
+          <GithubStars
+            className="hidden text-base tracking-tighter xl:flex"
+            stars={githubStars}
+          />
+          <Button
+            className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+            asChild
+          >
+            <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
           </Button>
         </div>
         <SearchBar

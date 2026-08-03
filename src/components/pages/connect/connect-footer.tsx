@@ -17,7 +17,9 @@ const CONNECT_FOOTER_GROUPS: IMenuFooterItem[] = MENUS.footer.main.map(
       return {
         ...group,
         items: group.items
-          .filter(({ label }) => label !== "Novu Copilot")
+          .filter(
+            ({ label }) => label !== "Novu Copilot" && label !== "Novu ACI"
+          )
           .map((item) =>
             item.label === "Novu MCP" ? { ...item, isNew: true } : item
           ),
@@ -92,7 +94,7 @@ const SocialLink = ({ href, icon, label }: IMenuSocialItem) => {
 
 function ConnectFooter() {
   return (
-    <footer className="relative overflow-hidden bg-connect-footer px-5 pt-10 pb-6 md:px-8 md:pb-7 lg:pt-12 lg:pb-8">
+    <footer className="relative overflow-hidden bg-connect-footer px-5 pt-10 pb-6 md:px-8 md:pb-7 lg:pt-12 lg:pb-6.5">
       <div
         className="pointer-events-none absolute top-0 left-1/2 aspect-1920/614 h-auto w-[150%] max-w-480 -translate-x-1/2 connect-footer-background md:w-[120%] xl:w-full"
         aria-hidden="true"
@@ -141,8 +143,8 @@ function ConnectFooter() {
           </div>
         </div>
 
-        <div className="mt-18 lg:mt-16 xl:pt-px">
-          <div className="pb-4.25 md:flex md:justify-between md:pb-5.25 lg:pb-6.5">
+        <div className="mt-18 lg:mt-14.5 xl:pt-px">
+          <div className="pb-4.25 md:flex md:justify-between md:pb-5.25 lg:pb-7">
             <SystemStatus />
             <ul className="absolute top-11.5 right-5 flex gap-8 md:static xl:mr-0.75">
               {MENUS.footer.social.map((link, index) => (

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { pricingPageData } from "@/data/pages/pricing"
 
 import { cn } from "@/lib/utils"
-import Logos from "@/components/pages/integrations/logos"
+import Logos from "@/components/ui/logos"
 
 function IntegrationsHeroTrustedBy() {
   const { logos } = pricingPageData

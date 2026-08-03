@@ -2,10 +2,6 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Providers } from "@/contexts"
 
 import { getGithubInfo } from "@/lib/get-github-info"
-import {
-  getLatestBlogPost,
-  getLatestChangelogPost,
-} from "@/lib/get-header-data"
 import Fonts from "@/components/fonts"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
@@ -13,11 +9,7 @@ import NotFoundContent from "@/components/pages/not-found"
 import Scripts, { GTM_ID } from "@/components/scripts"
 
 export default async function NotFound() {
-  const [{ stars }, changelog, blog] = await Promise.all([
-    getGithubInfo(),
-    getLatestChangelogPost(),
-    getLatestBlogPost(),
-  ])
+  const { stars } = await getGithubInfo()
 
   return (
     <>
@@ -37,7 +29,7 @@ export default async function NotFound() {
         className={`flex min-h-svh flex-col bg-background font-sans antialiased`}
       >
         <Providers>
-          <Header githubStars={stars} changelog={changelog} blog={blog} />
+          <Header githubStars={stars} />
           <main className="flex grow">
             <NotFoundContent />
           </main>

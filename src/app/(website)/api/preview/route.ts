@@ -1,14 +1,13 @@
 import { draftMode } from "next/headers"
-import { redirect } from "next/navigation"
+import { defineEnableDraftMode } from "next-sanity/draft-mode"
+
+import { getPreviewClient } from "@/lib/sanity/client"
 
 /**
- * Preview api route
- * - verify the secret token in the request
- * - enable draftMode to allow draft content display
- * - disable draftMode to disable draft content display
- * - retrieve redirect_url and perform the redirect
- * @param request
- * @constructor
+ * Preview API route used by Sanity Studio.
+ *
+ * `defineEnableDraftMode` verifies Sanity's short-lived preview URL secret
+ * before it enables the draft-mode cookie and redirects to the validated path.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -21,20 +20,14 @@ export async function GET(request: Request) {
     return new Response("Draft mode is disabled")
   }
 
-  const secret = searchParams.get("secret")
+  try {
+    const enableDraftMode = defineEnableDraftMode({
+      client: getPreviewClient(),
+    })
 
-  if (secret !== process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET) {
-    return new Response("Invalid token", { status: 401 })
-  }
-
-  const draft = await draftMode()
-  draft.enable()
-
-  const redirectUrl = searchParams.get("redirect_url")
-
-  if (redirectUrl) {
-    redirect(redirectUrl)
-  } else {
-    return new Response("Missing redirect URL", { status: 400 })
+    return enableDraftMode.GET(request)
+  } catch (error) {
+    console.error("Unable to enable Sanity draft mode", error)
+    return new Response("Draft mode is unavailable", { status: 503 })
   }
 }

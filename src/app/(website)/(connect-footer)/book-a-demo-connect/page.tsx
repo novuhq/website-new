@@ -39,7 +39,7 @@ export default async function BookADemoConnectPage() {
           id="faq"
           className="scroll-mt-16 bg-black pt-28 md:pt-36 lg:pt-44 xl:pt-63 xl:pb-0"
           titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
-          containerClassName="lg:max-w-227 md:max-w-[796px] lg:px-0"
+          containerClassName="gap-y-6 md:gap-y-[22px] md:max-w-[796px] lg:max-w-227 lg:px-0"
         />
         <BookADemoConnectFinalCta />
       </div>

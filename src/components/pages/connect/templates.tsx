@@ -15,6 +15,7 @@ import type {
   ITemplateCategoryData,
   ITemplateImage,
 } from "@/types/templates"
+import { getAgentTemplateUrl } from "@/lib/templates/url"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
@@ -260,7 +261,7 @@ function TemplateCardButton({
 }) {
   return (
     <NextLink
-      href={`${ROUTE.connectApp}?agentTemplateId=${templateId}`}
+      href={getAgentTemplateUrl(templateId)}
       target="_blank"
       rel="noopener noreferrer"
       className="group/button relative flex h-10 w-full items-center justify-center overflow-visible rounded border border-[#534b5d] px-5 py-3.5 text-center text-xs leading-none font-medium tracking-normal text-white uppercase transition-[border-color] duration-200 ease-out outline-none hover:border-[#686170] focus-visible:border-[#686170] focus-visible:ring-2 focus-visible:ring-lagune-3/40 motion-reduce:transition-none"

@@ -105,7 +105,7 @@ export default function AciPage() {
         {...ACI_FAQ}
         className="pt-26 md:pt-48 lg:pt-73"
         titleClassName="text-center text-[1.75rem] md:text-[40px] lg:text-left"
-        containerClassName="max-w-272"
+        containerClassName="max-w-272 gap-y-6 md:gap-y-[22px]"
       />
       <FinalCta
         {...ACI_FINAL_CTA}

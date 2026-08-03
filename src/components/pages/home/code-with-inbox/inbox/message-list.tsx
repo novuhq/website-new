@@ -4,37 +4,37 @@ import { useMemo, useState } from "react"
 import { AnimatePresence, domAnimation, LazyMotion } from "motion/react"
 import * as m from "motion/react-m"
 
-import { cn } from "@/lib/utils"
 import { prepareAndFilterMessages } from "@/lib/linear-theme-utils"
+import { cn } from "@/lib/utils"
+
+import LinearHeader from "./headers/linear-header"
+import NotionHeader from "./headers/notion-header"
+import NovuHeader from "./headers/novu-header"
 import {
   ArchiveAllIcon,
-  ArchiveReadIcon,
   ArchivedIcon,
+  ArchiveReadIcon,
   LinearDeleteIcon,
   LinearMarkReadIcon,
   MarkReadIcon,
-  UnreadReadIcon,
   UnreadIcon,
+  UnreadReadIcon,
 } from "./icons"
+import LinearMessage from "./messages/linear-message"
+import NotionMessage from "./messages/notion-message"
+import NovuMessage from "./messages/novu-message"
+import NovuTabList from "./novu-tab-list"
 import { MESSAGE_LIST_THEMES } from "./theme-config"
 import type {
-  InboxTheme,
-  InboxMessage,
-  INovuMessage,
-  INotionMessage,
-  ILinearMessage,
-  ITabItem,
-  IFilterItem,
   IActionItem,
+  IFilterItem,
+  ILinearMessage,
+  InboxMessage,
+  InboxTheme,
+  INotionMessage,
+  INovuMessage,
+  ITabItem,
 } from "./types"
-
-import NovuHeader from "./headers/novu-header"
-import NotionHeader from "./headers/notion-header"
-import LinearHeader from "./headers/linear-header"
-import NovuTabList from "./novu-tab-list"
-import NovuMessage from "./messages/novu-message"
-import NotionMessage from "./messages/notion-message"
-import LinearMessage from "./messages/linear-message"
 
 const ANIMATION_DURATION = 0.2
 const MOTION_EASY = [0.25, 0.1, 0.25, 1]
@@ -60,8 +60,7 @@ const NOVU_NOTION_FILTERS: IFilterItem[] = [
   {
     label: "Unread",
     Icon: UnreadIcon,
-    filter: (messages) =>
-      messages.filter((m) => !m.isArchived && !m.isRead),
+    filter: (messages) => messages.filter((m) => !m.isArchived && !m.isRead),
   },
   {
     label: "Archived",
@@ -74,22 +73,18 @@ const NOVU_NOTION_ACTIONS: IActionItem[] = [
   {
     label: "Mark all as read",
     Icon: MarkReadIcon,
-    action: (messages) =>
-      messages.map((m) => ({ ...m, isRead: true })),
+    action: (messages) => messages.map((m) => ({ ...m, isRead: true })),
   },
   {
     label: "Archive all",
     Icon: ArchiveAllIcon,
-    action: (messages) =>
-      messages.map((m) => ({ ...m, isArchived: true })),
+    action: (messages) => messages.map((m) => ({ ...m, isArchived: true })),
   },
   {
     label: "Archive read",
     Icon: ArchiveReadIcon,
     action: (messages) =>
-      messages.map((m) =>
-        m.isRead ? { ...m, isArchived: true } : m
-      ),
+      messages.map((m) => (m.isRead ? { ...m, isArchived: true } : m)),
   },
 ]
 
@@ -110,13 +105,13 @@ const LINEAR_FILTERS = {
     {
       label: "Delete all read notifications",
       Icon: LinearDeleteIcon,
-      action: (messages: InboxMessage[]) =>
-        messages.filter((m) => !m.isRead),
+      action: (messages: InboxMessage[]) => messages.filter((m) => !m.isRead),
     },
   ] satisfies IActionItem[],
 }
 
 interface IMessageListProps {
+  animateEntrance?: boolean
   theme: InboxTheme
   tabs?: ITabItem[]
   setActiveTab: (tab: string) => void
@@ -126,6 +121,7 @@ interface IMessageListProps {
 }
 
 function MessageList({
+  animateEntrance = true,
   theme,
   tabs = [],
   setActiveTab,
@@ -199,10 +195,9 @@ function MessageList({
     )
   }
 
-  const handleAction =
-    (action: IActionItem["action"]) => () => {
-      setMessages(action(messages))
-    }
+  const handleAction = (action: IActionItem["action"]) => () => {
+    setMessages(action(messages))
+  }
 
   const handleFilter = (filter: number) => () => {
     setFilterIndex(filter)
@@ -247,9 +242,7 @@ function MessageList({
           showRead={showRead}
           showUnreadFirst={showUnreadFirst}
           toggleShowRead={() => setShowRead((prev) => !prev)}
-          toggleShowUnreadFirst={() =>
-            setShowUnreadFirst((prev) => !prev)
-          }
+          toggleShowUnreadFirst={() => setShowUnreadFirst((prev) => !prev)}
         />
       )}
       {(theme === "novuDark" || theme === "novuLight") &&
@@ -267,7 +260,7 @@ function MessageList({
           <m.div
             className="scrollbar-hidden relative z-10 h-full overflow-y-auto pb-4"
             key={activeTab}
-            initial={{ opacity: 0, x: 20 }}
+            initial={animateEntrance ? { opacity: 0, x: 20 } : false}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: ANIMATION_DURATION, ease: MOTION_EASY }}
@@ -293,16 +286,14 @@ function MessageList({
                       exit="exit"
                       layout
                     >
-                      {(theme === "novuDark" ||
-                        theme === "novuLight") && (
+                      {(theme === "novuDark" || theme === "novuLight") && (
                         <NovuMessage
                           theme={theme}
                           message={message as unknown as INovuMessage}
                           readMessage={readMessage}
                         />
                       )}
-                      {(theme === "notionDark" ||
-                        theme === "notionLight") && (
+                      {(theme === "notionDark" || theme === "notionLight") && (
                         <NotionMessage
                           theme={theme}
                           message={message as unknown as INotionMessage}
@@ -310,8 +301,7 @@ function MessageList({
                           deleteMessage={deleteMessage}
                         />
                       )}
-                      {(theme === "linearDark" ||
-                        theme === "linearLight") && (
+                      {(theme === "linearDark" || theme === "linearLight") && (
                         <LinearMessage
                           theme={theme}
                           message={message as unknown as ILinearMessage}

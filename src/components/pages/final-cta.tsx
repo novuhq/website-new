@@ -47,7 +47,7 @@ const DEFAULT_FINAL_CTA_TITLE = (
   </>
 )
 
-function FinalCtaVideo({ className }: { className?: string }) {
+export function FinalCtaVideo({ className }: { className?: string }) {
   return (
     <div
       className={cn(

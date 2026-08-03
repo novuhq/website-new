@@ -1,6 +1,12 @@
 import { Metadata as NextMetadata } from "next"
 import config from "@/configs/website-config"
 
+import {
+  absoluteUrl,
+  toCanonicalPathname,
+  toMarkdownPathname,
+} from "@/lib/site-url"
+
 /**
  * Metadata configuration options for page SEO
  * @interface Metadata
@@ -22,23 +28,6 @@ type Metadata = {
   noIndex?: boolean
   /** Pathname for the markdown alternate. Set true to derive pathname + ".md". */
   markdownPathname?: string | true | false
-}
-
-function withTrailingSlash(pathname: string) {
-  if (!pathname || pathname === "/") {
-    return "/"
-  }
-
-  return pathname.endsWith("/") ? pathname : `${pathname}/`
-}
-
-function withMarkdownExtension(pathname: string) {
-  if (!pathname || pathname === "/") {
-    return "/index.md"
-  }
-
-  const normalized = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname
-  return `${normalized}.md`
 }
 
 /**
@@ -65,19 +54,19 @@ export function getMetadata({
   noIndex = false,
   markdownPathname,
 }: Metadata) {
-  const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
-  const canonicalUrl = SITE_URL + withTrailingSlash(pathname)
+  const canonicalUrl = absoluteUrl(toCanonicalPathname(pathname))
   const markdownUrl =
     !noIndex && markdownPathname
-      ? SITE_URL +
-        (markdownPathname === true
-          ? withMarkdownExtension(pathname)
-          : markdownPathname)
+      ? absoluteUrl(
+          markdownPathname === true
+            ? toMarkdownPathname(pathname)
+            : markdownPathname
+        )
       : null
   const resolvedImagePath = imagePath || config.defaultSocialImage
   const imageUrl = resolvedImagePath.startsWith("http")
     ? resolvedImagePath
-    : SITE_URL + resolvedImagePath
+    : absoluteUrl(resolvedImagePath)
 
   return {
     title,
@@ -92,7 +81,7 @@ export function getMetadata({
           }
         : {}),
     },
-    manifest: `${SITE_URL}/manifest.json`,
+    manifest: absoluteUrl("/manifest.json"),
     icons: {
       icon: "/favicon/favicon.png",
       apple: [
@@ -160,6 +149,6 @@ export function getMetadata({
       description,
       images: imageAlt ? { url: imageUrl, alt: imageAlt } : imageUrl,
     },
-    robots: noIndex ? "noindex" : null,
+    robots: noIndex ? { index: false, follow: false } : null,
   } as NextMetadata
 }

@@ -1,9 +1,6 @@
 import type { ReactNode } from "react"
+
 import { getGithubInfo } from "@/lib/get-github-info"
-import {
-  getLatestBlogPost,
-  getLatestChangelogPost,
-} from "@/lib/get-header-data"
 import Header from "@/components/header"
 import WebsiteLayoutShell from "@/components/website-layout-shell"
 
@@ -20,15 +17,11 @@ async function WebsiteShellLayout({
   footer,
   wrapperClassName,
 }: WebsiteShellLayoutProps) {
-  const [{ stars }, changelog, blog] = await Promise.all([
-    getGithubInfo(),
-    getLatestChangelogPost(),
-    getLatestBlogPost(),
-  ])
+  const { stars } = await getGithubInfo()
 
   return (
     <WebsiteLayoutShell
-      header={<Header githubStars={stars} changelog={changelog} blog={blog} />}
+      header={<Header githubStars={stars} />}
       footer={footer}
       bodyClassName={bodyClassName}
       wrapperClassName={wrapperClassName}
