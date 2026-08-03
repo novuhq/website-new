@@ -71,7 +71,7 @@ function NovuConnect({
               {title}
             </h2>
 
-            <p className="mt-4 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-60 md:text-lg lg:max-w-sm xl:text-xl xl:leading-[1.875rem]">
+            <p className="mt-4 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-60 md:text-lg lg:max-w-md xl:text-xl xl:leading-[1.875rem]">
               {description}
             </p>
           </div>

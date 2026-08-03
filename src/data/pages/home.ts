@@ -293,14 +293,14 @@ export const HOME_NOVU_CONNECT_INTRO = {
   label: "Novu Connect",
   title: "The Agent Communication Infrastructure",
   description:
-    "Converse with humans on any channel without building the plumbing. ",
+    "Talk with your users on the channels they already use, without building the plumbing.",
 }
 
 export const HOME_NOVU_CONNECT_ITEMS = [
   {
     title: "Customer-facing agents, connected across every channel",
     description:
-      "Novu routes and normalizes every conversation through one reliable layer, ensuring consistent responses, automatic retries, and a single integration for Slack, WhatsApp, Teams, and more.",
+      "Allow your customers to reach out to your agents directly, and your agents to initiate conversations with customers. Your agents get the work done with format consistency, reliability, and security in mind.",
   },
   {
     title: "Full context, every message",
@@ -310,7 +310,7 @@ export const HOME_NOVU_CONNECT_ITEMS = [
   {
     title: "Human approval, before it acts",
     description:
-      "When an agent needs to refund, provision, deploy, or trigger an MCP tool, Novu brings approval into the same conversation before it acts.",
+      "When an agent needs to refund, provision, deploy, or call a tool on an MCP server, Novu brings human-in-the-loop (HITL) approval into the same conversation before it acts.",
   },
   {
     title: "Open source, ready in one command",
@@ -323,7 +323,7 @@ export const HOME_NOVU_NOTIFY_INTRO = {
   label: "Novu Notify",
   title: "Novu Notify overview",
   description:
-    "Stop building notification centers. Drop in our React/Vue components and start delivering across every channel with a single API call.",
+    "Add an <Inbox /> to your product by end of day. Start sending notifications across every channel with one API tomorrow. Simple.",
 }
 
 export const HOME_NOVU_NOTIFY_ITEMS = [
