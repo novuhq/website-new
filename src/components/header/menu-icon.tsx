@@ -14,6 +14,8 @@ import channelsImessageIcon from "@/svgs/header/menu/channels-imessage.inline.sv
 import channelsInboxIcon from "@/svgs/header/menu/channels-inbox.inline.svg"
 import channelsLangchainIcon from "@/svgs/header/menu/channels-langchain.inline.svg"
 import channelsAiSdkIcon from "@/svgs/header/integrations/vercel-ai-sdk.inline.svg"
+import channelsChatSdkIcon from "@/svgs/header/menu/channels-chat-sdk.inline.svg"
+import channelsClaudeAwsIcon from "@/svgs/header/menu/channels-claude-aws.inline.svg"
 import channelsMsTeamsIcon from "@/svgs/header/menu/channels-ms-teams.inline.svg"
 import channelsPushIcon from "@/svgs/header/menu/channels-push.inline.svg"
 import channelsSlackIcon from "@/svgs/header/menu/channels-slack.inline.svg"
@@ -93,6 +95,8 @@ const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   sms: channelsSmsIcon,
   langchain: channelsLangchainIcon,
   "ai-sdk": channelsAiSdkIcon,
+  "chat-sdk": channelsChatSdkIcon,
+  "claude-aws": channelsClaudeAwsIcon,
 }
 
 function MenuIcon({ icon, className }: IMenuIconProps) {

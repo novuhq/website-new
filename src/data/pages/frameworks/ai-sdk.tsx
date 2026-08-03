@@ -27,7 +27,7 @@ export const aiSdkFrameworkData: IAgentFrameworkData = {
     },
     {
       title: "Connect the channel",
-      body: "Run npx novu connect --runtime ai-sdk --channel {cliSlug}. The CLI scaffolds a bridge route in your app and connects {channelName}. You can also paste the prompt below into your coding agent and let it wire the bridge for you.",
+      body: "Run npx novu connect --channel {cliSlug} --runtime ai-sdk. The CLI scaffolds a bridge route in your app and connects {channelName}. You can also paste the prompt below into your coding agent and let it wire the bridge for you.",
     },
     {
       title: "Wire the bridge handler",

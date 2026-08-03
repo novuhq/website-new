@@ -35,6 +35,8 @@ export type TMenuIcon =
   | "sms"
   | "langchain"
   | "ai-sdk"
+  | "chat-sdk"
+  | "claude-aws"
   | "mcp"
   | "copilot"
   | "aci"
