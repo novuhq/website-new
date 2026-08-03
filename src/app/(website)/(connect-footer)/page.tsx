@@ -23,7 +23,6 @@ import clientFacingPreview from "@/images/pages/home/features/client-facing.png"
 import discordPreview from "@/images/pages/home/features/discord-preview.jpg"
 import googleChatPreview from "@/images/pages/home/features/google-chat-preview.jpg"
 import linearPreview from "@/images/pages/home/features/linear-preview.jpg"
-import messengerPreview from "@/images/pages/home/features/messenger-preview.jpg"
 import pushPreview from "@/images/pages/home/features/push-preview.png"
 import smsPreview from "@/images/pages/home/features/sms-preview.jpg"
 import zoomPreview from "@/images/pages/home/features/zoom-preview.jpg"
@@ -386,7 +385,6 @@ export default async function HomePage() {
     zoom: zoomPreview,
     linear: linearPreview,
     discord: discordPreview,
-    messenger: messengerPreview,
     "google-chat": googleChatPreview,
   }
 
@@ -424,11 +422,6 @@ export default async function HomePage() {
         "top-[9.35%] left-1/2 w-[71.5625%] max-w-[458px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
       sizes: "(min-width: 1024px) 458px, 72vw",
     },
-    messenger: {
-      className:
-        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
-      sizes: "(min-width: 1024px) 504px, 79vw",
-    },
     "google-chat": {
       className:
         "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
@@ -450,7 +443,6 @@ export default async function HomePage() {
     discord: "Coming Soon",
     linear: "Coming Soon",
     zoom: "Coming Soon",
-    messenger: "Coming Soon",
     "google-chat": "Coming Soon",
   }
 
@@ -515,12 +507,6 @@ export default async function HomePage() {
       about: "A game studio.",
       useCase:
         "Its agent supports players in the community Discord, checking access and granting roles without leaving the channel.",
-    },
-    messenger: {
-      name: "Lark & Loom",
-      about: "A home-goods brand.",
-      useCase:
-        "Its agent helps shoppers reorder over Facebook Messenger, surfacing past orders as product cards.",
     },
     "google-chat": {
       name: "Kepler",

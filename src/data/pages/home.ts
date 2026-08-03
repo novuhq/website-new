@@ -256,22 +256,6 @@ export const HOME_CHANNELS = [
       "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
   },
   {
-    key: "messenger",
-    badges: ["notify", "connect"] as const,
-    statusBadge: "Coming Soon",
-    label: "FB Messenger",
-    title: "Connect your AI agent to Facebook Messenger",
-    description:
-      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
-    features: [
-      "Conversation context across replies",
-      "Adaptive Cards that update in place",
-      "Buttons for actions and approvals",
-      "Rich text and reactions",
-      "Ordered message processing",
-    ],
-  },
-  {
     key: "google-chat",
     badges: ["connect"] as const,
     statusBadge: "Coming Soon",
