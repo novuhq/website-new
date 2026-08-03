@@ -1,3 +1,5 @@
+import "server-only"
+
 import { createClient, QueryParams } from "next-sanity"
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -13,17 +15,23 @@ export const client = createClient({
 export const freshClient = client.withConfig({
   useCdn: false,
 })
-export const previewClient = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: false,
-  token: process.env.SANITY_API_PREVIEW_TOKEN,
-  perspective: "drafts",
-})
+export function getPreviewClient() {
+  const token = process.env.SANITY_API_PREVIEW_TOKEN
+
+  if (!token) {
+    throw new Error(
+      "SANITY_API_PREVIEW_TOKEN is required to access draft content"
+    )
+  }
+
+  return freshClient.withConfig({
+    token,
+    perspective: "drafts",
+  })
+}
 
 export const getClient = (preview = false, useCdn = true) =>
-  preview ? previewClient : useCdn ? client : freshClient
+  preview ? getPreviewClient() : useCdn ? client : freshClient
 
 export async function sanityFetch<QueryResponse>({
   query,
@@ -40,9 +48,12 @@ export async function sanityFetch<QueryResponse>({
   cache?: RequestCache
   useCdn?: boolean
 }): Promise<QueryResponse> {
-  const options: { cache: RequestCache; next?: { tags: string[] } } = { cache }
+  const resolvedCache = preview ? "no-store" : cache
+  const options: { cache: RequestCache; next?: { tags: string[] } } = {
+    cache: resolvedCache,
+  }
 
-  if (cache !== "no-store") {
+  if (resolvedCache !== "no-store") {
     options.next = { tags }
   }
 

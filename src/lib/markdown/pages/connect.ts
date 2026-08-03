@@ -2,6 +2,7 @@ import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import { getAgentTemplatesSection } from "@/lib/templates"
+import { getAgentTemplateUrl } from "@/lib/templates/url"
 import { CONNECT_FAQ } from "@/components/pages/connect/faq-data"
 
 import {
@@ -127,12 +128,6 @@ function markdownText(value: unknown) {
   return text ? escapeMarkdownText(text) : ""
 }
 
-function templateUrl(templateId: string) {
-  const url = new URL(String(ROUTE.connectApp))
-  url.searchParams.set("agentTemplateId", templateId)
-  return url.toString()
-}
-
 function namedItems(
   items: Array<{ name?: string | null } | null> | null | undefined
 ) {
@@ -178,7 +173,7 @@ function templateDetailsMarkdown(
           ? `Tools: ${inlineList(namedItems(template.tools))}`
           : "",
         templateId
-          ? formatMarkdownLink("Use template", templateUrl(templateId))
+          ? formatMarkdownLink("Use template", getAgentTemplateUrl(templateId))
           : "",
       ]
         .filter(Boolean)
@@ -295,7 +290,7 @@ export async function getConnect(
               rawText(template.name) ||
               rawText(template.agentName) ||
               "Agent template",
-            href: templateUrl(rawText(template.id)),
+            href: getAgentTemplateUrl(rawText(template.id)),
             description: rawText(template.summary) || undefined,
           }))
         )}`

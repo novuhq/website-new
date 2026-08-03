@@ -7,6 +7,7 @@ import {
 import { sanityFetch } from "@/lib/sanity/client"
 import {
   agentTemplateByIdQuery,
+  agentTemplatesByIdsQuery,
   agentTemplatesQuery,
   agentTemplatesSectionQuery,
   templateAvatarsQuery,
@@ -28,6 +29,27 @@ export const getAgentTemplates = (preview = false) =>
     preview,
     tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
   })
+
+export async function getAgentTemplatesByIds(
+  ids: string[],
+  preview = false
+): Promise<IAgentTemplateData[]> {
+  if (!ids.length) return []
+
+  const templates = await sanityFetch<IAgentTemplateData[]>({
+    query: agentTemplatesByIdsQuery,
+    qParams: { ids },
+    preview,
+    tags: AGENT_TEMPLATE_DEPENDENCY_TAGS,
+  })
+  const templatesById = new Map(
+    templates.map((template) => [template.id, template])
+  )
+
+  return ids
+    .map((id) => templatesById.get(id))
+    .filter((template): template is IAgentTemplateData => Boolean(template))
+}
 
 export async function getAgentTemplatesSection(
   preview = false

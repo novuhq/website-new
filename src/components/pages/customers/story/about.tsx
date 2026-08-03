@@ -15,16 +15,18 @@ export default function About({
 >) {
   return (
     <div className="flex flex-col lg:border-b lg:border-gray-3 lg:pb-6">
-      <Image
-        className="h-auto w-36"
-        src={logo.url}
-        alt={`${name} logo`}
-        width={logo.width}
-        height={logo.height}
-        priority
-        quality={100}
-        sizes="144px"
-      />
+      {logo?.url && (
+        <Image
+          className="h-auto w-36"
+          src={logo.url}
+          alt={`${name} logo`}
+          width={logo.width}
+          height={logo.height}
+          priority
+          quality={100}
+          sizes="144px"
+        />
+      )}
       <dl className="mt-7 grid grid-cols-1 gap-y-5 md:grid-cols-2 md:gap-x-6 md:gap-y-6 lg:grid-cols-1">
         <div className="flex flex-col gap-2 md:col-span-2 lg:col-span-1">
           <dt className="leading-tight font-medium tracking-tighter">About</dt>

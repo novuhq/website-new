@@ -1,0 +1,155 @@
+"use client"
+
+import { useEffect, useRef } from "react"
+import eyesImg from "@/images/pages/home/novu-connect/mascot-eyes.png"
+
+import { cn } from "@/lib/utils"
+
+// The transparent eyes asset shares the 1954 × 944 coordinate system of the
+// card artwork. Percentage positioning keeps it aligned with the mascot as the
+// artwork scales and gets clipped across breakpoints.
+const EYES = { left: 23.75, top: 60.4, width: 9.8 }
+const MAX_OFFSET_RATIO = 0.011 // of the image width
+const EASING = 0.16
+
+export interface IConnectMascotEyesProps {
+  className?: string
+}
+
+function ConnectMascotEyes({ className }: IConnectMascotEyesProps) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  const eyesRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    const root = rootRef.current
+    const eyes = eyesRef.current
+
+    if (!root || !eyes || window.matchMedia("(hover: none)").matches) {
+      return
+    }
+
+    const card = root.closest<HTMLElement>(".magic-bento-card") ?? root
+
+    let currentX = 0
+    let currentY = 0
+    let targetX = 0
+    let targetY = 0
+    let rafId: number | null = null
+    let isInViewport = false
+    let isDisposed = false
+
+    const tick = () => {
+      if (!isInViewport || isDisposed) {
+        rafId = null
+        return
+      }
+
+      currentX += (targetX - currentX) * EASING
+      currentY += (targetY - currentY) * EASING
+      eyes.style.translate = `${currentX.toFixed(2)}px ${currentY.toFixed(2)}px`
+
+      rafId = requestAnimationFrame(tick)
+    }
+
+    const startAnimation = () => {
+      if (rafId !== null || isDisposed) {
+        return
+      }
+
+      rafId = requestAnimationFrame(tick)
+    }
+
+    const stopAnimation = () => {
+      if (rafId === null) {
+        return
+      }
+
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isInViewport = entry?.isIntersecting ?? false
+
+      if (isInViewport) {
+        startAnimation()
+      } else {
+        stopAnimation()
+      }
+    })
+
+    observer.observe(root)
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const cardRect = card.getBoundingClientRect()
+      const inside =
+        event.clientX >= cardRect.left &&
+        event.clientX <= cardRect.right &&
+        event.clientY >= cardRect.top &&
+        event.clientY <= cardRect.bottom
+
+      if (!inside) {
+        targetX = 0
+        targetY = 0
+        return
+      }
+
+      const eyesRect = eyes.getBoundingClientRect()
+      const midX = eyesRect.left + eyesRect.width / 2
+      const midY = eyesRect.top + eyesRect.height / 2
+      const dx = event.clientX - midX
+      const dy = event.clientY - midY
+      const distance = Math.hypot(dx, dy) || 1
+      const rootRect = root.getBoundingClientRect()
+      const maxOffset = rootRect.width * MAX_OFFSET_RATIO
+      const reach = Math.min(1, distance / (rootRect.width * 0.4))
+
+      targetX = (dx / distance) * maxOffset * reach
+      // eyes have a little less vertical travel so they stay in the visor
+      targetY = (dy / distance) * maxOffset * reach * 0.7
+    }
+
+    const handleLeave = () => {
+      targetX = 0
+      targetY = 0
+    }
+
+    document.addEventListener("mousemove", handleMouseMove)
+    document.documentElement.addEventListener("mouseleave", handleLeave)
+
+    return () => {
+      isDisposed = true
+      observer.disconnect()
+      stopAnimation()
+      document.removeEventListener("mousemove", handleMouseMove)
+      document.documentElement.removeEventListener("mouseleave", handleLeave)
+    }
+  }, [])
+
+  return (
+    <div
+      ref={rootRef}
+      className={cn(
+        "pointer-events-none absolute aspect-[1954/944]",
+        className,
+        "z-[2]"
+      )}
+      aria-hidden="true"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={eyesRef}
+        src={eyesImg.src}
+        alt=""
+        className="absolute [will-change:translate]"
+        style={{
+          left: `${EYES.left}%`,
+          top: `${EYES.top}%`,
+          width: `${EYES.width}%`,
+        }}
+      />
+    </div>
+  )
+}
+
+export default ConnectMascotEyes

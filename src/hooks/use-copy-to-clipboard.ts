@@ -1,33 +1,52 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import copyToClipboard from "copy-to-clipboard"
 
 type UseCopyToClipboardResult = {
   isCopied: boolean
   handleCopy: (text: string | number) => void
+  resetCopied: () => void
 }
 
 export default function useCopyToClipboard(
   resetInterval: number | null = null
 ): UseCopyToClipboardResult {
   const [isCopied, setCopied] = useState(false)
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleCopy = useCallback((text: string | number) => {
-    if (typeof text === "string" || typeof text === "number") {
-      copyToClipboard(text.toString())
-      setCopied(true)
-    } else {
-      setCopied(false)
+  const clearResetTimeout = useCallback(() => {
+    if (resetTimeoutRef.current) {
+      clearTimeout(resetTimeoutRef.current)
+      resetTimeoutRef.current = null
     }
   }, [])
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout
-    if (isCopied && resetInterval) {
-      timeout = setTimeout(() => setCopied(false), resetInterval)
-    }
+  const resetCopied = useCallback(() => {
+    clearResetTimeout()
+    setCopied(false)
+  }, [clearResetTimeout])
 
-    return () => clearTimeout(timeout)
-  }, [isCopied, resetInterval])
+  const handleCopy = useCallback(
+    (text: string | number) => {
+      clearResetTimeout()
 
-  return { isCopied, handleCopy }
+      const didCopy =
+        typeof text === "string" || typeof text === "number"
+          ? copyToClipboard(text.toString())
+          : false
+
+      setCopied(didCopy)
+
+      if (didCopy && resetInterval) {
+        resetTimeoutRef.current = setTimeout(() => {
+          setCopied(false)
+          resetTimeoutRef.current = null
+        }, resetInterval)
+      }
+    },
+    [clearResetTimeout, resetInterval]
+  )
+
+  useEffect(() => clearResetTimeout, [clearResetTimeout])
+
+  return { isCopied, handleCopy, resetCopied }
 }

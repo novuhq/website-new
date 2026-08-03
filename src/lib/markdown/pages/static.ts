@@ -10,6 +10,7 @@ import { bulletList, faqMarkdown, linkList, pageFromSeo } from "../page-utils"
 import { portableTextToMarkdown } from "../portable-text-to-markdown"
 import type { MarkdownPage, SeoEntry } from "../types"
 import { absoluteUrl, toCanonicalPathname } from "../url"
+import { getHomeBody } from "./home"
 
 function section(title: string, content: Array<string | undefined | null>) {
   return [`## ${title}`, ...content].filter(Boolean).join("\n\n")
@@ -365,33 +366,6 @@ const CONNECT_CHANNELS = [
   "GitHub: Coming soon",
 ]
 
-function indexBody() {
-  return [
-    SEO_DATA.index.description,
-    section("Notification infrastructure for product teams", [
-      "Build multi-channel notification workflows across email, SMS, push, in-app, and chat with APIs and workflows designed for production teams.",
-      "Use Novu to centralize workflow logic, user preferences, digests, in-app inbox experiences, and provider integrations.",
-    ]),
-    section("Just copy and ship", [
-      "Copy the component, connect it to Novu, and ship a production-grade notification inbox without rebuilding the full experience from scratch.",
-    ]),
-    section("Core capabilities", [
-      bulletList([
-        "Workflow orchestration",
-        "Multi-channel delivery",
-        "User preferences",
-        "Notification digests",
-        "In-app inbox",
-        "Provider integrations",
-      ]),
-    ]),
-    section("Get started", [
-      formatMarkdownLink("Start building", ROUTE.dashboardV2SignUp),
-      formatMarkdownLink("Read the docs", ROUTE.docsOverview),
-    ]),
-  ].join("\n\n")
-}
-
 async function bookDemoBody() {
   return [
     "Novu Enterprise Inbox",
@@ -581,7 +555,7 @@ const STATIC_ROUTE_COPY: Record<
 > = {
   "/": {
     ...SEO_DATA.index,
-    body: indexBody,
+    body: getHomeBody,
   },
   "/book-a-demo": {
     ...SEO_DATA.bookADemo,

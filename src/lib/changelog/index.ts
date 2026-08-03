@@ -10,6 +10,7 @@ import {
   changelogPostsByCategoryQuery,
   changelogPostsQuery,
 } from "@/lib/sanity/queries/changelog"
+import { absoluteUrl } from "@/lib/site-url"
 
 const REVALIDATE_CHANGELOG_TAG = [...REVALIDATION_CONFIG.changelogPost.tags]
 
@@ -84,7 +85,9 @@ export async function getChangelogPostBySlug(
       ...post.seo,
       socialImage:
         post.seo.socialImage ??
-        `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}/api/og?template=changelog&title=${post.seo.title}`,
+        absoluteUrl(
+          `/api/og?template=changelog&title=${encodeURIComponent(post.seo.title)}`
+        ),
     },
   }
 

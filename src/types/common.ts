@@ -5,12 +5,67 @@ import { type BundledLanguage } from "shiki/langs"
 
 import { type TSocialIcons } from "@/components/icons"
 
+import type { TIntegrationMenuIcon } from "./integration-menu"
+
 export interface IMenuItem {
   label: string
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
+  description?: string
+  integrationIcon?: TIntegrationMenuIcon
+  menuIcon?: TMenuIcon
+  remainingCount?: number
 }
+
+export type TMenuIcon =
+  | "agents"
+  | "notifications"
+  | "builders"
+  | "enterprise"
+  | "slack"
+  | "whatsapp"
+  | "telegram"
+  | "teams"
+  | "imessage"
+  | "email"
+  | "inbox"
+  | "push"
+  | "chat"
+  | "sms"
+  | "langchain"
+  | "mcp"
+  | "copilot"
+  | "aci"
+  | "prompt"
+  | "skills"
+  | "claude"
+  | "codex"
+  | "cursor"
+  | "custom-code"
+  | "blog"
+  | "customers"
+  | "community"
+  | "changelog"
+  | "history"
+  | "documentation"
+  | "api"
+  | "sdks"
+  | "integrations"
+  | "github"
+  | "about"
+  | "careers"
+  | "brand"
+  | "status"
+  | "contact"
+
+export type THeaderMenuVariant =
+  | "product"
+  | "solutions"
+  | "channels"
+  | "ai"
+  | "resources"
+  | "integrations"
 
 export interface IMenuSocialItem extends IMenuItem {
   icon: TSocialIcons
@@ -24,7 +79,7 @@ export interface IMenuHeaderCard {
 }
 
 export interface IMenuHeaderContent {
-  subtitle: string
+  subtitle?: string
   type?: "changelog" | "blog" | "link"
   items?: IMenuItem[]
   card?: IMenuHeaderCard
@@ -34,6 +89,7 @@ export interface IMenuHeaderItem {
   title: string
   href?: Route<string> | URL
   content?: IMenuHeaderContent[]
+  variant?: THeaderMenuVariant
 }
 
 export interface IMenuFooterItem {

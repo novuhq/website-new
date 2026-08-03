@@ -286,6 +286,10 @@ function mapPageToCareerJob(page: NotionPage): ICareerJob | null {
 }
 
 async function queryCareerPages(filter?: Record<string, unknown>) {
+  if (process.env.CRITICAL_FLOW_TESTING === "1") {
+    return []
+  }
+
   const config = getCareersNotionConfig()
 
   const pages: NotionPage[] = []

@@ -1,6 +1,21 @@
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
 
+interface IWebpackSvgRule {
+  test?: {
+    test: (value: string) => boolean
+  }
+  exclude?: RegExp
+  issuer?: unknown
+}
+
+const svgrLoader = {
+  loader: "@svgr/webpack",
+  options: {
+    svgo: false,
+  },
+}
+
 const agentDiscoveryLinkHeader =
   '</.well-known/api-catalog>; rel="api-catalog", </.well-known/integrations.json>; rel="describedby", </llms.txt>; rel="describedby", </agents.md>; rel="describedby", </auth.md>; rel="describedby", <https://docs.novu.co/api-reference>; rel="service-doc", <https://api.novu.co/openapi.json>; rel="service-desc"'
 
@@ -43,6 +58,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: true,
   poweredByHeader: false,
+  transpilePackages: ["three"],
+  turbopack: {
+    rules: {
+      "*.inline.svg": {
+        loaders: [svgrLoader],
+        as: "*.js",
+      },
+    },
+  },
   async rewrites() {
     return [
       {
@@ -208,6 +232,28 @@ const nextConfig: NextConfig = {
     "/integrations/channels": ["./src/content/integrations/**/*.mdx"],
     "/integrations/sources": ["./src/content/integrations/**/*.mdx"],
     "/integrations/[slug]": ["./src/content/integrations/**/*.mdx"],
+  },
+  webpack(config) {
+    const fileLoaderRule = config.module.rules.find(
+      (rule: unknown): rule is IWebpackSvgRule =>
+        typeof rule === "object" &&
+        rule !== null &&
+        "test" in rule &&
+        typeof (rule as IWebpackSvgRule).test?.test === "function" &&
+        (rule as IWebpackSvgRule).test?.test(".svg") === true
+    )
+
+    if (fileLoaderRule) {
+      fileLoaderRule.exclude = /\.inline\.svg$/i
+    }
+
+    config.module.rules.push({
+      test: /\.inline\.svg$/i,
+      issuer: fileLoaderRule?.issuer,
+      use: [svgrLoader],
+    })
+
+    return config
   },
   images: {
     formats: ["image/avif", "image/webp"],

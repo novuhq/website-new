@@ -149,6 +149,19 @@ export const customersPageQuery = groq`
   }
 `
 
+// Same big/small/small/big ordering as fullCustomersPageFields so the cards
+// line up with HeroCard's position-dependent CARDS_CONFIG.
+export const featuredCustomerCardsQuery = groq`
+  *[_type == "customers"][0] {
+    "cards": [
+      cardsBig[0]->{${customersCardsFields}},
+      cardsSmall[0]->{${customersCardsFields}},
+      cardsSmall[1]->{${customersCardsFields}},
+      cardsBig[1]->{${customersCardsFields}}
+    ]
+  }.cards
+`
+
 export const customersGridQuery = groq`
 *[_type == "customer"] | order(orderRank) {
   ${customersGridFields}

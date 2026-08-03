@@ -1,0 +1,284 @@
+/* Magic Bento effects (adapted from reactbits.dev/components/magic-bento):
+   cursor spotlight, proximity border glow, hover star particles, click ripple. */
+
+.magic-bento,
+.magic-bento-spotlight {
+  --mb-glow-rgb: 67 82 225;
+}
+
+.magic-bento-card {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+  --glow-radius: 12.5rem;
+  border-color: transparent;
+  background:
+    linear-gradient(#0b0c0e, #0b0c0e) padding-box,
+    radial-gradient(
+        var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+        rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.9)) 0%,
+        rgb(var(--mb-glow-rgb) / calc(var(--glow-intensity) * 0.5)) 30%,
+        transparent 60%
+      )
+      border-box,
+    linear-gradient(rgb(41 43 50), rgb(41 43 50)) border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+.magic-bento-card.is-glowing {
+  box-shadow:
+    0 4px 20px rgb(46 24 78 / 0.4),
+    0 0 30px rgb(var(--mb-glow-rgb) / 0.15);
+}
+
+/* Lift the copy to full-contrast white on hover so the dim gray body text
+   stays readable once the glow and particles are active. */
+.magic-bento-card h3,
+.magic-bento-card p {
+  transition: color 0.3s ease;
+}
+
+.magic-bento-card:hover h3 {
+  color: #fff;
+}
+
+.magic-bento-card:hover p {
+  color: hsl(0 0% 90%);
+}
+
+.magic-bento-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50rem;
+  height: 50rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgb(var(--mb-glow-rgb) / 0.12) 0%,
+    rgb(var(--mb-glow-rgb) / 0.06) 15%,
+    rgb(var(--mb-glow-rgb) / 0.03) 25%,
+    rgb(var(--mb-glow-rgb) / 0.015) 40%,
+    rgb(var(--mb-glow-rgb) / 0.008) 65%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 60;
+}
+
+.magic-bento-particle {
+  position: absolute;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: rgb(var(--mb-glow-rgb));
+  box-shadow: 0 0 6px rgb(var(--mb-glow-rgb) / 0.6);
+  pointer-events: none;
+  z-index: 25;
+  animation:
+    mb-particle-enter 0.3s ease both,
+    mb-particle-float var(--mb-dur, 3s) ease-in-out 0.3s infinite alternate;
+}
+
+@keyframes mb-particle-enter {
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+  to {
+    opacity: 0.9;
+    scale: 1;
+  }
+}
+
+@keyframes mb-particle-float {
+  to {
+    translate: var(--mb-tx, 0) var(--mb-ty, -1.5rem);
+    opacity: 0.3;
+  }
+}
+
+.magic-bento-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(var(--mb-glow-rgb) / 0.4) 0%,
+    rgb(var(--mb-glow-rgb) / 0.2) 30%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 30;
+  animation: mb-ripple 0.8s ease-out forwards;
+}
+
+@keyframes mb-ripple {
+  from {
+    scale: 0;
+    opacity: 1;
+  }
+  to {
+    scale: 1;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-bento-particle,
+  .magic-bento-ripple {
+    display: none;
+  }
+}
+
+/* The customer-facing card uses two independently rotating channel orbits.
+   Each icon remains a real interactive element instead of being baked into
+   the artwork. */
+@property --mb-arc-hover-progress {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --mb-arc-hover-blur {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.mb-arc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mb-channel-orbit {
+  position: absolute;
+  left: 50%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.mb-channel-orbit-outer {
+  top: 164%;
+  width: 128.571%;
+}
+
+.mb-channel-orbit-inner {
+  top: 164%;
+  width: 101.224%;
+}
+
+.mb-channel-orbit-rotator {
+  position: absolute;
+  inset: 0;
+  animation: mb-channel-orbit-spin 48s linear infinite;
+  pointer-events: none;
+}
+
+.mb-channel-orbit-rotator-reverse {
+  animation-direction: reverse;
+}
+
+.mb-arc-tile {
+  --mb-arc-hover-blur: 0px;
+  --mb-arc-hover-progress: 0;
+
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  isolation: isolate;
+  border-radius: 28.18%;
+  border: 0;
+  background:
+    linear-gradient(
+      194deg,
+      rgb(0 0 0 / var(--mb-arc-hover-progress)) 9.88%,
+      rgb(0 0 0 / calc(var(--mb-arc-hover-progress) * 0.1)) 102.69%
+    ),
+    linear-gradient(
+      158deg,
+      rgb(23 24 29 / calc(1 - var(--mb-arc-hover-progress))) 0%,
+      rgb(10 10 13 / calc(1 - var(--mb-arc-hover-progress))) 48%,
+      rgb(6 6 8 / calc(1 - var(--mb-arc-hover-progress))) 100%
+    );
+  -webkit-backdrop-filter: blur(var(--mb-arc-hover-blur));
+  backdrop-filter: blur(var(--mb-arc-hover-blur));
+  cursor: pointer;
+  transform: rotate(var(--mb-tile-rot, 0deg));
+  transition:
+    --mb-arc-hover-blur 0.25s ease,
+    --mb-arc-hover-progress 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+  will-change: transform;
+  pointer-events: auto;
+}
+
+/* Bridge the narrow gaps between neighboring icons so the orbit stays paused
+   while the pointer travels from one tile to the next. */
+.mb-arc-tile::before {
+  position: absolute;
+  inset: -12.5%;
+  content: "";
+}
+
+.mb-arc-mascot {
+  position: absolute;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  transform: rotate(var(--mb-tile-rot, 0deg));
+  pointer-events: none;
+}
+
+.mb-channel-orbit-outer .mb-arc-tile,
+.mb-channel-orbit-outer .mb-arc-mascot {
+  width: 8.73%;
+}
+
+.mb-channel-orbit-inner .mb-arc-tile,
+.mb-channel-orbit-inner .mb-arc-mascot {
+  width: 11.09%;
+}
+
+.mb-arc-tile:hover,
+.mb-arc-tile:focus-visible {
+  --mb-arc-hover-blur: 2px;
+  --mb-arc-hover-progress: 1;
+
+  outline: none;
+  transform: rotate(var(--mb-tile-rot, 0deg)) scale(1.090909);
+}
+
+@keyframes mb-channel-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mb-channel-orbit[data-paused="true"] .mb-channel-orbit-rotator {
+  animation-play-state: paused;
+}
+
+.connect-channel-arc[data-in-view="false"] .mb-channel-orbit-rotator {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-channel-orbit-rotator {
+    animation: none;
+  }
+}
+/* The live inbox lives inside a magic-bento-card, so the card's hover
+   text-brighten would recolor the inbox header. Keep the inbox styling intact. */
+.magic-bento-card:hover .notify-live-inbox h3,
+.magic-bento-card:hover .notify-live-inbox p {
+  color: revert-layer;
+}

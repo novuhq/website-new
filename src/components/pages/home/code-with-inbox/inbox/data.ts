@@ -1,3 +1,15 @@
+import aliceAvatar from "@/images/pages/home/inbox/alice.png"
+import danielAvatar from "@/images/pages/home/inbox/daniel.png"
+import evanClarkAvatar from "@/images/pages/home/inbox/evan-clark.jpg"
+import joeAvatar from "@/images/pages/home/inbox/joe-avatar.jpg"
+import johnDoeAvatar from "@/images/pages/home/inbox/john-doe.jpg"
+import oliverJamesAvatar from "@/images/pages/home/inbox/oliver-james.jpg"
+import rayAvatar from "@/images/pages/home/inbox/ray.png"
+import completeIcon from "@/svgs/pages/home/inbox/complete.svg"
+import cubeIcon from "@/svgs/pages/home/inbox/cube.svg"
+import rhombIcon from "@/svgs/pages/home/inbox/rhomb.svg"
+import yellowHalfCircleIcon from "@/svgs/pages/home/inbox/yellow-half-circle.svg"
+
 import {
   AddedIcon,
   AssignedIcon,
@@ -7,23 +19,10 @@ import {
 } from "./icons"
 import type { IInboxEntry } from "./types"
 
-import joeAvatar from "@/images/pages/home/inbox/joe-avatar.jpg"
-import johnDoeAvatar from "@/images/pages/home/inbox/john-doe.jpg"
-import oliverJamesAvatar from "@/images/pages/home/inbox/oliver-james.jpg"
-import evanClarkAvatar from "@/images/pages/home/inbox/evan-clark.jpg"
-import danielAvatar from "@/images/pages/home/inbox/daniel.png"
-import rayAvatar from "@/images/pages/home/inbox/ray.png"
-import aliceAvatar from "@/images/pages/home/inbox/alice.png"
-
-import completeIcon from "@/svgs/pages/home/inbox/complete.svg"
-import cubeIcon from "@/svgs/pages/home/inbox/cube.svg"
-import rhombIcon from "@/svgs/pages/home/inbox/rhomb.svg"
-import yellowHalfCircleIcon from "@/svgs/pages/home/inbox/yellow-half-circle.svg"
-
 const inboxData: IInboxEntry[] = [
   {
     theme: "novuDark",
-    title: "Novu dark",
+    title: "Novu Dark",
     categories: ["All", "Projects", "Announcements"],
     messages: [
       {
@@ -48,8 +47,8 @@ const inboxData: IInboxEntry[] = [
       {
         category: "Projects",
         title: "2 new comments from Radek and Dima.",
-        text: "You have 2 new comments on the Acme figma file.",
-        date: "Last Monday at 13:45 PM",
+        text: "You have 2 new comments on the Acme Figma file.",
+        date: "Last Monday at 1:45 PM",
         isRead: false,
       },
       {
@@ -74,8 +73,8 @@ const inboxData: IInboxEntry[] = [
       {
         category: "Announcements",
         title: "2 new comments from Radek and Dima.",
-        text: "You have 2 new comments on the Acme figma file.",
-        date: "Last Monday at 13:45 PM",
+        text: "You have 2 new comments on the Acme Figma file.",
+        date: "Last Monday at 1:45 PM",
         isRead: false,
       },
     ],
@@ -107,8 +106,8 @@ const inboxData: IInboxEntry[] = [
       {
         category: "Projects",
         title: "2 new comments from Radek and Dima.",
-        text: "You have 2 new comments on the Acme figma file.",
-        date: "Last Monday at 13:45 PM",
+        text: "You have 2 new comments on the Acme Figma file.",
+        date: "Last Monday at 1:45 PM",
         isRead: false,
       },
       {
@@ -133,8 +132,8 @@ const inboxData: IInboxEntry[] = [
       {
         category: "Projects",
         title: "2 new comments from Radek and Dima.",
-        text: "You have 2 new comments on the Acme figma file.",
-        date: "Last Monday at 13:45 PM",
+        text: "You have 2 new comments on the Acme Figma file.",
+        date: "Last Monday at 1:45 PM",
         isRead: false,
       },
     ],
@@ -240,7 +239,8 @@ const inboxData: IInboxEntry[] = [
         authors: [{ name: "Daniel", avatar: danielAvatar.src }],
       },
       {
-        title: "Create a new design for the hero section for improving user engagement.",
+        title:
+          "Create a new design for the hero section for improving user engagement.",
         actionType: "replied:",
         avatarIcon: RepliedIcon,
         additionalText: "Love it!",
@@ -250,7 +250,8 @@ const inboxData: IInboxEntry[] = [
         authors: [{ name: "Alice", avatar: aliceAvatar.src }],
       },
       {
-        title: "Replace current cookie-based authentication with JWT tokens for enhanced security.",
+        title:
+          "Replace current cookie-based authentication with JWT tokens for enhanced security.",
         actionType: "added you to project",
         avatarIcon: AddedIcon,
         additionalText: "",
@@ -306,7 +307,8 @@ const inboxData: IInboxEntry[] = [
         authors: [{ name: "Daniel", avatar: danielAvatar.src }],
       },
       {
-        title: "Create a new design for the hero section for improving user engagement.",
+        title:
+          "Create a new design for the hero section for improving user engagement.",
         actionType: "replied:",
         avatarIcon: RepliedIcon,
         additionalText: "Love it!",
@@ -316,7 +318,8 @@ const inboxData: IInboxEntry[] = [
         authors: [{ name: "Alice", avatar: aliceAvatar.src }],
       },
       {
-        title: "Replace current cookie-based authentication with JWT tokens for enhanced security.",
+        title:
+          "Replace current cookie-based authentication with JWT tokens for enhanced security.",
         actionType: "added you to project",
         avatarIcon: AddedIcon,
         additionalText: "",

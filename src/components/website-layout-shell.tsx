@@ -4,6 +4,8 @@ import { draftMode } from "next/headers"
 import Script from "next/script"
 import { Providers } from "@/contexts"
 
+import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import DemoBookingTracker from "@/components/demo-booking-tracker"
 import Fonts from "@/components/fonts"
@@ -35,6 +37,9 @@ async function WebsiteLayoutShell({
   wrapperClassName,
 }: WebsiteLayoutShellProps) {
   const { isEnabled: isDraftMode } = await draftMode()
+  const siteUrl = absoluteUrl("/")
+  const organizationId = `${siteUrl}#organization`
+  const websiteId = `${siteUrl}#website`
 
   return (
     <>
@@ -77,32 +82,39 @@ async function WebsiteLayoutShell({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLdStringify({
               "@context": "https://schema.org",
               "@type": "Organization",
+              "@id": organizationId,
               name: "Novu",
-              url: "https://novu.co",
-              logo: "https://novu.co/images/logo.svg",
+              url: siteUrl,
+              logo: absoluteUrl("/images/logo.svg"),
               sameAs: [
                 "https://github.com/novuhq/novu",
-                "https://twitter.com/novaborhq",
+                "https://twitter.com/novuhq",
                 "https://www.linkedin.com/company/novuhq",
                 "https://discord.gg/novu",
               ],
               description:
-                "Open-source notification infrastructure for developers and product teams.",
-            }).replace(/</g, "\\u003c"),
+                "Novu is the open-source notification and agent communication infrastructure that connects AI agents and products to customers across every channel.",
+            }),
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLdStringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": websiteId,
               name: "Novu",
-              url: "https://novu.co",
-            }).replace(/</g, "\\u003c"),
+              url: siteUrl,
+              publisher: {
+                "@id": organizationId,
+              },
+              description:
+                "Novu is the open-source notification and agent communication infrastructure that connects AI agents and products to customers across every channel.",
+            }),
           }}
         />
         <Script id="plain-live-chat" strategy="afterInteractive">

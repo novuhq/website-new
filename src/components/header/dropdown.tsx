@@ -1,84 +1,306 @@
-import { AnimatePresence, motion } from "motion/react"
+"use client"
 
-import { IMenuHeaderContent } from "@/types/common"
+import { useState } from "react"
+import Image from "next/image"
+import { ROUTE } from "@/constants/routes"
+import ChannelsArrowRight from "@/svgs/header/menu/channels-arrow-right.inline.svg"
+import { ChevronRight } from "lucide-react"
+import { motion } from "motion/react"
+
+import type {
+  IMenuHeaderContent,
+  IMenuItem,
+  THeaderMenuVariant,
+} from "@/types/common"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
-import Card from "./card"
+import IntegrationMenuIcon from "./integration-menu-icon"
+import MenuIcon from "./menu-icon"
 
 interface IDropdownProps {
+  id: string
   isOpen: boolean
+  animateIn: boolean
   title: string
+  variant: THeaderMenuVariant
   content: IMenuHeaderContent[]
 }
 
-function Dropdown({ isOpen, title, content }: IDropdownProps) {
+interface IMenuLinksProps {
+  items: IMenuItem[]
+  variant: "solutions" | "ai"
+}
+
+const DROPDOWN_POSITION: Record<THeaderMenuVariant, string> = {
+  product: "-left-3",
+  solutions: "-left-2",
+  channels: "-left-2",
+  ai: "-left-2",
+  resources: "-left-80 xl:translate-x-0 xl:-left-40 2xl:-left-20",
+  integrations: "-left-2",
+}
+
+const PRODUCT_BANNERS = [
+  "/images/header/menu/banner-inbox.jpg",
+  "/images/header/menu/banner-connect.jpg",
+] as const
+
+function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
+  const items = content[0]?.items ?? []
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeItem = items[activeIndex] ?? items[0]
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          layoutId="navigation-dropdown"
-          aria-label={`${title} submenu`}
-          className={cn(
-            "absolute top-10.5 -left-5 rounded-[14px] border-gray-2 bg-gray-1 shadow-header-dropdown transition-[left,min-width] ease-in-out will-change-transform",
-            "before:absolute before:-top-1.5 before:z-10 before:h-3.5 before:w-3.5 before:rotate-45 before:rounded-[1px] before:border before:border-gray-2 before:bg-gray-1",
-            "after:absolute after:-top-5 after:h-5 after:w-full after:bg-transparent",
-            title === "Product" &&
-              "min-w-[515px] before:left-[59px] lg:-left-[22px] lg:before:left-[60px]",
-            title === "Resources" &&
-              "min-w-[515px] before:left-[53px] lg:-left-1.5 lg:before:left-[54px]",
-            title === "AI" && "min-w-[190px] before:left-[31px]",
-            title === "Docs" && "min-w-[434px] before:left-[50px]"
-          )}
-          exit={{
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.4,
-          }}
-        >
-          <div className="relative z-10 flex gap-x-3.5 rounded-[14px] bg-gray-1 px-8 pt-6 pb-7">
-            {content.map(({ subtitle, items, card, type }, index) => (
-              <div
+    <div className="flex w-max gap-3 p-3">
+      <div className="flex w-74 shrink-0 flex-col">
+        <ul className="flex flex-col gap-y-0.5">
+          {items.map(({ label, description, href }, index) => (
+            <li key={label}>
+              <Link
                 className={cn(
-                  "min-w-0",
-                  index === 0 && "-ml-px grow",
-                  index === 1 && "w-[220px]"
+                  "flex w-full flex-col items-start gap-1 rounded-[10px] px-3 py-2.5 transition-colors hover:bg-[#121417]",
+                  index === activeIndex && "bg-[#121417]"
                 )}
-                key={index}
+                href={href}
+                variant="clean"
+                onMouseEnter={() => setActiveIndex(index)}
+                onFocus={() => setActiveIndex(index)}
               >
-                {title !== "AI" && (
-                  <p
-                    className={cn(
-                      "mb-6 text-sm leading-none -tracking-[0.01em] text-[#909090]",
-                      title === "Product" && "mb-5"
-                    )}
-                  >
-                    {subtitle}
-                  </p>
+                <span className="block text-base leading-none font-normal tracking-tighter text-white">
+                  {label}
+                </span>
+                {description && (
+                  <span className="block text-sm leading-snug font-normal tracking-tighter text-[#A3A6B2]">
+                    {description}
+                  </span>
                 )}
-                {items && items.length > 0 && (
-                  <ul className="flex flex-col gap-y-4">
-                    {items.map(({ label, href }, itemIndex) => (
-                      <li key={itemIndex}>
-                        <Link
-                          className="!leading-none font-light"
-                          href={href}
-                          variant="ghost-intense"
-                        >
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {card && <Card type={type} {...card} />}
-              </div>
-            ))}
-          </div>
-        </motion.div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <Link
+          className="mt-auto mb-3 w-fit gap-1 px-3 text-sm leading-none font-medium tracking-normal text-white hover:text-gray-80"
+          href={ROUTE.dashboardV2SignUp}
+          variant="clean"
+        >
+          Start for free
+          <ChevronRight className="size-4" aria-hidden="true" />
+        </Link>
+      </div>
+
+      {activeItem && (
+        <Link
+          className="relative aspect-[13/11] w-81.25 max-w-none shrink-0 overflow-hidden rounded-[0.625rem] border border-[#23242A]"
+          href={activeItem.href}
+          variant="clean"
+          aria-label={`Open ${activeItem.label}`}
+        >
+          {PRODUCT_BANNERS.map((src, index) => (
+            <Image
+              className={cn(
+                "absolute inset-0 size-full object-cover transition-opacity duration-200 ease-out motion-reduce:transition-none",
+                index === activeIndex ? "opacity-100" : "opacity-0"
+              )}
+              src={src}
+              width={650}
+              height={550}
+              alt=""
+              loading="eager"
+              unoptimized
+              key={src}
+            />
+          ))}
+        </Link>
       )}
-    </AnimatePresence>
+    </div>
+  )
+}
+
+function MenuLinks({ items, variant }: IMenuLinksProps) {
+  return (
+    <ul
+      className={cn(
+        variant === "solutions" && "flex flex-col p-3.5",
+        variant === "ai" && "flex flex-col p-3.5"
+      )}
+    >
+      {items.map(({ label, href, menuIcon }) => (
+        <li
+          className={cn(
+            variant === "solutions" && "min-w-45",
+            variant === "ai" && "min-w-37.5"
+          )}
+          key={label}
+        >
+          <Link
+            className="group flex w-full items-center gap-2.5 rounded-[.5rem] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:bg-[#121417] hover:text-white"
+            href={href}
+            variant="clean"
+          >
+            <MenuIcon icon={menuIcon} />
+            {label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function NestedMenu({
+  items,
+  variant,
+}: {
+  items: IMenuItem[]
+  variant: "channels" | "integrations"
+}) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeItem = items[activeIndex] ?? items[0]
+
+  return (
+    <div className="flex font-inter">
+      <ul className="shrink-0 rounded-l-[1.375rem] bg-[#0B0C0E] p-3.5">
+        {items.map(({ label, href, menuIcon }, index) => {
+          const isActive = activeIndex === index
+
+          return (
+            <li key={label}>
+              <Link
+                className={cn(
+                  "group flex min-h-9 w-full min-w-42.5 items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white",
+                  isActive && "bg-[#121417] text-white"
+                )}
+                href={href}
+                variant="clean"
+                onMouseEnter={() => setActiveIndex(index)}
+                onFocus={() => setActiveIndex(index)}
+              >
+                <MenuIcon icon={menuIcon} />
+                {label}
+                {variant === "channels" && (
+                  <ChannelsArrowRight
+                    className="-ml-1 h-4 w-1.5 opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
+                )}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+
+      {activeItem && (
+        <div className="min-w-64 shrink-0 border-l border-gray-20 p-3.5">
+          {variant === "channels" && (
+            <p className="mx-2.5 mt-2.5 mb-3.5 text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+              {activeItem.label} Agent Frameworks
+            </p>
+          )}
+          <ul aria-label={`${activeItem.label} links`}>
+            {activeItem.children?.map(
+              ({ label, href, menuIcon, integrationIcon }) => (
+                <li key={label}>
+                  <Link
+                    className="group flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 transition-colors hover:bg-[#121417] hover:text-white"
+                    href={href}
+                    variant="clean"
+                  >
+                    <MenuIcon icon={menuIcon} />
+                    <IntegrationMenuIcon icon={integrationIcon} />
+                    {label}
+                  </Link>
+                </li>
+              )
+            )}
+            {Boolean(activeItem.remainingCount) && (
+              <li>
+                <Link
+                  className="flex min-h-9 w-full items-center gap-1 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white"
+                  href={activeItem.href}
+                  variant="clean"
+                >
+                  +{activeItem.remainingCount} more
+                  <ChevronRight className="size-4" aria-hidden="true" />
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ResourcesMenu({ content }: { content: IMenuHeaderContent[] }) {
+  return (
+    <div className="grid auto-cols-max grid-flow-col gap-x-6 p-3.5 pt-6">
+      {content.map(({ subtitle, items }, index) => (
+        <div className="w-52.5" key={subtitle ?? index}>
+          {subtitle && (
+            <span className="mb-3.5 ml-2.5 block text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+              {subtitle}
+            </span>
+          )}
+          {items && (
+            <ul className="flex flex-col">
+              {items.map(({ label, href, menuIcon }) => (
+                <li key={label}>
+                  <Link
+                    className="group flex min-h-4 items-center gap-2.5 rounded-[.5rem] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 hover:bg-[#121417] hover:text-white"
+                    href={href}
+                    variant="clean"
+                  >
+                    <MenuIcon icon={menuIcon} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function Dropdown({
+  id,
+  isOpen,
+  animateIn,
+  title,
+  variant,
+  content,
+}: IDropdownProps) {
+  const items = content.flatMap((group) => group.items ?? [])
+
+  if (!isOpen) return null
+
+  return (
+    <motion.div
+      id={id}
+      aria-label={`${title} submenu`}
+      initial={animateIn ? { opacity: 0, y: -4 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        animateIn ? { duration: 0.16, ease: "easeOut" } : { duration: 0 }
+      }
+      className={cn(
+        "absolute top-[calc(100%+1.25rem)] z-50 rounded-[22px] border border-[#2A2B33] bg-black shadow-[0_3px_26px_4px_rgba(0,0,0,0.54)]",
+        "after:absolute after:-top-6 after:left-0 after:h-6 after:w-full after:bg-transparent",
+        DROPDOWN_POSITION[variant]
+      )}
+    >
+      {variant === "product" && <ProductMenu content={content} />}
+      {(variant === "solutions" || variant === "ai") && (
+        <MenuLinks items={items} variant={variant} />
+      )}
+      {(variant === "channels" || variant === "integrations") && (
+        <NestedMenu items={items} variant={variant} />
+      )}
+      {variant === "resources" && <ResourcesMenu content={content} />}
+    </motion.div>
   )
 }
 

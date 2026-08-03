@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { draftMode } from "next/headers"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
@@ -7,6 +8,8 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { getAllCustomers, getLatestCustomers } from "@/lib/customers"
 import { getCustomerBySlug } from "@/lib/customers/customer"
 import { getMetadata } from "@/lib/get-metadata"
+import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import ColoredList, { ColorType } from "@/components/ui/colored-list"
@@ -27,8 +30,9 @@ interface CustomerStoryPageProps {
 export async function generateMetadata({
   params,
 }: CustomerStoryPageProps): Promise<Metadata> {
+  const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
-  const customerData = await getCustomerBySlug(slug)
+  const customerData = await getCustomerBySlug(slug, isDraftMode)
 
   if (!customerData) {
     return {}
@@ -42,6 +46,7 @@ export async function generateMetadata({
     pathname: `${ROUTE.customers}/${slug}`,
     imagePath: seo?.socialImage || SEO_DATA.customers.imagePath,
     markdownPathname: true,
+    noIndex: isDraftMode || seo?.noIndex,
   })
 }
 
@@ -55,8 +60,9 @@ export async function generateStaticParams() {
 export default async function CustomerStoryPage({
   params,
 }: CustomerStoryPageProps) {
+  const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
-  const postData = await getCustomerBySlug(slug)
+  const postData = await getCustomerBySlug(slug, isDraftMode)
 
   if (!postData) {
     notFound()
@@ -80,22 +86,26 @@ export default async function CustomerStoryPage({
   } = customer
 
   const relatedCustomers =
-    related && related.length > 0 ? related : await getLatestCustomers(slug)
+    related && related.length > 0
+      ? related
+      : await getLatestCustomers(slug, isDraftMode)
 
   const customerPathname = pathname || `${ROUTE.customers}/${slug}`
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const canonicalPathname = toCanonicalPathname(customerPathname)
+  const pageUrl = absoluteUrl(canonicalPathname)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${pageUrl}#article`,
     headline: title,
     description: about || title,
     datePublished: customer._createdAt,
-    url: `${siteUrl}${customerPathname}`,
-    image: cover || `${siteUrl}/social-previews/customers.jpg`,
+    url: pageUrl,
+    image: cover || absoluteUrl("/social-previews/customers.jpg"),
     author: {
       "@type": "Organization",
-      name: "Novu",
+      "@id": `${absoluteUrl("/")}#organization`,
     },
     about: {
       "@type": "Organization",
@@ -105,12 +115,7 @@ export default async function CustomerStoryPage({
     },
     publisher: {
       "@type": "Organization",
-      name: "Novu",
-      url: "https://novu.co",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
-      },
+      "@id": `${absoluteUrl("/")}#organization`,
     },
   }
 
@@ -190,7 +195,7 @@ export default async function CustomerStoryPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          __html: safeJsonLdStringify(jsonLd),
         }}
       />
       <CTA
