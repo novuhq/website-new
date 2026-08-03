@@ -3,7 +3,9 @@
 import { useState } from "react"
 import Image, { type StaticImageData } from "next/image"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
+import awsIcon from "@/svgs/pages/home/stack/aws.svg"
 import chatSdkIcon from "@/svgs/pages/home/stack/chat-sdk.svg"
+import claudeIcon from "@/svgs/pages/home/stack/claude.svg"
 import customCodeIcon from "@/svgs/pages/home/stack/custom-code.svg"
 import emailIcon from "@/svgs/pages/home/stack/email.svg"
 import langChainIcon from "@/svgs/pages/home/stack/lang-chain.svg"
@@ -23,6 +25,7 @@ export interface IStackOption {
   icon?: StaticImageData | string
   label: string
   promptLabel?: string
+  promptTemplate?: string
   value: string
 }
 
@@ -89,6 +92,36 @@ const DEFAULT_FRAMEWORKS: IStackOption[] = [
     value: "chat-sdk",
     label: "Chat SDK",
     icon: chatSdkIcon,
+  },
+  {
+    value: "claude-managed-agent",
+    label: "Claude Managed Agent",
+    icon: claudeIcon,
+    cliSlug: "claude",
+    promptTemplate: `Create a Claude Managed Agent with Novu and connect it to [SELECTED_CHANNEL].
+
+Run this command:
+
+npx novu connect --channel [CHANNEL_SLUG] --runtime claude
+
+The Novu CLI will guide you through the complete setup. Follow the prompts to connect your Anthropic credentials, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
+
+You do not need to scaffold a project or modify application code for this setup.`,
+  },
+  {
+    value: "aws-claude-managed-agent",
+    label: "AWS Claude Managed Agent",
+    icon: awsIcon,
+    cliSlug: "claude-aws",
+    promptTemplate: `Create a Claude Managed Agent on AWS with Novu and connect it to [SELECTED_CHANNEL].
+
+Run this command:
+
+npx novu connect --channel [CHANNEL_SLUG] --runtime claude-aws
+
+The Novu CLI will guide you through the complete setup. Follow the prompts to complete the required credential flow, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
+
+You do not need to scaffold a project or modify application code for this setup.`,
   },
 ]
 
@@ -159,14 +192,14 @@ function SelectField({
 
         <SelectPrimitive.Portal>
           <SelectPrimitive.Content
-            className="z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black font-inter shadow-xl"
+            className="z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black font-inter shadow-xl outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
             position="popper"
             sideOffset={2}
           >
             <SelectPrimitive.Viewport className="p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
-                  className="relative flex cursor-default items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
+                  className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
                   key={option.value}
                   value={option.value}
                 >
@@ -230,12 +263,18 @@ function ConnectStack({
     frameworks[0]
   const frameworkLabel = framework.promptLabel ?? framework.label
   const channelLabel = channel.promptLabel ?? channel.label
-  const command = `npx novu connect --channel ${channel.cliSlug ?? channel.value} --runtime ${framework.cliSlug ?? framework.value}`
-  const prompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu Connect. Inspect the repo (agent entry point, how ${frameworkLabel} is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
+  const channelSlug = channel.cliSlug ?? channel.value
+  const command = `npx novu connect --channel ${channelSlug} --runtime ${framework.cliSlug ?? framework.value}`
+  const defaultPrompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu Connect. Inspect the repo (agent entry point, how ${frameworkLabel} is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
 
 ${command}
 
 I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`
+  const prompt = framework.promptTemplate
+    ? framework.promptTemplate
+        .replaceAll("[SELECTED_CHANNEL]", channelLabel)
+        .replaceAll("[CHANNEL_SLUG]", channelSlug)
+    : defaultPrompt
 
   return (
     <section
@@ -323,12 +362,14 @@ I will complete the interactive CLI and approve dependency installs when asked. 
               <TabsList className="grid h-10 w-full grid-cols-2 rounded-none border-b border-gray-20 bg-black p-0">
                 <TabsTrigger
                   className="h-full rounded-none border-r border-gray-20 bg-[#0B0C0E] px-3 text-[.8125rem] font-normal tracking-tighter text-gray-60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none focus-visible:ring-inset data-[state=active]:bg-gray-12 data-[state=active]:text-foreground"
+                  tabIndex={0}
                   value="prompt"
                 >
                   AI prompt
                 </TabsTrigger>
                 <TabsTrigger
                   className="h-full rounded-none bg-[#0B0C0E] px-3 text-[.8125rem] font-normal tracking-tighter text-gray-60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:outline-none focus-visible:ring-inset data-[state=active]:bg-gray-12 data-[state=active]:text-foreground"
+                  tabIndex={0}
                   value="cli"
                 >
                   CLI command

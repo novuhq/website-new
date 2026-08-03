@@ -4,11 +4,8 @@ import { useEffect, useRef } from "react"
 import Image, { type StaticImageData } from "next/image"
 
 import { cn } from "@/lib/utils"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+
+import CompanyTooltip, { type IFeatureCompany } from "./company-tooltip"
 
 export interface IPreviewData {
   backgroundImage: StaticImageData | string
@@ -31,11 +28,7 @@ export interface IPreviewData {
       height: number
     }
   }
-  company?: {
-    name: string
-    about: string
-    useCase: string
-  }
+  company?: IFeatureCompany
 }
 
 interface IPreviewProps extends IPreviewData {
@@ -177,40 +170,13 @@ function Preview({
                 draggable={false}
               />
             )}
-
-            {company ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    aria-label={`About ${company.name}`}
-                    className="absolute top-[6%] left-[6%] h-[8%] w-[42%] cursor-help rounded-md focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
-                  />
-                </TooltipTrigger>
-                <TooltipContent
-                  side="top"
-                  align="start"
-                  sideOffset={12}
-                  avoidCollisions={false}
-                  className="max-w-[min(22rem,80vw)] px-3.5 py-2.5 before:hidden after:hidden"
-                >
-                  <span className="flex flex-col gap-1.5 text-left">
-                    <span className="text-[13px] font-semibold tracking-tight text-foreground">
-                      {company.name}
-                    </span>
-                    <span className="text-[12.5px] leading-snug text-gray-60">
-                      {company.about}
-                    </span>
-                    <span className="mt-1 border-t border-white/10 pt-2 text-[12.5px] leading-snug text-foreground/90">
-                      {company.useCase}
-                    </span>
-                  </span>
-                </TooltipContent>
-              </Tooltip>
-            ) : null}
           </div>
         </div>
       )}
+
+      {company && (!clientFacingImageClassName || clientFacingVideo) ? (
+        <CompanyTooltip company={company} />
+      ) : null}
 
       {clientFacingLabel ? (
         <span className="absolute top-[5.05%] left-1/2 z-20 flex h-9 w-29 -translate-x-1/2 items-center justify-center rounded-full bg-black/80 px-4 text-sm leading-none font-medium tracking-[-0.04em] whitespace-nowrap text-white backdrop-blur-[6px]">

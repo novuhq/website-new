@@ -317,7 +317,7 @@ function Features({
               ) : activeItem.availability === "live" && activeItem.prompt ? (
                 <>
                   <CopyPromptButton
-                    className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-39 [&_svg]:size-3.5"
+                    className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:max-w-39 [&_svg]:size-3.5"
                     key={activeItem.key}
                     size="none"
                     resetInterval={2000}
