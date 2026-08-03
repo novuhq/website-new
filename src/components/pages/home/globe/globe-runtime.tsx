@@ -103,6 +103,7 @@ const PITCH_MAX = 0.28
 const PERFORMANCE_SAMPLE_WINDOW_MS = 5_000
 const SLOW_FRAME_THRESHOLD_MS = 22
 const SLOW_FRAME_RATIO = 0.4
+const GLOBE_MIN_VISIBLE_RATIO = 0.08
 const ACTIVE_ROUTE_DURATION_MS =
   GLOBE_ROUTE_REVEAL_MS + GLOBE_ROUTE_HOLD_MS + GLOBE_ROUTE_EXIT_MS
 const STORY_ROUTE_IDS = new Set(GLOBE_CARD_EVENTS.map(({ routeId }) => routeId))
@@ -422,8 +423,11 @@ export default function GlobeRuntime({
 
     const observer = new IntersectionObserver(
       ([entry]) =>
-        setInView(entry.isIntersecting && entry.intersectionRatio >= 0.45),
-      { threshold: [0, 0.45, 1] }
+        setInView(
+          entry.isIntersecting &&
+            entry.intersectionRatio >= GLOBE_MIN_VISIBLE_RATIO
+        ),
+      { threshold: [0, GLOBE_MIN_VISIBLE_RATIO, 1] }
     )
 
     observer.observe(root)
@@ -459,7 +463,16 @@ export default function GlobeRuntime({
     const restoreRuntimeAfterPageShow = () => {
       rootRef.current?.style.removeProperty("opacity")
     }
+    // Chromium can clear the old WebGL backbuffer well before `pagehide`
+    // during a reload. Keep the earlier guard there (and in Safari), but avoid
+    // installing it in Firefox where `beforeunload` disables the bfcache.
+    const needsEarlyReloadGuard = !/firefox/i.test(navigator.userAgent)
 
+    if (needsEarlyReloadGuard) {
+      window.addEventListener("beforeunload", hideRuntimeBeforePageExit, {
+        capture: true,
+      })
+    }
     window.addEventListener("pagehide", hideRuntimeBeforePageExit, {
       capture: true,
     })
@@ -467,6 +480,11 @@ export default function GlobeRuntime({
     window.addEventListener("keydown", handleReloadKey, { capture: true })
 
     return () => {
+      if (needsEarlyReloadGuard) {
+        window.removeEventListener("beforeunload", hideRuntimeBeforePageExit, {
+          capture: true,
+        })
+      }
       window.removeEventListener("pagehide", hideRuntimeBeforePageExit, {
         capture: true,
       })

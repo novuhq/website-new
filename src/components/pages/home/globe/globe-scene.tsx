@@ -51,6 +51,7 @@ export default function GlobeScene({
   const gl = useThree((state) => state.gl)
   const scene = useThree((state) => state.scene)
   const size = useThree((state) => state.size)
+  const [baseShadersReady, setBaseShadersReady] = useState(false)
   const [landGeometryReady, setLandGeometryReady] = useState(false)
   const [routesMounted, setRoutesMounted] = useState(false)
   const anchorPositions = useMemo(
@@ -92,8 +93,29 @@ export default function GlobeScene({
 
   useEffect(() => {
     const baseGlobe = baseGlobeRef.current
-    if (!landGeometryReady || !baseGlobe) return
-    const readyBaseGlobe: THREE.Group = baseGlobe
+    if (!baseGlobe) return
+    const shaderBaseGlobe: THREE.Group = baseGlobe
+
+    let cancelled = false
+
+    // GlobeLandPoints mounts with a zero-instance placeholder, so its shader
+    // can compile while the real point coordinates are still in flight.
+    void gl
+      .compileAsync(shaderBaseGlobe, camera, scene)
+      .then(() => {
+        if (!cancelled) setBaseShadersReady(true)
+      })
+      .catch(() => {
+        if (!cancelled) onLoadError()
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [camera, gl, onLoadError, scene])
+
+  useEffect(() => {
+    if (!baseShadersReady || !landGeometryReady) return
 
     let cancelled = false
     let gpuFrame = 0
@@ -157,11 +179,8 @@ export default function GlobeScene({
 
     async function prepareBaseGlobe() {
       try {
-        // Only the surface and land points block the poster transition. Routes
-        // mount afterwards and compile under the 300 ms cross-fade.
-        await gl.compileAsync(readyBaseGlobe, camera, scene)
-        if (cancelled) return
-
+        // Shader compilation and land-data loading have already completed in
+        // parallel. This draw uploads the final attributes before the fence.
         gl.render(scene, camera)
         await waitForBaseFrame()
         if (cancelled) return
@@ -187,7 +206,7 @@ export default function GlobeScene({
         gpuSync = null
       }
     }
-  }, [camera, gl, landGeometryReady, onLoadError, onReady, scene])
+  }, [baseShadersReady, gl, landGeometryReady, onLoadError, onReady])
 
   useFrame(() => {
     const group = groupRef.current

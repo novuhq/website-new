@@ -13,7 +13,12 @@ import globeGlow from "@/images/pages/home/hero/bg.jpg"
 import heroPoster from "@/images/pages/home/hero/hero-poster.webp"
 import mobileGlobeBackground from "@/images/pages/home/hero/mobile-poster.webp"
 import noiseLight from "@/images/pages/home/surface-noise.webp"
+import { preload } from "react-dom"
 
+import {
+  getPreferredGlobeQuality,
+  loadGlobeLandPoints,
+} from "./globe/globe-assets"
 import GlobeMetric from "./globe/globe-metric"
 
 const loadGlobeRuntime = () => import("./globe/globe-runtime")
@@ -24,6 +29,27 @@ const GlobeRuntime = dynamic(loadGlobeRuntime, {
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)"
 const MOBILE_QUERY = "(max-width: 767px)"
+const MEDIUM_LAND_POINTS_MEDIA =
+  "(min-width: 768px) and (max-width: 1439px) and (prefers-reduced-motion: no-preference)"
+const HIGH_LAND_POINTS_MEDIA =
+  "(min-width: 1440px) and (prefers-reduced-motion: no-preference)"
+
+function preloadGlobeResources() {
+  if (
+    typeof window === "undefined" ||
+    window.matchMedia(MOBILE_QUERY).matches ||
+    window.matchMedia(REDUCED_MOTION_QUERY).matches
+  ) {
+    return
+  }
+
+  void loadGlobeRuntime().catch(() => undefined)
+  void loadGlobeLandPoints(getPreferredGlobeQuality()).catch(() => undefined)
+}
+
+// Begin the two independent network branches as soon as the desktop hero
+// module executes, before React finishes hydrating the component.
+preloadGlobeResources()
 
 function subscribeToReducedMotion(onChange: () => void) {
   const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY)
@@ -54,6 +80,21 @@ function getServerMobileSnapshot() {
 }
 
 export default function HeroGlobe() {
+  preload("/globe/land-points-medium.bin", {
+    as: "fetch",
+    crossOrigin: "anonymous",
+    fetchPriority: "low",
+    media: MEDIUM_LAND_POINTS_MEDIA,
+    type: "application/octet-stream",
+  })
+  preload("/globe/land-points-high.bin", {
+    as: "fetch",
+    crossOrigin: "anonymous",
+    fetchPriority: "low",
+    media: HIGH_LAND_POINTS_MEDIA,
+    type: "application/octet-stream",
+  })
+
   const shouldReduceMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
@@ -104,8 +145,10 @@ export default function HeroGlobe() {
       return
     }
 
-    // Start after hydration. Keeping this out of module evaluation avoids
-    // competing with the initial HTML while still replacing the poster quickly.
+    // Start the runtime chunk and the exact quality data request together.
+    // GlobeLandPoints reuses the cached request when it mounts, removing the
+    // previous runtime-import -> mount -> land-fetch waterfall.
+    preloadGlobeResources()
     setShouldLoadRuntime(true)
   }, [animationUnavailable, isMobile, shouldReduceMotion])
 

@@ -20,6 +20,35 @@ interface ILandPointsGeometryResource {
   quality: TGlobeQuality
 }
 
+function createLandPointsGeometry(
+  centers: Float32Array,
+  seeds: Float32Array,
+  pointCount: number
+) {
+  const plane = new THREE.PlaneGeometry(1, 1)
+  const geometry = new THREE.InstancedBufferGeometry()
+  geometry.setIndex(plane.index?.clone() ?? null)
+  geometry.setAttribute("position", plane.getAttribute("position").clone())
+  geometry.setAttribute("uv", plane.getAttribute("uv").clone())
+  geometry.setAttribute(
+    "aCenter",
+    new THREE.InstancedBufferAttribute(centers, 3)
+  )
+  geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1))
+  geometry.instanceCount = pointCount
+  geometry.boundingSphere = new THREE.Sphere(
+    new THREE.Vector3(),
+    GLOBE_RADIUS + 0.1
+  )
+  plane.dispose()
+
+  return geometry
+}
+
+function createPlaceholderGeometry() {
+  return createLandPointsGeometry(new Float32Array(3), new Float32Array(1), 0)
+}
+
 function parseLandPoints(buffer: ArrayBuffer) {
   if (buffer.byteLength < 4) {
     throw new Error("Invalid globe land-points file")
@@ -52,24 +81,7 @@ function parseLandPoints(buffer: ArrayBuffer) {
     seeds[index] = ((index * 16807) % 2147483647) / 2147483647
   }
 
-  const plane = new THREE.PlaneGeometry(1, 1)
-  const geometry = new THREE.InstancedBufferGeometry()
-  geometry.setIndex(plane.index?.clone() ?? null)
-  geometry.setAttribute("position", plane.getAttribute("position").clone())
-  geometry.setAttribute("uv", plane.getAttribute("uv").clone())
-  geometry.setAttribute(
-    "aCenter",
-    new THREE.InstancedBufferAttribute(centers, 3)
-  )
-  geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1))
-  geometry.instanceCount = pointCount
-  geometry.boundingSphere = new THREE.Sphere(
-    new THREE.Vector3(),
-    GLOBE_RADIUS + 0.1
-  )
-  plane.dispose()
-
-  return geometry
+  return createLandPointsGeometry(centers, seeds, pointCount)
 }
 
 export default function GlobeLandPoints({
@@ -80,6 +92,7 @@ export default function GlobeLandPoints({
   const [resource, setResource] = useState<ILandPointsGeometryResource | null>(
     null
   )
+  const placeholderGeometry = useMemo(createPlaceholderGeometry, [])
   const pointScale = quality === "high" ? 1 : quality === "medium" ? 0.9 : 0.78
   const geometry = resource?.quality === quality ? resource.geometry : null
   const uniforms = useMemo(
@@ -122,15 +135,24 @@ export default function GlobeLandPoints({
     return () => resourceGeometry?.dispose()
   }, [resource])
 
+  useEffect(
+    () => () => {
+      placeholderGeometry.dispose()
+    },
+    [placeholderGeometry]
+  )
+
   useEffect(() => {
     if (!geometry) return
     onGeometryReady()
   }, [geometry, onGeometryReady])
 
-  if (!geometry) return null
-
   return (
-    <mesh frustumCulled={false} geometry={geometry} renderOrder={3}>
+    <mesh
+      frustumCulled={false}
+      geometry={geometry ?? placeholderGeometry}
+      renderOrder={3}
+    >
       <shaderMaterial
         blending={THREE.AdditiveBlending}
         depthTest
