@@ -132,6 +132,63 @@ export default function GlobeLandPoints({
     let cancelled = false
     let firstFrame = 0
     let secondFrame = 0
+    let gpuFrame = 0
+    let gpuSync: WebGLSync | null = null
+    let settleGpuWait: (() => void) | null = null
+
+    function waitForGpu() {
+      const context = gl.getContext()
+
+      if (!("fenceSync" in context)) {
+        // WebGL 1 is now uncommon on the supported desktop path. Preserve the
+        // old correctness guarantee there rather than risking a white frame.
+        context.finish()
+        return Promise.resolve()
+      }
+
+      gpuSync = context.fenceSync(context.SYNC_GPU_COMMANDS_COMPLETE, 0)
+      if (!gpuSync) {
+        context.finish()
+        return Promise.resolve()
+      }
+
+      context.flush()
+
+      return new Promise<void>((resolve, reject) => {
+        const complete = () => {
+          settleGpuWait = null
+          resolve()
+        }
+        settleGpuWait = complete
+
+        const poll = () => {
+          if (cancelled || !gpuSync) {
+            complete()
+            return
+          }
+
+          const status = context.clientWaitSync(gpuSync, 0, 0)
+          if (status === context.WAIT_FAILED) {
+            context.deleteSync(gpuSync)
+            gpuSync = null
+            settleGpuWait = null
+            reject(new Error("Unable to prepare the globe GPU resources"))
+            return
+          }
+
+          if (status === context.TIMEOUT_EXPIRED) {
+            gpuFrame = requestAnimationFrame(poll)
+            return
+          }
+
+          context.deleteSync(gpuSync)
+          gpuSync = null
+          complete()
+        }
+
+        poll()
+      })
+    }
 
     async function prepareScene() {
       try {
@@ -143,7 +200,8 @@ export default function GlobeLandPoints({
         if (cancelled) return
 
         gl.render(scene, camera)
-        gl.getContext().finish()
+        await waitForGpu()
+        if (cancelled) return
 
         firstFrame = requestAnimationFrame(() => {
           secondFrame = requestAnimationFrame(() => {
@@ -161,6 +219,15 @@ export default function GlobeLandPoints({
       cancelled = true
       cancelAnimationFrame(firstFrame)
       cancelAnimationFrame(secondFrame)
+      cancelAnimationFrame(gpuFrame)
+      settleGpuWait?.()
+      settleGpuWait = null
+
+      if (gpuSync) {
+        const context = gl.getContext()
+        if ("deleteSync" in context) context.deleteSync(gpuSync)
+        gpuSync = null
+      }
     }
   }, [camera, geometry, gl, onLoadError, onReady, scene])
 

@@ -14,10 +14,6 @@ import heroPoster from "@/images/pages/home/hero/hero-poster.webp"
 import mobileGlobeBackground from "@/images/pages/home/hero/mobile-poster.webp"
 import noiseLight from "@/images/pages/home/surface-noise.webp"
 
-import {
-  getPreferredGlobeQuality,
-  loadGlobeLandPoints,
-} from "./globe/globe-assets"
 import GlobeMetric from "./globe/globe-metric"
 
 const loadGlobeRuntime = () => import("./globe/globe-runtime")
@@ -28,17 +24,6 @@ const GlobeRuntime = dynamic(loadGlobeRuntime, {
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)"
 const MOBILE_QUERY = "(max-width: 767px)"
-
-if (
-  typeof window !== "undefined" &&
-  !window.matchMedia(MOBILE_QUERY).matches &&
-  !window.matchMedia(REDUCED_MOTION_QUERY).matches
-) {
-  // Start the split bundle as soon as the Hero module is evaluated. Rendering
-  // still waits for hydration, while the browser can fetch Three.js in parallel.
-  void loadGlobeRuntime()
-  void loadGlobeLandPoints(getPreferredGlobeQuality()).catch(() => undefined)
-}
 
 function subscribeToReducedMotion(onChange: () => void) {
   const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY)
@@ -119,8 +104,8 @@ export default function HeroGlobe() {
       return
     }
 
-    // This is the primary above-the-fold visual. Start its split bundle after
-    // hydration instead of waiting for every below-the-fold asset to finish.
+    // Start after hydration. Keeping this out of module evaluation avoids
+    // competing with the initial HTML while still replacing the poster quickly.
     setShouldLoadRuntime(true)
   }, [animationUnavailable, isMobile, shouldReduceMotion])
 
@@ -139,7 +124,7 @@ export default function HeroGlobe() {
       />
 
       <div
-        className={`pointer-events-none absolute inset-0 lg:right-auto lg:left-1/2 lg:z-20 lg:w-[max(120rem,100vw)] lg:-translate-x-1/2 ${playbackEnabled ? "invisible opacity-0" : runtimeReady ? "will-change-opacity opacity-0 transition-opacity duration-700 ease-out" : "will-change-opacity opacity-100"}`}
+        className={`pointer-events-none absolute inset-0 md:z-20 lg:right-auto lg:left-1/2 lg:w-[max(120rem,100vw)] lg:-translate-x-1/2 ${playbackEnabled ? "invisible opacity-0" : runtimeReady ? "will-change-opacity opacity-0 transition-opacity duration-300 ease-out" : "will-change-opacity opacity-100"}`}
         onTransitionEnd={handlePosterTransitionEnd}
       >
         <picture className="absolute inset-0 block size-full lg:right-auto lg:left-1/2 lg:w-480 lg:-translate-x-1/2 lg:[mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)]">
