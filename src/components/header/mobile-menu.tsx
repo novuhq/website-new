@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 
 import { IMenuHeaderItem } from "@/types/common"
-import { cn } from "@/lib/utils"
 import { useScrollStatus } from "@/hooks/use-scroll-status"
 import { Button } from "@/components/ui/button"
 import {
@@ -47,7 +46,6 @@ const DEFAULT_ACTIONS: Required<MobileMenuProps>["actions"] = {
 
 function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
-  const [isBanner, setIsBanner] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
   const navigationRef = useRef<HTMLElement>(null)
@@ -69,10 +67,6 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
 
   useEffect(() => {
     setOpen(false)
-  }, [pathname])
-
-  useEffect(() => {
-    setIsBanner(Boolean(document.querySelector(".link-banner")))
   }, [pathname])
 
   useEffect(() => {
@@ -174,12 +168,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
       </DrawerTrigger>
       <DrawerContent
         ref={drawerRef}
-        className={cn(
-          "flex min-h-0 flex-col overflow-hidden overscroll-none rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden",
-          isBanner
-            ? "top-25 bottom-auto h-[calc(100dvh-6.25rem)]"
-            : "top-16 bottom-auto h-[calc(100dvh-4rem)]"
-        )}
+        className="top-16 bottom-auto flex h-[calc(100dvh-4rem)] min-h-0 flex-col overflow-hidden overscroll-none rounded-t-none border border-border p-0 backdrop-blur-none lg:hidden"
         onCloseAutoFocus={onCloseAutoFocus}
         onPointerDownCapture={() => {
           interactionWasKeyboardRef.current = false
