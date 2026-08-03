@@ -1,6 +1,7 @@
 import type { IChannelPageData } from "@/types/channel"
 
 import { emailChannelData } from "./email"
+import { imessageChannelData } from "./imessage"
 import { microsoftTeamsChannelData } from "./microsoft-teams"
 import { slackChannelData } from "./slack"
 import { telegramChannelData } from "./telegram"
@@ -12,6 +13,7 @@ export const channelPages: Record<string, IChannelPageData> = {
   telegram: telegramChannelData,
   "microsoft-teams": microsoftTeamsChannelData,
   email: emailChannelData,
+  imessage: imessageChannelData,
 }
 
 export function getChannelBySlug(slug: string): IChannelPageData | undefined {

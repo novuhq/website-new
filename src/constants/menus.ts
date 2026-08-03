@@ -216,6 +216,43 @@ export const MENUS = {
                 },
               ],
             },
+            {
+              label: "iMessage",
+              href: ROUTE.channelIMessage,
+              menuIcon: "imessage",
+              children: [
+                {
+                  label: "LangChain",
+                  href: ROUTE.channelIMessageLangchain,
+                  menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelIMessageAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelIMessageChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelIMessageCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelIMessageClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelIMessageClaudeAws,
+                  menuIcon: "claude-aws",
+                },
+              ],
+            },
           ],
         },
       ],

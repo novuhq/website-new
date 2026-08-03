@@ -87,7 +87,7 @@ export const telegramChannelData: IChannelPageData = {
     {
       question: "Which other channels can the same agent reach?",
       answer:
-        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, and Email through Novu Connect, with one conversation thread across channels.",
+        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, Email, and iMessage through Novu Connect, with one conversation thread across channels.",
     },
   ],
   starterTemplateIds: [
