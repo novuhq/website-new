@@ -6,12 +6,9 @@ import { getAllChannelSlugs, getChannelBySlug } from "@/data/pages/channels"
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
-import { getStarterAgentTemplates } from "@/lib/templates/starter-templates"
-import { getAgentTemplateUrl } from "@/lib/templates/url"
 import ChannelConnect from "@/components/pages/channels/channel-connect"
 import ChannelConnectStack from "@/components/pages/channels/channel-connect-stack"
 import ChannelHero from "@/components/pages/channels/channel-hero"
-import ChannelTemplates from "@/components/pages/channels/channel-templates"
 import ChannelUseCase from "@/components/pages/channels/channel-use-case"
 import FAQ from "@/components/pages/faq"
 import CTA from "@/components/pages/home/cta"
@@ -56,8 +53,6 @@ async function ChannelPage({ params }: PageProps) {
     notFound()
   }
 
-  const templates = await getStarterAgentTemplates(channel.starterTemplateIds)
-
   const siteUrl = absoluteUrl("/")
   const pageUrl = absoluteUrl(toCanonicalPathname(`/channels/${channel.slug}`))
   const connectUrl = absoluteUrl(toCanonicalPathname(String(ROUTE.connect)))
@@ -68,7 +63,6 @@ async function ChannelPage({ params }: PageProps) {
   const faqId = `${pageUrl}#faq`
   const breadcrumbId = `${pageUrl}#breadcrumb`
   const howToId = `${pageUrl}#howto`
-  const templatesId = `${pageUrl}#starter-templates`
 
   const webPageJsonLd = {
     "@type": "WebPage",
@@ -81,7 +75,6 @@ async function ChannelPage({ params }: PageProps) {
     publisher: { "@id": organizationId },
     breadcrumb: { "@id": breadcrumbId },
     mainEntity: [{ "@id": faqId }, { "@id": howToId }],
-    ...(templates.length ? { hasPart: { "@id": templatesId } } : {}),
   }
 
   const faqJsonLd = {
@@ -122,21 +115,6 @@ async function ChannelPage({ params }: PageProps) {
     ],
   }
 
-  const templatesItemListJsonLd = templates.length
-    ? {
-        "@type": "ItemList",
-        "@id": templatesId,
-        name: `Starter AI agent templates for ${channel.channelName}`,
-        itemListElement: templates.map((template, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          name: `${template.name} agent`,
-          description: template.summary,
-          url: getAgentTemplateUrl(template.id),
-        })),
-      }
-    : null
-
   const howToJsonLd = {
     "@type": "HowTo",
     "@id": howToId,
@@ -146,8 +124,8 @@ async function ChannelPage({ params }: PageProps) {
       {
         "@type": "HowToStep",
         position: 1,
-        name: "Pick a starter agent or bring your own",
-        text: `Choose a ready-made agent template for ${channel.channelName}, or connect the agent you already built.`,
+        name: "Bring your agent",
+        text: `Connect the agent you already built to ${channel.channelName}.`,
       },
       {
         "@type": "HowToStep",
@@ -166,20 +144,13 @@ async function ChannelPage({ params }: PageProps) {
 
   const jsonLdGraph = {
     "@context": "https://schema.org",
-    "@graph": [
-      webPageJsonLd,
-      faqJsonLd,
-      breadcrumbJsonLd,
-      howToJsonLd,
-      ...(templatesItemListJsonLd ? [templatesItemListJsonLd] : []),
-    ],
+    "@graph": [webPageJsonLd, faqJsonLd, breadcrumbJsonLd, howToJsonLd],
   }
 
   return (
     <div className="overflow-clip font-inter">
       <ChannelHero channel={channel} />
       <ChannelUseCase channel={channel} />
-      <ChannelTemplates channel={channel} templates={templates} />
       <ChannelConnect channel={channel} />
       <ChannelConnectStack channel={channel} />
       <FAQ
