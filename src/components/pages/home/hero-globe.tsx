@@ -13,10 +13,9 @@ import globeGlow from "@/images/pages/home/hero/bg.jpg"
 import heroPoster from "@/images/pages/home/hero/hero-poster.webp"
 import mobileGlobeBackground from "@/images/pages/home/hero/mobile-poster.webp"
 import noiseLight from "@/images/pages/home/surface-noise.webp"
-import { preload } from "react-dom"
 
 import {
-  getPreferredGlobeQuality,
+  getPreferredGlobeLandPointQuality,
   loadGlobeLandPoints,
 } from "./globe/globe-assets"
 import GlobeMetric from "./globe/globe-metric"
@@ -29,10 +28,6 @@ const GlobeRuntime = dynamic(loadGlobeRuntime, {
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)"
 const MOBILE_QUERY = "(max-width: 767px)"
-const MEDIUM_LAND_POINTS_MEDIA =
-  "(min-width: 768px) and (max-width: 1439px) and (prefers-reduced-motion: no-preference)"
-const HIGH_LAND_POINTS_MEDIA =
-  "(min-width: 1440px) and (prefers-reduced-motion: no-preference)"
 
 function preloadGlobeResources() {
   if (
@@ -44,7 +39,9 @@ function preloadGlobeResources() {
   }
 
   void loadGlobeRuntime().catch(() => undefined)
-  void loadGlobeLandPoints(getPreferredGlobeQuality()).catch(() => undefined)
+  void loadGlobeLandPoints(getPreferredGlobeLandPointQuality()).catch(
+    () => undefined
+  )
 }
 
 // Begin the two independent network branches as soon as the desktop hero
@@ -80,21 +77,6 @@ function getServerMobileSnapshot() {
 }
 
 export default function HeroGlobe() {
-  preload("/globe/land-points-medium.bin", {
-    as: "fetch",
-    crossOrigin: "anonymous",
-    fetchPriority: "low",
-    media: MEDIUM_LAND_POINTS_MEDIA,
-    type: "application/octet-stream",
-  })
-  preload("/globe/land-points-high.bin", {
-    as: "fetch",
-    crossOrigin: "anonymous",
-    fetchPriority: "low",
-    media: HIGH_LAND_POINTS_MEDIA,
-    type: "application/octet-stream",
-  })
-
   const shouldReduceMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
@@ -155,7 +137,7 @@ export default function HeroGlobe() {
   return (
     <div
       aria-hidden="true"
-      className="absolute bottom-22 left-1/2 z-0 aspect-[1520/745] w-[180%] max-w-480 -translate-x-1/2 overflow-hidden md:aspect-[1920/931] lg:-top-16 lg:bottom-auto lg:w-480 lg:overflow-visible"
+      className="absolute bottom-18 left-1/2 z-0 aspect-[1520/745] w-[180%] max-w-480 -translate-x-1/2 overflow-hidden md:bottom-21.5 md:aspect-[1920/931] lg:w-480 lg:overflow-visible 2xl:-top-16 2xl:bottom-auto"
     >
       <div className="pointer-events-none absolute top-0 left-1/2 hidden h-full w-[max(120rem,100vw)] -translate-x-1/2 bg-[radial-gradient(ellipse_70rem_30rem_at_50%_72%,rgba(76,63,218,0.22),rgba(30,35,101,0.08)_54%,transparent_80%)] lg:block" />
       <div

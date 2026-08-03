@@ -17,7 +17,10 @@ import * as THREE from "three"
 
 import { cn } from "@/lib/utils"
 
-import { getPreferredGlobeQuality } from "./globe-assets"
+import {
+  getPreferredGlobeLandPointQuality,
+  getPreferredGlobeQuality,
+} from "./globe-assets"
 import {
   GLOBE_AUTO_ROTATION_TIME_SCALE,
   GLOBE_CARD_CONTENT_READY_MS,
@@ -246,6 +249,12 @@ function getInitialQuality(): TGlobeQuality {
   return typeof window === "undefined" ? "medium" : getPreferredGlobeQuality()
 }
 
+function getInitialLandPointQuality(): TGlobeQuality {
+  return typeof window === "undefined"
+    ? "medium"
+    : getPreferredGlobeLandPointQuality()
+}
+
 function advanceGlobeInteraction(
   interaction: IGlobeInteractionState,
   deltaMs: number,
@@ -410,6 +419,7 @@ export default function GlobeRuntime({
   // pause the renderer after the user scrolls it out of view.
   const [inView, setInView] = useState(true)
   const [quality] = useState<TGlobeQuality>(getInitialQuality)
+  const [landPointQuality] = useState<TGlobeQuality>(getInitialLandPointQuality)
   const [dprCap, setDprCap] = useState(() =>
     quality === "high" ? 1.5 : quality === "medium" ? 1.25 : 1
   )
@@ -884,6 +894,7 @@ export default function GlobeRuntime({
                 activeCards={activeCards}
                 elapsedRef={elapsedRef}
                 interactionRef={interactionRef}
+                landPointQuality={landPointQuality}
                 onAnchorUpdate={handleAnchorUpdate}
                 onLoadError={handleLoadError}
                 onReady={handleSceneReady}
@@ -907,7 +918,7 @@ export default function GlobeRuntime({
         ))}
       </div>
 
-      <div className="absolute right-0 bottom-5 left-0 flex justify-center">
+      <div className="absolute right-0 bottom-6 left-0 flex justify-center">
         <GlobeMetric />
       </div>
     </div>

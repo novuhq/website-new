@@ -26,6 +26,7 @@ interface IGlobeSceneProps {
   activeCards: IGlobeCardEvent[]
   elapsedRef: TElapsedTimeRef
   interactionRef: TInteractionRef
+  landPointQuality: TGlobeQuality
   onAnchorUpdate: (eventId: string, anchor: IProjectedAnchor) => void
   onLoadError: () => void
   onReady: () => void
@@ -39,6 +40,7 @@ export default function GlobeScene({
   activeCards,
   elapsedRef,
   interactionRef,
+  landPointQuality,
   onAnchorUpdate,
   onLoadError,
   onReady,
@@ -257,7 +259,7 @@ export default function GlobeScene({
         <GlobeLandPoints
           onGeometryReady={handleLandGeometryReady}
           onLoadError={onLoadError}
-          quality={quality}
+          quality={landPointQuality}
         />
       </group>
       {routesMounted ? (
