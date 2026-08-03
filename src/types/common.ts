@@ -11,7 +11,9 @@ export interface IMenuItem {
   isNew?: boolean
   children?: IMenuItem[]
   description?: string
+  iconSrc?: string
   menuIcon?: TMenuIcon
+  remainingCount?: number
 }
 
 export type TMenuIcon =
@@ -37,6 +39,7 @@ export type TMenuIcon =
   | "claude"
   | "codex"
   | "cursor"
+  | "custom-code"
   | "blog"
   | "customers"
   | "community"
@@ -59,6 +62,7 @@ export type THeaderMenuVariant =
   | "channels"
   | "ai"
   | "resources"
+  | "integrations"
 
 export interface IMenuSocialItem extends IMenuItem {
   icon: TSocialIcons

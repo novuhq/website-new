@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Image from "next/image"
 import { ChevronRight } from "lucide-react"
 import { domAnimation, LazyMotion, m } from "motion/react"
 
@@ -70,29 +71,93 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                 {items && items.length > 0 && (
                   <ul className="flex flex-col gap-y-5">
                     {items.map(
-                      ({ label, href, menuIcon, description }, itemIndex) => (
+                      (
+                        {
+                          label,
+                          href,
+                          menuIcon,
+                          description,
+                          children,
+                          remainingCount,
+                        },
+                        itemIndex
+                      ) => (
                         <li key={itemIndex}>
-                          <Link
-                            className={cn(
-                              "group flex w-full items-start gap-3 !leading-none font-normal",
-                              variant === "product"
-                                ? "text-white"
-                                : "text-gray-90"
-                            )}
-                            href={href}
-                            variant="clean"
-                            onClick={onNavigate}
-                          >
-                            <MenuIcon className="mt-px" icon={menuIcon} />
-                            <span>
-                              <span className="block">{label}</span>
-                              {description && (
-                                <span className="mt-1.5 block text-sm leading-4 text-gray-70">
-                                  {description}
-                                </span>
+                          {children?.length ? (
+                            <>
+                              <Link
+                                className="group flex w-full items-start gap-3 leading-none font-normal text-gray-90"
+                                href={href}
+                                variant="clean"
+                                onClick={onNavigate}
+                              >
+                                <MenuIcon className="mt-px" icon={menuIcon} />
+                                <span>{label}</span>
+                              </Link>
+                              <ul className="mt-3 flex flex-col gap-y-3">
+                                {children.map((child) => (
+                                  <li key={child.label}>
+                                    <Link
+                                      className="flex items-center gap-2.5 text-sm leading-none font-normal text-gray-70 hover:text-white"
+                                      href={child.href}
+                                      variant="clean"
+                                      onClick={onNavigate}
+                                    >
+                                      {child.iconSrc && (
+                                        <Image
+                                          className="size-4 shrink-0 object-contain"
+                                          src={child.iconSrc}
+                                          width={16}
+                                          height={16}
+                                          alt=""
+                                          aria-hidden
+                                        />
+                                      )}
+                                      {child.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                                {Boolean(remainingCount) && (
+                                  <li>
+                                    <Link
+                                      className="flex items-center gap-1 text-sm leading-none font-normal text-gray-70 hover:text-white"
+                                      href={href}
+                                      variant="clean"
+                                      onClick={onNavigate}
+                                    >
+                                      +{remainingCount} more
+                                      <ChevronRight
+                                        className="size-3.5"
+                                        aria-hidden="true"
+                                      />
+                                    </Link>
+                                  </li>
+                                )}
+                              </ul>
+                            </>
+                          ) : (
+                            <Link
+                              className={cn(
+                                "group flex w-full items-start gap-3 !leading-none font-normal",
+                                variant === "product"
+                                  ? "text-white"
+                                  : "text-gray-90"
                               )}
-                            </span>
-                          </Link>
+                              href={href}
+                              variant="clean"
+                              onClick={onNavigate}
+                            >
+                              <MenuIcon className="mt-px" icon={menuIcon} />
+                              <span>
+                                <span className="block">{label}</span>
+                                {description && (
+                                  <span className="mt-1.5 block text-sm leading-4 text-gray-70">
+                                    {description}
+                                  </span>
+                                )}
+                              </span>
+                            </Link>
+                          )}
                         </li>
                       )
                     )}

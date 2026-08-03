@@ -1,3 +1,4 @@
+import { INTEGRATION_MENU_ITEMS } from "@/constants/integration-menu"
 import { ROUTE } from "@/constants/routes"
 
 import { IMenuHeaderItem, IMenuSocialItem } from "@/types/common"
@@ -64,45 +65,75 @@ export const MENUS = {
               label: "Slack",
               href: ROUTE.channelSlack,
               menuIcon: "slack",
+              children: [
+                {
+                  label: "Connect LangChain agent",
+                  href: ROUTE.channelSlackLangchain,
+                },
+                { label: "Connect AI agent", href: ROUTE.channelSlack },
+              ],
             },
             {
               label: "WhatsApp",
               href: ROUTE.channelWhatsApp,
               menuIcon: "whatsapp",
+              children: [
+                {
+                  label: "Connect LangChain agent",
+                  href: ROUTE.channelWhatsAppLangchain,
+                },
+                { label: "Connect AI agent", href: ROUTE.channelWhatsApp },
+              ],
             },
             {
               label: "Telegram",
               href: ROUTE.channelTelegram,
               menuIcon: "telegram",
+              children: [
+                {
+                  label: "Connect LangChain agent",
+                  href: ROUTE.channelTelegramLangchain,
+                },
+                { label: "Connect AI agent", href: ROUTE.channelTelegram },
+              ],
             },
             {
               label: "MS Teams",
               href: ROUTE.channelMicrosoftTeams,
               menuIcon: "teams",
+              children: [
+                {
+                  label: "Connect LangChain agent",
+                  href: ROUTE.channelMicrosoftTeamsLangchain,
+                },
+                {
+                  label: "Connect AI agent",
+                  href: ROUTE.channelMicrosoftTeams,
+                },
+              ],
             },
             {
-              label: "iMessage",
-              href: ROUTE.connect,
-              menuIcon: "imessage",
-            },
-            { label: "Email", href: ROUTE.channelEmail, menuIcon: "email" },
-            { label: "Inbox", href: ROUTE.inbox, menuIcon: "inbox" },
-            {
-              label: "Push",
-              href: ROUTE.integrationsChannels,
-              menuIcon: "push",
-            },
-            {
-              label: "Chat",
-              href: ROUTE.integrationsChannels,
-              menuIcon: "chat",
-            },
-            {
-              label: "SMS",
-              href: ROUTE.integrationsChannels,
-              menuIcon: "sms",
+              label: "Email",
+              href: ROUTE.channelEmail,
+              menuIcon: "email",
+              children: [
+                {
+                  label: "Connect LangChain agent",
+                  href: ROUTE.channelEmailLangchain,
+                },
+                { label: "Connect AI agent", href: ROUTE.channelEmail },
+              ],
             },
           ],
+        },
+      ],
+    },
+    {
+      title: "Integrations",
+      variant: "integrations",
+      content: [
+        {
+          items: INTEGRATION_MENU_ITEMS,
         },
       ],
     },
@@ -128,6 +159,11 @@ export const MENUS = {
             { label: "Claude", href: ROUTE.docsMcp, menuIcon: "claude" },
             { label: "Codex", href: ROUTE.docsMcp, menuIcon: "codex" },
             { label: "Cursor", href: ROUTE.docsMcp, menuIcon: "cursor" },
+            {
+              label: "Custom Code",
+              href: ROUTE.docsCustomCode,
+              menuIcon: "custom-code",
+            },
           ],
         },
       ],
@@ -176,11 +212,6 @@ export const MENUS = {
               href: ROUTE.docsSdks,
               menuIcon: "sdks",
             },
-            {
-              label: "Integrations",
-              href: ROUTE.integrations,
-              menuIcon: "integrations",
-            },
             { label: "GitHub", href: ROUTE.github, menuIcon: "github" },
           ],
         },
@@ -189,11 +220,6 @@ export const MENUS = {
           items: [
             { label: "About", href: ROUTE.handbook, menuIcon: "about" },
             { label: "Careers", href: ROUTE.careers, menuIcon: "careers" },
-            {
-              label: "Brand Assets",
-              href: ROUTE.github,
-              menuIcon: "brand",
-            },
             { label: "Status", href: ROUTE.statusPage, menuIcon: "status" },
             {
               label: "Contact us",
@@ -203,6 +229,10 @@ export const MENUS = {
           ],
         },
       ],
+    },
+    {
+      title: "Customers",
+      href: ROUTE.customers,
     },
     {
       title: "Pricing",

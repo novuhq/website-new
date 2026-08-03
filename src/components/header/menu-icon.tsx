@@ -5,6 +5,7 @@ import aiCodexIcon from "@/svgs/header/menu/ai-codex.inline.svg"
 import aiConsoleIcon from "@/svgs/header/menu/ai-console.inline.svg"
 import aiCopilotIcon from "@/svgs/header/menu/ai-copilot.inline.svg"
 import aiCursorIcon from "@/svgs/header/menu/ai-cursor.inline.svg"
+import aiCustomCodeIcon from "@/svgs/header/menu/ai-custom-code.inline.svg"
 import aiMcpIcon from "@/svgs/header/menu/ai-mcp.inline.svg"
 import aiSkillsIcon from "@/svgs/header/menu/ai-skills.inline.svg"
 import channelsChatIcon from "@/svgs/header/menu/channels-chat.inline.svg"
@@ -59,6 +60,7 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   claude: aiClaudeIcon,
   codex: aiCodexIcon,
   cursor: aiCursorIcon,
+  "custom-code": aiCustomCodeIcon,
   blog: resourcesBlogIcon,
   customers: resourcesCustomersIcon,
   community: resourcesCommunityIcon,

@@ -69,9 +69,9 @@ function Header({ githubStars }: IHeaderProps) {
       )}
     >
       <LinkBanner />
-      <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:justify-start">
+      <div className="relative z-10 mx-auto flex min-h-16 w-full max-w-384 items-center justify-between px-5 md:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <NextLink
-          className="mr-5 inline-flex shrink-0 rounded lg:mr-8"
+          className="mr-5 inline-flex shrink-0 rounded lg:mr-0 lg:justify-self-start"
           href={ROUTE.index}
         >
           <Image
@@ -84,8 +84,11 @@ function Header({ githubStars }: IHeaderProps) {
           />
           <span className="sr-only">{config.projectName}</span>
         </NextLink>
-        <Nav className="hidden lg:flex" items={navigationItems} />
-        <div className="ml-auto hidden items-center justify-end gap-x-5 lg:flex">
+        <Nav
+          className="hidden lg:flex lg:justify-self-center"
+          items={navigationItems}
+        />
+        <div className="ml-auto hidden items-center justify-end gap-x-5 lg:ml-0 lg:flex lg:justify-self-end">
           <GithubStars
             className="hidden text-base tracking-tighter xl:flex"
             stars={githubStars}

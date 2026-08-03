@@ -11,7 +11,20 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   customers: "/customers",
   integrations: "/integrations",
   integrationsChannels: "/integrations/channels",
+  integrationsChannelsInApp:
+    "/integrations/channels#integration-category-in-app",
+  integrationsChannelsEmail:
+    "/integrations/channels#integration-category-email",
+  integrationsChannelsSms: "/integrations/channels#integration-category-sms",
+  integrationsChannelsPush: "/integrations/channels#integration-category-push",
+  integrationsChannelsChat: "/integrations/channels#integration-category-chat",
   integrationsSources: "/integrations/sources",
+  integrationsSourcesWorkflow:
+    "/integrations/sources#integration-category-email-frameworks",
+  integrationsSourcesAiSdks:
+    "/integrations/sources#integration-category-ai-sdks",
+  integrationsSourcesFeatureFlags:
+    "/integrations/sources#integration-category-feature-flags",
   connect: "/connect",
   copilot: "/copilot",
   mcp: "/mcp",
@@ -19,10 +32,15 @@ export const ROUTE: Record<string, Route<string> | URL> = {
 
   // Per-channel Novu Connect landing pages
   channelSlack: "/channels/slack",
+  channelSlackLangchain: "/channels/slack/langchain",
   channelWhatsApp: "/channels/whatsapp",
+  channelWhatsAppLangchain: "/channels/whatsapp/langchain",
   channelTelegram: "/channels/telegram",
+  channelTelegramLangchain: "/channels/telegram/langchain",
   channelMicrosoftTeams: "/channels/microsoft-teams",
+  channelMicrosoftTeamsLangchain: "/channels/microsoft-teams/langchain",
   channelEmail: "/channels/email",
+  channelEmailLangchain: "/channels/email/langchain",
 
   // PREVIOUS WEBSITE
 
@@ -85,6 +103,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   docsApis: "https://docs.novu.co/api-reference",
   docsContentManagement:
     "https://docs.novu.co/platform/workflow/add-notification-content/channels-template-editors",
+  docsCustomCode: "https://docs.novu.co/agents/get-started/what-is-aci",
   docsFramework: "https://docs.novu.co/framework/introduction",
   docsGuides: "https://docs.novu.co/guides",
   docsInApp: "https://docs.novu.co/platform/inbox",
