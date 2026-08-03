@@ -247,20 +247,20 @@ I will complete the interactive CLI and approve dependency installs when asked. 
     >
       <div
         className={cn(
-          "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)] lg:gap-16 2xl:grid-cols-[38rem_36rem] 2xl:gap-24",
+          "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)] lg:gap-16",
           isCompact &&
             "max-w-176 gap-8 lg:max-w-176 lg:grid-cols-1 lg:gap-8 lg:px-0 2xl:grid-cols-1 2xl:gap-8"
         )}
       >
         <header
           className={cn(
-            "flex max-w-152 flex-col lg:pt-8",
+            "flex max-w-160 flex-col lg:pt-8",
             isCompact && "max-w-full lg:pt-0"
           )}
         >
           <h2
             className={cn(
-              "text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.75rem] md:leading-[1.125] md:tracking-plus-tight",
+              "text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.5rem] md:leading-[1.125] md:tracking-plus-tight",
               isCompact &&
                 "md:text-[2rem] md:leading-[1.125] md:tracking-[-0.04em]"
             )}
@@ -270,9 +270,9 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           {description && (
             <p
               className={cn(
-                "mt-4 max-w-152 text-base leading-snug tracking-tight text-pretty text-gray-70 md:text-xl/snug",
+                "mt-4 max-w-160 text-base leading-snug tracking-tight text-pretty text-gray-70 md:text-xl md:leading-normal md:tracking-tighter",
                 isCompact &&
-                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base"
+                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base md:leading-snug"
               )}
             >
               {description}
