@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
+import ChannelsArrowRight from "@/svgs/header/menu/channels-arrow-right.inline.svg"
 import { ChevronRight } from "lucide-react"
 import { motion } from "motion/react"
 
@@ -177,6 +178,13 @@ function NestedMenu({
               >
                 <MenuIcon icon={menuIcon} />
                 {label}
+                {variant === "channels" && (
+                  <ChannelsArrowRight
+                    className="-ml-1 h-4 w-1.5 opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
+                )}
               </Link>
             </li>
           )
