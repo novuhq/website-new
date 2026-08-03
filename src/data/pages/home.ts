@@ -52,32 +52,53 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
 export const HOME_CHANNELS = [
   {
     key: "slack",
-    badges: ["connect"] as const,
+    badges: ["notify", "connect"] as const,
     label: "Slack",
     title: "Connect your AI agent to Slack",
     description:
-      "Reach teams where work happens with rich, actionable messages, threads, and reliable delivery routing.",
+      "Put your agent where teams coordinate work, investigate issues, and make decisions together.",
     prompt:
-      "Connect my AI agent to Slack with Novu, including threaded replies and delivery status handling.",
+      "Connect this project to Slack with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel slack. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete the interactive CLI (including Slack authorization). When it copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat.",
     features: [
-      "Two-way threaded conversations",
-      "Team and user identity mapping",
-      "Reliable delivery with retries",
+      "Conversation context across threaded replies",
+      "Rich messages built with Block Kit",
+      "Buttons for actions and approvals",
+      "Live typing and read states",
+      "Messages that update in place",
+    ],
+  },
+  {
+    key: "teams",
+    badges: ["notify", "connect"] as const,
+    label: "Microsoft Teams",
+    title: "Connect your AI agent to Microsoft Teams",
+    description:
+      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
+    prompt:
+      "Connect this project to Microsoft Teams with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel teams. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete the interactive CLI. Teams finishes in the Novu dashboard after the CLI opens it — guide me only if I get stuck. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
+    features: [
+      "Conversation context across replies",
+      "Adaptive Cards that update in place",
+      "Buttons for actions and approvals",
+      "Rich text and reactions",
+      "Ordered message processing",
     ],
   },
   {
     key: "whatsapp",
     badges: ["connect"] as const,
-    label: "WhatsApp",
-    title: "Connect your AI agent to WhatsApp",
+    label: "WhatsApp Business",
+    title: "Connect your AI agent to WhatsApp Business",
     description:
-      "Start secure two-way customer conversations with templates, attachments, and delivery receipts.",
+      "Give customers a direct way to reach your agent from the messaging app they already use.",
     prompt:
-      "Connect my AI agent to WhatsApp with Novu and configure approved templates plus two-way replies.",
+      "Connect this project to WhatsApp Business with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel whatsapp. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete Meta Embedded Signup in the browser and send the test WhatsApp message the CLI asks for. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
     features: [
-      "Secure two-way conversations",
-      "Approved message templates",
-      "Attachments and delivery receipts",
+      "Persistent conversation context",
+      "Typing indicators and read receipts",
+      "Quick-reply buttons",
+      "Secure links for tool and MCP approvals",
+      "Ordered message processing",
     ],
   },
   {
@@ -86,28 +107,15 @@ export const HOME_CHANNELS = [
     label: "Telegram",
     title: "Connect your AI agent to Telegram",
     description:
-      "Reach users with fast, conversational updates, rich media, and replies inside Telegram.",
+      "Make your agent available in a fast, lightweight channel suited to direct user conversations.",
     prompt:
-      "Connect my AI agent to Telegram with Novu and configure rich messages, user identity, and two-way replies.",
+      "Connect this project to Telegram with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel telegram. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will create the bot in BotFather and finish the CLI handoff (setup link / QR). When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask me to paste the bot token into chat.",
     features: [
-      "Fast conversational delivery",
-      "Rich messages and media",
-      "Replies routed to the right context",
-    ],
-  },
-  {
-    key: "teams",
-    badges: ["connect", "notify"] as const,
-    label: "MS Teams",
-    title: "Connect your AI agent to Microsoft Teams",
-    description:
-      "Bring agent updates and human handoffs into the channels your organization already uses.",
-    prompt:
-      "Connect my AI agent to Microsoft Teams with Novu and include a human handoff workflow.",
-    features: [
-      "Channel and thread awareness",
-      "Human handoff workflows",
-      "Reliable team notifications",
+      "Conversation context across replies",
+      "Markdown-rich messages",
+      "Inline buttons and quick actions",
+      "Typing indicators and read receipts",
+      "Messages that update in place",
     ],
   },
   {
@@ -116,13 +124,15 @@ export const HOME_CHANNELS = [
     label: "Email",
     title: "Connect your AI agent to Email",
     description:
-      "Reach users directly in their inbox with rich, actionable notifications. Support for templates, attachments, and high-deliverability routing.",
+      "Use email for conversations that benefit from a durable record and more room for detail.",
     prompt:
-      "Connect my AI agent to Email with Novu using a responsive template, attachments, and delivery tracking.",
+      "Connect this project to email with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel email. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will send the test email to the inbound address the CLI prints. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
     features: [
-      "Responsive message templates",
-      "Attachments and rich content",
-      "High-deliverability routing",
+      "Threaded conversation history",
+      "Rich HTML messages",
+      "Action links for approvals and tool access",
+      "Read tracking",
+      "Ordered message processing",
     ],
   },
   {
@@ -131,13 +141,15 @@ export const HOME_CHANNELS = [
     label: "iMessage",
     title: "Connect your AI agent to iMessage",
     description:
-      "Bring agent conversations and timely updates into the native messaging experience customers already use.",
+      "Give customers a familiar way to reach your agent through the Messages app.",
     prompt:
-      "Connect my AI agent to iMessage with Novu and configure secure two-way conversations plus delivery tracking.",
+      "Connect this project to iMessage with Novu Connect (Sendblue). Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel sendblue. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will enter Sendblue credentials in the CLI and reply to the test iMessage. Prefer the CLI prompts over chat for secrets. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps.",
     features: [
-      "Native messaging experience",
-      "Secure two-way conversations",
-      "Delivery status tracking",
+      "Full conversation history",
+      "Conversation-level threaded replies",
+      "Live typing indicators",
+      "Reply-based action and MCP approvals",
+      "Plain-text MCP connection links",
     ],
   },
   {
@@ -174,8 +186,8 @@ export const HOME_CHANNELS = [
       "Selected providers: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
     ],
     action: {
-      label: "Explore Push Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore push providers",
+      href: "https://docs.novu.co/platform/integrations/push",
     },
   },
   {
@@ -184,15 +196,17 @@ export const HOME_CHANNELS = [
     label: "Chat",
     title: "Send notifications to chat platforms",
     description:
-      "Deliver personalized notifications through Slack, Microsoft Teams, WhatsApp, Telegram, Discord, and other supported chat providers, all managed through Novu workflows.",
+      "Route product notifications into the workplace and community tools your users already monitor.",
     features: [
-      "Slack, Teams, WhatsApp, and more",
-      "Personalized workflow messages",
+      "Workflow-driven chat notifications",
       "Multiple provider integrations",
+      "Subscriber-specific channel credentials",
+      "Provider-specific formatting and overrides",
+      "Selected providers: Slack, Microsoft Teams, Discord, WhatsApp Business, Mattermost and more",
     ],
     action: {
-      label: "Explore Chat Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore chat providers",
+      href: "https://docs.novu.co/platform/integrations/chat",
     },
   },
   {
@@ -210,33 +224,18 @@ export const HOME_CHANNELS = [
       "Selected providers: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
     ],
     action: {
-      label: "Explore SMS Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore SMS providers",
+      href: "https://docs.novu.co/platform/integrations/sms",
     },
   },
   {
-    key: "github",
-    badges: ["notify"] as const,
-    label: "GitHub",
-    title: "Connect your AI agent to GitHub workflows",
-    description:
-      "Notify maintainers about releases, incidents, and reviews with the right context attached.",
-    prompt:
-      "Connect my AI agent to GitHub events with Novu for pull request and release notifications.",
-    features: [
-      "Pull request notifications",
-      "Release and incident updates",
-      "Repository context included",
-    ],
-  },
-  {
-    key: "zoom",
-    badges: ["connect"] as const,
+    key: "discord",
+    badges: ["notify", "connect"] as const,
     statusBadge: "Coming Soon",
-    label: "Zoom",
-    title: "Connect your AI agent to Zoom",
+    label: "Discord",
+    title: "Connect your AI agent to Discord",
     description:
-      "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
+      "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
   },
   {
     key: "linear",
@@ -248,13 +247,13 @@ export const HOME_CHANNELS = [
       "Let teams work with your agent from the issue and project workflows they already manage in Linear.",
   },
   {
-    key: "discord",
-    badges: ["notify", "connect"] as const,
+    key: "zoom",
+    badges: ["connect"] as const,
     statusBadge: "Coming Soon",
-    label: "Discord",
-    title: "Connect your AI agent to Discord",
+    label: "Zoom",
+    title: "Connect your AI agent to Zoom",
     description:
-      "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
+      "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
   },
   {
     key: "messenger",
