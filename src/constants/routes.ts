@@ -33,14 +33,19 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   // Per-channel Novu Connect landing pages
   channelSlack: "/channels/slack",
   channelSlackLangchain: "/channels/slack/langchain",
+  channelSlackAiSdk: "/channels/slack/ai-sdk",
   channelWhatsApp: "/channels/whatsapp",
   channelWhatsAppLangchain: "/channels/whatsapp/langchain",
+  channelWhatsAppAiSdk: "/channels/whatsapp/ai-sdk",
   channelTelegram: "/channels/telegram",
   channelTelegramLangchain: "/channels/telegram/langchain",
+  channelTelegramAiSdk: "/channels/telegram/ai-sdk",
   channelMicrosoftTeams: "/channels/microsoft-teams",
   channelMicrosoftTeamsLangchain: "/channels/microsoft-teams/langchain",
+  channelMicrosoftTeamsAiSdk: "/channels/microsoft-teams/ai-sdk",
   channelEmail: "/channels/email",
   channelEmailLangchain: "/channels/email/langchain",
+  channelEmailAiSdk: "/channels/email/ai-sdk",
 
   // PREVIOUS WEBSITE
 

@@ -1,9 +1,11 @@
 import type { IAgentFrameworkData } from "@/types/framework"
 
+import { aiSdkFrameworkData } from "./ai-sdk"
 import { langchainFrameworkData } from "./langchain"
 
 export const frameworkPages: Record<string, IAgentFrameworkData> = {
   langchain: langchainFrameworkData,
+  "ai-sdk": aiSdkFrameworkData,
 }
 
 export function getFrameworkBySlug(

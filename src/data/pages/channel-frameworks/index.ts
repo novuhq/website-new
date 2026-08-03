@@ -16,6 +16,11 @@ export const publishedCombos: Array<{ channel: string; framework: string }> = [
   { channel: "whatsapp", framework: "langchain" },
   { channel: "telegram", framework: "langchain" },
   { channel: "email", framework: "langchain" },
+  { channel: "slack", framework: "ai-sdk" },
+  { channel: "microsoft-teams", framework: "ai-sdk" },
+  { channel: "whatsapp", framework: "ai-sdk" },
+  { channel: "telegram", framework: "ai-sdk" },
+  { channel: "email", framework: "ai-sdk" },
 ]
 
 export interface IChannelFrameworkCombo {
@@ -123,6 +128,7 @@ export function getFrameworkCommands(
  */
 export const FRAMEWORK_COVER_LOGO: Record<string, string> = {
   langchain: "images/integration-icons/ai/langchain-icon.svg",
+  "ai-sdk": "images/integration-icons/ai/ai-sdk-icon.png",
 }
 
 export const CHANNEL_COVER_LOGO: Record<string, string> = {

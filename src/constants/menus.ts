@@ -41,6 +41,11 @@ export const MENUS = {
                   href: ROUTE.channelSlackLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelSlackAiSdk,
+                  menuIcon: "ai-sdk",
+                },
               ],
             },
             {
@@ -52,6 +57,11 @@ export const MENUS = {
                   label: "LangChain",
                   href: ROUTE.channelWhatsAppLangchain,
                   menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelWhatsAppAiSdk,
+                  menuIcon: "ai-sdk",
                 },
               ],
             },
@@ -65,6 +75,11 @@ export const MENUS = {
                   href: ROUTE.channelTelegramLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelTelegramAiSdk,
+                  menuIcon: "ai-sdk",
+                },
               ],
             },
             {
@@ -77,6 +92,11 @@ export const MENUS = {
                   href: ROUTE.channelMicrosoftTeamsLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelMicrosoftTeamsAiSdk,
+                  menuIcon: "ai-sdk",
+                },
               ],
             },
             {
@@ -88,6 +108,11 @@ export const MENUS = {
                   label: "LangChain",
                   href: ROUTE.channelEmailLangchain,
                   menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelEmailAiSdk,
+                  menuIcon: "ai-sdk",
                 },
               ],
             },
