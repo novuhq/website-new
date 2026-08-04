@@ -3,10 +3,15 @@ import type { TGlobeQuality } from "./globe-types"
 const landPointRequests = new Map<TGlobeQuality, Promise<ArrayBuffer>>()
 
 export function getPreferredGlobeLandPointQuality(): TGlobeQuality {
+  const navigatorWithMemory = navigator as Navigator & {
+    deviceMemory?: number
+  }
+  const memory = navigatorWithMemory.deviceMemory ?? 8
+  const cores = navigator.hardwareConcurrency ?? 8
   const width = window.innerWidth
 
-  if (width < 768) return "low"
-  if (width < 1440) return "medium"
+  if (width < 768 || memory <= 4 || cores <= 4) return "low"
+  if (width < 1440 || memory < 8 || cores < 8) return "medium"
   return "high"
 }
 
