@@ -11,9 +11,9 @@ importers:
       '@calcom/embed-react':
         specifier: ^1.5.3
         version: 1.5.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@clerk/nextjs':
-        specifier: ^7.6.4
-        version: 7.6.4(next@16.2.4(@babel/core@7.29.0)(@playwright/test@1.62.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@clerk/react':
+        specifier: ^6.12.11
+        version: 6.12.11(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@hookform/resolvers':
         specifier: ^4.1.3
         version: 4.1.3(react-hook-form@7.61.1(react@19.2.5))
@@ -1044,27 +1044,15 @@ packages:
   '@calcom/embed-snippet@1.3.3':
     resolution: {integrity: sha512-pqqKaeLB8R6BvyegcpI9gAyY6Xyx1bKYfWvIGOvIbTpguWyM1BBBVcT9DCeGe8Zw7Ujp5K56ci7isRUrT2Uadg==}
 
-  '@clerk/backend@3.15.0':
-    resolution: {integrity: sha512-m8/X0hAjX9HyBD0IdfIFIxP1fbbSvnq5DB6mPLeIc53Ya9XCLn/hlQkaIM8pobKsM/jquRt9DQLT9IvV6z6bFQ==}
-    engines: {node: '>=20.9.0'}
-
-  '@clerk/nextjs@7.6.4':
-    resolution: {integrity: sha512-eDo55Yheel2xoYSvVRsg8SKiZV5sB57NIfX2tTuSRCHh2/pG20nZ2wUHg7CdVQ7xtwtIp9qkmGScSkjm/T4++Q==}
-    engines: {node: '>=20.9.0'}
-    peerDependencies:
-      next: ^15.2.8 || ^15.3.8 || ^15.4.10 || ^15.5.9 || ^15.6.0-0 || ^16.0.10 || ^16.1.0-0
-      react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
-      react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
-
-  '@clerk/react@6.12.10':
-    resolution: {integrity: sha512-VDYyCyzRdMsNW6qQsMp1+L2VOXxFwpLfWBxOWPvUNOYCruecnAZjUYEJWS+E+i5MAPhSew9HjuweS4bO0FclTQ==}
+  '@clerk/react@6.12.11':
+    resolution: {integrity: sha512-qetJGDcQMHg7GY9H1VK1znSyMEoxe//dgP+qCWjD81wMm9EiDy0ShYP9aNu9fe2CxEe/7eX8Ax+iemZA5GuexQ==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
       react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
 
-  '@clerk/shared@4.25.10':
-    resolution: {integrity: sha512-Vjqk74nQGJ8y+cm+eSshoBzRvBhIzuKLOs3Gt13gEHdyQ6yV798Dl2SrBKt0jw2u6I1tOcD3s8/i9P4yJYo0dw==}
+  '@clerk/shared@4.26.0':
+    resolution: {integrity: sha512-CYPOxpvKuKidy4ReSf3XU3YF28kr3QlmdJuFtwlrChK/GnLJxKp54GmUYtgoh1p61IHqirWfc8MerxlUhwWLFQ==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
@@ -3766,9 +3754,6 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@stablelib/base64@1.0.1':
-    resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
-
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
@@ -5160,9 +5145,6 @@ packages:
 
   fast-levenshtein@3.0.0:
     resolution: {integrity: sha512-hKKNajm46uNmTlhHSyZkmToAc56uZJwYq7yrciZjqOxnlfQwERDQJmHPUp7m1m9wx8vgOe8IaCKZ5Kv2k1DdCQ==}
-
-  fast-sha256@1.3.0:
-    resolution: {integrity: sha512-n11RGP/lrWEFI/bWdygLxhI+pVeo1ZYIVwvvPkW7azl/rOy+F3HYRZ2K5zeE9mmkhQppyv9sQFx0JM9UabnpPQ==}
 
   fast-string-truncated-width@3.0.3:
     resolution: {integrity: sha512-0jjjIEL6+0jag3l2XWWizO64/aZVtpiGE3t0Zgqxv0DPuxiMjvB3M24fCyhZUO4KomJQPj3LTSUnDP3GpdwC0g==}
@@ -7497,9 +7479,6 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
-  standardwebhooks@1.0.0:
-    resolution: {integrity: sha512-BbHGOQK9olHPMvQNHWul6MYlrRTAOKn03rOe4A8O3CLWhNf4YHBqq2HJKKC+sfqpxiBY52pNeesD6jIiLDz8jg==}
-
   stdin-discarder@0.3.2:
     resolution: {integrity: sha512-eCPu1qRxPVkl5605OTWF8Wz40b4Mf45NY5LQmVPQ599knfs5QhASUm9GbJ5BDMDOXgrnh0wyEdvzmL//YMlw0A==}
     engines: {node: '>=18'}
@@ -9212,34 +9191,14 @@ snapshots:
     dependencies:
       '@calcom/embed-core': 1.5.3
 
-  '@clerk/backend@3.15.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@clerk/react@6.12.11(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
-      '@clerk/shared': 4.25.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      standardwebhooks: 1.0.0
-      tslib: 2.8.1
-    transitivePeerDependencies:
-      - react
-      - react-dom
-
-  '@clerk/nextjs@7.6.4(next@16.2.4(@babel/core@7.29.0)(@playwright/test@1.62.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
-    dependencies:
-      '@clerk/backend': 3.15.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@clerk/react': 6.12.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@clerk/shared': 4.25.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      next: 16.2.4(@babel/core@7.29.0)(@playwright/test@1.62.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react: 19.2.5
-      react-dom: 19.2.5(react@19.2.5)
-      server-only: 0.0.1
-      tslib: 2.8.1
-
-  '@clerk/react@6.12.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
-    dependencies:
-      '@clerk/shared': 4.25.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@clerk/shared': 4.26.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
       tslib: 2.8.1
 
-  '@clerk/shared@4.25.10(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@clerk/shared@4.26.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@tanstack/query-core': 5.101.4
       dequal: 2.0.3
@@ -12325,8 +12284,6 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@stablelib/base64@1.0.1': {}
-
   '@standard-schema/spec@1.0.0': {}
 
   '@standard-schema/utils@0.3.0': {}
@@ -13772,8 +13729,6 @@ snapshots:
   fast-levenshtein@3.0.0:
     dependencies:
       fastest-levenshtein: 1.0.16
-
-  fast-sha256@1.3.0: {}
 
   fast-string-truncated-width@3.0.3: {}
 
@@ -16660,11 +16615,6 @@ snapshots:
   speakingurl@14.0.1: {}
 
   sprintf-js@1.0.3: {}
-
-  standardwebhooks@1.0.0:
-    dependencies:
-      '@stablelib/base64': 1.0.1
-      fast-sha256: 1.3.0
 
   stdin-discarder@0.3.2: {}
 
