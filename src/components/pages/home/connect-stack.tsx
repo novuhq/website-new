@@ -196,7 +196,7 @@ function SelectField({
             position="popper"
             sideOffset={2}
           >
-            <SelectPrimitive.Viewport className="p-1.5">
+            <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
                   className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
@@ -319,7 +319,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           )}
         </header>
 
-        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:min-h-124">
+        <div className="w-full overflow-hidden rounded-xl border border-gray-20">
           <div className="border-b border-gray-20 p-5 md:p-8">
             <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
               1. Choose your setup

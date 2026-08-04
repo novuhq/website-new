@@ -53,8 +53,8 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
         />
 
         {allCommands.length > 1 && (
-          <div className="mt-8 flex flex-col gap-4">
-            <h3 className="text-sm leading-none tracking-tighter text-white">
+          <div className="mt-8 flex flex-col gap-3">
+            <h3 className="text-base tracking-tighter text-gray-80">
               Every {framework.name} connect command
             </h3>
             <FrameworkCommandPicker

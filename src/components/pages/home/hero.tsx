@@ -236,7 +236,7 @@ function Hero({
             <ChannelIcons />
           </h1>
 
-          <div className="flex max-w-121 flex-col lg:justify-self-end lg:pt-[37px]">
+          <div className="flex max-w-121 flex-col lg:justify-end lg:justify-self-end lg:pb-2.5 xl:pb-3.5">
             <p className="pointer-events-auto text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] select-text md:text-lg md:leading-normal">
               {description}
             </p>
@@ -248,7 +248,7 @@ function Hero({
                 copiedContent={<AnimatedCopyCheck />}
               />
               <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-39 [&_svg]:size-3.5"
+                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case hover:border-[#867A94] hover:bg-white/7 sm:w-39 [&_svg]:size-3.5"
                 variant="outline-transparent"
                 size="none"
                 resetInterval={2000}

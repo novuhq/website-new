@@ -29,9 +29,9 @@ function CliCommand({ command, className }: ICliCommandProps) {
       </span>
       <span className="ml-auto shrink-0 text-gray-50 transition-colors group-hover:text-foreground">
         {isCopied ? (
-          <Check className="size-3.5" aria-hidden />
+          <Check className="size-4" aria-hidden />
         ) : (
-          <Copy className="size-3.5" aria-hidden />
+          <Copy className="size-4" aria-hidden />
         )}
       </span>
     </button>
