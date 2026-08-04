@@ -21,10 +21,18 @@ export const navigationContract = {
   destinationHeading: "Flexible pricing for companies and developers",
   authLinks: {
     desktop: [{ name: "Sign up now", href: destinations.dashboard }],
+    desktopSignedIn: [
+      { name: "Visit Dashboard", href: destinations.dashboard },
+    ],
     mobile: [
       { name: "Login", href: destinations.dashboard },
       { name: "Get Started", href: destinations.dashboard },
     ],
+  },
+  authStateCookie: "novu-critical-flow-auth-state",
+  authStates: {
+    loading: "loading",
+    signedIn: "signed-in",
   },
 } as const
 
