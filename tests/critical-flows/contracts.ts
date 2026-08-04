@@ -21,10 +21,18 @@ export const navigationContract = {
   destinationHeading: "Flexible pricing for companies and developers",
   authLinks: {
     desktop: [{ name: "Sign up now", href: destinations.dashboard }],
+    desktopSignedIn: [
+      { name: "Visit Dashboard", href: destinations.dashboard },
+    ],
     mobile: [
       { name: "Login", href: destinations.dashboard },
       { name: "Get Started", href: destinations.dashboard },
     ],
+  },
+  authStateCookie: "novu-critical-flow-auth-state",
+  authStates: {
+    loading: "loading",
+    signedIn: "signed-in",
   },
 } as const
 
@@ -62,11 +70,19 @@ export const connectStackContract = {
   channel: "MS Teams",
   framework: "LangChain",
   command: "npx novu connect --channel teams --runtime langchain",
-  prompt: `Connect this project's LangChain agent to MS Teams with Novu Connect. Inspect the repo (agent entry point, how LangChain is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
+  prompt: `Connect this project's LangChain agent to MS Teams with Novu Connect.
 
-npx novu connect --channel teams --runtime langchain
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
 
-I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`,
+Inspect the repo (agent entry point, how LangChain is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime langchain --channel teams
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
 } as const
 
 export const channelPagesContract = {
@@ -121,7 +137,13 @@ export const connectContract = {
   route: destinations.connect,
   heading: "Connect your agent to any channel",
   command: "npx novu connect",
-  prompt: "Add an agent to my app https://novu.co/agents.md",
+  prompt: `Connect this project's AI agent to customer channels (Slack, Microsoft Teams, WhatsApp, Telegram, Email, or iMessage) with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci\`).
+
+Inspect the repo first. Ask me which channel to connect if it is not clear. Detect the framework/runtime from the project, or ask once. Then run one connect command per agents.md (bridge vs managed, keyless vs dashboard OAuth).
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md says that channel requires it (e.g. iMessage/Sendblue).`,
   signUpDestination: destinations.agentsSignUp,
   connectAppDestination: destinations.connectApp,
 } as const

@@ -53,8 +53,8 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
         />
 
         {allCommands.length > 1 && (
-          <div className="mt-8 flex flex-col gap-4">
-            <h3 className="text-sm leading-none tracking-tighter text-white">
+          <div className="mt-8 flex flex-col gap-3">
+            <h3 className="text-base tracking-tighter text-gray-80">
               Every {framework.name} connect command
             </h3>
             <FrameworkCommandPicker
@@ -68,7 +68,7 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
           <h3 className="text-base leading-none tracking-tighter text-white">
             Prompt for your coding agent
           </h3>
-          <p className="text-base leading-normal font-normal tracking-tighter text-gray-70">
+          <p className="text-base leading-normal font-normal tracking-tighter whitespace-pre-line text-gray-70">
             {fillTemplate(framework.promptTemplate, combo)}
           </p>
         </div>

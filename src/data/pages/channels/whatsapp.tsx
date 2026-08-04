@@ -62,8 +62,13 @@ export const whatsappChannelData: IChannelPageData = {
     "Attachments and delivery receipts",
     "Embedded WhatsApp Business signup (official Meta Business Partner)",
   ],
-  prompt:
-    "Connect my AI agent to WhatsApp with Novu and configure approved templates plus two-way replies. Identify each user and route their messages back to the same conversation.",
+  prompt: `Connect this project's AI agent to WhatsApp with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel whatsapp\`).
+
+Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for WhatsApp per agents.md.
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
   onRamp: {
     type: "oauth",
     note: "WhatsApp connects from the Novu dashboard with embedded signup: log in with your business account, pick your WhatsApp number, and you are working in about 5 minutes.",

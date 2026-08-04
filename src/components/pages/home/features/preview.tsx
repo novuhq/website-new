@@ -9,7 +9,7 @@ import CompanyTooltip, { type IFeatureCompany } from "./company-tooltip"
 
 export interface IPreviewData {
   backgroundImage: StaticImageData | string
-  clientFacingImage: StaticImageData | string
+  clientFacingImage?: StaticImageData | string
   clientFacingImageClassName?: string
   clientFacingImageSizes?: string
   clientFacingLabel?: string
@@ -79,7 +79,7 @@ function Preview({
         draggable={false}
       />
 
-      {clientFacingImageClassName && !clientFacingVideo ? (
+      {clientFacingImageClassName && clientFacingImage && !clientFacingVideo ? (
         <div className={cn("absolute z-10", clientFacingImageClassName)}>
           {clientFacingUnderlayVideo ? (
             <video
@@ -160,7 +160,7 @@ function Preview({
                   <source src={clientFacingVideo.webm} type="video/webm" />
                 </video>
               </div>
-            ) : (
+            ) : clientFacingImage ? (
               <Image
                 className="size-full object-contain"
                 src={clientFacingImage}
@@ -169,7 +169,7 @@ function Preview({
                 quality={100}
                 draggable={false}
               />
-            )}
+            ) : null}
           </div>
         </div>
       )}

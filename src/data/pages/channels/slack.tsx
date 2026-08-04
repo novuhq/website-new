@@ -58,8 +58,13 @@ export const slackChannelData: IChannelPageData = {
     "Reliable delivery with retries",
     "Native Block Kit messages and tool-approval prompts",
   ],
-  prompt:
-    "Connect my AI agent to Slack with Novu, including threaded replies and delivery status handling. Identify each user and route agent replies back to the same Slack conversation.",
+  prompt: `Connect this project's AI agent to Slack with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel slack\`).
+
+Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Slack per agents.md.
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
   onRamp: {
     type: "keyless",
     note: "Slack works in the keyless quickstart. Run npx novu connect --channel slack and you get a managed agent on Slack, no account needed for the first few replies.",

@@ -77,51 +77,109 @@ const DEFAULT_FRAMEWORKS: IStackOption[] = [
     value: "ai-sdk",
     label: "Vercel AI SDK",
     icon: chatSdkIcon,
+    promptTemplate: `Connect this project's Vercel AI SDK agent to [SELECTED_CHANNEL] with Novu Connect.
+
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
+
+Inspect the repo (agent entry point, how Vercel AI SDK is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime ai-sdk --channel [CHANNEL_SLUG]
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
   {
     value: "langchain",
     label: "LangChain",
     icon: langChainIcon,
+    promptTemplate: `Connect this project's LangChain agent to [SELECTED_CHANNEL] with Novu Connect.
+
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
+
+Inspect the repo (agent entry point, how LangChain is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime langchain --channel [CHANNEL_SLUG]
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
   {
     value: "custom-code",
     label: "Custom code",
     icon: customCodeIcon,
+    promptTemplate: `Connect this project's custom code agent to [SELECTED_CHANNEL] with Novu Connect.
+
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
+
+Inspect the repo (agent entry point, how custom code is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime custom-code --channel [CHANNEL_SLUG]
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
   {
     value: "chat-sdk",
     label: "Chat SDK",
     icon: chatSdkIcon,
+    promptTemplate: `Connect this project's Chat SDK agent to [SELECTED_CHANNEL] with Novu Connect.
+
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
+
+Inspect the repo (agent entry point, how Chat SDK is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime chat-sdk --channel [CHANNEL_SLUG]
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
   {
     value: "claude-managed-agent",
     label: "Claude Managed Agent",
     icon: claudeIcon,
     cliSlug: "claude",
-    promptTemplate: `Create a Claude Managed Agent with Novu and connect it to [SELECTED_CHANNEL].
+    promptTemplate: `Connect a Claude Managed Agent to [SELECTED_CHANNEL] with Novu Connect.
 
-Run this command:
+Follow https://novu.co/agents.md end to end (managed agent path). Default to the non-interactive CLI (\`--ci\`).
 
-npx novu connect --channel [CHANNEL_SLUG] --runtime claude
+Infer a short agent description from the project, confirm it with me once, then prefer a connect command shaped like:
 
-The Novu CLI will guide you through the complete setup. Follow the prompts to connect your Anthropic credentials, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
+export NOVU_AGENT_DESCRIPTION='…'
+npx novu@latest connect "$NOVU_AGENT_DESCRIPTION" --ci --keyless --channel [CHANNEL_SLUG] --runtime claude
 
-You do not need to scaffold a project or modify application code for this setup.`,
+(Omit --keyless if I am already signed in to the Novu dashboard. Never combine --keyless with --channel teams; follow agents.md.)
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
   {
     value: "aws-claude-managed-agent",
     label: "AWS Claude Managed Agent",
     icon: awsIcon,
     cliSlug: "claude-aws",
-    promptTemplate: `Create a Claude Managed Agent on AWS with Novu and connect it to [SELECTED_CHANNEL].
+    promptTemplate: `Connect a Claude Managed Agent on AWS to [SELECTED_CHANNEL] with Novu Connect.
 
-Run this command:
+Follow https://novu.co/agents.md end to end (managed agent path). Default to the non-interactive CLI (\`--ci\`).
 
-npx novu connect --channel [CHANNEL_SLUG] --runtime claude-aws
+Infer a short agent description from the project, confirm it with me once, then prefer a connect command shaped like:
 
-The Novu CLI will guide you through the complete setup. Follow the prompts to complete the required credential flow, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
+export NOVU_AGENT_DESCRIPTION='…'
+npx novu@latest connect "$NOVU_AGENT_DESCRIPTION" --ci --keyless --channel [CHANNEL_SLUG] --runtime claude-aws
 
-You do not need to scaffold a project or modify application code for this setup.`,
+(Omit --keyless if I am already signed in to the Novu dashboard. Never combine --keyless with --channel teams; follow agents.md.)
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   },
 ]
 
@@ -196,7 +254,7 @@ function SelectField({
             position="popper"
             sideOffset={2}
           >
-            <SelectPrimitive.Viewport className="p-1.5">
+            <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
                   className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
@@ -265,11 +323,13 @@ function ConnectStack({
   const channelLabel = channel.promptLabel ?? channel.label
   const channelSlug = channel.cliSlug ?? channel.value
   const command = `npx novu connect --channel ${channelSlug} --runtime ${framework.cliSlug ?? framework.value}`
-  const defaultPrompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu Connect. Inspect the repo (agent entry point, how ${frameworkLabel} is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
+  const defaultPrompt = `Connect this project's AI agent to ${channelLabel} with Novu Connect.
 
-${command}
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel ${channelSlug}\`).
 
-I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`
+Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for ${channelLabel} per agents.md.
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`
   const prompt = framework.promptTemplate
     ? framework.promptTemplate
         .replaceAll("[SELECTED_CHANNEL]", channelLabel)
@@ -319,7 +379,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           )}
         </header>
 
-        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:min-h-124">
+        <div className="w-full overflow-hidden rounded-xl border border-gray-20">
           <div className="border-b border-gray-20 p-5 md:p-8">
             <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
               1. Choose your setup

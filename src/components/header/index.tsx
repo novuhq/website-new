@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
+import { ClerkProvider, useAuth } from "@clerk/nextjs"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -17,10 +18,69 @@ import MobileMenu from "./mobile-menu"
 import Nav from "./nav"
 
 interface IHeaderProps {
+  authStateOverride?: HeaderAuthState
+  criticalFlowAuthFixture?: boolean
   githubStars: number
 }
 
-function Header({ githubStars }: IHeaderProps) {
+type HeaderAuthState = "loading" | "signed-in" | "signed-out"
+
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+function DashboardAction({ authState }: { authState: HeaderAuthState }) {
+  if (authState === "signed-in") {
+    return (
+      <Button
+        className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+        asChild
+      >
+        <NextLink href={ROUTE.dashboard}>Visit Dashboard</NextLink>
+      </Button>
+    )
+  }
+
+  return (
+    <Button
+      className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+      asChild
+    >
+      <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
+    </Button>
+  )
+}
+
+function ClerkDashboardAction() {
+  const { isLoaded, isSignedIn } = useAuth()
+  const authState: HeaderAuthState = !isLoaded
+    ? "loading"
+    : isSignedIn
+      ? "signed-in"
+      : "signed-out"
+
+  return <DashboardAction authState={authState} />
+}
+
+function HeaderDashboardAction({
+  authStateOverride,
+}: {
+  authStateOverride?: HeaderAuthState
+}) {
+  if (authStateOverride || !clerkPublishableKey) {
+    return <DashboardAction authState={authStateOverride ?? "signed-out"} />
+  }
+
+  return (
+    <ClerkProvider publishableKey={clerkPublishableKey} afterSignOutUrl="/">
+      <ClerkDashboardAction />
+    </ClerkProvider>
+  )
+}
+
+function Header({
+  authStateOverride,
+  criticalFlowAuthFixture = false,
+  githubStars,
+}: IHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const normalizedPathname =
@@ -62,6 +122,9 @@ function Header({ githubStars }: IHeaderProps) {
 
   return (
     <header
+      data-critical-flow-auth-fixture={
+        criticalFlowAuthFixture ? "enabled" : undefined
+      }
       className={cn(
         "sticky top-0 z-50 font-inter transition-colors duration-150",
         !isCareersPage || isScrolled ? "bg-black" : "bg-transparent"
@@ -91,12 +154,7 @@ function Header({ githubStars }: IHeaderProps) {
             className="hidden text-base tracking-tighter xl:flex"
             stars={githubStars}
           />
-          <Button
-            className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
-            asChild
-          >
-            <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
-          </Button>
+          <HeaderDashboardAction authStateOverride={authStateOverride} />
         </div>
         <SearchBar
           className="ml-auto lg:hidden"

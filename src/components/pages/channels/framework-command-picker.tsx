@@ -25,7 +25,7 @@ function ChannelLabel({ command }: { command: IFrameworkCommand }) {
         className="size-4 md:size-4"
         isMonochrome
       />
-      <span className="truncate">{command.channelName}</span>
+      <span className="truncate text-base">{command.channelName}</span>
     </span>
   )
 }
@@ -55,7 +55,7 @@ function FrameworkCommandPicker({
 
   return (
     <div
-      className="flex h-11 w-full min-w-0 items-stretch rounded-md border border-gray-30 bg-black focus-within:ring-2 focus-within:ring-foreground/30"
+      className="flex h-11 w-full min-w-0 items-stretch rounded-[0.25rem] border border-gray-30 bg-transparent focus-within:ring-2 focus-within:ring-foreground/30"
       data-slot="framework-command-picker"
     >
       <SelectPrimitive.Root
@@ -63,7 +63,7 @@ function FrameworkCommandPicker({
         onValueChange={handleChannelChange}
       >
         <SelectPrimitive.Trigger
-          className="group relative flex w-40 shrink-0 items-center justify-between gap-1.5 rounded-tl-md rounded-bl-md bg-[#040406] px-[13px] text-left font-inter text-sm font-normal tracking-tighter text-gray-70 ring-0 outline-0 transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:text-white focus-visible:z-10 focus-visible:text-white focus-visible:ring-2 focus-visible:ring-foreground/30 sm:w-44"
+          className="group relative flex w-40 shrink-0 items-center justify-between gap-1.5 rounded-tl-[0.25rem] rounded-bl-[0.25rem] bg-transparent px-[13px] text-left font-inter text-sm font-normal tracking-tighter text-gray-70 ring-0 outline-0 transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:text-white focus-visible:z-10 focus-visible:text-white focus-visible:ring-2 focus-visible:ring-foreground/30 sm:w-44"
           aria-label="Select channel command"
         >
           <SelectPrimitive.Value>
@@ -92,7 +92,7 @@ function FrameworkCommandPicker({
             position="popper"
             sideOffset={2}
           >
-            <SelectPrimitive.Viewport className="p-1.5">
+            <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {commands.map((command) => (
                 <SelectPrimitive.Item
                   key={command.channelSlug}
@@ -126,7 +126,7 @@ function FrameworkCommandPicker({
 
       <div className="my-auto h-5.5 w-px bg-gray-20" aria-hidden="false" />
 
-      <div className="flex min-w-0 flex-1 items-center gap-3 px-3 font-mono text-sm tracking-normal text-gray-80 sm:px-4">
+      <div className="flex min-w-0 flex-1 items-center gap-3 pr-1.5 pl-3 font-mono text-base tracking-normal text-gray-80">
         <span className="shrink-0 text-gray-50 select-none">$</span>
         <code className="min-w-0 flex-1 truncate">{current.command}</code>
         <button
@@ -136,9 +136,9 @@ function FrameworkCommandPicker({
           aria-label={isCopied ? "Command copied" : "Copy selected command"}
         >
           {isCopied ? (
-            <Check className="size-3.5" aria-hidden />
+            <Check className="size-4" aria-hidden />
           ) : (
-            <Copy className="size-3.5" aria-hidden />
+            <Copy className="size-4" aria-hidden />
           )}
         </button>
       </div>

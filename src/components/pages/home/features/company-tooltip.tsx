@@ -1,5 +1,7 @@
 "use client"
 
+import { useRef, useState, type MouseEvent, type PointerEvent } from "react"
+
 import {
   Tooltip,
   TooltipContent,
@@ -55,12 +57,54 @@ function TooltipTip() {
 }
 
 function CompanyTooltip({ company }: { company: IFeatureCompany }) {
+  const [open, setOpen] = useState(false)
+  const isPinnedRef = useRef(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+
+  const pinTooltip = () => {
+    isPinnedRef.current = true
+    setOpen(true)
+  }
+
+  const closeTooltip = () => {
+    isPinnedRef.current = false
+    setOpen(false)
+  }
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen && isPinnedRef.current) return
+
+    setOpen(nextOpen)
+  }
+
+  const handlePointerDown = (event: PointerEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
+    if (event.pointerType === "touch" && isPinnedRef.current) {
+      closeTooltip()
+      return
+    }
+
+    pinTooltip()
+  }
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+
+    if (event.detail === 0) {
+      pinTooltip()
+    }
+  }
+
   return (
-    <Tooltip>
+    <Tooltip open={open} onOpenChange={handleOpenChange}>
       <TooltipTrigger asChild>
         <button
+          ref={triggerRef}
           aria-label={`About ${company.name}`}
-          className="absolute top-5 right-5 z-20 flex size-7 cursor-help items-center justify-center overflow-hidden rounded border border-gray-12 bg-[#101114] text-gray-60 shadow-[0_0_6px_2px_rgba(0,0,0,0.15)] backdrop-blur-[3.5px] transition-colors hover:border-gray-20 hover:bg-[#0B0C0E] hover:text-white focus-visible:border-gray-20 focus-visible:bg-[#0B0C0E] focus-visible:text-white focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none data-[state=delayed-open]:border-gray-20 data-[state=delayed-open]:bg-[#0B0C0E] data-[state=delayed-open]:text-white data-[state=instant-open]:border-gray-20 data-[state=instant-open]:bg-[#0B0C0E] data-[state=instant-open]:text-white"
+          className="absolute top-5 right-5 z-20 flex size-7 cursor-pointer items-center justify-center overflow-hidden rounded border border-gray-12 bg-[#101114] text-gray-60 shadow-[0_0_6px_2px_rgba(0,0,0,0.15)] backdrop-blur-[3.5px] transition-colors hover:border-gray-20 hover:bg-[#0B0C0E] hover:text-white focus-visible:border-gray-20 focus-visible:bg-[#0B0C0E] focus-visible:text-white focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none data-[state=delayed-open]:border-gray-20 data-[state=delayed-open]:bg-[#0B0C0E] data-[state=delayed-open]:text-white data-[state=instant-open]:border-gray-20 data-[state=instant-open]:bg-[#0B0C0E] data-[state=instant-open]:text-white"
+          onClick={handleClick}
+          onPointerDown={handlePointerDown}
           type="button"
         >
           <ChatBotIcon />
@@ -69,23 +113,45 @@ function CompanyTooltip({ company }: { company: IFeatureCompany }) {
       <TooltipContent
         align="end"
         avoidCollisions={false}
-        className="block w-[23.1875rem] max-w-[calc(100vw-2rem)] rounded-md border-gray-20 bg-[#0B0C0E] p-0 font-inter shadow-none drop-shadow-[0_2px_2.5px_rgba(0,0,0,0.25)] before:hidden after:hidden [&>span]:block [&>span]:w-full"
+        className="block w-[23.1875rem] max-w-[calc(100vw-2rem)] rounded-md border-gray-20 bg-[#0B0C0E] p-0 font-inter text-pretty shadow-none drop-shadow-[0_2px_2.5px_rgba(0,0,0,0.25)] before:hidden after:hidden [&>span]:block [&>span]:w-full"
+        onEscapeKeyDown={(event) => {
+          if (
+            isPinnedRef.current ||
+            triggerRef.current === document.activeElement
+          ) {
+            closeTooltip()
+            return
+          }
+
+          event.preventDefault()
+        }}
+        onPointerDownOutside={(event) => {
+          if (
+            event.target instanceof Node &&
+            triggerRef.current?.contains(event.target)
+          ) {
+            event.preventDefault()
+            return
+          }
+
+          closeTooltip()
+        }}
         side="top"
         sideOffset={12}
       >
-        <span className="block px-[11px] py-[9px] text-left">
+        <span className="block px-2.5 py-2 text-left">
           <span className="flex flex-col gap-3">
             <span className="flex flex-col gap-1 text-[13px] leading-none">
-              <span className="font-medium tracking-[-0.02em] text-gray-90">
+              <span className="font-medium tracking-tighter text-gray-90">
                 {company.name}
               </span>
-              <span className="font-normal tracking-[-0.025em] text-gray-60">
+              <span className="leading-tight font-normal tracking-tight text-gray-60">
                 {company.about}
               </span>
             </span>
             <span className="h-px w-full bg-gray-20" aria-hidden="true" />
           </span>
-          <span className="mt-2 block text-[13px] leading-[1.375] font-normal tracking-[-0.025em] text-gray-80">
+          <span className="mt-2 block text-[13px] leading-[1.375] font-normal tracking-tight text-gray-80">
             {company.useCase}
           </span>
         </span>
