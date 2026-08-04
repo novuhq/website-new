@@ -319,7 +319,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           )}
         </header>
 
-        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:min-h-124">
+        <div className="w-full overflow-hidden rounded-xl border border-gray-20">
           <div className="border-b border-gray-20 p-5 md:p-8">
             <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
               1. Choose your setup

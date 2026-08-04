@@ -69,7 +69,7 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                   </p>
                 )}
                 {items && items.length > 0 && (
-                  <ul className="flex flex-col gap-y-5">
+                  <ul className="flex flex-col gap-y-7">
                     {items.map(
                       (
                         {
@@ -94,11 +94,11 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                                 <MenuIcon className="mt-px" icon={menuIcon} />
                                 <span>{label}</span>
                               </Link>
-                              <ul className="mt-3 flex flex-col gap-y-3">
+                              <ul className="mt-4 flex flex-col gap-y-4">
                                 {children.map((child) => (
                                   <li key={child.label}>
                                     <Link
-                                      className="flex items-center gap-2.5 text-sm leading-none font-normal text-gray-70 hover:text-white"
+                                      className="flex items-center gap-2.5 text-base leading-none font-normal text-gray-70 hover:text-white"
                                       href={child.href}
                                       variant="clean"
                                       onClick={onNavigate}

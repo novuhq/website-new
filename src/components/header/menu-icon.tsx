@@ -64,6 +64,8 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   codex: aiCodexIcon,
   cursor: aiCursorIcon,
   "custom-code": aiCustomCodeIcon,
+  "ai-sdk": vercelIcon,
+  "chat-sdk": vercelIcon,
   blog: resourcesBlogIcon,
   customers: resourcesCustomersIcon,
   community: resourcesCommunityIcon,
@@ -93,8 +95,6 @@ const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   chat: channelsChatIcon,
   sms: channelsSmsIcon,
   langchain: channelsLangchainIcon,
-  "ai-sdk": vercelIcon,
-  "chat-sdk": vercelIcon,
   "claude-aws": channelsClaudeAwsIcon,
 }
 
