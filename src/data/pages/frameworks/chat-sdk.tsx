@@ -38,8 +38,19 @@ export const chatSdkFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your Chat SDK agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect this project's Chat SDK agent to {channelName} with Novu Connect. Inspect the repo to see how Chat SDK is used, then have me run npx novu connect --channel {cliSlug} --runtime chat-sdk from the project root. I will complete the interactive CLI. When the CLI copies a follow-up prompt, ask me to paste it here and continue. Do not invent setup steps or ask for secrets in chat. Stop after giving me the command.",
+  promptTemplate: `Connect this project's Chat SDK agent to {channelName} with Novu Connect.
+
+Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
+
+Inspect the repo (agent entry point, how Chat SDK is used, package manager, env conventions). Do not modify anything yet.
+
+Prefer a connect command shaped like:
+
+npx novu@latest connect --ci --runtime chat-sdk --channel {cliSlug}
+
+(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
+
+Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   faq: [
     {
       question: "Do I have to rewrite my Chat SDK app to add {channelName}?",
@@ -52,7 +63,8 @@ export const chatSdkFrameworkData: IAgentFrameworkData = {
         "No. Novu Connect is the communication layer, the ACI, Agent Communication Infrastructure, bridge between your agent and {channelName}. You own the reasoning and the tools. We never run your brain, that is the whole point.",
     },
     {
-      question: "Do users in {channelName} get the same agent as my in-app chat?",
+      question:
+        "Do users in {channelName} get the same agent as my in-app chat?",
       answer:
         "Yes. The bridge points at the same agent loop that powers your Chat SDK app, so one agent serves your product and {channelName}, with conversation context kept per user.",
     },

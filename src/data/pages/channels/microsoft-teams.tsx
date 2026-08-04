@@ -57,8 +57,13 @@ export const microsoftTeamsChannelData: IChannelPageData = {
     "Reliable team notifications",
     "Native Adaptive Cards and approval prompts",
   ],
-  prompt:
-    "Connect my AI agent to Microsoft Teams with Novu and include a human handoff workflow. Keep channel and thread context, and route replies back to the same conversation.",
+  prompt: `Connect this project's AI agent to Microsoft Teams with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel teams\`). Note: Teams cannot use keyless mode; follow agents.md for dashboard OAuth / dashboard redirect rules.
+
+Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Microsoft Teams per agents.md.
+
+Prefer the secure setup links or dashboard handoffs the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
   onRamp: {
     type: "oauth",
     note: "Microsoft Teams connects from the Novu dashboard. Authenticate your workspace once, and Novu Connect manages delivery, identity, and two-way routing after that.",

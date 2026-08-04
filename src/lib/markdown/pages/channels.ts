@@ -1,6 +1,6 @@
 import { getChannelBySlug } from "@/data/pages/channels"
 
-import { escapeMarkdownText } from "../markdown-format"
+import { escapeMarkdownText, formatCodeFence } from "../markdown-format"
 import { bulletList } from "../page-utils"
 import type { MarkdownPage } from "../types"
 
@@ -39,7 +39,8 @@ export async function getChannels(
     transcript,
     `## How to connect`,
     escapeMarkdownText(channel.onRamp.note),
-    `Prompt for your coding agent: ${escapeMarkdownText(channel.prompt)}`,
+    "Prompt for your coding agent:",
+    formatCodeFence(channel.prompt, "text"),
     `## ${escapeMarkdownText(channel.channelName)} and Novu Connect, common questions`,
     faq,
   ]

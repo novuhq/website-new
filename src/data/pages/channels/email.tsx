@@ -57,8 +57,13 @@ export const emailChannelData: IChannelPageData = {
     "High-deliverability routing",
     "Secure action links for approvals",
   ],
-  prompt:
-    "Connect my AI agent to Email with Novu using a responsive template, attachments, and delivery tracking. Route each customer's replies back to the same thread.",
+  prompt: `Connect this project's AI agent to Email with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel email\`).
+
+Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Email per agents.md.
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
   onRamp: {
     type: "keyless",
     note: "Email works in the keyless quickstart. Run npx novu connect --channel email to get a managed agent sending email, no account needed for the first few replies.",
