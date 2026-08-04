@@ -132,11 +132,19 @@ export const integrationsContract = {
   priority: "P0",
   mode: "navigate",
   route: "/integrations/channels",
-  heading: "Novu Integrations for Unified Notification Delivery",
+  heading: "Novu integrations for notifications and AI agent communication",
   query: "SendGrid",
   detailRoute: "/integrations/sendgrid",
   detailHeading: "SendGrid",
   docsDestination: "https://docs.novu.co/platform/integrations/email/sendgrid",
+  agentRuntimes: ["Vercel AI SDK", "Chat SDK", "LangChain", "Custom code"],
+  comingSoonAgentChannels: [
+    "Discord",
+    "Linear",
+    "Zoom",
+    "Voice",
+    "Google Chat",
+  ],
 } as const
 
 export const pricingContract = {

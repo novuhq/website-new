@@ -62,4 +62,68 @@ test.describe("critical integrations discovery journey", () => {
     ).toHaveAttribute("href", integrationsContract.docsDestination)
     expectHealthyPage(applicationErrors)
   })
+
+  test("filters shared agent runtimes and keeps coming-soon channels non-interactive", async ({
+    page,
+  }) => {
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, "/integrations/sources")
+
+    const agentRuntimesFilter = page.getByRole("button", {
+      name: "Agent runtimes",
+      exact: true,
+    })
+    await expectReactHandlerReady(agentRuntimesFilter, "onClick")
+    await agentRuntimesFilter.click()
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("category"))
+      .toBe("agent-runtimes")
+
+    const runtimeCards = page.locator('[data-slot="integration-card"]')
+    await expect(runtimeCards).toHaveCount(4)
+    for (const title of integrationsContract.agentRuntimes) {
+      await expect(
+        runtimeCards.getByRole("heading", {
+          level: 3,
+          name: title,
+          exact: true,
+        })
+      ).toHaveCount(1)
+    }
+
+    await gotoCriticalPage(page, "/integrations/channels")
+    const agentChannelsFilter = page.getByRole("button", {
+      name: "Agent channels",
+      exact: true,
+    })
+    await expectReactHandlerReady(agentChannelsFilter, "onClick")
+    await agentChannelsFilter.click()
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("category"))
+      .toBe("agent-channels")
+
+    await page.getByRole("button", { name: "Show more" }).click()
+    const comingSoonCards = page.locator(
+      '[data-slot="integration-card"][data-availability="coming-soon"]'
+    )
+    await expect(comingSoonCards).toHaveCount(5)
+    await expect
+      .poll(() =>
+        comingSoonCards.evaluateAll((cards) =>
+          cards.every((card) => card.tagName === "ARTICLE")
+        )
+      )
+      .toBe(true)
+    for (const title of integrationsContract.comingSoonAgentChannels) {
+      await expect(
+        comingSoonCards.getByRole("heading", {
+          level: 3,
+          name: title,
+          exact: true,
+        })
+      ).toHaveCount(1)
+    }
+
+    expectHealthyPage(applicationErrors)
+  })
 })

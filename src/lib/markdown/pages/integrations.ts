@@ -222,8 +222,8 @@ export async function getIntegrations(
 
     const categorySections = categories
       .map((category) => {
-        const categoryItems = integrations.filter(
-          (integration) => integration.category === category.slug
+        const categoryItems = integrations.filter((integration) =>
+          integration.categories.includes(category.slug)
         )
 
         if (categoryItems.length === 0) {

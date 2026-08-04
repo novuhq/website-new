@@ -36,12 +36,16 @@ function IntegrationDetail({
 
   const relatedSlice = relatedIntegrations.slice(0, 6)
   const relatedArticles = integration.relatedArticles.slice(0, 4)
+  const relatedProviderType =
+    integration.detailBadge === "SMS"
+      ? integration.detailBadge
+      : integration.detailBadge.toLowerCase()
   const relatedHeading =
     integration.category === "agent-channels"
       ? "Other agent channels"
       : integration.tab === "sources"
         ? "Other integrations"
-        : `Other ${integration.detailBadge.toLowerCase()} providers`
+        : `Other ${relatedProviderType} providers`
 
   return (
     <article
