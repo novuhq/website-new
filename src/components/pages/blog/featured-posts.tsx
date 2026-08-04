@@ -34,23 +34,20 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
           className={cn(
             "flex flex-col border-b border-border pb-6 md:border-b-0 md:pb-0",
             isSinglePost &&
-              "md:grid md:h-60 md:grid-cols-[minmax(0,5fr)_minmax(0,3fr)] md:gap-x-8 lg:h-64 lg:gap-x-10"
+              "md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,3fr)] md:gap-x-8 lg:gap-x-10"
           )}
         >
           <Link
             className={cn(
               "shrink-0 overflow-hidden rounded-lg",
-              isSinglePost && "md:relative md:block md:h-full md:min-w-0"
+              isSinglePost && "md:block md:min-w-0"
             )}
             variant="clean"
             size="none"
             href={featuredPost.url}
           >
             <Image
-              className={cn(
-                "w-full object-cover",
-                isSinglePost && "md:absolute md:inset-0 md:h-full"
-              )}
+              className="w-full object-cover"
               src={featuredPost.cover}
               width={480}
               height={270}
@@ -90,7 +87,7 @@ function FeaturedPost({ className, posts }: IFeaturedPostProps) {
               </Link>
             </h3>
             {isSinglePost && featuredPost.caption && (
-              <p className="mt-3 hidden text-base/snug font-book tracking-tighter text-pretty text-gray-8 md:line-clamp-2 lg:line-clamp-3">
+              <p className="mt-3 line-clamp-3 text-base/snug font-book tracking-tighter text-pretty text-gray-8 md:line-clamp-2 lg:line-clamp-3">
                 {featuredPost.caption}
               </p>
             )}
