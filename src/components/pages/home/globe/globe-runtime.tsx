@@ -36,7 +36,6 @@ import {
   GLOBE_STORY_SETTLE_MS,
 } from "./globe-data"
 import GlobeEventCard from "./globe-event-card"
-import GlobeMetric from "./globe-metric"
 import GlobeScene from "./globe-scene"
 import {
   GLOBE_AMBIENT_ROUTE_GAP_MS,
@@ -45,10 +44,8 @@ import {
 } from "./globe-scheduler"
 import {
   advanceGlobeRotation,
-  getActiveCardEvent,
   getGlobeCardDurationMs,
   getGlobeCardExitStartMs,
-  getGlobeCycleStartMs,
   getGlobeRotation,
 } from "./globe-timeline"
 import type {
@@ -301,18 +298,6 @@ function advanceGlobeInteraction(
   }
 }
 
-function getDebugTimeMs() {
-  if (process.env.NODE_ENV === "production" || typeof window === "undefined") {
-    return null
-  }
-
-  const rawValue = new URLSearchParams(window.location.search).get("globeTime")
-  if (rawValue === null || rawValue.trim() === "") return null
-
-  const value = Number(rawValue)
-  return Number.isFinite(value) && value >= 0 ? value : null
-}
-
 function createCardPlayback(
   event: IGlobeCardEvent,
   id: string,
@@ -337,9 +322,7 @@ export default function GlobeRuntime({
   const shouldReduceMotion = useReducedMotion()
   const rootRef = useRef<HTMLDivElement>(null)
   const canvasHostRef = useRef<HTMLDivElement>(null)
-  const debugTimeMsRef = useRef(getDebugTimeMs())
-  const initialTimeMs = debugTimeMsRef.current ?? GLOBE_INITIAL_TIME_MS
-  const debugCycleStartMs = getGlobeCycleStartMs(initialTimeMs)
+  const initialTimeMs = GLOBE_INITIAL_TIME_MS
   const elapsedRef = useRef(initialTimeMs)
   const interactionRef = useRef<IGlobeInteractionState>({
     autoBlend: 1,
@@ -354,25 +337,16 @@ export default function GlobeRuntime({
   const previousScheduleRotationRef = useRef<number | null>(
     interactionRef.current.rotation
   )
-  const debugCard = getActiveCardEvent(initialTimeMs)
-  const bootstrapEvents =
-    debugTimeMsRef.current === null
-      ? GLOBE_CARD_EVENTS.filter((event) => (event.initialRouteLeadMs ?? 0) > 0)
-      : []
+  const bootstrapEvents = GLOBE_CARD_EVENTS.filter(
+    (event) => (event.initialRouteLeadMs ?? 0) > 0
+  )
   const routePlaybackRef = useRef<Record<string, number>>(
-    debugTimeMsRef.current === null
-      ? Object.fromEntries(
-          bootstrapEvents.map((event) => [
-            event.routeId,
-            -(event.initialRouteLeadMs ?? 0),
-          ])
-        )
-      : Object.fromEntries(
-          GLOBE_ROUTES.map((route) => [
-            route.id,
-            debugCycleStartMs + route.startMs,
-          ])
-        )
+    Object.fromEntries(
+      bootstrapEvents.map((event) => [
+        event.routeId,
+        -(event.initialRouteLeadMs ?? 0),
+      ])
+    )
   )
   const lastCardCompletedAtRef = useRef<Record<string, number>>({})
   const lastAmbientRouteStartedAtRef = useRef<Record<string, number>>({})
@@ -390,21 +364,13 @@ export default function GlobeRuntime({
   const hasStartedPlaybackRef = useRef(false)
   const initialCardPlaybacksRef = useRef<IActiveCardPlayback[] | null>(null)
   if (initialCardPlaybacksRef.current === null) {
-    initialCardPlaybacksRef.current = debugCard
-      ? [
-          createCardPlayback(
-            debugCard,
-            `${debugCard.id}:debug`,
-            initialTimeMs - (debugCycleStartMs + debugCard.startMs)
-          ),
-        ]
-      : bootstrapEvents.map((event, index) =>
-          createCardPlayback(
-            event,
-            `${event.id}:bootstrap-${index}`,
-            (event.initialRouteLeadMs ?? 0) - GLOBE_STORY_CARD_DELAY_MS
-          )
-        )
+    initialCardPlaybacksRef.current = bootstrapEvents.map((event, index) =>
+      createCardPlayback(
+        event,
+        `${event.id}:bootstrap-${index}`,
+        (event.initialRouteLeadMs ?? 0) - GLOBE_STORY_CARD_DELAY_MS
+      )
+    )
   }
   const [activeCardPlaybacks, setActiveCardPlaybacks] = useState<
     IActiveCardPlayback[]
@@ -524,12 +490,7 @@ export default function GlobeRuntime({
   }, [playbackActive])
 
   useEffect(() => {
-    if (
-      debugTimeMsRef.current !== null ||
-      !playbackActive ||
-      shouldReduceMotion ||
-      failed
-    ) {
+    if (!playbackActive || shouldReduceMotion || failed) {
       return
     }
 
@@ -882,11 +843,7 @@ export default function GlobeRuntime({
             >
               <GlobeViewportCamera virtualViewportRef={rootRef} />
               <GlobePerformanceMonitor
-                enabled={
-                  playbackEnabled &&
-                  debugTimeMsRef.current === null &&
-                  dprCap > 1
-                }
+                enabled={playbackEnabled && dprCap > 1}
                 onSustainedSlowFrames={handleSustainedSlowFrames}
               />
               <GlobeContextMonitor onContextLost={handleContextLost} />
@@ -916,10 +873,6 @@ export default function GlobeRuntime({
             y={playback.anchorY}
           />
         ))}
-      </div>
-
-      <div className="absolute right-0 bottom-6 left-0 flex justify-center">
-        <GlobeMetric />
       </div>
     </div>
   )
