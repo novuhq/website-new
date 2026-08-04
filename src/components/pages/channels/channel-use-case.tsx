@@ -1,14 +1,15 @@
-import Image from "next/image"
+import {
+  CHANNEL_PREVIEW_COMPANIES,
+  CHANNEL_PREVIEW_VIDEOS,
+} from "@/data/pages/channel-previews"
 import featuresBackground from "@/images/pages/home/features/bg.jpg"
 
 import type { IChannelPageData } from "@/types/channel"
+import Preview from "@/components/pages/home/features/preview"
 
 function ChannelUseCase({ channel }: { channel: IChannelPageData }) {
-  const clientFacingVideo = {
-    webm: `/videos/channels/${channel.cliSlug}-client-facing.webm`,
-    mp4: `/videos/channels/${channel.cliSlug}-client-facing.hevc.mp4`,
-    poster: `/videos/channels/${channel.cliSlug}-client-facing-poster.png`,
-  }
+  const clientFacingVideo = CHANNEL_PREVIEW_VIDEOS[channel.cliSlug]
+  const company = CHANNEL_PREVIEW_COMPANIES[channel.cliSlug]
 
   return (
     <section className="safe-paddings mt-24">
@@ -22,33 +23,14 @@ function ChannelUseCase({ channel }: { channel: IChannelPageData }) {
           </p>
         </div>
 
-        <div className="relative mt-8 aspect-703/432 overflow-hidden rounded-[0.625rem] border border-gray-20">
-          <Image
-            className="object-cover"
-            src={featuresBackground}
-            alt=""
-            fill
-            sizes="(min-width: 768px) 704px, calc(100vw - 40px)"
-            quality={100}
-            loading="eager"
-            aria-hidden
+        <div className="relative mt-8 aspect-10/11 overflow-hidden rounded-[0.625rem] border border-gray-20 sm:aspect-5/4 lg:aspect-[640/536]">
+          <Preview
+            backgroundImage={featuresBackground}
+            channelLabel={channel.channelName}
+            clientFacingVideo={clientFacingVideo}
+            company={company}
+            isActive
           />
-          <video
-            className="absolute top-1/2 left-1/2 h-[87%] w-[72.5%] -translate-1/2 rounded-[0.9375rem] object-contain"
-            poster={clientFacingVideo.poster}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label={`${channel.channelName} client-facing preview`}
-          >
-            <source src={clientFacingVideo.webm} type="video/webm" />
-            <source
-              src={clientFacingVideo.mp4}
-              type='video/mp4; codecs="hvc1"'
-            />
-          </video>
         </div>
       </div>
     </section>
