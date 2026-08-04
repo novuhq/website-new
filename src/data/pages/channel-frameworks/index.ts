@@ -41,6 +41,12 @@ export const publishedCombos: Array<{ channel: string; framework: string }> = [
   { channel: "whatsapp", framework: "claude-aws" },
   { channel: "telegram", framework: "claude-aws" },
   { channel: "email", framework: "claude-aws" },
+  { channel: "imessage", framework: "langchain" },
+  { channel: "imessage", framework: "ai-sdk" },
+  { channel: "imessage", framework: "chat-sdk" },
+  { channel: "imessage", framework: "custom-code" },
+  { channel: "imessage", framework: "claude" },
+  { channel: "imessage", framework: "claude-aws" },
 ]
 
 export interface IChannelFrameworkCombo {
@@ -162,4 +168,5 @@ export const CHANNEL_COVER_LOGO: Record<string, string> = {
   whatsapp: "images/integration-icons/chat/whatsapp-business-icon.svg",
   telegram: "images/covers-assets/telegram.svg",
   email: "images/covers-assets/email.svg",
+  imessage: "images/covers-assets/imessage.svg",
 }

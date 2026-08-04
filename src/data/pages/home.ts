@@ -46,6 +46,7 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
   telegram: "/channels/telegram",
   teams: "/channels/microsoft-teams",
   email: "/channels/email",
+  imessage: "/channels/imessage",
   inbox: String(ROUTE.inbox),
 }
 
