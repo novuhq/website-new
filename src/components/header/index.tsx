@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
-import { ClerkProvider, useAuth } from "@clerk/nextjs"
+import { ClerkProvider, useAuth } from "@clerk/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
