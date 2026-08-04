@@ -74,4 +74,7 @@ pnpm test:critical:report
 Playwright starts the local Next.js development server automatically. CI builds
 the production application first and starts it with `pnpm start`. Set
 `PLAYWRIGHT_BASE_URL` to exercise an existing local or preview deployment, and set
-`PLAYWRIGHT_SKIP_WEB_SERVER=1` when that server is managed separately.
+`PLAYWRIGHT_SKIP_WEB_SERVER=1` when that server is managed separately. The
+signed-in and loading auth-state cases detect the `CRITICAL_FLOW_TESTING=1`
+fixture on the target and skip themselves when an unmanaged server or preview
+deployment does not expose it.

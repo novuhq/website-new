@@ -19,6 +19,7 @@ import Nav from "./nav"
 
 interface IHeaderProps {
   authStateOverride?: HeaderAuthState
+  criticalFlowAuthFixture?: boolean
   githubStars: number
 }
 
@@ -75,7 +76,11 @@ function HeaderDashboardAction({
   )
 }
 
-function Header({ authStateOverride, githubStars }: IHeaderProps) {
+function Header({
+  authStateOverride,
+  criticalFlowAuthFixture = false,
+  githubStars,
+}: IHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const normalizedPathname =
@@ -117,6 +122,9 @@ function Header({ authStateOverride, githubStars }: IHeaderProps) {
 
   return (
     <header
+      data-critical-flow-auth-fixture={
+        criticalFlowAuthFixture ? "enabled" : undefined
+      }
       className={cn(
         "sticky top-0 z-50 font-inter transition-colors duration-150",
         !isCareersPage || isScrolled ? "bg-black" : "bg-transparent"

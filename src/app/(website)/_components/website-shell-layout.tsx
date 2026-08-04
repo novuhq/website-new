@@ -19,9 +19,10 @@ async function WebsiteShellLayout({
   wrapperClassName,
 }: WebsiteShellLayoutProps) {
   const { stars } = await getGithubInfo()
+  const criticalFlowAuthFixture = process.env.CRITICAL_FLOW_TESTING === "1"
   let authStateOverride: "loading" | "signed-in" | "signed-out" | undefined
 
-  if (process.env.CRITICAL_FLOW_TESTING === "1") {
+  if (criticalFlowAuthFixture) {
     const authState = (await cookies()).get(
       "novu-critical-flow-auth-state"
     )?.value
@@ -38,7 +39,11 @@ async function WebsiteShellLayout({
   return (
     <WebsiteLayoutShell
       header={
-        <Header githubStars={stars} authStateOverride={authStateOverride} />
+        <Header
+          githubStars={stars}
+          authStateOverride={authStateOverride}
+          criticalFlowAuthFixture={criticalFlowAuthFixture}
+        />
       }
       footer={footer}
       bodyClassName={bodyClassName}

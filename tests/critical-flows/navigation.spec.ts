@@ -23,6 +23,18 @@ async function expectDashboardNavigation(page: Page, linkName: string) {
   await expect(page).toHaveURL(/^https:\/\/dashboard\.novu\.co\/?$/)
 }
 
+async function skipUnlessAuthStateFixture(page: Page) {
+  const fixtureEnabled =
+    (await page
+      .getByRole("banner")
+      .getAttribute("data-critical-flow-auth-fixture")) === "enabled"
+
+  test.skip(
+    !fixtureEnabled,
+    "Target does not expose the critical auth-state fixture"
+  )
+}
+
 test.describe("critical responsive navigation", () => {
   test(`[${navigationContract.id}] opens pricing and preserves authentication destinations`, async ({
     isMobile,
@@ -119,6 +131,7 @@ test.describe("critical responsive navigation", () => {
 
     const applicationErrors = observeApplicationErrors(page)
     await gotoCriticalPage(page, navigationContract.route)
+    await skipUnlessAuthStateFixture(page)
 
     const signedOutLink = navigationContract.authLinks.desktop[0]
     await expect(
@@ -152,6 +165,7 @@ test.describe("critical responsive navigation", () => {
 
     const applicationErrors = observeApplicationErrors(page)
     await gotoCriticalPage(page, navigationContract.route)
+    await skipUnlessAuthStateFixture(page)
 
     const signedInLink = navigationContract.authLinks.desktopSignedIn[0]
     await expect(
