@@ -69,7 +69,7 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                   </p>
                 )}
                 {items && items.length > 0 && (
-                  <ul className="flex flex-col gap-y-7">
+                  <ul className="flex flex-col gap-y-5">
                     {items.map(
                       (
                         {
@@ -86,7 +86,7 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                           {children?.length ? (
                             <>
                               <Link
-                                className="group flex w-full items-start gap-3 leading-none font-normal text-gray-90"
+                                className="group mt-2 flex w-full items-start gap-3 leading-none font-normal text-gray-90"
                                 href={href}
                                 variant="clean"
                                 onClick={onNavigate}
@@ -94,7 +94,7 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                                 <MenuIcon className="mt-px" icon={menuIcon} />
                                 <span>{label}</span>
                               </Link>
-                              <ul className="mt-4 flex flex-col gap-y-4">
+                              <ul className="mt-5 flex flex-col gap-y-5">
                                 {children.map((child) => (
                                   <li key={child.label}>
                                     <Link
