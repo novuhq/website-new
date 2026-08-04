@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { cookies } from "next/headers"
 
 import { getGithubInfo } from "@/lib/get-github-info"
 import Header from "@/components/header"
@@ -18,10 +19,23 @@ async function WebsiteShellLayout({
   wrapperClassName,
 }: WebsiteShellLayoutProps) {
   const { stars } = await getGithubInfo()
+  let authStateOverride: "signed-in" | "signed-out" | undefined
+
+  if (process.env.CRITICAL_FLOW_TESTING === "1") {
+    const authState = (await cookies()).get(
+      "novu-critical-flow-auth-state"
+    )?.value
+
+    if (authState === "signed-in" || authState === "signed-out") {
+      authStateOverride = authState
+    }
+  }
 
   return (
     <WebsiteLayoutShell
-      header={<Header githubStars={stars} />}
+      header={
+        <Header githubStars={stars} authStateOverride={authStateOverride} />
+      }
       footer={footer}
       bodyClassName={bodyClassName}
       wrapperClassName={wrapperClassName}

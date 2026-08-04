@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
+import { ClerkProvider, Show } from "@clerk/nextjs"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -17,10 +18,52 @@ import MobileMenu from "./mobile-menu"
 import Nav from "./nav"
 
 interface IHeaderProps {
+  authStateOverride?: HeaderAuthState
   githubStars: number
 }
 
-function Header({ githubStars }: IHeaderProps) {
+type HeaderAuthState = "signed-in" | "signed-out"
+
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+function HeaderDashboardAction({
+  authStateOverride,
+}: {
+  authStateOverride?: HeaderAuthState
+}) {
+  const signedOutAction = (
+    <Button
+      className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+      asChild
+    >
+      <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
+    </Button>
+  )
+
+  const signedInAction = (
+    <Button
+      className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+      asChild
+    >
+      <NextLink href={ROUTE.dashboard}>Visit Dashboard</NextLink>
+    </Button>
+  )
+
+  if (authStateOverride === "signed-in") return signedInAction
+  if (authStateOverride === "signed-out" || !clerkPublishableKey) {
+    return signedOutAction
+  }
+
+  return (
+    <ClerkProvider publishableKey={clerkPublishableKey} afterSignOutUrl="/">
+      <Show when="signed-in" fallback={signedOutAction}>
+        {signedInAction}
+      </Show>
+    </ClerkProvider>
+  )
+}
+
+function Header({ authStateOverride, githubStars }: IHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const normalizedPathname =
@@ -91,12 +134,7 @@ function Header({ githubStars }: IHeaderProps) {
             className="hidden text-base tracking-tighter xl:flex"
             stars={githubStars}
           />
-          <Button
-            className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
-            asChild
-          >
-            <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
-          </Button>
+          <HeaderDashboardAction authStateOverride={authStateOverride} />
         </div>
         <SearchBar
           className="ml-auto lg:hidden"

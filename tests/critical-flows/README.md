@@ -22,7 +22,7 @@ destination or business outcome changes.
 
 | ID                   | Priority | Journey                              | Required outcome                                            |
 | -------------------- | -------- | ------------------------------------ | ----------------------------------------------------------- |
-| `TC-NAV-001`         | P0       | Responsive header → pricing and auth | Mobile/desktop navigation and dashboard destinations work   |
+| `TC-NAV-001`         | P0       | Responsive header → pricing and auth | Signed-in/out actions and dashboard destinations work       |
 | `TC-HOME-001`        | P0       | Homepage → live channel              | Channel content and the generated CLI command are usable    |
 | `TC-HOME-002`        | P1       | Homepage → coming-soon waitlist      | Validation, failure feedback, and retry all work            |
 | `TC-HOME-003`        | P0       | Homepage Connect Stack setup         | Channel/runtime selection and both copy actions work        |
@@ -44,7 +44,9 @@ registrations. Submission endpoints are intercepted in the browser, HubSpot form
 use the non-persisting `+skipform@hubspot.com` address, Notion forms use
 `@example.com`, and the careers CV is an in-memory fixture. Separate Node
 integration tests call the real Next.js form route handlers while replacing only
-their outbound HubSpot and Notion requests.
+their outbound HubSpot and Notion requests. Header authentication states use a
+test-only cookie that the application reads only when `CRITICAL_FLOW_TESTING=1`;
+the suite does not require Clerk credentials or create a Clerk session.
 
 ## Commands
 
