@@ -103,6 +103,22 @@ test.describe("critical integrations discovery journey", () => {
       .toBe("agent-channels")
 
     await page.getByRole("button", { name: "Show more" }).click()
+    const agentChannelCards = page.locator('[data-slot="integration-card"]')
+    await expect(agentChannelCards).toHaveCount(11)
+    await expect
+      .poll(() =>
+        agentChannelCards
+          .locator("img")
+          .evaluateAll((images) =>
+            images.every(
+              (image) =>
+                (image as HTMLImageElement).complete &&
+                (image as HTMLImageElement).naturalWidth > 0
+            )
+          )
+      )
+      .toBe(true)
+
     const comingSoonCards = page.locator(
       '[data-slot="integration-card"][data-availability="coming-soon"]'
     )
