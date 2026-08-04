@@ -8,8 +8,12 @@ import type { IChannelPageData } from "@/types/channel"
 import Preview from "@/components/pages/home/features/preview"
 
 function ChannelUseCase({ channel }: { channel: IChannelPageData }) {
-  const clientFacingVideo = CHANNEL_PREVIEW_VIDEOS[channel.cliSlug]
-  const company = CHANNEL_PREVIEW_COMPANIES[channel.cliSlug]
+  const clientFacingVideo =
+    CHANNEL_PREVIEW_VIDEOS[channel.slug] ??
+    CHANNEL_PREVIEW_VIDEOS[channel.cliSlug]
+  const company =
+    CHANNEL_PREVIEW_COMPANIES[channel.slug] ??
+    CHANNEL_PREVIEW_COMPANIES[channel.cliSlug]
 
   return (
     <section className="safe-paddings mt-24">
