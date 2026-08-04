@@ -260,11 +260,6 @@ export const MENUS = {
           items: [
             { label: "Blog", href: ROUTE.blog, menuIcon: "blog" },
             {
-              label: "Customers",
-              href: ROUTE.customers,
-              menuIcon: "customers",
-            },
-            {
               label: "Community",
               href: ROUTE.community,
               menuIcon: "community",

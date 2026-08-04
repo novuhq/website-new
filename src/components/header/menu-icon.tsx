@@ -13,14 +13,13 @@ import channelsEmailIcon from "@/svgs/header/menu/channels-email.inline.svg"
 import channelsImessageIcon from "@/svgs/header/menu/channels-imessage.inline.svg"
 import channelsInboxIcon from "@/svgs/header/menu/channels-inbox.inline.svg"
 import channelsLangchainIcon from "@/svgs/header/menu/channels-langchain.inline.svg"
-import channelsAiSdkIcon from "@/svgs/header/integrations/vercel-ai-sdk.inline.svg"
-import channelsChatSdkIcon from "@/svgs/header/menu/channels-chat-sdk.inline.svg"
 import channelsClaudeAwsIcon from "@/svgs/header/menu/channels-claude-aws.inline.svg"
 import channelsMsTeamsIcon from "@/svgs/header/menu/channels-ms-teams.inline.svg"
 import channelsPushIcon from "@/svgs/header/menu/channels-push.inline.svg"
 import channelsSlackIcon from "@/svgs/header/menu/channels-slack.inline.svg"
 import channelsSmsIcon from "@/svgs/header/menu/channels-sms.inline.svg"
 import channelsTelegramIcon from "@/svgs/header/menu/channels-telegram.inline.svg"
+import vercelIcon from "@/svgs/header/menu/channels-vercel.inline.svg"
 import channelsWhatsappIcon from "@/svgs/header/menu/channels-whatsapp.inline.svg"
 import resourcesAboutIcon from "@/svgs/header/menu/resources-about.inline.svg"
 import resourcesApiIcon from "@/svgs/header/menu/resources-api.inline.svg"
@@ -94,8 +93,8 @@ const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   chat: channelsChatIcon,
   sms: channelsSmsIcon,
   langchain: channelsLangchainIcon,
-  "ai-sdk": channelsAiSdkIcon,
-  "chat-sdk": channelsChatSdkIcon,
+  "ai-sdk": vercelIcon,
+  "chat-sdk": vercelIcon,
   "claude-aws": channelsClaudeAwsIcon,
 }
 

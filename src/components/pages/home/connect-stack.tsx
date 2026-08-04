@@ -196,7 +196,7 @@ function SelectField({
             position="popper"
             sideOffset={2}
           >
-            <SelectPrimitive.Viewport className="p-1.5">
+            <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
                   className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
