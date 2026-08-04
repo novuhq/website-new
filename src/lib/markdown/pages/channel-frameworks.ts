@@ -4,7 +4,7 @@ import {
   getConnectCommand,
 } from "@/data/pages/channel-frameworks"
 
-import { escapeMarkdownText } from "../markdown-format"
+import { escapeMarkdownText, formatCodeFence } from "../markdown-format"
 import { bulletList } from "../page-utils"
 import type { MarkdownPage } from "../types"
 
@@ -50,7 +50,8 @@ export async function getChannelFrameworks(
     bulletList(framework.strengths),
     `## How to connect ${escapeMarkdownText(framework.name)} to ${escapeMarkdownText(channel.channelName)}`,
     steps,
-    `Prompt for your coding agent: ${escapeMarkdownText(fillTemplate(framework.promptTemplate, combo))}`,
+    "Prompt for your coding agent:",
+    formatCodeFence(fillTemplate(framework.promptTemplate, combo), "text"),
     `## ${escapeMarkdownText(framework.name)} and ${escapeMarkdownText(channel.channelName)}, common questions`,
     faq,
   ]

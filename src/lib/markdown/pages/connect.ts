@@ -15,7 +15,13 @@ import type { MarkdownPage } from "../types"
 import { absoluteUrl, toCanonicalPathname } from "../url"
 
 const CONNECT_COMMAND = "npx novu connect"
-const CONNECT_PROMPT = "Add an agent to my app https://novu.co/agents.md"
+const CONNECT_PROMPT = `Connect this project's AI agent to customer channels (Slack, Microsoft Teams, WhatsApp, Telegram, Email, or iMessage) with Novu Connect.
+
+Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci\`).
+
+Inspect the repo first. Ask me which channel to connect if it is not clear. Detect the framework/runtime from the project, or ask once. Then run one connect command per agents.md (bridge vs managed, keyless vs dashboard OAuth).
+
+Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md says that channel requires it (e.g. iMessage/Sendblue).`
 const PRODUCT_HUNT_LAUNCH_URL =
   "https://www.producthunt.com/products/novu/launches/novu-connect"
 
