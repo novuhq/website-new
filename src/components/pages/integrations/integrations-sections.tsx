@@ -12,15 +12,15 @@ import IntegrationChannelCategory from "./integration-channel-category"
 
 function integrationToCards(
   integrations: IIntegration[],
-  selectedCategory?: string
+  categoryContext: string
 ) {
   return integrations.map((i) => ({
     title: i.title,
     description: i.description,
     iconSrc: i.icon,
-    category: selectedCategory === "agent-runtimes" ? "Agent runtime" : i.badge,
+    category: categoryContext === "agent-runtimes" ? "Agent runtime" : i.badge,
     status:
-      i.product === "connect" || selectedCategory === "agent-runtimes"
+      i.product === "connect" || categoryContext === "agent-runtimes"
         ? i.availability === "live"
           ? "Live"
           : "Coming soon"
@@ -121,11 +121,7 @@ function IntegrationsSections({
           }
 
           const items = filteredIntegrations
-            .filter((i) =>
-              selectedCategory
-                ? i.categories.includes(cat.slug)
-                : i.category === cat.slug
-            )
+            .filter((i) => i.categories.includes(cat.slug))
             .sort((a, b) => {
               if (a.order !== b.order) {
                 return a.order - b.order
@@ -143,7 +139,7 @@ function IntegrationsSections({
               title={cat.title}
               count={items.length}
               description={cat.description}
-              cards={integrationToCards(items, selectedCategory || undefined)}
+              cards={integrationToCards(items, cat.slug)}
               className="mt-0"
             />
           )

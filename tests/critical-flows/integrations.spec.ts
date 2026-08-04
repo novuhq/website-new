@@ -63,11 +63,27 @@ test.describe("critical integrations discovery journey", () => {
     expectHealthyPage(applicationErrors)
   })
 
-  test("filters shared agent runtimes and keeps coming-soon channels non-interactive", async ({
+  test("groups shared agent runtimes and keeps coming-soon channels non-interactive", async ({
     page,
   }) => {
     const applicationErrors = observeApplicationErrors(page)
     await gotoCriticalPage(page, "/integrations/sources")
+
+    const aiSdkSection = page.getByRole("region", { name: "AI SDKs" })
+    const agentRuntimesSection = page.getByRole("region", {
+      name: "Agent runtimes",
+    })
+    await expect(
+      aiSdkSection.locator('[data-slot="integration-card"]')
+    ).toHaveCount(2)
+    await expect(
+      agentRuntimesSection.locator('[data-slot="integration-card"]')
+    ).toHaveCount(4)
+    for (const title of ["Vercel AI SDK", "LangChain"]) {
+      await expect(
+        page.getByRole("heading", { level: 3, name: title, exact: true })
+      ).toHaveCount(2)
+    }
 
     const agentRuntimesFilter = page.getByRole("button", {
       name: "Agent runtimes",
