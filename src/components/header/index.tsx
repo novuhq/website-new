@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import config from "@/configs/website-config"
 import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
-import { ClerkProvider, Show } from "@clerk/nextjs"
+import { ClerkProvider, useAuth } from "@clerk/nextjs"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -22,16 +22,23 @@ interface IHeaderProps {
   githubStars: number
 }
 
-type HeaderAuthState = "signed-in" | "signed-out"
+type HeaderAuthState = "loading" | "signed-in" | "signed-out"
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
-function HeaderDashboardAction({
-  authStateOverride,
-}: {
-  authStateOverride?: HeaderAuthState
-}) {
-  const signedOutAction = (
+function DashboardAction({ authState }: { authState: HeaderAuthState }) {
+  if (authState === "signed-in") {
+    return (
+      <Button
+        className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
+        asChild
+      >
+        <NextLink href={ROUTE.dashboard}>Visit Dashboard</NextLink>
+      </Button>
+    )
+  }
+
+  return (
     <Button
       className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
       asChild
@@ -39,26 +46,31 @@ function HeaderDashboardAction({
       <NextLink href={ROUTE.dashboardV2SignUp}>Sign up now</NextLink>
     </Button>
   )
+}
 
-  const signedInAction = (
-    <Button
-      className="h-11 rounded-sm px-5 text-base tracking-tighter normal-case"
-      asChild
-    >
-      <NextLink href={ROUTE.dashboard}>Visit Dashboard</NextLink>
-    </Button>
-  )
+function ClerkDashboardAction() {
+  const { isLoaded, isSignedIn } = useAuth()
+  const authState: HeaderAuthState = !isLoaded
+    ? "loading"
+    : isSignedIn
+      ? "signed-in"
+      : "signed-out"
 
-  if (authStateOverride === "signed-in") return signedInAction
-  if (authStateOverride === "signed-out" || !clerkPublishableKey) {
-    return signedOutAction
+  return <DashboardAction authState={authState} />
+}
+
+function HeaderDashboardAction({
+  authStateOverride,
+}: {
+  authStateOverride?: HeaderAuthState
+}) {
+  if (authStateOverride || !clerkPublishableKey) {
+    return <DashboardAction authState={authStateOverride ?? "signed-out"} />
   }
 
   return (
     <ClerkProvider publishableKey={clerkPublishableKey} afterSignOutUrl="/">
-      <Show when="signed-in" fallback={signedOutAction}>
-        {signedInAction}
-      </Show>
+      <ClerkDashboardAction />
     </ClerkProvider>
   )
 }

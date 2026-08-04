@@ -19,14 +19,18 @@ async function WebsiteShellLayout({
   wrapperClassName,
 }: WebsiteShellLayoutProps) {
   const { stars } = await getGithubInfo()
-  let authStateOverride: "signed-in" | "signed-out" | undefined
+  let authStateOverride: "loading" | "signed-in" | "signed-out" | undefined
 
   if (process.env.CRITICAL_FLOW_TESTING === "1") {
     const authState = (await cookies()).get(
       "novu-critical-flow-auth-state"
     )?.value
 
-    if (authState === "signed-in" || authState === "signed-out") {
+    if (
+      authState === "loading" ||
+      authState === "signed-in" ||
+      authState === "signed-out"
+    ) {
       authStateOverride = authState
     }
   }

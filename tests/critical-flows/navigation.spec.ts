@@ -100,6 +100,39 @@ test.describe("critical responsive navigation", () => {
     expectHealthyPage(applicationErrors)
   })
 
+  test(`[${navigationContract.id}] loading auth state renders dashboard signup immediately`, async ({
+    baseURL,
+    context,
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop authentication action")
+    expect(baseURL).toBeTruthy()
+
+    await context.addCookies([
+      {
+        name: navigationContract.authStateCookie,
+        value: navigationContract.authStates.loading,
+        url: baseURL,
+      },
+    ])
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+
+    const signedOutLink = navigationContract.authLinks.desktop[0]
+    await expect(
+      page.getByRole("link", { name: signedOutLink.name, exact: true })
+    ).toHaveAttribute("href", signedOutLink.href)
+    await expect(
+      page.getByRole("link", {
+        name: navigationContract.authLinks.desktopSignedIn[0].name,
+        exact: true,
+      })
+    ).toHaveCount(0)
+    expectHealthyPage(applicationErrors)
+  })
+
   test(`[${navigationContract.id}] signed-in header action opens dashboard`, async ({
     baseURL,
     context,
@@ -112,7 +145,7 @@ test.describe("critical responsive navigation", () => {
     await context.addCookies([
       {
         name: navigationContract.authStateCookie,
-        value: "signed-in",
+        value: navigationContract.authStates.signedIn,
         url: baseURL,
       },
     ])

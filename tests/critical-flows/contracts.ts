@@ -30,6 +30,10 @@ export const navigationContract = {
     ],
   },
   authStateCookie: "novu-critical-flow-auth-state",
+  authStates: {
+    loading: "loading",
+    signedIn: "signed-in",
+  },
 } as const
 
 export const liveChannelContract = {
