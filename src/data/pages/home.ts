@@ -71,7 +71,7 @@ export const HOME_CHANNELS = [
     key: "teams",
     badges: ["notify", "connect"] as const,
     label: "Microsoft Teams",
-    title: "Connect your AI agent to Microsoft Teams",
+    title: "Communicate with users in Microsoft Teams",
     description:
       "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
     prompt:
@@ -122,7 +122,7 @@ export const HOME_CHANNELS = [
     key: "email",
     badges: ["notify", "connect"] as const,
     label: "Email",
-    title: "Connect your AI agent to Email",
+    title: "Communicate with users over email",
     description:
       "Use email for conversations that benefit from a durable record and more room for detail.",
     prompt:
@@ -156,7 +156,7 @@ export const HOME_CHANNELS = [
     key: "inbox",
     badges: ["notify"] as const,
     label: "Inbox",
-    title: "Connect your AI agent to Inbox",
+    title: "Send notifications to your in-app Inbox",
     description:
       "Give users one place inside your product to see and manage the updates that matter to them.",
     features: [
@@ -175,7 +175,7 @@ export const HOME_CHANNELS = [
     key: "push",
     badges: ["notify"] as const,
     label: "Push",
-    title: "Connect your AI agent to Push",
+    title: "Send push notifications to your users",
     description:
       "Reach users on mobile, desktop, and web when they are away from your product.",
     features: [
@@ -183,7 +183,7 @@ export const HOME_CHANNELS = [
       "Multiple provider integrations",
       "Subscriber device-token management",
       "Provider-specific delivery overrides",
-      "Selected providers: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
+      "Support for providers such as: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
     ],
     action: {
       label: "Explore push providers",
@@ -213,7 +213,7 @@ export const HOME_CHANNELS = [
     key: "sms",
     badges: ["notify"] as const,
     label: "SMS",
-    title: "Connect your AI agent to SMS",
+    title: "Send notifications to your users via SMS",
     description:
       "Deliver urgent and transactional updates directly to users' phones.",
     features: [
@@ -221,7 +221,7 @@ export const HOME_CHANNELS = [
       "Dynamic message content",
       "Multiple provider integrations",
       "Runtime recipient, sender, and content overrides",
-      "Selected providers: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
+      "Support for providers such as: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
     ],
     action: {
       label: "Explore SMS providers",
@@ -233,7 +233,7 @@ export const HOME_CHANNELS = [
     badges: ["notify", "connect"] as const,
     statusBadge: "Coming Soon",
     label: "Discord",
-    title: "Connect your AI agent to Discord",
+    title: "Communicate with users over Discord chat",
     description:
       "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
   },
