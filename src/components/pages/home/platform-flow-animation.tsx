@@ -1,6 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import Image from "next/image"
 import EngageIcon from "@/images/pages/home/communication-lifecycle/engage.inline.svg"
 import EventIcon from "@/images/pages/home/communication-lifecycle/event.inline.svg"
@@ -10,14 +16,25 @@ import PlatformFlowBackground from "@/images/pages/home/platform/background.jpg"
 import imessageIcon from "@/images/pages/home/platform/imessage.svg"
 import { Check } from "lucide-react"
 import {
+  animate,
   AnimatePresence,
   domAnimation,
   LazyMotion,
+  useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
 
 import { cn } from "@/lib/utils"
+
+import {
+  createTrackPath,
+  createTrackProgressPath,
+  TRACK_BASE_SIZE,
+  type ITrackPoint,
+  type ITrackSize,
+} from "./platform-flow-path"
 
 const FLOW_ORDER = ["event", "notify", "engage", "resolve"] as const
 
@@ -44,14 +61,6 @@ const MOBILE_TIMELINE_POSITIONS = [
 ] as const
 const MOBILE_TIMELINE_STEPS = [...FLOW_ORDER, FLOW_ORDER[0]] as const
 const MOBILE_TIMELINE_SEGMENT_INDEXES = [0, 1, 2, 4] as const
-
-const TRACK_BASE_WIDTH = 1216
-const TRACK_BASE_HEIGHT = 420
-const TRACK_BASE_LEFT = 160
-const TRACK_BASE_RIGHT = 1056
-const TRACK_BASE_TOP = 72
-const TRACK_BASE_BOTTOM = 349
-const TRACK_COMPACT_SIDE_INSET = 0.0625
 
 const CARD_ENTER_DURATION = 0.35
 const CARD_EXIT_DURATION = 0.2
@@ -118,28 +127,11 @@ interface IMobileTimelineProps {
   onStepComplete?: () => void
 }
 
-interface ITrackSize {
-  width: number
-  height: number
-  isDesktop: boolean
-}
-
-function createTrackPath({ width, height, isDesktop }: ITrackSize) {
-  const scaleX = width / TRACK_BASE_WIDTH
-  const scaleY = height / TRACK_BASE_HEIGHT
-  const left = isDesktop
-    ? TRACK_BASE_LEFT * scaleX
-    : width * TRACK_COMPACT_SIDE_INSET
-  const right = isDesktop
-    ? TRACK_BASE_RIGHT * scaleX
-    : width * (1 - TRACK_COMPACT_SIDE_INSET)
-  const top = TRACK_BASE_TOP * scaleY
-  const bottom = TRACK_BASE_BOTTOM * scaleY
-  const radius = Math.min((bottom - top) / 2, (right - left) / 2)
-  const centerX = (left + right) / 2
-  const centerY = (top + bottom) / 2
-
-  return `M${centerX} ${top}H${right - radius}A${radius} ${radius} 0 0 1 ${right} ${centerY}A${radius} ${radius} 0 0 1 ${right - radius} ${bottom}H${left + radius}A${radius} ${radius} 0 0 1 ${left} ${centerY}A${radius} ${radius} 0 0 1 ${left + radius} ${top}H${centerX}`
+interface ITrackBounds {
+  left: number
+  right: number
+  top: number
+  bottom: number
 }
 
 function normalizeFlowStep(value?: string): FlowStep {
@@ -569,68 +561,170 @@ function PlatformFlowAnimation({
   const activeStep = normalizeFlowStep(activeTab)
   const prefersReducedMotion = useReducedMotion()
   const sceneRef = useRef<HTMLDivElement>(null)
+  const glowLineRef = useRef<SVGPathElement>(null)
   const animatedLineRef = useRef<SVGPathElement>(null)
   const reachedStepRef = useRef<FlowStep | null>(null)
+  const markerBoundsRef = useRef<ITrackBounds | null>(null)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
   const [lineReachedStep, setLineReachedStep] = useState<FlowStep | null>(null)
-  const [trackSize, setTrackSize] = useState<ITrackSize>({
-    width: TRACK_BASE_WIDTH,
-    height: TRACK_BASE_HEIGHT,
-    isDesktop: true,
-  })
+  const [trackSize, setTrackSize] = useState<ITrackSize>(TRACK_BASE_SIZE)
+  const trackSizeRef = useRef(trackSize)
   const activeIndex = FLOW_ORDER.indexOf(activeStep)
   const nextStep = FLOW_ORDER[(activeIndex + 1) % FLOW_ORDER.length]
   const startProgress = TRACK_CHECKPOINTS[activeStep]
   const targetProgress = nextStep === "event" ? 1 : TRACK_CHECKPOINTS[nextStep]
   const stageHoldDuration = FLOW_STAGE_HOLD_DURATIONS[activeStep]
-  const stepDuration = stageHoldDuration + FLOW_LINE_DURATION
-  const progress = [startProgress, startProgress, targetProgress]
   const activeTitle = activeStep.charAt(0).toUpperCase() + activeStep.slice(1)
   const trackPath = createTrackPath(trackSize)
-  const pathTransition = {
-    duration: isPlaying ? stepDuration : 0,
-    ease: ["linear", LINE_EASE_OUT],
-    times: [0, stageHoldDuration / stepDuration, 1],
-  }
+  const lineProgress = useMotionValue(startProgress)
+  const initialLinePath = createTrackProgressPath(trackSize, startProgress).path
 
-  const handleLineUpdate = (latest: { pathLength?: string | number }) => {
-    if (!isPlaying || isMobileViewport || reachedStepRef.current === nextStep) {
+  const renderLineProgress = useCallback((progress: number): ITrackPoint => {
+    const { path, endPoint } = createTrackProgressPath(
+      trackSizeRef.current,
+      progress
+    )
+
+    glowLineRef.current?.setAttribute("d", path)
+    animatedLineRef.current?.setAttribute("d", path)
+
+    return endPoint
+  }, [])
+
+  const completeStep = useCallback(() => {
+    if (reachedStepRef.current === nextStep) {
       return
     }
 
-    const pathLength = Number(latest.pathLength)
+    reachedStepRef.current = nextStep
+    setLineReachedStep(nextStep)
+    onStepComplete?.()
+  }, [nextStep, onStepComplete])
+
+  const updateMarkerBounds = useCallback(() => {
     const line = animatedLineRef.current
     const marker = sceneRef.current?.querySelector<HTMLElement>(
       `[data-flow-marker="${nextStep}"]`
     )
+    const screenMatrix = line?.getScreenCTM()
 
-    if (!line || !marker || !Number.isFinite(pathLength)) {
+    if (!line || !marker || !screenMatrix) {
+      markerBoundsRef.current = null
       return
     }
 
-    const pathPoint = line.getPointAtLength(line.getTotalLength() * pathLength)
-    const screenMatrix = line.getScreenCTM()
+    try {
+      const inverseMatrix = screenMatrix.inverse()
+      const markerRect = marker.getBoundingClientRect()
+      const markerCorners = [
+        new DOMPoint(markerRect.left, markerRect.top),
+        new DOMPoint(markerRect.right, markerRect.top),
+        new DOMPoint(markerRect.right, markerRect.bottom),
+        new DOMPoint(markerRect.left, markerRect.bottom),
+      ].map((point) => point.matrixTransform(inverseMatrix))
+      const markerXs = markerCorners.map((point) => point.x)
+      const markerYs = markerCorners.map((point) => point.y)
 
-    if (!screenMatrix) {
-      return
+      markerBoundsRef.current = {
+        left: Math.min(...markerXs),
+        right: Math.max(...markerXs),
+        top: Math.min(...markerYs),
+        bottom: Math.max(...markerYs),
+      }
+    } catch {
+      markerBoundsRef.current = null
     }
+  }, [nextStep])
 
-    const lineEndPoint = new DOMPoint(pathPoint.x, pathPoint.y).matrixTransform(
-      screenMatrix
+  useLayoutEffect(() => {
+    trackSizeRef.current = trackSize
+    renderLineProgress(lineProgress.get())
+    updateMarkerBounds()
+
+    const marker = sceneRef.current?.querySelector<HTMLElement>(
+      `[data-flow-marker="${nextStep}"]`
     )
-    const markerRect = marker.getBoundingClientRect()
+
+    if (!marker) {
+      return
+    }
+
+    const markerResizeObserver = new ResizeObserver(updateMarkerBounds)
+    markerResizeObserver.observe(marker)
+    window.addEventListener("resize", updateMarkerBounds)
+    window.visualViewport?.addEventListener("resize", updateMarkerBounds)
+
+    return () => {
+      markerResizeObserver.disconnect()
+      window.removeEventListener("resize", updateMarkerBounds)
+      window.visualViewport?.removeEventListener("resize", updateMarkerBounds)
+    }
+  }, [
+    lineProgress,
+    nextStep,
+    renderLineProgress,
+    trackSize,
+    updateMarkerBounds,
+  ])
+
+  useMotionValueEvent(lineProgress, "change", (progress) => {
+    if (!Number.isFinite(progress)) {
+      return
+    }
+
+    const lineEndPoint = renderLineProgress(progress)
+
+    if (!isPlaying || isMobileViewport || reachedStepRef.current === nextStep) {
+      return
+    }
+
+    const markerBounds = markerBoundsRef.current
+    if (!markerBounds) {
+      return
+    }
+
     const hasTouchedMarker =
-      lineEndPoint.x >= markerRect.left &&
-      lineEndPoint.x <= markerRect.right &&
-      lineEndPoint.y >= markerRect.top &&
-      lineEndPoint.y <= markerRect.bottom
+      lineEndPoint.x >= markerBounds.left &&
+      lineEndPoint.x <= markerBounds.right &&
+      lineEndPoint.y >= markerBounds.top &&
+      lineEndPoint.y <= markerBounds.bottom
 
     if (hasTouchedMarker) {
-      reachedStepRef.current = nextStep
-      setLineReachedStep(nextStep)
-      onStepComplete?.()
+      completeStep()
     }
-  }
+  })
+
+  useLayoutEffect(() => {
+    reachedStepRef.current = null
+    setLineReachedStep(null)
+    lineProgress.set(startProgress)
+    renderLineProgress(startProgress)
+
+    if (!isPlaying || isMobileViewport) {
+      return
+    }
+
+    const lineAnimation = animate(lineProgress, targetProgress, {
+      delay: stageHoldDuration,
+      duration: FLOW_LINE_DURATION,
+      ease: LINE_EASE_OUT,
+      onComplete: completeStep,
+    })
+
+    return () => {
+      lineAnimation.stop()
+    }
+  }, [
+    activeStep,
+    completeStep,
+    isMobileViewport,
+    isPlaying,
+    lineProgress,
+    renderLineProgress,
+    stageHoldDuration,
+    startProgress,
+    targetProgress,
+  ])
 
   useEffect(() => {
     const scene = sceneRef.current
@@ -729,6 +823,7 @@ function PlatformFlowAnimation({
         />
 
         <svg
+          data-flow-layer="track-and-line"
           className="pointer-events-none absolute inset-0 hidden size-full sm:block"
           viewBox={`0 0 ${trackSize.width} ${trackSize.height}`}
           preserveAspectRatio="none"
@@ -739,38 +834,23 @@ function PlatformFlowAnimation({
             d={trackPath}
             stroke="white"
             strokeWidth="1.5"
-            vectorEffect="non-scaling-stroke"
             className="mix-blend-overlay"
           />
-          <m.path
-            key={`${activeStep}-${isPlaying ? "playing" : "paused"}-glow`}
-            d={trackPath}
+          <path
+            ref={glowLineRef}
+            d={initialLinePath}
             stroke="white"
             strokeWidth="4"
             strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
             className="opacity-20 blur-[2.5px]"
-            initial={{ pathLength: startProgress }}
-            animate={{ pathLength: isPlaying ? progress : startProgress }}
-            transition={pathTransition}
           />
-          <m.path
+          <path
             ref={animatedLineRef}
             data-flow-line
-            key={`${activeStep}-${isPlaying ? "playing" : "paused"}-line`}
-            d={trackPath}
+            d={initialLinePath}
             stroke="white"
             strokeWidth="1.5"
             strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: startProgress }}
-            animate={{ pathLength: isPlaying ? progress : startProgress }}
-            onAnimationStart={() => {
-              reachedStepRef.current = null
-              setLineReachedStep(null)
-            }}
-            onUpdate={handleLineUpdate}
-            transition={pathTransition}
           />
         </svg>
 
