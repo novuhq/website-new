@@ -38,19 +38,6 @@ export const langchainFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your LangChain agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate: `Connect this project's LangChain agent to {channelName} with Novu Connect.
-
-Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
-
-Inspect the repo (agent entry point, how LangChain is used, package manager, env conventions). Do not modify anything yet.
-
-Prefer a connect command shaped like:
-
-npx novu@latest connect --ci --runtime langchain --channel {cliSlug}
-
-(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
-
-Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
   faq: [
     {
       question: "Do I have to rewrite my LangChain agent to add {channelName}?",

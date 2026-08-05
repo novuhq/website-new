@@ -16,6 +16,7 @@ import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
 import Logos from "@/components/ui/logos"
@@ -28,14 +29,6 @@ import {
 } from "./channel-navigation"
 import CopyPromptButton from "./copy-prompt-button"
 import HeroGlobe from "./hero-globe"
-
-const DEFAULT_PROMPT = `Connect this project's AI agent to customer channels (Slack, Microsoft Teams, WhatsApp, Telegram, Email, or iMessage) with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci\`).
-
-Inspect the repo first. Ask me which channel to connect if it is not clear. Detect the framework/runtime from the project, or ask once. Then run one connect command per agents.md (bridge vs managed, keyless vs dashboard OAuth).
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md says that channel requires it (e.g. iMessage/Sendblue).`
 
 const CHANNEL_HOVER_STYLES = {
   telegram: {
@@ -223,7 +216,7 @@ function Hero({
   title,
   description,
   command = "npx novu connect",
-  prompt = DEFAULT_PROMPT,
+  prompt = DEFAULT_CONNECT_PROMPT,
   className,
 }: IHeroProps) {
   return (

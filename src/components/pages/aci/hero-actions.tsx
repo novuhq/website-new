@@ -4,16 +4,9 @@ import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import { Check, Copy } from "lucide-react"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
-
-const ACI_PROMPT = `Connect this project's AI agent to customer channels (Slack, Microsoft Teams, WhatsApp, Telegram, Email, or iMessage) with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci\`).
-
-Inspect the repo first. Ask me which channel to connect if it is not clear. Detect the framework/runtime from the project, or ask once. Then run one connect command per agents.md (bridge vs managed, keyless vs dashboard OAuth).
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md says that channel requires it (e.g. iMessage/Sendblue).`
 
 function HeroActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
@@ -59,7 +52,7 @@ function HeroActions() {
         <button
           type="button"
           className="inline-flex items-center gap-1 text-lagune-3 transition-colors hover:text-lagune-1 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-lagune-3/50 focus-visible:outline-none"
-          onClick={() => handleCopy(ACI_PROMPT)}
+          onClick={() => handleCopy(DEFAULT_CONNECT_PROMPT)}
           disabled={isCopied}
           aria-label={isCopied ? "Prompt copied" : "Copy prompt to Claude"}
           data-click-location="aci_hero"

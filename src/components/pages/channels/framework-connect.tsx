@@ -6,6 +6,7 @@ import {
   getFrameworkCommands,
 } from "@/data/pages/channel-frameworks"
 
+import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
 import CliCommand from "@/components/pages/home/features/cli-command"
 
 import FrameworkCommandPicker from "./framework-command-picker"
@@ -16,6 +17,11 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
   const { channel, framework } = combo
   const docsUrl = `${DOCS_URL}${framework.docsPath}`
   const allCommands = getFrameworkCommands(framework.slug)
+  const prompt = buildFrameworkChannelConnectPrompt({
+    frameworkName: framework.name,
+    channelName: channel.channelName,
+    connectPath: framework.connectPath,
+  })
 
   return (
     <section className="safe-paddings mt-18">
@@ -68,8 +74,8 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
           <h3 className="text-base leading-none tracking-tighter text-white">
             Prompt for your coding agent
           </h3>
-          <p className="text-base leading-normal font-normal tracking-tighter whitespace-pre-line text-gray-70">
-            {fillTemplate(framework.promptTemplate, combo)}
+          <p className="text-base leading-normal font-normal tracking-tighter text-gray-70">
+            {prompt}
           </p>
         </div>
 

@@ -4,7 +4,9 @@ import {
   getConnectCommand,
 } from "@/data/pages/channel-frameworks"
 
-import { escapeMarkdownText, formatCodeFence } from "../markdown-format"
+import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
+
+import { escapeMarkdownText } from "../markdown-format"
 import { bulletList } from "../page-utils"
 import type { MarkdownPage } from "../types"
 
@@ -41,6 +43,12 @@ export async function getChannelFrameworks(
     )
     .join("\n\n")
 
+  const prompt = buildFrameworkChannelConnectPrompt({
+    frameworkName: framework.name,
+    channelName: channel.channelName,
+    connectPath: framework.connectPath,
+  })
+
   const body = [
     `${escapeMarkdownText(framework.tagline)} Novu Connect gives it a voice in ${escapeMarkdownText(channel.channelName)}.`,
     escapeMarkdownText(fillTemplate(framework.connectIntro, combo)),
@@ -50,8 +58,7 @@ export async function getChannelFrameworks(
     bulletList(framework.strengths),
     `## How to connect ${escapeMarkdownText(framework.name)} to ${escapeMarkdownText(channel.channelName)}`,
     steps,
-    "Prompt for your coding agent:",
-    formatCodeFence(fillTemplate(framework.promptTemplate, combo), "text"),
+    `Prompt for your coding agent: ${escapeMarkdownText(prompt)}`,
     `## ${escapeMarkdownText(framework.name)} and ${escapeMarkdownText(channel.channelName)}, common questions`,
     faq,
   ]
