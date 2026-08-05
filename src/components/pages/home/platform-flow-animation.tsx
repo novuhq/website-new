@@ -31,34 +31,9 @@ const TRACK_CHECKPOINTS: Record<FlowStep, number> = {
 }
 
 const FLOW_LINE_DURATION = 3.5
-const FLOW_STAGE_HOLD_DURATION = 1.25
-const FLOW_STEP_DURATION = FLOW_STAGE_HOLD_DURATION + FLOW_LINE_DURATION
-const FLOW_TIMELINE_TIMES = [
-  0,
-  FLOW_STAGE_HOLD_DURATION / FLOW_STEP_DURATION,
-  1,
-] as const
-const MOBILE_BADGE_SETTLE_DELAY_MS = 200
-const MOBILE_STEP_HOLD_DURATION = 4
-const MOBILE_FINAL_STEP_HOLD_DURATION = 6
-const MOBILE_FAST_FILL_DURATION = 0.35
-const MOBILE_SLIDE_DURATION = 0.65
-const MOBILE_STEP_DURATION =
-  MOBILE_STEP_HOLD_DURATION + MOBILE_FAST_FILL_DURATION + MOBILE_SLIDE_DURATION
-const MOBILE_FINAL_STEP_DURATION =
-  MOBILE_FINAL_STEP_HOLD_DURATION + MOBILE_SLIDE_DURATION
-const MOBILE_TIMELINE_TIMES = [
-  0,
-  MOBILE_STEP_HOLD_DURATION / MOBILE_STEP_DURATION,
-  (MOBILE_STEP_HOLD_DURATION + MOBILE_FAST_FILL_DURATION) /
-    MOBILE_STEP_DURATION,
-  1,
-] as const
-const MOBILE_FINAL_TIMELINE_TIMES = [
-  0,
-  MOBILE_FINAL_STEP_HOLD_DURATION / MOBILE_FINAL_STEP_DURATION,
-  1,
-] as const
+const MOBILE_FAST_FILL_DURATION = 0.8
+const MOBILE_SLIDE_DURATION = 1.2
+const MOBILE_CARD_SETTLE_DELAY = 0.45
 const MOBILE_TIMELINE_SLOT_WIDTH = 20
 const MOBILE_TIMELINE_POSITIONS = [
   "left-[10%]",
@@ -82,7 +57,7 @@ const CARD_ENTER_DURATION = 0.35
 const CARD_EXIT_DURATION = 0.2
 const CARD_EASE_IN = [0.4, 0, 1, 1] as const
 const CARD_EASE_OUT = [0, 0, 0.2, 1] as const
-const LINE_EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const
+const LINE_EASE_OUT = [0.4, 0.08, 0.06, 1] as const
 
 const ENGAGE_CONTENT_DELAY = 0.42
 const ENGAGE_QUESTION_DURATION = 0.38
@@ -99,6 +74,26 @@ const ENGAGE_RESPONSE_WORDS =
   "Your connection is at risk. Would you like me to find another flight?".split(
     " "
   )
+const ENGAGE_ANIMATION_DURATION =
+  ENGAGE_WORD_DELAY +
+  (ENGAGE_RESPONSE_WORDS.length - 1) * ENGAGE_WORD_STAGGER +
+  ENGAGE_WORD_DURATION
+const FLOW_DEFAULT_STAGE_HOLD_DURATION =
+  CARD_EXIT_DURATION + CARD_ENTER_DURATION
+const FLOW_ENGAGE_STAGE_HOLD_DURATION =
+  CARD_EXIT_DURATION + ENGAGE_ANIMATION_DURATION + 0.1
+const FLOW_STAGE_HOLD_DURATIONS: Record<FlowStep, number> = {
+  event: FLOW_DEFAULT_STAGE_HOLD_DURATION,
+  notify: FLOW_DEFAULT_STAGE_HOLD_DURATION,
+  engage: FLOW_ENGAGE_STAGE_HOLD_DURATION,
+  resolve: FLOW_DEFAULT_STAGE_HOLD_DURATION,
+}
+const MOBILE_STAGE_HOLD_DURATIONS: Record<FlowStep, number> = {
+  event: FLOW_DEFAULT_STAGE_HOLD_DURATION + MOBILE_CARD_SETTLE_DELAY,
+  notify: FLOW_DEFAULT_STAGE_HOLD_DURATION + MOBILE_CARD_SETTLE_DELAY,
+  engage: FLOW_ENGAGE_STAGE_HOLD_DURATION,
+  resolve: FLOW_DEFAULT_STAGE_HOLD_DURATION + MOBILE_CARD_SETTLE_DELAY,
+}
 
 interface IPlatformFlowAnimationProps {
   activeTab?: string
@@ -108,6 +103,7 @@ interface IPlatformFlowAnimationProps {
 
 interface IFlowMarkerProps {
   activeStep: FlowStep
+  lineReachedStep: FlowStep | null
   step: FlowStep
 }
 
@@ -119,6 +115,7 @@ interface IFlowMarkerBadgeProps {
 interface IMobileTimelineProps {
   activeStep: FlowStep
   isPlaying: boolean
+  onStepComplete?: () => void
 }
 
 interface ITrackSize {
@@ -157,35 +154,33 @@ function FlowMarkerBadge({ active, step }: IFlowMarkerBadgeProps) {
         active
           ? "border-white bg-white text-[#191a1f] shadow-[0_0_14px_rgba(255,255,255,0.12)]"
           : "border-[#261e43] bg-black text-[#9a72df] shadow-[0_2px_5px_rgba(0,0,0,0.35)] backdrop-blur-[15px]",
-        active && step === "event" && "lg:pr-[0.9375rem]",
-        active && step === "engage" && "lg:pr-[0.9375rem]",
-        active && step === "resolve" && "lg:pr-[0.9375rem]",
         !active && step === "notify" && "text-[#ab4bbf]",
         !active && step === "resolve" && "text-[#9581e2]",
         !active && step === "engage" && "text-[#a271de]"
       )}
+      data-flow-marker-active={active}
     >
       {step === "event" && (
         <EventIcon
-          className="size-3.5 text-[#d6507a] sm:size-3 lg:size-6"
+          className="size-3.5 text-[#d6507a] sm:size-3 lg:size-4.5"
           aria-hidden
         />
       )}
       {step === "notify" && (
         <NotifyIcon
-          className="size-3.5 text-[#bd57de] sm:size-3 lg:size-5"
+          className="size-3.5 text-[#bd57de] sm:size-3 lg:size-4.5"
           aria-hidden
         />
       )}
       {step === "engage" && (
         <EngageIcon
-          className="size-3.5 text-[#8d5cda] sm:size-3 lg:size-5"
+          className="size-3.5 text-[#8d5cda] sm:size-3 lg:size-4.5"
           aria-hidden
         />
       )}
       {step === "resolve" && (
         <ResolveIcon
-          className="size-3.5 text-[#8767ff] sm:size-3 lg:size-4"
+          className="size-3.5 text-[#8767ff] sm:size-3 lg:size-5"
           aria-hidden
         />
       )}
@@ -196,8 +191,10 @@ function FlowMarkerBadge({ active, step }: IFlowMarkerBadgeProps) {
   )
 }
 
-function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
-  const isReached = FLOW_ORDER.indexOf(step) <= FLOW_ORDER.indexOf(activeStep)
+function FlowMarker({ activeStep, lineReachedStep, step }: IFlowMarkerProps) {
+  const isReached =
+    FLOW_ORDER.indexOf(step) <= FLOW_ORDER.indexOf(activeStep) ||
+    step === lineReachedStep
 
   return (
     <div
@@ -212,24 +209,35 @@ function FlowMarker({ activeStep, step }: IFlowMarkerProps) {
         step === "resolve" &&
           "top-1/2 left-[6.25%] -translate-x-1/2 -translate-y-1/2 lg:left-[13.16%]"
       )}
+      data-flow-marker={step}
     >
       <FlowMarkerBadge active={isReached} step={step} />
     </div>
   )
 }
 
-function MobileTimeline({ activeStep, isPlaying }: IMobileTimelineProps) {
+function MobileTimeline({
+  activeStep,
+  isPlaying,
+  onStepComplete,
+}: IMobileTimelineProps) {
   const activeIndex = FLOW_ORDER.indexOf(activeStep)
   const [hasArrived, setHasArrived] = useState(false)
   const startOffset = `${-activeIndex * MOBILE_TIMELINE_SLOT_WIDTH}%`
   const targetOffset = `${-(activeIndex + 1) * MOBILE_TIMELINE_SLOT_WIDTH}%`
   const isFinalStep = activeStep === "resolve"
+  const stageHoldDuration = MOBILE_STAGE_HOLD_DURATIONS[activeStep]
   const timelineDuration = isFinalStep
-    ? MOBILE_FINAL_STEP_DURATION
-    : MOBILE_STEP_DURATION
+    ? stageHoldDuration + MOBILE_SLIDE_DURATION
+    : stageHoldDuration + MOBILE_FAST_FILL_DURATION + MOBILE_SLIDE_DURATION
   const timelineTimes = isFinalStep
-    ? MOBILE_FINAL_TIMELINE_TIMES
-    : MOBILE_TIMELINE_TIMES
+    ? [0, stageHoldDuration / timelineDuration, 1]
+    : [
+        0,
+        stageHoldDuration / timelineDuration,
+        (stageHoldDuration + MOBILE_FAST_FILL_DURATION) / timelineDuration,
+        1,
+      ]
   const trackKeyframes = isFinalStep
     ? [startOffset, startOffset, targetOffset]
     : [startOffset, startOffset, startOffset, targetOffset]
@@ -242,12 +250,14 @@ function MobileTimeline({ activeStep, isPlaying }: IMobileTimelineProps) {
   return (
     <div className="pointer-events-none absolute inset-x-0 top-10 z-20 h-px overflow-visible sm:hidden">
       <m.div
+        data-mobile-timeline-track
         className="absolute top-0 left-0 h-px w-[500%] will-change-transform"
         initial={{ x: startOffset }}
         animate={{ x: isPlaying ? trackKeyframes : startOffset }}
         onAnimationComplete={() => {
           if (isPlaying) {
             setHasArrived(true)
+            onStepComplete?.()
           }
         }}
         transition={timelineTransition}
@@ -265,6 +275,7 @@ function MobileTimeline({ activeStep, isPlaying }: IMobileTimelineProps) {
             )}
             {segmentIndex === activeIndex && (
               <m.span
+                data-mobile-timeline-fill
                 className="absolute inset-0 origin-left bg-white shadow-[0_0_7px_rgba(255,255,255,0.55)] will-change-transform"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: isPlaying ? [0, 0, 0.8, 1] : 0 }}
@@ -558,7 +569,10 @@ function PlatformFlowAnimation({
   const activeStep = normalizeFlowStep(activeTab)
   const prefersReducedMotion = useReducedMotion()
   const sceneRef = useRef<HTMLDivElement>(null)
+  const animatedLineRef = useRef<SVGPathElement>(null)
+  const reachedStepRef = useRef<FlowStep | null>(null)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
+  const [lineReachedStep, setLineReachedStep] = useState<FlowStep | null>(null)
   const [trackSize, setTrackSize] = useState<ITrackSize>({
     width: TRACK_BASE_WIDTH,
     height: TRACK_BASE_HEIGHT,
@@ -568,13 +582,54 @@ function PlatformFlowAnimation({
   const nextStep = FLOW_ORDER[(activeIndex + 1) % FLOW_ORDER.length]
   const startProgress = TRACK_CHECKPOINTS[activeStep]
   const targetProgress = nextStep === "event" ? 1 : TRACK_CHECKPOINTS[nextStep]
+  const stageHoldDuration = FLOW_STAGE_HOLD_DURATIONS[activeStep]
+  const stepDuration = stageHoldDuration + FLOW_LINE_DURATION
   const progress = [startProgress, startProgress, targetProgress]
   const activeTitle = activeStep.charAt(0).toUpperCase() + activeStep.slice(1)
   const trackPath = createTrackPath(trackSize)
   const pathTransition = {
-    duration: isPlaying ? FLOW_STEP_DURATION : 0,
+    duration: isPlaying ? stepDuration : 0,
     ease: ["linear", LINE_EASE_OUT],
-    times: FLOW_TIMELINE_TIMES,
+    times: [0, stageHoldDuration / stepDuration, 1],
+  }
+
+  const handleLineUpdate = (latest: { pathLength?: string | number }) => {
+    if (!isPlaying || isMobileViewport || reachedStepRef.current === nextStep) {
+      return
+    }
+
+    const pathLength = Number(latest.pathLength)
+    const line = animatedLineRef.current
+    const marker = sceneRef.current?.querySelector<HTMLElement>(
+      `[data-flow-marker="${nextStep}"]`
+    )
+
+    if (!line || !marker || !Number.isFinite(pathLength)) {
+      return
+    }
+
+    const pathPoint = line.getPointAtLength(line.getTotalLength() * pathLength)
+    const screenMatrix = line.getScreenCTM()
+
+    if (!screenMatrix) {
+      return
+    }
+
+    const lineEndPoint = new DOMPoint(pathPoint.x, pathPoint.y).matrixTransform(
+      screenMatrix
+    )
+    const markerRect = marker.getBoundingClientRect()
+    const hasTouchedMarker =
+      lineEndPoint.x >= markerRect.left &&
+      lineEndPoint.x <= markerRect.right &&
+      lineEndPoint.y >= markerRect.top &&
+      lineEndPoint.y <= markerRect.bottom
+
+    if (hasTouchedMarker) {
+      reachedStepRef.current = nextStep
+      setLineReachedStep(nextStep)
+      onStepComplete?.()
+    }
   }
 
   useEffect(() => {
@@ -644,33 +699,13 @@ function PlatformFlowAnimation({
     }
   }, [])
 
-  useEffect(() => {
-    if (!isPlaying || !onStepComplete) {
-      return
-    }
-
-    const stepDuration = isMobileViewport
-      ? activeStep === "resolve"
-        ? MOBILE_FINAL_STEP_DURATION
-        : MOBILE_STEP_DURATION
-      : FLOW_STEP_DURATION
-    const settleDelay = isMobileViewport ? MOBILE_BADGE_SETTLE_DELAY_MS : 0
-    const timer = window.setTimeout(
-      onStepComplete,
-      stepDuration * 1000 + settleDelay
-    )
-
-    return () => {
-      window.clearTimeout(timer)
-    }
-  }, [activeStep, isMobileViewport, isPlaying, onStepComplete])
-
   return (
     <div
       ref={sceneRef}
       className="relative isolate h-68 w-full overflow-hidden rounded-[0.625rem] border border-gray-20 bg-[#0e0c17] sm:aspect-video sm:h-auto lg:aspect-[1216/420]"
       data-flow-step={activeStep}
       data-flow-playing={isPlaying}
+      data-flow-line-reached={lineReachedStep ?? undefined}
       data-flow-progress-start={startProgress}
       data-flow-progress-target={targetProgress}
       role="img"
@@ -685,13 +720,11 @@ function PlatformFlowAnimation({
         aria-hidden
       />
 
-      <LazyMotion
-        features={domAnimation}
-        key={isPlaying ? "flow-playing" : "flow-paused"}
-      >
+      <LazyMotion features={domAnimation}>
         <MobileTimeline
           activeStep={activeStep}
           isPlaying={isPlaying && isMobileViewport}
+          onStepComplete={onStepComplete}
           key={`${activeStep}-${isPlaying && isMobileViewport ? "playing" : "paused"}`}
         />
 
@@ -722,6 +755,8 @@ function PlatformFlowAnimation({
             transition={pathTransition}
           />
           <m.path
+            ref={animatedLineRef}
+            data-flow-line
             key={`${activeStep}-${isPlaying ? "playing" : "paused"}-line`}
             d={trackPath}
             stroke="white"
@@ -730,19 +765,29 @@ function PlatformFlowAnimation({
             vectorEffect="non-scaling-stroke"
             initial={{ pathLength: startProgress }}
             animate={{ pathLength: isPlaying ? progress : startProgress }}
+            onAnimationStart={() => {
+              reachedStepRef.current = null
+              setLineReachedStep(null)
+            }}
+            onUpdate={handleLineUpdate}
             transition={pathTransition}
           />
         </svg>
 
         {FLOW_ORDER.map((step) => (
-          <FlowMarker activeStep={activeStep} step={step} key={step} />
+          <FlowMarker
+            activeStep={activeStep}
+            lineReachedStep={lineReachedStep}
+            step={step}
+            key={step}
+          />
         ))}
 
-        <div className="pointer-events-none absolute top-[58.1%] left-1/2 z-10 w-[90%] max-w-104 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]">
+        <div className="pointer-events-none absolute top-[58.1%] left-1/2 z-10 grid w-[90%] max-w-104 -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:w-[52%]">
           <AnimatePresence initial={false} mode="wait">
             <m.div
               className={cn(
-                "mx-auto w-full will-change-transform",
+                "col-start-1 row-start-1 mx-auto w-full will-change-transform",
                 activeStep === "event" &&
                   "w-[88.8889%] max-w-64 sm:w-full sm:max-w-[24.9375rem]",
                 activeStep === "notify" && "max-w-72 sm:max-w-[21.5rem]",
@@ -752,35 +797,25 @@ function PlatformFlowAnimation({
                   "w-[88.8889%] max-w-64 sm:w-full sm:max-w-[24.9375rem]"
               )}
               data-flow-card={activeStep}
-              key={`${activeStep}-${isPlaying ? "playing" : "paused"}`}
+              key={activeStep}
               initial={
-                prefersReducedMotion
+                prefersReducedMotion || !isPlaying
                   ? false
                   : {
                       opacity: 0,
                       transform: "translate3d(0,-16px,0)",
                     }
               }
-              animate={
-                !isPlaying && !prefersReducedMotion
-                  ? {
-                      opacity: 0,
-                      transform: "translate3d(0,-16px,0)",
-                      transition: { duration: 0 },
-                    }
-                  : {
-                      opacity: 1,
-                      transform: "translate3d(0,0,0)",
-                      transition: {
-                        duration: prefersReducedMotion
-                          ? 0
-                          : CARD_ENTER_DURATION,
-                        ease: CARD_EASE_OUT,
-                      },
-                    }
-              }
+              animate={{
+                opacity: 1,
+                transform: "translate3d(0,0,0)",
+                transition: {
+                  duration: prefersReducedMotion ? 0 : CARD_ENTER_DURATION,
+                  ease: CARD_EASE_OUT,
+                },
+              }}
               exit={
-                prefersReducedMotion
+                prefersReducedMotion || !isPlaying
                   ? { opacity: 1, transition: { duration: 0 } }
                   : {
                       opacity: 0,
