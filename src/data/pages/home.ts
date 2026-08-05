@@ -229,21 +229,6 @@ export const HOME_CHANNELS = [
     },
   },
   {
-    key: "github",
-    badges: ["notify"] as const,
-    label: "GitHub",
-    title: "Connect your AI agent to GitHub workflows",
-    description:
-      "Notify maintainers about releases, incidents, and reviews with the right context attached.",
-    prompt:
-      "Connect my AI agent to GitHub events with Novu for pull request and release notifications.",
-    features: [
-      "Pull request notifications",
-      "Release and incident updates",
-      "Repository context included",
-    ],
-  },
-  {
     key: "discord",
     badges: ["notify", "connect"] as const,
     statusBadge: "Coming Soon",
