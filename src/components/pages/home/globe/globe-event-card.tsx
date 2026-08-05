@@ -8,6 +8,9 @@ import smsIcon from "@/images/pages/home/hero/sms.svg"
 import whatsappIcon from "@/images/pages/home/hero/whatsapp.svg"
 import { motion, useMotionValue, type MotionValue } from "motion/react"
 
+import { cn } from "@/lib/utils"
+import { useIsSafari } from "@/hooks/use-is-safari"
+
 import { getGlobeCardMotionState } from "./globe-timeline"
 import type {
   IGlobeCardEvent,
@@ -94,6 +97,7 @@ export default function GlobeEventCard({
   x,
   y,
 }: IGlobeEventCardProps) {
+  const isSafari = useIsSafari()
   const popupOpacity = useMotionValue(0)
   const backgroundOpacity = useMotionValue(0)
   const headerOpacity = useMotionValue(0)
@@ -181,7 +185,11 @@ export default function GlobeEventCard({
             <div className="relative px-3.5 pt-3.5 pb-3.5">
               <motion.div
                 aria-hidden="true"
-                className="absolute inset-0 border border-white/10 bg-[#130C3D]/70 backdrop-blur-xl"
+                className={cn(
+                  "absolute inset-0 border border-white/10",
+                  isSafari ? "bg-[#130C3D]" : "bg-[#130C3D]/70 backdrop-blur-xl"
+                )}
+                data-globe-card-background=""
                 style={{ opacity: backgroundOpacity }}
               />
 

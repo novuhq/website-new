@@ -15,7 +15,7 @@ import mobileGlobeBackground from "@/images/pages/home/hero/mobile-poster.webp"
 import noiseLight from "@/images/pages/home/surface-noise.webp"
 
 import {
-  getPreferredGlobeQuality,
+  getPreferredGlobeLandPointQuality,
   loadGlobeLandPoints,
 } from "./globe/globe-assets"
 import GlobeMetric from "./globe/globe-metric"
@@ -29,16 +29,24 @@ const GlobeRuntime = dynamic(loadGlobeRuntime, {
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)"
 const MOBILE_QUERY = "(max-width: 767px)"
 
-if (
-  typeof window !== "undefined" &&
-  !window.matchMedia(MOBILE_QUERY).matches &&
-  !window.matchMedia(REDUCED_MOTION_QUERY).matches
-) {
-  // Start the split bundle as soon as the Hero module is evaluated. Rendering
-  // still waits for hydration, while the browser can fetch Three.js in parallel.
-  void loadGlobeRuntime()
-  void loadGlobeLandPoints(getPreferredGlobeQuality()).catch(() => undefined)
+function preloadGlobeResources() {
+  if (
+    typeof window === "undefined" ||
+    window.matchMedia(MOBILE_QUERY).matches ||
+    window.matchMedia(REDUCED_MOTION_QUERY).matches
+  ) {
+    return
+  }
+
+  void loadGlobeRuntime().catch(() => undefined)
+  void loadGlobeLandPoints(getPreferredGlobeLandPointQuality()).catch(
+    () => undefined
+  )
 }
+
+// Begin the two independent network branches as soon as the desktop hero
+// module executes, before React finishes hydrating the component.
+preloadGlobeResources()
 
 function subscribeToReducedMotion(onChange: () => void) {
   const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY)
@@ -103,7 +111,6 @@ export default function HeroGlobe() {
     },
     [runtimeReady]
   )
-
   useEffect(() => {
     if (isMobile) {
       setPlaybackEnabled(false)
@@ -119,30 +126,25 @@ export default function HeroGlobe() {
       return
     }
 
-    // This is the primary above-the-fold visual. Start its split bundle after
-    // hydration instead of waiting for every below-the-fold asset to finish.
+    // Start the runtime chunk and the exact quality data request together.
+    // GlobeLandPoints reuses the cached request when it mounts, removing the
+    // previous runtime-import -> mount -> land-fetch waterfall.
+    preloadGlobeResources()
     setShouldLoadRuntime(true)
   }, [animationUnavailable, isMobile, shouldReduceMotion])
 
   return (
     <div
       aria-hidden="true"
-      className="absolute bottom-22 left-1/2 z-0 aspect-[1520/745] w-[180%] max-w-480 -translate-x-1/2 overflow-hidden md:aspect-[1920/931] lg:-top-16 lg:bottom-auto lg:w-480 lg:overflow-visible"
+      className="absolute bottom-18 left-1/2 z-0 aspect-[1520/745] w-[180%] max-w-480 -translate-x-1/2 overflow-hidden md:bottom-21.5 md:aspect-[1920/931] lg:w-480 lg:overflow-visible 2xl:-top-16 2xl:bottom-auto"
     >
       <div className="pointer-events-none absolute top-0 left-1/2 hidden h-full w-[max(120rem,100vw)] -translate-x-1/2 bg-[radial-gradient(ellipse_70rem_30rem_at_50%_72%,rgba(76,63,218,0.22),rgba(30,35,101,0.08)_54%,transparent_80%)] lg:block" />
-      <div
-        className="pointer-events-none absolute top-0 left-1/2 hidden h-full w-[max(120rem,100vw)] -translate-x-1/2 bg-center bg-repeat opacity-10 mix-blend-overlay lg:block"
-        style={{
-          backgroundImage: `url("${noiseLight.src}")`,
-          backgroundSize: "256px 256px",
-        }}
-      />
 
       <div
-        className={`pointer-events-none absolute inset-0 lg:right-auto lg:left-1/2 lg:z-20 lg:w-[max(120rem,100vw)] lg:-translate-x-1/2 ${playbackEnabled ? "invisible opacity-0" : runtimeReady ? "will-change-opacity opacity-0 transition-opacity duration-700 ease-out" : "will-change-opacity opacity-100"}`}
+        className={`pointer-events-none absolute inset-0 md:z-20 lg:right-auto lg:left-1/2 lg:w-[max(120rem,100vw)] lg:-translate-x-1/2 ${playbackEnabled ? "invisible opacity-0" : runtimeReady ? "will-change-opacity opacity-0 transition-opacity duration-300 ease-out" : "will-change-opacity opacity-100"}`}
         onTransitionEnd={handlePosterTransitionEnd}
       >
-        <picture className="absolute inset-0 block size-full lg:right-auto lg:left-1/2 lg:w-480 lg:-translate-x-1/2 lg:[mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)]">
+        <picture className="absolute inset-0 block size-full lg:right-auto lg:left-1/2 lg:w-480 lg:-translate-x-1/2">
           <source media="(min-width: 768px)" srcSet={heroPoster.src} />
           <img
             alt=""
@@ -155,20 +157,21 @@ export default function HeroGlobe() {
             width={1520}
           />
         </picture>
-        <div
-          className="pointer-events-none absolute inset-0 hidden bg-center bg-repeat opacity-[0.07] mix-blend-overlay lg:block"
-          style={{
-            backgroundImage: `url("${noiseLight.src}")`,
-            backgroundSize: "256px 256px",
-          }}
-        />
       </div>
 
-      {isMobile ? (
-        <div className="absolute right-0 bottom-5 left-0 z-10 flex justify-center">
-          <GlobeMetric compact />
-        </div>
-      ) : shouldLoadRuntime && !animationUnavailable ? (
+      <div
+        className="pointer-events-none absolute top-0 left-1/2 hidden h-full w-[max(120rem,100vw)] -translate-x-1/2 bg-center bg-repeat opacity-10 mix-blend-overlay lg:block"
+        style={{
+          backgroundImage: `url("${noiseLight.src}")`,
+          backgroundSize: "256px 256px",
+        }}
+      />
+
+      <div className="absolute bottom-5 left-1/2 z-30 -translate-x-1/2 justify-center md:bottom-6">
+        <GlobeMetric />
+      </div>
+
+      {!isMobile && shouldLoadRuntime && !animationUnavailable ? (
         <div className="absolute inset-0 overflow-hidden mask-radial-from-black mask-radial-from-60% mask-radial-to-transparent mask-radial-to-85% mask-ellipse [mask-size:80%_100%] mask-top lg:z-10">
           <Image
             alt=""
