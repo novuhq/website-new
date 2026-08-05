@@ -141,6 +141,20 @@ function ConnectFooter() {
               </NextLink>
             </Button>
           </div>
+
+          <p className="mt-10 w-72 max-w-full text-base leading-snug font-normal tracking-tighter text-gray-13/50 xl:absolute xl:right-0 xl:bottom-0 xl:mt-0 xl:text-right">
+            AI agent looking to onboard?
+            <br />
+            Follow the instructions in{" "}
+            <Link
+              className="text-gray-13 underline hover:text-white/70 focus-visible:text-white/70"
+              href="https://novu.co/agents.md"
+              size="none"
+              variant="clean"
+            >
+              agents.md
+            </Link>
+          </p>
         </div>
 
         <div className="mt-18 lg:mt-14.5 xl:pt-px">
