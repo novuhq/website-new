@@ -1,6 +1,7 @@
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const whatsappChannelData: IChannelPageData = {
   slug: "whatsapp",
@@ -62,8 +63,7 @@ export const whatsappChannelData: IChannelPageData = {
     "Attachments and delivery receipts",
     "Embedded WhatsApp Business signup (official Meta Business Partner)",
   ],
-  prompt:
-    "Connect my AI agent to WhatsApp with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("WhatsApp"),
   onRamp: {
     type: "oauth",
     note: "WhatsApp connects from the Novu dashboard with embedded signup: log in with your business account, pick your WhatsApp number, and you are working in about 5 minutes.",

@@ -38,8 +38,6 @@ export const aiSdkFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your AI SDK agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect this project's Vercel AI SDK agent to {channelName} with Novu using instructions from https://novu.co/agents.md",
   faq: [
     {
       question: "Do I have to rewrite my AI SDK agent to add {channelName}?",

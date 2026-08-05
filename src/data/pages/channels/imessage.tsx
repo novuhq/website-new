@@ -1,6 +1,7 @@
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const imessageChannelData: IChannelPageData = {
   slug: "imessage",
@@ -57,8 +58,7 @@ export const imessageChannelData: IChannelPageData = {
     "Live typing indicators",
     "Reply-based action and MCP approvals",
   ],
-  prompt:
-    "Connect my AI agent to iMessage with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("iMessage"),
   onRamp: {
     type: "oauth",
     note: "iMessage connects through Sendblue. Run npx novu connect --channel sendblue, enter your Sendblue credentials in the CLI, and reply to the test iMessage to go live.",

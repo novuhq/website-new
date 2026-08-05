@@ -38,8 +38,6 @@ export const claudeAwsFrameworkData: IAgentFrameworkData = {
       body: "The guided flow connects {channelName}. Your agent now holds a two-way conversation there, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect a Claude Managed Agent on AWS to {channelName} with Novu using instructions from https://novu.co/agents.md",
   faq: [
     {
       question: "How is this different from the standard Claude Managed Agent?",

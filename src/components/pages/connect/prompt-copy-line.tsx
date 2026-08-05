@@ -3,10 +3,9 @@
 import copyIcon from "@/images/pages/connect/hero/copy.svg"
 import checkIcon from "@/svgs/icons/check.svg"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 
-const CONNECT_PROMPT_PLACEHOLDER =
-  "Add an agent to my app using instructions from https://novu.co/agents.md"
 const COPY_ICON_SRC = copyIcon.src
 const CHECK_ICON_SRC = checkIcon.src
 
@@ -20,7 +19,7 @@ function ConnectPromptCopyLine() {
       <button
         type="button"
         className="mr-1 inline-flex items-center gap-1 rounded-sm text-lagune-3 transition-colors duration-200 hover:text-lagune-2 focus-visible:ring-2 focus-visible:ring-lagune-3/40 focus-visible:outline-none"
-        onClick={() => handleCopy(CONNECT_PROMPT_PLACEHOLDER)}
+        onClick={() => handleCopy(DEFAULT_CONNECT_PROMPT)}
         aria-label={isCopied ? "Prompt copied" : "Copy prompt to Claude"}
         data-click-location="connect_hero"
         data-click-text="copy_prompt"

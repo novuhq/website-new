@@ -1,6 +1,7 @@
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const emailChannelData: IChannelPageData = {
   slug: "email",
@@ -57,8 +58,7 @@ export const emailChannelData: IChannelPageData = {
     "High-deliverability routing",
     "Secure action links for approvals",
   ],
-  prompt:
-    "Connect my AI agent to Email with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("Email"),
   onRamp: {
     type: "keyless",
     note: "Email works in the keyless quickstart. Run npx novu connect --channel email to get a managed agent sending email, no account needed for the first few replies.",

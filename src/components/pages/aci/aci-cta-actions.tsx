@@ -5,13 +5,12 @@ import NextLink from "next/link"
 import claudeIcon from "@/images/pages/aci/aci-cta/claude-logo.svg"
 import { Check } from "lucide-react"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
 
 const CONNECT_COMMAND = "npx novu connect"
-const ACI_PROMPT =
-  "Add an agent to my app using instructions from https://novu.co/agents.md"
-const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${encodeURIComponent(ACI_PROMPT)}`
+const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${encodeURIComponent(DEFAULT_CONNECT_PROMPT)}`
 
 function AciCtaActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)

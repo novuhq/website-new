@@ -1,6 +1,7 @@
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const telegramChannelData: IChannelPageData = {
   slug: "telegram",
@@ -57,8 +58,7 @@ export const telegramChannelData: IChannelPageData = {
     "Inline keyboards for quick actions",
     "Replies routed to the right context",
   ],
-  prompt:
-    "Connect my AI agent to Telegram with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("Telegram"),
   onRamp: {
     type: "keyless",
     note: "Telegram works in the keyless quickstart. Run npx novu connect --channel telegram to get a managed agent on Telegram, no account needed for the first few replies.",

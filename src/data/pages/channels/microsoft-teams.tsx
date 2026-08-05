@@ -1,6 +1,7 @@
 import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const microsoftTeamsChannelData: IChannelPageData = {
   slug: "microsoft-teams",
@@ -57,8 +58,7 @@ export const microsoftTeamsChannelData: IChannelPageData = {
     "Reliable team notifications",
     "Native Adaptive Cards and approval prompts",
   ],
-  prompt:
-    "Connect my AI agent to Microsoft Teams with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("Microsoft Teams"),
   onRamp: {
     type: "oauth",
     note: "Microsoft Teams connects from the Novu dashboard. Authenticate your workspace once, and Novu Connect manages delivery, identity, and two-way routing after that.",

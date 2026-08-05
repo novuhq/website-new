@@ -1,6 +1,7 @@
 import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const slackChannelData: IChannelPageData = {
   slug: "slack",
@@ -58,8 +59,7 @@ export const slackChannelData: IChannelPageData = {
     "Reliable delivery with retries",
     "Native Block Kit messages and tool-approval prompts",
   ],
-  prompt:
-    "Connect my AI agent to Slack with Novu using instructions from https://novu.co/agents.md",
+  prompt: buildChannelConnectPrompt("Slack"),
   onRamp: {
     type: "keyless",
     note: "Slack works in the keyless quickstart. Run npx novu connect --channel slack and you get a managed agent on Slack, no account needed for the first few replies.",

@@ -38,8 +38,6 @@ export const customCodeFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect this project's custom code agent to {channelName} with Novu using instructions from https://novu.co/agents.md",
   faq: [
     {
       question:

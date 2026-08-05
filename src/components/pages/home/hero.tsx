@@ -16,6 +16,7 @@ import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
 import Logos from "@/components/ui/logos"
@@ -28,9 +29,6 @@ import {
 } from "./channel-navigation"
 import CopyPromptButton from "./copy-prompt-button"
 import HeroGlobe from "./hero-globe"
-
-const DEFAULT_PROMPT =
-  "Connect my AI agent to customers across their preferred channels with Novu using instructions from https://novu.co/agents.md"
 
 const CHANNEL_HOVER_STYLES = {
   telegram: {
@@ -218,7 +216,7 @@ function Hero({
   title,
   description,
   command = "npx novu connect",
-  prompt = DEFAULT_PROMPT,
+  prompt = DEFAULT_CONNECT_PROMPT,
   className,
 }: IHeroProps) {
   return (

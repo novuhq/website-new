@@ -15,6 +15,7 @@ import telegramIcon from "@/svgs/pages/home/stack/telegram.svg"
 import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
+import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -22,10 +23,10 @@ import CopyPromptButton from "./copy-prompt-button"
 
 export interface IStackOption {
   cliSlug?: string
+  connectPath?: "bridge" | "managed"
   icon?: StaticImageData | string
   label: string
   promptLabel?: string
-  promptTemplate?: string
   value: string
 }
 
@@ -77,45 +78,35 @@ const DEFAULT_FRAMEWORKS: IStackOption[] = [
     value: "ai-sdk",
     label: "Vercel AI SDK",
     icon: chatSdkIcon,
-    promptTemplate:
-      "Connect this project's Vercel AI SDK agent to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
   },
   {
     value: "langchain",
     label: "LangChain",
     icon: langChainIcon,
-    promptTemplate:
-      "Connect this project's LangChain agent to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
   },
   {
     value: "custom-code",
     label: "Custom code",
     icon: customCodeIcon,
-    promptTemplate:
-      "Connect this project's custom code agent to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
   },
   {
     value: "chat-sdk",
     label: "Chat SDK",
     icon: chatSdkIcon,
-    promptTemplate:
-      "Connect this project's Chat SDK agent to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
   },
   {
     value: "claude-managed-agent",
     label: "Claude Managed Agent",
     icon: claudeIcon,
     cliSlug: "claude",
-    promptTemplate:
-      "Connect a Claude Managed Agent to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
+    connectPath: "managed",
   },
   {
     value: "aws-claude-managed-agent",
     label: "AWS Claude Managed Agent",
     icon: awsIcon,
     cliSlug: "claude-aws",
-    promptTemplate:
-      "Connect a Claude Managed Agent on AWS to [SELECTED_CHANNEL] with Novu using instructions from https://novu.co/agents.md",
+    connectPath: "managed",
   },
 ]
 
@@ -259,12 +250,11 @@ function ConnectStack({
   const channelLabel = channel.promptLabel ?? channel.label
   const channelSlug = channel.cliSlug ?? channel.value
   const command = `npx novu connect --channel ${channelSlug} --runtime ${framework.cliSlug ?? framework.value}`
-  const defaultPrompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu using instructions from https://novu.co/agents.md`
-  const prompt = framework.promptTemplate
-    ? framework.promptTemplate
-        .replaceAll("[SELECTED_CHANNEL]", channelLabel)
-        .replaceAll("[CHANNEL_SLUG]", channelSlug)
-    : defaultPrompt
+  const prompt = buildFrameworkChannelConnectPrompt({
+    frameworkName: frameworkLabel,
+    channelName: channelLabel,
+    connectPath: framework.connectPath,
+  })
 
   return (
     <section

@@ -127,7 +127,7 @@ export const connectContract = {
   heading: "Connect your agent to any channel",
   command: "npx novu connect",
   prompt:
-    "Add an agent to my app using instructions from https://novu.co/agents.md",
+    "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md",
   signUpDestination: destinations.agentsSignUp,
   connectAppDestination: destinations.connectApp,
 } as const
