@@ -57,7 +57,7 @@ const CARD_ENTER_DURATION = 0.35
 const CARD_EXIT_DURATION = 0.2
 const CARD_EASE_IN = [0.4, 0, 1, 1] as const
 const CARD_EASE_OUT = [0, 0, 0.2, 1] as const
-const LINE_EASE_OUT = [0.4, 0.08, 0.06, 1] as const
+const LINE_EASE_OUT = [0.4, 0.08, 0.06, 0.85] as const
 
 const ENGAGE_CONTENT_DELAY = 0.42
 const ENGAGE_QUESTION_DURATION = 0.38
