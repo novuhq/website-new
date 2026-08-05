@@ -187,9 +187,7 @@ export default function GlobeEventCard({
                 aria-hidden="true"
                 className={cn(
                   "absolute inset-0 border border-white/10",
-                  isSafari
-                    ? "bg-[#130C3D]/85 backdrop-blur-sm"
-                    : "bg-[#130C3D]/70 backdrop-blur-xl"
+                  isSafari ? "bg-[#130C3D]" : "bg-[#130C3D]/70 backdrop-blur-xl"
                 )}
                 data-globe-card-background=""
                 style={{ opacity: backgroundOpacity }}
