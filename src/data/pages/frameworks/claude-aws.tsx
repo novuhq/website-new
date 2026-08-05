@@ -38,18 +38,8 @@ export const claudeAwsFrameworkData: IAgentFrameworkData = {
       body: "The guided flow connects {channelName}. Your agent now holds a two-way conversation there, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate: `Connect a Claude Managed Agent on AWS to {channelName} with Novu Connect.
-
-Follow https://novu.co/agents.md end to end (managed agent path). Default to the non-interactive CLI (\`--ci\`).
-
-Infer a short agent description from the project, confirm it with me once, then prefer a connect command shaped like:
-
-export NOVU_AGENT_DESCRIPTION='…'
-npx novu@latest connect "$NOVU_AGENT_DESCRIPTION" --ci --keyless --channel {cliSlug} --runtime claude-aws
-
-(Omit --keyless if I am already signed in to the Novu dashboard. Never combine --keyless with --channel teams; follow agents.md.)
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
+  promptTemplate:
+    "Connect a Claude Managed Agent on AWS to {channelName} with Novu using instructions from https://novu.co/agents.md",
   faq: [
     {
       question: "How is this different from the standard Claude Managed Agent?",

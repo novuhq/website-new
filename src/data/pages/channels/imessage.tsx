@@ -58,7 +58,7 @@ export const imessageChannelData: IChannelPageData = {
     "Reply-based action and MCP approvals",
   ],
   prompt:
-    "Connect this project to iMessage with Novu Connect (Sendblue). Inspect the repo for the existing agent and framework, then have me run npx novu connect --channel sendblue from the project root, appending the matching --runtime if you detect one. I will enter Sendblue credentials in the CLI and reply to the test iMessage. Prefer the CLI prompts over chat for secrets. Do not invent setup steps. Stop after giving me the command.",
+    "Connect my AI agent to iMessage with Novu using instructions from https://novu.co/agents.md",
   onRamp: {
     type: "oauth",
     note: "iMessage connects through Sendblue. Run npx novu connect --channel sendblue, enter your Sendblue credentials in the CLI, and reply to the test iMessage to go live.",

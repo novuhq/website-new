@@ -38,19 +38,8 @@ export const chatSdkFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your Chat SDK agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate: `Connect this project's Chat SDK agent to {channelName} with Novu Connect.
-
-Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
-
-Inspect the repo (agent entry point, how Chat SDK is used, package manager, env conventions). Do not modify anything yet.
-
-Prefer a connect command shaped like:
-
-npx novu@latest connect --ci --runtime chat-sdk --channel {cliSlug}
-
-(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
-
-Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
+  promptTemplate:
+    "Connect this project's Chat SDK agent to {channelName} with Novu using instructions from https://novu.co/agents.md",
   faq: [
     {
       question: "Do I have to rewrite my Chat SDK app to add {channelName}?",

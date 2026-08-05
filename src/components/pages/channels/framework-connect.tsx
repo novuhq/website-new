@@ -68,7 +68,7 @@ function FrameworkConnect({ combo }: { combo: IChannelFrameworkCombo }) {
           <h3 className="text-base leading-none tracking-tighter text-white">
             Prompt for your coding agent
           </h3>
-          <p className="text-base leading-normal font-normal tracking-tighter whitespace-pre-line text-gray-70">
+          <p className="text-base leading-normal font-normal tracking-tighter text-gray-70">
             {fillTemplate(framework.promptTemplate, combo)}
           </p>
         </div>

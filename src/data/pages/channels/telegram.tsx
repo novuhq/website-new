@@ -57,13 +57,8 @@ export const telegramChannelData: IChannelPageData = {
     "Inline keyboards for quick actions",
     "Replies routed to the right context",
   ],
-  prompt: `Connect this project's AI agent to Telegram with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel telegram\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Telegram per agents.md.
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+  prompt:
+    "Connect my AI agent to Telegram with Novu using instructions from https://novu.co/agents.md",
   onRamp: {
     type: "keyless",
     note: "Telegram works in the keyless quickstart. Run npx novu connect --channel telegram to get a managed agent on Telegram, no account needed for the first few replies.",

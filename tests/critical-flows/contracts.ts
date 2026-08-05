@@ -70,19 +70,8 @@ export const connectStackContract = {
   channel: "MS Teams",
   framework: "LangChain",
   command: "npx novu connect --channel teams --runtime langchain",
-  prompt: `Connect this project's LangChain agent to MS Teams with Novu Connect.
-
-Follow https://novu.co/agents.md end to end (custom code bridge path). Default to the non-interactive CLI (\`--ci\`).
-
-Inspect the repo (agent entry point, how LangChain is used, package manager, env conventions). Do not modify anything yet.
-
-Prefer a connect command shaped like:
-
-npx novu@latest connect --ci --runtime langchain --channel teams
-
-(Omit --keyless: bridge uses dashboard OAuth. Adjust flags only as agents.md allows for this runtime.)
-
-Prefer the secure setup links the CLI prints. After connect, finish any bridge wiring from the requirements file agents.md describes. Do not invent setup steps or ask for secrets in chat unless agents.md requires it.`,
+  prompt:
+    "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://novu.co/agents.md",
 } as const
 
 export const channelPagesContract = {
@@ -137,13 +126,8 @@ export const connectContract = {
   route: destinations.connect,
   heading: "Connect your agent to any channel",
   command: "npx novu connect",
-  prompt: `Connect this project's AI agent to customer channels (Slack, Microsoft Teams, WhatsApp, Telegram, Email, or iMessage) with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci\`).
-
-Inspect the repo first. Ask me which channel to connect if it is not clear. Detect the framework/runtime from the project, or ask once. Then run one connect command per agents.md (bridge vs managed, keyless vs dashboard OAuth).
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md says that channel requires it (e.g. iMessage/Sendblue).`,
+  prompt:
+    "Add an agent to my app using instructions from https://novu.co/agents.md",
   signUpDestination: destinations.agentsSignUp,
   connectAppDestination: destinations.connectApp,
 } as const

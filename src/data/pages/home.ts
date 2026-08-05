@@ -58,13 +58,8 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Slack",
     description:
       "Reach teams where work happens with rich, actionable messages, threads, and reliable delivery routing.",
-    prompt: `Connect this project's AI agent to Slack with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel slack\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Slack per agents.md.
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+    prompt:
+      "Connect my AI agent to Slack with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Two-way threaded conversations",
       "Team and user identity mapping",
@@ -78,13 +73,8 @@ Prefer the secure setup links the CLI prints. Do not invent setup steps or ask f
     title: "Connect your AI agent to WhatsApp",
     description:
       "Start secure two-way customer conversations with templates, attachments, and delivery receipts.",
-    prompt: `Connect this project's AI agent to WhatsApp with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel whatsapp\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for WhatsApp per agents.md.
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+    prompt:
+      "Connect my AI agent to WhatsApp with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Secure two-way conversations",
       "Approved message templates",
@@ -98,13 +88,8 @@ Prefer the secure setup links the CLI prints. Do not invent setup steps or ask f
     title: "Connect your AI agent to Telegram",
     description:
       "Reach users with fast, conversational updates, rich media, and replies inside Telegram.",
-    prompt: `Connect this project's AI agent to Telegram with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel telegram\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Telegram per agents.md.
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+    prompt:
+      "Connect my AI agent to Telegram with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Fast conversational delivery",
       "Rich messages and media",
@@ -118,13 +103,8 @@ Prefer the secure setup links the CLI prints. Do not invent setup steps or ask f
     title: "Connect your AI agent to Microsoft Teams",
     description:
       "Bring agent updates and human handoffs into the channels your organization already uses.",
-    prompt: `Connect this project's AI agent to Microsoft Teams with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel teams\`). Note: Teams cannot use keyless mode; follow agents.md for dashboard OAuth / dashboard redirect rules.
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Microsoft Teams per agents.md.
-
-Prefer the secure setup links or dashboard handoffs the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+    prompt:
+      "Connect my AI agent to Microsoft Teams with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Channel and thread awareness",
       "Human handoff workflows",
@@ -138,13 +118,8 @@ Prefer the secure setup links or dashboard handoffs the CLI prints. Do not inven
     title: "Connect your AI agent to Email",
     description:
       "Reach users directly in their inbox with rich, actionable notifications. Support for templates, attachments, and high-deliverability routing.",
-    prompt: `Connect this project's AI agent to Email with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel email\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Then run one connect command for Email per agents.md.
-
-Prefer the secure setup links the CLI prints. Do not invent setup steps or ask for secrets in chat unless agents.md requires it for this channel.`,
+    prompt:
+      "Connect my AI agent to Email with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Responsive message templates",
       "Attachments and rich content",
@@ -158,13 +133,8 @@ Prefer the secure setup links the CLI prints. Do not invent setup steps or ask f
     title: "Connect your AI agent to iMessage",
     description:
       "Bring agent conversations and timely updates into the native messaging experience customers already use.",
-    prompt: `Connect this project's AI agent to iMessage with Novu Connect.
-
-Follow https://novu.co/agents.md end to end. Default to the non-interactive CLI (\`npx novu@latest connect … --ci --channel sendblue\`).
-
-Inspect the repo. Detect the runtime from the project (AI SDK / LangChain / etc.), or ask once. Collect the Sendblue inputs agents.md requires before running connect, then run one command for iMessage.
-
-Do not invent setup steps. For Sendblue, agents.md allows collecting credentials in chat (no secure setup page): warn once, then continue.`,
+    prompt:
+      "Connect my AI agent to iMessage with Novu using instructions from https://novu.co/agents.md",
     features: [
       "Native messaging experience",
       "Secure two-way conversations",
