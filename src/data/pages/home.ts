@@ -98,9 +98,9 @@ export const HOME_CHANNELS = [
     key: "teams",
     badges: ["connect", "notify"] as const,
     label: "MS Teams",
-    title: "Connect your AI agent to Microsoft Teams",
+    title: "Communicate with users in Microsoft Teams",
     description:
-      "Bring agent updates and human handoffs into the channels your organization already uses.",
+      "Let your agent collaborate in Teams, or send workflow-driven updates to channels and direct messages.",
     prompt: buildChannelConnectPrompt("Microsoft Teams"),
     features: [
       "Channel and thread awareness",
@@ -112,9 +112,9 @@ export const HOME_CHANNELS = [
     key: "email",
     badges: ["notify", "connect"] as const,
     label: "Email",
-    title: "Connect your AI agent to Email",
+    title: "Communicate with users over email",
     description:
-      "Reach users directly in their inbox with rich, actionable notifications. Support for templates, attachments, and high-deliverability routing.",
+      "Continue agent conversations over email, or send workflow-driven messages through your preferred email provider.",
     prompt: buildChannelConnectPrompt("Email"),
     features: [
       "Responsive message templates",
@@ -140,7 +140,7 @@ export const HOME_CHANNELS = [
     key: "inbox",
     badges: ["notify"] as const,
     label: "Inbox",
-    title: "Connect your AI agent to Inbox",
+    title: "Send notifications to your in-app Inbox",
     description:
       "Give users one place inside your product to see and manage the updates that matter to them.",
     features: [
@@ -159,7 +159,7 @@ export const HOME_CHANNELS = [
     key: "push",
     badges: ["notify"] as const,
     label: "Push",
-    title: "Connect your AI agent to Push",
+    title: "Send push notifications to your users",
     description:
       "Reach users on mobile, desktop, and web when they are away from your product.",
     features: [
@@ -167,7 +167,7 @@ export const HOME_CHANNELS = [
       "Multiple provider integrations",
       "Subscriber device-token management",
       "Provider-specific delivery overrides",
-      "Selected providers: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
+      "Support for providers such as: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
     ],
     action: {
       label: "Explore Push Providers",
@@ -195,7 +195,7 @@ export const HOME_CHANNELS = [
     key: "sms",
     badges: ["notify"] as const,
     label: "SMS",
-    title: "Connect your AI agent to SMS",
+    title: "Send notifications to your users via SMS",
     description:
       "Deliver urgent and transactional updates directly to users' phones.",
     features: [
@@ -203,7 +203,7 @@ export const HOME_CHANNELS = [
       "Dynamic message content",
       "Multiple provider integrations",
       "Runtime recipient, sender, and content overrides",
-      "Selected providers: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
+      "Support for providers such as: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
     ],
     action: {
       label: "Explore SMS Providers",
@@ -212,18 +212,12 @@ export const HOME_CHANNELS = [
   },
   {
     key: "github",
-    badges: ["notify"] as const,
+    badges: ["connect"] as const,
+    statusBadge: "Coming Soon",
     label: "GitHub",
     title: "Connect your AI agent to GitHub workflows",
     description:
       "Notify maintainers about releases, incidents, and reviews with the right context attached.",
-    prompt:
-      "Connect my AI agent to GitHub events with Novu for pull request and release notifications.",
-    features: [
-      "Pull request notifications",
-      "Release and incident updates",
-      "Repository context included",
-    ],
   },
   {
     key: "zoom",
@@ -248,25 +242,18 @@ export const HOME_CHANNELS = [
     badges: ["notify", "connect"] as const,
     statusBadge: "Coming Soon",
     label: "Discord",
-    title: "Connect your AI agent to Discord",
+    title: "Communicate with users over Discord chat",
     description:
       "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
   },
   {
     key: "messenger",
-    badges: ["notify", "connect"] as const,
+    badges: ["connect"] as const,
     statusBadge: "Coming Soon",
     label: "FB Messenger",
     title: "Connect your AI agent to Facebook Messenger",
     description:
-      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
-    features: [
-      "Conversation context across replies",
-      "Adaptive Cards that update in place",
-      "Buttons for actions and approvals",
-      "Rich text and reactions",
-      "Ordered message processing",
-    ],
+      "Bring your agent into the conversations customers already have with your business on Facebook Messenger.",
   },
   {
     key: "google-chat",
