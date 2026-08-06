@@ -3,34 +3,36 @@ slug: "chat-sdk"
 title: "Chat SDK"
 tab: "sources"
 category: "agent-runtimes"
+group: "custom-code-runtimes"
 badge: "Novu Connect"
 detailBadge: "Agent runtime"
 availability: "live"
 product: "connect"
-tagline: "Connect a Chat SDK application to supported communication channels with Novu Connect."
-shortDescription: "Give a Chat SDK application access to supported Novu Connect channels."
+tagline: "Chat SDK is the open-source template for building complete chat apps on Next.js and the AI SDK."
+shortDescription: "Connect an agent built with Chat SDK to supported Novu Connect channels."
 helpText: "Check our documentation for connecting a Chat SDK application to channels with Novu Connect."
 icon: "/images/integration-icons/ai/chat-sdk-integration-icon.svg"
-order: 1
-docsUrl: "https://docs.novu.co/agents/get-started/what-is-aci"
+order: 2
+docsUrl: "https://docs.novu.co/agents/custom-code-agent/frameworks/other"
 primaryCtaLabel: "Connect Chat SDK"
+cliCommand: "npx novu connect --channel <channel> --runtime chat-sdk"
+seo:
+  title: "Chat SDK Agent Integration"
+  description: "Connect an agent built with Chat SDK to supported communication channels through Novu Connect."
 ---
 
 <IntegrationSection title="Overview" icon="eye">
-  Chat SDK provides building blocks for conversational applications and agent
-  experiences. Novu Connect gives an existing Chat SDK application access to
-  supported communication channels without replacing its core application logic.
+  Chat SDK is an open-source chat app template built on Next.js and the AI
+  SDK. You build and run the agent in your own app. Novu Connect adds the
+  last step: getting it into a channel and routing replies back.
 </IntegrationSection>
 
 <IntegrationSection title="How it works" icon="refresh-cw">
-  Novu Connect receives channel messages, normalizes their conversation context,
-  and routes them to your Chat SDK application. Responses return through the
-  correct channel, thread, or conversation while Novu manages the surrounding
-  communication infrastructure.
+  Novu Connect delivers channel messages to the same agent loop that powers
+  your Chat SDK app, and routes its replies back to the same conversation.
 </IntegrationSection>
 
 <IntegrationSection title="Configure" icon="settings">
-  Start the Novu Connect setup flow, choose a supported channel, and configure
-  the adapter that invokes your existing Chat SDK agent. Keep your current
-  models, tools, and application logic in place.
+  Run the command above and pick a channel. The CLI adds a bridge route to
+  your project. Point it at your existing agent, and you're live.
 </IntegrationSection>

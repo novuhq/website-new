@@ -12,6 +12,7 @@ export const integrationFrontmatterSchema = z.object({
   tab: z.enum(["channels", "sources"]),
   category: z.string().min(1),
   categories: z.array(z.string().min(1)).optional(),
+  group: z.string().optional(),
   badge: z.string().optional(),
   detailBadge: z.string().optional(),
   availability: z.enum(["live", "coming-soon"]).default("live"),
@@ -38,6 +39,7 @@ export const integrationFrontmatterSchema = z.object({
     .optional(),
   primaryCtaLabel: z.string().optional(),
   primaryCtaHref: z.string().optional(),
+  cliCommand: z.string().optional(),
   secondaryCtaLabel: z.string().optional(),
   secondaryCtaHref: z.string().optional(),
 })

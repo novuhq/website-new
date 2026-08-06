@@ -49,7 +49,7 @@ export const SEO_DATA = {
   integrationsSources: {
     title: `Workflow and Agent Runtime Integrations | ${config.projectName}`,
     description:
-      "Use workflow tools and AI SDKs with Novu Notify, or connect existing agent runtimes to supported communication channels with Novu Connect.",
+      "Use workflow tools with Novu Notify, or connect an existing custom-code or managed agent runtime to supported communication channels with Novu Connect.",
     pathname: ROUTE.integrationsSources as string,
   },
   integrationsChannels: {

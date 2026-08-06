@@ -1,0 +1,36 @@
+---
+slug: "pagerduty"
+title: "PagerDuty"
+tab: "channels"
+category: "tools"
+badge: "Tool"
+tagline: "Create PagerDuty incidents through workflow Tool steps."
+shortDescription: "Page subscriber-specific PagerDuty services from a single Novu workflow."
+helpText: "Read the PagerDuty Tool integration documentation for the complete setup."
+icon: "/images/integration-icons/tools/pagerduty-icon.svg"
+order: 82
+docsUrl: "https://docs.novu.co/platform/integrations/tool/pagerduty"
+primaryCtaLabel: "Integrate PagerDuty"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  PagerDuty is a Tool provider for creating incidents from Novu workflows.
+  Each subscriber connects an Events API v2 routing key, allowing one
+  workflow to page different PagerDuty services and escalation policies.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When a workflow reaches a PagerDuty Tool step, Novu resolves the routing
+  key stored for the subscriber and sends an Events API v2 event. The step
+  content becomes the incident summary, and Novu uses a deterministic
+  deduplication key so retries update the same incident instead of creating
+  duplicates. If the subscriber has no PagerDuty endpoint, Novu skips the
+  step.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Create an Events API v2 integration in PagerDuty, add PagerDuty under Tool
+  in the Novu Integration Store, and register the routing key and region as a
+  subscriber channel endpoint. Add a PagerDuty Tool step to a workflow and
+  send a test incident.
+</IntegrationSection>

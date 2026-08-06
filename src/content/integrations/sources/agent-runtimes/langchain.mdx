@@ -1,0 +1,40 @@
+---
+slug: "langchain"
+title: "LangChain"
+tab: "sources"
+category: "agent-runtimes"
+group: "custom-code-runtimes"
+badge: "Novu Connect"
+detailBadge: "Agent runtime"
+availability: "live"
+product: "connect"
+tagline: "LangChain is the open-source framework for building agents and LLM apps in Python and JavaScript."
+shortDescription: "Connect an agent built with LangChain to supported Novu Connect channels."
+helpText: "Check our documentation for connecting a LangChain agent to channels with Novu Connect."
+icon: "/images/integration-icons/ai/langchain-icon.svg"
+order: 1
+docsUrl: "https://docs.novu.co/agents/custom-code-agent/frameworks/langchain"
+primaryCtaLabel: "Integrate LangChain"
+cliCommand: "npx novu connect --channel <channel> --runtime langchain"
+seo:
+  title: "LangChain Agent Integration"
+  description: "Connect an agent built with LangChain to supported communication channels through Novu Connect."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  LangChain is an open-source framework for building agents with models,
+  tools, and memory. You build and run the agent in your own app. Novu
+  Connect adds the last step: getting it into a channel and routing replies
+  back.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect delivers messages from the channel to your agent and routes
+  its replies back to the same conversation. Your agent keeps running in your
+  own app the whole time.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Run the command above and pick a channel. The CLI adds a bridge route to
+  your project. Point it at your agent, and you're live.
+</IntegrationSection>

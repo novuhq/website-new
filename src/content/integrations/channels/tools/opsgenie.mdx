@@ -1,0 +1,33 @@
+---
+slug: "opsgenie"
+title: "Opsgenie"
+tab: "channels"
+category: "tools"
+badge: "Tool"
+tagline: "Route workflow alerts to subscriber-specific Opsgenie teams and integrations."
+shortDescription: "Create Opsgenie alerts for different subscribers from a single Novu workflow."
+helpText: "Read the Opsgenie Tool integration documentation for the complete setup."
+icon: "/images/integration-icons/tools/opsgenie-icon.svg"
+order: 81
+docsUrl: "https://docs.novu.co/platform/integrations/tool/opsgenie"
+primaryCtaLabel: "Integrate Opsgenie"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Opsgenie is a Tool provider for creating alerts from Novu workflows. Each
+  subscriber connects an Opsgenie API integration key, so the same workflow
+  can route alerts to different Opsgenie teams or escalation configurations.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When a workflow reaches an Opsgenie Tool step, Novu resolves the API
+  integration key registered for the subscriber and creates the alert using
+  the step content and configured fields. If no Opsgenie endpoint is
+  registered for that subscriber, Novu skips the Tool step.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Create an API integration in Opsgenie, add Opsgenie under Tool in the Novu
+  Integration Store, and register the API key as a channel endpoint for the
+  subscriber. Add an Opsgenie Tool step to a workflow and send a test alert.
+</IntegrationSection>

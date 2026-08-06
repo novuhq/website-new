@@ -178,11 +178,12 @@ function IntegrationsTabs({
           </h2>
           <div className="max-w-2xl text-base leading-normal font-book tracking-tight text-gray-8">
             <p className="mb-0">
-              Use Novu Notify to connect 80+ providers across email, SMS, push,
-              and chat, and add an in-app Inbox to your product. Use Novu
-              Connect to bring AI agents into Slack, Microsoft Teams, WhatsApp
-              Business, Telegram, email, and iMessage. Need an integration that
-              is not listed? Novu is open source, so you can contribute a new
+              Connect 80+ integrations across email, SMS, push, chat, in-app,
+              and tools with Novu Notify. Use one API to send notifications
+              and switch providers without rebuilding. Use Novu Connect to
+              bring AI agents into Slack, Microsoft Teams, WhatsApp Business,
+              Telegram, email, and iMessage. Need an integration that is not
+              listed? Novu is open source, so you can contribute a new
               provider or channel.
             </p>
           </div>

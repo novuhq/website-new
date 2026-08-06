@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { IIntegration } from "@/types/integration"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { CopyCommand } from "@/components/ui/copy-command"
 import { Link } from "@/components/ui/link"
 import RelatedArticles from "@/components/pages/integrations/related-articles"
 
@@ -65,7 +66,14 @@ function IntegrationDetail({
           All Integrations
         </Link>
 
-        <header className="flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8 md:pt-9 md:pb-10 lg:max-w-xl xl:max-w-176 2xl:max-w-none">
+        <header
+          className={cn(
+            "flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8 md:pt-9 md:pb-10",
+            integration.cliCommand
+              ? "lg:max-w-2xl 2xl:max-w-none"
+              : "lg:max-w-xl xl:max-w-176 2xl:max-w-none"
+          )}
+        >
           <div className="relative size-18 shrink-0 overflow-hidden rounded-xl border border-[var(--integration-icon-wrapper-border)] [background:var(--integration-icon-wrapper-bg)]">
             <div className="absolute top-[0.9375rem] left-[0.9375rem] size-10">
               <Image
@@ -79,7 +87,12 @@ function IntegrationDetail({
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
-            <div className="min-w-0 flex-1 basis-[60%]">
+            <div
+              className={cn(
+                "min-w-0 flex-1",
+                !integration.cliCommand && "basis-[60%]"
+              )}
+            >
               <div className="flex flex-wrap items-center gap-3 md:gap-4">
                 <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
                   {integration.title}
@@ -93,20 +106,28 @@ function IntegrationDetail({
               </p>
             </div>
 
-            <Button
-              variant="default"
-              size="none"
-              className="h-11 w-full rounded-md px-5 text-sm leading-none uppercase sm:w-fit"
-              asChild
-            >
-              <NextLink
-                href={primaryHref as Route<string>}
-                target="_blank"
-                rel="noopener noreferrer"
+            {integration.cliCommand ? (
+              <CopyCommand
+                command={integration.cliCommand}
+                variant="highlighted"
+                className="w-full shrink-0 sm:w-70.5"
+              />
+            ) : (
+              <Button
+                variant="default"
+                size="none"
+                className="h-11 w-full rounded-md px-5 text-sm leading-none uppercase sm:w-fit"
+                asChild
               >
-                {primaryLabel}
-              </NextLink>
-            </Button>
+                <NextLink
+                  href={primaryHref as Route<string>}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {primaryLabel}
+                </NextLink>
+              </Button>
+            )}
           </div>
         </header>
       </div>

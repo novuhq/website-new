@@ -13,11 +13,19 @@ import {
 
 import IntegrationCard, { type IIntegrationCardProps } from "./integration-card"
 
+export interface IIntegrationChannelCategoryGroup {
+  slug: string
+  title: string
+  description?: string
+  cards: IIntegrationCardProps[]
+}
+
 export interface IIntegrationChannelCategoryProps {
   title: string
   count?: number
   description: string
-  cards: IIntegrationCardProps[]
+  cards?: IIntegrationCardProps[]
+  groups?: IIntegrationChannelCategoryGroup[]
   showMoreLabel?: string
   sectionId?: string
   className?: string
@@ -28,6 +36,7 @@ function IntegrationChannelCategory({
   count,
   description,
   cards,
+  groups,
   showMoreLabel: showMoreLabelProp,
   sectionId,
   className,
@@ -37,12 +46,13 @@ function IntegrationChannelCategory({
   const showMoreLabel = showMoreLabelProp ?? "Show more"
   const showLessLabel = "Show less"
 
-  const hasOverflow = cards.length > config.integrations.visibleCardsCount
+  const flatCards = cards ?? []
+  const hasOverflow = flatCards.length > config.integrations.visibleCardsCount
   const visibleCards = hasOverflow
-    ? cards.slice(0, config.integrations.visibleCardsCount)
-    : cards
+    ? flatCards.slice(0, config.integrations.visibleCardsCount)
+    : flatCards
   const hiddenCards = hasOverflow
-    ? cards.slice(config.integrations.visibleCardsCount)
+    ? flatCards.slice(config.integrations.visibleCardsCount)
     : []
 
   const gridClassName = "grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
@@ -79,26 +89,22 @@ function IntegrationChannelCategory({
         </p>
       </div>
 
-      <div className="flex w-full flex-col gap-3">
-        <ul className={gridClassName}>
-          {visibleCards.map((card) => (
-            <li
-              key={`${card.title}-${card.iconSrc}`}
-              className="h-full min-w-0"
-            >
-              <IntegrationCard {...card} />
-            </li>
-          ))}
-        </ul>
-
-        {hasOverflow ? (
-          <Collapsible
-            className="flex w-full flex-col"
-            onOpenChange={setExpanded}
-          >
-            <CollapsibleContent>
+      {groups ? (
+        <div className="flex w-full flex-col gap-8">
+          {groups.map((group) => (
+            <div key={group.slug} className="flex w-full flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <h3 className="font-display text-base tracking-tighter text-foreground">
+                  {group.title}
+                </h3>
+                {group.description ? (
+                  <p className="max-w-md text-sm leading-snug font-book tracking-tighter text-gray-8">
+                    {group.description}
+                  </p>
+                ) : null}
+              </div>
               <ul className={gridClassName}>
-                {hiddenCards.map((card) => (
+                {group.cards.map((card) => (
                   <li
                     key={`${card.title}-${card.iconSrc}`}
                     className="h-full min-w-0"
@@ -107,29 +113,62 @@ function IntegrationChannelCategory({
                   </li>
                 ))}
               </ul>
-            </CollapsibleContent>
-            <div className="mt-3 flex justify-center">
-              <CollapsibleTrigger
-                type="button"
-                className={cn(
-                  "inline-flex items-center gap-1 text-[0.9375rem] font-book tracking-tighter text-lagune-3",
-                  "hover:text-lagune-2",
-                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                )}
-              >
-                {expanded ? showLessLabel : showMoreLabel}
-                <ChevronDown
-                  className={cn(
-                    "size-4 shrink-0 transition-transform duration-200",
-                    expanded && "rotate-180"
-                  )}
-                  aria-hidden
-                />
-              </CollapsibleTrigger>
             </div>
-          </Collapsible>
-        ) : null}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex w-full flex-col gap-3">
+          <ul className={gridClassName}>
+            {visibleCards.map((card) => (
+              <li
+                key={`${card.title}-${card.iconSrc}`}
+                className="h-full min-w-0"
+              >
+                <IntegrationCard {...card} />
+              </li>
+            ))}
+          </ul>
+
+          {hasOverflow ? (
+            <Collapsible
+              className="flex w-full flex-col"
+              onOpenChange={setExpanded}
+            >
+              <CollapsibleContent>
+                <ul className={gridClassName}>
+                  {hiddenCards.map((card) => (
+                    <li
+                      key={`${card.title}-${card.iconSrc}`}
+                      className="h-full min-w-0"
+                    >
+                      <IntegrationCard {...card} />
+                    </li>
+                  ))}
+                </ul>
+              </CollapsibleContent>
+              <div className="mt-3 flex justify-center">
+                <CollapsibleTrigger
+                  type="button"
+                  className={cn(
+                    "inline-flex items-center gap-1 text-[0.9375rem] font-book tracking-tighter text-lagune-3",
+                    "hover:text-lagune-2",
+                    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+                  )}
+                >
+                  {expanded ? showLessLabel : showMoreLabel}
+                  <ChevronDown
+                    className={cn(
+                      "size-4 shrink-0 transition-transform duration-200",
+                      expanded && "rotate-180"
+                    )}
+                    aria-hidden
+                  />
+                </CollapsibleTrigger>
+              </div>
+            </Collapsible>
+          ) : null}
+        </div>
+      )}
     </section>
   )
 }

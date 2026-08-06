@@ -41,7 +41,7 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                   <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base [&_span]:font-normal [&_span]:text-white">
                     Connect the providers, channels, and tools you use with{" "}
                     <span>Novu Notify</span> and <span>Novu Connect</span>{" "}
-                    across email, SMS, push, chat, in-app, and agent
+                    across email, SMS, push, chat, in-app, tools, and agent
                     conversations.
                   </p>
 

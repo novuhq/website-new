@@ -57,11 +57,20 @@ export const CHANNEL_CATEGORY_TAXONOMY: IChannelCategoryTaxonomy[] = [
     defaultBadge: "Chat",
   },
   {
+    slug: "tools",
+    title: "Tools",
+    description:
+      "Connect incident-management platforms and custom HTTP endpoints to Novu workflows. Use Tool steps to route alerts through Grafana, Opsgenie, PagerDuty, or your own webhook.",
+    order: 5,
+    tab: "channels",
+    defaultBadge: "Tool",
+  },
+  {
     slug: "agent-channels",
     title: "Agent channels",
     description:
       "Bring your AI agent into the channels where your customers and teams already communicate, with support for contextual conversations, actions, and approvals.",
-    order: 5,
+    order: 6,
     tab: "channels",
     defaultBadge: "Novu Connect",
   },

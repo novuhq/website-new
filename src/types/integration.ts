@@ -22,6 +22,7 @@ export interface IIntegration {
   tab: IntegrationTabType
   category: string
   categories: string[]
+  group?: string
   badge: string
   detailBadge: string
   availability: IntegrationAvailability
@@ -39,6 +40,7 @@ export interface IIntegration {
   seo?: IIntegrationSeo
   primaryCtaLabel?: string
   primaryCtaHref?: string
+  cliCommand?: string
   secondaryCtaLabel?: string
   secondaryCtaHref?: string
   relativePath: string

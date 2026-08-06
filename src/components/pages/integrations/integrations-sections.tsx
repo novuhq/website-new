@@ -2,13 +2,16 @@
 
 import { useSearchParams } from "next/navigation"
 
+import { AGENT_RUNTIME_GROUP_TAXONOMY } from "@/content/integrations/taxonomy/agent-runtime-groups"
 import type {
   IIntegration,
   IIntegrationCategoryMeta,
   IntegrationTabType,
 } from "@/types/integration"
 
-import IntegrationChannelCategory from "./integration-channel-category"
+import IntegrationChannelCategory, {
+  type IIntegrationChannelCategoryGroup,
+} from "./integration-channel-category"
 
 function integrationToCards(
   integrations: IIntegration[],
@@ -19,14 +22,43 @@ function integrationToCards(
     description: i.description,
     iconSrc: i.icon,
     category: categoryContext === "agent-runtimes" ? "Agent runtime" : i.badge,
-    status:
-      i.product === "connect" || categoryContext === "agent-runtimes"
-        ? i.availability === "live"
-          ? "Live"
-          : "Coming soon"
-        : undefined,
     href: i.hasDedicatedPage ? i.pathname : undefined,
   }))
+}
+
+function buildAgentRuntimeGroups(
+  items: IIntegration[]
+): IIntegrationChannelCategoryGroup[] {
+  const groups: IIntegrationChannelCategoryGroup[] = AGENT_RUNTIME_GROUP_TAXONOMY.slice()
+    .sort((a, b) => a.order - b.order)
+    .map((group) => ({
+      slug: group.slug,
+      title: group.title,
+      description: group.description,
+      cards: [],
+    }))
+
+  const groupBySlug = new Map(groups.map((g) => [g.slug, g]))
+  const ungrouped: IIntegration[] = []
+
+  for (const item of items) {
+    const target = item.group ? groupBySlug.get(item.group) : undefined
+    if (target) {
+      target.cards.push(...integrationToCards([item], "agent-runtimes"))
+    } else {
+      ungrouped.push(item)
+    }
+  }
+
+  if (ungrouped.length > 0) {
+    groups.push({
+      slug: "other",
+      title: "Other",
+      cards: integrationToCards(ungrouped, "agent-runtimes"),
+    })
+  }
+
+  return groups.filter((group) => group.cards.length > 0)
 }
 
 interface IntegrationsSectionsProps {
@@ -132,6 +164,8 @@ function IntegrationsSections({
             return null
           }
 
+          const isAgentRuntimes = cat.slug === "agent-runtimes"
+
           return (
             <IntegrationChannelCategory
               key={cat.slug}
@@ -139,7 +173,8 @@ function IntegrationsSections({
               title={cat.title}
               count={items.length}
               description={cat.description}
-              cards={integrationToCards(items, cat.slug)}
+              cards={isAgentRuntimes ? undefined : integrationToCards(items, cat.slug)}
+              groups={isAgentRuntimes ? buildAgentRuntimeGroups(items) : undefined}
               className="mt-0"
             />
           )
