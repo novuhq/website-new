@@ -1,6 +1,13 @@
 "use client"
 
-import { useEffect, useRef, type CSSProperties } from "react"
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -52,12 +59,32 @@ const INITIAL_ITEM_STYLE: CSSProperties = {
   willChange: ANIMATED_WILL_CHANGE,
 }
 
+type TickerName = "channel" | "framework"
+
+interface FocusBlurCycleItem {
+  content: ReactNode
+  key: string
+}
+
 interface FocusBlurTextCycleProps {
-  accessibleText: string
+  accessibleText?: string
   className?: string
   fallbackText: string
-  items: readonly string[]
+  itemClassName?: string
+  items: readonly FocusBlurCycleItem[]
+  reserveItemWidths?: boolean
+  staticClassName?: string
+  tickerName: TickerName
 }
+
+interface PendingIndexCommit {
+  index: number
+  onAbort: () => void
+  resolve: (committed: boolean) => void
+  signal: AbortSignal
+}
+
+type CommitIndex = (index: number, signal: AbortSignal) => Promise<boolean>
 
 function applyFrame(element: HTMLElement, frame: TextAnimationFrame) {
   element.style.filter = frame.filter
@@ -127,77 +154,117 @@ async function animateFrame(
   }
 }
 
+async function enterItem(element: HTMLElement, signal: AbortSignal) {
+  return animateFrame(
+    element,
+    ENTER_FROM,
+    VISIBLE,
+    ENTER_DURATION_MS,
+    ENTER_EASING,
+    signal
+  )
+}
+
+async function exitItem(element: HTMLElement, signal: AbortSignal) {
+  return animateFrame(
+    element,
+    VISIBLE,
+    EXIT_TO,
+    EXIT_DURATION_MS,
+    EXIT_EASING,
+    signal
+  )
+}
+
 async function runTextCycle(
   element: HTMLElement,
-  items: readonly string[],
+  itemCount: number,
+  commitIndex: CommitIndex,
   signal: AbortSignal
 ) {
-  element.textContent = items[0]
+  if (!(await commitIndex(0, signal))) return
   applyFrame(element, ENTER_FROM)
 
   const initialDelay = Math.random() * INITIAL_DELAY_MAX_MS
   if (!(await waitFor(initialDelay, signal))) return
-  if (
-    !(await animateFrame(
-      element,
-      ENTER_FROM,
-      VISIBLE,
-      ENTER_DURATION_MS,
-      ENTER_EASING,
-      signal
-    ))
-  ) {
-    return
-  }
+  if (!(await enterItem(element, signal))) return
 
   let currentIndex = 0
 
   while (!signal.aborted) {
     if (!(await waitFor(HOLD_DURATION_MS, signal))) return
-    if (
-      !(await animateFrame(
-        element,
-        VISIBLE,
-        EXIT_TO,
-        EXIT_DURATION_MS,
-        EXIT_EASING,
-        signal
-      ))
-    ) {
-      return
-    }
-
+    if (!(await exitItem(element, signal))) return
     if (!(await waitFor(MICRO_DELAY_MS, signal))) return
 
-    currentIndex = (currentIndex + 1) % items.length
-    element.textContent = items[currentIndex]
-
-    if (
-      !(await animateFrame(
-        element,
-        ENTER_FROM,
-        VISIBLE,
-        ENTER_DURATION_MS,
-        ENTER_EASING,
-        signal
-      ))
-    ) {
-      return
-    }
-
+    currentIndex = (currentIndex + 1) % itemCount
+    if (!(await commitIndex(currentIndex, signal))) return
+    if (!(await enterItem(element, signal))) return
     if (!(await waitFor(GAP_DURATION_MS, signal))) return
   }
+}
+
+function finishPendingCommit(
+  pendingCommitRef: React.MutableRefObject<PendingIndexCommit | null>,
+  committed: boolean
+) {
+  const pending = pendingCommitRef.current
+  if (!pending) return
+
+  pending.signal.removeEventListener("abort", pending.onAbort)
+  pendingCommitRef.current = null
+  pending.resolve(committed)
+}
+
+function useCommittedIndex() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const currentIndexRef = useRef(currentIndex)
+  const pendingCommitRef = useRef<PendingIndexCommit | null>(null)
+
+  useEffect(() => {
+    currentIndexRef.current = currentIndex
+
+    if (pendingCommitRef.current?.index === currentIndex) {
+      finishPendingCommit(pendingCommitRef, true)
+    }
+  }, [currentIndex])
+
+  useEffect(
+    () => () => {
+      finishPendingCommit(pendingCommitRef, false)
+    },
+    []
+  )
+
+  const commitIndex = useCallback<CommitIndex>((index, signal) => {
+    if (signal.aborted) return Promise.resolve(false)
+    if (currentIndexRef.current === index) return Promise.resolve(true)
+
+    return new Promise<boolean>((resolve) => {
+      const onAbort = () => finishPendingCommit(pendingCommitRef, false)
+
+      pendingCommitRef.current = { index, onAbort, resolve, signal }
+      signal.addEventListener("abort", onAbort, { once: true })
+      setCurrentIndex(index)
+    })
+  }, [])
+
+  return [currentIndex, commitIndex] as const
 }
 
 function FocusBlurTextCycle({
   accessibleText,
   className,
   fallbackText,
+  itemClassName,
   items,
+  reserveItemWidths = true,
+  staticClassName,
+  tickerName,
 }: FocusBlurTextCycleProps) {
   const itemRef = useRef<HTMLSpanElement>(null)
-  const initialText = items[0] ?? fallbackText
-  const sizingItems = [...items, fallbackText]
+  const [currentIndex, commitIndex] = useCommittedIndex()
+  const currentItem = items[currentIndex] ?? items[0]
+  const isChannelTicker = tickerName === "channel"
 
   useEffect(() => {
     const item = itemRef.current
@@ -210,7 +277,13 @@ function FocusBlurTextCycle({
       controller.abort()
       controller = new AbortController()
 
-      if (reducedMotion.matches || items.length === 0) {
+      if (items.length === 0) {
+        item.style.willChange = "auto"
+        applyFrame(item, VISIBLE)
+        return
+      }
+
+      if (reducedMotion.matches) {
         item.style.willChange = "auto"
         applyFrame(item, ENTER_FROM)
         return
@@ -218,13 +291,12 @@ function FocusBlurTextCycle({
 
       if (items.length === 1) {
         item.style.willChange = "auto"
-        item.textContent = items[0]
         applyFrame(item, VISIBLE)
         return
       }
 
       item.style.willChange = ANIMATED_WILL_CHANGE
-      void runTextCycle(item, items, controller.signal)
+      void runTextCycle(item, items.length, commitIndex, controller.signal)
     }
 
     reducedMotion.addEventListener("change", start)
@@ -234,12 +306,13 @@ function FocusBlurTextCycle({
       controller.abort()
       reducedMotion.removeEventListener("change", start)
     }
-  }, [items])
+  }, [commitIndex, items])
 
   return (
     <>
       <span
-        data-connect-hero-framework-ticker
+        data-connect-hero-channel-ticker={isChannelTicker ? "" : undefined}
+        data-connect-hero-framework-ticker={isChannelTicker ? undefined : ""}
         className={cn(
           "relative z-0 inline-grid max-w-full text-left align-bottom [perspective:900px]",
           className
@@ -248,30 +321,47 @@ function FocusBlurTextCycle({
       >
         <span
           ref={itemRef}
-          data-connect-hero-framework-item
-          className="inline-block whitespace-nowrap [grid-area:1/1] motion-reduce:opacity-0"
+          data-connect-hero-channel-item={
+            isChannelTicker ? currentItem?.key : undefined
+          }
+          data-connect-hero-framework-item={
+            isChannelTicker ? undefined : currentItem?.key
+          }
+          className={cn(
+            "whitespace-nowrap [grid-area:1/1] motion-reduce:opacity-0",
+            itemClassName
+          )}
           style={INITIAL_ITEM_STYLE}
         >
-          {initialText}
+          {currentItem?.content ?? fallbackText}
         </span>
-        {sizingItems.map((item) => (
-          <span
-            className="invisible whitespace-nowrap [grid-area:1/1]"
-            key={item}
-          >
-            {item}
-          </span>
-        ))}
+        {reserveItemWidths &&
+          items.map((item) => (
+            <span
+              className={cn(
+                "invisible whitespace-nowrap [grid-area:1/1]",
+                itemClassName
+              )}
+              key={item.key}
+            >
+              {item.content}
+            </span>
+          ))}
         <span
-          data-connect-hero-framework-static
-          className="whitespace-nowrap opacity-0 [grid-area:1/1] motion-reduce:opacity-100"
+          data-connect-hero-channel-static={isChannelTicker ? "" : undefined}
+          data-connect-hero-framework-static={isChannelTicker ? undefined : ""}
+          className={cn(
+            "whitespace-nowrap opacity-0 [grid-area:1/1] motion-reduce:opacity-100",
+            staticClassName
+          )}
         >
           {fallbackText}
         </span>
       </span>
-      <span className="sr-only">{accessibleText}</span>
+      {accessibleText && <span className="sr-only">{accessibleText}</span>}
     </>
   )
 }
 
+export type { FocusBlurCycleItem }
 export default FocusBlurTextCycle

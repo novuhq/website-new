@@ -1,4 +1,6 @@
-import FocusBlurTextCycle from "./focus-blur-text-cycle"
+import FocusBlurTextCycle, {
+  type FocusBlurCycleItem,
+} from "./focus-blur-text-cycle"
 
 /**
  * Runtimes the CLI currently supports, mirrored from the homepage prompt
@@ -12,13 +14,22 @@ const HERO_FRAMEWORKS = [
   "custom code.",
 ] as const
 
+const HERO_FRAMEWORK_ITEMS: FocusBlurCycleItem[] = HERO_FRAMEWORKS.map(
+  (framework) => ({
+    content: framework,
+    key: framework,
+  })
+)
+
 function ConnectHeroFrameworkTicker({ className }: { className?: string }) {
   return (
     <FocusBlurTextCycle
       accessibleText="LangChain, Vercel AI SDK, Chat SDK, or custom code."
       className={className}
       fallbackText="your framework."
-      items={HERO_FRAMEWORKS}
+      itemClassName="inline-block"
+      items={HERO_FRAMEWORK_ITEMS}
+      tickerName="framework"
     />
   )
 }

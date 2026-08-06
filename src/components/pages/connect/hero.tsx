@@ -1,10 +1,7 @@
 import ProductHuntBadge from "@/components/ui/product-hunt-badge"
 
 import ConnectHeroActions from "./hero-actions"
-import {
-  ConnectHeroChannelTicker,
-  ConnectHeroChannelTickerStyles,
-} from "./hero-channel-ticker"
+import { ConnectHeroChannelTicker } from "./hero-channel-ticker"
 import { ConnectHeroFrameworkTicker } from "./hero-framework-ticker"
 import ConnectHeroVideo from "./hero-video"
 import ConnectPromptCopyLine from "./prompt-copy-line"
@@ -61,7 +58,6 @@ function Hero() {
 
         <ConnectHeroVideo />
       </div>
-      <ConnectHeroChannelTickerStyles />
     </section>
   )
 }
