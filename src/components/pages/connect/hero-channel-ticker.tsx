@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { preload } from "react-dom"
 
 import { cn } from "@/lib/utils"
 
@@ -8,6 +9,12 @@ import FocusBlurTextCycle, {
 } from "./focus-blur-text-cycle"
 
 type HeroChannel = (typeof CONNECT_HERO_CHANNELS)[number]
+
+function preloadChannelIcons() {
+  for (const channel of CONNECT_HERO_CHANNELS) {
+    preload(channel.icon.src, { as: "image", fetchPriority: "high" })
+  }
+}
 
 function ChannelItem({ channel }: { channel: HeroChannel }) {
   return (
@@ -29,6 +36,8 @@ function ChannelItem({ channel }: { channel: HeroChannel }) {
 }
 
 function ConnectHeroChannelTicker({ className }: { className?: string }) {
+  preloadChannelIcons()
+
   const items: FocusBlurCycleItem[] = CONNECT_HERO_CHANNELS.map((channel) => ({
     content: <ChannelItem channel={channel} />,
     key: channel.name,
