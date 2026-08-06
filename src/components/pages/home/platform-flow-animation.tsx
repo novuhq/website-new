@@ -547,7 +547,12 @@ function FlowCard({ isPlaying, step }: { isPlaying: boolean; step: FlowStep }) {
     case "notify":
       return <NotifyCard />
     case "engage":
-      return <ConversationCard isPlaying={isPlaying} />
+      return (
+        <ConversationCard
+          isPlaying={isPlaying}
+          key={isPlaying ? "playing" : "paused"}
+        />
+      )
     case "resolve":
       return <ResolveCard />
   }
