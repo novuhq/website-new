@@ -29,6 +29,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   copilot: "/copilot",
   mcp: "/mcp",
   aci: "/aci",
+  notify: "/notify",
 
   // Per-channel Novu Connect landing pages
   channelSlack: "/channels/slack",
@@ -136,9 +137,19 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   docsContentManagement:
     "https://docs.novu.co/platform/workflow/add-notification-content/channels-template-editors",
   docsCustomCode: "https://docs.novu.co/agents/get-started/what-is-aci",
+  docsDigest: "https://docs.novu.co/platform/workflow/digest",
   docsFramework: "https://docs.novu.co/framework/introduction",
   docsGuides: "https://docs.novu.co/guides",
   docsInApp: "https://docs.novu.co/platform/inbox",
+  docsInboxLocalization:
+    "https://docs.novu.co/platform/inbox/advanced-features/localization",
+  docsInboxPreferences:
+    "https://docs.novu.co/platform/inbox/configuration/preferences",
+  docsInboxSetup: "https://docs.novu.co/platform/inbox/setup-inbox",
+  docsInboxSnooze: "https://docs.novu.co/platform/inbox/features/snooze",
+  docsInboxStyling:
+    "https://docs.novu.co/platform/inbox/configuration/styling",
+  docsInboxTabs: "https://docs.novu.co/platform/inbox/configuration/tabs",
   docsMcp: "https://docs.novu.co/platform/additional-resources/mcp",
   docsNotifications: "https://docs.novu.co/platform/sdks/react",
   docsOverview: "https://docs.novu.co/platform",
@@ -147,6 +158,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   docsQuickStart:
     "https://docs.novu.co/platform/quickstart/nextjs?utm_campaign=website",
   docsSdks: "https://docs.novu.co/platform/sdks",
+  docsSelfHosting: "https://docs.novu.co/community/self-hosting-novu/overview",
   docsUserPreferences:
     "https://docs.novu.co/platform/sdks/react/hooks/use-preferences",
   docsWorkflow: "https://docs.novu.co/platform/workflow",
