@@ -49,11 +49,6 @@ export interface IAgentFrameworkData {
   connectIntro: string
   /** Ordered how-to steps. Placeholders substituted at render. */
   steps: IFrameworkStep[]
-  /**
-   * Copy-paste prompt for a coding agent. `{channelName}` and `{cliSlug}`
-   * are substituted at render.
-   */
-  promptTemplate: string
   /** Framework-specific FAQ. `{channelName}` substituted at render. */
   faq: IFrameworkFaqItem[]
   /** Path under docs.novu.co for the framework's connect guide. */

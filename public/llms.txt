@@ -70,8 +70,8 @@ How to connect an agent built with a specific framework to a specific channel. T
 - [Content Management](https://novu.co/usecases/content-management/): Manage notification templates and content
 - [Communication Experience](https://novu.co/usecases/improve-communication-experience/): Enhance user engagement
 
-### AI agent use cases by channel (starter agents, one-click launch)
-Each channel page lists ready-made agent templates you can launch in about two minutes.
+### AI agent use cases by channel
+
 - AI agent for incident response, SDK setup, and API questions on Slack: [novu.co/channels/slack](https://novu.co/channels/slack/)
 - AI agent for order status, restock alerts, and returns on WhatsApp: [novu.co/channels/whatsapp](https://novu.co/channels/whatsapp/)
 - AI agent for developer support, API reference, and usage on Telegram: [novu.co/channels/telegram](https://novu.co/channels/telegram/)

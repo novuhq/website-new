@@ -1,6 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 
 import type { IFaqSection } from "@/types/common"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 // Single source of truth for homepage copy. The homepage
 // (app/(website)/(connect-footer)/page.tsx), the /index.md markdown alternate
@@ -46,6 +47,7 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
   telegram: "/channels/telegram",
   teams: "/channels/microsoft-teams",
   email: "/channels/email",
+  imessage: "/channels/imessage",
   inbox: String(ROUTE.inbox),
 }
 
@@ -57,8 +59,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Slack",
     description:
       "Put your agent where teams coordinate work, investigate issues, and make decisions together.",
-    prompt:
-      "Connect this project to Slack with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel slack. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete the interactive CLI (including Slack authorization). When it copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat.",
+    prompt: buildChannelConnectPrompt("Slack"),
     features: [
       "Conversation context across threaded replies",
       "Rich messages built with Block Kit",
@@ -74,8 +75,7 @@ export const HOME_CHANNELS = [
     title: "Communicate with users in Microsoft Teams",
     description:
       "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
-    prompt:
-      "Connect this project to Microsoft Teams with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel teams. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete the interactive CLI. Teams finishes in the Novu dashboard after the CLI opens it — guide me only if I get stuck. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
+    prompt: buildChannelConnectPrompt("Microsoft Teams"),
     features: [
       "Conversation context across replies",
       "Adaptive Cards that update in place",
@@ -91,8 +91,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to WhatsApp Business",
     description:
       "Give customers a direct way to reach your agent from the messaging app they already use.",
-    prompt:
-      "Connect this project to WhatsApp Business with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel whatsapp. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will complete Meta Embedded Signup in the browser and send the test WhatsApp message the CLI asks for. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
+    prompt: buildChannelConnectPrompt("WhatsApp Business"),
     features: [
       "Persistent conversation context",
       "Typing indicators and read receipts",
@@ -108,8 +107,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Telegram",
     description:
       "Make your agent available in a fast, lightweight channel suited to direct user conversations.",
-    prompt:
-      "Connect this project to Telegram with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel telegram. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will create the bot in BotFather and finish the CLI handoff (setup link / QR). When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask me to paste the bot token into chat.",
+    prompt: buildChannelConnectPrompt("Telegram"),
     features: [
       "Conversation context across replies",
       "Markdown-rich messages",
@@ -125,8 +123,7 @@ export const HOME_CHANNELS = [
     title: "Communicate with users over email",
     description:
       "Use email for conversations that benefit from a durable record and more room for detail.",
-    prompt:
-      "Connect this project to email with Novu Connect. Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel email. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will send the test email to the inbound address the CLI prints. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps or ask for secrets in chat.",
+    prompt: buildChannelConnectPrompt("Email"),
     features: [
       "Threaded conversation history",
       "Rich HTML messages",
@@ -142,8 +139,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to iMessage",
     description:
       "Give customers a familiar way to reach your agent through the Messages app.",
-    prompt:
-      "Connect this project to iMessage with Novu Connect (Sendblue). Inspect the repo for the existing agent and framework. From the project root, have me run: npx novu connect --channel sendblue. If you detect AI SDK, LangChain, custom code, or Chat SDK, append the matching --runtime (ai-sdk, langchain, custom-code, or chat-sdk). Otherwise leave runtime unset so the CLI can ask. I will enter Sendblue credentials in the CLI and reply to the test iMessage. Prefer the CLI prompts over chat for secrets. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps.",
+    prompt: buildChannelConnectPrompt("iMessage"),
     features: [
       "Full conversation history",
       "Conversation-level threaded replies",

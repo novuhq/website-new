@@ -1,10 +1,8 @@
 import ProductHuntBadge from "@/components/ui/product-hunt-badge"
 
 import ConnectHeroActions from "./hero-actions"
-import {
-  ConnectHeroChannelTicker,
-  ConnectHeroChannelTickerStyles,
-} from "./hero-channel-ticker"
+import { ConnectHeroChannelTicker } from "./hero-channel-ticker"
+import { ConnectHeroFrameworkTicker } from "./hero-framework-ticker"
 import ConnectHeroVideo from "./hero-video"
 import ConnectPromptCopyLine from "./prompt-copy-line"
 
@@ -38,9 +36,9 @@ function Hero() {
                 </h1>
 
                 <p className="max-w-[523.4609375px] text-base leading-normal font-normal tracking-tighter text-pretty text-gray-8 md:text-lg">
-                  Novu Connect plugs any Claude Managed Agent into Slack, Teams,
-                  WhatsApp, email, and more. Two minutes from template to live
-                  agent. No infrastructure to babysit.
+                  Novu Connect plugs any AI agent into Slack, Teams, WhatsApp,
+                  email, and more. Two minutes from template to live agent.
+                  Works with <ConnectHeroFrameworkTicker />
                 </p>
               </div>
             </div>
@@ -60,7 +58,6 @@ function Hero() {
 
         <ConnectHeroVideo />
       </div>
-      <ConnectHeroChannelTickerStyles />
     </section>
   )
 }

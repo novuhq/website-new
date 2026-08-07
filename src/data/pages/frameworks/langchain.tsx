@@ -27,7 +27,7 @@ export const langchainFrameworkData: IAgentFrameworkData = {
     },
     {
       title: "Connect the channel",
-      body: "Run npx novu connect --runtime langchain --channel {cliSlug}. The CLI scaffolds a bridge route in your app and connects {channelName}. You can also paste the prompt below into your coding agent and let it wire the bridge for you.",
+      body: "Run npx novu connect --channel {cliSlug} --runtime langchain. The CLI scaffolds a bridge route in your app and connects {channelName}. You can also paste the prompt below into your coding agent and let it wire the bridge for you.",
     },
     {
       title: "Wire the bridge handler",
@@ -38,8 +38,6 @@ export const langchainFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your LangChain agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect my LangChain agent to {channelName} with Novu Connect. Use the custom-code bridge with runtime langchain, wire the bridge route and handler into my app, identify each user, and route agent replies back to the same {channelName} conversation.",
   faq: [
     {
       question: "Do I have to rewrite my LangChain agent to add {channelName}?",

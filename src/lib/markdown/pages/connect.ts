@@ -1,6 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { getAgentTemplatesSection } from "@/lib/templates"
 import { getAgentTemplateUrl } from "@/lib/templates/url"
 import { CONNECT_FAQ } from "@/components/pages/connect/faq-data"
@@ -15,7 +16,6 @@ import type { MarkdownPage } from "../types"
 import { absoluteUrl, toCanonicalPathname } from "../url"
 
 const CONNECT_COMMAND = "npx novu connect"
-const CONNECT_PROMPT = "Add an agent to my app https://novu.co/agents.md"
 const PRODUCT_HUNT_LAUNCH_URL =
   "https://www.producthunt.com/products/novu/launches/novu-connect"
 
@@ -218,7 +218,7 @@ export async function getConnect(
       SEO_DATA.connect.description,
       formatCodeFence(CONNECT_COMMAND, "bash"),
       formatMarkdownLink("Sign Up", ROUTE.dashboardV2AgentsSignUp),
-      `Prompt for Claude:\n\n${formatCodeFence(CONNECT_PROMPT, "text")}`,
+      `Prompt for Claude:\n\n${formatCodeFence(DEFAULT_CONNECT_PROMPT, "text")}`,
       `Featured on ${formatMarkdownLink("Product Hunt", PRODUCT_HUNT_LAUNCH_URL)}`,
     ].join("\n\n"),
     "## Novu is trusted by leading teams worldwide",

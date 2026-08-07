@@ -4,18 +4,16 @@ import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 import { Check, Copy } from "lucide-react"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"
-
-const ACI_PROMPT =
-  "Add an agent to my app using instructions from https://novu.co/agents.md"
 
 function HeroActions() {
   const { isCopied, handleCopy } = useCopyToClipboard(3000)
 
   return (
     <div className="flex w-full max-w-79.25 flex-col items-center lg:items-start">
-      <div className="flex w-full gap-3 flex-row sm:gap-5">
+      <div className="flex w-full flex-row gap-3 sm:gap-5">
         <Button
           variant="default"
           size="lg"
@@ -54,7 +52,7 @@ function HeroActions() {
         <button
           type="button"
           className="inline-flex items-center gap-1 text-lagune-3 transition-colors hover:text-lagune-1 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-lagune-3/50 focus-visible:outline-none"
-          onClick={() => handleCopy(ACI_PROMPT)}
+          onClick={() => handleCopy(DEFAULT_CONNECT_PROMPT)}
           disabled={isCopied}
           aria-label={isCopied ? "Prompt copied" : "Copy prompt to Claude"}
           data-click-location="aci_hero"

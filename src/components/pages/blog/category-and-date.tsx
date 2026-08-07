@@ -17,9 +17,12 @@ function CategoryAndDate({
   isFeatured = false,
 }: ICategoryAndDateProps) {
   return (
-    <div className={cn("flex items-center gap-x-2", className)}>
+    <div className={cn("flex items-baseline gap-x-2", className)}>
       <Category category={category} isFeatured={isFeatured} />
-      <div className="size-1 shrink-0 rounded-full bg-gray-5" aria-hidden />
+      <div
+        className="size-1 shrink-0 self-center rounded-full bg-gray-5"
+        aria-hidden
+      />
       <Date variant="blog" size="sm" publishedAt={publishedAt} />
     </div>
   )

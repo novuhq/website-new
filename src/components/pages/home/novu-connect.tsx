@@ -2,6 +2,7 @@ import Image, { type StaticImageData } from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -33,16 +34,13 @@ export interface INovuConnectProps {
   title: string
 }
 
-const DEFAULT_PROMPT =
-  "Connect my AI agent to customers with Novu Connect. Configure secure two-way messaging, user identity, delivery status, and replies across the customer's preferred communication channel."
-
 function NovuConnect({
   className,
   label,
   title,
   description,
   items,
-  prompt = DEFAULT_PROMPT,
+  prompt = DEFAULT_CONNECT_PROMPT,
 }: INovuConnectProps) {
   if (!items || items.length === 0) {
     return null

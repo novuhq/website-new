@@ -41,6 +41,31 @@ export const MENUS = {
                   href: ROUTE.channelSlackLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelSlackAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelSlackChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelSlackCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelSlackClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelSlackClaudeAws,
+                  menuIcon: "claude-aws",
+                },
               ],
             },
             {
@@ -52,6 +77,31 @@ export const MENUS = {
                   label: "LangChain",
                   href: ROUTE.channelWhatsAppLangchain,
                   menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelWhatsAppAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelWhatsAppChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelWhatsAppCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelWhatsAppClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelWhatsAppClaudeAws,
+                  menuIcon: "claude-aws",
                 },
               ],
             },
@@ -65,6 +115,31 @@ export const MENUS = {
                   href: ROUTE.channelTelegramLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelTelegramAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelTelegramChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelTelegramCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelTelegramClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelTelegramClaudeAws,
+                  menuIcon: "claude-aws",
+                },
               ],
             },
             {
@@ -77,6 +152,31 @@ export const MENUS = {
                   href: ROUTE.channelMicrosoftTeamsLangchain,
                   menuIcon: "langchain",
                 },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelMicrosoftTeamsAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelMicrosoftTeamsChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelMicrosoftTeamsCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelMicrosoftTeamsClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelMicrosoftTeamsClaudeAws,
+                  menuIcon: "claude-aws",
+                },
               ],
             },
             {
@@ -88,6 +188,68 @@ export const MENUS = {
                   label: "LangChain",
                   href: ROUTE.channelEmailLangchain,
                   menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelEmailAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelEmailChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelEmailCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelEmailClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelEmailClaudeAws,
+                  menuIcon: "claude-aws",
+                },
+              ],
+            },
+            {
+              label: "iMessage",
+              href: ROUTE.channelIMessage,
+              menuIcon: "imessage",
+              children: [
+                {
+                  label: "LangChain",
+                  href: ROUTE.channelIMessageLangchain,
+                  menuIcon: "langchain",
+                },
+                {
+                  label: "Vercel AI SDK",
+                  href: ROUTE.channelIMessageAiSdk,
+                  menuIcon: "ai-sdk",
+                },
+                {
+                  label: "Chat SDK",
+                  href: ROUTE.channelIMessageChatSdk,
+                  menuIcon: "chat-sdk",
+                },
+                {
+                  label: "Custom code",
+                  href: ROUTE.channelIMessageCustomCode,
+                  menuIcon: "custom-code",
+                },
+                {
+                  label: "Claude Managed Agent",
+                  href: ROUTE.channelIMessageClaude,
+                  menuIcon: "claude",
+                },
+                {
+                  label: "AWS Claude Managed Agent",
+                  href: ROUTE.channelIMessageClaudeAws,
+                  menuIcon: "claude-aws",
                 },
               ],
             },
@@ -134,11 +296,6 @@ export const MENUS = {
           subtitle: "Discover",
           items: [
             { label: "Blog", href: ROUTE.blog, menuIcon: "blog" },
-            {
-              label: "Customers",
-              href: ROUTE.customers,
-              menuIcon: "customers",
-            },
             {
               label: "Community",
               href: ROUTE.community,

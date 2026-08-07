@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
@@ -26,6 +26,7 @@ interface IGlobeSceneProps {
   activeCards: IGlobeCardEvent[]
   elapsedRef: TElapsedTimeRef
   interactionRef: TInteractionRef
+  landPointQuality: TGlobeQuality
   onAnchorUpdate: (eventId: string, anchor: IProjectedAnchor) => void
   onLoadError: () => void
   onReady: () => void
@@ -39,6 +40,7 @@ export default function GlobeScene({
   activeCards,
   elapsedRef,
   interactionRef,
+  landPointQuality,
   onAnchorUpdate,
   onLoadError,
   onReady,
@@ -46,8 +48,14 @@ export default function GlobeScene({
   routePlaybackRef,
 }: IGlobeSceneProps) {
   const groupRef = useRef<THREE.Group>(null)
+  const baseGlobeRef = useRef<THREE.Group>(null)
   const camera = useThree((state) => state.camera)
+  const gl = useThree((state) => state.gl)
+  const scene = useThree((state) => state.scene)
   const size = useThree((state) => state.size)
+  const [baseShadersReady, setBaseShadersReady] = useState(false)
+  const [landGeometryReady, setLandGeometryReady] = useState(false)
+  const [routesMounted, setRoutesMounted] = useState(false)
   const anchorPositions = useMemo(
     () =>
       activeCards.map((event) => ({
@@ -73,7 +81,10 @@ export default function GlobeScene({
       }),
     []
   )
-  const handleLandReady = useCallback(onReady, [onReady])
+  const handleLandGeometryReady = useCallback(
+    () => setLandGeometryReady(true),
+    []
+  )
 
   useEffect(
     () => () => {
@@ -81,6 +92,123 @@ export default function GlobeScene({
     },
     [depthMaskMaterial]
   )
+
+  useEffect(() => {
+    const baseGlobe = baseGlobeRef.current
+    if (!baseGlobe) return
+    const shaderBaseGlobe: THREE.Group = baseGlobe
+
+    let cancelled = false
+
+    // GlobeLandPoints mounts with a zero-instance placeholder, so its shader
+    // can compile while the real point coordinates are still in flight.
+    void gl
+      .compileAsync(shaderBaseGlobe, camera, scene)
+      .then(() => {
+        if (!cancelled) setBaseShadersReady(true)
+      })
+      .catch(() => {
+        if (!cancelled) onLoadError()
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [camera, gl, onLoadError, scene])
+
+  useEffect(() => {
+    if (!baseShadersReady || !landGeometryReady) return
+
+    let cancelled = false
+    let gpuFrame = 0
+    let gpuSync: WebGLSync | null = null
+    let settleGpuWait: (() => void) | null = null
+
+    function waitForBaseFrame() {
+      const context = gl.getContext()
+
+      if (!("fenceSync" in context)) {
+        context.finish()
+        return Promise.resolve()
+      }
+
+      gpuSync = context.fenceSync(context.SYNC_GPU_COMMANDS_COMPLETE, 0)
+      if (!gpuSync) {
+        context.finish()
+        return Promise.resolve()
+      }
+
+      context.flush()
+
+      return new Promise<void>((resolve, reject) => {
+        let settled = false
+        const settle = (error?: Error) => {
+          if (settled) return
+          settled = true
+          settleGpuWait = null
+          if (error) reject(error)
+          else resolve()
+        }
+        settleGpuWait = () => settle()
+
+        const poll = () => {
+          if (cancelled || !gpuSync) {
+            settle()
+            return
+          }
+
+          const status = context.clientWaitSync(gpuSync, 0, 0)
+          if (status === context.WAIT_FAILED) {
+            context.deleteSync(gpuSync)
+            gpuSync = null
+            settle(new Error("Unable to prepare the base globe frame"))
+            return
+          }
+
+          if (status === context.TIMEOUT_EXPIRED) {
+            gpuFrame = requestAnimationFrame(poll)
+            return
+          }
+
+          context.deleteSync(gpuSync)
+          gpuSync = null
+          settle()
+        }
+
+        gpuFrame = requestAnimationFrame(poll)
+      })
+    }
+
+    async function prepareBaseGlobe() {
+      try {
+        // Shader compilation and land-data loading have already completed in
+        // parallel. This draw uploads the final attributes before the fence.
+        gl.render(scene, camera)
+        await waitForBaseFrame()
+        if (cancelled) return
+
+        setRoutesMounted(true)
+        onReady()
+      } catch {
+        if (!cancelled) onLoadError()
+      }
+    }
+
+    void prepareBaseGlobe()
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(gpuFrame)
+      settleGpuWait?.()
+      settleGpuWait = null
+
+      if (gpuSync) {
+        const context = gl.getContext()
+        if ("deleteSync" in context) context.deleteSync(gpuSync)
+        gpuSync = null
+      }
+    }
+  }, [baseShadersReady, gl, landGeometryReady, onLoadError, onReady])
 
   useFrame(() => {
     const group = groupRef.current
@@ -112,31 +240,35 @@ export default function GlobeScene({
 
   return (
     <group position={[0, GLOBE_CENTER_Y, 0]} ref={groupRef}>
-      <mesh material={depthMaskMaterial} renderOrder={0}>
-        <sphereGeometry args={[GLOBE_RADIUS - 0.018, 48, 32]} />
-      </mesh>
-      <mesh renderOrder={1}>
-        <sphereGeometry
-          args={[GLOBE_RADIUS + FIGMA_SURFACE_BLUR_WORLD, 64, 48]}
+      <group ref={baseGlobeRef}>
+        <mesh material={depthMaskMaterial} renderOrder={0}>
+          <sphereGeometry args={[GLOBE_RADIUS - 0.018, 48, 32]} />
+        </mesh>
+        <mesh renderOrder={1}>
+          <sphereGeometry
+            args={[GLOBE_RADIUS + FIGMA_SURFACE_BLUR_WORLD, 64, 48]}
+          />
+          <shaderMaterial
+            blending={THREE.NormalBlending}
+            depthWrite={false}
+            fragmentShader={SURFACE_FRAGMENT_SHADER}
+            transparent
+            vertexShader={SURFACE_VERTEX_SHADER}
+          />
+        </mesh>
+        <GlobeLandPoints
+          onGeometryReady={handleLandGeometryReady}
+          onLoadError={onLoadError}
+          quality={landPointQuality}
         />
-        <shaderMaterial
-          blending={THREE.NormalBlending}
-          depthWrite={false}
-          fragmentShader={SURFACE_FRAGMENT_SHADER}
-          transparent
-          vertexShader={SURFACE_VERTEX_SHADER}
+      </group>
+      {routesMounted ? (
+        <GlobeRoutes
+          elapsedRef={elapsedRef}
+          quality={quality}
+          routePlaybackRef={routePlaybackRef}
         />
-      </mesh>
-      <GlobeRoutes
-        elapsedRef={elapsedRef}
-        quality={quality}
-        routePlaybackRef={routePlaybackRef}
-      />
-      <GlobeLandPoints
-        onLoadError={onLoadError}
-        onReady={handleLandReady}
-        quality={quality}
-      />
+      ) : null}
     </group>
   )
 }

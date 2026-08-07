@@ -41,7 +41,7 @@ function FrameworkHero({ combo }: { combo: IChannelFrameworkCombo }) {
           <Button
             size="none"
             variant="default"
-            className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-normal tracking-tight normal-case sm:w-fit"
+            className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-fit"
             asChild
           >
             <NextLink

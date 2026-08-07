@@ -21,10 +21,18 @@ export const navigationContract = {
   destinationHeading: "Flexible pricing for companies and developers",
   authLinks: {
     desktop: [{ name: "Sign up now", href: destinations.dashboard }],
+    desktopSignedIn: [
+      { name: "Visit Dashboard", href: destinations.dashboard },
+    ],
     mobile: [
       { name: "Login", href: destinations.dashboard },
       { name: "Get Started", href: destinations.dashboard },
     ],
+  },
+  authStateCookie: "novu-critical-flow-auth-state",
+  authStates: {
+    loading: "loading",
+    signedIn: "signed-in",
   },
 } as const
 
@@ -62,11 +70,8 @@ export const connectStackContract = {
   channel: "MS Teams",
   framework: "LangChain",
   command: "npx novu connect --channel teams --runtime langchain",
-  prompt: `Connect this project's LangChain agent to MS Teams with Novu Connect. Inspect the repo (agent entry point, how LangChain is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
-
-npx novu connect --channel teams --runtime langchain
-
-I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`,
+  prompt:
+    "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://novu.co/agents.md",
 } as const
 
 export const channelPagesContract = {
@@ -121,7 +126,8 @@ export const connectContract = {
   route: destinations.connect,
   heading: "Connect your agent to any channel",
   command: "npx novu connect",
-  prompt: "Add an agent to my app https://novu.co/agents.md",
+  prompt:
+    "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md",
   signUpDestination: destinations.agentsSignUp,
   connectAppDestination: destinations.connectApp,
 } as const
