@@ -8,7 +8,13 @@ function channelCategoryTitle(categorySlug: string): string {
 }
 
 /** Default `<title>` segment before `| Novu` when `seo.title` is not set in frontmatter. */
-export function getDefaultIntegrationSeoTitleSegment(integration: IIntegration): string {
+export function getDefaultIntegrationSeoTitleSegment(
+  integration: IIntegration
+): string {
+  if (integration.product === "connect") {
+    return `${integration.title} Agent Integration`
+  }
+
   if (integration.tab === "sources") {
     return `${integration.title} Integration`
   }
@@ -16,7 +22,13 @@ export function getDefaultIntegrationSeoTitleSegment(integration: IIntegration):
 }
 
 /** Default meta description when `seo.description` is not set in frontmatter. */
-export function getDefaultIntegrationSeoDescription(integration: IIntegration): string {
+export function getDefaultIntegrationSeoDescription(
+  integration: IIntegration
+): string {
+  if (integration.product === "connect") {
+    return `Connect your AI agent to ${integration.title} with Novu Connect for contextual conversations, actions, and approvals.`
+  }
+
   if (integration.tab === "sources") {
     return `Connect ${integration.title} with Novu to power notifications at scale. Unified API, multi-channel support, and real-time observability out of the box.`
   }

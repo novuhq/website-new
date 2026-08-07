@@ -10,6 +10,7 @@ export interface IIntegrationCardProps {
   iconSrc: string
   iconAlt?: string
   category?: string
+  status?: string
   href?: string | Route
   className?: string
 }
@@ -20,6 +21,7 @@ function IntegrationCard({
   iconSrc,
   iconAlt,
   category,
+  status,
   href,
   className,
 }: IIntegrationCardProps) {
@@ -28,6 +30,7 @@ function IntegrationCard({
   const shellClass = cn(
     "group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl border border-integration-card-border bg-integration-card p-5",
     "transition-[background] duration-200 hover:[background:var(--integration-card-hover-bg)]",
+    !href && status === "Coming soon" && "cursor-default opacity-75",
     className
   )
 
@@ -41,18 +44,27 @@ function IntegrationCard({
               alt={label}
               width={24}
               height={24}
-              className="object-contain"
+              className="size-6 object-contain"
             />
           </div>
-          {category ? (
-            <span
+          {category || status ? (
+            <div
               className={cn(
-                "pointer-events-none absolute top-0 right-0 rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter whitespace-nowrap text-gray-9",
-                "opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                "pointer-events-none absolute top-0 right-0 flex items-center gap-1.5 transition-opacity duration-200",
+                status ? "opacity-100" : "opacity-0 group-hover:opacity-100"
               )}
             >
-              {category}
-            </span>
+              {category ? (
+                <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter whitespace-nowrap text-gray-9">
+                  {category}
+                </span>
+              ) : null}
+              {status ? (
+                <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter whitespace-nowrap text-gray-9">
+                  {status}
+                </span>
+              ) : null}
+            </div>
           ) : null}
         </div>
         <div className="flex min-w-0 flex-col gap-2">
@@ -80,7 +92,11 @@ function IntegrationCard({
   }
 
   return (
-    <article className={shellClass} data-slot="integration-card">
+    <article
+      className={shellClass}
+      data-slot="integration-card"
+      data-availability={status === "Coming soon" ? "coming-soon" : undefined}
+    >
       {body}
     </article>
   )

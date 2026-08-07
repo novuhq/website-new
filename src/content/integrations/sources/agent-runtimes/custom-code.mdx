@@ -1,0 +1,38 @@
+---
+slug: "custom-code"
+title: "Custom Code"
+tab: "sources"
+category: "agent-runtimes"
+group: "custom-code-runtimes"
+badge: "Novu Connect"
+detailBadge: "Agent runtime"
+availability: "live"
+product: "connect"
+tagline: "No framework required. Connect the agent loop you already wrote to every channel your users are on."
+shortDescription: "Connect an agent built with your own framework, LLM SDK, or application code to Novu-supported channels."
+helpText: "Read the Custom Code agent documentation for framework-agnostic setup patterns."
+icon: "/images/integration-icons/ai/custom-code-integration-icon.svg"
+order: 3
+docsUrl: "https://docs.novu.co/agents/custom-code-agent/quickstart"
+primaryCtaLabel: "Connect custom code"
+cliCommand: "npx novu connect --channel <channel> --runtime custom-code"
+seo:
+  title: "Custom Code Agent Integration"
+  description: "Connect an agent built with any LLM SDK, orchestration framework, or custom application code to supported communication channels through Novu Connect."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  No framework required. The agent is fully yours: your own loop, your own
+  model calls, your own tools. Novu Connect adds the last step: getting it
+  into a channel and routing replies back.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect delivers each channel message to your handler with its
+  conversation context. Whatever your handler returns goes back to the user.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Run the command above and pick a channel. The CLI adds a bridge route to
+  your project. Point the handler at your agent, and send a test message.
+</IntegrationSection>

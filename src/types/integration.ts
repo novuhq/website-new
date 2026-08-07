@@ -1,6 +1,8 @@
 import type { Route } from "next"
 
 export type IntegrationTabType = "channels" | "sources"
+export type IntegrationAvailability = "live" | "coming-soon"
+export type IntegrationProduct = "notify" | "connect"
 
 export interface IIntegrationRelatedArticle {
   title: string
@@ -19,10 +21,17 @@ export interface IIntegration {
   title: string
   tab: IntegrationTabType
   category: string
+  categories: string[]
+  group?: string
   badge: string
+  detailBadge: string
+  availability: IntegrationAvailability
+  product: IntegrationProduct
+  hasDedicatedPage: boolean
   icon: string
   tagline: string
   description: string
+  helpText?: string
   docsUrl?: string
   order: number
   features?: string[]
@@ -31,6 +40,7 @@ export interface IIntegration {
   seo?: IIntegrationSeo
   primaryCtaLabel?: string
   primaryCtaHref?: string
+  cliCommand?: string
   secondaryCtaLabel?: string
   secondaryCtaHref?: string
   relativePath: string

@@ -1,0 +1,45 @@
+---
+slug: "telegram-agent"
+title: "Telegram"
+tab: "channels"
+category: "agent-channels"
+badge: "Novu Connect"
+detailBadge: "Agent channel"
+availability: "live"
+product: "connect"
+tagline: "Make your agent available for fast, contextual conversations through Telegram."
+shortDescription: "Make your agent available through Telegram for fast, contextual conversations with inline actions, rich messages, and real-time responses."
+helpText: "Check our documentation for a step-by-step guide to connecting an agent to Telegram with Novu Connect."
+icon: "/images/integration-icons/agent-channels/telegram-icon.svg"
+order: 3
+docsUrl: "https://docs.novu.co/agents/channels/telegram"
+primaryCtaLabel: "Connect Telegram"
+cliCommand: "npx novu connect --channel telegram"
+seo:
+  title: "Telegram AI Agent Integration"
+  description: "Connect your AI agent to Telegram for contextual conversations, rich messages, inline actions, and real-time responses."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Telegram is a messaging platform that supports bots, rich messages, and
+  interactive actions. Novu Connect lets your existing agent communicate through
+  Telegram without requiring you to build and operate a separate Telegram bot
+  integration.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect receives Telegram messages and replies, retains their
+  conversation context, and sends them to your agent. Agent responses return to
+  the correct chat with support for Markdown-rich messages, inline buttons,
+  quick actions, typing indicators, read states, and messages that update in
+  place.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+From your agent project, run:
+
+`npx novu connect --channel telegram`
+
+Create the Telegram bot in BotFather, then complete the setup link or QR-code flow provided by the CLI. Enter the bot token only in the CLI flow.
+
+</IntegrationSection>

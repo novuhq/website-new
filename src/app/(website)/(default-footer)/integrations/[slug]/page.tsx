@@ -27,7 +27,9 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const items = await getAllIntegrations()
-  return items.map((i) => ({ slug: i.slug }))
+  return items
+    .filter((item) => item.hasDedicatedPage)
+    .map((item) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata({
@@ -68,6 +70,11 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     compileIntegrationMdx(integration.relativePath),
   ])
 
+  const isLiveAgentChannel =
+    integration.category === "agent-channels" &&
+    integration.product === "connect" &&
+    integration.availability === "live"
+
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
 
@@ -101,32 +108,59 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
         relatedIntegrations={relatedIntegrations}
         content={content}
       />
-      <CTA
-        title={`Send notifications with\nthe providers you already use`}
-        titleClassName="whitespace-pre-line"
-        className="!pt-24 md:!pt-46"
-        description={
-          <>
-            Start with one provider or connect multiple channels, and
-            <br className="hidden md:block" />
-            manage them in one place with Novu.
-          </>
-        }
-        actions={[
-          {
-            kind: "primary-button",
-            label: "Start building",
-            href: ROUTE.dashboard,
-            clickLocation: "integrations_detail_cta",
-            clickText: "start_building",
-          },
-          {
-            kind: "secondary-button",
-            label: "TALK TO US",
-            href: ROUTE.contactUs,
-          },
-        ]}
-      />
+      {isLiveAgentChannel ? (
+        <CTA
+          title={`Bring your agent to every\nconversation`}
+          titleClassName="whitespace-pre-line"
+          className="!pt-24 md:!pt-46"
+          description="Connect the agent you already built to the channels where customers and teams communicate. Novu handles channel-specific messaging, conversation context, and delivery."
+          actions={[
+            {
+              kind: "primary-button",
+              label: "Explore agent channels",
+              href: "https://docs.novu.co/agents/channels",
+              clickLocation: "integrations_detail_cta",
+              clickText: "explore_agent_channels",
+              openInNewTab: true,
+            },
+            {
+              kind: "secondary-button",
+              label: "Read the agent documentation",
+              href: "https://docs.novu.co/agents",
+              clickLocation: "integrations_detail_cta",
+              clickText: "read_agent_docs",
+              openInNewTab: true,
+            },
+          ]}
+        />
+      ) : (
+        <CTA
+          title={`Connect your communication\nstack to Novu`}
+          titleClassName="whitespace-pre-line"
+          className="!pt-24 md:!pt-46"
+          description={
+            <>
+              Use Novu Notify for multi-channel notifications and Novu Connect
+              <br className="hidden md:block" /> for contextual agent
+              conversations, actions, and approvals.
+            </>
+          }
+          actions={[
+            {
+              kind: "primary-button",
+              label: "Start building",
+              href: ROUTE.dashboard,
+              clickLocation: "integrations_detail_cta",
+              clickText: "start_building",
+            },
+            {
+              kind: "secondary-button",
+              label: "TALK TO US",
+              href: ROUTE.contactUs,
+            },
+          ]}
+        />
+      )}
     </div>
   )
 }

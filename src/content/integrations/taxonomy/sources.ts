@@ -20,13 +20,13 @@ export const SOURCE_CATEGORY_TAXONOMY: ISourceCategoryTaxonomy[] = [
     defaultBadge: "Workflow",
   },
   {
-    slug: "ai-sdks",
-    title: "AI SDKs",
+    slug: "agent-runtimes",
+    title: "Agent runtimes",
     description:
-      "Use AI in code steps to generate or transform workflow content dynamically.",
+      "Connect an existing agent to supported communication channels without changing its core application logic.",
     order: 1,
     tab: "sources",
-    defaultBadge: "AI",
+    defaultBadge: "Agent runtime",
   },
   {
     slug: "feature-flags",

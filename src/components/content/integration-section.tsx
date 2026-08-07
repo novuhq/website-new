@@ -36,7 +36,8 @@ function IntegrationSection({
       <div
         className={cn(
           "text-sm leading-snug font-book tracking-tight text-gray-9",
-          "[&_p]:text-sm [&_p]:leading-snug [&_p]:tracking-tight"
+          "[&_p]:text-sm [&_p]:leading-snug [&_p]:tracking-tight",
+          "[&_code]:inline-flex [&_code]:items-center [&_code]:rounded [&_code]:border [&_code]:border-border [&_code]:bg-gray-3 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.8125rem] [&_code]:leading-snug [&_code]:whitespace-nowrap [&_code]:text-foreground"
         )}
       >
         {children}

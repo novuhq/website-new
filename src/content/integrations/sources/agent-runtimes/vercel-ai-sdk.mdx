@@ -1,0 +1,39 @@
+---
+slug: "vercel-ai-sdk"
+title: "Vercel AI SDK"
+tab: "sources"
+category: "agent-runtimes"
+group: "custom-code-runtimes"
+badge: "Novu Connect"
+detailBadge: "Agent runtime"
+availability: "live"
+product: "connect"
+tagline: "The Vercel AI SDK is the open-source TypeScript toolkit for building agents and AI apps on any model provider."
+shortDescription: "Connect an agent built with the Vercel AI SDK to supported Novu Connect channels."
+helpText: "Check our documentation for connecting a Vercel AI SDK agent to channels with Novu Connect."
+icon: "/images/integration-icons/ai/ai-sdk-icon.svg"
+order: 0
+docsUrl: "https://docs.novu.co/agents/custom-code-agent/frameworks/ai-sdk"
+primaryCtaLabel: "Integrate Vercel AI SDK"
+cliCommand: "npx novu connect --channel <channel> --runtime ai-sdk"
+seo:
+  title: "Vercel AI SDK Agent Integration"
+  description: "Connect an agent built with the Vercel AI SDK to supported communication channels through Novu Connect."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  The Vercel AI SDK is an open-source toolkit for building AI agents in
+  TypeScript. You build and run the agent in your own app. Novu Connect adds
+  the last step: getting it into a channel and routing replies back.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect delivers messages from the channel to your agent and routes
+  its replies back to the same conversation. Your agent keeps running in your
+  own app the whole time.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Run the command above and pick a channel. The CLI adds a bridge route to
+  your project. Point it at your agent, and you're live.
+</IntegrationSection>

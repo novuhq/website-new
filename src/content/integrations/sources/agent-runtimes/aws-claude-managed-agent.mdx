@@ -1,0 +1,39 @@
+---
+slug: "aws-claude-managed-agent"
+title: "AWS Claude Managed Agent"
+tab: "sources"
+category: "agent-runtimes"
+group: "managed-agent-runtimes"
+badge: "Novu Connect"
+detailBadge: "Agent runtime"
+availability: "live"
+product: "connect"
+tagline: "The same Claude Managed Agent, set up through your AWS credential flow. One CLI command, no agent server."
+shortDescription: "Create a hosted Claude agent through your AWS credential flow and connect it to supported Novu Connect channels."
+helpText: "Check our documentation for creating and connecting an AWS Claude Managed Agent."
+icon: "/images/integration-icons/ai/aws-icon.svg"
+order: 1
+docsUrl: "https://docs.novu.co/agents/managed-agent/quickstart"
+primaryCtaLabel: "Create a Claude Managed Agent on AWS"
+cliCommand: "npx novu connect --channel <channel> --runtime claude-aws"
+seo:
+  title: "AWS Claude Managed Agent Integration"
+  description: "Create a hosted Claude Managed Agent through your AWS credential flow with Novu and connect it to supported communication channels through Novu Connect."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  The same Claude Managed Agent, hosted by Novu. You bring your AWS
+  credentials instead of Anthropic's, describe the agent you want, and Claude
+  handles the reasoning.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  There's no code to host. The CLI walks you through the AWS credential flow,
+  creating the agent, and connecting it to a channel.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Run the command above and pick a channel. Follow the prompts to complete
+  the AWS credential flow and describe your agent. You can edit it later from
+  the Novu dashboard.
+</IntegrationSection>

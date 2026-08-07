@@ -78,14 +78,14 @@ async function IntegrationsTabPageContent({
         className="pb-18"
       />
       <CTA
-        title={`Send notifications with\nthe providers you already use`}
+        title={`Connect your communication\nstack to Novu`}
         titleClassName="whitespace-pre-line"
         className="!pt-27 !pb-45"
         description={
           <>
-            Start with one provider or connect multiple channels, and
-            <br className="hidden md:block" />
-            manage them in one place with Novu.
+            Use Novu Notify for multi-channel notifications and Novu Connect
+            <br className="hidden md:block" /> for contextual agent
+            conversations, actions, and approvals.
           </>
         }
         actions={[

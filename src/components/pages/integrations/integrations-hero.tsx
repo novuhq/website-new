@@ -32,16 +32,17 @@ function IntegrationsHero({ className }: IntegrationsHeroProps) {
                     "md:text-[2.5rem] md:tracking-tight lg:text-[2.75rem]"
                   )}
                 >
-                  <span className="block">Novu Integrations for</span>
-                  <span className="block">Unified Notification Delivery</span>
+                  <span className="block">Novu integrations for</span>
+                  <span className="block">notifications and AI agent</span>
+                  <span className="block">communication</span>
                 </h1>
 
                 <div className="flex flex-col gap-7">
                   <p className="max-w-[35.25rem] text-left text-lg leading-normal font-book tracking-tight text-gray-8 md:text-base [&_span]:font-normal [&_span]:text-white">
-                    Connect the providers and tools you use with Novu across{" "}
-                    <span>email</span>, <span>SMS</span>, <span>push</span>,{" "}
-                    <span>chat</span>, <span>in-app</span>, and{" "}
-                    <span>workflow integrations.</span>
+                    Connect the providers, channels, and tools you use with{" "}
+                    <span>Novu Notify</span> and <span>Novu Connect</span>{" "}
+                    across email, SMS, push, chat, in-app, tools, and agent
+                    conversations.
                   </p>
 
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-7">

@@ -1,0 +1,35 @@
+---
+slug: "grafana"
+title: "Grafana"
+tab: "channels"
+category: "tools"
+badge: "Tool"
+tagline: "Route alerts to different Grafana stacks from one Novu workflow."
+shortDescription: "Send workflow alerts to subscriber-specific Grafana IRM or OnCall stacks with Novu."
+helpText: "Read the Grafana Tool integration documentation for the complete setup."
+icon: "/images/integration-icons/tools/grafana-icon.svg"
+order: 80
+docsUrl: "https://docs.novu.co/platform/integrations/tool/grafana"
+primaryCtaLabel: "Integrate Grafana"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Grafana is a Tool provider for sending workflow alerts to Grafana IRM or
+  Grafana OnCall. Each subscriber can connect a different incoming webhook
+  URL, allowing one workflow to route alerts to the correct Grafana stack
+  without storing a shared webhook on the integration.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When a workflow reaches a Grafana Tool step, Novu resolves the Grafana
+  channel endpoint registered for the subscriber and sends the rendered alert
+  to that incoming webhook. If the subscriber has no matching endpoint, Novu
+  skips the Tool step for that subscriber.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Create the Grafana integration under Tool in the Novu Integration Store.
+  Register each subscriber's Grafana incoming webhook URL as a channel
+  endpoint, add a Tool step to a workflow, select Grafana, and send a test
+  alert.
+</IntegrationSection>

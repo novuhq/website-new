@@ -1,7 +1,8 @@
 "use client"
 
-import type { MouseEvent } from "react"
 import { useLayoutEffect, useRef, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { ROUTE } from "@/constants/routes"
 
 import type { IntegrationTabType } from "@/types/integration"
 import { cn } from "@/lib/utils"
@@ -18,12 +19,21 @@ interface IntegrationCategoriesNavProps {
 }
 
 function IntegrationCategoriesNav({
-  tab: _tab,
+  tab,
   categories,
   className,
 }: IntegrationCategoriesNavProps) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [fadeEdges, setFadeEdges] = useState({ left: false, right: false })
+  const requestedCategory = searchParams.get("category") ?? ""
+  const selectedCategory = categories.some(
+    (category) => category.slug === requestedCategory
+  )
+    ? requestedCategory
+    : ""
+  const categoryOptions = [{ slug: "", title: "All" }, ...categories]
 
   useLayoutEffect(() => {
     const el = scrollRef.current
@@ -54,17 +64,19 @@ function IntegrationCategoriesNav({
     }
   }, [categories])
 
-  const handleCategoryClick = (
-    event: MouseEvent<HTMLButtonElement>,
-    slug: string
-  ) => {
-    event.preventDefault()
-    const element = document.getElementById(`integration-category-${slug}`)
-    if (!element) {
-      return
+  const handleCategoryClick = (slug: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (slug) {
+      params.set("category", slug)
+    } else {
+      params.delete("category")
     }
 
-    element.scrollIntoView({ behavior: "smooth", block: "start" })
+    const queryString = params.toString()
+    const pathname = `${ROUTE.integrations}/${tab}`
+    router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+      scroll: false,
+    })
   }
 
   return (
@@ -94,18 +106,21 @@ function IntegrationCategoriesNav({
           ref={scrollRef}
           className="scrollbar-hidden overflow-x-auto overflow-y-hidden"
         >
-          <nav aria-label="Jump to category">
+          <nav aria-label="Filter by category">
             <ul className="flex min-h-9 w-max min-w-full flex-nowrap items-center justify-center py-0.5 md:justify-start">
-              {categories.map(({ slug, title }) => {
+              {categoryOptions.map(({ slug, title }) => {
+                const isActive = selectedCategory === slug
                 return (
                   <li key={slug} className="shrink-0">
                     <button
                       type="button"
                       className={cn(
                         "relative inline-flex h-7.5 items-center justify-center rounded-full border border-transparent px-3 leading-none tracking-tight whitespace-nowrap text-gray-8 transition-colors hover:border-transparent hover:text-white",
-                        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:ring-inset"
+                        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:outline-none focus-visible:ring-inset",
+                        isActive && "bg-white/10 text-white"
                       )}
-                      onClick={(event) => handleCategoryClick(event, slug)}
+                      aria-pressed={isActive}
+                      onClick={() => handleCategoryClick(slug)}
                     >
                       {title}
                     </button>

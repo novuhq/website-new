@@ -1,7 +1,7 @@
 import type { Route } from "next"
 import { ROUTE } from "@/constants/routes"
 
-import type { IMenuItem } from "@/types/common"
+import type { IMenuItem, TMenuIcon } from "@/types/common"
 import type { TIntegrationMenuSlug } from "@/types/integration-menu"
 
 const integrationItem = (
@@ -11,6 +11,16 @@ const integrationItem = (
   label,
   href: `/integrations/${slug}` as Route<string>,
   integrationIcon: `integration-${slug}`,
+})
+
+const menuIconIntegrationItem = (
+  label: string,
+  slug: string,
+  menuIcon: TMenuIcon
+): IMenuItem => ({
+  label,
+  href: `/integrations/${slug}` as Route<string>,
+  menuIcon,
 })
 
 const categoryItem = (
@@ -31,7 +41,7 @@ export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
   categoryItem("In-app", ROUTE.integrationsChannelsInApp, 1, [
     integrationItem("Novu Inbox", "novu-inbox"),
   ]),
-  categoryItem("Email", ROUTE.integrationsChannelsEmail, 18, [
+  categoryItem("Email", ROUTE.integrationsChannelsEmail, 19, [
     integrationItem("SendGrid", "sendgrid"),
     integrationItem("Amazon SES", "ses"),
     integrationItem("Postmark", "postmark"),
@@ -40,7 +50,7 @@ export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
     integrationItem("Mailgun", "mailgun"),
     integrationItem("Mailjet", "mailjet"),
   ]),
-  categoryItem("SMS", ROUTE.integrationsChannelsSms, 23, [
+  categoryItem("SMS", ROUTE.integrationsChannelsSms, 38, [
     integrationItem("Twilio", "twilio"),
     integrationItem("Plivo", "plivo"),
     integrationItem("AWS SNS", "aws-sns"),
@@ -49,7 +59,7 @@ export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
     integrationItem("Telnyx", "telnyx"),
     integrationItem("Termii", "termii"),
   ]),
-  categoryItem("Push", ROUTE.integrationsChannelsPush, 7, [
+  categoryItem("Push", ROUTE.integrationsChannelsPush, 8, [
     integrationItem("Firebase Cloud Messaging", "fcm"),
     integrationItem("Apple Push Notification", "apns"),
     integrationItem("Expo Push", "expo-push"),
@@ -58,13 +68,29 @@ export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
     integrationItem("Pusher Beams", "pusher-beams"),
     integrationItem("Push Webhook", "push-webhook"),
   ]),
-  categoryItem("Chat", ROUTE.integrationsChannelsChat, 6, [
+  categoryItem("Chat", ROUTE.integrationsChannelsChat, 15, [
     integrationItem("Slack", "slack"),
     integrationItem("Discord", "discord"),
     integrationItem("Microsoft Teams", "ms-teams"),
     integrationItem("Mattermost", "mattermost"),
     integrationItem("WhatsApp Business", "whatsapp"),
     integrationItem("Zulip", "zulip"),
+  ]),
+  categoryItem("Agent channels", ROUTE.integrationsChannelsAgentChannels, 11, [
+    menuIconIntegrationItem("Slack", "slack-agent", "slack"),
+    menuIconIntegrationItem(
+      "Microsoft Teams",
+      "microsoft-teams-agent",
+      "teams"
+    ),
+    menuIconIntegrationItem(
+      "WhatsApp Business",
+      "whatsapp-business-agent",
+      "whatsapp"
+    ),
+    menuIconIntegrationItem("Telegram", "telegram-agent", "telegram"),
+    menuIconIntegrationItem("Email", "email-agent", "email"),
+    menuIconIntegrationItem("iMessage", "imessage-agent", "imessage"),
   ]),
   categoryItem("Workflow integrations", ROUTE.integrationsSourcesWorkflow, 5, [
     integrationItem("React Email", "react-email"),
@@ -76,6 +102,12 @@ export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
   categoryItem("AI SDKs", ROUTE.integrationsSourcesAiSdks, 2, [
     integrationItem("LangChain", "langchain"),
     integrationItem("Vercel AI SDK", "vercel-ai-sdk"),
+  ]),
+  categoryItem("Agent runtimes", ROUTE.integrationsSourcesAgentRuntimes, 4, [
+    integrationItem("Vercel AI SDK", "vercel-ai-sdk"),
+    menuIconIntegrationItem("Chat SDK", "chat-sdk", "chat-sdk"),
+    integrationItem("LangChain", "langchain"),
+    menuIconIntegrationItem("Custom code", "custom-code", "custom-code"),
   ]),
   categoryItem("Feature Flags", ROUTE.integrationsSourcesFeatureFlags, 3, [
     integrationItem("LaunchDarkly", "launchdarkly"),

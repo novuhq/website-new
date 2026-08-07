@@ -108,6 +108,9 @@ async function fileToMarkdownIntegration(
   }
 
   const frontmatter: IntegrationFrontmatter = parsed.data
+  const categories = Array.from(
+    new Set([frontmatter.category, ...(frontmatter.categories ?? [])])
+  )
   const relativePath = path
     .relative(INTEGRATIONS_CONTENT_DIR, filePath)
     .replace(/\\/g, "/")
@@ -117,12 +120,21 @@ async function fileToMarkdownIntegration(
     title: frontmatter.title,
     tab: frontmatter.tab,
     category: frontmatter.category,
+    categories,
     badge:
       frontmatter.badge?.trim() ||
       defaultIntegrationBadge(frontmatter.tab, frontmatter.category),
+    detailBadge:
+      frontmatter.detailBadge?.trim() ||
+      frontmatter.badge?.trim() ||
+      defaultIntegrationBadge(frontmatter.tab, frontmatter.category),
+    availability: frontmatter.availability,
+    product: frontmatter.product,
+    hasDedicatedPage: frontmatter.detailPage,
     icon: frontmatter.icon?.trim() || PLACEHOLDER_ICON,
     tagline: frontmatter.tagline,
     description: frontmatter.shortDescription,
+    helpText: frontmatter.helpText,
     docsUrl: frontmatter.docsUrl,
     order: frontmatter.order ?? 0,
     features: frontmatter.features,
@@ -161,7 +173,11 @@ async function getMarkdownIntegrations() {
 
 async function getMarkdownIntegrationBySlug(slug: string) {
   const integrations = await getMarkdownIntegrations()
-  return integrations.find((integration) => integration.slug === slug) ?? null
+  return (
+    integrations.find(
+      (integration) => integration.slug === slug && integration.hasDedicatedPage
+    ) ?? null
+  )
 }
 
 async function getMarkdownIntegrationsByTab(tab: IntegrationTabType) {
@@ -171,7 +187,9 @@ async function getMarkdownIntegrationsByTab(tab: IntegrationTabType) {
 
 async function getMarkdownIntegrationCategories(tab: IntegrationTabType) {
   const integrations = await getMarkdownIntegrationsByTab(tab)
-  const slugs = new Set(integrations.map((integration) => integration.category))
+  const slugs = new Set(
+    integrations.flatMap((integration) => integration.categories)
+  )
 
   return Array.from(slugs)
     .map((slug) => integrationCategoryMetaFor(tab, slug))
@@ -204,9 +222,13 @@ export async function getIntegrations(
 
     const categorySections = categories
       .map((category) => {
-        const categoryItems = integrations.filter(
-          (integration) => integration.category === category.slug
+        const categoryItems = integrations.filter((integration) =>
+          integration.categories.includes(category.slug)
         )
+
+        if (categoryItems.length === 0) {
+          return ""
+        }
 
         return [
           `### ${category.title}`,
@@ -214,9 +236,13 @@ export async function getIntegrations(
           linkList(
             categoryItems.map((integration) => ({
               title: integration.title,
-              href: absoluteUrl(
-                toCanonicalPathname(`/integrations/${integration.slug}`)
-              ),
+              href: integration.hasDedicatedPage
+                ? absoluteUrl(
+                    toCanonicalPathname(`/integrations/${integration.slug}`)
+                  )
+                : absoluteUrl(
+                    toCanonicalPathname(`/integrations/${integration.tab}`)
+                  ),
               description: integration.description,
             }))
           ),
@@ -265,6 +291,7 @@ export async function getIntegrations(
           ? `## Features\n\n${bulletList(integration.features)}`
           : "",
         parsed.content.trim(),
+        integration.helpText ? `## Need help?\n\n${integration.helpText}` : "",
         integration.docsUrl
           ? `Docs: ${
               safeMarkdownUrl(integration.docsUrl) ??

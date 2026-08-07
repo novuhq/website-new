@@ -18,11 +18,15 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrationsChannelsSms: "/integrations/channels#integration-category-sms",
   integrationsChannelsPush: "/integrations/channels#integration-category-push",
   integrationsChannelsChat: "/integrations/channels#integration-category-chat",
+  integrationsChannelsAgentChannels:
+    "/integrations/channels#integration-category-agent-channels",
   integrationsSources: "/integrations/sources",
   integrationsSourcesWorkflow:
     "/integrations/sources#integration-category-email-frameworks",
   integrationsSourcesAiSdks:
     "/integrations/sources#integration-category-ai-sdks",
+  integrationsSourcesAgentRuntimes:
+    "/integrations/sources?category=agent-runtimes#integrations-explore",
   integrationsSourcesFeatureFlags:
     "/integrations/sources#integration-category-feature-flags",
   connect: "/connect",

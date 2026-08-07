@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { IIntegration } from "@/types/integration"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { CopyCommand } from "@/components/ui/copy-command"
 import { Link } from "@/components/ui/link"
 import RelatedArticles from "@/components/pages/integrations/related-articles"
 
@@ -36,6 +37,42 @@ function IntegrationDetail({
 
   const relatedSlice = relatedIntegrations.slice(0, 6)
   const relatedArticles = integration.relatedArticles.slice(0, 4)
+  const relatedProviderType =
+    integration.detailBadge === "SMS"
+      ? integration.detailBadge
+      : integration.detailBadge.toLowerCase()
+  const relatedHeading =
+    integration.category === "agent-channels"
+      ? "Other agent channels"
+      : integration.tab === "sources"
+        ? "Other integrations"
+        : `Other ${relatedProviderType} providers`
+
+  const heroTitle = (
+    <div
+      className={cn(
+        "min-w-0",
+        integration.cliCommand ? "w-full" : "flex-1 basis-[60%]"
+      )}
+    >
+      <div className="flex flex-wrap items-center gap-3 md:gap-4">
+        <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
+          {integration.title}
+        </h1>
+        <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
+          {integration.detailBadge}
+        </span>
+      </div>
+      <p
+        className={cn(
+          "mt-3 text-lg leading-normal font-book tracking-tight text-gray-8",
+          !integration.cliCommand && "max-w-[22.6875rem]"
+        )}
+      >
+        {integration.tagline}
+      </p>
+    </div>
+  )
 
   return (
     <article
@@ -55,48 +92,56 @@ function IntegrationDetail({
           All Integrations
         </Link>
 
-        <header className="flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8 md:pt-9 md:pb-10 lg:max-w-xl xl:max-w-176 2xl:max-w-none">
+        <header
+          className={cn(
+            "flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8",
+            integration.cliCommand
+              ? "md:py-10 lg:max-w-2xl 2xl:max-w-none"
+              : "md:pt-9 md:pb-10 lg:max-w-xl xl:max-w-176 2xl:max-w-none"
+          )}
+        >
           <div className="relative size-18 shrink-0 overflow-hidden rounded-xl border border-[var(--integration-icon-wrapper-border)] [background:var(--integration-icon-wrapper-bg)]">
             <div className="absolute top-[0.9375rem] left-[0.9375rem] size-10">
               <Image
                 src={integration.icon}
                 alt=""
                 fill
+                sizes="40px"
                 className="object-contain"
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
-            <div className="min-w-0 flex-1 basis-[60%]">
-              <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
-                  {integration.title}
-                </h1>
-                <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
-                  {integration.badge}
-                </span>
-              </div>
-              <p className="mt-3 max-w-[22.6875rem] text-lg leading-normal font-book tracking-tight text-gray-8">
-                {integration.description}
-              </p>
+          {integration.cliCommand ? (
+            <div className="flex w-full flex-col items-start gap-7">
+              {heroTitle}
+              <CopyCommand
+                command={integration.cliCommand}
+                variant="highlighted"
+                className="w-fit max-w-full shrink-0 sm:w-fit"
+                controlClassName="w-fit max-w-full"
+                commandClassName="min-w-0 flex-auto overflow-x-auto whitespace-nowrap text-clip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              />
             </div>
-
-            <Button
-              variant="default"
-              size="none"
-              className="h-11 w-full rounded-md px-5 text-sm leading-none uppercase sm:w-fit"
-              asChild
-            >
-              <NextLink
-                href={primaryHref as Route<string>}
-                target="_blank"
-                rel="noopener noreferrer"
+          ) : (
+            <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+              {heroTitle}
+              <Button
+                variant="default"
+                size="none"
+                className="h-11 w-full rounded-md px-5 text-sm leading-none uppercase sm:w-fit"
+                asChild
               >
-                {primaryLabel}
-              </NextLink>
-            </Button>
-          </div>
+                <NextLink
+                  href={primaryHref as Route<string>}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {primaryLabel}
+                </NextLink>
+              </Button>
+            </div>
+          )}
         </header>
       </div>
 
@@ -117,8 +162,8 @@ function IntegrationDetail({
               Need help?
             </h3>
             <p className="relative mt-2 text-sm leading-tight font-book tracking-tight text-gray-8">
-              Check our docs for step-by-step guide for integrating{" "}
-              {integration.title}.
+              {integration.helpText ??
+                `Check our docs for a step-by-step guide to integrating ${integration.title}.`}
             </p>
             <Link
               href={
@@ -147,7 +192,7 @@ function IntegrationDetail({
           {relatedSlice.length > 0 ? (
             <div>
               <h3 className="font-display text-base tracking-tight text-white">
-                Other {integration.badge.toLowerCase()} providers
+                {relatedHeading}
               </h3>
               <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-3">
                 {relatedSlice.map((rel) => (

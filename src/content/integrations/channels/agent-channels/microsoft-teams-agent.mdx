@@ -1,0 +1,45 @@
+---
+slug: "microsoft-teams-agent"
+title: "Microsoft Teams"
+tab: "channels"
+category: "agent-channels"
+badge: "Novu Connect"
+detailBadge: "Agent channel"
+availability: "live"
+product: "connect"
+tagline: "Bring your agent into Microsoft Teams for enterprise conversations, approvals, and operational work."
+shortDescription: "Bring your agent into Microsoft Teams for conversations, approvals, and operational tasks across the workspace your organization already uses."
+helpText: "Check our documentation for a step-by-step guide to connecting an agent to Microsoft Teams with Novu Connect."
+icon: "/images/integration-icons/chat/microsoft-teams-icon.svg"
+order: 1
+docsUrl: "https://docs.novu.co/agents/channels/microsoft-teams"
+primaryCtaLabel: "Connect Microsoft Teams"
+cliCommand: "npx novu connect --channel teams"
+seo:
+  title: "Microsoft Teams AI Agent Integration"
+  description: "Connect your AI agent to Microsoft Teams for contextual conversations, Adaptive Cards, actions, approvals, and operational workflows."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Microsoft Teams is a communication and collaboration platform used across
+  Microsoft 365 organizations. Novu Connect lets your existing agent participate
+  in Teams conversations without requiring a separate integration layer for
+  Teams messages and events.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect receives messages and replies from Microsoft Teams, preserves
+  their conversation context, and routes them to your agent. Responses are
+  delivered back to the correct conversation with support for Adaptive Cards,
+  actions, approvals, rich text, reactions, ordered message processing, and
+  messages that update in place.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+From your agent project, run:
+
+`npx novu connect --channel teams`
+
+Complete the CLI flow. When the CLI opens the Novu dashboard, finish the Microsoft Teams connection there and return to the CLI to complete the setup.
+
+</IntegrationSection>

@@ -47,15 +47,15 @@ export const SEO_DATA = {
     pathname: ROUTE.pricing as string,
   },
   integrationsSources: {
-    title: `Integrations | ${config.projectName}`,
+    title: `Workflow and Agent Runtime Integrations | ${config.projectName}`,
     description:
-      "Explore all tools and services that integrate with Novu. Build notification workflows across email, SMS, push, in-app, and chat without switching providers.",
+      "Use workflow tools with Novu Notify, or connect an existing custom-code or managed agent runtime to supported communication channels with Novu Connect.",
     pathname: ROUTE.integrationsSources as string,
   },
   integrationsChannels: {
-    title: `Notification Providers | ${config.projectName}`,
+    title: `Notification and Agent Channel Integrations | ${config.projectName}`,
     description:
-      "Browse all notification providers supported by Novu. Connect email, SMS, push, in-app, and chat providers to your stack with a unified API.",
+      "Connect notification providers with Novu Notify and bring AI agents into Slack, Microsoft Teams, WhatsApp Business, Telegram, email, and iMessage with Novu Connect.",
     pathname: ROUTE.integrationsChannels as string,
   },
   connect: {

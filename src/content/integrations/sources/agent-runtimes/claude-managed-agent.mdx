@@ -1,0 +1,38 @@
+---
+slug: "claude-managed-agent"
+title: "Claude Managed Agent"
+tab: "sources"
+category: "agent-runtimes"
+group: "managed-agent-runtimes"
+badge: "Novu Connect"
+detailBadge: "Agent runtime"
+availability: "live"
+product: "connect"
+tagline: "Claude Managed Agents are hosted agents you create from one CLI command. No agent server, no bridge code."
+shortDescription: "Create a hosted Claude agent from one CLI command and connect it to supported Novu Connect channels."
+helpText: "Check our documentation for creating and connecting a Claude Managed Agent."
+icon: "/images/integration-icons/ai/claude-icon.svg"
+order: 0
+docsUrl: "https://docs.novu.co/agents/managed-agent/quickstart"
+primaryCtaLabel: "Create a Claude Managed Agent"
+cliCommand: "npx novu connect --channel <channel> --runtime claude"
+seo:
+  title: "Claude Managed Agent Integration"
+  description: "Create a hosted Claude Managed Agent with Novu and connect it to supported communication channels through Novu Connect."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  A Claude Managed Agent is hosted by Novu. You bring your Anthropic
+  credentials and describe the agent you want. Claude handles the reasoning.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  There's no code to host. The CLI walks you through connecting your
+  credentials, creating the agent, and connecting it to a channel.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Run the command above and pick a channel. Follow the prompts to connect
+  your credentials and describe your agent. You can edit it later from the
+  Novu dashboard.
+</IntegrationSection>

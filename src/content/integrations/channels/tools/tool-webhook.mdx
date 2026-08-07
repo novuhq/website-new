@@ -1,0 +1,35 @@
+---
+slug: "tool-webhook"
+title: "Tool Webhook"
+tab: "channels"
+category: "tools"
+badge: "Tool"
+tagline: "Connect custom HTTP endpoints to workflow Tool steps."
+shortDescription: "Send Tool step notifications to your own HTTP endpoints with Novu."
+helpText: "Read the Tool Webhook documentation for static and dynamic configuration."
+icon: "/images/integration-icons/tools/tool-webhook-icon.svg"
+order: 83
+docsUrl: "https://docs.novu.co/platform/integrations/tool/webhook"
+primaryCtaLabel: "Integrate Tool Webhook"
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  Tool Webhook lets Novu workflows call an HTTP endpoint when a Tool step
+  runs. Use static mode for one shared endpoint or dynamic mode when each
+  subscriber needs a different destination.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  When a workflow reaches a Tool Webhook step, Novu renders the configured
+  request and sends it to the shared integration URL or the endpoint
+  registered for the subscriber. This provides a generic path for connecting
+  internal systems and providers that do not have a dedicated Tool
+  integration.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+  Add Tool Webhook under Tool in the Novu Integration Store. Choose static
+  mode and configure a shared URL, or use dynamic mode and register webhook
+  channel endpoints for subscribers. Add a Tool Webhook step to a workflow
+  and test the request.
+</IntegrationSection>

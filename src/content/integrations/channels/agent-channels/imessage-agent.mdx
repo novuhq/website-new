@@ -1,0 +1,43 @@
+---
+slug: "imessage-agent"
+title: "iMessage (Sendblue)"
+tab: "channels"
+category: "agent-channels"
+badge: "Novu Connect"
+detailBadge: "Agent channel"
+availability: "live"
+product: "connect"
+tagline: "Give customers a familiar way to communicate with your agent through iMessage."
+shortDescription: "Let customers communicate with your agent through iMessage for familiar, ongoing conversations with replies, actions, and approval requests."
+helpText: "Check our documentation for a step-by-step guide to connecting an agent to iMessage with Novu Connect and Sendblue."
+icon: "/images/integration-icons/agent-channels/imessage-icon.svg"
+order: 5
+docsUrl: "https://docs.novu.co/agents/channels/imessage"
+primaryCtaLabel: "Connect iMessage"
+cliCommand: "npx novu connect --channel sendblue"
+seo:
+  title: "iMessage AI Agent Integration"
+  description: "Connect your AI agent to iMessage through Sendblue for familiar, ongoing customer conversations, replies, actions, and approvals."
+---
+
+<IntegrationSection title="Overview" icon="eye">
+  iMessage is Apple's messaging experience across the Messages app. Novu Connect
+  uses Sendblue to give your existing agent an iMessage presence without
+  requiring you to build and maintain the channel integration yourself.
+</IntegrationSection>
+
+<IntegrationSection title="How it works" icon="refresh-cw">
+  Novu Connect receives iMessage conversations through Sendblue, preserves the
+  conversation history, and routes new messages to your agent. Agent responses
+  return to the same conversation with support for live typing indicators,
+  reply-based actions, MCP approvals, and plain-text connection links.
+</IntegrationSection>
+
+<IntegrationSection title="Configure" icon="settings">
+From your agent project, run:
+
+`npx novu connect --channel sendblue`
+
+Enter your Sendblue credentials in the CLI, then reply to the test iMessage to verify the connection.
+
+</IntegrationSection>
