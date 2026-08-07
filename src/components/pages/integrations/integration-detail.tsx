@@ -118,7 +118,9 @@ function IntegrationDetail({
               <CopyCommand
                 command={integration.cliCommand}
                 variant="highlighted"
-                className="w-full shrink-0 sm:w-70.5"
+                className="w-fit max-w-full shrink-0 sm:w-fit"
+                controlClassName="w-fit max-w-full"
+                commandClassName="min-w-0 flex-auto overflow-x-auto whitespace-nowrap text-clip [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               />
             </div>
           ) : (

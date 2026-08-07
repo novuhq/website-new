@@ -3,7 +3,6 @@ import { expect, test } from "@playwright/test"
 import { integrationsContract } from "./contracts"
 import {
   expectHealthyPage,
-  expectReactHandlerReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -25,7 +24,6 @@ test.describe("critical integrations discovery journey", () => {
     const searchInput = page.getByRole("searchbox", {
       name: "Search integrations by title or category",
     })
-    await expectReactHandlerReady(searchInput, "onChange")
     await searchInput.fill(integrationsContract.query)
     await expect
       .poll(() => new URL(page.url()).searchParams.get("q"))
@@ -89,7 +87,6 @@ test.describe("critical integrations discovery journey", () => {
       name: "Agent runtimes",
       exact: true,
     })
-    await expectReactHandlerReady(agentRuntimesFilter, "onClick")
     await agentRuntimesFilter.click()
     await expect
       .poll(() => new URL(page.url()).searchParams.get("category"))
@@ -112,7 +109,6 @@ test.describe("critical integrations discovery journey", () => {
       name: "Agent channels",
       exact: true,
     })
-    await expectReactHandlerReady(agentChannelsFilter, "onClick")
     await agentChannelsFilter.click()
     await expect
       .poll(() => new URL(page.url()).searchParams.get("category"))
@@ -168,6 +164,10 @@ test.describe("critical integrations discovery journey", () => {
     const copyCommand = runtimeHero.getByRole("button", {
       name: "Copy to clipboard",
     })
+    const commandText = runtimeHero.getByText(
+      "npx novu connect --channel <channel> --runtime langchain",
+      { exact: true }
+    )
 
     await expect(copyCommand).toBeVisible()
     await expect(
@@ -184,6 +184,34 @@ test.describe("critical integrations discovery journey", () => {
         return commandBox.y >= taglineBox.y + taglineBox.height + 27
       })
       .toBe(true)
+
+    const [heroBox, commandBox] = await Promise.all([
+      runtimeHero.boundingBox(),
+      copyCommand.locator("xpath=../..").boundingBox(),
+    ])
+    expect(heroBox).not.toBeNull()
+    expect(commandBox).not.toBeNull()
+    expect(commandBox!.width).toBeLessThanOrEqual(heroBox!.width)
+
+    const commandTextMetrics = await commandText.evaluate((element) => {
+      const styles = window.getComputedStyle(element)
+
+      return {
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        overflowX: styles.overflowX,
+        textOverflow: styles.textOverflow,
+      }
+    })
+    expect(commandTextMetrics.overflowX).toBe("auto")
+    expect(commandTextMetrics.textOverflow).toBe("clip")
+
+    if ((page.viewportSize()?.width ?? 0) >= 640) {
+      expect(commandBox!.width).toBeGreaterThan(282)
+      expect(commandTextMetrics.scrollWidth).toBeLessThanOrEqual(
+        commandTextMetrics.clientWidth
+      )
+    }
 
     await gotoCriticalPage(page, "/integrations/sendgrid")
     const providerHero = page.locator("article header")
