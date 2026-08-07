@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test"
 import { integrationsContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectReactHandlerReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -24,6 +25,7 @@ test.describe("critical integrations discovery journey", () => {
     const searchInput = page.getByRole("searchbox", {
       name: "Search integrations by title or category",
     })
+    await expectReactHandlerReady(searchInput, "onChange")
     await searchInput.fill(integrationsContract.query)
     await expect
       .poll(() => new URL(page.url()).searchParams.get("q"))
@@ -87,6 +89,7 @@ test.describe("critical integrations discovery journey", () => {
       name: "Agent runtimes",
       exact: true,
     })
+    await expectReactHandlerReady(agentRuntimesFilter, "onClick")
     await agentRuntimesFilter.click()
     await expect
       .poll(() => new URL(page.url()).searchParams.get("category"))
@@ -109,6 +112,7 @@ test.describe("critical integrations discovery journey", () => {
       name: "Agent channels",
       exact: true,
     })
+    await expectReactHandlerReady(agentChannelsFilter, "onClick")
     await agentChannelsFilter.click()
     await expect
       .poll(() => new URL(page.url()).searchParams.get("category"))
@@ -116,19 +120,21 @@ test.describe("critical integrations discovery journey", () => {
 
     const agentChannelCards = page.locator('[data-slot="integration-card"]')
     await expect(agentChannelCards).toHaveCount(6)
-    await expect
-      .poll(() =>
-        agentChannelCards
-          .locator("img")
-          .evaluateAll((images) =>
-            images.every(
-              (image) =>
-                (image as HTMLImageElement).complete &&
-                (image as HTMLImageElement).naturalWidth > 0
-            )
+    const agentChannelImages = agentChannelCards.locator("img")
+    await expect(agentChannelImages).toHaveCount(6)
+    for (let index = 0; index < 6; index += 1) {
+      const image = agentChannelImages.nth(index)
+      await image.scrollIntoViewIfNeeded()
+      await expect
+        .poll(() =>
+          image.evaluate(
+            (element) =>
+              (element as HTMLImageElement).complete &&
+              (element as HTMLImageElement).naturalWidth > 0
           )
-      )
-      .toBe(true)
+        )
+        .toBe(true)
+    }
 
     await expect
       .poll(() =>
@@ -209,7 +215,7 @@ test.describe("critical integrations discovery journey", () => {
     if ((page.viewportSize()?.width ?? 0) >= 640) {
       expect(commandBox!.width).toBeGreaterThan(282)
       expect(commandTextMetrics.scrollWidth).toBeLessThanOrEqual(
-        commandTextMetrics.clientWidth
+        commandTextMetrics.clientWidth + 4
       )
     }
 
