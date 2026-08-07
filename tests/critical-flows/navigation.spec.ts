@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test"
+import { expect, test, type Page } from "@playwright/test"
 
 import { navigationContract } from "./contracts"
 import {
@@ -7,6 +7,33 @@ import {
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
+
+async function expectDashboardNavigation(page: Page, linkName: string) {
+  await page.route(
+    `${navigationContract.authLinks.desktop[0].href}/**`,
+    (route) =>
+      route.fulfill({
+        body: "<title>Dashboard handoff</title>",
+        contentType: "text/html",
+        status: 200,
+      })
+  )
+
+  await page.getByRole("link", { name: linkName, exact: true }).click()
+  await expect(page).toHaveURL(/^https:\/\/dashboard\.novu\.co\/?$/)
+}
+
+async function skipUnlessAuthStateFixture(page: Page) {
+  const fixtureEnabled =
+    (await page
+      .getByRole("banner")
+      .getAttribute("data-critical-flow-auth-fixture")) === "enabled"
+
+  test.skip(
+    !fixtureEnabled,
+    "Target does not expose the critical auth-state fixture"
+  )
+}
 
 test.describe("critical responsive navigation", () => {
   test(`[${navigationContract.id}] opens pricing and preserves authentication destinations`, async ({
@@ -58,6 +85,100 @@ test.describe("critical responsive navigation", () => {
         name: navigationContract.destinationHeading,
       })
     ).toBeVisible()
+    expectHealthyPage(applicationErrors)
+  })
+
+  test(`[${navigationContract.id}] signed-out header action opens dashboard signup`, async ({
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop authentication action")
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+
+    const signedOutLink = navigationContract.authLinks.desktop[0]
+    await expect(
+      page.getByRole("link", { name: signedOutLink.name, exact: true })
+    ).toHaveAttribute("href", signedOutLink.href)
+    await expect(
+      page.getByRole("link", {
+        name: navigationContract.authLinks.desktopSignedIn[0].name,
+        exact: true,
+      })
+    ).toHaveCount(0)
+
+    await expectDashboardNavigation(page, signedOutLink.name)
+    expectHealthyPage(applicationErrors)
+  })
+
+  test(`[${navigationContract.id}] loading auth state renders dashboard signup immediately`, async ({
+    baseURL,
+    context,
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop authentication action")
+    expect(baseURL).toBeTruthy()
+
+    await context.addCookies([
+      {
+        name: navigationContract.authStateCookie,
+        value: navigationContract.authStates.loading,
+        url: baseURL,
+      },
+    ])
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+    await skipUnlessAuthStateFixture(page)
+
+    const signedOutLink = navigationContract.authLinks.desktop[0]
+    await expect(
+      page.getByRole("link", { name: signedOutLink.name, exact: true })
+    ).toHaveAttribute("href", signedOutLink.href)
+    await expect(
+      page.getByRole("link", {
+        name: navigationContract.authLinks.desktopSignedIn[0].name,
+        exact: true,
+      })
+    ).toHaveCount(0)
+    expectHealthyPage(applicationErrors)
+  })
+
+  test(`[${navigationContract.id}] signed-in header action opens dashboard`, async ({
+    baseURL,
+    context,
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop authentication action")
+    expect(baseURL).toBeTruthy()
+
+    await context.addCookies([
+      {
+        name: navigationContract.authStateCookie,
+        value: navigationContract.authStates.signedIn,
+        url: baseURL,
+      },
+    ])
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+    await skipUnlessAuthStateFixture(page)
+
+    const signedInLink = navigationContract.authLinks.desktopSignedIn[0]
+    await expect(
+      page.getByRole("link", { name: signedInLink.name, exact: true })
+    ).toHaveAttribute("href", signedInLink.href)
+    await expect(
+      page.getByRole("link", {
+        name: navigationContract.authLinks.desktop[0].name,
+        exact: true,
+      })
+    ).toHaveCount(0)
+
+    await expectDashboardNavigation(page, signedInLink.name)
     expectHealthyPage(applicationErrors)
   })
 })

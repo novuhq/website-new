@@ -38,8 +38,6 @@ export const langchainFrameworkData: IAgentFrameworkData = {
       body: "Sign in to keep the agent live, then run your dev server. Your LangChain agent now holds a two-way conversation in {channelName}, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Connect this project's LangChain agent to {channelName} with Novu Connect. Inspect the repo to see how LangChain is used, then have me run npx novu connect --channel {cliSlug} --runtime langchain from the project root. I will complete the interactive CLI. When the CLI copies a follow-up prompt, ask me to paste it here and continue. Do not invent setup steps or ask for secrets in chat. Stop after giving me the command.",
   faq: [
     {
       question: "Do I have to rewrite my LangChain agent to add {channelName}?",

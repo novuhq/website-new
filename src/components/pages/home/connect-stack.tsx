@@ -15,6 +15,7 @@ import telegramIcon from "@/svgs/pages/home/stack/telegram.svg"
 import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
+import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -22,10 +23,10 @@ import CopyPromptButton from "./copy-prompt-button"
 
 export interface IStackOption {
   cliSlug?: string
+  connectPath?: "bridge" | "managed"
   icon?: StaticImageData | string
   label: string
   promptLabel?: string
-  promptTemplate?: string
   value: string
 }
 
@@ -98,30 +99,14 @@ const DEFAULT_FRAMEWORKS: IStackOption[] = [
     label: "Claude Managed Agent",
     icon: claudeIcon,
     cliSlug: "claude",
-    promptTemplate: `Create a Claude Managed Agent with Novu and connect it to [SELECTED_CHANNEL].
-
-Run this command:
-
-npx novu connect --channel [CHANNEL_SLUG] --runtime claude
-
-The Novu CLI will guide you through the complete setup. Follow the prompts to connect your Anthropic credentials, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
-
-You do not need to scaffold a project or modify application code for this setup.`,
+    connectPath: "managed",
   },
   {
     value: "aws-claude-managed-agent",
     label: "AWS Claude Managed Agent",
     icon: awsIcon,
     cliSlug: "claude-aws",
-    promptTemplate: `Create a Claude Managed Agent on AWS with Novu and connect it to [SELECTED_CHANNEL].
-
-Run this command:
-
-npx novu connect --channel [CHANNEL_SLUG] --runtime claude-aws
-
-The Novu CLI will guide you through the complete setup. Follow the prompts to complete the required credential flow, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect [SELECTED_CHANNEL].
-
-You do not need to scaffold a project or modify application code for this setup.`,
+    connectPath: "managed",
   },
 ]
 
@@ -196,7 +181,7 @@ function SelectField({
             position="popper"
             sideOffset={2}
           >
-            <SelectPrimitive.Viewport className="p-1.5">
+            <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
                   className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
@@ -265,16 +250,11 @@ function ConnectStack({
   const channelLabel = channel.promptLabel ?? channel.label
   const channelSlug = channel.cliSlug ?? channel.value
   const command = `npx novu connect --channel ${channelSlug} --runtime ${framework.cliSlug ?? framework.value}`
-  const defaultPrompt = `Connect this project's ${frameworkLabel} agent to ${channelLabel} with Novu Connect. Inspect the repo (agent entry point, how ${frameworkLabel} is used, package manager, model provider, env conventions). Do not modify anything yet. Then have me run from the project root:
-
-${command}
-
-I will complete the interactive CLI and approve dependency installs when asked. When the CLI copies a follow-up prompt, ask me to paste that here and continue. Do not invent setup steps, supervise each CLI screen, or ask for secrets in chat. Stop after giving me the command.`
-  const prompt = framework.promptTemplate
-    ? framework.promptTemplate
-        .replaceAll("[SELECTED_CHANNEL]", channelLabel)
-        .replaceAll("[CHANNEL_SLUG]", channelSlug)
-    : defaultPrompt
+  const prompt = buildFrameworkChannelConnectPrompt({
+    frameworkName: frameworkLabel,
+    channelName: channelLabel,
+    connectPath: framework.connectPath,
+  })
 
   return (
     <section
@@ -319,7 +299,7 @@ I will complete the interactive CLI and approve dependency installs when asked. 
           )}
         </header>
 
-        <div className="w-full overflow-hidden rounded-xl border border-gray-20 lg:min-h-124">
+        <div className="w-full overflow-hidden rounded-xl border border-gray-20">
           <div className="border-b border-gray-20 p-5 md:p-8">
             <h3 className="text-xl leading-snug font-medium tracking-[-0.01em] text-foreground">
               1. Choose your setup

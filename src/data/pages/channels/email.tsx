@@ -1,6 +1,7 @@
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const emailChannelData: IChannelPageData = {
   slug: "email",
@@ -57,8 +58,7 @@ export const emailChannelData: IChannelPageData = {
     "High-deliverability routing",
     "Secure action links for approvals",
   ],
-  prompt:
-    "Connect my AI agent to Email with Novu using a responsive template, attachments, and delivery tracking. Route each customer's replies back to the same thread.",
+  prompt: buildChannelConnectPrompt("Email"),
   onRamp: {
     type: "keyless",
     note: "Email works in the keyless quickstart. Run npx novu connect --channel email to get a managed agent sending email, no account needed for the first few replies.",
@@ -87,7 +87,7 @@ export const emailChannelData: IChannelPageData = {
     {
       question: "Which other channels can the same agent reach?",
       answer:
-        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, and Email through Novu Connect, with one conversation thread across channels.",
+        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, Email, and iMessage through Novu Connect, with one conversation thread across channels.",
     },
   ],
   starterTemplateIds: [

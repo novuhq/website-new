@@ -1,6 +1,7 @@
 import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const slackChannelData: IChannelPageData = {
   slug: "slack",
@@ -58,8 +59,7 @@ export const slackChannelData: IChannelPageData = {
     "Reliable delivery with retries",
     "Native Block Kit messages and tool-approval prompts",
   ],
-  prompt:
-    "Connect my AI agent to Slack with Novu, including threaded replies and delivery status handling. Identify each user and route agent replies back to the same Slack conversation.",
+  prompt: buildChannelConnectPrompt("Slack"),
   onRamp: {
     type: "keyless",
     note: "Slack works in the keyless quickstart. Run npx novu connect --channel slack and you get a managed agent on Slack, no account needed for the first few replies.",
@@ -89,7 +89,7 @@ export const slackChannelData: IChannelPageData = {
     {
       question: "Which other channels can the same agent reach?",
       answer:
-        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, and Email through Novu Connect, with one conversation thread across channels.",
+        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, Email, and iMessage through Novu Connect, with one conversation thread across channels.",
     },
   ],
   starterTemplateIds: [

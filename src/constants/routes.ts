@@ -70,6 +70,13 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   channelEmailCustomCode: "/channels/email/custom-code",
   channelEmailClaude: "/channels/email/claude",
   channelEmailClaudeAws: "/channels/email/claude-aws",
+  channelIMessage: "/channels/imessage",
+  channelIMessageLangchain: "/channels/imessage/langchain",
+  channelIMessageAiSdk: "/channels/imessage/ai-sdk",
+  channelIMessageChatSdk: "/channels/imessage/chat-sdk",
+  channelIMessageCustomCode: "/channels/imessage/custom-code",
+  channelIMessageClaude: "/channels/imessage/claude",
+  channelIMessageClaudeAws: "/channels/imessage/claude-aws",
 
   // PREVIOUS WEBSITE
 

@@ -38,11 +38,10 @@ export const claudeFrameworkData: IAgentFrameworkData = {
       body: "The guided flow connects {channelName}. Your agent now holds a two-way conversation there, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Create a Claude Managed Agent with Novu and connect it to {channelName}. Run this command: npx novu connect --channel {cliSlug} --runtime claude. The Novu CLI will guide you through the complete setup. Follow the prompts to connect your Anthropic credentials, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect {channelName}. You do not need to scaffold a project or modify application code for this setup.",
   faq: [
     {
-      question: "Do I need to host anything to put a Claude Managed Agent in {channelName}?",
+      question:
+        "Do I need to host anything to put a Claude Managed Agent in {channelName}?",
       answer:
         "No. There is no agent server and no bridge code. You bring Anthropic credentials, Claude does the reasoning, and Novu keeps the conversation running in {channelName}.",
     },

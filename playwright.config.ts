@@ -55,6 +55,7 @@ export default defineConfig({
             : "pnpm dev --hostname 127.0.0.1"),
         env: {
           ...process.env,
+          CRITICAL_FLOW_TESTING: "1",
           NEXT_PUBLIC_DEFAULT_SITE_URL: baseURL,
         },
         url: baseURL,

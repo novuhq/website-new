@@ -2,6 +2,7 @@ import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import type { IFaqSection } from "@/types/common"
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 
 import {
   escapeMarkdownTableCell,
@@ -12,10 +13,8 @@ import { bulletList, faqMarkdown, pageFromSeo } from "../page-utils"
 import type { MarkdownPage } from "../types"
 
 const CONNECT_COMMAND = "npx novu connect"
-const ACI_PROMPT =
-  "Add an agent to my app using instructions from https://novu.co/agents.md"
 const CLAUDE_PROMPT_URL = `https://claude.ai/new?q=${encodeURIComponent(
-  ACI_PROMPT
+  DEFAULT_CONNECT_PROMPT
 )}`
 const GITHUB_REPO_URL = "https://github.com/novuhq/novu"
 const PRODUCT_HUNT_LAUNCH_URL =
@@ -174,7 +173,7 @@ export async function getAci(pathname: string): Promise<MarkdownPage | null> {
       ]
         .map((item) => `- ${item}`)
         .join("\n"),
-      `Prompt for Claude:\n\n${formatCodeFence(ACI_PROMPT, "text")}`,
+      `Prompt for Claude:\n\n${formatCodeFence(DEFAULT_CONNECT_PROMPT, "text")}`,
       `Featured on ${formatMarkdownLink("Product Hunt", PRODUCT_HUNT_LAUNCH_URL)}`,
     ].join("\n\n"),
     [

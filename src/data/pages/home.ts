@@ -1,6 +1,7 @@
 import { ROUTE } from "@/constants/routes"
 
 import type { IFaqSection } from "@/types/common"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 // Single source of truth for homepage copy. The homepage
 // (app/(website)/(connect-footer)/page.tsx), the /index.md markdown alternate
@@ -46,6 +47,7 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
   telegram: "/channels/telegram",
   teams: "/channels/microsoft-teams",
   email: "/channels/email",
+  imessage: "/channels/imessage",
   inbox: String(ROUTE.inbox),
 }
 
@@ -57,8 +59,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Slack",
     description:
       "Reach teams where work happens with rich, actionable messages, threads, and reliable delivery routing.",
-    prompt:
-      "Connect my AI agent to Slack with Novu, including threaded replies and delivery status handling.",
+    prompt: buildChannelConnectPrompt("Slack"),
     features: [
       "Two-way threaded conversations",
       "Team and user identity mapping",
@@ -72,8 +73,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to WhatsApp",
     description:
       "Start secure two-way customer conversations with templates, attachments, and delivery receipts.",
-    prompt:
-      "Connect my AI agent to WhatsApp with Novu and configure approved templates plus two-way replies.",
+    prompt: buildChannelConnectPrompt("WhatsApp"),
     features: [
       "Secure two-way conversations",
       "Approved message templates",
@@ -87,8 +87,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Telegram",
     description:
       "Reach users with fast, conversational updates, rich media, and replies inside Telegram.",
-    prompt:
-      "Connect my AI agent to Telegram with Novu and configure rich messages, user identity, and two-way replies.",
+    prompt: buildChannelConnectPrompt("Telegram"),
     features: [
       "Fast conversational delivery",
       "Rich messages and media",
@@ -102,8 +101,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Microsoft Teams",
     description:
       "Bring agent updates and human handoffs into the channels your organization already uses.",
-    prompt:
-      "Connect my AI agent to Microsoft Teams with Novu and include a human handoff workflow.",
+    prompt: buildChannelConnectPrompt("Microsoft Teams"),
     features: [
       "Channel and thread awareness",
       "Human handoff workflows",
@@ -117,8 +115,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to Email",
     description:
       "Reach users directly in their inbox with rich, actionable notifications. Support for templates, attachments, and high-deliverability routing.",
-    prompt:
-      "Connect my AI agent to Email with Novu using a responsive template, attachments, and delivery tracking.",
+    prompt: buildChannelConnectPrompt("Email"),
     features: [
       "Responsive message templates",
       "Attachments and rich content",
@@ -132,8 +129,7 @@ export const HOME_CHANNELS = [
     title: "Connect your AI agent to iMessage",
     description:
       "Bring agent conversations and timely updates into the native messaging experience customers already use.",
-    prompt:
-      "Connect my AI agent to iMessage with Novu and configure secure two-way conversations plus delivery tracking.",
+    prompt: buildChannelConnectPrompt("iMessage"),
     features: [
       "Native messaging experience",
       "Secure two-way conversations",

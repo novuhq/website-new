@@ -1,6 +1,7 @@
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
 import type { IChannelPageData } from "@/types/channel"
+import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 export const whatsappChannelData: IChannelPageData = {
   slug: "whatsapp",
@@ -62,8 +63,7 @@ export const whatsappChannelData: IChannelPageData = {
     "Attachments and delivery receipts",
     "Embedded WhatsApp Business signup (official Meta Business Partner)",
   ],
-  prompt:
-    "Connect my AI agent to WhatsApp with Novu and configure approved templates plus two-way replies. Identify each user and route their messages back to the same conversation.",
+  prompt: buildChannelConnectPrompt("WhatsApp"),
   onRamp: {
     type: "oauth",
     note: "WhatsApp connects from the Novu dashboard with embedded signup: log in with your business account, pick your WhatsApp number, and you are working in about 5 minutes.",
@@ -93,7 +93,7 @@ export const whatsappChannelData: IChannelPageData = {
     {
       question: "Which other channels can the same agent reach?",
       answer:
-        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, and Email through Novu Connect, with one conversation thread across channels.",
+        "The same agent can reach users on Slack, Microsoft Teams, WhatsApp, Telegram, Email, and iMessage through Novu Connect, with one conversation thread across channels.",
     },
   ],
   starterTemplateIds: [

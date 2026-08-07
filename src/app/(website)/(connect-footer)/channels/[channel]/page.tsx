@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 import { getAllChannelSlugs, getChannelBySlug } from "@/data/pages/channels"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
@@ -169,7 +170,7 @@ async function ChannelPage({ params }: PageProps) {
       />
       <CTA
         title="Give your agent a voice, anywhere your users are"
-        description="Pro tip: paste 'Add an agent to my app https://novu.co/agents.md' into your coding agent, or run npx novu connect. One agent, every channel, one conversation."
+        description={`Pro tip: paste '${DEFAULT_CONNECT_PROMPT}' into your coding agent, or run npx novu connect. One agent, every channel, one conversation.`}
         actions={[
           {
             kind: "primary-button",

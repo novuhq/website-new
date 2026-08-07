@@ -38,8 +38,6 @@ export const claudeAwsFrameworkData: IAgentFrameworkData = {
       body: "The guided flow connects {channelName}. Your agent now holds a two-way conversation there, and the same agent can reach every other channel from one thread.",
     },
   ],
-  promptTemplate:
-    "Create a Claude Managed Agent on AWS with Novu and connect it to {channelName}. Run this command: npx novu connect --channel {cliSlug} --runtime claude-aws. The Novu CLI will guide you through the complete setup. Follow the prompts to complete the required credential flow, describe the agent you want to create, review the skills and tools Novu adds, preview the agent, create it, and connect {channelName}. You do not need to scaffold a project or modify application code for this setup.",
   faq: [
     {
       question: "How is this different from the standard Claude Managed Agent?",

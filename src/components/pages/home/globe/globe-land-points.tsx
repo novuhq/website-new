@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
 import { loadGlobeLandPoints } from "./globe-assets"
@@ -11,14 +10,43 @@ import { LAND_FRAGMENT_SHADER, LAND_VERTEX_SHADER } from "./globe-shaders"
 import type { TGlobeQuality } from "./globe-types"
 
 interface IGlobeLandPointsProps {
+  onGeometryReady: () => void
   onLoadError: () => void
-  onReady: () => void
   quality: TGlobeQuality
 }
 
 interface ILandPointsGeometryResource {
   geometry: THREE.InstancedBufferGeometry
   quality: TGlobeQuality
+}
+
+function createLandPointsGeometry(
+  centers: Float32Array,
+  seeds: Float32Array,
+  pointCount: number
+) {
+  const plane = new THREE.PlaneGeometry(1, 1)
+  const geometry = new THREE.InstancedBufferGeometry()
+  geometry.setIndex(plane.index?.clone() ?? null)
+  geometry.setAttribute("position", plane.getAttribute("position").clone())
+  geometry.setAttribute("uv", plane.getAttribute("uv").clone())
+  geometry.setAttribute(
+    "aCenter",
+    new THREE.InstancedBufferAttribute(centers, 3)
+  )
+  geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1))
+  geometry.instanceCount = pointCount
+  geometry.boundingSphere = new THREE.Sphere(
+    new THREE.Vector3(),
+    GLOBE_RADIUS + 0.1
+  )
+  plane.dispose()
+
+  return geometry
+}
+
+function createPlaceholderGeometry() {
+  return createLandPointsGeometry(new Float32Array(3), new Float32Array(1), 0)
 }
 
 function parseLandPoints(buffer: ArrayBuffer) {
@@ -53,37 +81,18 @@ function parseLandPoints(buffer: ArrayBuffer) {
     seeds[index] = ((index * 16807) % 2147483647) / 2147483647
   }
 
-  const plane = new THREE.PlaneGeometry(1, 1)
-  const geometry = new THREE.InstancedBufferGeometry()
-  geometry.setIndex(plane.index?.clone() ?? null)
-  geometry.setAttribute("position", plane.getAttribute("position").clone())
-  geometry.setAttribute("uv", plane.getAttribute("uv").clone())
-  geometry.setAttribute(
-    "aCenter",
-    new THREE.InstancedBufferAttribute(centers, 3)
-  )
-  geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1))
-  geometry.instanceCount = pointCount
-  geometry.boundingSphere = new THREE.Sphere(
-    new THREE.Vector3(),
-    GLOBE_RADIUS + 0.1
-  )
-  plane.dispose()
-
-  return geometry
+  return createLandPointsGeometry(centers, seeds, pointCount)
 }
 
 export default function GlobeLandPoints({
+  onGeometryReady,
   onLoadError,
-  onReady,
   quality,
 }: IGlobeLandPointsProps) {
   const [resource, setResource] = useState<ILandPointsGeometryResource | null>(
     null
   )
-  const camera = useThree((state) => state.camera)
-  const gl = useThree((state) => state.gl)
-  const scene = useThree((state) => state.scene)
+  const placeholderGeometry = useMemo(createPlaceholderGeometry, [])
   const pointScale = quality === "high" ? 1 : quality === "medium" ? 0.9 : 0.78
   const geometry = resource?.quality === quality ? resource.geometry : null
   const uniforms = useMemo(
@@ -126,48 +135,24 @@ export default function GlobeLandPoints({
     return () => resourceGeometry?.dispose()
   }, [resource])
 
+  useEffect(
+    () => () => {
+      placeholderGeometry.dispose()
+    },
+    [placeholderGeometry]
+  )
+
   useEffect(() => {
     if (!geometry) return
-
-    let cancelled = false
-    let firstFrame = 0
-    let secondFrame = 0
-
-    async function prepareScene() {
-      try {
-        // Loading the binary only prepares CPU-side buffers. On a cold reload,
-        // Safari can still be compiling the instanced shader when React reveals
-        // the canvas. Compile and draw the complete scene while it is still
-        // hidden, then wait for the GPU before starting the DOM cross-fade.
-        await gl.compileAsync(scene, camera)
-        if (cancelled) return
-
-        gl.render(scene, camera)
-        gl.getContext().finish()
-
-        firstFrame = requestAnimationFrame(() => {
-          secondFrame = requestAnimationFrame(() => {
-            if (!cancelled) onReady()
-          })
-        })
-      } catch {
-        if (!cancelled) onLoadError()
-      }
-    }
-
-    void prepareScene()
-
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(firstFrame)
-      cancelAnimationFrame(secondFrame)
-    }
-  }, [camera, geometry, gl, onLoadError, onReady, scene])
-
-  if (!geometry) return null
+    onGeometryReady()
+  }, [geometry, onGeometryReady])
 
   return (
-    <mesh frustumCulled={false} geometry={geometry} renderOrder={3}>
+    <mesh
+      frustumCulled={false}
+      geometry={geometry ?? placeholderGeometry}
+      renderOrder={3}
+    >
       <shaderMaterial
         blending={THREE.AdditiveBlending}
         depthTest

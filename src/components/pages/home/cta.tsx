@@ -1,4 +1,5 @@
 import type { TSectionAction } from "@/types/common"
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import ActionGroup from "@/components/ui/action-group"
 import { CopyCommand } from "@/components/ui/copy-command"
@@ -16,16 +17,13 @@ interface ICTAProps {
   title: string
 }
 
-const DEFAULT_PROMPT =
-  "Connect my app or AI agent to customers with Novu. Set up reliable delivery, channel routing, and user preferences."
-
 function Cta({
   actions,
   className,
   title,
   description,
   command = "npx novu connect",
-  prompt = DEFAULT_PROMPT,
+  prompt = DEFAULT_CONNECT_PROMPT,
 }: ICTAProps) {
   return (
     <section

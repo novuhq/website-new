@@ -74,7 +74,7 @@ function CommunicationLifecycle({
           Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.4)
         )
       },
-      { threshold: [0, 0.5, 1] }
+      { threshold: [0, 0.4, 1] }
     )
 
     observer.observe(animationContainer)

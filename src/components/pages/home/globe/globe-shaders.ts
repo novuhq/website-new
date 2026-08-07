@@ -41,14 +41,15 @@ export const LAND_FRAGMENT_SHADER = /* glsl */ `
   varying vec2 vUv;
 
   void main() {
-    vec2 centeredCoord = abs(vUv - vec2(0.5));
-    float distanceFromCenter = max(centeredCoord.x, centeredCoord.y);
-    float pointMask = 1.0 - smoothstep(0.45, 0.51, distanceFromCenter);
+    vec2 edgeDistance = vec2(0.5) - abs(vUv - vec2(0.5));
+    vec2 pixelWidth = fwidth(vUv);
+    vec2 coverage = smoothstep(vec2(0.0), pixelWidth, edgeDistance);
+    float pointMask = coverage.x * coverage.y;
     float edgeColor = smoothstep(0.12, 0.9, abs(vHorizontal - 0.5) * 2.0);
     vec3 blue = vec3(0.32, 0.45, 1.0);
     vec3 pink = vec3(0.94, 0.63, 1.0);
     vec3 color = mix(blue, pink, clamp(edgeColor + vSeed * 0.08, 0.0, 1.0));
-    float alpha = pointMask * mix(0.16, 1.0, vFacing);
+    float alpha = pointMask;
 
     if (alpha < 0.01) discard;
     gl_FragColor = vec4(color, alpha);
