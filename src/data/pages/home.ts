@@ -54,30 +54,50 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
 export const HOME_CHANNELS = [
   {
     key: "slack",
-    badges: ["connect"] as const,
+    badges: ["notify", "connect"] as const,
     label: "Slack",
     title: "Connect your AI agent to Slack",
     description:
-      "Reach teams where work happens with rich, actionable messages, threads, and reliable delivery routing.",
+      "Put your agent where teams coordinate work, investigate issues, and make decisions together.",
     prompt: buildChannelConnectPrompt("Slack"),
     features: [
-      "Two-way threaded conversations",
-      "Team and user identity mapping",
-      "Reliable delivery with retries",
+      "Conversation context across threaded replies",
+      "Rich messages built with Block Kit",
+      "Buttons for actions and approvals",
+      "Live typing and read states",
+      "Messages that update in place",
+    ],
+  },
+  {
+    key: "teams",
+    badges: ["notify", "connect"] as const,
+    label: "Microsoft Teams",
+    title: "Communicate with users in Microsoft Teams",
+    description:
+      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
+    prompt: buildChannelConnectPrompt("Microsoft Teams"),
+    features: [
+      "Conversation context across replies",
+      "Adaptive Cards that update in place",
+      "Buttons for actions and approvals",
+      "Rich text and reactions",
+      "Ordered message processing",
     ],
   },
   {
     key: "whatsapp",
     badges: ["connect"] as const,
-    label: "WhatsApp",
-    title: "Connect your AI agent to WhatsApp",
+    label: "WhatsApp Business",
+    title: "Connect your AI agent to WhatsApp Business",
     description:
-      "Start secure two-way customer conversations with templates, attachments, and delivery receipts.",
-    prompt: buildChannelConnectPrompt("WhatsApp"),
+      "Give customers a direct way to reach your agent from the messaging app they already use.",
+    prompt: buildChannelConnectPrompt("WhatsApp Business"),
     features: [
-      "Secure two-way conversations",
-      "Approved message templates",
-      "Attachments and delivery receipts",
+      "Persistent conversation context",
+      "Typing indicators and read receipts",
+      "Quick-reply buttons",
+      "Secure links for tool and MCP approvals",
+      "Ordered message processing",
     ],
   },
   {
@@ -86,40 +106,30 @@ export const HOME_CHANNELS = [
     label: "Telegram",
     title: "Connect your AI agent to Telegram",
     description:
-      "Reach users with fast, conversational updates, rich media, and replies inside Telegram.",
+      "Make your agent available in a fast, lightweight channel suited to direct user conversations.",
     prompt: buildChannelConnectPrompt("Telegram"),
     features: [
-      "Fast conversational delivery",
-      "Rich messages and media",
-      "Replies routed to the right context",
-    ],
-  },
-  {
-    key: "teams",
-    badges: ["connect", "notify"] as const,
-    label: "MS Teams",
-    title: "Connect your AI agent to Microsoft Teams",
-    description:
-      "Bring agent updates and human handoffs into the channels your organization already uses.",
-    prompt: buildChannelConnectPrompt("Microsoft Teams"),
-    features: [
-      "Channel and thread awareness",
-      "Human handoff workflows",
-      "Reliable team notifications",
+      "Conversation context across replies",
+      "Markdown-rich messages",
+      "Inline buttons and quick actions",
+      "Typing indicators and read receipts",
+      "Messages that update in place",
     ],
   },
   {
     key: "email",
     badges: ["notify", "connect"] as const,
     label: "Email",
-    title: "Connect your AI agent to Email",
+    title: "Communicate with users over email",
     description:
-      "Reach users directly in their inbox with rich, actionable notifications. Support for templates, attachments, and high-deliverability routing.",
+      "Use email for conversations that benefit from a durable record and more room for detail.",
     prompt: buildChannelConnectPrompt("Email"),
     features: [
-      "Responsive message templates",
-      "Attachments and rich content",
-      "High-deliverability routing",
+      "Threaded conversation history",
+      "Rich HTML messages",
+      "Action links for approvals and tool access",
+      "Read tracking",
+      "Ordered message processing",
     ],
   },
   {
@@ -128,19 +138,21 @@ export const HOME_CHANNELS = [
     label: "iMessage",
     title: "Connect your AI agent to iMessage",
     description:
-      "Bring agent conversations and timely updates into the native messaging experience customers already use.",
+      "Give customers a familiar way to reach your agent through the Messages app.",
     prompt: buildChannelConnectPrompt("iMessage"),
     features: [
-      "Native messaging experience",
-      "Secure two-way conversations",
-      "Delivery status tracking",
+      "Full conversation history",
+      "Conversation-level threaded replies",
+      "Live typing indicators",
+      "Reply-based action and MCP approvals",
+      "Plain-text MCP connection links",
     ],
   },
   {
     key: "inbox",
     badges: ["notify"] as const,
     label: "Inbox",
-    title: "Connect your AI agent to Inbox",
+    title: "Send notifications to your in-app Inbox",
     description:
       "Give users one place inside your product to see and manage the updates that matter to them.",
     features: [
@@ -159,7 +171,7 @@ export const HOME_CHANNELS = [
     key: "push",
     badges: ["notify"] as const,
     label: "Push",
-    title: "Connect your AI agent to Push",
+    title: "Send push notifications to your users",
     description:
       "Reach users on mobile, desktop, and web when they are away from your product.",
     features: [
@@ -167,11 +179,11 @@ export const HOME_CHANNELS = [
       "Multiple provider integrations",
       "Subscriber device-token management",
       "Provider-specific delivery overrides",
-      "Selected providers: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
+      "Support for providers such as: FCM, APNS, Expo Push, OneSignal, Pusher Beams and more",
     ],
     action: {
-      label: "Explore Push Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore push providers",
+      href: "https://docs.novu.co/platform/integrations/push",
     },
   },
   {
@@ -180,22 +192,24 @@ export const HOME_CHANNELS = [
     label: "Chat",
     title: "Send notifications to chat platforms",
     description:
-      "Deliver personalized notifications through Slack, Microsoft Teams, WhatsApp, Telegram, Discord, and other supported chat providers, all managed through Novu workflows.",
+      "Route product notifications into the workplace and community tools your users already monitor.",
     features: [
-      "Slack, Teams, WhatsApp, and more",
-      "Personalized workflow messages",
+      "Workflow-driven chat notifications",
       "Multiple provider integrations",
+      "Subscriber-specific channel credentials",
+      "Provider-specific formatting and overrides",
+      "Selected providers: Slack, Microsoft Teams, Discord, WhatsApp Business, Mattermost and more",
     ],
     action: {
-      label: "Explore Chat Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore chat providers",
+      href: "https://docs.novu.co/platform/integrations/chat",
     },
   },
   {
     key: "sms",
     badges: ["notify"] as const,
     label: "SMS",
-    title: "Connect your AI agent to SMS",
+    title: "Send notifications to your users via SMS",
     description:
       "Deliver urgent and transactional updates directly to users' phones.",
     features: [
@@ -203,36 +217,21 @@ export const HOME_CHANNELS = [
       "Dynamic message content",
       "Multiple provider integrations",
       "Runtime recipient, sender, and content overrides",
-      "Selected providers: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
+      "Support for providers such as: Twilio, Infobip, AWS SNS, Vonage (Nexmo), Telnyx and more",
     ],
     action: {
-      label: "Explore SMS Providers",
-      href: String(ROUTE.docsProviders),
+      label: "Explore SMS providers",
+      href: "https://docs.novu.co/platform/integrations/sms",
     },
   },
   {
-    key: "github",
-    badges: ["notify"] as const,
-    label: "GitHub",
-    title: "Connect your AI agent to GitHub workflows",
-    description:
-      "Notify maintainers about releases, incidents, and reviews with the right context attached.",
-    prompt:
-      "Connect my AI agent to GitHub events with Novu for pull request and release notifications.",
-    features: [
-      "Pull request notifications",
-      "Release and incident updates",
-      "Repository context included",
-    ],
-  },
-  {
-    key: "zoom",
-    badges: ["connect"] as const,
+    key: "discord",
+    badges: ["notify", "connect"] as const,
     statusBadge: "Coming Soon",
-    label: "Zoom",
-    title: "Connect your AI agent to Zoom",
+    label: "Discord",
+    title: "Communicate with users over Discord chat",
     description:
-      "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
+      "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
   },
   {
     key: "linear",
@@ -244,29 +243,13 @@ export const HOME_CHANNELS = [
       "Let teams work with your agent from the issue and project workflows they already manage in Linear.",
   },
   {
-    key: "discord",
-    badges: ["notify", "connect"] as const,
+    key: "zoom",
+    badges: ["connect"] as const,
     statusBadge: "Coming Soon",
-    label: "Discord",
-    title: "Connect your AI agent to Discord",
+    label: "Zoom",
+    title: "Connect your AI agent to Zoom",
     description:
-      "Bring your agent into the communities where users ask questions, share feedback, and collaborate.",
-  },
-  {
-    key: "messenger",
-    badges: ["notify", "connect"] as const,
-    statusBadge: "Coming Soon",
-    label: "FB Messenger",
-    title: "Connect your AI agent to Facebook Messenger",
-    description:
-      "Bring your agent into the Microsoft workspace used for internal operations and enterprise collaboration.",
-    features: [
-      "Conversation context across replies",
-      "Adaptive Cards that update in place",
-      "Buttons for actions and approvals",
-      "Rich text and reactions",
-      "Ordered message processing",
-    ],
+      "Bring your agent into the conversations that continue before, during, and after work happens in Zoom.",
   },
   {
     key: "google-chat",

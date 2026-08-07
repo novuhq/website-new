@@ -25,10 +25,8 @@ import featuresBackground from "@/images/pages/home/features/bg.jpg"
 import chatPreview from "@/images/pages/home/features/chat-preview.jpg"
 import clientFacingPreview from "@/images/pages/home/features/client-facing.png"
 import discordPreview from "@/images/pages/home/features/discord-preview.jpg"
-import githubPreview from "@/images/pages/home/features/github-preview.jpg"
 import googleChatPreview from "@/images/pages/home/features/google-chat-preview.jpg"
 import linearPreview from "@/images/pages/home/features/linear-preview.jpg"
-import messengerPreview from "@/images/pages/home/features/messenger-preview.jpg"
 import pushPreview from "@/images/pages/home/features/push-preview.png"
 import smsPreview from "@/images/pages/home/features/sms-preview.jpg"
 import zoomPreview from "@/images/pages/home/features/zoom-preview.jpg"
@@ -335,11 +333,9 @@ export default async function HomePage() {
     push: pushPreview,
     chat: chatPreview,
     sms: smsPreview,
-    github: githubPreview,
     zoom: zoomPreview,
     linear: linearPreview,
     discord: discordPreview,
-    messenger: messengerPreview,
     "google-chat": googleChatPreview,
   }
 
@@ -362,11 +358,6 @@ export default async function HomePage() {
         "top-1/2 left-1/2 w-[68.75%] max-w-[440px] -translate-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
       sizes: "(min-width: 1024px) 440px, 69vw",
     },
-    github: {
-      className:
-        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
-      sizes: "(min-width: 1024px) 504px, 79vw",
-    },
     discord: {
       className:
         "top-[9.35%] left-1/2 w-[71.5625%] max-w-[458px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
@@ -381,11 +372,6 @@ export default async function HomePage() {
       className:
         "top-[9.35%] left-1/2 w-[71.5625%] max-w-[458px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
       sizes: "(min-width: 1024px) 458px, 72vw",
-    },
-    messenger: {
-      className:
-        "top-[9.35%] left-1/2 w-[78.75%] max-w-[504px] -translate-x-1/2 overflow-hidden rounded-[10px] shadow-[0_16.105px_39.368px_rgba(0,0,0,0.6)]",
-      sizes: "(min-width: 1024px) 504px, 79vw",
     },
     "google-chat": {
       className:
@@ -405,11 +391,9 @@ export default async function HomePage() {
   }
 
   const clientFacingLabels: Record<string, string> = {
-    github: "Coming Soon",
     discord: "Coming Soon",
     linear: "Coming Soon",
     zoom: "Coming Soon",
-    messenger: "Coming Soon",
     "google-chat": "Coming Soon",
   }
 

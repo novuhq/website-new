@@ -98,12 +98,6 @@ export const CHANNEL_PREVIEW_COMPANIES: Record<string, IChannelPreviewCompany> =
       useCase:
         "Its agent manages reservations over iMessage, moving bookings and confirming details in the customer's Messages app.",
     },
-    github: {
-      name: "Corewave",
-      about: "An open-source developer tool.",
-      useCase:
-        "Its agent triages bug reports inside GitHub issues, references the fix, and closes the thread when it ships.",
-    },
     zoom: {
       name: "Loopwork",
       about: "A coaching and enablement platform.",
@@ -121,12 +115,6 @@ export const CHANNEL_PREVIEW_COMPANIES: Record<string, IChannelPreviewCompany> =
       about: "A game studio.",
       useCase:
         "Its agent supports players in the community Discord, checking access and granting roles without leaving the channel.",
-    },
-    messenger: {
-      name: "Lark & Loom",
-      about: "A home-goods brand.",
-      useCase:
-        "Its agent helps shoppers reorder over Facebook Messenger, surfacing past orders as product cards.",
     },
     "google-chat": {
       name: "Kepler",
