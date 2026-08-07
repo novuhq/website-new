@@ -1,10 +1,7 @@
 import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
-import {
-  HOME_COMPLIANCE,
-  HOME_FEATURED_CUSTOMERS,
-} from "@/data/pages/home"
+import { HOME_COMPLIANCE, HOME_FEATURED_CUSTOMERS } from "@/data/pages/home"
 import {
   NOTIFY_COMMAND,
   NOTIFY_CTA,
@@ -219,11 +216,7 @@ export default async function NotifyPage() {
         variant="minimal"
         defaultOpenFirst
       />
-      <Cta
-        {...NOTIFY_CTA}
-        command={NOTIFY_COMMAND}
-        prompt={NOTIFY_PROMPT}
-      />
+      <Cta {...NOTIFY_CTA} command={NOTIFY_COMMAND} prompt={NOTIFY_PROMPT} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

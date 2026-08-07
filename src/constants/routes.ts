@@ -147,8 +147,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
     "https://docs.novu.co/platform/inbox/configuration/preferences",
   docsInboxSetup: "https://docs.novu.co/platform/inbox/setup-inbox",
   docsInboxSnooze: "https://docs.novu.co/platform/inbox/features/snooze",
-  docsInboxStyling:
-    "https://docs.novu.co/platform/inbox/configuration/styling",
+  docsInboxStyling: "https://docs.novu.co/platform/inbox/configuration/styling",
   docsInboxTabs: "https://docs.novu.co/platform/inbox/configuration/tabs",
   docsMcp: "https://docs.novu.co/platform/additional-resources/mcp",
   docsNotifications: "https://docs.novu.co/platform/sdks/react",

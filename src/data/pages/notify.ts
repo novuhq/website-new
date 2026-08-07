@@ -117,7 +117,9 @@ export const NOTIFY_FEATURE_SECTIONS = [
         external: true,
       },
       {
-        label: "usePreferences hook",
+        // Reads as a destination rather than a bare identifier, matching the
+        // "React SDK docs" capability card.
+        label: "usePreferences hook docs",
         href: String(ROUTE.docsUserPreferences),
         external: true,
       },

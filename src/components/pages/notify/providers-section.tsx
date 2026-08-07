@@ -1,9 +1,11 @@
 import Image from "next/image"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import { ChevronRight } from "lucide-react"
 
 import type { IIntegration } from "@/types/integration"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 
 interface IProvidersSectionProps {
   categoryLabels: Record<string, string>
@@ -33,15 +35,15 @@ function ProvidersSection({
           {title}
         </h2>
 
-        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,40.3125rem)_auto] lg:items-start lg:justify-between lg:gap-12">
+        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,40.3125rem)_auto] lg:items-end lg:justify-between lg:gap-12">
           <p className="max-w-161 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-60 md:text-lg xl:text-xl xl:leading-[1.5]">
             {description}
           </p>
 
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:justify-self-end lg:pt-2">
+          <div className="flex w-full flex-col items-start gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-5 lg:justify-self-end">
             <Button
               className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-auto"
-              variant="outline-transparent"
+              variant="outline"
               size="sm"
               asChild
             >
@@ -53,20 +55,18 @@ function ProvidersSection({
                 Browse all integrations
               </NextLink>
             </Button>
-            <Button
-              className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-auto"
-              variant="outline-transparent"
-              size="sm"
-              asChild
+            <Link
+              className="w-fit shrink-0 gap-x-1 text-base leading-none tracking-tight"
+              href={ROUTE.docsProviders as string}
+              size="none"
+              variant="foreground"
+              animation="arrow-right"
+              data-click-location="notify_providers"
+              data-click-text="provider_docs"
             >
-              <NextLink
-                href={ROUTE.docsProviders}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Provider docs
-              </NextLink>
-            </Button>
+              Provider docs
+              <ChevronRight size={16} />
+            </Link>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ function ProvidersSection({
                 {providersByCategory[category].map((provider) => (
                   <li key={provider.slug}>
                     <NextLink
-                      className="flex items-center gap-2.5 rounded-lg border border-gray-20 bg-[#0B0C0E] py-2 pr-3.5 pl-2.5 transition-colors duration-300 hover:border-white/25"
+                      className="flex items-center gap-2.5 rounded-lg border border-gray-20 bg-[#0B0C0E] py-2 pr-3.5 pl-2.5 transition-colors duration-300 hover:border-gray-50"
                       href={provider.pathname}
                       data-click-location="notify_providers"
                       data-click-text={provider.slug}

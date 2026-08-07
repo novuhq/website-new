@@ -1,10 +1,11 @@
 import Image, { type StaticImageData } from "next/image"
 import NextLink from "next/link"
-import { Check } from "lucide-react"
+import { Check, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 
 export interface INotifyFeatureLink {
   external?: boolean
@@ -70,43 +71,64 @@ function NotifyFeatureSplit({
             ))}
           </ul>
 
+          {/* Lead action is a button, anything after it is a chevron link, so
+              two equally-weighted buttons never sit side by side. Mirrors
+              ui/action-group.tsx. */}
           {links && links.length > 0 && (
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-              {links.map((link) => (
-                <Button
-                  className="h-11 px-5 text-base leading-none tracking-tight normal-case max-sm:w-full"
-                  variant="outline-transparent"
-                  size="none"
-                  key={link.href}
-                  asChild
+            <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-5">
+              <Button
+                className="h-11 px-5 text-base leading-none tracking-tight normal-case max-sm:w-full"
+                variant="outline"
+                size="none"
+                asChild
+              >
+                <NextLink
+                  href={links[0].href}
+                  {...(links[0].external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  data-click-location={linkClickLocation}
+                  data-click-text={links[0].label}
                 >
-                  <NextLink
-                    href={link.href}
-                    {...(link.external
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    data-click-location={linkClickLocation}
-                    data-click-text={link.label}
-                  >
-                    {link.label}
-                  </NextLink>
-                </Button>
+                  {links[0].label}
+                </NextLink>
+              </Button>
+
+              {links.slice(1).map((link) => (
+                <Link
+                  className="w-fit shrink-0 gap-x-1 text-base leading-none tracking-tight"
+                  href={link.href}
+                  size="none"
+                  variant="foreground"
+                  animation="arrow-right"
+                  key={link.href}
+                  data-click-location={linkClickLocation}
+                  data-click-text={link.label}
+                >
+                  {link.label}
+                  <ChevronRight size={16} />
+                </Link>
               ))}
             </div>
           )}
         </div>
 
+        {/* These graphics are authored for the homepage bento: the artwork sits
+            in the top-centre of the canvas and the lower third is empty, because
+            there the card's own copy sits on top of it. Crop to the artwork the
+            same way the homepage does - oversize the image and anchor it to the
+            top centre - instead of letting the empty band pad out the frame. */}
         <div
           className={cn(
-            "relative overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E]",
+            "relative aspect-8/5 overflow-hidden rounded-xl border border-gray-20 bg-[#0B0C0E]",
             reverse && "lg:order-1"
           )}
         >
           <Image
-            className="h-auto w-full"
+            className="absolute top-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
             src={image}
             alt=""
-            sizes="(min-width: 1024px) 608px, 100vw"
+            sizes="(min-width: 1024px) 912px, 150vw"
             quality={100}
             aria-hidden="true"
           />

@@ -1,5 +1,5 @@
 import NextLink from "next/link"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, ChevronRight } from "lucide-react"
 
 export interface IExploreLinkItem {
   description: string
@@ -46,7 +46,7 @@ function ExploreLinks({
           {items.map((item) => (
             <li key={item.title}>
               <NextLink
-                className="group flex h-full flex-col rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 transition-colors duration-300 hover:border-white/25 lg:p-6"
+                className="group flex h-full flex-col rounded-xl border border-gray-20 bg-[#0B0C0E] p-5 transition-colors duration-300 hover:border-gray-50 lg:p-6"
                 href={item.href}
                 data-click-location="notify_explore"
                 data-click-text={item.linkLabel}
@@ -57,10 +57,10 @@ function ExploreLinks({
                 <p className="mt-2 text-sm leading-normal font-normal tracking-tighter text-pretty text-gray-50">
                   {item.description}
                 </p>
-                <span className="mt-auto flex items-center gap-1.5 pt-4 text-sm leading-none font-medium tracking-tighter text-blue-1">
+                <span className="mt-auto flex w-fit items-center gap-1.5 pt-4 text-sm leading-none font-medium tracking-normal text-white">
                   {item.linkLabel}
-                  <ArrowRight
-                    className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                  <ChevronRight
+                    className="size-4 transition-transform duration-300 group-hover:translate-x-0.5"
                     aria-hidden
                   />
                 </span>
@@ -80,7 +80,7 @@ function ExploreLinks({
               {docsItems.map((item) => (
                 <li key={item.href}>
                   <NextLink
-                    className="group flex items-center gap-1.5 rounded-lg border border-gray-20 bg-[#0B0C0E] px-3.5 py-2.5 text-sm leading-none tracking-tighter text-gray-8 transition-colors duration-300 hover:border-white/25 hover:text-foreground"
+                    className="group flex items-center gap-1.5 rounded-lg border border-gray-20 bg-[#0B0C0E] px-3.5 py-2.5 text-sm leading-none tracking-tighter text-gray-8 transition-colors duration-300 hover:border-gray-50 hover:text-foreground"
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"

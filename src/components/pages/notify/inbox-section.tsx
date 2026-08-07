@@ -1,7 +1,9 @@
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import { ChevronRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 import InboxCapabilities, { type IInboxCapability } from "./inbox-capabilities"
@@ -27,12 +29,30 @@ function InboxSection({
             {title}
           </h2>
 
-          <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,40.3125rem)_18.125rem] lg:items-start lg:justify-between lg:gap-12">
+          {/* Two buttons max, primary + secondary, with any further action
+              demoted to a chevron link - the rule ui/action-group.tsx encodes
+              and the mcp/copilot heroes follow. Bottom-aligned to the
+              description like the featured-customers header. */}
+          <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,40.3125rem)_auto] lg:items-end lg:justify-between lg:gap-12">
+            {/* "Read docs" rides at the end of the copy instead of becoming a
+                third button, leaving one primary + one secondary in the row. */}
             <p className="max-w-161 text-base leading-normal font-normal tracking-tighter text-pretty text-gray-60 md:text-lg xl:text-xl xl:leading-[1.5]">
-              {description}
+              {description}{" "}
+              <Link
+                className="gap-x-1 align-baseline"
+                href={ROUTE.docsInApp as string}
+                size="none"
+                variant="foreground"
+                animation="arrow-right"
+                data-click-location="notify_inbox_section"
+                data-click-text="read_docs"
+              >
+                Read docs
+                <ChevronRight size={16} />
+              </Link>
             </p>
 
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:justify-self-end lg:pt-2">
+            <div className="flex w-full flex-col items-start gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-5 lg:justify-self-end">
               <CopyPromptButton
                 className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-39 [&_svg]:!size-3.5"
                 size="sm"
@@ -40,7 +60,7 @@ function InboxSection({
               />
               <Button
                 className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-auto"
-                variant="outline-transparent"
+                variant="outline"
                 size="sm"
                 asChild
               >
@@ -50,20 +70,6 @@ function InboxSection({
                   data-click-text="explore_inbox"
                 >
                   Explore Inbox
-                </NextLink>
-              </Button>
-              <Button
-                className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-29.5"
-                variant="outline-transparent"
-                size="sm"
-                asChild
-              >
-                <NextLink
-                  href={ROUTE.docsInApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Read docs
                 </NextLink>
               </Button>
             </div>

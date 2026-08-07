@@ -25,10 +25,13 @@ function CapabilityCardBody({ item }: { item: IInboxCapability }) {
         {item.description}
       </p>
       {item.href && item.linkLabel && (
-        <span className="mt-auto flex items-center gap-1 pt-4 text-sm leading-none font-medium tracking-tighter text-blue-1">
+        // Matches the case-study link in components/pages/home/featured-customers:
+        // white label, canonical chevron nudged on hover. The whole card is the
+        // link, so the nudge hangs off `group-hover`.
+        <span className="mt-auto flex w-fit items-center gap-1.5 pt-4 text-sm leading-none font-medium tracking-normal text-white">
           {item.linkLabel}
           <ArrowUpRight
-            className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             aria-hidden
           />
         </span>
@@ -58,7 +61,7 @@ function InboxCapabilities({ className, items }: IInboxCapabilitiesProps) {
             <NextLink
               className={cn(
                 cardClassName,
-                "group transition-colors duration-300 hover:border-white/25"
+                "group transition-colors duration-300 hover:border-gray-50"
               )}
               href={item.href}
               target="_blank"
