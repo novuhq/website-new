@@ -63,26 +63,26 @@ test.describe("critical integrations discovery journey", () => {
     expectHealthyPage(applicationErrors)
   })
 
-  test("groups shared agent runtimes and keeps coming-soon channels non-interactive", async ({
+  test("groups agent runtimes and exposes live agent channels", async ({
     page,
   }) => {
     const applicationErrors = observeApplicationErrors(page)
     await gotoCriticalPage(page, "/integrations/sources")
 
-    const aiSdkSection = page.getByRole("region", { name: "AI SDKs" })
     const agentRuntimesSection = page.getByRole("region", {
       name: "Agent runtimes",
     })
     await expect(
-      aiSdkSection.locator('[data-slot="integration-card"]')
-    ).toHaveCount(2)
-    await expect(
       agentRuntimesSection.locator('[data-slot="integration-card"]')
-    ).toHaveCount(4)
-    for (const title of ["Vercel AI SDK", "LangChain"]) {
+    ).toHaveCount(6)
+    for (const group of integrationsContract.agentRuntimeGroups) {
       await expect(
-        page.getByRole("heading", { level: 3, name: title, exact: true })
-      ).toHaveCount(2)
+        agentRuntimesSection.getByRole("heading", {
+          level: 3,
+          name: group,
+          exact: true,
+        })
+      ).toBeVisible()
     }
 
     const agentRuntimesFilter = page.getByRole("button", {
@@ -96,7 +96,7 @@ test.describe("critical integrations discovery journey", () => {
       .toBe("agent-runtimes")
 
     const runtimeCards = page.locator('[data-slot="integration-card"]')
-    await expect(runtimeCards).toHaveCount(4)
+    await expect(runtimeCards).toHaveCount(6)
     for (const title of integrationsContract.agentRuntimes) {
       await expect(
         runtimeCards.getByRole("heading", {
@@ -118,9 +118,8 @@ test.describe("critical integrations discovery journey", () => {
       .poll(() => new URL(page.url()).searchParams.get("category"))
       .toBe("agent-channels")
 
-    await page.getByRole("button", { name: "Show more" }).click()
     const agentChannelCards = page.locator('[data-slot="integration-card"]')
-    await expect(agentChannelCards).toHaveCount(11)
+    await expect(agentChannelCards).toHaveCount(6)
     await expect
       .poll(() =>
         agentChannelCards
@@ -135,26 +134,68 @@ test.describe("critical integrations discovery journey", () => {
       )
       .toBe(true)
 
-    const comingSoonCards = page.locator(
-      '[data-slot="integration-card"][data-availability="coming-soon"]'
-    )
-    await expect(comingSoonCards).toHaveCount(5)
     await expect
       .poll(() =>
-        comingSoonCards.evaluateAll((cards) =>
-          cards.every((card) => card.tagName === "ARTICLE")
+        agentChannelCards.evaluateAll((cards) =>
+          cards.every((card) => card.tagName === "A")
         )
       )
       .toBe(true)
-    for (const title of integrationsContract.comingSoonAgentChannels) {
+    for (const title of integrationsContract.agentChannels) {
       await expect(
-        comingSoonCards.getByRole("heading", {
+        agentChannelCards.getByRole("heading", {
           level: 3,
           name: title,
           exact: true,
         })
       ).toHaveCount(1)
     }
+
+    expectHealthyPage(applicationErrors)
+  })
+
+  test("keeps detail hero actions mutually exclusive and stacks CLI commands", async ({
+    page,
+  }) => {
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, "/integrations/langchain")
+
+    const runtimeHero = page.locator("article header")
+    const runtimeTagline = runtimeHero.getByText(
+      "LangChain is the open-source framework for building agents and LLM apps in Python and JavaScript.",
+      { exact: true }
+    )
+    const copyCommand = runtimeHero.getByRole("button", {
+      name: "Copy to clipboard",
+    })
+
+    await expect(copyCommand).toBeVisible()
+    await expect(
+      runtimeHero.getByRole("link", { name: "Integrate LangChain" })
+    ).toHaveCount(0)
+    await expect
+      .poll(async () => {
+        const [taglineBox, commandBox] = await Promise.all([
+          runtimeTagline.boundingBox(),
+          copyCommand.locator("xpath=../..").boundingBox(),
+        ])
+
+        if (!taglineBox || !commandBox) return false
+        return commandBox.y >= taglineBox.y + taglineBox.height + 27
+      })
+      .toBe(true)
+
+    await gotoCriticalPage(page, "/integrations/sendgrid")
+    const providerHero = page.locator("article header")
+    await expect(
+      providerHero.getByRole("link", { name: "Integrate SendGrid" })
+    ).toHaveAttribute(
+      "href",
+      "https://docs.novu.co/platform/integrations/email/sendgrid"
+    )
+    await expect(
+      providerHero.getByRole("button", { name: "Copy to clipboard" })
+    ).toHaveCount(0)
 
     expectHealthyPage(applicationErrors)
   })

@@ -48,6 +48,32 @@ function IntegrationDetail({
         ? "Other integrations"
         : `Other ${relatedProviderType} providers`
 
+  const heroTitle = (
+    <div
+      className={cn(
+        "min-w-0",
+        integration.cliCommand ? "w-full" : "flex-1 basis-[60%]"
+      )}
+    >
+      <div className="flex flex-wrap items-center gap-3 md:gap-4">
+        <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
+          {integration.title}
+        </h1>
+        <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
+          {integration.detailBadge}
+        </span>
+      </div>
+      <p
+        className={cn(
+          "mt-3 text-lg leading-normal font-book tracking-tight text-gray-8",
+          !integration.cliCommand && "max-w-[22.6875rem]"
+        )}
+      >
+        {integration.tagline}
+      </p>
+    </div>
+  )
+
   return (
     <article
       className={cn(
@@ -68,10 +94,10 @@ function IntegrationDetail({
 
         <header
           className={cn(
-            "flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8 md:pt-9 md:pb-10",
+            "flex flex-col gap-5 border-b border-gray-2 pt-7 pb-8",
             integration.cliCommand
-              ? "lg:max-w-2xl 2xl:max-w-none"
-              : "lg:max-w-xl xl:max-w-176 2xl:max-w-none"
+              ? "md:py-10 lg:max-w-2xl 2xl:max-w-none"
+              : "md:pt-9 md:pb-10 lg:max-w-xl xl:max-w-176 2xl:max-w-none"
           )}
         >
           <div className="relative size-18 shrink-0 overflow-hidden rounded-xl border border-[var(--integration-icon-wrapper-border)] [background:var(--integration-icon-wrapper-bg)]">
@@ -86,33 +112,18 @@ function IntegrationDetail({
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
-            <div
-              className={cn(
-                "min-w-0 flex-1",
-                !integration.cliCommand && "basis-[60%]"
-              )}
-            >
-              <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                <h1 className="font-display text-4xl leading-[1.125] tracking-tight text-white sm:text-5xl">
-                  {integration.title}
-                </h1>
-                <span className="rounded-xl border border-integration-card-category-border bg-integration-card-category-bg px-2.5 pt-[0.3125rem] pb-[0.4375rem] text-xs leading-none tracking-tighter text-gray-9">
-                  {integration.detailBadge}
-                </span>
-              </div>
-              <p className="mt-3 max-w-[22.6875rem] text-lg leading-normal font-book tracking-tight text-gray-8">
-                {integration.tagline}
-              </p>
-            </div>
-
-            {integration.cliCommand ? (
+          {integration.cliCommand ? (
+            <div className="flex w-full flex-col items-start gap-7">
+              {heroTitle}
               <CopyCommand
                 command={integration.cliCommand}
                 variant="highlighted"
                 className="w-full shrink-0 sm:w-70.5"
               />
-            ) : (
+            </div>
+          ) : (
+            <div className="flex flex-col gap-6 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+              {heroTitle}
               <Button
                 variant="default"
                 size="none"
@@ -127,8 +138,8 @@ function IntegrationDetail({
                   {primaryLabel}
                 </NextLink>
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </header>
       </div>
 

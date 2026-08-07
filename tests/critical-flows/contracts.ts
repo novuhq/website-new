@@ -137,13 +137,22 @@ export const integrationsContract = {
   detailRoute: "/integrations/sendgrid",
   detailHeading: "SendGrid",
   docsDestination: "https://docs.novu.co/platform/integrations/email/sendgrid",
-  agentRuntimes: ["Vercel AI SDK", "Chat SDK", "LangChain", "Custom code"],
-  comingSoonAgentChannels: [
-    "Discord",
-    "Linear",
-    "Zoom",
-    "Voice",
-    "Google Chat",
+  agentRuntimeGroups: ["Custom code runtimes", "Managed agent runtimes"],
+  agentRuntimes: [
+    "Vercel AI SDK",
+    "LangChain",
+    "Chat SDK",
+    "Custom Code",
+    "Claude Managed Agent",
+    "AWS Claude Managed Agent",
+  ],
+  agentChannels: [
+    "Slack",
+    "Microsoft Teams",
+    "WhatsApp Business",
+    "Telegram",
+    "Email",
+    "iMessage (Sendblue)",
   ],
 } as const
 
