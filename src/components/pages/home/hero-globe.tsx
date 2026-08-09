@@ -19,6 +19,7 @@ import {
   loadGlobeLandPoints,
 } from "./globe/globe-assets"
 import GlobeMetric from "./globe/globe-metric"
+import type { IGlobeCardEvent } from "./globe/globe-types"
 
 const loadGlobeRuntime = () => import("./globe/globe-runtime")
 const GlobeRuntime = dynamic(loadGlobeRuntime, {
@@ -76,7 +77,11 @@ function getServerMobileSnapshot() {
   return false
 }
 
-export default function HeroGlobe() {
+export default function HeroGlobe({
+  cardEvents,
+}: {
+  cardEvents?: IGlobeCardEvent[]
+}) {
   const shouldReduceMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
@@ -187,6 +192,7 @@ export default function HeroGlobe() {
             onReady={handleRuntimeReady}
             onUnavailable={handleUnavailable}
             playbackEnabled={playbackEnabled}
+            cardEvents={cardEvents}
           />
         </div>
       ) : null}
