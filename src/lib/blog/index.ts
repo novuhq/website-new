@@ -116,7 +116,11 @@ export async function getAllPosts(
     cache: options.cache,
     useCdn: options.useCdn,
   })
-  return posts.map((post) => transformPost(post))
+  // Skip incomplete posts (missing category/slug) so a draft-only post with
+  // unfilled required fields cannot crash the listing in preview mode.
+  return posts
+    .filter((post) => post.category?.slug?.current && post.slug?.current)
+    .map((post) => transformPost(post))
 }
 
 /**
@@ -133,7 +137,11 @@ export async function getAllPostsWithExcerpt(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  // Skip incomplete posts (missing category/slug) so a draft-only post with
+  // unfilled required fields cannot crash the listing in preview mode.
+  return posts
+    .filter((post) => post.category?.slug?.current && post.slug?.current)
+    .map((post) => transformPost(post))
 }
 
 /**
