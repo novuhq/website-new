@@ -28,7 +28,12 @@ import {
 import { getTableOfContents } from "@/lib/sanity/utils/get-table-of-contents"
 import { absoluteUrl } from "@/lib/site-url"
 
-import { transformCategory, transformPost, transformPosts } from "./transform"
+import {
+  isCompletePost,
+  transformCategory,
+  transformPost,
+  transformPosts,
+} from "./transform"
 
 const POSTS_PER_PAGE = config.blog.postsPerPage
 const REVALIDATE_BLOG_TAG = "blog"
@@ -194,8 +199,10 @@ export async function getPostBySlug(
 
   if (!post) return null
 
+  // `postBySlugQuery` is intentionally unfiltered so drafts resolve, so the
+  // completeness the post page relies on has to be checked here.
   const transformedPost = transformPost(post)
-  if (!transformedPost) return null
+  if (!transformedPost || !isCompletePost(post)) return null
 
   return {
     ...transformedPost,

@@ -2,7 +2,11 @@ import assert from "node:assert/strict"
 import { describe, it } from "node:test"
 
 import type { IPostData } from "@/types/blog"
-import { transformPost, transformPosts } from "@/lib/blog/transform"
+import {
+  isCompletePost,
+  transformPost,
+  transformPosts,
+} from "@/lib/blog/transform"
 import { latestPostsQuery } from "@/lib/sanity/queries/blog"
 
 const completePost = {
@@ -55,5 +59,28 @@ describe("blog data readiness", () => {
       ),
       ["complete-post"]
     )
+  })
+
+  it("keeps posts from projections that omit card fields", () => {
+    // `postExcerptFields` powers site search and never projects a cover
+    const excerptPost = {
+      ...completePost,
+      cover: undefined,
+    } as unknown as IPostData
+
+    assert.deepEqual(
+      transformPosts([excerptPost]).map((post) => post.slug.current),
+      ["complete-post"]
+    )
+  })
+
+  it("treats a cover-less draft as unrenderable on the post page", () => {
+    const draftWithoutCover = {
+      ...completePost,
+      cover: undefined,
+    } as unknown as IPostData
+
+    assert.equal(isCompletePost(completePost), true)
+    assert.equal(isCompletePost(draftWithoutCover), false)
   })
 })
