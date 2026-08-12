@@ -1,5 +1,4 @@
 import config from "@/configs/website-config"
-import { ROUTE } from "@/constants/routes"
 
 import {
   ICategory,
@@ -29,39 +28,14 @@ import {
 import { getTableOfContents } from "@/lib/sanity/utils/get-table-of-contents"
 import { absoluteUrl } from "@/lib/site-url"
 
+import { transformCategory, transformPost, transformPosts } from "./transform"
+
 const POSTS_PER_PAGE = config.blog.postsPerPage
 const REVALIDATE_BLOG_TAG = "blog"
 
 type SanityReadOptions = {
   cache?: RequestCache
   useCdn?: boolean
-}
-
-/**
- * Transforms a category data object from Sanity into the application's category format
- * @param category - The raw category data from Sanity
- *
- * @returns A formatted category object with URL
- */
-function transformCategory(category: ICategoryData): ICategory {
-  return {
-    ...category,
-    url: `${ROUTE.blogCategory}/${category.slug.current}`,
-  }
-}
-
-/**
- * Transforms a post data object from Sanity into the application's post format
- * @param post - The raw post data from Sanity
- *
- * @returns A formatted post object with transformed category
- */
-function transformPost(post: IPostData): IPost {
-  return {
-    ...post,
-    url: `${ROUTE.blog}/${post.slug.current}`,
-    category: transformCategory(post.category),
-  }
 }
 
 /**
@@ -79,9 +53,10 @@ export async function getFeaturedPost(
     tags: [REVALIDATE_BLOG_TAG],
   })
 
-  if (!featuredPosts || featuredPosts.length === 0) return null
+  const readyPosts = transformPosts(featuredPosts || [])
+  if (readyPosts.length === 0) return null
 
-  return featuredPosts.map((post) => transformPost(post))
+  return readyPosts
 }
 
 /**
@@ -116,7 +91,7 @@ export async function getAllPosts(
     cache: options.cache,
     useCdn: options.useCdn,
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -133,7 +108,7 @@ export async function getAllPostsWithExcerpt(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -153,7 +128,7 @@ export async function getLatestPostsWithExcerpt(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -173,7 +148,7 @@ export async function getLatestPosts(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -196,7 +171,7 @@ export async function getPostsByCategory(
     cache: options.cache,
     useCdn: options.useCdn,
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -219,8 +194,11 @@ export async function getPostBySlug(
 
   if (!post) return null
 
+  const transformedPost = transformPost(post)
+  if (!transformedPost) return null
+
   return {
-    ...transformPost(post),
+    ...transformedPost,
     tableOfContents: getTableOfContents(post.content),
     seo: {
       ...post.seo,
@@ -359,7 +337,7 @@ export async function getPaginatedPosts(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }
 
 /**
@@ -393,5 +371,5 @@ export async function getPaginatedPostsByCategory(
     preview,
     tags: [REVALIDATE_BLOG_TAG],
   })
-  return posts.map((post) => transformPost(post))
+  return transformPosts(posts)
 }

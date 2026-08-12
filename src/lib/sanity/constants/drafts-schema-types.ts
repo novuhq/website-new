@@ -1,4 +1,4 @@
-import { Route } from "next"
+import type { Route } from "next"
 import { ROUTE } from "@/constants/routes"
 
 /**
@@ -6,6 +6,7 @@ import { ROUTE } from "@/constants/routes"
  */
 
 export enum DraftsSchemaTypes {
+  BLOG_POST = "blogPost",
   CHANGELOG_POST = "changelogPost",
   CUSTOMERS = "customers",
   CUSTOMER = "customer",
@@ -16,6 +17,7 @@ export enum DraftsSchemaTypes {
  * Map SchemaType with a preview to its corresponding route
  */
 export const PREVIEW_ROUTES: Record<DraftsSchemaTypes, URL | Route<string>> = {
+  [DraftsSchemaTypes.BLOG_POST]: ROUTE.blog,
   [DraftsSchemaTypes.CHANGELOG_POST]: ROUTE.changelog,
   [DraftsSchemaTypes.CUSTOMERS]: ROUTE.customers,
   [DraftsSchemaTypes.CUSTOMER]: ROUTE.customers,
