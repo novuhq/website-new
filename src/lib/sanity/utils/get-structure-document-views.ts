@@ -1,44 +1,14 @@
-import { SanityDocument } from "sanity"
 import { Iframe } from "sanity-plugin-iframe-pane"
 import { StructureBuilder } from "sanity/structure"
 
-import {
-  DraftsSchemaTypes,
-  PREVIEW_ROUTES,
-} from "@/lib/sanity/constants/drafts-schema-types"
-
-interface ExtendedSanityDocument extends SanityDocument {
-  slug?: {
-    current: string
-  }
-  link?: {
-    type: string
-  }
-}
-
-function getPreviewPath(
-  doc: ExtendedSanityDocument | null,
-  schemaType: string
-) {
-  const route = PREVIEW_ROUTES[schemaType as DraftsSchemaTypes]
-  if (!route) {
-    return new Error(`Preview route is not configured for ${schemaType}`)
-  }
-
-  if (schemaType === DraftsSchemaTypes.CUSTOMER && !doc?.slug?.current) {
-    return new Error("A customer story needs a slug before it can be previewed")
-  }
-
-  const slug = doc?.slug?.current
-  return `${String(route)}${slug ? `/${encodeURIComponent(slug)}` : ""}`
-}
+import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
+import { getPreviewPath, type PreviewDocument } from "@/lib/sanity/preview-path"
 
 function getIframeOptions(schemaType: string) {
   return {
     url: {
       origin: "same-origin" as const,
-      preview: (doc: ExtendedSanityDocument | null) =>
-        getPreviewPath(doc, schemaType),
+      preview: (doc: PreviewDocument | null) => getPreviewPath(doc, schemaType),
       draftMode: "/api/preview",
     },
     showDisplayUrl: false,
@@ -73,7 +43,7 @@ export const getStructureDocumentViews = (
             ...iframeOptions,
             url: {
               ...iframeOptions.url,
-              preview: (doc: ExtendedSanityDocument | null) =>
+              preview: (doc: PreviewDocument | null) =>
                 doc?.link?.type === "story"
                   ? getPreviewPath(doc, schemaType)
                   : new Error("Preview is only available for customer stories"),

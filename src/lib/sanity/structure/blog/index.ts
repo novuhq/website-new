@@ -2,6 +2,8 @@ import { BookIcon, DocumentTextIcon, UlistIcon } from "@sanity/icons"
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list"
 import { StructureBuilder, StructureResolverContext } from "sanity/structure"
 
+import { DraftsSchemaTypes } from "@/lib/sanity/constants/drafts-schema-types"
+
 const blogStructure = (
   S: StructureBuilder,
   context: StructureResolverContext
@@ -16,7 +18,9 @@ const blogStructure = (
           S.listItem()
             .title("Posts")
             .icon(DocumentTextIcon)
-            .child(S.documentTypeList("blogPost").title("All Posts")),
+            .child(
+              S.documentTypeList(DraftsSchemaTypes.BLOG_POST).title("All Posts")
+            ),
           orderableDocumentListDeskItem({
             title: "Categories",
             icon: UlistIcon,

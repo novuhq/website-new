@@ -4,6 +4,17 @@ import { groq } from "next-sanity"
 
 const COVER_ASPECT_RATIO = config.blog.coverAspectRatio
 
+const postCardReadyFilter = groq`
+  _type == "blogPost" &&
+  defined(title) &&
+  defined(slug.current) &&
+  defined(caption) &&
+  defined(publishedAt) &&
+  defined(category._ref) &&
+  defined(cover.asset._ref) &&
+  count(authors) > 0
+`
+
 const commonPostFields = `
   _type,
   _createdAt,
@@ -104,14 +115,14 @@ const fullPostFields = groq`
 
 // Query for featured post
 export const featuredPostQuery = groq`
-  *[_type == "blogPost" && isFeatured == true] | order(publishedAt desc) {
+  *[${postCardReadyFilter} && isFeatured == true] | order(publishedAt desc) {
     ${postCardFields}
   }
 `
 
 // Query for all categories that have at least one post
 export const categoriesQuery = groq`
-  *[_type == "blogCategory" && count(*[_type == "blogPost" && references(^._id)]) > 0] | order(title asc) {
+  *[_type == "blogCategory" && defined(title) && defined(slug.current) && count(*[${postCardReadyFilter} && references(^._id)]) > 0] | order(title asc) {
     title,
     slug
   }
@@ -119,35 +130,35 @@ export const categoriesQuery = groq`
 
 // Query for all posts with pagination
 export const postsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) {
+  *[${postCardReadyFilter}] | order(publishedAt desc) {
     ${postCardFields}
   }
 `
 
 // Query for latest N posts (accepts $limit parameter)
 export const latestPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc)[0...$limit] {
+  *[${postCardReadyFilter}] | order(publishedAt desc)[0...$limit] {
     ${postCardFields}
   }
 `
 
 // Query for all posts with excerpt
 export const postsWithExcerptQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) {
+  *[${postCardReadyFilter}] | order(publishedAt desc) {
     ${postExcerptFields}
   }
 `
 
 // Query for latest N posts with excerpt
 export const latestPostsWithExcerptQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc)[0...$limit] {
+  *[${postCardReadyFilter}] | order(publishedAt desc)[0...$limit] {
     ${postExcerptFields}
   }
 `
 
 // Query for posts by category
 export const postsByCategoryQuery = groq`
-  *[_type == "blogPost" && category->slug.current == $slug] | order(publishedAt desc) {
+  *[${postCardReadyFilter} && category->slug.current == $slug] | order(publishedAt desc) {
     ${postCardFields}
   }
 `
@@ -168,41 +179,41 @@ export const categoryBySlugQuery = groq`
 
 // Query for pagination
 export const totalPostsQuery = groq`{
-  "total": count(*[_type == "blogPost"]),
-  "nonFeatured": count(*[_type == "blogPost" && (!defined(isFeatured) || isFeatured == false)])
+  "total": count(*[${postCardReadyFilter}]),
+  "nonFeatured": count(*[${postCardReadyFilter} && (!defined(isFeatured) || isFeatured == false)])
 }
 `
 
 // Query for total posts by category
 export const totalPostsByCategoryQuery = groq`{
-  "total": count(*[_type == "blogPost" && category->slug.current == $slug]),
-  "nonFeatured": count(*[_type == "blogPost" && category->slug.current == $slug && (!defined(isFeatured) || isFeatured == false)])
+  "total": count(*[${postCardReadyFilter} && category->slug.current == $slug]),
+  "nonFeatured": count(*[${postCardReadyFilter} && category->slug.current == $slug && (!defined(isFeatured) || isFeatured == false)])
 }`
 
 // Query for paginated posts
 export const paginatedPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc)[$start...$end] {
+  *[${postCardReadyFilter}] | order(publishedAt desc)[$start...$end] {
     ${postCardFields}
   }
 `
 
 // Query for paginated non-featured posts
 export const paginatedNonFeaturedPostsQuery = groq`
-  *[_type == "blogPost" && (!defined(isFeatured) || isFeatured == false)] | order(publishedAt desc)[$start...$end] {
+  *[${postCardReadyFilter} && (!defined(isFeatured) || isFeatured == false)] | order(publishedAt desc)[$start...$end] {
     ${postCardFields}
   }
 `
 
 // Query for paginated posts by category
 export const paginatedPostsByCategoryQuery = groq`
-  *[_type == "blogPost" && category->slug.current == $slug] | order(publishedAt desc)[$start...$end] {
+  *[${postCardReadyFilter} && category->slug.current == $slug] | order(publishedAt desc)[$start...$end] {
     ${postCardFields}
   }
 `
 
 // Query for paginated non-featured posts by category
 export const paginatedNonFeaturedPostsByCategoryQuery = groq`
-  *[_type == "blogPost" && category->slug.current == $slug && (!defined(isFeatured) || isFeatured == false)] | order(publishedAt desc)[$start...$end] {
+  *[${postCardReadyFilter} && category->slug.current == $slug && (!defined(isFeatured) || isFeatured == false)] | order(publishedAt desc)[$start...$end] {
     ${postCardFields}
   }
 `
