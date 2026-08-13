@@ -74,7 +74,7 @@ function NovuCallout({ children, className }: INovuCalloutProps) {
         className={cn(
           "prose-inside-content prose max-w-none px-6 pt-5 pb-6",
           "[&_.prose>p:first-child]:!text-xl [&_.prose>p:first-child]:!leading-[1.375] [&_.prose>p:first-child]:tracking-tight [&_.prose>p:first-child]:text-foreground",
-          "[&_.prose>p+p]:!mt-6"
+          "[&_.prose>p+p]:!mt-6 [&_.prose>p+p]:text-gray-9"
         )}
       >
         {children}

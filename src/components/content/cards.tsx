@@ -19,7 +19,7 @@ function Card({ title, children, className }: ICardProps) {
       <h4 className="not-prose text-lg leading-normal font-medium tracking-tight text-foreground">
         {title}
       </h4>
-      <div className="prose-inside-content prose mt-2.5 max-w-none">
+      <div className="prose-inside-content prose mt-2.5 max-w-none [&_p]:text-gray-9">
         {children}
       </div>
     </article>

@@ -323,7 +323,11 @@
       @apply flex flex-col gap-3 border-y border-gray-5 py-4 pl-5;
 
       & > li {
-        @apply text-lg;
+        @apply text-lg text-gray-9;
+
+        strong {
+          @apply text-foreground;
+        }
       }
     }
 
