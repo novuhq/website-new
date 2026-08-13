@@ -97,12 +97,13 @@
 
   ul {
     @apply prose-li:marker:text-[0px];
-    @apply flex flex-col gap-3 border-y border-gray-5 py-4 pl-5;
+  }
 
+  &:not(.prose-v2) ul {
     & > li {
-      @apply relative my-0 pl-6 text-lg leading-normal tracking-tight;
+      @apply relative;
 
-      @apply before:absolute before:top-0 before:left-0 before:text-lg before:leading-normal before:text-purple-2 before:content-['–'];
+      @apply before:absolute before:top-3 before:-left-6 before:h-px before:w-2 before:rounded-full before:bg-secondary-foreground md:before:top-3.5;
     }
   }
 
@@ -306,6 +307,33 @@
     ul {
       li {
         @apply text-base leading-snug tracking-tight before:top-2.5 before:-left-5;
+      }
+    }
+  }
+
+  /* Redesigned content styles, enabled per-post via the prose-v2 class */
+  &.prose-v2 {
+    ul > li {
+      @apply relative my-0 pl-6 leading-normal tracking-tight;
+
+      @apply before:absolute before:top-0 before:left-0 before:leading-normal before:text-purple-2 before:content-['–'];
+    }
+
+    & > ul {
+      @apply flex flex-col gap-3 border-y border-gray-5 py-4 pl-5;
+
+      & > li {
+        @apply text-lg;
+      }
+    }
+
+    .prose-inside-content {
+      ul {
+        @apply gap-y-2 py-0 pl-0;
+
+        li {
+          @apply before:top-0 before:left-0 before:leading-snug;
+        }
       }
     }
   }
