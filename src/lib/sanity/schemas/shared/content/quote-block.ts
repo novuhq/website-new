@@ -46,8 +46,7 @@ const quoteBlock = defineType({
       name: "role",
       type: "string",
       title: "Role",
-      validation: (rule: StringRule) =>
-        rule.error("You have to fill in this field.").required().max(64),
+      validation: (rule: StringRule) => rule.max(64),
     }),
   ],
   preview: {

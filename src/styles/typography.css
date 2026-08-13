@@ -97,11 +97,12 @@
 
   ul {
     @apply prose-li:marker:text-[0px];
+    @apply flex flex-col gap-3 border-y border-gray-5 py-4 pl-5;
 
     & > li {
-      @apply relative;
+      @apply relative my-0 pl-6 text-lg leading-normal tracking-tight;
 
-      @apply before:absolute before:top-3 before:-left-6 before:h-px before:w-2 before:rounded-full before:bg-secondary-foreground md:before:top-3.5;
+      @apply before:absolute before:top-0 before:left-0 before:text-lg before:leading-normal before:text-purple-2 before:content-['–'];
     }
   }
 

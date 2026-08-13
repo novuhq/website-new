@@ -13,13 +13,16 @@ import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
 import {
+  IContentCard,
   IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
   IContentCtaBlock,
   IContentDetailsToggle,
   IContentIframeBlock,
+  IContentKeyTakeaways,
   IContentNote,
+  IContentNovuCallout,
   IContentPicture,
   IContentStep,
   IContentTable,
@@ -39,12 +42,15 @@ import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
 import Blockquote from "@/components/content/blockquote"
+import { Card, Cards } from "@/components/content/cards"
 import ChangeBlock from "@/components/content/change-block"
 import CodeBlock from "@/components/content/code-block"
 import CodeTabs from "@/components/content/code-tabs"
 import Cta from "@/components/content/cta"
 import Details from "@/components/content/details"
 import Heading from "@/components/content/heading"
+import KeyTakeaways from "@/components/content/key-takeaways"
+import NovuCallout from "@/components/content/novu-callout"
 import Picture from "@/components/content/picture"
 import { Step, Steps } from "@/components/content/steps"
 import Table from "@/components/content/table"
@@ -122,7 +128,7 @@ function getComponents(
           quote={quote}
           role={role}
           authors={authors}
-          theme="border"
+          theme="accent"
           size="xs"
         />
       ),
@@ -155,6 +161,29 @@ function getComponents(
             </Step>
           ))}
         </Steps>
+      ),
+      cardsBlock: ({
+        value: { cards },
+      }: PortableTextComponentProps<{ cards: IContentCard[] }>) => (
+        <Cards>
+          {cards.map(({ title, content }, index) => (
+            <Card key={index} title={title}>
+              <Content content={content} />
+            </Card>
+          ))}
+        </Cards>
+      ),
+      novuCalloutBlock: ({
+        value: { content },
+      }: PortableTextComponentProps<IContentNovuCallout>) => (
+        <NovuCallout>
+          <Content content={content} />
+        </NovuCallout>
+      ),
+      keyTakeawaysBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentKeyTakeaways>) => (
+        <KeyTakeaways items={items} />
       ),
       codeBlock: ({ value }: PortableTextComponentProps<IContentCode>) => {
         return <CodeBlock className="my-8" {...value} />

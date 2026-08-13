@@ -7,7 +7,7 @@ import StackedAvatars from "@/components/pages/stacked-avatars"
 
 export interface IBlockquoteProps extends IBlockquote {
   className?: string
-  theme?: "border" | "quote"
+  theme?: "border" | "quote" | "accent"
   size?: "xs" | "sm" | "md" | "lg"
   centered?: boolean
 }
@@ -16,6 +16,7 @@ const blockquoteVariants = cva("blockquote not-prose flex flex-col", {
   variants: {
     variant: {
       border: "border-l-2 border-gray-3 py-1.5 pl-3.5 md:pl-6",
+      accent: "border-l-2 border-purple-2 pl-3.5 md:pl-6",
       quote: "",
     },
   },
@@ -95,7 +96,12 @@ function Blockquote({
           isThemeQuote && !centered && "md:pl-8"
         )}
       >
-        <p className="text-lg leading-snug font-medium tracking-tight text-pretty md:text-[28px] md:leading-normal">
+        <p
+          className={cn(
+            "text-lg leading-snug font-medium tracking-tight text-pretty md:leading-normal",
+            theme === "accent" ? "md:text-2xl" : "md:text-[28px]"
+          )}
+        >
           {quote}
         </p>
       </blockquote>

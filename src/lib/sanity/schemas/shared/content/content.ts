@@ -102,6 +102,9 @@ const content = defineField({
     { type: "video", title: "Video" },
     { type: "iframeBlock" },
     { type: "stepsBlock", title: "Steps" },
+    { type: "cardsBlock", title: "Cards" },
+    { type: "novuCalloutBlock", title: "Novu Callout" },
+    { type: "keyTakeawaysBlock", title: "Key Takeaways" },
     { type: "changeBlock", title: "List of changes" },
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
