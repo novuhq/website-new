@@ -13,6 +13,7 @@ interface ICopyPromptButtonProps
   copiedLabel?: string
   copiedMessage?: string
   label?: string
+  onCopy?: () => void
   resetInterval?: number
   showCopyIcon?: boolean
   value: string
@@ -22,6 +23,7 @@ function CopyPromptButton({
   copiedLabel = "Copied",
   copiedMessage = "Prompt copied to clipboard",
   label = "Copy prompt",
+  onCopy,
   resetInterval = 2500,
   showCopyIcon = true,
   value,
@@ -30,11 +32,16 @@ function CopyPromptButton({
   const { isCopied, handleCopy } = useCopyToClipboard(resetInterval)
   const statusId = useId()
 
+  const copy = () => {
+    handleCopy(value)
+    onCopy?.()
+  }
+
   return (
     <Button
       {...buttonProps}
       type="button"
-      onClick={() => handleCopy(value)}
+      onClick={copy}
       aria-label={isCopied ? copiedLabel || "Copied" : label}
       aria-describedby={statusId}
     >

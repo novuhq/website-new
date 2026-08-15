@@ -24,6 +24,9 @@ export const initMixpanel = (): Promise<void> => {
       mixpanel.init(MIXPANEL_TOKEN, {
         debug: process.env.NODE_ENV === "development",
         track_pageview: false,
+        // Enable feature flags so getting-started-flow variants can be
+        // evaluated client-side (see lib/experiments.ts). Auto-fetches on init.
+        flags: true,
       })
       isInitialized = true
       console.info("Mixpanel initialized successfully")

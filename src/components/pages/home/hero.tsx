@@ -16,7 +16,15 @@ import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
+import {
+  WEBSITE_CLI_COMMAND_COPIED_EVENT,
+  WEBSITE_PROMPT_COPIED_EVENT,
+} from "@/lib/experiments"
+import { trackEvent } from "@/lib/mixpanel"
 import { cn } from "@/lib/utils"
+import { ROUTE } from "@/constants/routes"
+import { useGettingStartedFlow } from "@/hooks/use-getting-started-flow"
+import { Button } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 import Logos from "@/components/ui/logos"
 
@@ -28,6 +36,8 @@ import {
 } from "./channel-navigation"
 import CopyPromptButton from "./copy-prompt-button"
 import HeroGlobe from "./hero-globe"
+
+const SIGN_UP_HREF = String(ROUTE.dashboardV2AgentsSignUp)
 
 const DEFAULT_PROMPT =
   "Connect my AI agent to customers across their preferred channels with Novu."
@@ -209,6 +219,74 @@ function ChannelIcons() {
   )
 }
 
+// Getting-started A/B/C test: each arm commits the primary CTA to one flow.
+// The control (ui) renders on the server and first paint so the CTA area stays
+// stable; the assigned arm swaps in once the Mixpanel flag resolves. All arms
+// share the same block height to avoid layout shift on swap.
+function HeroGetStarted({
+  command,
+  prompt,
+}: {
+  command: string
+  prompt: string
+}) {
+  const flow = useGettingStartedFlow()
+
+  return (
+    <div className="mt-6 flex min-h-19 w-full flex-col gap-3 lg:mt-7">
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+        {flow === "ui" && (
+          <Button
+            asChild
+            variant="default"
+            size="none"
+            className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight sm:w-auto"
+          >
+            <a href={SIGN_UP_HREF}>Get started free</a>
+          </Button>
+        )}
+
+        {flow === "cli" && (
+          <CopyCommand
+            command={command}
+            variant="highlighted"
+            copiedContent={<AnimatedCopyCheck />}
+            onCopy={() =>
+              trackEvent(WEBSITE_CLI_COMMAND_COPIED_EVENT, { command })
+            }
+          />
+        )}
+
+        {flow === "prompt" && (
+          <CopyPromptButton
+            className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-auto [&_svg]:size-3.5"
+            variant="default"
+            size="none"
+            resetInterval={2000}
+            value={prompt}
+            onCopy={() => trackEvent(WEBSITE_PROMPT_COPIED_EVENT, { prompt })}
+          />
+        )}
+      </div>
+
+      <div className="flex min-h-5 items-center">
+        {flow === "ui" ? (
+          <p className="text-sm tracking-tight text-[#a3a6b2]">
+            Free plan available. No credit card required.
+          </p>
+        ) : (
+          <a
+            className="text-sm font-medium tracking-tight text-[#a3a6b2] underline-offset-4 transition-colors hover:text-white hover:underline"
+            href={SIGN_UP_HREF}
+          >
+            Sign up instead
+          </a>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function Hero({
   title,
   description,
@@ -235,20 +313,7 @@ function Hero({
             <p className="text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] md:text-lg md:leading-normal">
               {description}
             </p>
-            <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
-              <CopyCommand
-                command={command}
-                variant="highlighted"
-                copiedContent={<AnimatedCopyCheck />}
-              />
-              <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-39 [&_svg]:size-3.5"
-                variant="outline-transparent"
-                size="none"
-                resetInterval={2000}
-                value={prompt}
-              />
-            </div>
+            <HeroGetStarted command={command} prompt={prompt} />
           </div>
         </div>
 

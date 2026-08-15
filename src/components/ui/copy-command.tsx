@@ -54,6 +54,7 @@ export interface CopyCommandProps
   controlClassName?: string
   copiedContent?: React.ReactNode
   copyButtonClassName?: string
+  onCopy?: () => void
 }
 
 function CopyCommand({
@@ -62,11 +63,17 @@ function CopyCommand({
   controlClassName,
   copiedContent,
   copyButtonClassName,
+  onCopy,
   variant,
   className,
   ...props
 }: CopyCommandProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(2000)
+
+  const copy = () => {
+    handleCopy(command)
+    onCopy?.()
+  }
 
   return (
     <div
@@ -106,7 +113,7 @@ function CopyCommand({
             copyButtonClassName
           )}
           type="button"
-          onClick={() => handleCopy(command)}
+          onClick={copy}
           aria-label={isCopied ? "Copied" : "Copy to clipboard"}
         >
           {isCopied ? (
