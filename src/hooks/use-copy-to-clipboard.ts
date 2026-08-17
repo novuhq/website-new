@@ -3,7 +3,7 @@ import copyToClipboard from "copy-to-clipboard"
 
 type UseCopyToClipboardResult = {
   isCopied: boolean
-  handleCopy: (text: string | number) => void
+  handleCopy: (text: string | number) => boolean
   resetCopied: () => void
 }
 
@@ -42,6 +42,8 @@ export default function useCopyToClipboard(
           resetTimeoutRef.current = null
         }, resetInterval)
       }
+
+      return didCopy
     },
     [clearResetTimeout, resetInterval]
   )

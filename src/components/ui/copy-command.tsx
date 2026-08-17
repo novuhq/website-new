@@ -71,8 +71,7 @@ function CopyCommand({
   const { isCopied, handleCopy } = useCopyToClipboard(2000)
 
   const copy = () => {
-    handleCopy(command)
-    onCopy?.()
+    if (handleCopy(command)) onCopy?.()
   }
 
   return (

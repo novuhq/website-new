@@ -33,8 +33,7 @@ function CopyPromptButton({
   const statusId = useId()
 
   const copy = () => {
-    handleCopy(value)
-    onCopy?.()
+    if (handleCopy(value)) onCopy?.()
   }
 
   return (
