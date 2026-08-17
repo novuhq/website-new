@@ -19,7 +19,9 @@ const codeBlock = defineType({
       options: {
         list: [
           { title: "JavaScript", value: "javascript" },
+          { title: "TypeScript", value: "typescript" },
           { title: "JSX", value: "jsx" },
+          { title: "TSX", value: "tsx" },
           { title: "Ruby", value: "ruby" },
           { title: "Python", value: "python" },
           { title: "Go", value: "go" },

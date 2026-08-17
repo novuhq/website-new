@@ -48,8 +48,10 @@ function Step({
       </div>
       <div
         className={cn(
-          "steps-content pl-14",
-          isV2 ? "prose-inside-content mt-4" : "mt-1 pb-5"
+          "steps-content",
+          isV2
+            ? "prose-inside-content ml-4.5 border-l border-gray-3 pt-3 pb-7 pl-9.5"
+            : "mt-1 pb-5 pl-14"
         )}
       >
         {children}
@@ -61,9 +63,15 @@ function Step({
 interface StepsProps {
   children: ReactNode
   variant?: TStepsVariant
+  startNumber?: number
 }
 
-function Steps({ children, variant = "default", ...props }: StepsProps) {
+function Steps({
+  children,
+  variant = "default",
+  startNumber = 1,
+  ...props
+}: StepsProps) {
   const isV2 = variant === "v2"
   const cardChildren = Children.toArray(children).filter((child) =>
     isValidElement(child)
@@ -71,7 +79,7 @@ function Steps({ children, variant = "default", ...props }: StepsProps) {
 
   const cardsWithAutoNumber = cardChildren.map((child, index) => {
     return cloneElement(child as React.ReactElement<StepProps>, {
-      number: index + 1,
+      number: startNumber + index,
       variant,
     })
   })
@@ -81,12 +89,13 @@ function Steps({ children, variant = "default", ...props }: StepsProps) {
       className={cn(
         "steps relative my-6 flex flex-col pl-0 md:my-8",
         isV2
-          ? "gap-y-8"
+          ? "gap-y-1"
           : [
               "gap-3 gap-y-7",
               "before:absolute before:inset-y-0 before:left-[1.125rem] before:w-px before:-translate-x-px before:bg-gray-2",
             ]
       )}
+      start={startNumber}
       {...props}
     >
       {cardsWithAutoNumber}

@@ -172,11 +172,14 @@ function getComponents(
         <Table table={table} type={type} theme={theme} />
       ),
       stepsBlock: ({
-        value: { steps },
-      }: PortableTextComponentProps<{ steps: IContentStep[] }>) => (
-        <Steps variant={design}>
+        value: { steps, startNumber },
+      }: PortableTextComponentProps<{
+        steps: IContentStep[]
+        startNumber?: number
+      }>) => (
+        <Steps variant={design} startNumber={startNumber}>
           {steps.map(({ title, content }, index) => (
-            <Step key={index} title={title} number={index + 1}>
+            <Step key={index} title={title}>
               <Content content={content} design={design} />
             </Step>
           ))}

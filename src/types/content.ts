@@ -82,7 +82,7 @@ export interface IContentNovuCallout {
 
 export interface IContentKeyTakeaway {
   title: string
-  text?: string
+  text?: PortableTextBlock[]
 }
 
 export interface IContentKeyTakeaways {

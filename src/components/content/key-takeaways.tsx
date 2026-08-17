@@ -1,13 +1,42 @@
+import { Route } from "next"
+import {
+  PortableText,
+  type PortableTextBlock,
+  type PortableTextReactComponents,
+} from "@portabletext/react"
+
 import { cn } from "@/lib/utils"
+import { Link } from "@/components/ui/link"
 
 export interface IKeyTakeaway {
   title: string
-  text?: string
+  text?: PortableTextBlock[]
 }
 
 interface IKeyTakeawaysProps {
   items: IKeyTakeaway[]
   className?: string
+}
+
+const textComponents: Partial<PortableTextReactComponents> = {
+  block: {
+    normal: ({ children }) => (
+      <p className="text-base leading-normal tracking-tight text-gray-9">
+        {children}
+      </p>
+    ),
+  },
+  marks: {
+    link: ({ value, children }) => (
+      <Link
+        href={value.href as Route<string>}
+        target={value.isExternal ? "_blank" : undefined}
+        rel={value.isExternal ? "noopener noreferrer" : undefined}
+      >
+        {children}
+      </Link>
+    ),
+  },
 }
 
 function KeyTakeaways({ items, className }: IKeyTakeawaysProps) {
@@ -30,10 +59,8 @@ function KeyTakeaways({ items, className }: IKeyTakeawaysProps) {
             <h4 className="text-lg leading-normal font-medium tracking-tight text-foreground">
               {title}
             </h4>
-            {text && (
-              <p className="text-base leading-normal tracking-tight text-gray-9">
-                {text}
-              </p>
+            {text && text.length > 0 && (
+              <PortableText value={text} components={textComponents} />
             )}
           </div>
         </div>

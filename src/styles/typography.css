@@ -313,6 +313,10 @@
 
   /* Redesigned content styles, enabled per-post via the prose-v2 class */
   &.prose-v2 {
+    :not(pre) > code {
+      @apply text-purple-2;
+    }
+
     ul > li {
       @apply relative my-0 pl-6 leading-normal tracking-tight;
 
