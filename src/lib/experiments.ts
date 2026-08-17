@@ -19,7 +19,7 @@ export const GETTING_STARTED_FLOW_SUPER_PROPERTY = "getting_started_flow"
 
 export type GettingStartedFlow = "ui" | "cli" | "prompt"
 
-/** Control arm. Also the server / first-paint render before flags resolve. */
+/** Control arm. Also the fallback when the flag errors out or times out. */
 export const GETTING_STARTED_FLOW_DEFAULT: GettingStartedFlow = "ui"
 
 /** Website-side copy events (the existing CLI/prompt events fire elsewhere). */

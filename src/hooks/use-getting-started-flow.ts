@@ -4,13 +4,14 @@ import { useEffect, useState } from "react"
 
 import {
   GETTING_STARTED_FLOW_DEFAULT,
-  type GettingStartedFlow,
   isGettingStartedFlow,
   resolveGettingStartedFlow,
+  type GettingStartedFlow,
 } from "@/lib/experiments"
 
-/** QA override: append ?gsf=cli (or ui / prompt) to force an arm locally. */
 const QA_OVERRIDE_PARAM = "gsf"
+
+const RESOLVE_TIMEOUT_MS = 2500
 
 const readQaOverride = (): GettingStartedFlow | null => {
   if (typeof window === "undefined") return null
@@ -20,17 +21,8 @@ const readQaOverride = (): GettingStartedFlow | null => {
   return isGettingStartedFlow(value) ? value : null
 }
 
-/**
- * Returns the visitor's getting-started arm.
- *
- * Renders the control on the server and first paint so the CTA area is stable,
- * then swaps to the assigned arm once the flag resolves. A ?gsf= query param
- * forces an arm for QA without touching experiment assignment.
- */
-export function useGettingStartedFlow(): GettingStartedFlow {
-  const [flow, setFlow] = useState<GettingStartedFlow>(
-    GETTING_STARTED_FLOW_DEFAULT
-  )
+export function useGettingStartedFlow(): GettingStartedFlow | null {
+  const [flow, setFlow] = useState<GettingStartedFlow | null>(null)
 
   useEffect(() => {
     const override = readQaOverride()
@@ -40,12 +32,20 @@ export function useGettingStartedFlow(): GettingStartedFlow {
     }
 
     let active = true
+
+    const timeoutId = setTimeout(() => {
+      if (active) setFlow((current) => current ?? GETTING_STARTED_FLOW_DEFAULT)
+    }, RESOLVE_TIMEOUT_MS)
+
     resolveGettingStartedFlow().then((resolved) => {
-      if (active) setFlow(resolved)
+      if (!active) return
+      clearTimeout(timeoutId)
+      setFlow(resolved)
     })
 
     return () => {
       active = false
+      clearTimeout(timeoutId)
     }
   }, [])
 

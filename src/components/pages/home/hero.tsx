@@ -1,6 +1,7 @@
 "use client"
 
 import Image, { type StaticImageData } from "next/image"
+import { ROUTE } from "@/constants/routes"
 import gangverkLogo from "@/images/pages/home/gangverk.svg"
 import checkpointLogo from "@/images/pages/pricing/logos/checkpoint.svg"
 import cloudSoftwareLogo from "@/images/pages/pricing/logos/cloud-software-group.svg"
@@ -22,9 +23,8 @@ import {
 } from "@/lib/experiments"
 import { trackEvent } from "@/lib/mixpanel"
 import { cn } from "@/lib/utils"
-import { ROUTE } from "@/constants/routes"
 import { useGettingStartedFlow } from "@/hooks/use-getting-started-flow"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 import Logos from "@/components/ui/logos"
 
@@ -219,10 +219,6 @@ function ChannelIcons() {
   )
 }
 
-// Getting-started A/B/C test: each arm commits the primary CTA to one flow.
-// The control (ui) renders on the server and first paint so the CTA area stays
-// stable; the assigned arm swaps in once the Mixpanel flag resolves. All arms
-// share the same block height to avoid layout shift on swap.
 function HeroGetStarted({
   command,
   prompt,
@@ -235,6 +231,23 @@ function HeroGetStarted({
   return (
     <div className="mt-6 flex min-h-19 w-full flex-col gap-3 lg:mt-7">
       <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+        {flow === null && (
+          <>
+            <div
+              aria-hidden
+              className="h-11 w-full animate-pulse rounded-md bg-white/10 motion-reduce:animate-none sm:w-40 [@media(scripting:none)]:hidden"
+            />
+            <noscript
+              dangerouslySetInnerHTML={{
+                __html: `<a href="${SIGN_UP_HREF}" class="${cn(
+                  buttonVariants({ variant: "default", size: "none" }),
+                  "h-11 w-full px-5 text-base leading-none font-medium tracking-tight sm:w-auto"
+                )}">Get started free</a>`,
+              }}
+            />
+          </>
+        )}
+
         {flow === "ui" && (
           <Button
             asChild
@@ -270,7 +283,19 @@ function HeroGetStarted({
       </div>
 
       <div className="flex min-h-5 items-center">
-        {flow === "ui" ? (
+        {flow === null ? (
+          <>
+            <div
+              aria-hidden
+              className="h-3.5 w-56 max-w-full animate-pulse rounded bg-white/10 motion-reduce:animate-none [@media(scripting:none)]:hidden"
+            />
+            <noscript
+              dangerouslySetInnerHTML={{
+                __html: `<p class="text-sm tracking-tight text-[#a3a6b2]">Free plan available. No credit card required.</p>`,
+              }}
+            />
+          </>
+        ) : flow === "ui" ? (
           <p className="text-sm tracking-tight text-[#a3a6b2]">
             Free plan available. No credit card required.
           </p>
