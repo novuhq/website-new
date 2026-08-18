@@ -9,7 +9,7 @@ export type RevalidationConfigItem = {
 
 export const REVALIDATION_TYPES = {
   blog: {
-    types: ["blogPost", "author", "blogCategory"],
+    types: ["blogPost", "blogCategory"],
     tags: ["blog"],
     paths: [
       "/blog",
@@ -19,8 +19,22 @@ export const REVALIDATION_TYPES = {
       "/blog/category/[category]/page/[page]",
     ],
   },
+  author: {
+    types: ["author"],
+    tags: ["blog", "changelog"],
+    paths: [
+      "/blog",
+      "/blog/[slug]",
+      "/blog/page/[page]",
+      "/blog/category/[category]",
+      "/blog/category/[category]/page/[page]",
+      "/changelog",
+      "/changelog/[slug]",
+      "/changelog/category/[category]",
+    ],
+  },
   changelog: {
-    types: ["changelogPost"],
+    types: ["changelogPost", "changelogCategory", "tag"],
     tags: ["changelog"],
     paths: [
       "/changelog",
@@ -77,6 +91,12 @@ export const REVALIDATION_CONFIG: Record<WebhookType, RevalidationConfigItem> =
   Object.values(REVALIDATION_TYPES).reduce(
     (acc, group) => {
       group.types.forEach((type) => {
+        if (acc[type]) {
+          throw new Error(
+            `Duplicate revalidation type "${type}": list it once with the union of its tags and paths.`
+          )
+        }
+
         acc[type] = {
           type: type,
           tags: group.tags,
