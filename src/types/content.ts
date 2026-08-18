@@ -112,6 +112,7 @@ export interface IContentChangeBlock {
 
 export interface IContentCtaBlock {
   text: string
+  description?: string
   buttonText: string
   buttonUrl: string
   clickLocation?: string

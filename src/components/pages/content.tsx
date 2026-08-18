@@ -138,7 +138,7 @@ function getComponents(
         )
       },
       ctaBlock: ({ value }: PortableTextComponentProps<IContentCtaBlock>) => (
-        <Cta {...value} />
+        <Cta {...value} variant={design} />
       ),
       quoteBlock: ({
         value: { quote, role, authors },
