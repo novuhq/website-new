@@ -8,25 +8,40 @@ export type RevalidationConfigItem = {
 }
 
 export const REVALIDATION_TYPES = {
+  blog: {
+    types: ["blogPost", "author", "blogCategory"],
+    tags: ["blog"],
+    paths: [
+      "/blog",
+      "/blog/[slug]",
+      "/blog/page/[page]",
+      "/blog/category/[category]",
+      "/blog/category/[category]/page/[page]",
+    ],
+  },
   changelog: {
     types: ["changelogPost"],
     tags: ["changelog"],
-    paths: ["/app/(website)/changelog", "/app/(website)/changelog/[slug]"],
+    paths: [
+      "/changelog",
+      "/changelog/[slug]",
+      "/changelog/category/[category]",
+    ],
   },
   customer: {
     types: ["customer"],
     tags: ["customers", "customer"],
-    paths: ["/app/(website)/customers", "/app/(website)/customers/[slug]"],
+    paths: ["/customers", "/customers/[slug]"],
   },
   customers: {
     types: ["customers"],
     tags: ["customers"],
-    paths: ["/app/(website)/customers"],
+    paths: ["/customers"],
   },
   staticPage: {
     types: ["staticPage"],
     tags: ["staticPage"],
-    paths: ["/app/(website)/(static)/[slug]"],
+    paths: ["/[slug]"],
   },
   agentTemplate: {
     types: ["agentTemplate"],
