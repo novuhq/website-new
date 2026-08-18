@@ -67,6 +67,28 @@ export interface IContentDetailsToggle
   content: PortableTextBlock
 }
 
+export interface IContentCard {
+  title: string
+  content: PortableTextBlock
+}
+
+export interface IContentCardsBlock {
+  cards: IContentCard[]
+}
+
+export interface IContentNovuCallout {
+  content: PortableTextBlock
+}
+
+export interface IContentKeyTakeaway {
+  title: string
+  text?: PortableTextBlock[]
+}
+
+export interface IContentKeyTakeaways {
+  items: IContentKeyTakeaway[]
+}
+
 export interface IContentIframeBlock {
   content: string
 }
@@ -90,6 +112,7 @@ export interface IContentChangeBlock {
 
 export interface IContentCtaBlock {
   text: string
+  description?: string
   buttonText: string
   buttonUrl: string
   clickLocation?: string

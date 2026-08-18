@@ -214,6 +214,39 @@ function customBlockToMarkdown(block: PortableBlock) {
         .filter(Boolean)
         .join("\n\n")
     }
+    case "cardsBlock": {
+      const cards = Array.isArray(block.cards)
+        ? (block.cards as Array<{ title?: string; content?: unknown }>)
+        : []
+
+      return cards
+        .map((card) =>
+          [
+            card.title ? `#### ${escapeMarkdownText(card.title)}` : "",
+            portableTextToMarkdown(card.content),
+          ]
+            .filter(Boolean)
+            .join("\n\n")
+        )
+        .join("\n\n")
+    }
+    case "novuCalloutBlock":
+      return portableTextToMarkdown(block.content)
+    case "keyTakeawaysBlock": {
+      const items = Array.isArray(block.items)
+        ? (block.items as Array<{ title?: string; text?: string }>)
+        : []
+
+      return items
+        .map((item) => {
+          const title = item.title
+            ? `**${escapeMarkdownText(item.title)}**`
+            : ""
+          const text = item.text ? escapeMarkdownText(item.text) : ""
+          return `- ${[title, text].filter(Boolean).join(" ")}`
+        })
+        .join("\n")
+    }
     case "ctaBlock": {
       const text = typeof block.text === "string" ? block.text : ""
       const buttonText =

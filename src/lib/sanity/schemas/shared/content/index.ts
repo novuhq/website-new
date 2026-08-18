@@ -1,11 +1,14 @@
+import cardsBlock from "./cards-block"
 import changeBlock from "./change-block"
 import codeBlock from "./code-block"
 import codeTabs from "./code-tabs"
 import content from "./content"
 import ctaBlock from "./cta-block"
+import novuCalloutBlock from "./novu-callout-block"
 import detailsToggleBlock from "./details-toggle-block"
 import dividerBlock from "./divider"
 import iframeBlock from "./iframe-block"
+import keyTakeawaysBlock from "./key-takeaways-block"
 import noteBlock from "./note-block"
 import quoteBlock from "./quote-block"
 import staticContent from "./static-content"
@@ -30,8 +33,11 @@ const CONTENT_TYPES = [
   twitterEmbed,
   staticContent,
   ctaBlock,
+  novuCalloutBlock,
+  keyTakeawaysBlock,
   ...codeTabs,
   ...stepBlock,
+  ...cardsBlock,
 ]
 
 export default CONTENT_TYPES

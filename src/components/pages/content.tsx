@@ -13,13 +13,16 @@ import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
 import {
+  IContentCard,
   IContentChangeBlock,
   IContentCode,
   IContentCodeTabs,
   IContentCtaBlock,
   IContentDetailsToggle,
   IContentIframeBlock,
+  IContentKeyTakeaways,
   IContentNote,
+  IContentNovuCallout,
   IContentPicture,
   IContentStep,
   IContentTable,
@@ -39,22 +42,45 @@ import { Link } from "@/components/ui/link"
 import ZoomIllustration from "@/components/ui/zoom-illustration"
 import Admonition from "@/components/content/admonition"
 import Blockquote from "@/components/content/blockquote"
+import { Card, Cards } from "@/components/content/cards"
 import ChangeBlock from "@/components/content/change-block"
 import CodeBlock from "@/components/content/code-block"
 import CodeTabs from "@/components/content/code-tabs"
 import Cta from "@/components/content/cta"
 import Details from "@/components/content/details"
 import Heading from "@/components/content/heading"
+import KeyTakeaways from "@/components/content/key-takeaways"
+import NovuCallout from "@/components/content/novu-callout"
 import Picture from "@/components/content/picture"
 import { Step, Steps } from "@/components/content/steps"
 import Table from "@/components/content/table"
 import Video from "@/components/content/video"
 import YouTubeEmbed from "@/components/content/youtube-embed"
 
+type TContentDesign = "default" | "v2"
+
+const NEW_DESIGN_BLOCK_TYPES = new Set([
+  "cardsBlock",
+  "novuCalloutBlock",
+  "keyTakeawaysBlock",
+])
+
+function hasNewDesignBlocks(
+  content: PortableTextBlock[] | PortableTextBlock
+): boolean {
+  return (
+    Array.isArray(content) &&
+    content.some(
+      (block) => block?._type && NEW_DESIGN_BLOCK_TYPES.has(block._type)
+    )
+  )
+}
+
 function getComponents(
   uniqueHeadingMap: Record<string, number>,
   allowMediaBreakout: boolean,
-  readMoreSlug: string
+  readMoreSlug: string,
+  design: TContentDesign
 ): Partial<PortableTextReactComponents> {
   return {
     types: {
@@ -112,7 +138,7 @@ function getComponents(
         )
       },
       ctaBlock: ({ value }: PortableTextComponentProps<IContentCtaBlock>) => (
-        <Cta {...value} />
+        <Cta {...value} variant={design} />
       ),
       quoteBlock: ({
         value: { quote, role, authors },
@@ -122,7 +148,7 @@ function getComponents(
           quote={quote}
           role={role}
           authors={authors}
-          theme="border"
+          theme={design === "v2" ? "accent" : "border"}
           size="xs"
         />
       ),
@@ -130,14 +156,14 @@ function getComponents(
         value: { content, title },
       }: PortableTextComponentProps<IContentNote>) => (
         <Admonition title={title}>
-          <Content content={content} />
+          <Content content={content} design={design} />
         </Admonition>
       ),
       detailsToggleBlock: ({
         value: { title, content },
       }: PortableTextComponentProps<IContentDetailsToggle>) => (
         <Details title={title}>
-          <Content content={content} />
+          <Content content={content} design={design} />
         </Details>
       ),
       tableBlock: ({
@@ -146,15 +172,41 @@ function getComponents(
         <Table table={table} type={type} theme={theme} />
       ),
       stepsBlock: ({
-        value: { steps },
-      }: PortableTextComponentProps<{ steps: IContentStep[] }>) => (
-        <Steps>
+        value: { steps, startNumber },
+      }: PortableTextComponentProps<{
+        steps: IContentStep[]
+        startNumber?: number
+      }>) => (
+        <Steps variant={design} startNumber={startNumber}>
           {steps.map(({ title, content }, index) => (
-            <Step key={index} title={title} number={index + 1}>
-              <Content content={content} />
+            <Step key={index} title={title}>
+              <Content content={content} design={design} />
             </Step>
           ))}
         </Steps>
+      ),
+      cardsBlock: ({
+        value: { cards },
+      }: PortableTextComponentProps<{ cards: IContentCard[] }>) => (
+        <Cards>
+          {cards.map(({ title, content }, index) => (
+            <Card key={index} title={title}>
+              <Content content={content} design={design} />
+            </Card>
+          ))}
+        </Cards>
+      ),
+      novuCalloutBlock: ({
+        value: { content },
+      }: PortableTextComponentProps<IContentNovuCallout>) => (
+        <NovuCallout>
+          <Content content={content} design={design} />
+        </NovuCallout>
+      ),
+      keyTakeawaysBlock: ({
+        value: { items },
+      }: PortableTextComponentProps<IContentKeyTakeaways>) => (
+        <KeyTakeaways items={items} />
       ),
       codeBlock: ({ value }: PortableTextComponentProps<IContentCode>) => {
         return <CodeBlock className="my-8" {...value} />
@@ -392,6 +444,7 @@ interface IContentProps {
   content: PortableTextBlock[] | PortableTextBlock
   allowMediaBreakout?: boolean
   readMoreSlug?: string
+  design?: TContentDesign
 }
 
 function Content({
@@ -399,16 +452,29 @@ function Content({
   content,
   allowMediaBreakout = false,
   readMoreSlug = "",
+  design = "default",
 }: IContentProps) {
   const uniqueHeadingMap = {}
+  // Posts that use the redesigned blocks opt into the v2 content styles;
+  // nested Content instances inherit the mode via the design prop.
+  const isTopLevelNewDesign = hasNewDesignBlocks(content)
+  const resolvedDesign: TContentDesign =
+    design === "v2" || isTopLevelNewDesign ? "v2" : "default"
   const components = getComponents(
     uniqueHeadingMap,
     allowMediaBreakout,
-    readMoreSlug
+    readMoreSlug,
+    resolvedDesign
   )
 
   return (
-    <div className={cn("prose max-w-none", className)}>
+    <div
+      className={cn(
+        "prose max-w-none",
+        isTopLevelNewDesign && "prose-v2",
+        className
+      )}
+    >
       <PortableText value={content} components={components} />
     </div>
   )
