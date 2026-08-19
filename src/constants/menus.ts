@@ -280,6 +280,11 @@ export const MENUS = {
             },
             { label: "Novu ACI", href: ROUTE.aci, menuIcon: "aci" },
             {
+              label: "Email for AI agents",
+              href: ROUTE.emailForAiAgents,
+              menuIcon: "aci",
+            },
+            {
               label: "Skills",
               href: ROUTE.githubSkills,
               menuIcon: "skills",
@@ -383,6 +388,11 @@ export const MENUS = {
             href: ROUTE.mcp,
           },
           { label: "Novu ACI", href: ROUTE.aci, isNew: true },
+          {
+            label: "Email for AI agents",
+            href: ROUTE.emailForAiAgents,
+            isNew: true,
+          },
         ],
       },
       {

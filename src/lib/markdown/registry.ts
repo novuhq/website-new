@@ -32,6 +32,10 @@ export const MARKDOWN_ROUTE_FAMILIES: readonly MarkdownRouteFamily[] = [
     pathnames: ["/aci"],
   },
   {
+    name: "email-for-ai-agents",
+    pathnames: ["/email-for-ai-agents"],
+  },
+  {
     name: "blog",
     pathnames: ["/blog"],
     dynamicPatterns: [/^\/blog\/[^/]+$/, /^\/blog\/category\/[^/]+$/],

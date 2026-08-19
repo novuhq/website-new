@@ -33,6 +33,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   copilot: "/copilot",
   mcp: "/mcp",
   aci: "/aci",
+  emailForAiAgents: "/email-for-ai-agents",
 
   // Per-channel Novu Connect landing pages
   channelSlack: "/channels/slack",
