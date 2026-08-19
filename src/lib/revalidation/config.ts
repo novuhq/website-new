@@ -8,25 +8,54 @@ export type RevalidationConfigItem = {
 }
 
 export const REVALIDATION_TYPES = {
+  blog: {
+    types: ["blogPost", "blogCategory"],
+    tags: ["blog"],
+    paths: [
+      "/blog",
+      "/blog/[slug]",
+      "/blog/page/[page]",
+      "/blog/category/[category]",
+      "/blog/category/[category]/page/[page]",
+    ],
+  },
+  author: {
+    types: ["author"],
+    tags: ["blog", "changelog"],
+    paths: [
+      "/blog",
+      "/blog/[slug]",
+      "/blog/page/[page]",
+      "/blog/category/[category]",
+      "/blog/category/[category]/page/[page]",
+      "/changelog",
+      "/changelog/[slug]",
+      "/changelog/category/[category]",
+    ],
+  },
   changelog: {
-    types: ["changelogPost"],
+    types: ["changelogPost", "changelogCategory", "tag"],
     tags: ["changelog"],
-    paths: ["/app/(website)/changelog", "/app/(website)/changelog/[slug]"],
+    paths: [
+      "/changelog",
+      "/changelog/[slug]",
+      "/changelog/category/[category]",
+    ],
   },
   customer: {
     types: ["customer"],
     tags: ["customers", "customer"],
-    paths: ["/app/(website)/customers", "/app/(website)/customers/[slug]"],
+    paths: ["/customers", "/customers/[slug]"],
   },
   customers: {
     types: ["customers"],
     tags: ["customers"],
-    paths: ["/app/(website)/customers"],
+    paths: ["/customers"],
   },
   staticPage: {
     types: ["staticPage"],
     tags: ["staticPage"],
-    paths: ["/app/(website)/(static)/[slug]"],
+    paths: ["/[slug]"],
   },
   agentTemplate: {
     types: ["agentTemplate"],
@@ -62,6 +91,12 @@ export const REVALIDATION_CONFIG: Record<WebhookType, RevalidationConfigItem> =
   Object.values(REVALIDATION_TYPES).reduce(
     (acc, group) => {
       group.types.forEach((type) => {
+        if (acc[type]) {
+          throw new Error(
+            `Duplicate revalidation type "${type}": list it once with the union of its tags and paths.`
+          )
+        }
+
         acc[type] = {
           type: type,
           tags: group.tags,
