@@ -1,18 +1,15 @@
+![Novu website demo](.github/assets/cover.webp)
+
 # Novu Next.js
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Table of Contents
 
-- [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Learn More](#learn-more)
 - [Deploy on Vercel](#deploy-on-vercel)
-
-## Demo
-
-https://github.com/user-attachments/assets/0f8a36a8-a2b8-4a2d-9965-5ecea29054f2
 
 ## Getting Started
 
