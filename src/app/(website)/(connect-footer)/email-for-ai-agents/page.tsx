@@ -1,30 +1,30 @@
 import { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
-import { HOME_COMPLIANCE, HOME_FEATURED_CUSTOMERS } from "@/data/pages/home"
 import {
+  emailForAiAgentsData as channel,
   EMAIL_AGENTS_COMMAND,
   EMAIL_AGENTS_CTA,
-  EMAIL_AGENTS_DELIVERY,
   EMAIL_AGENTS_PROMPT,
   EMAIL_AGENTS_SEO_DESCRIPTION,
   EMAIL_AGENTS_SEO_TITLE,
-  emailForAiAgentsData as channel,
 } from "@/data/pages/email-for-ai-agents"
+import { HOME_COMPLIANCE, HOME_FEATURED_CUSTOMERS } from "@/data/pages/home"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
-import ChannelConnect from "@/components/pages/channels/channel-connect"
-import ChannelConnectStack from "@/components/pages/channels/channel-connect-stack"
-import ChannelUseCase from "@/components/pages/channels/channel-use-case"
+import CustomerLogosMarquee from "@/components/customer-logos-marquee"
+import EmailAgentsCapabilities from "@/components/pages/email-for-ai-agents/capabilities"
+import EmailAgentsConnectStack from "@/components/pages/email-for-ai-agents/connect-stack"
+import EmailAgentsDeliveryLayer from "@/components/pages/email-for-ai-agents/delivery-layer"
 import EmailAgentsHero from "@/components/pages/email-for-ai-agents/hero"
+import EmailAgentsUseCase from "@/components/pages/email-for-ai-agents/use-case"
 import FAQ from "@/components/pages/faq"
 import Compliance from "@/components/pages/home/compliance"
 import Cta from "@/components/pages/home/cta"
 import FeaturedCustomers from "@/components/pages/home/featured-customers"
-import SectionWithLogosAnimated from "@/components/section-with-logos-animated"
 
-const OG_IMAGE_PATH = "/og-images/channels/email.jpg"
+const OG_IMAGE_PATH = "/og-images/og-image-email-for-ai-agents.jpg"
 
 export const metadata: Metadata = getMetadata({
   title: EMAIL_AGENTS_SEO_TITLE,
@@ -34,39 +34,6 @@ export const metadata: Metadata = getMetadata({
   imageAlt: channel.hero.heading,
   markdownPathname: true,
 })
-
-function DeliveryLayerSection() {
-  return (
-    <section className="safe-paddings mt-18">
-      <div className="container mx-auto max-w-176 px-5 md:px-8 lg:px-0">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-white md:text-[2rem]">
-            {EMAIL_AGENTS_DELIVERY.title}
-          </h2>
-          <p className="text-base leading-normal font-normal tracking-tighter text-gray-80">
-            {EMAIL_AGENTS_DELIVERY.description}
-          </p>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {EMAIL_AGENTS_DELIVERY.points.map((point) => (
-            <div
-              key={point.title}
-              className="flex flex-col gap-2 rounded-xl border border-gray-20 bg-[#0b0c0e] p-6"
-            >
-              <h3 className="text-lg leading-tight font-medium tracking-tighter text-white">
-                {point.title}
-              </h3>
-              <p className="text-base leading-snug font-light tracking-normal text-gray-80">
-                {point.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 async function EmailForAiAgentsPage() {
   const siteUrl = absoluteUrl("/")
@@ -166,27 +133,26 @@ async function EmailForAiAgentsPage() {
   }
 
   return (
-    <div className="overflow-clip">
+    <div className="overflow-clip font-inter">
       <EmailAgentsHero channel={channel} />
-      <SectionWithLogosAnimated
-        className="mt-16 mb-0 px-5 md:mt-20 md:mb-0 md:px-8 lg:mt-24 lg:mb-0 xl:mb-0"
-        titleHighlight="Novu"
-        title="is trusted by leading teams worldwide"
-        titleSize="sm"
-        titleClassName="leading-normal font-normal tracking-tighter"
-        rows={2}
+      <CustomerLogosMarquee className="mt-14 md:mt-16" />
+      <EmailAgentsUseCase channel={channel} />
+      <EmailAgentsConnectStack channel={channel} />
+      <EmailAgentsCapabilities channel={channel} />
+      <EmailAgentsDeliveryLayer />
+      <Compliance
+        {...HOME_COMPLIANCE}
+        className="mt-24 mb-24 md:mt-32 md:mb-32 lg:mt-60 lg:mb-60 xl:mt-60 xl:mb-60"
       />
-      <ChannelUseCase channel={channel} />
-      <ChannelConnectStack channel={channel} />
-      <ChannelConnect channel={channel} />
-      <DeliveryLayerSection />
-      <Compliance {...HOME_COMPLIANCE} />
-      <FeaturedCustomers {...HOME_FEATURED_CUSTOMERS} />
+      <FeaturedCustomers
+        {...HOME_FEATURED_CUSTOMERS}
+        className="mt-24 mb-24 md:mt-32 md:mb-32 lg:mt-55 lg:mb-55 xl:mt-55 xl:mb-55"
+      />
       <FAQ
-        className="relative z-10 mt-18 pt-0 pb-0 sm:pb-0 md:pt-0 md:pb-0 lg:pb-0"
+        className="relative z-10 mt-24 mb-24 pt-0 pb-0 sm:pb-0 md:mt-32 md:mb-32 md:pt-0 md:pb-0 lg:mt-55 lg:mb-60 lg:pb-0 xl:mt-55 xl:mb-60"
         title="Email for AI agents, common questions"
-        titleClassName="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] md:text-[2rem]"
-        containerClassName="max-w-176 gap-y-8 lg:max-w-176 lg:px-0"
+        titleClassName="text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]"
+        containerClassName="max-w-288 gap-y-10 lg:max-w-288"
         defaultOpenFirst
         variant="minimal"
         accordion={{

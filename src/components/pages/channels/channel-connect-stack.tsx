@@ -12,7 +12,7 @@ import ConnectStack, {
 } from "@/components/pages/home/connect-stack"
 
 // The five launched channels, in the exact external labels the brand rules use.
-const LIVE_CHANNEL_OPTIONS: IStackOption[] = [
+export const LIVE_CHANNEL_OPTIONS: IStackOption[] = [
   { value: "slack", label: "Slack", icon: slackIcon },
   { value: "whatsapp", label: "WhatsApp", icon: whatsappIcon },
   { value: "telegram", label: "Telegram", icon: telegramIcon },

@@ -70,7 +70,7 @@ function Compliance({
 
             <BookADemoSchedulingProvider utmCampaign="book_a_demo_connect">
               <BookADemoSchedulingButton
-                className="mt-8 h-10.5 rounded-md px-5 text-base leading-none tracking-tight normal-case"
+                className="mt-8 h-11 rounded-md px-5 text-base leading-none tracking-tight normal-case"
                 size="none"
                 clickLocation="homepage_compliance"
                 clickText="book_a_call"

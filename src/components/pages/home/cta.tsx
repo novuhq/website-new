@@ -39,7 +39,7 @@ function Cta({
         >
           {title}
         </h2>
-        <p className="mt-4 max-w-151.5 text-base font-normal tracking-tighter text-balance text-gray-60 lg:text-xl/normal">
+        <p className="mt-4 max-w-184 text-base font-normal tracking-tighter text-balance text-gray-60 lg:text-xl/normal">
           {description}
         </p>
         {actions?.length ? (
@@ -50,14 +50,15 @@ function Cta({
         ) : (
           <div className="mt-8 flex w-full flex-col items-center justify-center gap-5 sm:w-auto sm:flex-row">
             <CopyCommand
-              className="w-full max-w-xs sm:w-70.5"
-              controlClassName="pl-3"
+              className="w-full max-w-107.5 sm:w-107.5"
+              controlClassName="border-white pl-3"
+              copyButtonClassName="rounded-[0.25rem]"
               command={command}
               variant="highlighted"
               copiedContent={<AnimatedCopyCheck />}
             />
             <CopyPromptButton
-              className="h-11 w-full max-w-xs px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
+              className="h-11 w-full max-w-107.5 border-gray-30 px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
               variant="outline-transparent"
               size="none"
               resetInterval={2000}
