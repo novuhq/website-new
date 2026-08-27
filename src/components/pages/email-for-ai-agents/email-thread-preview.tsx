@@ -8,12 +8,9 @@ import { cn } from "@/lib/utils"
 
 const { agent, customer, outcome } = EMAIL_AGENTS_HERO_THREAD
 
-// The hero visual for /email-for-ai-agents: an email client showing the agent
-// writing, the customer replying, and the action settling, all in one thread.
-// The card deliberately bleeds past the bottom of its glow frame, as designed.
 function EmailThreadPreview() {
   return (
-    <div className="relative w-full overflow-clip rounded-3xl bg-[#1b1a2b] px-4 pt-6 sm:px-7.5 sm:pt-10 lg:max-w-152">
+    <div className="relative w-full overflow-clip rounded-3xl bg-[#1b1a2b] px-4 pt-6.5 xs:px-7.5 xs:pt-10 lg:max-w-152">
       <span
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(58%_108%_at_105%_100%,#f77dff_0%,#ed71ff_12%,#eb77ff_17%,#c657f1_37%,#6d3cae_59%,#3e3068_79%,#201c3b_92%,rgba(27,26,43,0)_100%),radial-gradient(95%_115%_at_-8%_62%,#6a5ce0_0%,#6456d4_8%,#5c53c2_23%,#5c5dbd_30%,#4a3a9b_42%,#362878_54%,#36285f_63%,#231e43_80%,rgba(27,26,43,0)_100%)]"
         aria-hidden
@@ -29,56 +26,56 @@ function EmailThreadPreview() {
         aria-hidden
       />
 
-      <div className="relative -mb-4 rounded-2xl border border-gray-20 bg-[linear-gradient(184.73deg,#000_6.47%,#0a0a0a_30.02%,rgba(10,10,10,0.8)_120%)] p-4 pb-10 shadow-[0_5.5px_37px_#13151d,0_5.5px_30px_rgba(0,0,0,0.1)] sm:p-6 sm:pb-14">
+      <div className="relative -mb-2.5 rounded-[0.5rem] border border-gray-20 bg-[linear-gradient(184.73deg,#000_6.47%,#0a0a0a_30.02%,rgba(10,10,10,0.8)_120%)] p-3.5 pb-12 shadow-[0_2.878px_19.189px_#13151d,0_2.878px_15.351px_rgba(0,0,0,0.1)] xs:-mb-4 xs:rounded-2xl xs:p-6 xs:pb-14 xs:shadow-[0_5.5px_37px_#13151d,0_5.5px_30px_rgba(0,0,0,0.1)]">
         <span
-          className="pointer-events-none absolute inset-0 rounded-2xl bg-[linear-gradient(71.29deg,#fff_13.53%,rgba(153,153,153,0)_49.57%)] mix-blend-overlay"
+          className="pointer-events-none absolute inset-0 rounded-[0.5rem] bg-[linear-gradient(71.29deg,#fff_13.53%,rgba(153,153,153,0)_49.57%)] mix-blend-overlay xs:rounded-2xl"
           aria-hidden
         />
 
         <div className="relative">
-          <ThreadRail className="top-13.5 -bottom-7.25" />
+          <ThreadRail className="top-7 -bottom-5.75 xs:top-13.5 xs:-bottom-7.25" />
 
           <header className="flex items-start justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2.5">
-              <span className="relative size-11 shrink-0" aria-hidden>
-                <span className="absolute -inset-[2.75px] rounded-full bg-[radial-gradient(circle_at_38%_34%,#fee0f3_0%,#fc67c5_26%,#e0489f_52%,#c25cd6_78%,#8c6bef_100%)] blur-[1.4px]" />
+            <div className="flex min-w-0 items-center gap-2 xs:gap-2.5">
+              <span className="relative size-6 shrink-0 xs:size-11" aria-hidden>
+                <span className="absolute -inset-[1.5px] rounded-full bg-[radial-gradient(circle_at_38%_34%,#fee0f3_0%,#fc67c5_26%,#e0489f_52%,#c25cd6_78%,#8c6bef_100%)] blur-[0.8px] xs:-inset-[2.75px] xs:blur-[1.4px]" />
               </span>
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <p className="-mb-1 truncate pb-1 text-base leading-none font-medium tracking-tighter text-gray-90">
+              <div className="flex min-w-0 flex-col gap-px xs:gap-0.5">
+                <p className="-mb-1 truncate pb-1 text-[0.6875rem] leading-none font-medium tracking-tighter text-gray-90 xs:text-base">
                   {agent.name}
                 </p>
-                <p className="truncate text-[0.9375rem] leading-snug tracking-tighter text-gray-50">
+                <p className="truncate text-[0.625rem] leading-snug tracking-tighter text-gray-50 xs:text-[0.9375rem]">
                   {agent.email}
                 </p>
               </div>
             </div>
-            <span className="shrink-0 text-[0.8125rem] leading-none tracking-tighter text-gray-40">
+            <span className="shrink-0 pt-0.5 text-[0.5rem] leading-none tracking-tighter text-gray-40 xs:pt-0 xs:text-[0.8125rem]">
               {agent.time}
             </span>
           </header>
 
-          <div className="mt-6 sm:pl-13.5">
-            <p className="text-[0.9375rem] leading-snug tracking-tighter text-gray-40">
+          <div className="mt-3.5 pl-8 xs:mt-6 xs:pl-13.5">
+            <p className="text-[0.625rem] leading-snug tracking-tighter text-gray-40 xs:text-[0.9375rem]">
               {agent.subject}
             </p>
-            <p className="mt-3 text-base leading-snug tracking-tighter text-gray-90">
+            <p className="mt-1.5 text-[0.6875rem] leading-snug tracking-tighter text-gray-90 xs:mt-3 xs:text-base">
               {agent.message}
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="flex h-8 items-center rounded-md bg-[rgba(1,122,89,0.2)] px-2 text-[0.9375rem] leading-none font-medium tracking-tight text-[rgba(65,255,203,0.76)] backdrop-blur-[4px]">
+              <span className="flex h-5.5 items-center rounded-md bg-[rgba(1,122,89,0.2)] px-1.75 text-[0.6875rem] leading-none font-medium tracking-tight text-[rgba(65,255,203,0.76)] backdrop-blur-[4px] xs:h-8 xs:px-2 xs:text-[0.9375rem]">
                 {agent.approveLabel}
               </span>
-              <span className="flex h-8 items-center rounded-md bg-[rgba(234,57,116,0.2)] px-2 text-[0.9375rem] leading-none font-medium tracking-tight text-[rgba(255,152,186,0.7)] backdrop-blur-[4px]">
+              <span className="flex h-5.5 items-center rounded-md bg-[rgba(234,57,116,0.2)] px-1.75 text-[0.6875rem] leading-none font-medium tracking-tight text-[rgba(255,152,186,0.7)] backdrop-blur-[4px] xs:h-8 xs:px-2 xs:text-[0.9375rem]">
                 {agent.denyLabel}
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 pl-0.5 xs:pl-0">
                 <span
                   className="hidden h-px w-20.25 bg-gradient-to-r from-gray-20 to-gray-50 xl:block"
                   aria-hidden
                 />
                 <div className="flex items-center gap-2">
                   <SecureBadge />
-                  <span className="text-[0.9375rem] leading-snug tracking-tighter text-gray-70">
+                  <span className="text-xs leading-snug tracking-tighter text-gray-70 xs:text-[0.9375rem]">
                     {agent.secureLabel}
                   </span>
                 </div>
@@ -87,46 +84,50 @@ function EmailThreadPreview() {
           </div>
         </div>
 
-        <div className="relative -mx-1 mt-8 rounded-xl border border-white/20 bg-[linear-gradient(192.84deg,rgba(77,80,92,0.2)_46.43%,rgba(174,179,204,0.2)_112.28%)] p-3 shadow-[0_8px_12px_rgba(0,0,0,0.1)] sm:-mx-3">
+        <div className="relative -mx-1.5 mt-6.25 rounded-[0.5rem] border border-white/20 bg-[linear-gradient(192.84deg,rgba(77,80,92,0.2)_46.43%,rgba(174,179,204,0.2)_112.28%)] p-1.5 shadow-[0_8px_12px_rgba(0,0,0,0.1)] xs:-mx-3 xs:mt-8 xs:rounded-xl xs:p-3">
           <div className="flex items-start justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2.5">
+            <div className="flex min-w-0 items-center gap-2 xs:gap-2.5">
               <Image
-                className="size-11 shrink-0 rounded-full object-cover"
+                className="size-6 shrink-0 rounded-full object-cover xs:size-11"
                 src={customerAvatar}
                 width={44}
                 height={44}
                 alt=""
+                draggable={false}
               />
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <p className="flex items-center gap-1 text-base leading-none font-medium tracking-tighter text-gray-90">
+              <div className="flex min-w-0 flex-col gap-px xs:gap-0.5">
+                <p className="flex items-center gap-0.5 text-[0.6875rem] leading-none font-medium tracking-tighter text-gray-90 xs:gap-1 xs:text-base">
                   <ReplyIcon />
                   <span className="-mb-1 truncate pb-1">{customer.name}</span>
                 </p>
-                <p className="truncate text-[0.9375rem] leading-snug tracking-tighter text-gray-60">
+                <p className="truncate text-[0.625rem] leading-snug tracking-tighter text-gray-50 xs:text-[0.9375rem] xs:text-gray-60">
                   {customer.email}
                 </p>
               </div>
             </div>
-            <span className="shrink-0 text-[0.8125rem] leading-none tracking-tighter text-gray-40">
+            <span className="shrink-0 pt-0.5 text-[0.5rem] leading-none tracking-tighter text-gray-40 xs:pt-0 xs:text-[0.8125rem]">
               {customer.time}
             </span>
           </div>
-          <p className="mt-3 text-base leading-snug tracking-tighter text-gray-90 sm:pl-13.5">
+          <p className="mt-1.5 pl-8 text-[0.6875rem] leading-snug tracking-tighter text-gray-90 xs:mt-3 xs:pl-13.5 xs:text-base">
             {customer.message}
           </p>
         </div>
 
-        <div className="relative mt-12">
-          <ThreadRail className="-top-11.5 h-11" />
-          <div className="ml-1 flex items-center gap-4">
+        <div className="relative mt-6 xs:mt-12">
+          <ThreadRail className="-top-5.5 h-5.5 xs:-top-11.5 xs:h-11" />
+          <div className="flex items-center gap-2.5 xs:ml-1 xs:gap-4">
             <span
-              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[rgba(1,122,89,0.5)] backdrop-blur-[4px]"
+              className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[rgba(1,122,89,0.5)] backdrop-blur-[4px] xs:size-9"
               aria-hidden
             >
-              <Check className="size-5 text-[#34d3a7]" strokeWidth={2} />
+              <Check
+                className="size-3 text-[#34d3a7] xs:size-5"
+                strokeWidth={2}
+              />
             </span>
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <p className="text-base leading-snug tracking-tighter text-gray-90">
+            <div className="flex min-w-0 flex-wrap items-center gap-1 xs:gap-2">
+              <p className="text-[0.6875rem] leading-snug tracking-tighter text-gray-90 xs:text-base">
                 {outcome.label}
               </p>
               <span
@@ -135,8 +136,8 @@ function EmailThreadPreview() {
               >
                 ·
               </span>
-              <span className="relative flex items-center rounded-md bg-white/12 p-2">
-                <span className="text-[0.9375rem] leading-none tracking-tight text-white">
+              <span className="relative flex items-center rounded-md bg-white/12 px-2 py-1.5 xs:p-2">
+                <span className="text-[0.6875rem] leading-none tracking-tight text-white xs:text-[0.9375rem]">
                   <span className="font-light">{outcome.noteLabel}</span>{" "}
                   <span className="font-medium">{outcome.noteValue}</span>
                 </span>
@@ -154,7 +155,7 @@ function ThreadRail({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "absolute left-5.5 hidden w-px bg-gradient-to-b from-gray-20 to-gray-40 sm:block",
+        "absolute left-3 w-px bg-gradient-to-b from-gray-20 to-gray-40 xs:left-5.5",
         className
       )}
       aria-hidden
@@ -162,14 +163,13 @@ function ThreadRail({ className }: { className?: string }) {
   )
 }
 
-// A glass badge whose circle overflows its 16px slot, matching the design.
 function SecureBadge() {
   return (
     <span className="relative size-4 shrink-0" aria-hidden>
-      <span className="absolute -inset-1.5 rounded-full bg-white/30 mix-blend-overlay" />
-      <span className="absolute -inset-1.5 rounded-full ring-1 ring-white/30 ring-inset" />
+      <span className="absolute -inset-[3px] rounded-full bg-white/30 mix-blend-overlay xs:-inset-1.5" />
+      <span className="absolute -inset-[3px] rounded-full ring-1 ring-white/30 ring-inset xs:-inset-1.5" />
       <svg
-        className="absolute -inset-1.5 size-7"
+        className="absolute -inset-[3px] size-[22px] xs:-inset-1.5 xs:size-7"
         viewBox="0 0 28 28"
         fill="none"
       >
@@ -192,7 +192,7 @@ function SecureBadge() {
 function ReplyIcon() {
   return (
     <svg
-      className="size-4 shrink-0 fill-gray-50"
+      className="size-3 shrink-0 fill-gray-50 xs:size-4"
       viewBox="0 0 16 16"
       aria-hidden
     >

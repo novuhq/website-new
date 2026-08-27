@@ -10,10 +10,6 @@ import Preview from "@/components/pages/home/features/preview"
 
 import ConnectCommand from "./connect-command"
 
-// The use-case section for /email-for-ai-agents: the email-client animation on
-// one side, the pitch and the connect command on the other. A route-local
-// section rather than a variant of the shared ChannelUseCase, which the channel
-// pages still render in its single-column form.
 function EmailAgentsUseCase({ channel }: { channel: IChannelPageData }) {
   const clientFacingVideo =
     CHANNEL_PREVIEW_VIDEOS[channel.slug] ??

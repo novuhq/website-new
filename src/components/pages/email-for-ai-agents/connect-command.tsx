@@ -1,9 +1,6 @@
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
 
-// The `.input-field` from the design: a bare command field with a copy affordance
-// and no shell prompt. Shared by the hero and the use-case section so the
-// overrides stay in one place.
 function ConnectCommand({
   command,
   className,

@@ -10,17 +10,11 @@ import type { IChannelPageData } from "@/types/channel"
 
 import ConnectCommand from "./connect-command"
 
-// Two glow treatments alternate across the row, matching the design's two
-// background variants.
 const CARD_GLOWS = [
-  "bg-[radial-gradient(115%_85%_at_-8%_-6%,#5c3ba9_0%,#402770_26%,#271b48_50%,rgba(17,15,27,0)_80%)]",
-  "bg-[radial-gradient(105%_95%_at_-12%_10%,#4a3596_0%,#33245f_28%,#221a3f_54%,rgba(17,15,27,0)_82%)]",
+  "bg-[radial-gradient(115%_85%_at_-8%_-6%,#5c3ba9_0%,#402770_26%,#271b48_50%,rgba(16,17,20,0)_80%)]",
+  "bg-[radial-gradient(105%_95%_at_-12%_10%,#4a3596_0%,#33245f_28%,#221a3f_54%,rgba(16,17,20,0)_82%)]",
 ]
 
-// The per-card illustration, exported from the design's `ui` frames already
-// clipped to the visible 268x198. The panel's fill and top corners are baked
-// into the export; the border, shadow and backdrop blur stay in CSS. Keyed by
-// label so the row order is free to change.
 const CARD_UI: Record<string, StaticImageData> = {
   "Responsive message templates": templatesUi,
   "High-deliverability routing": routingUi,
@@ -28,14 +22,9 @@ const CARD_UI: Record<string, StaticImageData> = {
   "Secure action links for approvals": approvalsUi,
 }
 
-// The design anchors the panel at (12, 122) in a 292x320 card and runs it off
-// the bottom edge, so the offsets are percentages of the card and the bottom
-// border is dropped.
 const UI_PANEL =
   "pointer-events-none absolute inset-x-[4.11%] top-[38.125%] rounded-t-xl border border-b-0 border-gray-20 shadow-[0_5.554px_37.027px_#13151d,0_5.554px_29.622px_rgba(0,0,0,0.1)] backdrop-blur-[46px] select-none"
 
-// The capability cards for /email-for-ai-agents. A route-local section: the
-// shared ChannelConnect stays as the plain bulleted list the channel pages use.
 function EmailAgentsCapabilities({ channel }: { channel: IChannelPageData }) {
   return (
     <section className="mt-24 md:mt-32 lg:mt-55 xl:mt-55">
@@ -61,11 +50,11 @@ function EmailAgentsCapabilities({ channel }: { channel: IChannelPageData }) {
 
             return (
               <li
-                className={`relative aspect-[292/320] overflow-clip rounded-2xl bg-[#110f1b] ${CARD_GLOWS[index % CARD_GLOWS.length]}`}
+                className={`relative aspect-[292/320] overflow-clip rounded-2xl border border-gray-20 bg-[#101114] ${CARD_GLOWS[index % CARD_GLOWS.length]}`}
                 key={label}
               >
                 <span
-                  className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-overlay"
+                  className="pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay"
                   style={{
                     backgroundImage: `url("${noiseTexture.src}")`,
                     backgroundPosition: "top left",
@@ -85,7 +74,7 @@ function EmailAgentsCapabilities({ channel }: { channel: IChannelPageData }) {
                     />
                   </div>
                 )}
-                <p className="absolute inset-x-6 top-6 text-xl leading-[1.25] font-normal tracking-tighter text-balance text-white">
+                <p className="absolute inset-x-6 top-6 max-w-45 text-xl leading-[1.25] font-normal tracking-tighter text-balance text-white">
                   {label}
                 </p>
               </li>

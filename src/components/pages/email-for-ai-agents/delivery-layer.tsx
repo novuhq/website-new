@@ -1,9 +1,6 @@
 import type { ReactNode } from "react"
 import { EMAIL_AGENTS_DELIVERY } from "@/data/pages/email-for-ai-agents"
 
-// The three item icons, inlined from the design so they inherit currentColor.
-// Each path set keeps its own coordinate space; the translate places it inside
-// the 24x24 frame exactly where the design puts it.
 function KeyIcon() {
   return (
     <svg
@@ -94,7 +91,7 @@ function EmailAgentsDeliveryLayer() {
   return (
     <section className="mt-24 md:mt-32 lg:mt-60 xl:mt-60">
       <div className="container mx-auto max-w-272 px-5 md:px-8 xl:px-0">
-        <h2 className="max-w-261.5 text-xl leading-[1.25] font-normal tracking-plus-tight text-white sm:text-2xl md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]">
+        <h2 className="max-w-261.5 text-[1.625rem] leading-[1.25] font-normal tracking-plus-tight text-white md:text-[2rem] lg:text-[2.5rem] xl:text-[2.75rem]">
           {EMAIL_AGENTS_DELIVERY.title}{" "}
           <span className="text-gray-50">
             {EMAIL_AGENTS_DELIVERY.description}
@@ -107,7 +104,7 @@ function EmailAgentsDeliveryLayer() {
               className="flex flex-1 flex-col gap-2.5 rounded-[0.5rem] bg-[#101114] px-6 py-5"
               key={point.title}
             >
-              <h3 className="flex items-center gap-2.5 text-xl leading-none font-medium tracking-tighter text-white">
+              <h3 className="flex items-center gap-2.5 text-lg leading-none font-medium tracking-tighter text-white md:text-xl">
                 {POINT_ICONS[index]}
                 {point.title}
               </h3>

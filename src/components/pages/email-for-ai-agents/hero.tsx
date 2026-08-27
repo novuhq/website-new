@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/button"
 import ConnectCommand from "./connect-command"
 import EmailThreadPreview from "./email-thread-preview"
 
-// A bespoke hero for the /email-for-ai-agents master page: the channel hero's
-// text + CTA structure on the left, and an email-client visual on the right
-// that shows the product story, an AI agent writing a real, two-way email
-// thread that Novu delivers, complete with a reply and a settled action.
 function EmailAgentsHero({ channel }: { channel: IChannelPageData }) {
   return (
     <section className="pt-16 md:pt-20 lg:pt-22">
@@ -32,7 +28,7 @@ function EmailAgentsHero({ channel }: { channel: IChannelPageData }) {
             <Button
               size="none"
               variant="default"
-              className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case"
+              className="h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-auto"
               asChild
             >
               <NextLink
