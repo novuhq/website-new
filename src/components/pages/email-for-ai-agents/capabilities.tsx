@@ -33,7 +33,7 @@ function EmailAgentsCapabilities({ channel }: { channel: IChannelPageData }) {
           What your agent can do in {channel.channelName}
         </h2>
         <div className="mt-8 flex flex-col items-start gap-6 lg:flex-row lg:justify-between lg:gap-16">
-          <p className="max-w-176 text-base leading-normal font-normal tracking-tight text-gray-70 md:text-lg">
+          <p className="max-w-176 text-base leading-normal font-normal tracking-tight text-balance text-gray-70 md:text-lg">
             {EMAIL_AGENTS_CAPABILITIES.description}
           </p>
           <ConnectCommand
