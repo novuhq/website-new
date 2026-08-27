@@ -116,7 +116,7 @@ function EmailThreadPreview() {
 
         <div className="relative mt-6 xs:mt-12">
           <ThreadRail className="-top-5.5 h-5.5 xs:-top-11.5 xs:h-11" />
-          <div className="flex items-center gap-2.5 xs:ml-1 xs:gap-4">
+          <div className="ml-0.5 flex items-center gap-2.5 xs:ml-1 xs:gap-4">
             <span
               className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[rgba(1,122,89,0.5)] backdrop-blur-[4px] xs:size-9"
               aria-hidden
