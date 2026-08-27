@@ -113,6 +113,8 @@ export interface IContentChangeBlock {
 export interface IContentCtaBlock {
   text: string
   description?: string
+  cover?: ISanityImageWithAsset
+  mobileCover?: ISanityImageWithAsset
   buttonText: string
   buttonUrl: string
   clickLocation?: string

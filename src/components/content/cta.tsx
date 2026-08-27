@@ -8,6 +8,7 @@ import shine from "@/svgs/pages/customers/cta/shine.svg"
 
 import { IContentCtaBlock } from "@/types/content"
 import { normalizeDashboardUrl } from "@/lib/normalize-dashboard-url"
+import { getProcessedImageUrl } from "@/lib/sanity/utils/get-url-for-image"
 import { Button } from "@/components/ui/button"
 
 type TCtaVariant = "default" | "v2"
@@ -19,6 +20,8 @@ interface ICtaProps extends IContentCtaBlock {
 function Cta({
   text,
   description,
+  cover,
+  mobileCover,
   buttonText,
   buttonUrl,
   clickLocation,
@@ -28,6 +31,21 @@ function Cta({
   const normalizedButtonUrl = normalizeDashboardUrl(buttonUrl)
 
   if (variant === "v2") {
+    const desktopCoverUrl = cover?.asset?._ref
+      ? getProcessedImageUrl(cover, {
+          width: 704,
+          height: 336,
+          quality: 95,
+        })
+      : null
+    const mobileCoverUrl = mobileCover?.asset?._ref
+      ? getProcessedImageUrl(mobileCover, {
+          width: 320,
+          height: 496,
+          quality: 95,
+        })
+      : null
+
     return (
       <div className="not-prose relative my-8 h-124 overflow-hidden rounded-[20px] border border-[#191a1f] sm:aspect-[704/336] sm:h-auto">
         <div className="absolute inset-0 sm:hidden" aria-hidden>
@@ -41,7 +59,9 @@ function Cta({
                   "linear-gradient(to right, transparent 0, rgba(0,0,0,0.55) 7px, rgba(0,0,0,0.92) 14px, #000 26px, #000 calc(100% - 26px), rgba(0,0,0,0.92) calc(100% - 14px), rgba(0,0,0,0.55) calc(100% - 7px), transparent 100%)",
               } as CSSProperties
             }
-            src={ctaBgMobile}
+            src={mobileCoverUrl ?? ctaBgMobile}
+            width={320}
+            height={496}
             quality={100}
             sizes="320px"
             alt=""
@@ -49,7 +69,9 @@ function Cta({
         </div>
         <Image
           className="pointer-events-none absolute inset-0 hidden size-full object-cover sm:block"
-          src={ctaBg}
+          src={desktopCoverUrl ?? ctaBg}
+          width={704}
+          height={336}
           quality={100}
           sizes="702px"
           alt=""
