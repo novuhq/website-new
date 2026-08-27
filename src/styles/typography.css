@@ -335,6 +335,40 @@
       }
     }
 
+    /* Ordered lists never got a redesigned counterpart, so they fell back to
+       the base `ol:not(.steps)` grey `n.` marker. Mirror the `ul` treatment:
+       purple counter, hairline above and below. */
+    ol:not(.steps) {
+      @apply my-6 flex flex-col gap-3 border-y border-gray-5 py-4 pl-0;
+      counter-reset: v2-counter;
+
+      & > li {
+        @apply relative my-0 pl-6 leading-normal tracking-tight;
+        counter-increment: v2-counter;
+
+        &::before {
+          content: counter(v2-counter);
+          @apply absolute top-0 left-0 leading-normal text-purple-2;
+        }
+
+        &::marker {
+          content: none;
+        }
+      }
+    }
+
+    & > ol:not(.steps) {
+      @apply pl-5;
+
+      & > li {
+        @apply text-lg text-gray-9;
+
+        strong {
+          @apply text-foreground;
+        }
+      }
+    }
+
     .prose-inside-content {
       ul {
         @apply gap-y-2 py-0 pl-0;
@@ -368,7 +402,14 @@
         }
         li::before {
           content: counter(main-counter) ".";
-          @apply absolute -left-4 text-current;
+          /* top-0 overrides the `before:top-2.5` bullet offset that
+             `.prose-inside-content` applies to every list item */
+          @apply absolute top-0 -left-4 text-current;
+        }
+        /* the generic `ol:not(.steps)` rule above also matches this list and
+           would paint a second, empty `list-counter` marker on top of it */
+        li::marker {
+          content: none;
         }
       }
     }
