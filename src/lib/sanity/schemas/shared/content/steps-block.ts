@@ -24,6 +24,7 @@ const step = defineType({
         { type: "codeBlock" },
         { type: "codeTabs" },
         { type: "quoteBlock" },
+        { type: "tableBlock" },
         {
           type: "image",
           icon: ImageIcon,
