@@ -6,16 +6,18 @@ import { getMetadata } from "@/lib/get-metadata"
 import { Button } from "@/components/ui/button"
 import ChannelIcon from "@/components/pages/home/features/channel-icon"
 import Cta from "@/components/pages/home/cta"
-import AgentChatShowcase from "@/components/pages/channels/agent-chat-showcase"
+import AgentInProduct from "@/components/pages/channels/agent-in-product"
+import AgentCenterSurface from "@/components/pages/channels/agent-center-surface"
+import AciPackage from "@/components/pages/channels/aci-package"
 import { Reveal } from "@/components/pages/channels/web-chat-reveal"
 import { TaglineReveal } from "@/components/pages/channels/web-chat-tagline"
 import ChatThemeShowcase from "@/components/pages/channels/chat-theme-showcase"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 export const metadata: Metadata = getMetadata({
-  title: "Web Chat for AI Agents: Put Your Agent on Your Own Site | Novu",
+  title: "Web Chat: Put Your AI Agent Inside Your Product | Novu",
   description:
-    "Add your AI agent to your own website with Novu Web Chat, the embeddable widget that runs on the same rails as Slack, Microsoft Teams, iMessage, WhatsApp, Telegram, and email. One agent, one conversation, live in about two minutes.",
+    "Web Chat is your real AI agent, embedded in your product. It works in your app's context, takes actions through your frontend, and renders your own components in the conversation. Same agent on Slack, Microsoft Teams, iMessage, WhatsApp, Telegram, and email, on Novu's production ACI.",
   pathname: "/channels/web-chat",
 })
 
@@ -29,21 +31,22 @@ const CHANNELS: Array<{ key: string; name: string; isNew?: boolean }> = [
   { key: "email", name: "Email" },
 ]
 
-const WHY = [
+// Pillar 1: it lives in your product. State, actions, your own UI.
+const IN_PRODUCT = [
   {
-    label: "Yours",
-    title: "The channel you own",
-    body: "Every other channel is a place your users already are. Web Chat is the surface you control: your dashboard, your docs, your onboarding, your checkout.",
+    label: "Context",
+    title: "Works in your app's context",
+    body: "It knows who the user is and what they are doing right now, so it answers and acts in context instead of making them start over.",
   },
   {
-    label: "Fast",
-    title: "The fastest to go live",
-    body: "No third-party OAuth, no business verification, no app review. Drop in the widget and your agent is answering. About two minutes.",
+    label: "Actions",
+    title: "Takes real actions",
+    body: "Through your frontend and your tools, with approval gates you control. It books the call, updates the record, files the ticket, and resolves the request in the thread.",
   },
   {
-    label: "One thread",
-    title: "Never another silo",
-    body: "The same agent and the same conversation as every channel. A user starts on your site and picks it back up on WhatsApp or email.",
+    label: "Your UI",
+    title: "Renders your components",
+    body: "Replies are real interface, not walls of text. Built from your own components with AI Elements or your design system, with tool calls and approvals rendered inline.",
   },
 ]
 
@@ -61,7 +64,7 @@ const BUILDERS = [
   "Remix",
 ]
 
-const IMPLEMENT_PROMPT = `Add Novu Agent Chat to my app so end users can chat with my agent in-product.
+const IMPLEMENT_PROMPT = `Add Novu Web Chat to my app so end users can chat with my agent in-product.
 
 Use @novu/react (useAgentChat + NovuProvider) following the docs at https://docs.novu.co/agents/channels/agent-chat. Build a production-quality chat UI with AI Elements (https://elements.ai-sdk.dev): render the message list from message.parts, a composer, reasoning and tool parts, and tool approvals via respondToAction. Match my app's existing styling and design system. Do not dump raw JSON.
 
@@ -78,73 +81,141 @@ export default function WebChatPage() {
           className="pointer-events-none absolute inset-x-0 -top-40 -z-10 mx-auto h-125 max-w-4xl bg-[radial-gradient(closest-side,hsl(var(--purple-3)/0.28),transparent_75%)] blur-2xl"
         />
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <Reveal className="flex flex-col items-start">
-              <span className="rounded-full border border-purple-3/40 bg-purple-3/30 px-2.5 py-1.25 text-sm leading-none font-normal tracking-tighter text-purple-1">
-                New channel
-              </span>
-              <h1 className="mt-3.5 max-w-full text-[2.25rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-5xl">
-                Shoot your agent to the web.
-              </h1>
-              <p className="mt-4 max-w-md text-base leading-normal font-normal tracking-tighter text-gray-70 md:text-xl md:leading-normal">
-                One command puts your agent on your own site, live, as a chat
-                widget. Same agent, same conversation as Slack, Microsoft Teams,
-                iMessage, WhatsApp, Telegram, and email. No third-party setup.
-                About two minutes.
-              </p>
-              <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
-                <Button
-                  size="none"
-                  variant="default"
-                  className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
-                  asChild
+          <Reveal className="flex flex-col items-center text-center">
+            <span className="rounded-full border border-purple-3/40 bg-purple-3/30 px-2.5 py-1.25 text-sm leading-none font-normal tracking-tighter text-purple-1">
+              New channel
+            </span>
+            <h1 className="mt-3.5 max-w-3xl text-[2.25rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-5xl">
+              Your agent, live inside your product.
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-normal font-normal tracking-tighter text-gray-70 md:text-xl md:leading-normal">
+              Web Chat is not a chat widget. It is your real AI agent, embedded
+              in your app. It works in your product's context, takes actions
+              through your frontend, and renders your own components right in the
+              conversation. The same agent is on Slack, Microsoft Teams, iMessage,
+              WhatsApp, Telegram, and email. Deployed to production in about two
+              minutes.
+            </p>
+            <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              <Button
+                size="none"
+                variant="default"
+                className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+                asChild
+              >
+                <NextLink
+                  href={ROUTE.connect}
+                  data-click-location="web_chat_hero"
+                  data-click-text="add_to_app"
                 >
-                  <NextLink
-                    href={ROUTE.connect}
-                    data-click-location="web_chat_hero"
-                    data-click-text="add_to_app"
-                  >
-                    Add it to your app
-                  </NextLink>
-                </Button>
-                <Button
-                  size="none"
-                  variant="outline"
-                  className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
-                  asChild
+                  Add it to your app
+                </NextLink>
+              </Button>
+              <CopyPromptButton
+                className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+                copiedLabel="Copied"
+                label="Copy the prompt"
+                size="none"
+                value={IMPLEMENT_PROMPT}
+                variant="outline"
+              />
+              <Button
+                size="none"
+                variant="outline"
+                className="h-11 shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case"
+                asChild
+              >
+                <NextLink
+                  href={ROUTE.bookADemoConnect}
+                  data-click-location="web_chat_hero"
+                  data-click-text="book_a_demo"
                 >
-                  <NextLink
-                    href={ROUTE.bookADemoConnect}
-                    data-click-location="web_chat_hero"
-                    data-click-text="book_a_demo"
-                  >
-                    Book a Demo
-                  </NextLink>
-                </Button>
-              </div>
-              <p className="mt-6 font-mono text-sm text-gray-60">
-                ~40K GitHub stars · open source · no OAuth to install
-              </p>
-            </Reveal>
+                  Book a Demo
+                </NextLink>
+              </Button>
+            </div>
+            <p className="mt-6 font-mono text-sm text-gray-60">
+              ~40K GitHub stars · open source · no OAuth to install
+            </p>
+          </Reveal>
 
-            <AgentChatShowcase />
-          </div>
+          <Reveal delay={0.12} className="mt-14">
+            <p className="mb-4 text-center font-mono text-xs text-gray-60">
+              Live and interactive. Paste your site to see the agent in your product.
+            </p>
+            <AgentInProduct />
+          </Reveal>
         </div>
       </section>
 
-      {/* Why Web Chat */}
+      {/* A new era: this is Web Chat */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
           <Reveal>
             <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              Why Web Chat
+              A new era
             </span>
             <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              A chat widget is an island. Your agent should not be.
+              You know the old chat widget. This is Web Chat.
             </h2>
+            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+              The old chat widget answered from a script, then handed you a
+              ticket form. Web Chat puts your real AI agent inside your product,
+              where it can read the context, take the action, and render the
+              result as real UI.
+            </p>
+          </Reveal>
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            <Reveal
+              className="rounded-xl border border-gray-20 bg-[#05050b] p-6"
+              delay={0.06}
+            >
+              <span className="font-mono text-xs tracking-[0.14em] text-gray-60 uppercase">
+                The old chat widget
+              </span>
+              <ul className="mt-4 flex flex-col gap-2.5 text-sm text-gray-70">
+                <li>Canned replies from a script</li>
+                <li>&quot;We&apos;ll get back to you&quot; and a ticket form</li>
+                <li>Walls of text, bolted onto one page</li>
+                <li>Its own silo, forgets you when you leave</li>
+              </ul>
+            </Reveal>
+            <Reveal
+              className="rounded-xl border border-purple-3/50 bg-purple-3/5 p-6"
+              delay={0.12}
+            >
+              <span className="font-mono text-xs tracking-[0.14em] text-purple-1 uppercase">
+                Web Chat
+              </span>
+              <ul className="mt-4 flex flex-col gap-2.5 text-sm text-gray-80">
+                <li>Your real agent: your logic, your model</li>
+                <li>Acts in your product: books, updates, files, resolves</li>
+                <li>Renders your components, right in the thread</li>
+                <li>One conversation across every channel</li>
+              </ul>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Pillar 1: lives in your product */}
+      <section className="mt-24 md:mt-32">
+        <div className="container mx-auto max-w-288 px-5 md:px-8">
+          <Reveal>
+            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+              Lives in your product
+            </span>
+            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+              Not a chat box on your site. An agent inside your app.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+              Web Chat is embedded in your product, so it can do the work in
+              place: understand the context, act on it, and answer with real
+              interface built from your own components.
+            </p>
           </Reveal>
           <ul className="mt-10 grid gap-4 md:grid-cols-3">
-            {WHY.map((card, i) => (
+            {IN_PRODUCT.map((card, i) => (
               <li key={card.title} className="h-full">
                 <Reveal
                   delay={i * 0.08}
@@ -166,20 +237,44 @@ export default function WebChatPage() {
         </div>
       </section>
 
-      {/* Channels */}
+      {/* Second install pattern: the agent as the main surface */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
           <Reveal>
             <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              One connection, every channel
+              Ship it your way
             </span>
             <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              The same agent, everywhere your users answer.
+              Dock it beside your app, or make it the main event.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+              Same agent, same hook. Put it in a side panel next to your product,
+              like the demo up top, or give it the whole screen as the primary
+              surface. This one is centered, and it is just as live.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-10">
+            <AgentCenterSurface />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Pillar 2: same agent, every channel */}
+      <section className="mt-24 md:mt-32">
+        <div className="container mx-auto max-w-288 px-5 md:px-8">
+          <Reveal>
+            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+              Same agent, every channel
+            </span>
+            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+              The one thing an in-app agent alone can never do.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
               Web Chat runs on the same rails as every channel, through Novu
-              Connect, our ACI, Agent Communication Infrastructure. Connect a new
-              channel and your agent code does not change.
+              Connect, our ACI, Agent Communication Infrastructure. It is the same
+              agent in your product and on Slack, Microsoft Teams, iMessage,
+              WhatsApp, Telegram, and email. Connect a new channel and your agent
+              code does not change.
             </p>
           </Reveal>
           <Reveal delay={0.06} className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
@@ -211,10 +306,34 @@ export default function WebChatPage() {
             ))}
           </Reveal>
           <p className="mt-8 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-60">
-            A user opens the widget on your dashboard, asks a question, and closes
-            the tab. An hour later your agent follows up by email, in the same
-            thread, with full context. No stitching, no "as I mentioned earlier."
+            A user starts a task with your agent inside your app, then closes the
+            tab. An hour later your agent follows up by email, in the same thread,
+            with full context. No stitching, no "as I mentioned earlier."
           </p>
+        </div>
+      </section>
+
+      {/* The ACI package: production infrastructure, not just a connection */}
+      <section className="mt-24 md:mt-32">
+        <div className="container mx-auto max-w-288 px-5 md:px-8">
+          <Reveal>
+            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+              The ACI package
+            </span>
+            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+              You are not connecting a chat. You are deploying the ACI.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+              Add the agent and you inherit the whole ACI, Agent Communication
+              Infrastructure: identity for every user, one durable thread,
+              delivery that lands, and the compliance and scale to run it for
+              real. Not a prototype and not a widget. Production ready in under two
+              minutes.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-10">
+            <AciPackage />
+          </Reveal>
         </div>
       </section>
 
@@ -226,14 +345,15 @@ export default function WebChatPage() {
               Yours to style
             </span>
             <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              Adjust it to your site. Customize every pixel.
+              You own the whole surface. Down to the pixel.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Web Chat is a React hook, not a locked-in black box. The live chat
-              at the top of this page is built with AI Elements and styled to
-              match this very site. Bring your own design system, drop in a
+              Web Chat is a React hook, not a locked-in black box. The live
+              agent at the top of this page is built with AI Elements and styled
+              to match this very site. Bring your own design system, drop in a
               component kit, or change as much as you want. Use AI Elements, or
-              any similar React components you like. You own the whole surface.
+              any similar React components you like. You render the conversation,
+              so it looks and behaves like part of your product.
             </p>
             <ChatThemeShowcase className="mt-8" />
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm">
@@ -270,10 +390,10 @@ export default function WebChatPage() {
               It's just a prompt. Ship it from any builder.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Web Chat is React and a hook, so it runs in whatever you build with.
-              Paste the prompt into Lovable, Base44, Bolt, or any coding agent, or
-              drop it into Next.js, Vite, or Remix by hand. Your agent goes live on
-              your site, no matter where you build.
+              Web Chat is React and a hook, so it runs in whatever you build
+              with. Paste the prompt into Lovable, Base44, Bolt, or any coding
+              agent, or drop it into Next.js, Vite, or Remix by hand. Your agent
+              goes live inside your app, no matter where you build.
             </p>
           </Reveal>
 
@@ -298,7 +418,7 @@ export default function WebChatPage() {
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <h3 className="text-lg font-normal tracking-tighter text-white">
-                  One prompt takes your agent to your website.
+                  One prompt puts your agent inside your product.
                 </h3>
                 <p className="mt-2 text-sm leading-normal text-gray-70">
                   Copy it, paste it into the agent you already use, and it builds
@@ -326,15 +446,15 @@ export default function WebChatPage() {
         <div className="container mx-auto max-w-2xl px-5 md:px-8">
           <TaglineReveal />
           <p className="mt-4 text-base leading-normal tracking-tighter text-pretty text-gray-60">
-            Your agent stays yours: your code, your model, your tools. Novu
-            carries the conversation across every channel. It never runs your
-            agent's logic.
+            Your agent stays yours: your code, your model, your tools. Novu gives
+            it the surface inside your product and carries the conversation across
+            every channel. It never runs your agent's logic.
           </p>
         </div>
       </section>
 
       <Cta
-        title="Put your agent on your own site"
+        title="Put your agent inside your product"
         description="Pro tip: paste 'Add an agent to my app https://novu.co/agents.md' into your coding agent, or run npx novu connect. One agent, every channel, one conversation."
         actions={[
           {

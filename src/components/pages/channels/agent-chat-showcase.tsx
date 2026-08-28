@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { NovuProvider, useAgentChat } from "@novu/react"
 import type { ChatStatus, DynamicToolUIPart } from "ai"
 import { CheckIcon, ExternalLinkIcon, MessageCircleIcon, XIcon } from "lucide-react"
@@ -34,7 +35,7 @@ import {
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
 import { Tool, ToolHeader } from "@/components/ai-elements/tool"
 
-// The "webchat" Agent Chat integration lives under this Novu environment.
+// The "webchat" Web Chat integration lives under this Novu environment.
 const AGENT_ID = "webchat"
 
 // On a real product this comes from your auth (Clerk, NextAuth, Firebase, etc.).
@@ -44,10 +45,27 @@ const SUBSCRIBER_ID = "69b008bc508e082a4f4f8322"
 const STARTERS = [
   "What is Novu Connect?",
   "Which channels can my agent reach?",
-  "How do I add Web Chat to my site?",
+  "How do I add this agent to my site?",
 ]
 
-function AgentChatWidget() {
+type WidgetVariant = "card" | "panel" | "center"
+
+type AgentChatWidgetProps = {
+  /** card = standalone bordered card · panel = fills a docked side panel · center = full-surface main chat */
+  variant?: WidgetVariant
+  starters?: string[]
+  emptyTitle?: string
+  emptyDescription?: string
+  className?: string
+}
+
+export function AgentChatWidget({
+  variant = "card",
+  starters = STARTERS,
+  emptyTitle = "Talk to a Novu agent",
+  emptyDescription = "It's live on this page. Ask anything about Novu Connect.",
+  className,
+}: AgentChatWidgetProps) {
   const {
     messages,
     pendingActions,
@@ -61,6 +79,7 @@ function AgentChatWidget() {
   const busy = isRunning || isLoading
   const isEmpty = messages.length === 0 && !isLoading
   const status: ChatStatus = isRunning ? "streaming" : "ready"
+  const isCenter = variant === "center"
 
   const submit = (text: string) => {
     const value = text.trim()
@@ -73,43 +92,66 @@ function AgentChatWidget() {
   }
 
   return (
-    <div className="flex h-[34rem] flex-col overflow-hidden rounded-xl border border-gray-20 bg-[#05050b] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)]">
-      {/* Header */}
-      <div className="flex items-center gap-2.5 border-b border-gray-20 px-4 py-3">
-        <span
-          className="flex size-7.5 items-center justify-center rounded-lg font-mono text-sm font-medium text-white"
-          style={{
-            backgroundImage:
-              "linear-gradient(135deg, hsl(var(--purple)), hsl(var(--purple-2)))",
-          }}
-        >
-          N
-        </span>
-        <span className="flex flex-col leading-tight">
-          <span className="text-[0.9rem] font-medium text-white">
-            Novu Agent Chat
+    <div
+      className={cn(
+        "flex flex-col overflow-hidden bg-[#05050b]",
+        variant === "card" &&
+          "h-[34rem] rounded-xl border border-gray-20 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)]",
+        variant === "panel" && "h-full",
+        isCenter && "h-full",
+        className
+      )}
+    >
+      {/* Header (card + panel only; the centered surface is header-less like ChatGPT) */}
+      {!isCenter && (
+        <div className="flex items-center gap-2.5 border-b border-gray-20 px-4 py-3">
+          <span
+            className="flex size-7.5 items-center justify-center rounded-lg font-mono text-sm font-medium text-white"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, hsl(var(--purple)), hsl(var(--purple-2)))",
+            }}
+          >
+            N
           </span>
-          <span className="flex items-center gap-1.5 font-mono text-[0.7rem] text-gray-60">
-            <span className="size-1.75 animate-pulse rounded-full bg-[#34C759]" />
-            live on the web · agent: {AGENT_ID}
+          <span className="flex flex-col leading-tight">
+            <span className="text-[0.9rem] font-medium text-white">
+              {variant === "panel" ? "Agent" : "Novu Web Chat"}
+            </span>
+            <span className="flex items-center gap-1.5 font-mono text-[0.7rem] text-gray-60">
+              <span className="size-1.75 animate-pulse rounded-full bg-[#34C759]" />
+              live · powered by your agent
+            </span>
           </span>
-        </span>
-        <span className="ml-auto font-mono text-[0.68rem] text-gray-60">
-          powered by Novu
-        </span>
-      </div>
+          <span className="ml-auto font-mono text-[0.68rem] text-gray-60">
+            powered by Novu
+          </span>
+        </div>
+      )}
 
       {/* Conversation */}
       <Conversation className="flex-1">
-        <ConversationContent className="gap-6 p-4">
-          {isEmpty && (
-            <ConversationEmptyState
-              className="h-full"
-              title="Talk to a Novu agent"
-              description="It's live on this page through Web Chat. Ask anything about Novu Connect."
-              icon={<MessageCircleIcon className="size-6" />}
-            />
-          )}
+        <ConversationContent
+          className={cn("gap-6 p-4", isCenter && "mx-auto w-full max-w-2xl")}
+        >
+          {isEmpty &&
+            (isCenter ? (
+              <div className="flex h-full flex-col items-center justify-center px-4 text-center">
+                <h3 className="max-w-lg text-2xl leading-tight font-normal tracking-[-0.03em] text-balance text-white md:text-[1.75rem]">
+                  {emptyTitle}
+                </h3>
+                <p className="mt-3 max-w-md text-sm leading-normal text-pretty text-gray-60">
+                  {emptyDescription}
+                </p>
+              </div>
+            ) : (
+              <ConversationEmptyState
+                className="h-full"
+                title={emptyTitle}
+                description={emptyDescription}
+                icon={<MessageCircleIcon className="size-6" />}
+              />
+            ))}
 
           {messages.map((message) => {
             const isUser = message.role === "user"
@@ -255,9 +297,9 @@ function AgentChatWidget() {
 
       {/* Starter suggestions (empty state) */}
       {isEmpty && (
-        <div className="px-3 pb-1">
-          <Suggestions>
-            {STARTERS.map((s) => (
+        <div className={cn("px-3 pb-1", isCenter && "mx-auto w-full max-w-2xl")}>
+          <Suggestions className={cn(isCenter && "justify-center")}>
+            {starters.map((s) => (
               <Suggestion key={s} onClick={submit} suggestion={s} />
             ))}
           </Suggestions>
@@ -265,7 +307,7 @@ function AgentChatWidget() {
       )}
 
       {/* Composer */}
-      <div className="p-3">
+      <div className={cn("p-3", isCenter && "mx-auto w-full max-w-2xl px-4 pb-5")}>
         <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
             <PromptInputTextarea placeholder="Message the agent..." />
@@ -280,33 +322,57 @@ function AgentChatWidget() {
   )
 }
 
-function AgentChatShowcase({ className }: { className?: string }) {
+/**
+ * Wraps the live Web Chat in a NovuProvider. Renders `fallback` when the
+ * app identifier env var is missing, so frames stay intact in that case.
+ */
+export function AgentChatProvider({
+  children,
+  fallback,
+  className,
+}: {
+  children: ReactNode
+  fallback?: ReactNode
+  className?: string
+}) {
   const applicationIdentifier = process.env.NEXT_PUBLIC_NOVU_APP_IDENTIFIER
 
   if (!applicationIdentifier) {
     return (
-      <div
-        className={cn(
-          "rounded-xl border border-gray-20 bg-[#05050b] p-6 text-sm text-gray-60",
-          className
+      <>
+        {fallback ?? (
+          <div
+            className={cn(
+              "flex h-full items-center justify-center bg-[#05050b] p-6 text-center text-sm text-gray-60",
+              className
+            )}
+          >
+            Set NEXT_PUBLIC_NOVU_APP_IDENTIFIER to load the live Web Chat.
+          </div>
         )}
-      >
-        Set NEXT_PUBLIC_NOVU_APP_IDENTIFIER to load the live Agent Chat.
-      </div>
+      </>
     )
   }
 
   return (
-    <div className={cn("w-full", className)}>
-      {/* If this environment enables subscriber HMAC, pass subscriberHash to
-          NovuProvider here, computed server-side, the same way the Inbox is secured. */}
-      <NovuProvider
-        applicationIdentifier={applicationIdentifier}
-        subscriberId={SUBSCRIBER_ID}
-      >
+    // If this environment enables subscriber HMAC, pass subscriberHash to
+    // NovuProvider here, computed server-side, the same way the Inbox is secured.
+    <NovuProvider
+      applicationIdentifier={applicationIdentifier}
+      subscriberId={SUBSCRIBER_ID}
+    >
+      {children}
+    </NovuProvider>
+  )
+}
+
+function AgentChatShowcase({ className }: { className?: string }) {
+  return (
+    <AgentChatProvider className={cn("rounded-xl border border-gray-20", className)}>
+      <div className={cn("w-full", className)}>
         <AgentChatWidget />
-      </NovuProvider>
-    </div>
+      </div>
+    </AgentChatProvider>
   )
 }
 

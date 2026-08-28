@@ -77,6 +77,9 @@ importers:
       '@react-three/fiber':
         specifier: ^9.6.1
         version: 9.6.1(@types/react@19.2.14)(immer@10.1.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.185.1)
+      '@remotion/player':
+        specifier: 4.0.496
+        version: 4.0.496(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@sanity/asset-utils':
         specifier: ^2.2.1
         version: 2.2.1
@@ -218,6 +221,9 @@ importers:
       remark-mdx-frontmatter:
         specifier: ^5.2.0
         version: 5.2.0
+      remotion:
+        specifier: 4.0.496
+        version: 4.0.496(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       rss:
         specifier: ^1.2.2
         version: 1.2.2
@@ -3407,6 +3413,12 @@ packages:
         optional: true
       react-redux:
         optional: true
+
+  '@remotion/player@4.0.496':
+    resolution: {integrity: sha512-eQ1f384arsdRrfnsp9GZMdP43yk9zj224ZQaBBwscsl4lK8BhjfoOXOHne03MI4m9tw7XgmQC1bLZtTgnfW5rA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   '@rexxars/jiti@2.6.2':
     resolution: {integrity: sha512-B9FdXL9Z+TnaT+H1Z91nd68tjaD5q3G0ZC7e1Se3/rUur70DSZj++54HhkfoNIA5n/Y1TMllKKGk9qYsOVK2Lw==}
@@ -8011,6 +8023,12 @@ packages:
   remend@1.3.0:
     resolution: {integrity: sha512-iIhggPkhW3hFImKtB10w0dz4EZbs28mV/dmbcYVonWEJ6UGHHpP+bFZnTh6GNWJONg5m+U56JrL+8IxZRdgWjw==}
 
+  remotion@4.0.496:
+    resolution: {integrity: sha512-B84022w11rPFoFr/uMQ9GaJYlgwXtCMo19CYlD6Pc2CL8hqhSMGPmso6a04zu7HwVTKApj8ZQy5XeFBAnR2/Uw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
@@ -12525,6 +12543,12 @@ snapshots:
     optionalDependencies:
       react: 19.2.5
       react-redux: 9.2.0(@types/react@19.2.14)(react@19.2.5)(redux@5.0.1)
+
+  '@remotion/player@4.0.496(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      remotion: 4.0.496(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
   '@rexxars/jiti@2.6.2': {}
 
@@ -18031,6 +18055,11 @@ snapshots:
   remeda@2.33.7: {}
 
   remend@1.3.0: {}
+
+  remotion@4.0.496(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+    dependencies:
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
 
   require-from-string@2.0.2: {}
 
