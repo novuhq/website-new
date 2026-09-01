@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { Suspense, type ReactNode } from "react"
 import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
 import Script from "next/script"
@@ -9,9 +9,9 @@ import { absoluteUrl } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import DemoBookingTracker from "@/components/demo-booking-tracker"
 import Fonts from "@/components/fonts"
-import MixpanelTracking from "@/components/mixpanel-tracking"
 import PreviewWarning from "@/components/preview-warning"
 import Scripts, { GTM_ID } from "@/components/scripts"
+import { SegmentPageTracking } from "@/components/segment-page-tracking"
 import UtmForwarder from "@/components/utm-forwarder"
 
 const inter = Inter({
@@ -54,7 +54,9 @@ async function WebsiteLayoutShell({
           bodyClassName
         )}
       >
-        <MixpanelTracking />
+        <Suspense fallback={null}>
+          <SegmentPageTracking />
+        </Suspense>
         <UtmForwarder />
         <DemoBookingTracker />
         <Providers>
