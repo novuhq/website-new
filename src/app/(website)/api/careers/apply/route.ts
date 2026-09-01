@@ -197,7 +197,7 @@ function getRichText(value: string) {
 function getCareerJobUrl(slug: string) {
   const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
 
-  return new URL(`/careers/${slug}`, siteUrl).toString()
+  return new URL(`/careers/${slug}/`, siteUrl).toString()
 }
 
 function getCareerJobProperties(jobReference: CareerJobReference | null) {

@@ -15,7 +15,7 @@ export const dynamic = "force-static"
 export async function generateMetadata(): Promise<Metadata> {
   const seo = SEO_DATA.integrationsSources
   const base = getMetadata({ ...seo, markdownPathname: true })
-  const canonicalUrl = `${SITE_URL}${ROUTE.integrations}/sources`
+  const canonicalUrl = `${SITE_URL}${ROUTE.integrations}/sources/`
 
   return {
     ...base,
@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function IntegrationsSourcesPage() {
   const seo = SEO_DATA.integrationsSources
-  const pageUrl = `${SITE_URL}${ROUTE.integrations}/sources`
+  const pageUrl = `${SITE_URL}${ROUTE.integrations}/sources/`
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

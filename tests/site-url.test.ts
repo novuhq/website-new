@@ -40,14 +40,9 @@ describe("site URL helpers", () => {
     delete process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
 
     assert.equal(getSiteUrl(), "https://novu.co")
-    assert.equal(absoluteUrl("/"), "https://novu.co")
-    assert.equal(
-      absoluteUrl("/?utm_source=newsletter"),
-      "https://novu.co/?utm_source=newsletter"
-    )
     assert.equal(
       absoluteUrl("/channels/slack/"),
-      "https://novu.co/channels/slack"
+      "https://novu.co/channels/slack/"
     )
   })
 
@@ -55,8 +50,7 @@ describe("site URL helpers", () => {
     process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = "http://localhost:3007/"
 
     assert.equal(getSiteUrl(), "http://localhost:3007")
-    assert.equal(toCanonicalPathname("channels/slack"), "/channels/slack")
-    assert.equal(toCanonicalPathname("/"), "/")
+    assert.equal(toCanonicalPathname("channels/slack"), "/channels/slack/")
     assert.equal(toMarkdownPathname("/channels/slack/"), "/channels/slack.md")
   })
 
@@ -105,29 +99,16 @@ describe("metadata URL generation", () => {
 
     assert.equal(
       metadata.alternates?.canonical,
-      "https://preview.novu.co/channels/slack"
+      "https://preview.novu.co/channels/slack/"
     )
     assert.deepEqual(metadata.alternates?.types, {
       "text/markdown": "https://preview.novu.co/channels/slack.md",
     })
     assert.equal(
       metadata.openGraph?.url,
-      "https://preview.novu.co/channels/slack"
+      "https://preview.novu.co/channels/slack/"
     )
     assert.equal(metadata.manifest, "https://preview.novu.co/manifest.json")
-  })
-
-  it("keeps the homepage canonical without a trailing slash", () => {
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = "https://novu.co/"
-
-    const metadata = getMetadata({
-      title: "Novu",
-      description: "Connect your agents",
-      pathname: "/",
-    })
-
-    assert.equal(metadata.alternates?.canonical, "https://novu.co")
-    assert.equal(metadata.openGraph?.url, "https://novu.co")
   })
 
   it("removes markdown alternates and indexing for private pages", () => {

@@ -48,7 +48,8 @@ export function getSiteUrl() {
 }
 
 export function toCanonicalPathname(pathname: string) {
-  return withoutTrailingSlash(withLeadingSlash(pathname))
+  const normalized = withoutTrailingSlash(withLeadingSlash(pathname))
+  return normalized === "/" ? "/" : `${normalized}/`
 }
 
 export function toMarkdownPathname(pathname: string) {
@@ -83,15 +84,5 @@ export function normalizePathname(pathname: string) {
 }
 
 export function absoluteUrl(pathname: string) {
-  const url = new URL(withLeadingSlash(pathname), `${getSiteUrl()}/`)
-
-  if (url.pathname !== "/") {
-    url.pathname = withoutTrailingSlash(url.pathname)
-  }
-
-  if (url.pathname === "/" && url.search === "" && url.hash === "") {
-    return `${url.protocol}//${url.host}`
-  }
-
-  return url.toString()
+  return new URL(withLeadingSlash(pathname), `${getSiteUrl()}/`).toString()
 }
