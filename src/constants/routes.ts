@@ -78,6 +78,21 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   channelIMessageClaude: "/channels/imessage/claude",
   channelIMessageClaudeAws: "/channels/imessage/claude-aws",
 
+  // Web Chat channel + builder landing pages
+  channelWebChat: "/channels/web-chat",
+  webChatSquarespace: "/channels/web-chat/squarespace",
+  webChatWix: "/channels/web-chat/wix",
+  webChatWebflow: "/channels/web-chat/webflow",
+  webChatFramer: "/channels/web-chat/framer",
+  webChatBubble: "/channels/web-chat/bubble",
+  webChatBolt: "/channels/web-chat/bolt",
+  webChatLovable: "/channels/web-chat/lovable",
+  webChatV0: "/channels/web-chat/v0",
+  webChatBase44: "/channels/web-chat/base44",
+  webChatReplit: "/channels/web-chat/replit",
+  addChatToWebsite: "/add-chat-to-website",
+  aiChatbotForWebsite: "/ai-chatbot-for-website",
+
   // PREVIOUS WEBSITE
 
   // Pages
