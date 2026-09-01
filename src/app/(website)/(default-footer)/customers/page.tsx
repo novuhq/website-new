@@ -45,7 +45,7 @@ export default async function CustomersPage() {
     name: "Novu",
     description:
       "Open-source notification infrastructure for developers and product teams.",
-    url: `${siteUrl}/customers/`,
+    url: `${siteUrl}/customers`,
     image: `${siteUrl}/social-previews/index.jpg`,
     brand: { "@type": "Brand", name: "Novu" },
     offers: {
@@ -54,7 +54,7 @@ export default async function CustomersPage() {
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       description: "Free up to 10,000 workflow runs per month",
-      url: `${siteUrl}/pricing/`,
+      url: `${siteUrl}/pricing`,
     },
     ...(reviews.length > 0 && { review: reviews }),
     ...(reviews.length > 0 && {

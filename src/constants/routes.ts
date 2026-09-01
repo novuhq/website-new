@@ -117,7 +117,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
 
   // Other services
   connectApp: "https://connect.novu.co",
-  bookMeeting: "https://novu.co/contact-us/",
+  bookMeeting: "https://novu.co/contact-us",
   handbook: "https://handbook.novu.co",
   roadmap: "https://roadmap.novu.co",
   statusPage: "https://novustatus.com",

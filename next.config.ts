@@ -56,7 +56,7 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
-  trailingSlash: true,
+  trailingSlash: false,
   poweredByHeader: false,
   transpilePackages: ["three"],
   turbopack: {
