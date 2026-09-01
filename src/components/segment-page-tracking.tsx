@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 
 declare global {
   interface Window {
+    __segmentLastTrackedPathname?: string
     analytics?: {
       page: () => void
     }
@@ -13,13 +14,13 @@ declare global {
 
 export function SegmentPageTracking() {
   const pathname = usePathname()
-  const previousPathnameRef = useRef(pathname)
 
   useEffect(() => {
-    if (pathname === previousPathnameRef.current) return
+    const analytics = window.analytics
+    if (!analytics || pathname === window.__segmentLastTrackedPathname) return
 
-    previousPathnameRef.current = pathname
-    window.analytics?.page()
+    window.__segmentLastTrackedPathname = pathname
+    analytics.page()
   }, [pathname])
 
   return null
