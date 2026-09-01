@@ -32,7 +32,7 @@ export default async function ChangelogPage({
     "@type": "CollectionPage",
     name: "Changelog | Novu",
     description: "Product updates, improvements, and fixes",
-    url: `${siteUrl}/changelog/`,
+    url: `${siteUrl}/changelog`,
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
