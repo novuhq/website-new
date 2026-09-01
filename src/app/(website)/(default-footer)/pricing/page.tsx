@@ -98,7 +98,7 @@ const productJsonLd = {
   name: "Novu",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Web",
-  url: `${siteUrl}/pricing/`,
+  url: `${siteUrl}/pricing`,
   offers: [
     {
       "@type": "Offer",

@@ -8,7 +8,7 @@ const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "http://localhost:30
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl,
-  trailingSlash: true,
+  trailingSlash: false,
   // robots.txt is served by src/app/(website)/robots.txt/route.ts so it is
   // included in the Next.js build output (postbuild public/ files are not).
   generateRobotsTxt: false,

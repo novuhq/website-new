@@ -51,7 +51,7 @@ export default async function BlogPage() {
     "@type": "CollectionPage",
     name: `${SEO_DATA.blog.title} | ${config.projectName}`,
     description: SEO_DATA.blog.description,
-    url: `${siteUrl}/blog/`,
+    url: `${siteUrl}/blog`,
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
