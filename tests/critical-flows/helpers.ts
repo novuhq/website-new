@@ -2,7 +2,7 @@ import { expect, type Locator, type Page } from "@playwright/test"
 
 const CLIPBOARD_TEXT_KEY = "__NOVU_CRITICAL_FLOW_CLIPBOARD_TEXT__"
 const THIRD_PARTY_SCRIPT_URL =
-  /^https:\/\/(?:[^/]+\.)?(?:cdn-plain\.com|plain\.com|segment\.com|segment\.io|snitcher\.com|vector\.co)(?:\/|$)/
+  /^https:\/\/(?:[^/]+\.)?(?:cdn-plain\.com|plain\.com|snitcher\.com|vector\.co)(?:\/|$)/
 const pagesWithThirdPartyScriptsBlocked = new WeakSet<Page>()
 
 function isExpectedWebKitNavigationCancellation(page: Page, message: string) {
