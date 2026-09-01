@@ -41,6 +41,12 @@ export const SEO_DATA = {
     description: `Join the team creating open-source notification infrastructure for developers, product teams, and the millions of users they reach.`,
     pathname: ROUTE.careers as string,
   },
+  notify: {
+    title: `Novu Notify | Notification Infrastructure with Inbox and Digest | ${config.projectName}`,
+    description:
+      "Novu Notify is open-source notification infrastructure: a prebuilt in-app Inbox, digests, user-controlled preferences, and one workflow across email, SMS, push, and chat. Install with npm install @novu/react.",
+    pathname: ROUTE.notify as string,
+  },
   pricing: {
     title: `Pricing | ${config.projectName}`,
     description: `Flexible pricing for companies and developers`,
