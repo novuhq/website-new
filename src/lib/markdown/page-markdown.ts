@@ -7,6 +7,7 @@ import { getChannels } from "./pages/channels"
 import { getComparison } from "./pages/comparison"
 import { getConnect } from "./pages/connect"
 import { getCustomers } from "./pages/customers"
+import { getEmailForAiAgents } from "./pages/email-for-ai-agents"
 import { getIntegrations } from "./pages/integrations"
 import { getPricing } from "./pages/pricing"
 import { getStaticMarketingPage, getStaticSanityPage } from "./pages/static"
@@ -21,6 +22,7 @@ const PAGE_BUILDERS: MarkdownPageBuilder[] = [
   getBlogPost,
   getChangelog,
   getCustomers,
+  getEmailForAiAgents,
   getComparison,
   getChannelFrameworks,
   getChannels,

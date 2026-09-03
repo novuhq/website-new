@@ -71,7 +71,7 @@ function FeaturedCustomers({
           </h2>
           <Button
             asChild
-            className="h-10.5 shrink-0 px-5 text-base leading-none tracking-tight normal-case md:mb-3 md:self-end"
+            className="h-11 shrink-0 px-5 text-base leading-none tracking-tight normal-case md:mb-2.5 md:self-end"
             size="none"
           >
             <Link href={ROUTE.customers} size="none" variant="clean">

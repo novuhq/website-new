@@ -34,9 +34,12 @@ export interface IConnectStackProps {
   aiFrameworks?: IStackOption[]
   channels?: IStackOption[]
   className?: string
+  containerClassName?: string
   defaultChannelValue?: string
   description?: string
+  descriptionClassName?: string
   title: string
+  titleClassName?: string
   variant?: "compact" | "default"
 }
 
@@ -218,8 +221,11 @@ function SelectField({
 
 function ConnectStack({
   className,
+  containerClassName,
   title,
+  titleClassName,
   description,
+  descriptionClassName,
   channels: channelOptions,
   defaultChannelValue,
   aiFrameworks: frameworkOptions,
@@ -268,7 +274,8 @@ function ConnectStack({
         className={cn(
           "mx-auto grid w-full max-w-3xl grid-cols-1 items-start gap-12 px-5 md:px-8 lg:max-w-336 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)] lg:gap-16",
           isCompact &&
-            "max-w-176 gap-8 lg:max-w-176 lg:grid-cols-1 lg:gap-8 lg:px-0 2xl:grid-cols-1 2xl:gap-8"
+            "max-w-176 gap-8 lg:max-w-176 lg:grid-cols-1 lg:gap-8 lg:px-0 2xl:grid-cols-1 2xl:gap-8",
+          containerClassName
         )}
       >
         <header
@@ -281,7 +288,8 @@ function ConnectStack({
             className={cn(
               "text-[1.75rem] leading-[1.125] font-normal tracking-tighter text-foreground md:text-[2.5rem] md:leading-[1.125] md:tracking-plus-tight",
               isCompact &&
-                "md:text-[2rem] md:leading-[1.125] md:tracking-[-0.04em]"
+                "md:text-[2rem] md:leading-[1.125] md:tracking-[-0.04em]",
+              titleClassName
             )}
           >
             {title}
@@ -291,7 +299,8 @@ function ConnectStack({
               className={cn(
                 "mt-4 max-w-160 text-base leading-snug tracking-tight text-pretty text-gray-70 md:text-xl md:leading-normal md:tracking-tighter",
                 isCompact &&
-                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base md:leading-snug"
+                  "max-w-151.5 tracking-tighter text-gray-80 md:text-base md:leading-snug",
+                descriptionClassName
               )}
             >
               {description}

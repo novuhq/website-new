@@ -34,7 +34,7 @@ const faqContentVariants = cva(
         default:
           "max-w-[752px] pt-2 pb-8 text-[18px] leading-relaxed font-book text-gray-8 sm:mr-7 sm:pb-6 sm:text-[16px] sm:leading-normal md:mr-14",
         minimal:
-          "max-w-none pr-8 pb-6.5 tracking-tighter text-gray-50 text-base md:pr-20",
+          "max-w-none pr-8 pb-6.5 tracking-tighter text-gray-60 text-base md:pr-20",
       },
     },
     defaultVariants: {
@@ -42,6 +42,18 @@ const faqContentVariants = cva(
     },
   }
 )
+
+const faqItemVariants = cva("", {
+  variants: {
+    variant: {
+      default: "border-gray-3",
+      minimal: "border-gray-20",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+})
 
 type TFaqVariant = VariantProps<typeof faqContentVariants>["variant"]
 
@@ -107,7 +119,7 @@ const FAQ = ({
 
             return (
               <AccordionItem
-                className="border-gray-3"
+                className={faqItemVariants({ variant })}
                 key={question}
                 value={question}
               >
