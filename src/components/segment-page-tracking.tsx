@@ -7,7 +7,7 @@ declare global {
   interface Window {
     __segmentLastTrackedPathname?: string
     analytics?: {
-      page: () => void
+      page?: () => void
     }
   }
 }
@@ -17,7 +17,12 @@ export function SegmentPageTracking() {
 
   useEffect(() => {
     const analytics = window.analytics
-    if (!analytics || pathname === window.__segmentLastTrackedPathname) return
+    if (
+      typeof analytics?.page !== "function" ||
+      pathname === window.__segmentLastTrackedPathname
+    ) {
+      return
+    }
 
     window.__segmentLastTrackedPathname = pathname
     analytics.page()

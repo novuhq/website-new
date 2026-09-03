@@ -112,6 +112,19 @@ export async function installClipboardMock(page: Page) {
           return true
         },
       })
+
+      try {
+        Object.defineProperty(navigator, "clipboard", {
+          configurable: true,
+          value: {
+            writeText: async (text: string) => {
+              browserState[clipboardKey] = text
+            },
+          },
+        })
+      } catch {
+        // The execCommand mock remains available as a fallback.
+      }
     },
     { clipboardKey: CLIPBOARD_TEXT_KEY }
   )
