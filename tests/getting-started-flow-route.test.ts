@@ -5,11 +5,18 @@ import { NextRequest } from "next/server"
 
 import { POST } from "../src/app/api/experiments/getting-started-flow/route"
 import {
+  GETTING_STARTED_FLOW_ASSIGNMENT_VERSION,
+  GETTING_STARTED_FLOW_EXPERIMENT_KEY,
   GETTING_STARTED_FLOW_EXPOSED_EVENT,
   GETTING_STARTED_FLOW_SELECTED_EVENT,
+  WEBSITE_CLI_COMMAND_COPIED_EVENT,
+  WEBSITE_PROMPT_COPIED_EVENT,
+  type GettingStartedFlow,
+  type GettingStartedFlowEvent,
 } from "../src/lib/getting-started-flow-experiment"
 
 const ENDPOINT = "https://novu.co/api/experiments/getting-started-flow/"
+const EVENT_TIMESTAMP = new Date().toISOString()
 
 function createRequest(body: unknown, origin = "https://novu.co") {
   return new NextRequest(ENDPOINT, {
@@ -34,6 +41,7 @@ function createBody(
     event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
     messageId: "gsf-00000000-0000-4000-8000-000000000002",
     properties: {},
+    timestamp: EVENT_TIMESTAMP,
     ...overrides,
   }
 }
@@ -60,6 +68,67 @@ async function withEnvironment<T>(
     }
   }
 }
+
+interface ValidEventCase {
+  event: GettingStartedFlowEvent
+  name: string
+  properties: Record<string, string>
+  variant: GettingStartedFlow
+}
+
+const validEventCases: ValidEventCase[] = [
+  {
+    event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
+    name: "ui exposure",
+    properties: {},
+    variant: "ui",
+  },
+  {
+    event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
+    name: "cli exposure",
+    properties: {},
+    variant: "cli",
+  },
+  {
+    event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
+    name: "prompt exposure",
+    properties: {},
+    variant: "prompt",
+  },
+  {
+    event: GETTING_STARTED_FLOW_SELECTED_EVENT,
+    name: "ui primary selection",
+    properties: { action: "sign_up_primary" },
+    variant: "ui",
+  },
+  {
+    event: GETTING_STARTED_FLOW_SELECTED_EVENT,
+    name: "cli primary selection",
+    properties: { action: "copy_cli" },
+    variant: "cli",
+  },
+  {
+    event: GETTING_STARTED_FLOW_SELECTED_EVENT,
+    name: "prompt primary selection",
+    properties: { action: "copy_prompt" },
+    variant: "prompt",
+  },
+  {
+    event: WEBSITE_CLI_COMMAND_COPIED_EVENT,
+    name: "cli copy diagnostic",
+    properties: { command: "npx novu connect" },
+    variant: "cli",
+  },
+  {
+    event: WEBSITE_PROMPT_COPIED_EVENT,
+    name: "prompt copy diagnostic",
+    properties: {
+      prompt:
+        "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md",
+    },
+    variant: "prompt",
+  },
+]
 
 test("rejects cross-origin and inconsistent experiment events", async () => {
   const missingBrowserHeaders = await POST(
@@ -123,6 +192,192 @@ test("drops production and QA events when their switches are disabled", async ()
   )
 })
 
+test("forwards every valid event and variant combination", async (context) => {
+  await withEnvironment(
+    {
+      CRITICAL_FLOW_TESTING: "0",
+      GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
+      NODE_ENV: "production",
+      VERCEL_ENV: "production",
+    },
+    async () => {
+      const originalFetch = globalThis.fetch
+      const requests: Array<Record<string, unknown>> = []
+
+      try {
+        globalThis.fetch = (async (_input, init) => {
+          requests.push(
+            JSON.parse(String(init?.body)) as Record<string, unknown>
+          )
+          return new Response(null, { status: 200 })
+        }) as typeof fetch
+
+        for (const [index, eventCase] of validEventCases.entries()) {
+          await context.test(eventCase.name, async () => {
+            const messageId = `gsf-valid-${index}`
+            const response = await POST(
+              createRequest(
+                createBody({
+                  assignment: {
+                    isQa: false,
+                    source: "random",
+                    variant: eventCase.variant,
+                  },
+                  event: eventCase.event,
+                  messageId,
+                  properties: eventCase.properties,
+                })
+              )
+            )
+
+            assert.equal(response.status, 204)
+            assert.equal(requests.length, index + 1)
+
+            const outboundRequest = requests[index]
+            assert.equal(outboundRequest.event, eventCase.event)
+            assert.equal(outboundRequest.messageId, messageId)
+            assert.equal(outboundRequest.timestamp, EVENT_TIMESTAMP)
+            assert.deepEqual(outboundRequest.properties, {
+              assignment_source: "random",
+              assignment_version: GETTING_STARTED_FLOW_ASSIGNMENT_VERSION,
+              experiment_key: GETTING_STARTED_FLOW_EXPERIMENT_KEY,
+              getting_started_flow: eventCase.variant,
+              is_qa: false,
+              variant: eventCase.variant,
+              ...eventCase.properties,
+            })
+          })
+        }
+      } finally {
+        globalThis.fetch = originalFetch
+      }
+    }
+  )
+})
+
+test("rejects a missing, malformed, or stale client event timestamp", async () => {
+  const missingTimestamp = createBody()
+  delete missingTimestamp.timestamp
+
+  assert.equal((await POST(createRequest(missingTimestamp))).status, 400)
+  assert.equal(
+    (
+      await POST(
+        createRequest(createBody({ timestamp: "2026-02-31T12:00:00.000Z" }))
+      )
+    ).status,
+    400
+  )
+  assert.equal(
+    (
+      await POST(
+        createRequest(
+          createBody({
+            timestamp: new Date(Date.now() - 60 * 60 * 1_000).toISOString(),
+          })
+        )
+      )
+    ).status,
+    400
+  )
+  assert.equal(
+    (
+      await POST(
+        createRequest(
+          createBody({
+            timestamp: new Date(Date.now() + 60 * 60 * 1_000).toISOString(),
+          })
+        )
+      )
+    ).status,
+    400
+  )
+})
+
+test("retries transient Segment failures with the same payload", async () => {
+  await withEnvironment(
+    {
+      CRITICAL_FLOW_TESTING: "0",
+      GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
+      NODE_ENV: "production",
+    },
+    async () => {
+      const originalFetch = globalThis.fetch
+      const requests: Array<Record<string, unknown>> = []
+
+      try {
+        globalThis.fetch = (async (_input, init) => {
+          requests.push(
+            JSON.parse(String(init?.body)) as Record<string, unknown>
+          )
+          return new Response(null, {
+            status: requests.length === 1 ? 500 : 200,
+          })
+        }) as typeof fetch
+
+        const response = await POST(createRequest(createBody()))
+
+        assert.equal(response.status, 204)
+        assert.equal(requests.length, 2)
+        assert.deepEqual(requests[1], requests[0])
+      } finally {
+        globalThis.fetch = originalFetch
+      }
+    }
+  )
+})
+
+test("honors a bounded 429 retry and does not retry permanent 4xx", async () => {
+  await withEnvironment(
+    {
+      CRITICAL_FLOW_TESTING: "0",
+      GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
+      NODE_ENV: "production",
+    },
+    async () => {
+      const originalFetch = globalThis.fetch
+
+      try {
+        let requests = 0
+        globalThis.fetch = (async () => {
+          requests += 1
+          return requests === 1
+            ? new Response(null, {
+                headers: { "Retry-After": "0" },
+                status: 429,
+              })
+            : new Response(null, { status: 200 })
+        }) as typeof fetch
+
+        assert.equal(
+          (await POST(createRequest(createBody()))).status,
+          204,
+          "429 should retry"
+        )
+        assert.equal(requests, 2)
+
+        requests = 0
+        globalThis.fetch = (async () => {
+          requests += 1
+          return new Response(null, { status: 400 })
+        }) as typeof fetch
+
+        assert.equal(
+          (await POST(createRequest(createBody()))).status,
+          503,
+          "permanent 4xx should fail without retry"
+        )
+        assert.equal(requests, 1)
+      } finally {
+        globalThis.fetch = originalFetch
+      }
+    }
+  )
+})
+
 test("preserves the Segment payload and reports upstream failure", async () => {
   await withEnvironment(
     {
@@ -155,10 +410,12 @@ test("preserves the Segment payload and reports upstream failure", async () => {
           response.headers.get("set-cookie") ?? "",
           /ajs_anonymous_id=/
         )
-        assert.equal(requests.length, 1)
-        assert.equal(requests[0].body.event, body.event)
-        assert.equal(requests[0].body.messageId, body.messageId)
-        assert.equal(requests[0].authorization, "Basic dGVzdC13cml0ZS1rZXk6")
+        assert.equal(requests.length, 3)
+        for (const request of requests) {
+          assert.equal(request.body.event, body.event)
+          assert.equal(request.body.messageId, body.messageId)
+          assert.equal(request.authorization, "Basic dGVzdC13cml0ZS1rZXk6")
+        }
       } finally {
         globalThis.fetch = originalFetch
       }

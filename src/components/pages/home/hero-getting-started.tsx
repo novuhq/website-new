@@ -3,9 +3,12 @@
 import { Suspense } from "react"
 import { ROUTE } from "@/constants/routes"
 
-import { trackGettingStartedFlowEvent } from "@/lib/getting-started-flow-client"
 import {
-  GETTING_STARTED_FLOW_SELECTED_EVENT,
+  trackGettingStartedFlowEvent,
+  trackGettingStartedFlowSelection,
+} from "@/lib/getting-started-flow-client"
+import {
+  GETTING_STARTED_FLOW_PREHYDRATION_COPIED_ATTRIBUTE,
   WEBSITE_CLI_COMMAND_COPIED_EVENT,
   WEBSITE_PROMPT_COPIED_EVENT,
 } from "@/lib/getting-started-flow-experiment"
@@ -18,6 +21,18 @@ import CopyPromptButton from "./copy-prompt-button"
 
 const SIGN_UP_HREF = String(ROUTE.dashboardV2AgentsSignUp)
 
+function clearPreHydrationCopyFeedback(target: HTMLButtonElement) {
+  target.removeAttribute(GETTING_STARTED_FLOW_PREHYDRATION_COPIED_ATTRIBUTE)
+  target.removeAttribute("aria-label")
+
+  const nestedLiveRegion = target.querySelector<HTMLElement>("[aria-live]")
+  const sibling = target.nextElementSibling
+  const liveRegion =
+    nestedLiveRegion ?? (sibling instanceof HTMLElement ? sibling : null)
+
+  if (liveRegion?.hasAttribute("aria-live")) liveRegion.textContent = ""
+}
+
 function SignupButton({ label }: { label: string }) {
   return (
     <Button
@@ -28,6 +43,7 @@ function SignupButton({ label }: { label: string }) {
     >
       <a
         href={SIGN_UP_HREF}
+        suppressHydrationWarning
         data-click-location="home_hero"
         data-click-text="get_started_free"
         data-getting-started-flow-action="sign_up_primary"
@@ -42,8 +58,9 @@ function SignupButton({ label }: { label: string }) {
 function SecondarySignupLink({ label }: { label: string }) {
   return (
     <a
-      className="w-fit text-sm font-medium tracking-tight text-[#a3a6b2] underline-offset-4 transition-colors hover:text-white hover:underline"
+      className="-mx-2 -my-3 inline-flex min-h-11 w-fit items-center px-2 py-3 text-sm font-medium tracking-tight text-gray-70 underline-offset-4 transition-colors hover:text-white hover:underline"
       href={SIGN_UP_HREF}
+      suppressHydrationWarning
       data-click-location="home_hero"
       data-click-text="sign_up_instead"
       data-getting-started-flow-signup
@@ -136,7 +153,7 @@ function HeroGettingStarted({
         data-getting-started-flow-variant="ui"
       >
         <SignupButton label={signupLabel} />
-        <p className="text-sm tracking-tight text-[#a3a6b2]">{signupNote}</p>
+        <p className="text-sm tracking-tight text-gray-70">{signupNote}</p>
       </div>
 
       <div
@@ -146,12 +163,13 @@ function HeroGettingStarted({
         <CopyCommand
           command={command}
           variant="highlighted"
+          copyButtonClassName="!h-11 lg:!h-11"
           commandClassName="pointer-events-auto select-text"
           copiedContent={<AnimatedCopyCheck />}
-          onCopySuccess={() => {
-            trackGettingStartedFlowEvent(GETTING_STARTED_FLOW_SELECTED_EVENT, {
-              action: "copy_cli",
-            })
+          suppressCopyHydrationWarning
+          onCopySuccess={(target) => {
+            clearPreHydrationCopyFeedback(target)
+            trackGettingStartedFlowSelection("copy_cli")
             trackGettingStartedFlowEvent(WEBSITE_CLI_COMMAND_COPIED_EVENT, {
               command,
             })
@@ -175,11 +193,11 @@ function HeroGettingStarted({
           variant="default"
           size="none"
           resetInterval={2000}
+          suppressCopyHydrationWarning
           value={prompt}
-          onCopySuccess={() => {
-            trackGettingStartedFlowEvent(GETTING_STARTED_FLOW_SELECTED_EVENT, {
-              action: "copy_prompt",
-            })
+          onCopySuccess={(target) => {
+            clearPreHydrationCopyFeedback(target)
+            trackGettingStartedFlowSelection("copy_prompt")
             trackGettingStartedFlowEvent(WEBSITE_PROMPT_COPIED_EVENT, {
               prompt,
             })

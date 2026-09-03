@@ -1,6 +1,6 @@
 "use client"
 
-import { useId } from "react"
+import { useId, type MouseEvent } from "react"
 import { Copy } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -14,10 +14,11 @@ interface ICopyPromptButtonProps
   copiedLabel?: string
   copiedMessage?: string
   label?: string
-  onCopySuccess?: () => void
+  onCopySuccess?: (target: HTMLButtonElement) => void
   resetInterval?: number
   showCopyIcon?: boolean
   showLabel?: boolean
+  suppressCopyHydrationWarning?: boolean
   value: string
 }
 
@@ -29,6 +30,7 @@ function CopyPromptButton({
   resetInterval = 2500,
   showCopyIcon = true,
   showLabel = true,
+  suppressCopyHydrationWarning = false,
   value,
   textClassName,
   ...buttonProps
@@ -36,8 +38,8 @@ function CopyPromptButton({
   const { isCopied, handleCopy } = useCopyToClipboard(resetInterval)
   const statusId = useId()
 
-  const copy = () => {
-    if (handleCopy(value)) onCopySuccess?.()
+  const copy = (event: MouseEvent<HTMLButtonElement>) => {
+    if (handleCopy(value)) onCopySuccess?.(event.currentTarget)
   }
 
   return (
@@ -47,6 +49,7 @@ function CopyPromptButton({
       onClick={copy}
       aria-label={isCopied ? copiedLabel || "Copied" : label}
       aria-describedby={statusId}
+      suppressHydrationWarning={suppressCopyHydrationWarning}
       textClassName={cn("gap-2", textClassName)}
     >
       {showLabel ? (isCopied ? copiedLabel : label) : null}
@@ -55,7 +58,12 @@ function CopyPromptButton({
       ) : showCopyIcon ? (
         <Copy aria-hidden />
       ) : null}
-      <span className="sr-only" id={statusId} aria-live="polite">
+      <span
+        className="sr-only"
+        id={statusId}
+        aria-live="polite"
+        suppressHydrationWarning={suppressCopyHydrationWarning}
+      >
         {isCopied ? copiedMessage : ""}
       </span>
     </Button>

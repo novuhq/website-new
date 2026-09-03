@@ -5,9 +5,36 @@ const THIRD_PARTY_SCRIPT_URL =
   /^https:\/\/(?:[^/]+\.)?(?:cdn-plain\.com|plain\.com|segment\.com|segment\.io|snitcher\.com|vector\.co)(?:\/|$)/
 const pagesWithThirdPartyScriptsBlocked = new WeakSet<Page>()
 
-function isExpectedWebKitNavigationCancellation(page: Page, message: string) {
+function isExpectedConsoleError(message: string) {
+  if (
+    message === "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
+  ) {
+    return true
+  }
+
+  if (
+    message.startsWith("The Content Security Policy ") &&
+    message.includes("was delivered in report-only mode")
+  ) {
+    return true
+  }
+
+  return (
+    message.startsWith("[Report Only] Refused to load ") &&
+    (message.includes("https://p.typekit.net/") ||
+      message.includes("https://app.cal.com/embed/embed.js"))
+  )
+}
+
+function isExpectedWebKitPageError(page: Page, message: string) {
   if (page.context().browser()?.browserType().name() !== "webkit") {
     return false
+  }
+
+  if (
+    message === "ResizeObserver loop completed with undelivered notifications."
+  ) {
+    return true
   }
 
   try {
@@ -33,7 +60,7 @@ function isExpectedWebKitNavigationCancellation(page: Page, message: string) {
   }
 }
 
-async function blockThirdPartyScripts(page: Page) {
+export async function blockThirdPartyScripts(page: Page) {
   if (pagesWithThirdPartyScriptsBlocked.has(page)) return
 
   await page.route(THIRD_PARTY_SCRIPT_URL, (route) =>
@@ -42,11 +69,24 @@ async function blockThirdPartyScripts(page: Page) {
   pagesWithThirdPartyScriptsBlocked.add(page)
 }
 
-export function observeApplicationErrors(page: Page) {
+export function observeApplicationErrors(
+  page: Page,
+  { includeConsoleErrors = false }: { includeConsoleErrors?: boolean } = {}
+) {
   const errors: string[] = []
 
+  if (includeConsoleErrors) {
+    page.on("console", (message) => {
+      if (
+        message.type() === "error" &&
+        !isExpectedConsoleError(message.text())
+      ) {
+        errors.push(message.text())
+      }
+    })
+  }
   page.on("pageerror", (error) => {
-    if (!isExpectedWebKitNavigationCancellation(page, error.message)) {
+    if (!isExpectedWebKitPageError(page, error.message)) {
       errors.push(error.message)
     }
   })

@@ -7,14 +7,12 @@ import {
   getGettingStartedFlowForRandomValue,
   GETTING_STARTED_FLOW_COOKIE_NAME,
   isGettingStartedFlow,
-  SEGMENT_ANONYMOUS_ID_COOKIE_NAME,
 } from "../src/lib/getting-started-flow-experiment"
 
 interface BootstrapOptions {
   cookie?: string
   cryptoValue?: number
   enabled: boolean
-  localStorageAnonymousId?: string
   protocol?: "http:" | "https:"
   qaEnabled?: boolean
   search?: string
@@ -24,7 +22,6 @@ function runBootstrap({
   cookie = "",
   cryptoValue = 0,
   enabled,
-  localStorageAnonymousId,
   protocol = "https:",
   qaEnabled = false,
   search = "",
@@ -44,14 +41,6 @@ function runBootstrap({
       })
   )
   const writtenCookies: string[] = []
-  const localStorageValues = new Map<string, string>()
-
-  if (localStorageAnonymousId) {
-    localStorageValues.set(
-      SEGMENT_ANONYMOUS_ID_COOKIE_NAME,
-      JSON.stringify(localStorageAnonymousId)
-    )
-  }
 
   const document = {
     addEventListener() {},
@@ -87,14 +76,6 @@ function runBootstrap({
         return values
       },
     },
-    localStorage: {
-      getItem(name: string) {
-        return localStorageValues.get(name) ?? null
-      },
-      setItem(name: string, value: string) {
-        localStorageValues.set(name, value)
-      },
-    },
     location: { hostname: "localhost", pathname: "/", protocol, search },
   } as Record<string, unknown>
 
@@ -103,20 +84,12 @@ function runBootstrap({
     {
       document,
       Math,
+      setTimeout() {},
       Uint32Array,
       URLSearchParams,
       window: browserWindow,
     }
   )
-
-  const segmentEvents = Array.isArray(browserWindow.analytics)
-    ? browserWindow.analytics
-        .filter(
-          (item): item is ["track", string, Record<string, unknown>] =>
-            Array.isArray(item) && item[0] === "track"
-        )
-        .map(([, event, properties]) => ({ event, properties }))
-    : []
 
   return {
     assignment: browserWindow.__novuGettingStartedFlowAssignment
@@ -124,22 +97,7 @@ function runBootstrap({
           JSON.stringify(browserWindow.__novuGettingStartedFlowAssignment)
         )
       : undefined,
-    queuedEvents: JSON.parse(
-      JSON.stringify(
-        segmentEvents.length > 0
-          ? segmentEvents
-          : (browserWindow.__novuGettingStartedFlowEventQueue ?? [])
-      )
-    ),
     rootVariant: attributes.get("data-getting-started-flow"),
-    segmentAnonymousId: browserWindow.__novuSegmentAnonymousId,
-    storedSegmentAnonymousId: localStorageValues.get(
-      SEGMENT_ANONYMOUS_ID_COOKIE_NAME
-    ),
-    writtenSegmentCookie:
-      writtenCookies.find((value) =>
-        value.startsWith(`${SEGMENT_ANONYMOUS_ID_COOKIE_NAME}=`)
-      ) ?? null,
     writtenCookie:
       writtenCookies.find((value) =>
         value.startsWith(`${GETTING_STARTED_FLOW_COOKIE_NAME}=`)
@@ -168,6 +126,17 @@ test("maps the 34/33/33 allocation boundaries", () => {
     () => getGettingStartedFlowForRandomValue(Number.NaN),
     RangeError
   )
+})
+
+test("keeps the synchronous fallback bounded and independent of remote flags", () => {
+  const script = buildGettingStartedFlowBootstrapScript({
+    enabled: true,
+    qaEnabled: true,
+  })
+
+  assert.ok(Buffer.byteLength(script, "utf8") < 8_750)
+  assert.doesNotMatch(script, /https:\/\/|get_variant_value|mixpanel/i)
+  assert.match(script, /addEventListener/)
 })
 
 test("keeps the production baseline when the experiment is disabled", () => {
@@ -211,10 +180,6 @@ test("QA override works without changing the sticky assignment", () => {
     source: "qa",
     variant: "prompt",
   })
-  assert.deepEqual(
-    result.queuedEvents.map(({ event }: { event: string }) => event),
-    ["Website Getting Started Flow Exposed"]
-  )
   assert.equal(result.writtenCookie, null)
 })
 
@@ -231,21 +196,6 @@ test("reuses a valid assignment cookie", () => {
     variant: "cli",
   })
   assert.equal(result.writtenCookie, null)
-})
-
-test("uses Segment localStorage identity before a divergent cookie", () => {
-  const result = runBootstrap({
-    cookie: `${SEGMENT_ANONYMOUS_ID_COOKIE_NAME}=%22cookie-id%22`,
-    enabled: true,
-    localStorageAnonymousId: "local-storage-id",
-  })
-
-  assert.equal(result.segmentAnonymousId, "local-storage-id")
-  assert.equal(result.storedSegmentAnonymousId, '"local-storage-id"')
-  assert.match(
-    result.writtenSegmentCookie ?? "",
-    new RegExp(`^${SEGMENT_ANONYMOUS_ID_COOKIE_NAME}=%22local-storage-id%22;`)
-  )
 })
 
 test("replaces an invalid cookie with a random sticky assignment", () => {

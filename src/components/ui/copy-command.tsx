@@ -63,7 +63,8 @@ export interface CopyCommandProps
     "data-getting-started-flow-action"?: string
     "data-getting-started-flow-copy-value"?: string
   }
-  onCopySuccess?: () => void
+  onCopySuccess?: (target: HTMLButtonElement) => void
+  suppressCopyHydrationWarning?: boolean
 }
 
 function CopyCommand({
@@ -74,14 +75,15 @@ function CopyCommand({
   copyButtonClassName,
   copyButtonProps,
   onCopySuccess,
+  suppressCopyHydrationWarning = false,
   variant,
   className,
   ...props
 }: CopyCommandProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(2000)
 
-  const copy = () => {
-    if (handleCopy(command)) onCopySuccess?.()
+  const copy = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (handleCopy(command)) onCopySuccess?.(event.currentTarget)
   }
 
   return (
@@ -125,6 +127,7 @@ function CopyCommand({
           type="button"
           onClick={copy}
           aria-label={isCopied ? "Copied" : "Copy to clipboard"}
+          suppressHydrationWarning={suppressCopyHydrationWarning}
         >
           {isCopied ? (
             (copiedContent ?? <Check className="size-5" strokeWidth={2.5} />)
@@ -134,7 +137,11 @@ function CopyCommand({
             <Copy className="size-5" />
           )}
         </button>
-        <span className="sr-only" aria-live="polite">
+        <span
+          className="sr-only"
+          aria-live="polite"
+          suppressHydrationWarning={suppressCopyHydrationWarning}
+        >
           {isCopied ? "Command copied to clipboard" : ""}
         </span>
       </div>

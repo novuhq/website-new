@@ -26,6 +26,7 @@ destination or business outcome changes.
 | `TC-HOME-001`        | P0       | Homepage → live channel              | Channel content and the generated CLI command are usable    |
 | `TC-HOME-002`        | P1       | Homepage → coming-soon waitlist      | Validation, failure feedback, and retry all work            |
 | `TC-HOME-003`        | P0       | Homepage Connect Stack setup         | Channel/runtime selection and both copy actions work        |
+| `TC-HOME-004`        | P1       | Homepage getting-started experiment  | All three arms expose one comparable primary action         |
 | `TC-CHANNEL-001`     | P0       | Published channel landing pages      | All five pages render their content, CLI, FAQ, and CTA      |
 | `TC-CHANNEL-002`     | P0       | Channel page → Novu Connect          | The primary channel CTA reaches the Connect experience      |
 | `TC-CONNECT-001`     | P0       | Novu Connect setup → product         | Copy actions, signup, and template handoffs remain usable   |
@@ -36,6 +37,11 @@ destination or business outcome changes.
 
 Browser journeys run in desktop Chromium, Pixel-sized Chromium, desktop WebKit,
 and iPhone-sized WebKit. Each test also fails on unhandled application errors.
+
+`TC-HOME-004` is temporary. At the experiment's documented 28-day or
+sequential-testing decision point, record the outcome, replace the experiment
+journey with the winning homepage behavior if it remains business-critical, and
+retire the experiment-only contract and tests with the runtime flags.
 
 ## Safety
 
@@ -78,3 +84,9 @@ the production application first and starts it with `pnpm start`. Set
 signed-in and loading auth-state cases detect the `CRITICAL_FLOW_TESTING=1`
 fixture on the target and skip themselves when an unmanaged server or preview
 deployment does not expose it.
+
+The managed local server enables the getting-started experiment unless
+`GETTING_STARTED_FLOW_EXPERIMENT_ENABLED` is set explicitly. The full
+getting-started spec expects either that production flag or QA overrides to be
+available on an externally managed target; the default-off bootstrap and route
+behavior are also covered by the Node contract tests.

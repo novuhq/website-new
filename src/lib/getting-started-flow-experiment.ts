@@ -11,6 +11,10 @@ export const SEGMENT_ANONYMOUS_ID_COOKIE_NAME = "ajs_anonymous_id"
 export const SEGMENT_ANONYMOUS_ID_MAX_AGE_SECONDS = 60 * 60 * 24 * 365
 export const GETTING_STARTED_FLOW_ASSIGNMENT_EVENT =
   "novu:getting-started-flow-assignment"
+export const GETTING_STARTED_FLOW_READY_ATTRIBUTE =
+  "data-getting-started-flow-ready"
+export const GETTING_STARTED_FLOW_PREHYDRATION_COPIED_ATTRIBUTE =
+  "data-getting-started-flow-prehydration-copied"
 
 export const GETTING_STARTED_FLOW_VARIANTS = ["ui", "cli", "prompt"] as const
 
@@ -40,6 +44,15 @@ export const GETTING_STARTED_FLOW_EVENTS = [
 export type GettingStartedFlowEvent =
   (typeof GETTING_STARTED_FLOW_EVENTS)[number]
 
+export const GETTING_STARTED_FLOW_PRIMARY_ACTIONS = [
+  "sign_up_primary",
+  "copy_cli",
+  "copy_prompt",
+] as const
+
+export type GettingStartedFlowPrimaryAction =
+  (typeof GETTING_STARTED_FLOW_PRIMARY_ACTIONS)[number]
+
 export const GETTING_STARTED_FLOW_UI_UPPER_BOUND = 0.34
 export const GETTING_STARTED_FLOW_CLI_UPPER_BOUND = 0.67
 
@@ -53,6 +66,12 @@ export function isGettingStartedFlowEvent(
   value: unknown
 ): value is GettingStartedFlowEvent {
   return GETTING_STARTED_FLOW_EVENTS.some((event) => event === value)
+}
+
+export function isGettingStartedFlowPrimaryAction(
+  value: unknown
+): value is GettingStartedFlowPrimaryAction {
+  return GETTING_STARTED_FLOW_PRIMARY_ACTIONS.some((action) => action === value)
 }
 
 export function getGettingStartedFlowForRandomValue(

@@ -9,6 +9,7 @@ import {
   isGettingStartedFlowExperimentEnabled,
   isGettingStartedFlowQaEnabled,
 } from "@/lib/getting-started-flow-server"
+import GettingStartedFlowInlineScript from "@/components/getting-started-flow-inline-script"
 
 /**
  * The style and assignment script must precede the homepage markup so a
@@ -25,14 +26,11 @@ function GettingStartedFlowBootstrap() {
           __html: GETTING_STARTED_FLOW_VISIBILITY_CSS,
         }}
       />
-      <script
-        id="getting-started-flow-bootstrap"
-        dangerouslySetInnerHTML={{
-          __html: buildGettingStartedFlowBootstrapScript({
-            enabled: isGettingStartedFlowExperimentEnabled(),
-            qaEnabled: isGettingStartedFlowQaEnabled(),
-          }),
-        }}
+      <GettingStartedFlowInlineScript
+        html={buildGettingStartedFlowBootstrapScript({
+          enabled: isGettingStartedFlowExperimentEnabled(),
+          qaEnabled: isGettingStartedFlowQaEnabled(),
+        })}
       />
     </>
   )

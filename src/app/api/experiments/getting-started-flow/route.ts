@@ -5,6 +5,7 @@ import {
   GETTING_STARTED_FLOW_COOKIE_MAX_AGE_SECONDS,
   GETTING_STARTED_FLOW_COOKIE_NAME,
   GETTING_STARTED_FLOW_EXPERIMENT_KEY,
+  GETTING_STARTED_FLOW_PRIMARY_ACTIONS,
   GETTING_STARTED_FLOW_SELECTED_EVENT,
   isGettingStartedFlow,
   isGettingStartedFlowEvent,
@@ -23,14 +24,17 @@ import {
 export const runtime = "nodejs"
 
 const MAX_BODY_BYTES = 16_384
+const MAX_EVENT_CLOCK_SKEW_MS = 5 * 60 * 1_000
+const MAX_SEGMENT_RETRY_DELAY_MS = 2_000
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" }
+const SEGMENT_DELIVERY_ATTEMPTS = 3
 const SEGMENT_TRACK_ENDPOINT = "https://api.segment.io/v1/track"
 const ASSIGNMENT_SOURCES = new Set<GettingStartedFlowAssignmentSource>([
   "cookie",
   "qa",
   "random",
 ])
-const ACTIONS = new Set(["copy_cli", "copy_prompt", "sign_up_primary"])
+const ACTIONS = new Set<string>(GETTING_STARTED_FLOW_PRIMARY_ACTIONS)
 
 type SegmentDeliveryResult = "delivered" | "failed" | "unconfigured"
 
@@ -44,6 +48,7 @@ interface EventRequestBody {
   event: string
   messageId: string
   properties?: Record<string, unknown>
+  timestamp: string
 }
 
 function errorResponse(error: string, status: number) {
@@ -89,6 +94,7 @@ function isValidBody(value: unknown): value is EventRequestBody {
     typeof body.messageId !== "string" ||
     body.messageId.length === 0 ||
     body.messageId.length > 128 ||
+    !isValidTimestamp(body.timestamp) ||
     (body.properties !== undefined &&
       (!body.properties ||
         typeof body.properties !== "object" ||
@@ -103,6 +109,17 @@ function isValidBody(value: unknown): value is EventRequestBody {
     body.event,
     assignment.variant,
     body.properties
+  )
+}
+
+function isValidTimestamp(value: unknown): value is string {
+  if (typeof value !== "string" || value.length !== 24) return false
+
+  const timestamp = new Date(value)
+  return (
+    Number.isFinite(timestamp.valueOf()) &&
+    timestamp.toISOString() === value &&
+    Math.abs(Date.now() - timestamp.valueOf()) <= MAX_EVENT_CLOCK_SKEW_MS
   )
 }
 
@@ -175,6 +192,32 @@ function getEventProperties(body: EventRequestBody) {
   return properties
 }
 
+function getSegmentRetryDelayMs(response: Response | null, attempt: number) {
+  if (response?.status === 429) {
+    const retryAfter = response.headers.get("retry-after")
+
+    if (retryAfter) {
+      const seconds = Number(retryAfter)
+      const delay = Number.isFinite(seconds)
+        ? seconds * 1_000
+        : Date.parse(retryAfter) - Date.now()
+
+      if (Number.isFinite(delay)) {
+        return Math.min(Math.max(delay, 0), MAX_SEGMENT_RETRY_DELAY_MS)
+      }
+    }
+  }
+
+  const exponentialDelay = 100 * 2 ** attempt
+  const jitter = Math.floor(Math.random() * 50)
+  return Math.min(exponentialDelay + jitter, MAX_SEGMENT_RETRY_DELAY_MS)
+}
+
+async function waitForSegmentRetry(delayMs: number) {
+  if (delayMs <= 0) return
+  await new Promise((resolve) => setTimeout(resolve, delayMs))
+}
+
 async function forwardToSegment(
   request: NextRequest,
   body: EventRequestBody
@@ -201,33 +244,54 @@ async function forwardToSegment(
     }
   }
 
-  try {
-    const response = await fetch(SEGMENT_TRACK_ENDPOINT, {
-      body: JSON.stringify({
-        anonymousId: body.anonymousId,
-        context: {
-          library: { name: "novu-getting-started-flow", version: "1" },
-          page: pageContext,
-          userAgent: request.headers.get("user-agent") ?? undefined,
-        },
-        event: body.event,
-        messageId: body.messageId,
-        properties: getEventProperties(body),
-        timestamp: new Date().toISOString(),
-      }),
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${writeKey}:`).toString("base64")}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      signal: AbortSignal.timeout(3_000),
-    })
-
-    return response.ok ? "delivered" : "failed"
-  } catch {
-    // Analytics delivery must never affect the visitor's experiment flow.
-    return "failed"
+  const payload = JSON.stringify({
+    anonymousId: body.anonymousId,
+    context: {
+      library: { name: "novu-getting-started-flow", version: "1" },
+      page: pageContext,
+      userAgent: request.headers.get("user-agent") ?? undefined,
+    },
+    event: body.event,
+    messageId: body.messageId,
+    properties: getEventProperties(body),
+    timestamp: body.timestamp,
+  })
+  const headers = {
+    Authorization: `Basic ${Buffer.from(`${writeKey}:`).toString("base64")}`,
+    "Content-Type": "application/json",
   }
+
+  for (let attempt = 0; attempt < SEGMENT_DELIVERY_ATTEMPTS; attempt += 1) {
+    let retryResponse: Response | null = null
+
+    try {
+      const response = await fetch(SEGMENT_TRACK_ENDPOINT, {
+        body: payload,
+        headers,
+        method: "POST",
+        signal: AbortSignal.timeout(3_000),
+      })
+
+      if (response.ok) return "delivered"
+      if (
+        response.status < 500 &&
+        response.status !== 408 &&
+        response.status !== 429
+      ) {
+        return "failed"
+      }
+      retryResponse = response
+    } catch {
+      // Retry transient network failures with the same Segment messageId.
+    }
+
+    if (attempt + 1 < SEGMENT_DELIVERY_ATTEMPTS) {
+      await waitForSegmentRetry(getSegmentRetryDelayMs(retryResponse, attempt))
+    }
+  }
+
+  // Analytics delivery must never affect the visitor's experiment flow.
+  return "failed"
 }
 
 function setIdentityCookies(

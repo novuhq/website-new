@@ -58,7 +58,8 @@ export default defineConfig({
         env: {
           ...process.env,
           CRITICAL_FLOW_TESTING: "1",
-          GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+          GETTING_STARTED_FLOW_EXPERIMENT_ENABLED:
+            process.env.GETTING_STARTED_FLOW_EXPERIMENT_ENABLED ?? "true",
           NEXT_PUBLIC_DEFAULT_SITE_URL: baseURL,
         },
         url: baseURL,

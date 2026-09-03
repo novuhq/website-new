@@ -20,8 +20,8 @@ The experiment key remains exactly `website-getting-started-flow-ui-vs-cli-vs-pr
 - When enabled, a small synchronous first-party script assigns the visitor before the homepage body is painted.
 - The assignment is stored for 60 days in `novu_getting_started_flow_v1` with `SameSite=Lax`. Each exposure request also renews it as a server-set first-party cookie, reducing the risk that Safari's script-created-storage limits shorten the planned 28-day cohort; actual retention still follows browser policy.
 - The homepage stays cacheable: there is no request-time cookie read, remote flag request, loading skeleton, or Mixpanel bundle in the render path.
-- CLI and prompt copying works from the same bootstrap before React hydrates, so slow devices do not favor the native signup-link arm. A selection is recorded only after a successful copy.
-- If JavaScript is unavailable, the script fails, or the experiment is disabled, the current dual CTA is shown.
+- The synchronous bootstrap assigns the visible arm and installs a compact first-party fallback for identity, event delivery, signup decoration, clipboard actions, and copy confirmation. This keeps every arm usable while application chunks are slow or unavailable. The hydrated runtime takes ownership before React handlers can receive clicks, and a copy selection is recorded only after clipboard success.
+- If JavaScript is unavailable, the inline script fails, or the experiment is disabled, the current dual CTA is shown. If only application chunks fail after the inline script runs, the assigned experiment CTA remains functional.
 - In development and preview deployments, `?gsf=ui`, `?gsf=cli`, and `?gsf=prompt` force an arm for QA without changing the visitor's sticky assignment. Production QA overrides require `GETTING_STARTED_FLOW_EXPERIMENT_QA_ENABLED=true`. QA events include `is_qa: true` and must be excluded from experiment results.
 
 Changing the weights or meaning of an arm requires a new assignment version and cookie name. Do not rebalance an active cohort in place.
@@ -32,9 +32,15 @@ The old branch rendered a skeleton while `mixpanel-browser` initialized and `get
 
 This implementation preserves the PR's exact experiment key, arms, allocation, copy, and QA URLs, but replaces the remote render dependency with local sticky assignment and first-party event delivery. The old branch also diverged substantially from current `main`, so it is not used as a merge base or cherry-pick source.
 
+The generated parser-blocking payload is 8,225 bytes of JavaScript plus 807 bytes of visibility/fallback CSS (9,032 bytes raw / 3,104 bytes gzip in the enabled QA configuration). A unit contract keeps the script below 8.75 KB and rejects remote URLs, Mixpanel, or remote flag APIs in this path. The earlier implementation reviewed in this branch used 13,265 bytes of synchronous JavaScript plus 1,545 bytes of CSS, then initialized the additional Mixpanel browser bundle and waited on its remote decision path.
+
 ## Analytics contract
 
-Events are posted with non-blocking `keepalive` requests to the allowlisted same-origin endpoint at `/api/experiments/getting-started-flow/`. The endpoint forwards them to the existing Segment source with its current write key; no Mixpanel browser SDK or remote decision request is added. A failed delivery is retried with `sendBeacon` and never changes the rendered CTA.
+Events are posted to the allowlisted same-origin endpoint at `/api/experiments/getting-started-flow/`. Exposure, primary selections, and copy diagnostics all use the same non-blocking `keepalive` request with a `sendBeacon` retry after a rejected request or non-2xx response. The endpoint retries transient Segment network, `408`, `429`, and `5xx` failures up to three times with the same `messageId`; `429` honors `Retry-After` with a two-second cap. No Mixpanel browser SDK or remote decision request is added. Delivery never gates the rendered CTA.
+
+Every request carries a monotonic client occurrence timestamp, which Segment receives unchanged. The endpoint rejects timestamps more than five minutes from server time. Funnel ordering therefore reflects the visitor's action order even when two actions occur in one clock millisecond or their requests reach the server in a different order.
+
+The server-forwarded events intentionally omit `context.ip`; geography is not a supported breakdown for this experiment. Adding visitor IP forwarding later requires an explicit privacy and reporting decision rather than silently attributing the Segment or hosting region.
 
 | Event                                   | When                                                     |
 | --------------------------------------- | -------------------------------------------------------- |
@@ -54,7 +60,7 @@ Every event includes:
 
 `Website Getting Started Flow Selected` also includes `action`: `sign_up_primary`, `copy_cli`, or `copy_prompt`. The secondary “Sign up instead” links retain normal site click tracking but intentionally do not count toward the experiment's common primary conversion.
 
-The bootstrap resolves `ajs_anonymous_id` in the same order as Analytics.js (`localStorage`, then cookie), synchronizes both stores, and uses that ID for the exposure. Signup links receive the same ID as Segment's documented `ajs_aid` query parameter before navigation, so even an immediate signup click can be stitched to the later identified dashboard account. The server also renews the shared `.novu.co` cookie.
+The hydrated runtime resolves a bounded `ajs_anonymous_id` in the same order as Analytics.js (`localStorage`, then cookie), synchronizes both stores, and uses that ID for the exposure. It prepares every experiment signup link with the same ID through Segment's documented `ajs_aid` query parameter, including context-menu and modified-click navigation. The server also renews the shared `.novu.co` cookie.
 
 CLI and prompt are copy-first paths and the current CLI/dashboard handoff does not carry the website anonymous ID. Therefore activation is not a valid symmetric primary metric for this version: it would be attributable for signup links but not reliably for the two copy arms. Use the common `Website Getting Started Flow Selected` event as the primary conversion. Treat later account activation only as a directional guardrail until the CLI, dashboard, or backend implements an explicit experiment-attribution handoff.
 
