@@ -2,6 +2,18 @@
 
 This runbook is safe to keep in the repository. Store real environment values, analytics source and destination names, project IDs, dashboard links, and owner names only in the private release ticket and the relevant service settings.
 
+## Required access
+
+Request the narrowest role that covers the work:
+
+- **GitHub repository:** Write access, access to Actions logs and artifacts, and either permission to merge the protected production branch or a named maintainer who will merge it.
+- **Vercel project:** Project Administrator, or the equivalent team role, with access to Preview and Production deployments, environment variables, function logs, observability, deployment protection, rollback, and WAF configuration. Project Developer is sufficient only for preview testing when production settings and WAF changes are handled by someone else.
+- **Segment workspace:** Access to the approved website source, its debugger or delivery view, and the connected destination. Request Source Admin or an equivalent scoped role only if you will verify or change the source-to-destination connection; read access is sufficient when an analytics owner performs that configuration.
+- **Mixpanel project:** Project Analyst access to inspect live events and create or edit the experiment report. Consumer access is sufficient only when the report is already configured and you only need to view it. No organization-level admin role is required for this release.
+- **Release approvals:** A privacy or analytics owner who can approve consent behavior, plus a named production release owner authorized to operate the experiment kill switch.
+
+Keep production credentials in the deployment platform. Access to a write key does not mean it should be copied into a ticket, chat, PR, or local shell history.
+
 ## Preview deployment
 
 ### 1. Configure the Vercel Preview environment
