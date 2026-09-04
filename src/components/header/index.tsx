@@ -26,6 +26,30 @@ interface IHeaderProps {
 type HeaderAuthState = "loading" | "signed-in" | "signed-out"
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+const CRITICAL_FLOW_AUTH_STATE_COOKIE = "novu-critical-flow-auth-state"
+
+function getCriticalFlowAuthState(): HeaderAuthState | undefined {
+  const prefix = `${CRITICAL_FLOW_AUTH_STATE_COOKIE}=`
+  const value = document.cookie
+    .split(";")
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith(prefix))
+    ?.slice(prefix.length)
+
+  if (value === "loading" || value === "signed-in" || value === "signed-out") {
+    return value
+  }
+}
+
+function useCriticalFlowAuthState(enabled: boolean) {
+  const [authState, setAuthState] = useState<HeaderAuthState>()
+
+  useEffect(() => {
+    if (enabled) setAuthState(getCriticalFlowAuthState())
+  }, [enabled])
+
+  return authState
+}
 
 function DashboardAction({ authState }: { authState: HeaderAuthState }) {
   if (authState === "signed-in") {
@@ -62,9 +86,19 @@ function ClerkDashboardAction() {
 
 function HeaderDashboardAction({
   authStateOverride,
+  criticalFlowAuthFixture,
 }: {
   authStateOverride?: HeaderAuthState
+  criticalFlowAuthFixture: boolean
 }) {
+  const criticalFlowAuthState = useCriticalFlowAuthState(
+    criticalFlowAuthFixture
+  )
+
+  if (criticalFlowAuthFixture) {
+    return <DashboardAction authState={criticalFlowAuthState ?? "signed-out"} />
+  }
+
   if (authStateOverride || !clerkPublishableKey) {
     return <DashboardAction authState={authStateOverride ?? "signed-out"} />
   }
@@ -154,7 +188,10 @@ function Header({
             className="hidden text-base tracking-tighter xl:flex"
             stars={githubStars}
           />
-          <HeaderDashboardAction authStateOverride={authStateOverride} />
+          <HeaderDashboardAction
+            authStateOverride={authStateOverride}
+            criticalFlowAuthFixture={criticalFlowAuthFixture}
+          />
         </div>
         <SearchBar
           className="ml-auto lg:hidden"

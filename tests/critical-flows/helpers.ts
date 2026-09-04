@@ -12,17 +12,12 @@ function isExpectedConsoleError(message: string) {
     return true
   }
 
-  if (
-    message.startsWith("The Content Security Policy ") &&
-    message.includes("was delivered in report-only mode")
-  ) {
-    return true
-  }
-
+  // WebKit reports every non-enforced CSP observation as a console error.
+  // Enforced violations omit this prefix and remain test failures.
   return (
-    message.startsWith("[Report Only] Refused to load ") &&
-    (message.includes("https://p.typekit.net/") ||
-      message.includes("https://app.cal.com/embed/embed.js"))
+    (message.startsWith("The Content Security Policy ") &&
+      message.includes("was delivered in report-only mode")) ||
+    message.startsWith("[Report Only] Refused to ")
   )
 }
 

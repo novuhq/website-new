@@ -24,6 +24,7 @@ jobs:
     env:
       CRITICAL_FLOW_TESTING: "1"
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true"
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true"
       NEXT_PUBLIC_DEFAULT_SITE_URL: http://127.0.0.1:3000
       NEXT_PUBLIC_SANITY_DATASET: production
       NEXT_PUBLIC_SANITY_PROJECT_ID: w2rl2099
@@ -53,6 +54,9 @@ jobs:
 
       - name: Build production application
         run: pnpm build
+
+      - name: Verify release rendering contract
+        run: pnpm verify:release-build
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium webkit

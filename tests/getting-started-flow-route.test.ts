@@ -17,6 +17,7 @@ import {
 
 const ENDPOINT = "https://novu.co/api/experiments/getting-started-flow/"
 const EVENT_TIMESTAMP = new Date().toISOString()
+const EVENT_SENT_AT = new Date().toISOString()
 
 function createRequest(body: unknown, origin = "https://novu.co") {
   return new NextRequest(ENDPOINT, {
@@ -41,6 +42,7 @@ function createBody(
     event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
     messageId: "gsf-00000000-0000-4000-8000-000000000002",
     properties: {},
+    sentAt: EVENT_SENT_AT,
     timestamp: EVENT_TIMESTAMP,
     ...overrides,
   }
@@ -171,6 +173,7 @@ test("drops production and QA events when their switches are disabled", async ()
       CRITICAL_FLOW_TESTING: "0",
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "false",
       GETTING_STARTED_FLOW_EXPERIMENT_QA_ENABLED: "false",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "false",
       NODE_ENV: "production",
       VERCEL_ENV: "production",
     },
@@ -192,11 +195,44 @@ test("drops production and QA events when their switches are disabled", async ()
   )
 })
 
+test("keeps production disabled until the external release gates are approved", async () => {
+  await withEnvironment(
+    {
+      CRITICAL_FLOW_TESTING: "1",
+      GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "false",
+      NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
+      NODE_ENV: "production",
+      VERCEL_ENV: "production",
+    },
+    async () => {
+      const originalFetch = globalThis.fetch
+      let fetchCalls = 0
+
+      try {
+        globalThis.fetch = (async () => {
+          fetchCalls += 1
+          return new Response(null, { status: 200 })
+        }) as typeof fetch
+
+        const response = await POST(createRequest(createBody()))
+
+        assert.equal(response.status, 204)
+        assert.equal(response.headers.get("set-cookie"), null)
+        assert.equal(fetchCalls, 0)
+      } finally {
+        globalThis.fetch = originalFetch
+      }
+    }
+  )
+})
+
 test("forwards every valid event and variant combination", async (context) => {
   await withEnvironment(
     {
       CRITICAL_FLOW_TESTING: "0",
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true",
       NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
       NODE_ENV: "production",
       VERCEL_ENV: "production",
@@ -237,6 +273,7 @@ test("forwards every valid event and variant combination", async (context) => {
             const outboundRequest = requests[index]
             assert.equal(outboundRequest.event, eventCase.event)
             assert.equal(outboundRequest.messageId, messageId)
+            assert.equal(outboundRequest.sentAt, EVENT_SENT_AT)
             assert.equal(outboundRequest.timestamp, EVENT_TIMESTAMP)
             assert.deepEqual(outboundRequest.properties, {
               assignment_source: "random",
@@ -256,11 +293,14 @@ test("forwards every valid event and variant combination", async (context) => {
   )
 })
 
-test("rejects a missing, malformed, or stale client event timestamp", async () => {
+test("rejects missing, malformed, or internally inconsistent client timing", async () => {
   const missingTimestamp = createBody()
   delete missingTimestamp.timestamp
+  const missingSentAt = createBody()
+  delete missingSentAt.sentAt
 
   assert.equal((await POST(createRequest(missingTimestamp))).status, 400)
+  assert.equal((await POST(createRequest(missingSentAt))).status, 400)
   assert.equal(
     (
       await POST(
@@ -272,11 +312,7 @@ test("rejects a missing, malformed, or stale client event timestamp", async () =
   assert.equal(
     (
       await POST(
-        createRequest(
-          createBody({
-            timestamp: new Date(Date.now() - 60 * 60 * 1_000).toISOString(),
-          })
-        )
+        createRequest(createBody({ sentAt: "2026-02-31T12:00:00.000Z" }))
       )
     ).status,
     400
@@ -286,7 +322,8 @@ test("rejects a missing, malformed, or stale client event timestamp", async () =
       await POST(
         createRequest(
           createBody({
-            timestamp: new Date(Date.now() + 60 * 60 * 1_000).toISOString(),
+            sentAt: new Date(Date.now()).toISOString(),
+            timestamp: new Date(Date.now() - 60 * 60 * 1_000).toISOString(),
           })
         )
       )
@@ -295,11 +332,54 @@ test("rejects a missing, malformed, or stale client event timestamp", async () =
   )
 })
 
+test("forwards skewed device times with sentAt for Segment correction", async () => {
+  await withEnvironment(
+    {
+      CRITICAL_FLOW_TESTING: "0",
+      GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true",
+      NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
+      NODE_ENV: "production",
+      VERCEL_ENV: "production",
+    },
+    async () => {
+      const originalFetch = globalThis.fetch
+      const deviceTimestamp = new Date(
+        Date.now() - 60 * 60 * 1_000
+      ).toISOString()
+      let outboundRequest: Record<string, unknown> | undefined
+
+      try {
+        globalThis.fetch = (async (_input, init) => {
+          outboundRequest = JSON.parse(String(init?.body)) as Record<
+            string,
+            unknown
+          >
+          return new Response(null, { status: 200 })
+        }) as typeof fetch
+
+        const response = await POST(
+          createRequest(
+            createBody({ sentAt: deviceTimestamp, timestamp: deviceTimestamp })
+          )
+        )
+
+        assert.equal(response.status, 204)
+        assert.equal(outboundRequest?.sentAt, deviceTimestamp)
+        assert.equal(outboundRequest?.timestamp, deviceTimestamp)
+      } finally {
+        globalThis.fetch = originalFetch
+      }
+    }
+  )
+})
+
 test("retries transient Segment failures with the same payload", async () => {
   await withEnvironment(
     {
       CRITICAL_FLOW_TESTING: "0",
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true",
       NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
       NODE_ENV: "production",
     },
@@ -334,13 +414,16 @@ test("honors a bounded 429 retry and does not retry permanent 4xx", async () => 
     {
       CRITICAL_FLOW_TESTING: "0",
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true",
       NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
       NODE_ENV: "production",
     },
     async () => {
       const originalFetch = globalThis.fetch
+      const originalConsoleError = console.error
 
       try {
+        console.error = () => {}
         let requests = 0
         globalThis.fetch = (async () => {
           requests += 1
@@ -372,6 +455,7 @@ test("honors a bounded 429 retry and does not retry permanent 4xx", async () => 
         )
         assert.equal(requests, 1)
       } finally {
+        console.error = originalConsoleError
         globalThis.fetch = originalFetch
       }
     }
@@ -383,17 +467,23 @@ test("preserves the Segment payload and reports upstream failure", async () => {
     {
       CRITICAL_FLOW_TESTING: "0",
       GETTING_STARTED_FLOW_EXPERIMENT_ENABLED: "true",
+      GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED: "true",
       NEXT_PUBLIC_SEGMENT_WRITE_KEY: "test-write-key",
       NODE_ENV: "production",
     },
     async () => {
       const originalFetch = globalThis.fetch
+      const originalConsoleError = console.error
       const requests: Array<{
         body: Record<string, unknown>
         authorization: string | null
       }> = []
+      const deliveryErrors: unknown[][] = []
 
       try {
+        console.error = (...args: unknown[]) => {
+          deliveryErrors.push(args)
+        }
         globalThis.fetch = (async (_input, init) => {
           requests.push({
             authorization: new Headers(init?.headers).get("authorization"),
@@ -416,7 +506,24 @@ test("preserves the Segment payload and reports upstream failure", async () => {
           assert.equal(request.body.messageId, body.messageId)
           assert.equal(request.authorization, "Basic dGVzdC13cml0ZS1rZXk6")
         }
+        assert.deepEqual(deliveryErrors, [
+          [
+            "Getting-started flow analytics delivery failed",
+            {
+              attempts: 3,
+              event: GETTING_STARTED_FLOW_EXPOSED_EVENT,
+              messageId: body.messageId,
+              status: "failed",
+              upstreamStatus: 500,
+            },
+          ],
+        ])
+        assert.doesNotMatch(
+          JSON.stringify(deliveryErrors),
+          new RegExp(String(body.anonymousId))
+        )
       } finally {
+        console.error = originalConsoleError
         globalThis.fetch = originalFetch
       }
     }

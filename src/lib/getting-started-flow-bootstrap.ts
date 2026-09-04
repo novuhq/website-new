@@ -122,9 +122,10 @@ var emit=function(event,extra){
     is_qa:assignment.isQa
   };
   for(var key in extra)properties[key]=extra[key];
+  var occurredAt=timestamp();
   var body=JSON.stringify({
     anonymousId:anonymousId(),assignment:assignment,event:event,
-    messageId:"gsf-"+uuid(),properties:properties,timestamp:timestamp()
+    messageId:"gsf-"+uuid(),properties:properties,sentAt:timestamp(),timestamp:occurredAt
   });
   try{
     if(typeof fetch==="function"){

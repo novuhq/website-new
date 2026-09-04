@@ -8,6 +8,7 @@
     "generate:globe-points": "node scripts/generate-globe-land-points.mjs",
     "build": "next build",
     "postbuild": "next-sitemap",
+    "verify:release-build": "node scripts/verify-release-build.mjs",
     "start": "next start",
     "test": "NODE_OPTIONS=--conditions=react-server tsx --test tests/*.test.ts",
     "test:critical": "playwright test",

@@ -60,6 +60,9 @@ export default defineConfig({
           CRITICAL_FLOW_TESTING: "1",
           GETTING_STARTED_FLOW_EXPERIMENT_ENABLED:
             process.env.GETTING_STARTED_FLOW_EXPERIMENT_ENABLED ?? "true",
+          GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED:
+            process.env.GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED ??
+            "true",
           NEXT_PUBLIC_DEFAULT_SITE_URL: baseURL,
         },
         url: baseURL,

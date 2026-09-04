@@ -24,7 +24,7 @@ import {
 export const runtime = "nodejs"
 
 const MAX_BODY_BYTES = 16_384
-const MAX_EVENT_CLOCK_SKEW_MS = 5 * 60 * 1_000
+const MAX_CLIENT_EVENT_DELIVERY_DELAY_MS = 5 * 60 * 1_000
 const MAX_SEGMENT_RETRY_DELAY_MS = 2_000
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" }
 const SEGMENT_DELIVERY_ATTEMPTS = 3
@@ -36,7 +36,13 @@ const ASSIGNMENT_SOURCES = new Set<GettingStartedFlowAssignmentSource>([
 ])
 const ACTIONS = new Set<string>(GETTING_STARTED_FLOW_PRIMARY_ACTIONS)
 
-type SegmentDeliveryResult = "delivered" | "failed" | "unconfigured"
+type SegmentDeliveryStatus = "delivered" | "failed" | "unconfigured"
+
+interface SegmentDeliveryResult {
+  attempts: number
+  status: SegmentDeliveryStatus
+  upstreamStatus?: number
+}
 
 interface EventRequestBody {
   anonymousId: string
@@ -48,6 +54,7 @@ interface EventRequestBody {
   event: string
   messageId: string
   properties?: Record<string, unknown>
+  sentAt: string
   timestamp: string
 }
 
@@ -93,8 +100,8 @@ function isValidBody(value: unknown): value is EventRequestBody {
     !isGettingStartedFlowEvent(body.event) ||
     typeof body.messageId !== "string" ||
     body.messageId.length === 0 ||
-    body.messageId.length > 128 ||
-    !isValidTimestamp(body.timestamp) ||
+    body.messageId.length > 100 ||
+    !hasValidEventTiming(body.timestamp, body.sentAt) ||
     (body.properties !== undefined &&
       (!body.properties ||
         typeof body.properties !== "object" ||
@@ -112,14 +119,23 @@ function isValidBody(value: unknown): value is EventRequestBody {
   )
 }
 
-function isValidTimestamp(value: unknown): value is string {
+function isCanonicalTimestamp(value: unknown): value is string {
   if (typeof value !== "string" || value.length !== 24) return false
 
   const timestamp = new Date(value)
   return (
-    Number.isFinite(timestamp.valueOf()) &&
-    timestamp.toISOString() === value &&
-    Math.abs(Date.now() - timestamp.valueOf()) <= MAX_EVENT_CLOCK_SKEW_MS
+    Number.isFinite(timestamp.valueOf()) && timestamp.toISOString() === value
+  )
+}
+
+function hasValidEventTiming(timestamp: unknown, sentAt: unknown) {
+  if (!isCanonicalTimestamp(timestamp) || !isCanonicalTimestamp(sentAt)) {
+    return false
+  }
+
+  return (
+    Math.abs(new Date(sentAt).valueOf() - new Date(timestamp).valueOf()) <=
+    MAX_CLIENT_EVENT_DELIVERY_DELAY_MS
   )
 }
 
@@ -223,8 +239,10 @@ async function forwardToSegment(
   body: EventRequestBody
 ): Promise<SegmentDeliveryResult> {
   const writeKey = process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY?.trim()
-  if (process.env.CRITICAL_FLOW_TESTING === "1") return "delivered"
-  if (!writeKey) return "unconfigured"
+  if (process.env.CRITICAL_FLOW_TESTING === "1") {
+    return { attempts: 0, status: "delivered" }
+  }
+  if (!writeKey) return { attempts: 0, status: "unconfigured" }
 
   const referer = request.headers.get("referer")
   let pageContext: Record<string, string> | undefined
@@ -254,12 +272,15 @@ async function forwardToSegment(
     event: body.event,
     messageId: body.messageId,
     properties: getEventProperties(body),
+    sentAt: body.sentAt,
     timestamp: body.timestamp,
   })
   const headers = {
     Authorization: `Basic ${Buffer.from(`${writeKey}:`).toString("base64")}`,
     "Content-Type": "application/json",
   }
+
+  let upstreamStatus: number | undefined
 
   for (let attempt = 0; attempt < SEGMENT_DELIVERY_ATTEMPTS; attempt += 1) {
     let retryResponse: Response | null = null
@@ -272,13 +293,16 @@ async function forwardToSegment(
         signal: AbortSignal.timeout(3_000),
       })
 
-      if (response.ok) return "delivered"
+      upstreamStatus = response.status
+      if (response.ok) {
+        return { attempts: attempt + 1, status: "delivered", upstreamStatus }
+      }
       if (
         response.status < 500 &&
         response.status !== 408 &&
         response.status !== 429
       ) {
-        return "failed"
+        return { attempts: attempt + 1, status: "failed", upstreamStatus }
       }
       retryResponse = response
     } catch {
@@ -291,7 +315,26 @@ async function forwardToSegment(
   }
 
   // Analytics delivery must never affect the visitor's experiment flow.
-  return "failed"
+  return {
+    attempts: SEGMENT_DELIVERY_ATTEMPTS,
+    status: "failed",
+    upstreamStatus,
+  }
+}
+
+function reportSegmentDeliveryFailure(
+  body: EventRequestBody,
+  result: SegmentDeliveryResult
+) {
+  if (result.status === "delivered") return
+
+  console.error("Getting-started flow analytics delivery failed", {
+    attempts: result.attempts,
+    event: body.event,
+    messageId: body.messageId,
+    status: result.status,
+    upstreamStatus: result.upstreamStatus,
+  })
 }
 
 function setIdentityCookies(
@@ -385,10 +428,11 @@ export async function POST(request: NextRequest) {
   }
 
   const deliveryResult = await forwardToSegment(request, body)
+  reportSegmentDeliveryFailure(body, deliveryResult)
 
   const response = new NextResponse(null, {
     headers: NO_STORE_HEADERS,
-    status: deliveryResult === "delivered" ? 204 : 503,
+    status: deliveryResult.status === "delivered" ? 204 : 503,
   })
   setIdentityCookies(request, response, body)
 

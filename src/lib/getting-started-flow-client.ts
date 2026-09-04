@@ -201,18 +201,25 @@ function createEventTimestamp() {
   return new Date(timestamp).toISOString()
 }
 
+function createEventTiming() {
+  const timestamp = createEventTimestamp()
+
+  return { sentAt: createEventTimestamp(), timestamp }
+}
+
 function deliverEvent(
   event: GettingStartedFlowEvent,
   properties: Record<string, unknown>,
   assignment: GettingStartedFlowAssignment
 ) {
+  const timing = createEventTiming()
   const body = JSON.stringify({
     anonymousId: getOrCreateSegmentAnonymousId(),
     assignment,
     event,
     messageId: `gsf-${createAnonymousId()}`,
     properties,
-    timestamp: createEventTimestamp(),
+    ...timing,
   })
 
   if (typeof fetch === "function") {

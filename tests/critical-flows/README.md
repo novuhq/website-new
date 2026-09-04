@@ -51,8 +51,10 @@ use the non-persisting `+skipform@hubspot.com` address, Notion forms use
 `@example.com`, and the careers CV is an in-memory fixture. Separate Node
 integration tests call the real Next.js form route handlers while replacing only
 their outbound HubSpot and Notion requests. Header authentication states use a
-test-only cookie that the application reads only when `CRITICAL_FLOW_TESTING=1`;
-the suite does not require Clerk credentials or create a Clerk session.
+test-only cookie that the client-side header fixture reads only when
+`CRITICAL_FLOW_TESTING=1`; the server layout never reads that cookie, so the CI
+build retains the same ISR/static homepage contract as a release build. The suite
+does not require Clerk credentials or create a Clerk session.
 
 ## Commands
 
@@ -78,7 +80,8 @@ pnpm test:critical:report
 ```
 
 Playwright starts the local Next.js development server automatically. CI builds
-the production application first and starts it with `pnpm start`. Set
+the production application first, verifies that `/` remains one-hour ISR, and
+starts it with `pnpm start`. Set
 `PLAYWRIGHT_BASE_URL` to exercise an existing local or preview deployment, and set
 `PLAYWRIGHT_SKIP_WEB_SERVER=1` when that server is managed separately. The
 signed-in and loading auth-state cases detect the `CRITICAL_FLOW_TESTING=1`

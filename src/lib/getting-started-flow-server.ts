@@ -1,7 +1,10 @@
 import "server-only"
 
 export function isGettingStartedFlowExperimentEnabled() {
-  return process.env.GETTING_STARTED_FLOW_EXPERIMENT_ENABLED === "true"
+  return (
+    process.env.GETTING_STARTED_FLOW_EXPERIMENT_ENABLED === "true" &&
+    process.env.GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED === "true"
+  )
 }
 
 export function isGettingStartedFlowQaEnabled() {
