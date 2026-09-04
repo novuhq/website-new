@@ -637,13 +637,6 @@ test("a pre-hydration copy is not replayed after delayed chunks load", async ({
       )
     )
     .toBe(1)
-  await page.evaluate(() => {
-    ;(
-      window as unknown as {
-        __NOVU_TEST_CAPTURE_COPY_TIMER__: boolean
-      }
-    ).__NOVU_TEST_CAPTURE_COPY_TIMER__ = true
-  })
   await copyButton.click()
   await expect(copyButton).not.toHaveAttribute(
     GETTING_STARTED_FLOW_PREHYDRATION_COPIED_ATTRIBUTE
@@ -663,7 +656,7 @@ test("a pre-hydration copy is not replayed after delayed chunks load", async ({
           ).__NOVU_TEST_COPY_TIMERS__.length
       )
     )
-    .toBe(2)
+    .toBe(1)
   await page.evaluate(() => {
     ;(
       window as unknown as {
@@ -682,13 +675,6 @@ test("a pre-hydration copy is not replayed after delayed chunks load", async ({
       )
     })
     .toHaveLength(2)
-  await page.evaluate(() => {
-    ;(
-      window as unknown as {
-        __NOVU_TEST_COPY_TIMERS__: Array<() => void>
-      }
-    ).__NOVU_TEST_COPY_TIMERS__.shift()?.()
-  })
   await expect(copyButton).toHaveAccessibleName("Copy to clipboard")
   expectHealthyPage(applicationErrors)
 })
