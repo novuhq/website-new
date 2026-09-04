@@ -54,6 +54,17 @@ export interface CopyCommandProps
   controlClassName?: string
   copiedContent?: React.ReactNode
   copyButtonClassName?: string
+  copyButtonProps?: Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    "aria-label" | "className" | "onClick" | "type"
+  > & {
+    "data-click-location"?: string
+    "data-click-text"?: string
+    "data-getting-started-flow-action"?: string
+    "data-getting-started-flow-copy-value"?: string
+  }
+  onCopySuccess?: (target: HTMLButtonElement) => void
+  suppressCopyHydrationWarning?: boolean
 }
 
 function CopyCommand({
@@ -62,11 +73,18 @@ function CopyCommand({
   controlClassName,
   copiedContent,
   copyButtonClassName,
+  copyButtonProps,
+  onCopySuccess,
+  suppressCopyHydrationWarning = false,
   variant,
   className,
   ...props
 }: CopyCommandProps) {
   const { isCopied, handleCopy } = useCopyToClipboard(2000)
+
+  const copy = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (handleCopy(command)) onCopySuccess?.(event.currentTarget)
+  }
 
   return (
     <div
@@ -99,6 +117,7 @@ function CopyCommand({
           {command}
         </span>
         <button
+          {...copyButtonProps}
           className={cn(
             "flex size-10 shrink-0 cursor-pointer items-center justify-center text-foreground transition-colors hover:text-foreground/85 lg:size-11",
             variant === "highlighted" &&
@@ -106,8 +125,9 @@ function CopyCommand({
             copyButtonClassName
           )}
           type="button"
-          onClick={() => handleCopy(command)}
+          onClick={copy}
           aria-label={isCopied ? "Copied" : "Copy to clipboard"}
+          suppressHydrationWarning={suppressCopyHydrationWarning}
         >
           {isCopied ? (
             (copiedContent ?? <Check className="size-5" strokeWidth={2.5} />)
@@ -117,7 +137,11 @@ function CopyCommand({
             <Copy className="size-5" />
           )}
         </button>
-        <span className="sr-only" aria-live="polite">
+        <span
+          className="sr-only"
+          aria-live="polite"
+          suppressHydrationWarning={suppressCopyHydrationWarning}
+        >
           {isCopied ? "Command copied to clipboard" : ""}
         </span>
       </div>

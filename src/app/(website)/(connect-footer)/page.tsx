@@ -41,10 +41,17 @@ import nextjsIcon from "@/svgs/pages/home/inbox/nextjs.svg"
 import reactIcon from "@/svgs/pages/home/inbox/react.svg"
 import remixIcon from "@/svgs/pages/home/inbox/remix.svg"
 
+import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { getMetadata } from "@/lib/get-metadata"
+import {
+  isGettingStartedFlowExperimentAvailable,
+  isGettingStartedFlowExperimentEnabled,
+  isGettingStartedFlowQaEnabled,
+} from "@/lib/getting-started-flow-server"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { highlightEchoCode } from "@/lib/shiki"
 import { absoluteUrl } from "@/lib/site-url"
+import GettingStartedFlowBootstrap from "@/components/getting-started-flow-bootstrap"
 import FAQ from "@/components/pages/faq"
 import CommunicationLifecycle from "@/components/pages/home/communication-lifecycle"
 import Compliance from "@/components/pages/home/compliance"
@@ -422,10 +429,30 @@ export default async function HomePage() {
       implementationHighlightedHtml: featureImplementationHighlightedHtml,
     }
   })
+  const gettingStartedFlowExperimentAvailable =
+    isGettingStartedFlowExperimentAvailable()
+  const { gettingStarted, ...hero } = contentData["hero"]
+  let gettingStartedActions
+
+  if (gettingStartedFlowExperimentAvailable) {
+    const { default: HeroGettingStarted } = await import(
+      "@/components/pages/home/hero-getting-started"
+    )
+    gettingStartedActions = (
+      <HeroGettingStarted
+        command={hero.command}
+        experimentEnabled={isGettingStartedFlowExperimentEnabled()}
+        experimentQaEnabled={isGettingStartedFlowQaEnabled()}
+        prompt={DEFAULT_CONNECT_PROMPT}
+        {...gettingStarted}
+      />
+    )
+  }
 
   return (
     <div>
-      <Hero {...contentData["hero"]} />
+      {gettingStartedFlowExperimentAvailable && <GettingStartedFlowBootstrap />}
+      <Hero {...hero} gettingStartedActions={gettingStartedActions} />
       <Features {...contentData["features"]} items={featureItems} />
       <ConnectStack {...contentData["connect-stack"]} />
       <CommunicationLifecycle {...contentData["communication-lifecycle"]} />
