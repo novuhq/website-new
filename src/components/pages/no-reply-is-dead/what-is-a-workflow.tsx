@@ -42,7 +42,7 @@ export function WhatIsAWorkflow() {
           alt="A trigger call from your app runs through notification settings — delivery timing, message template, and the assigned agent — then reaches the user on Telegram, iMessage, Microsoft Teams, WhatsApp, email, or Slack."
           width={1216}
           height={420}
-          className="mt-8 w-full rounded-2xl border border-illustration-border md:mt-14"
+          className="mt-8 w-full rounded-2xl md:mt-14"
           sizes="(min-width: 1536px) 1216px, (min-width: 768px) calc(100vw - 4rem), 100vw"
         />
 

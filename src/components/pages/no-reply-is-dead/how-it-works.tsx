@@ -80,7 +80,7 @@ export function HowItWorks() {
                 width={608}
                 height={532}
                 className={cn(
-                  "w-full rounded-2xl border border-illustration-border lg:w-152 lg:shrink-0",
+                  "w-full rounded-2xl lg:w-152 lg:shrink-0",
                   i % 2 === 1 && "lg:order-2"
                 )}
                 sizes="(min-width: 1280px) 608px, (min-width: 768px) calc(50vw - 4rem), 100vw"

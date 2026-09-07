@@ -9,7 +9,7 @@ export function HeroVisual() {
         alt="A phone lock screen showing an “Order shipped” notification with tracking #TN4471, arriving Thursday."
         width={608}
         height={532}
-        className="w-full rounded-2xl border border-illustration-border"
+        className="w-full rounded-2xl"
         sizes="(min-width: 1024px) 608px, 100vw"
         priority
       />

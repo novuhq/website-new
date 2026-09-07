@@ -88,7 +88,6 @@
   --foreground: 0 0% 100%;
 
   --card-surface: 225 11% 7%; /* #101114 */
-  --illustration-border: 240 16% 17%; /* #242432 */
 
   --destructive: 0 60% 50%;
   --ring: 215 90% 81%;
@@ -181,7 +180,6 @@
   --color-gray-90: hsl(var(--gray-90));
 
   --color-card-surface: hsl(var(--card-surface));
-  --color-illustration-border: hsl(var(--illustration-border));
 
   --color-integration-card: hsl(var(--integration-card-surface));
   --color-integration-card-border: hsl(240 16% 24% / 0.6);
