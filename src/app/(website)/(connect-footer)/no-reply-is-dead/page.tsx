@@ -24,7 +24,7 @@ export default function NoReplyIsDeadPage() {
   return (
     <div className="font-inter">
       {/* Hero */}
-      <section className="pt-32 md:pt-40">
+      <section className="pt-24 md:pt-28 lg:pt-23">
         <div className="mx-auto max-w-304 px-5 md:px-8 2xl:px-0">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,38rem)] lg:gap-16">
             <div>
@@ -76,7 +76,7 @@ export default function NoReplyIsDeadPage() {
         </div>
       </section>
 
-      <CustomerLogos className="mt-24 border-y-0 md:mt-32 lg:mt-40" />
+      <CustomerLogos className="mt-24 border-y-0 md:mt-32 lg:mt-16.5" />
 
       {/* Plain-language explainer for anyone new to Novu */}
       <WhatIsAWorkflow />
@@ -92,6 +92,7 @@ export default function NoReplyIsDeadPage() {
 
       {/* Closing CTA — shared with the home page */}
       <Cta
+        className="lg:mt-50.75"
         title="Stop sending mail no one can answer"
         description="Assign an agent to a workflow and turn every notification into a conversation your users can actually reply to."
       />

@@ -51,7 +51,7 @@ const STEPS: {
 
 export function HowItWorks() {
   return (
-    <section id="how" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-40">
+    <section id="how" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-44.75">
       <div className="mx-auto max-w-320 px-5 md:px-8 2xl:px-0">
         <div className="mx-auto max-w-184 text-center">
           <h2 className="text-[2rem] leading-[1.13] font-normal tracking-plus-tight text-balance text-white md:text-[2.75rem] lg:text-[3.5rem]">
@@ -60,12 +60,12 @@ export function HowItWorks() {
           </h2>
           <p className="mt-5 text-base leading-[1.5] tracking-tighter text-gray-60 md:text-xl lg:mt-7">
             No inbound webhook, reply parser, or context store needed. Novu
-            matches the reply, loads the original payload, and passes it to your
-            agent.
+            matches <br className="hidden lg:inline" />
+            the reply, loads the original payload, and passes it to your agent.
           </p>
         </div>
 
-        <div className="mt-16 flex flex-col gap-16 md:mt-20 md:gap-20 lg:mt-24 lg:gap-26">
+        <div className="mt-16 flex flex-col gap-16 md:mt-20 md:gap-20 lg:mt-18 lg:gap-26">
           {STEPS.map((step, i) => (
             <div
               key={step.idx}
@@ -86,10 +86,10 @@ export function HowItWorks() {
                 <div className="text-[0.8125rem] leading-none font-medium tracking-normal text-purple-1 uppercase">
                   Step {step.idx}
                 </div>
-                <h3 className="mt-4 max-w-136 text-[1.75rem] leading-[1.13] font-normal tracking-plus-tight text-balance text-white md:text-[2rem] lg:text-[2.5rem]">
+                <h3 className="mt-4 max-w-136 text-[1.75rem] leading-[1.13] font-normal tracking-plus-tight text-white md:text-[2rem] lg:text-[2.5rem]">
                   {step.title}
                 </h3>
-                <p className="mt-4 max-w-136 text-base leading-[1.5] tracking-tight text-gray-70 md:text-lg">
+                <p className="mt-5 max-w-136 text-base leading-[1.5] tracking-tight text-gray-70 md:text-lg">
                   {step.body}
                 </p>
               </div>

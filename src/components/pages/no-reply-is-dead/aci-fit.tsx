@@ -24,9 +24,9 @@ const TRIAD = [
 
 export function AciFit() {
   return (
-    <section id="aci" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-40">
+    <section id="aci" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-49.5">
       <div className="mx-auto max-w-272 px-5 md:px-8 2xl:px-0">
-        <h2 className="text-[2rem] leading-[1.25] font-normal tracking-plus-tight text-balance text-white md:text-[2.25rem] lg:text-[2.75rem]">
+        <h2 className="max-w-261.5 text-[2rem] leading-[1.25] font-normal tracking-plus-tight text-white md:text-[2.25rem] lg:text-[2.75rem]">
           We never run your brain.{" "}
           <span className="text-gray-50">
             Novu provides Agent Communication Infrastructure (ACI) for real,

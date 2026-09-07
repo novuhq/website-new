@@ -3,15 +3,14 @@ import Image, { type StaticImageData } from "next/image"
 import emailIcon from "@/images/pages/no-reply-is-dead/channel-icons/email.svg"
 import imessageIcon from "@/images/pages/no-reply-is-dead/channel-icons/imessage.svg"
 import slackIcon from "@/images/pages/no-reply-is-dead/channel-icons/slack.svg"
-import teamsIcon from "@/images/pages/no-reply-is-dead/channel-icons/teams.png"
+import teamsIcon from "@/images/pages/no-reply-is-dead/channel-icons/teams.svg"
 import telegramIcon from "@/images/pages/no-reply-is-dead/channel-icons/telegram.svg"
 import whatsappIcon from "@/images/pages/no-reply-is-dead/channel-icons/whatsapp.svg"
 
 import { cn } from "@/lib/utils"
 
-/* Glyphs are the white monochrome marks from the Figma tabs. Teams ships as a
-   PNG because that node will not export as SVG; it was lifted from the tab
-   render using luminance as alpha. */
+/* Glyphs are the white monochrome marks from the Figma tabs. Sizing is by
+   height with auto width: Teams is 31x28, the rest are square. */
 
 /* Scatter positions come from the Figma tab group (1326px wide). Pills on the
    right half are anchored from the right edge rather than the left: they sit
@@ -47,7 +46,7 @@ const CHANNELS: {
 
 export function Channels() {
   return (
-    <section id="channels" className="mt-24 scroll-mt-24 md:mt-32">
+    <section id="channels" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-50">
       <div className="mx-auto max-w-336 px-5 md:px-8 2xl:px-0">
         <div className="relative isolate lg:aspect-[1344/617]">
           {/* Dark elliptical vignette behind everything
@@ -79,9 +78,7 @@ export function Channels() {
                 <Image
                   src={icon}
                   alt=""
-                  width={28}
-                  height={28}
-                  className="size-5 shrink-0 opacity-75 lg:size-7"
+                  className="h-5 w-auto shrink-0 opacity-75 lg:h-7"
                 />
                 <span className="text-base leading-none font-medium tracking-tighter whitespace-nowrap text-white/75 lg:text-[1.625rem]">
                   {name}
