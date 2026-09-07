@@ -1,89 +1,66 @@
-"use client"
-
-import { Reveal } from "./how-it-works"
-
 const TRIAD = [
   {
     key: "MCP",
-    relation: "Agents ↔ tools",
-    detail: "Call APIs and data.",
-    me: false,
+    relation: "Agents use tools",
+    detail:
+      "Give agents access to APIs, tools, and data so they can take action.",
+    glow: false,
   },
   {
     key: "A2A",
-    relation: "Agents ↔ agents",
-    detail: "Coordinate with each other.",
-    me: false,
+    relation: "Agents work together",
+    detail:
+      "Coordinate and collaborate with other agents across systems and workflows.",
+    glow: false,
   },
   {
     key: "ACI",
-    relation: "Agents ↔ people",
-    detail: "Talk with your users, anywhere they already are. The leg Novu owns.",
-    me: true,
+    relation: "Agents talk to people",
+    detail:
+      "Hold real, two-way conversations across the channels your users already use.",
+    glow: true,
   },
 ]
 
 export function AciFit() {
   return (
-    <section id="aci" className="mt-24 scroll-mt-24 md:mt-32">
-      <div className="container mx-auto max-w-288 px-5 md:px-8">
-        <Reveal className="max-w-2xl">
-          <span className="rounded-full border border-purple-3/40 bg-purple-3/30 px-2.5 py-1.25 text-sm leading-none tracking-tighter text-purple-1">
-            Where this fits
+    <section id="aci" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-40">
+      <div className="mx-auto max-w-272 px-5 md:px-8 2xl:px-0">
+        <h2 className="text-[2rem] leading-[1.25] font-normal tracking-plus-tight text-balance text-white md:text-[2.25rem] lg:text-[2.75rem]">
+          We never run your brain.{" "}
+          <span className="text-gray-50">
+            Novu provides Agent Communication Infrastructure (ACI) for real,
+            two-way conversations between your agents and users across the
+            channels they already use.
           </span>
-          <h2 className="mt-3.5 text-[2rem] leading-[1.1] font-normal tracking-[-0.04em] text-balance text-white md:text-5xl">
-            This is ACI, Agent Communication Infrastructure.
-          </h2>
-          <p className="mt-4 text-base leading-normal tracking-tighter text-gray-70 md:text-lg">
-            The layer that lets your agents hold a real, two-way conversation
-            with the people they work for, across the channels those people
-            already use. Assigning an agent to a workflow is that in one line.
-          </p>
-        </Reveal>
+        </h2>
 
-        <Reveal delay={0.1}>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {TRIAD.map((item) => (
-              <div
-                key={item.key}
-                className={
-                  item.me
-                    ? "rounded-xl border border-purple-3/50 bg-purple-3/[0.12] p-5"
-                    : "rounded-xl border border-gray-20 bg-white/[0.02] p-5"
-                }
-              >
-                <div
-                  className={
-                    item.me
-                      ? "font-mono text-sm tracking-[0.08em] text-purple-1"
-                      : "font-mono text-sm tracking-[0.08em] text-gray-60"
-                  }
-                >
-                  {item.key}
-                </div>
-                <div className="mt-2 font-mono text-xl font-normal tracking-[-0.01em] text-white">
-                  {item.relation}
-                </div>
-                <div className="mt-2 text-sm leading-normal tracking-tighter text-gray-70">
-                  {item.detail}
-                </div>
+        <ul className="mt-14 grid gap-6 md:grid-cols-3 lg:mt-20">
+          {TRIAD.map(({ key, relation, detail, glow }) => (
+            <li
+              key={key}
+              className="relative isolate overflow-hidden rounded-lg bg-card-surface px-6 py-5"
+            >
+              {glow && (
+                /* Figma clips a large blurred #DF7AF3 ellipse inside this card,
+                   so the wash reads from the bottom-right corner */
+                <span
+                  className="pointer-events-none absolute top-[24%] left-[17.5%] -z-10 h-[374%] w-[236%] rounded-[50%] bg-[#DF7AF3] opacity-45 blur-[159px]"
+                  aria-hidden
+                />
+              )}
+              <div className="text-base leading-none font-medium tracking-normal text-gray-70 uppercase">
+                {key}
               </div>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.15}>
-          <div className="mt-6 rounded-xl border border-dashed border-gray-20 bg-white/[0.02] px-6 py-6 text-center">
-            <p className="font-mono text-lg tracking-tighter text-white md:text-xl">
-              We never run your brain.{" "}
-              <span className="text-purple-1">That&rsquo;s the whole point.</span>
-            </p>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-normal tracking-tighter text-gray-60">
-              Your model, your logic, your tools. Novu carries the conversation
-              between your agent and your users. The reasoning stays yours.
-            </p>
-          </div>
-        </Reveal>
+              <h3 className="mt-7 text-xl leading-none font-medium tracking-tighter text-white">
+                {relation}
+              </h3>
+              <p className="mt-2.5 text-base leading-[1.5] tracking-tighter text-gray-60 md:text-lg">
+                {detail}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )
