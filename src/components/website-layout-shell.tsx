@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Geist_Mono, Inter } from "next/font/google"
+import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
 import Script from "next/script"
 import { Providers } from "@/contexts"
@@ -19,13 +19,6 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-  variable: "--font-geist-mono",
 })
 
 interface WebsiteLayoutShellProps {
@@ -57,7 +50,6 @@ async function WebsiteLayoutShell({
       <body
         className={cn(
           inter.variable,
-          geistMono.variable,
           "flex min-h-svh flex-col bg-background font-sans antialiased",
           bodyClassName
         )}

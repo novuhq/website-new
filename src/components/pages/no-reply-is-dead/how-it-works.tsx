@@ -51,7 +51,10 @@ const STEPS: {
 
 export function HowItWorks() {
   return (
-    <section id="how" className="mt-24 scroll-mt-24 md:mt-32 lg:mt-44.75">
+    <section
+      id="how"
+      className="mt-24 scroll-mt-24 md:mt-28 lg:mt-32 xl:mt-44.75"
+    >
       <div className="mx-auto max-w-320 px-5 md:px-8 2xl:px-0">
         <div className="mx-auto max-w-184 text-center">
           <h2 className="text-[2rem] leading-[1.13] font-normal tracking-plus-tight text-balance text-white md:text-[2.75rem] lg:text-[3.5rem]">

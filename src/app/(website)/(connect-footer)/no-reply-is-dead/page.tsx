@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
+import { Geist_Mono } from "next/font/google"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 import CustomerLogos from "@/components/customer-logos"
@@ -13,6 +15,15 @@ import { HeroVisual } from "@/components/pages/no-reply-is-dead/hero-visual"
 import { HowItWorks } from "@/components/pages/no-reply-is-dead/how-it-works"
 import { WhatIsAWorkflow } from "@/components/pages/no-reply-is-dead/what-is-a-workflow"
 
+/* Only this route renders the command string the design sets in Geist Mono,
+   so the face is declared here and preloaded on this route alone. */
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-geist-mono",
+})
+
 export const metadata: Metadata = getMetadata({
   title: "Turn every notification into a conversation | Novu",
   description:
@@ -22,7 +33,7 @@ export const metadata: Metadata = getMetadata({
 
 export default function NoReplyIsDeadPage() {
   return (
-    <div className="font-inter">
+    <div className={cn("font-inter", geistMono.variable)}>
       {/* Hero */}
       <section className="pt-24 md:pt-28 lg:pt-23">
         <div className="mx-auto max-w-304 px-5 md:px-8 2xl:px-0">
@@ -46,11 +57,11 @@ export default function NoReplyIsDeadPage() {
                 and every notification becomes the start of a real conversation.
               </p>
 
-              <div className="mt-12 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+              <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                 <Button
                   size="none"
                   variant="default"
-                  className="h-11 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case"
+                  className="h-11 w-full max-w-xs rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case sm:w-auto"
                   asChild
                 >
                   <NextLink
@@ -76,7 +87,7 @@ export default function NoReplyIsDeadPage() {
         </div>
       </section>
 
-      <CustomerLogos className="mt-24 border-y-0 md:mt-32 lg:mt-16.5" />
+      <CustomerLogos className="mt-24 border-y-0 md:mt-28 lg:mt-16.5" />
 
       {/* Plain-language explainer for anyone new to Novu */}
       <WhatIsAWorkflow />
@@ -92,7 +103,7 @@ export default function NoReplyIsDeadPage() {
 
       {/* Closing CTA — shared with the home page */}
       <Cta
-        className="lg:mt-50.75"
+        className="lg:mt-32 xl:mt-50.75"
         title="Stop sending mail no one can answer"
         description="Assign an agent to a workflow and turn every notification into a conversation your users can actually reply to."
       />

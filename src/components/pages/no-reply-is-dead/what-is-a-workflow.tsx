@@ -22,7 +22,7 @@ export function WhatIsAWorkflow() {
   return (
     <section
       id="what-is-a-workflow"
-      className="mt-24 scroll-mt-24 md:mt-32 lg:mt-50"
+      className="mt-24 scroll-mt-24 md:mt-28 lg:mt-32 xl:mt-50"
     >
       <div className="mx-auto max-w-304 px-5 md:px-8 2xl:px-0">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
