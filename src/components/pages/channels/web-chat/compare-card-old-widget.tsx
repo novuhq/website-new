@@ -54,13 +54,21 @@ const GLOW_CLASSES =
 export function OldWidgetCard() {
   return (
     <div className="relative flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-[#2A2B33] bg-[#101114] md:h-[480px] md:w-[411px] md:rounded-[24px] md:border">
-      {/* Desktop illustration */}
+      {/* Desktop illustration. `sizes` matches the card's actual rendered
+          width — since Fix 3 (final review) this box is no longer a fixed
+          411px: it's the flex-row's first child, and its `md:w-[411px]`
+          basis now shrinks (default `flex-shrink: 1`, no `shrink-0`) to fit
+          alongside `WebChatCard` inside the container's real content width,
+          landing at ~391px once the container hits its `max-w-[1344px]`
+          cap and scaling down further below that (see `compare-bento.tsx`'s
+          file header for the full arithmetic). */}
       <div className="hidden md:absolute md:inset-0 md:isolate md:block">
         <Image
           alt=""
           aria-hidden
           className="object-cover"
           fill
+          sizes="(min-width: 1344px) 391px, 29vw"
           src={illustrationDesktop}
         />
         <div
@@ -99,6 +107,7 @@ export function OldWidgetCard() {
           aria-hidden
           className="object-cover"
           fill
+          sizes="92vw"
           src={illustrationMobile}
         />
         <div

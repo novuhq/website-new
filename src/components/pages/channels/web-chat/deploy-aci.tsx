@@ -54,7 +54,13 @@ export function DeployAci() {
             className="hidden object-cover md:block"
             fill
             priority={false}
-            sizes="1280px"
+            // The wrapper bleeds past the container's own padding
+            // (`md:-mx-8 md:w-[calc(100%+4rem)]`, see the file header), so
+            // it isn't a fixed 1280px — it's edge-to-edge with the viewport
+            // below the `max-w-[1344px]` cap and pinned at 1344px (its
+            // padding-inclusive bleed width) above it. The flat "1280px"
+            // here under-declared the real render width by ~64px.
+            sizes="(min-width: 1344px) 1344px, 100vw"
             src={illustrationDesktop}
           />
           <Image

@@ -150,12 +150,13 @@ export function WebChatConfigurator() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
+          <div className="relative isolate mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
             <Image
               alt=""
               aria-hidden
               className="object-cover opacity-80"
               fill
+              sizes="(min-width: 640px) 640px, 100vw"
               src={CONFIGURATOR_BLOB_IMAGE}
             />
             <div

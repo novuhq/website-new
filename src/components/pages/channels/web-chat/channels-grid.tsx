@@ -75,11 +75,19 @@ function MascotTile() {
   return (
     <div
       aria-hidden
-      className="relative col-span-2 h-[103.23px] overflow-hidden rounded-[12.9px] bg-[#0B0C0E] md:h-40 md:rounded-[20px]"
+      className="relative isolate col-span-2 h-[103.23px] overflow-hidden rounded-[12.9px] bg-[#0B0C0E] md:h-40 md:rounded-[20px]"
     >
+      {/* The tile spans 2 of the grid's 3 columns: 2*103.23px + one 5.16px
+          gap = 211.62px mobile; 2*160px (md:size-40) + one 8px gap = 328px
+          desktop (md+). `fill`+`sizes` replaces the previous
+          `absolute inset-0 size-full`, which carried no width hint and made
+          next/image request its largest breakpoint (w=2048) for this
+          ~328px tile. */}
       <Image
         alt=""
-        className="absolute inset-0 size-full object-cover"
+        className="object-cover"
+        fill
+        sizes="(min-width: 768px) 328px, 212px"
         src={mascotTileImage}
       />
     </div>
