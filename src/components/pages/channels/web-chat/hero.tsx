@@ -304,12 +304,18 @@ function FallbackAlertSlot({ children }: { children: ReactNode }) {
 export function WebChatHero() {
   const { status, errorMessage } = useWebChatBrand()
   const [isRunning, setIsRunning] = useState(false)
+  // Bumped on every submit, including a resubmit while already running.
+  // `isRunning` alone can't signal "a new submission just landed" — on a
+  // resubmit it's already `true`, so React bails on the identical value and
+  // `useStoryboard` never restarts. This counter always changes, forcing the
+  // storyboard back to its step-0 transition for the new brand.
+  const [submitEpoch, setSubmitEpoch] = useState(0)
   const inViewRef = useRef<HTMLDivElement>(null)
   // Continuous (not `once`) tracking: the storyboard needs to know whenever
   // the hero scrolls out of and back into view, for the whole page lifetime.
   const isInView = useInView(inViewRef, { margin: "-10% 0px" })
 
-  const step = useStoryboard({ isRunning, isInView })
+  const step = useStoryboard({ isRunning, isInView, submitEpoch })
   const isPersonalized = status === "personalized"
 
   // `UrlPersonalizer` calls `personalize()` itself and owns the reset button;
@@ -322,6 +328,7 @@ export function WebChatHero() {
 
   const handleSubmit = useCallback(() => {
     setIsRunning(true)
+    setSubmitEpoch((epoch) => epoch + 1)
   }, [])
 
   return (
