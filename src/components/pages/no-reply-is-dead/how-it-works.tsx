@@ -1,18 +1,24 @@
 import type { ReactNode } from "react"
 import Image, { type StaticImageData } from "next/image"
+import NextLink from "next/link"
+import { ROUTE } from "@/constants/routes"
 import step01 from "@/images/pages/no-reply-is-dead/step-01.jpg"
 import step02 from "@/images/pages/no-reply-is-dead/step-02.jpg"
 import step03 from "@/images/pages/no-reply-is-dead/step-03.jpg"
 import step04 from "@/images/pages/no-reply-is-dead/step-04.jpg"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
+/* Steps 01-03 carry a CTA; step 04 closes the section without one, as in the
+   Figma frame (node 45405-31750). */
 const STEPS: {
   idx: string
   title: ReactNode
   body: string
   image: StaticImageData
   alt: string
+  cta?: { label: string; href: string; clickText: string }
 }[] = [
   {
     idx: "01",
@@ -20,6 +26,11 @@ const STEPS: {
     body: "In the workflow editor, flip Send & reply via agent and pick the agent. Its messages now go out on the agent’s own connected channels, and replies route straight back to it.",
     image: step01,
     alt: "A workflow notification step with “Send & reply via agent” switched on and Ada · Support chosen as the agent.",
+    cta: {
+      label: "Set up workflow",
+      href: ROUTE.docsWorkflow as string,
+      clickText: "set_up_workflow",
+    },
   },
   {
     idx: "02",
@@ -27,6 +38,11 @@ const STEPS: {
     body: "On the channel they are already on: Slack, WhatsApp, iMessage, Telegram, Microsoft Teams, or email. Novu matches the reply back by reply-to token, thread, or quoted message. No app, no portal, no “click here to respond”.",
     image: step02,
     alt: "An agent thread where the user asks to change the delivery address and the agent answers with the order already in context, above the channel icons the reply can arrive on.",
+    cta: {
+      label: "Customize reply",
+      href: ROUTE.docsCustomCode as string,
+      clickText: "customize_reply",
+    },
   },
   {
     idx: "03",
@@ -34,6 +50,11 @@ const STEPS: {
     body: "The conversation is hydrated once with the original notification. Custom Code agents read a typed ctx.notification. Managed Agents get the same context injected for them. No re-fetch, no “please provide your order number”.",
     image: step03,
     alt: "An agent.ts file reading ctx.notification, with the workflow payload typed and available.",
+    cta: {
+      label: "Set agent context",
+      href: ROUTE.docsCustomCode as string,
+      clickText: "set_agent_context",
+    },
   },
   {
     idx: "04",
@@ -95,6 +116,22 @@ export function HowItWorks() {
                 <p className="mt-5 max-w-136 text-base leading-[1.5] tracking-tight text-gray-70 md:text-lg">
                   {step.body}
                 </p>
+                {step.cta ? (
+                  <Button
+                    size="none"
+                    variant="default"
+                    className="mt-6 h-11 rounded-md px-5 text-base leading-none font-medium tracking-tight normal-case"
+                    asChild
+                  >
+                    <NextLink
+                      href={step.cta.href}
+                      data-click-location="no_reply_is_dead_how_it_works"
+                      data-click-text={step.cta.clickText}
+                    >
+                      {step.cta.label}
+                    </NextLink>
+                  </Button>
+                ) : null}
               </div>
             </div>
           ))}
