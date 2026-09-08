@@ -25,15 +25,17 @@ export interface HeroAgentPanelProps {
   step: StoryboardStep | null
 }
 
-const AVATAR_GRADIENT =
-  "linear-gradient(26deg, rgba(217, 115, 87, 1) 12%, rgba(194, 92, 214, 1) 40%, rgba(140, 107, 239, 1) 77%)"
-
 /**
  * The agent's circular mark: the Figma logomark is a ~15-layer stack of
  * blurred, masked gradient shapes (`45487:90367` and friends) that isn't
- * practical to reproduce in a static/pure component, so this keeps its exact
- * gradient stops and adds the accent ring the brief calls for ("the send
- * button and the avatar ring use --wc-accent") in place of that stack.
+ * practical to reproduce in a static/pure component, so this keeps a
+ * simplified 3-stop gradient and adds the accent ring the brief calls for
+ * ("the send button and the avatar ring use --wc-accent"). Both the
+ * gradient (`wc-agent-avatar-surface`, globals.css) and the ring read
+ * `var(--wc-accent)` directly in CSS — confirmed against a second persona
+ * (`hero-personalization-05-todesktop.com`, `45487:93325`) that this mark
+ * recolours per visitor, not just the message bubbles — so recolouring
+ * costs zero React re-renders.
  */
 function AgentAvatar({
   className,
@@ -45,11 +47,11 @@ function AgentAvatar({
   return (
     <span
       aria-hidden
-      className={cn("inline-block shrink-0 rounded-full", className)}
-      style={{
-        background: AVATAR_GRADIENT,
-        boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)`,
-      }}
+      className={cn(
+        "inline-block shrink-0 rounded-full wc-agent-avatar-surface",
+        className
+      )}
+      style={{ boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)` }}
     />
   )
 }
@@ -235,11 +237,14 @@ function ConversationBody({
  * The card itself. Figma desktop `45487:90358`/`45487:88247` (408x647,
  * radius 14, border `rgba(255,255,255,0.9)`, shadow
  * `0 12px 32px rgba(0,0,0,0.64), 0 4px 4px rgba(0,0,0,0.25)`,
- * `backdrop-filter: blur(48px)`, fill a fixed purple/pink radial gradient —
- * not accent-tied, confirmed by this same gradient appearing unchanged in
- * the recent.dev-orange-personalized step-5 frame); mobile
- * `45487:113113` (190.2x301.62, ~0.4662x, real measured values, not a
- * guess). Step 0 desaturates the body via a CSS filter transition reading
+ * `backdrop-filter: blur(48px)`); mobile `45487:113113` (190.2x301.62,
+ * ~0.4662x, real measured values, not a guess). The fill IS accent-driven —
+ * confirmed against a second persona (`hero-personalization-05-
+ * todesktop.com`, `45487:93325`: panel reads blue, vs. orange for
+ * recent.dev) — so `wc-agent-panel-surface` (globals.css) derives its
+ * radial-gradient stops from `var(--wc-accent)` via `color-mix()`, keeping
+ * the original black base stop and the 0.56 alpha feel. Step 0 desaturates
+ * the body via a CSS filter transition reading
  * `STORYBOARD_TIMING.grayscaleMs`/`recolorMs` — the panel's analogue of
  * Task 6's dashboard blur (which hardcodes `duration-500` against
  * `blurMs: 600`; this file reads the constants directly instead, so Task 8
@@ -257,15 +262,11 @@ function AgentPanel({
   return (
     <div
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px]",
+        "relative flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] wc-agent-panel-surface",
         compact
           ? "h-[301.62px] w-[190.2px] rounded-[6.5px]"
           : "h-[647px] w-[408px]"
       )}
-      style={{
-        background:
-          "radial-gradient(circle at 89% 164%, rgba(0, 0, 0, 0.56) 15%, rgba(148, 72, 225, 0.56) 57%, rgba(234, 136, 239, 0.56) 79%)",
-      }}
     >
       <PanelHeader compact={compact} />
       <div

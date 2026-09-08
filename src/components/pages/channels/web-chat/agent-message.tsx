@@ -81,11 +81,12 @@ export function AgentMessage({ role, text, compact }: AgentMessageProps) {
 /**
  * The step-2-only "agent is thinking" state (brief Behaviour: shown at step
  * 2, gone once step 3 lands). No literal copy for this exists in either the
- * brief's content block or a Figma text node for it was found, so it's built
- * from pieces that do trace: the same icon+"Agent" label used on every agent
- * reply, plus a row of plain dots (a standard typing-indicator convention,
- * not invented prose). The phrase "Agent is thinking" is used only as an
- * `aria-live` label for assistive tech, never rendered visibly.
+ * brief's content block or a Figma text node for it — no frame shows a
+ * hero-storyboard thinking label at all — so this is dots-only: the
+ * `Sparkles` icon plus three plain dots (a standard typing-indicator
+ * convention, not invented prose), with no visible text label. The phrase
+ * "Agent is thinking" appears only inside the `sr-only` span below, giving
+ * the indicator an accessible name without rendering any copy on screen.
  */
 export function AgentThinking({ compact }: { compact?: boolean }) {
   return (
@@ -102,15 +103,6 @@ export function AgentThinking({ compact }: { compact?: boolean }) {
         className={cn("size-3.5 shrink-0 text-white/50", compact && "size-1.5")}
         aria-hidden
       />
-      <span
-        className={cn(
-          "text-[13px] leading-none tracking-[-0.01em] text-white/50",
-          compact && "text-[6px]"
-        )}
-        aria-hidden
-      >
-        Agent
-      </span>
       <span
         className={cn("flex items-center gap-0.5", compact && "gap-px")}
         aria-hidden

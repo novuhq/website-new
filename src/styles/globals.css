@@ -346,6 +346,38 @@
   }
 }
 
+/*
+  Web Chat hero agent panel (Task 7): the panel card and the avatar mark
+  read `--wc-accent` directly here, so recolouring the personalizer never
+  costs a React re-render. Both preserve their original gradient structure
+  (stop count/positions, the 0.56 alpha feel, the black base stop on the
+  panel) with only the accent-derived stops swapped in via `color-mix()`.
+  Verified to read correctly for a warm accent (`#E65006`, recent.dev) and a
+  cool one (`#0036FF`, todesktop.com), not just the default purple.
+*/
+@utility wc-agent-panel-surface {
+  background: radial-gradient(
+    circle at 89% 164%,
+    rgba(0, 0, 0, 0.56) 15%,
+    color-mix(in srgb, var(--wc-accent) 56%, transparent) 57%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--wc-accent) 55%, white) 56%,
+        transparent
+      )
+      79%
+  );
+}
+
+@utility wc-agent-avatar-surface {
+  background: linear-gradient(
+    26deg,
+    color-mix(in srgb, var(--wc-accent) 65%, white) 12%,
+    var(--wc-accent) 40%,
+    color-mix(in srgb, var(--wc-accent) 60%, black) 77%
+  );
+}
+
 @utility text-swap-layer {
   transition-property: translate, opacity;
   transition-duration: 300ms, 240ms;
