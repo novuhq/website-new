@@ -19,8 +19,8 @@ import {
 } from "@/components/pages/channels/web-chat/product-bento-accents"
 import { ProductBentoCard } from "@/components/pages/channels/web-chat/product-bento-card"
 
-const ROW_ONE_SIZES = "(min-width: 1408px) 660px, (min-width: 768px) 47vw, 92vw"
-const ROW_TWO_SIZES = "(min-width: 1408px) 432px, (min-width: 768px) 31vw, 92vw"
+const ROW_ONE_SIZES = "(min-width: 1344px) 628px, (min-width: 768px) 47vw, 92vw"
+const ROW_TWO_SIZES = "(min-width: 1344px) 411px, (min-width: 768px) 31vw, 92vw"
 
 const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
   PRODUCT_BENTO_CARDS
@@ -28,11 +28,16 @@ const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
 /**
  * §3 "Not a chat box on your site. An agent inside your app" (Task 10): a
  * five-card bento, two cards on row one and three on row two, matching
- * Figma's `section` node (`45487-79958`) `bento` group exactly — desktop
- * cards are 660×496 (row one) and 432×496 (row two) with a 24px gap both
- * ways, which a `grid-cols-2`/`grid-cols-3` `gap-6` pair reproduces exactly
- * at the section's 1344px content width (`(1344 - 24) / 2 = 660`,
- * `(1344 - 48) / 3 = 432`).
+ * Figma's `section` node (`45487-79958`) `bento` group's proportions — a
+ * `grid-cols-2`/`grid-cols-3` `gap-6` pair reproduces the 24px gap both
+ * ways, with each card sized by the grid's `1fr` tracks rather than a fixed
+ * px width. Final-review Fix 3 normalised this section's container to the
+ * canonical `max-w-[1344px]` (previously a bespoke 1408 chosen to make the
+ * row math land on Figma's literal 660×496/432×496 card sizes exactly); at
+ * the new 1280px content width the grid tracks now render ~628px (row one)
+ * and ~411px (row two) — a few percent smaller than Figma's literal sizes,
+ * reflected in `ROW_ONE_SIZES`/`ROW_TWO_SIZES` below so `next/image`'s
+ * `sizes` hint still matches what's actually rendered.
  *
  * This section is personalized (all five cards recolour) — see
  * `ProductBentoCard` for the `HueLayer` illustration recolour and
@@ -44,14 +49,15 @@ const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
  * ends ~y2400) to the "Full screen tab" section (`45497-139684`, y3810),
  * confirmed via three separate fetches (page depth 1, depth 2, and the
  * canvas root) — see the task report. Each card keeps its own desktop aspect
- * ratio (`660/496` or `432/496`) at full width instead, which is exact at
- * the real 1344px desktop content width and a reasoned, flagged
- * extrapolation everywhere narrower — not a guess at unrelated numbers.
+ * ratio (`660/496` or `432/496`, Figma's literal card proportions — unaffected
+ * by Fix 3's container change, since it's a ratio, not a pixel size) at full
+ * width instead, a reasoned, flagged extrapolation — not a guess at unrelated
+ * numbers.
  */
 export function ProductBento() {
   return (
     <section>
-      <div className="container mx-auto max-w-[1408px] px-5 md:px-8">
+      <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
           <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[560px] md:text-[48px] md:leading-[1.04]">
             {PRODUCT_BENTO_HEADING}

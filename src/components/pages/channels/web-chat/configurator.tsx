@@ -48,8 +48,9 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
  * `45487-98982` jumps from §6 straight to its end, three separate fetches
  * confirmed — the same gap `product-bento.tsx` already documents for §3). The
  * two-column split only activates at `xl` (1280px+, where the section's own
- * 1248px content width plus padding actually fits); narrower viewports stack
- * the card under the copy, a reasoned fallback rather than an invented frame.
+ * content width — 1280px after Fix 3's `max-w-[1344px]` normalisation —
+ * plus padding actually fits); narrower viewports stack the card under the
+ * copy, a reasoned fallback rather than an invented frame.
  */
 
 const CHANNEL_OPTIONS: IStackOption[] = [WEB_CHAT_CHANNEL, ...DEFAULT_CHANNELS]
@@ -134,8 +135,8 @@ export function WebChatConfigurator() {
   const isPromptTab = activeTab === "prompt"
 
   return (
-    <section>
-      <div className="container mx-auto max-w-[1312px] px-5 md:px-8">
+    <section data-testid="web-chat-configurator">
+      <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
         <div className="flex flex-col gap-14 xl:flex-row xl:items-start xl:justify-between">
           <div className="flex w-full flex-col xl:max-w-[532px] xl:shrink-0">
             <h2 className="max-w-[420px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[532px] md:text-[48px] md:leading-[1.04]">

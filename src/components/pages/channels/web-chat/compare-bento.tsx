@@ -12,10 +12,20 @@ import { WebChatCard } from "@/components/pages/channels/web-chat/compare-card-w
  * `45510-177550` (inside the mobile hero storyboard frame `45487-112573`,
  * not the plain mobile page).
  *
- * The container matches the hero's own convention (`hero.tsx`): 1408 =
- * 1344 (the desktop card row: 411 + 24 gap + 909) + 2*32 (`px-8`), so at
- * desktop this container reproduces the Figma section's own left/right
- * edges exactly. This section IS personalized (both cards recolour via
+ * The container uses `max-w-[1344px]` (final-review Fix 3: normalised to
+ * match §4/§6's canonical content width so every section's heading shares
+ * one left edge — this section previously used a bespoke 1408 tuned to fit
+ * the card row's literal pixel widths exactly). At the new 1280px content
+ * width the two fixed-width cards (`411px` + `24px` gap + `909px` = 1344)
+ * no longer fit without shrinking; there is no `shrink-0` on either card, so
+ * the flex row's default `flex-shrink: 1` narrows both proportionally
+ * (~391px / ~865px) rather than overflowing — verified in-browser. Their
+ * `object-cover` illustrations crop very slightly tighter as a result; all
+ * percentage-based overlays (`IllustrationBubble`, `SelectedRow`) track the
+ * shrunk box exactly since they're sized in box-relative percentages, and
+ * the fixed-px caption overlays (`w-[355px]`/`w-[555px]` at `left-7`) keep
+ * comfortable clearance from the new right edges. This section IS
+ * personalized (both cards recolour via
  * `HueLayer` + `--wc-accent*`, per `OldWidgetCard`/`WebChatCard`); it must
  * render inside `WebChatBrandProvider` for that and for the two cards'
  * `group-data-[wc-state]` glow toggle to resolve — the integration pass
@@ -24,7 +34,7 @@ import { WebChatCard } from "@/components/pages/channels/web-chat/compare-card-w
 export function CompareBento() {
   return (
     <section>
-      <div className="container mx-auto max-w-[1408px] px-5 md:px-8">
+      <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
         <div className="flex flex-col gap-7 md:flex-row md:items-start md:justify-between md:gap-16">
           <h2 className="text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[564px] md:text-[48px] md:leading-[1.04em]">
             {COMPARE_HEADING}

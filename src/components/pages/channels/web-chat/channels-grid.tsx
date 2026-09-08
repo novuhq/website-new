@@ -149,7 +149,27 @@ function ChannelsGridActions() {
 function ChannelsGrid() {
   return (
     <section>
-      <div className="container mx-auto flex max-w-288 flex-col gap-10 px-5 md:flex-row-reverse md:items-center md:gap-12 md:px-8">
+      {/*
+        Final-review Fix 3 normalised this container from the bespoke
+        `max-w-288` (1152px — exactly the two fixed-width children, 544 +
+        496 + the 48px `gap-12`, with zero slack) to the canonical
+        `max-w-[1344px]`. `md:flex-row-reverse` visually flips the DOM order
+        (text column first, tiles grid second) so the tiles grid renders on
+        the LEFT — flush with every other section's content edge — and the
+        text column on the right. That only worked by coincidence at 1152,
+        where the row exactly filled the box: with no slack, default
+        `justify-content` packing at the row-reverse main-start (right) and
+        `justify-content: space-between` both look identical. At 1344 there
+        IS slack (192px), and default packing put it all on the far left —
+        beyond the tiles grid — dragging the whole row right and breaking
+        the shared left edge. `md:justify-between` pins the first/last flex
+        items to the row's two ends (tiles grid flush left, text column
+        flush right) and grows the gap between them with the extra space
+        instead, reproducing the original edge alignment at any container
+        width. Verified in-browser at 1728px viewport: tiles grid left edge
+        now matches every other section's content-left edge.
+      */}
+      <div className="container mx-auto flex max-w-[1344px] flex-col gap-10 px-5 md:flex-row-reverse md:items-center md:justify-between md:gap-12 md:px-8">
         <div className="flex flex-col gap-10 md:w-[544px] md:shrink-0 md:gap-8">
           <div className="flex flex-col gap-5 md:gap-[18px]">
             <ChannelsGridHeading />
