@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test"
+import { expect, test, type Page } from "@playwright/test"
 
 import { webChatContract } from "./contracts"
 import {
@@ -8,6 +8,32 @@ import {
 } from "./helpers"
 
 const PREVIEW_ROUTE = "**/api/agent-preview"
+
+/**
+ * `HeroProductUI` and `HeroAgentPanel` each mount a desktop tree and a
+ * separate compact/mobile tree side by side (one CSS-hidden via
+ * `hidden md:flex` / `md:hidden`, never removed from the DOM) so a single
+ * Playwright project only ever has ONE of the two visible at a time — the
+ * other is present but `display:none`. Scoping to `data-testid="web-chat-hero"`
+ * alone still resolves both trees' matching nodes (strict-mode counts
+ * hidden elements too), so every hero locator here also filters to the
+ * visible one. This is what the final review's "Data sources" (4 elements)
+ * and "firstMessage" (2 elements) collisions were: not page-wide duplicates,
+ * but the hero's own desktop+compact trees both mounted at once.
+ */
+function heroTableTitle(page: Page) {
+  return page
+    .getByTestId("web-chat-hero")
+    .getByTestId("hero-table-title")
+    .filter({ visible: true })
+}
+
+function heroMessage(page: Page, text: string) {
+  return page
+    .getByTestId("web-chat-hero")
+    .getByText(text)
+    .filter({ visible: true })
+}
 
 test.describe("web chat personalizer", () => {
   test(`[${webChatContract.id}] personalizes the hero and plays the conversation`, async ({
@@ -37,9 +63,13 @@ test.describe("web chat personalizer", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: webChatContract.heading })
     ).toBeVisible()
-    await expect(
-      page.getByText(webChatContract.defaultTableTitle, { exact: true })
-    ).toBeVisible()
+    // Pre-submit: the hero's table title must read the DEFAULT string. This
+    // is the same locator the post-submit assertion below uses — if
+    // personalization silently no-ops, this test now fails here too, not
+    // just pass through on a stale duplicate match.
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.defaultTableTitle
+    )
 
     await page
       .getByRole("textbox", { name: /site|domain|url/i })
@@ -48,10 +78,17 @@ test.describe("web chat personalizer", () => {
       .getByRole("button", { name: webChatContract.submitLabel })
       .click()
 
-    await expect(
-      page.getByText(webChatContract.personalizedTableTitle, { exact: true })
-    ).toBeVisible()
-    await expect(page.getByText(webChatContract.firstMessage)).toBeVisible()
+    // The real personalization signal: the hero table's *title* flips from
+    // "Data sources" to "Form submissions". Unlike the row text "Form
+    // submissions" (which is already present pre-submit as row 2 of
+    // `HERO_TABLE_DEFAULT` in src/data/pages/web-chat.ts), the table TITLE
+    // genuinely does not exist anywhere in the DOM until personalization
+    // flips it — so this assertion is false pre-submit and would stay false
+    // (timing out) if personalization broke.
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.personalizedTableTitle
+    )
+    await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
 
     const accent = await page
       .locator("[data-wc-state]")
@@ -96,7 +133,7 @@ test.describe("web chat personalizer", () => {
     ).toBeVisible()
 
     // The spec is explicit: a personalization failure must not block the animation.
-    await expect(page.getByText(webChatContract.firstMessage)).toBeVisible()
+    await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
 
     expectHealthyPage(applicationErrors)
   })
@@ -131,16 +168,16 @@ test.describe("web chat personalizer", () => {
     await page
       .getByRole("button", { name: webChatContract.submitLabel })
       .click()
-    await expect(
-      page.getByText(webChatContract.personalizedTableTitle, { exact: true })
-    ).toBeVisible()
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.personalizedTableTitle
+    )
 
     await page.getByRole("button", { name: /reset/i }).click()
 
-    await expect(
-      page.getByText(webChatContract.defaultTableTitle, { exact: true })
-    ).toBeVisible()
-    await expect(page.getByText(webChatContract.firstMessage)).toBeHidden()
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.defaultTableTitle
+    )
+    await expect(heroMessage(page, webChatContract.firstMessage)).toBeHidden()
 
     expectHealthyPage(applicationErrors)
   })
@@ -152,26 +189,43 @@ test.describe("web chat personalizer", () => {
 
     await gotoCriticalPage(page, webChatContract.route)
 
+    // §8's configurator has its own "Copy prompt" button whose accessible
+    // name differs from the hero's "Copy Prompt" only by case — Playwright's
+    // default role-name match is case-insensitive, so an unscoped query
+    // matches both. Scoping to the section root (and using `exact: true`
+    // as a second, independent guard) makes this unambiguous.
+    const configurator = page.getByTestId("web-chat-configurator")
+
     await expect(
-      page.getByRole("heading", { name: webChatContract.configuratorHeading })
+      configurator.getByRole("heading", {
+        name: webChatContract.configuratorHeading,
+      })
     ).toBeVisible()
 
     await expect(
-      page.getByRole("button", { name: webChatContract.configuratorCopyPrompt })
+      configurator.getByRole("button", {
+        name: webChatContract.configuratorCopyPrompt,
+        exact: true,
+      })
     ).toBeVisible()
 
-    await page
+    await configurator
       .getByRole("tab", { name: webChatContract.configuratorCliTab })
       .click()
 
     await expect(
-      page.getByText(webChatContract.configuratorCommand)
+      configurator.getByText(webChatContract.configuratorCommand)
     ).toBeVisible()
     await expect(
-      page.getByRole("button", { name: webChatContract.configuratorCopyCli })
+      configurator.getByRole("button", {
+        name: webChatContract.configuratorCopyCli,
+      })
     ).toBeVisible()
     await expect(
-      page.getByRole("button", { name: webChatContract.configuratorCopyPrompt })
+      configurator.getByRole("button", {
+        name: webChatContract.configuratorCopyPrompt,
+        exact: true,
+      })
     ).toBeHidden()
 
     expectHealthyPage(applicationErrors)

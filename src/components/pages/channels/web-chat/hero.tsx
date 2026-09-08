@@ -332,7 +332,11 @@ export function WebChatHero() {
   }, [])
 
   return (
-    <section ref={inViewRef} className="relative pt-20 md:pt-24 lg:pt-28">
+    <section
+      ref={inViewRef}
+      className="relative pt-20 md:pt-24 lg:pt-28"
+      data-testid="web-chat-hero"
+    >
       <HeroBackdrop />
       {/*
         Figma's card spans x278-1640 in a 1920 frame (1364 wide, centred).

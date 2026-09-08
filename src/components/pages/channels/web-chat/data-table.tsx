@@ -75,6 +75,7 @@ export function DataTable({
             ? "text-[11px] font-semibold text-gray-90"
             : "text-2xl font-semibold text-gray-90"
         )}
+        data-testid="hero-table-title"
       >
         {table.title}
       </div>
