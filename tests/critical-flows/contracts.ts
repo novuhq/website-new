@@ -201,7 +201,7 @@ export const webChatContract = {
   defaultTableTitle: "Data sources",
   personalizedTableTitle: "Form submissions",
   fallbackAlert:
-    "We couldn't load your brand styles. Showing the default preview.",
+    "We couldn’t load your brand styles. Showing the default preview.",
 } as const
 
 export const careersContract = {
