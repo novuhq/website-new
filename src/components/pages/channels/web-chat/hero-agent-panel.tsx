@@ -11,7 +11,7 @@ import {
   STORYBOARD_TIMING,
   type StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
-import { ArrowUp, Maximize2, X } from "lucide-react"
+import { ChevronUp, Maximize2, Sparkles, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { AgentFieldTable } from "@/components/pages/channels/web-chat/agent-field-table"
@@ -29,30 +29,56 @@ export interface HeroAgentPanelProps {
  * The agent's circular mark: the Figma logomark is a ~15-layer stack of
  * blurred, masked gradient shapes (`45487:90367` and friends) that isn't
  * practical to reproduce in a static/pure component, so this keeps a
- * simplified 3-stop gradient and adds the accent ring the brief calls for
- * ("the send button and the avatar ring use --wc-accent"). Both the
- * gradient (`wc-agent-avatar-surface`, globals.css) and the ring read
- * `var(--wc-accent)` directly in CSS — confirmed against a second persona
+ * simplified gradient disc and adds the accent ring the brief calls for
+ * ("the send button and the avatar ring use --wc-accent"). A larger, more
+ * blurred copy of the same gradient sits behind it as a halo so the mark
+ * reads as a soft blended blob rather than a flat disc, and a small white
+ * glyph sits centred on top — both per the diff's read of the Figma frame
+ * (a blurred multi-colour blob with a centred glyph), approximated rather
+ * than reproducing the full layer stack. The gradient
+ * (`wc-agent-avatar-surface`, globals.css) and the ring read `var(--wc-accent)`
+ * directly in CSS — confirmed against a second persona
  * (`hero-personalization-05-todesktop.com`, `45487:93325`) that this mark
  * recolours per visitor, not just the message bubbles — so recolouring
  * costs zero React re-renders.
  */
 function AgentAvatar({
   className,
+  glyphClassName,
   ringWidth = 2,
+  square = false,
 }: {
   className?: string
+  glyphClassName?: string
   ringWidth?: number
+  /** Header avatar (`45487:90366`) is a rounded square, not a circle. */
+  square?: boolean
 }) {
+  const shape = square ? "rounded-[28%]" : "rounded-full"
+
   return (
     <span
       aria-hidden
       className={cn(
-        "inline-block shrink-0 rounded-full wc-agent-avatar-surface",
+        "relative inline-flex shrink-0 items-center justify-center",
+        shape,
         className
       )}
-      style={{ boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)` }}
-    />
+    >
+      <span
+        className={cn(
+          "absolute inset-[-35%] opacity-40 blur-lg wc-agent-avatar-surface",
+          shape
+        )}
+      />
+      <span
+        className={cn("absolute inset-0 wc-agent-avatar-surface", shape)}
+        style={{ boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)` }}
+      />
+      <Sparkles
+        className={cn("relative fill-white text-white", glyphClassName)}
+      />
+    </span>
   )
 }
 
@@ -80,7 +106,9 @@ function PanelHeader({ compact }: { compact?: boolean }) {
     >
       <AgentAvatar
         className={compact ? "size-[18.65px]" : "size-10"}
+        glyphClassName={compact ? "size-2" : "size-4"}
         ringWidth={compact ? 1 : 2}
+        square
       />
       <span
         className={cn(
@@ -134,7 +162,7 @@ function Composer({ compact }: { compact?: boolean }) {
           )}
           style={{ backgroundColor: "var(--wc-accent)" }}
         >
-          <ArrowUp
+          <ChevronUp
             className={cn("size-4", compact && "size-2")}
             style={{ color: "var(--wc-accent-foreground)" }}
             aria-hidden
@@ -162,6 +190,7 @@ function EmptyState({ compact }: { compact?: boolean }) {
     >
       <AgentAvatar
         className={compact ? "size-[65px]" : "size-[140px]"}
+        glyphClassName={compact ? "size-5" : "size-10"}
         ringWidth={compact ? 2 : 3}
       />
       <div
@@ -265,7 +294,11 @@ function AgentPanel({
         "relative flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] wc-agent-panel-surface",
         compact
           ? "h-[301.62px] w-[190.2px] rounded-[6.5px]"
-          : "h-[647px] w-[408px]"
+          : // Desktop: fills whatever height the shared card (`HeroLiveUi`
+            // in hero.tsx) gives its margined wrapper, matching Figma's
+            // `❖chat` panel filling ~647 of the 680-tall card rather than a
+            // hardcoded height that leaves dead space below it.
+            "h-full w-[408px]"
       )}
     >
       <PanelHeader compact={compact} />
@@ -309,7 +342,12 @@ export function HeroAgentPanel({ step }: HeroAgentPanelProps) {
         } as CSSProperties
       }
     >
-      <div className="hidden md:block">
+      {/* `my-4`/`mr-4` reproduce the Figma `❖chat` panel's 16px inset from
+          the shared card's top/right/bottom edges (`chat-area` 440 wide,
+          panel 408 wide at x16); the left inset is already the `gap-4`
+          between this and `HeroProductUI` in `HeroLiveUi`. Auto height lets
+          it stretch to match the card's real height as a flex sibling. */}
+      <div className="hidden md:my-4 md:mr-4 md:block">
         <AgentPanel step={step} />
       </div>
       <div className="md:hidden">

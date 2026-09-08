@@ -350,19 +350,28 @@
   Web Chat hero agent panel (Task 7): the panel card and the avatar mark
   read `--wc-accent` directly here, so recolouring the personalizer never
   costs a React re-render. Both preserve their original gradient structure
-  (stop count/positions, the 0.56 alpha feel, the black base stop on the
-  panel) with only the accent-derived stops swapped in via `color-mix()`.
-  Verified to read correctly for a warm accent (`#E65006`, recent.dev) and a
-  cool one (`#0036FF`, todesktop.com), not just the default purple.
+  (stop count/positions, the black base stop on the panel) with the
+  accent-derived stops swapped in via `color-mix()`.
+
+  Fidelity pass (2026-09-08): the original 55-56% accent mix read as a flat,
+  heavily-saturated purple against the Figma reference, which is a darker,
+  more subdued tinted-glass look — the same `circle at 89% 164%` shape sits
+  mostly off-canvas below-right, so most of the visible card should read
+  closer to the near-black centre stop than the lightened outer one. Lowered
+  the accent mix on both outer stops (56/55% -> 32/28%) so more of the card
+  reads dark; still purely `--wc-accent`-derived, so it still recolours for
+  every persona, just less saturated. Re-check against a warm accent
+  (`#E65006`, recent.dev) and a cool one (`#0036FF`, todesktop.com) if this
+  is retuned again.
 */
 @utility wc-agent-panel-surface {
   background: radial-gradient(
     circle at 89% 164%,
-    rgba(0, 0, 0, 0.56) 15%,
-    color-mix(in srgb, var(--wc-accent) 56%, transparent) 57%,
+    rgba(0, 0, 0, 0.7) 15%,
+    color-mix(in srgb, var(--wc-accent) 32%, transparent) 57%,
     color-mix(
         in srgb,
-        color-mix(in srgb, var(--wc-accent) 55%, white) 56%,
+        color-mix(in srgb, var(--wc-accent) 45%, white) 28%,
         transparent
       )
       79%

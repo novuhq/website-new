@@ -2,8 +2,8 @@
 
 import { HERO_SIDEBAR_DEFAULT } from "@/data/pages/web-chat"
 import {
-  ChevronRight,
   ChevronsUpDown,
+  ChevronUp,
   Database,
   GalleryVerticalEnd,
   LayoutDashboard,
@@ -113,7 +113,10 @@ export function Sidebar({
                 />
                 <span className="min-w-0 flex-1 truncate">{item}</span>
                 {isExpandable ? (
-                  <ChevronRight className={compact ? "size-2.5" : "size-4"} />
+                  // Figma shows the "Data" group already expanded (its
+                  // sub-items are visible below), so the chevron points up,
+                  // not the collapsed-state right chevron.
+                  <ChevronUp className={compact ? "size-2.5" : "size-4"} />
                 ) : null}
               </div>
               {isExpandable ? (
