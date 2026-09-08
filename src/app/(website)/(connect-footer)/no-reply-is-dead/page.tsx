@@ -63,11 +63,13 @@ export default function NoReplyIsDeadPage() {
                   asChild
                 >
                   <NextLink
-                    href={ROUTE.connect}
+                    href={ROUTE.dashboardV2AgentsSignUp}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-click-location="no_reply_is_dead_hero"
-                    data-click-text="add_an_agent"
+                    data-click-text="sign_up_for_free"
                   >
-                    Add an agent
+                    Sign up for free
                   </NextLink>
                 </Button>
                 <CopyCommand
