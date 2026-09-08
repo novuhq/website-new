@@ -22,7 +22,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Reveal } from "@/components/pages/channels/web-chat-reveal"
 import { BrandAlert } from "@/components/pages/channels/web-chat/brand-alert"
 import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
@@ -211,22 +210,20 @@ export function WebChatHero() {
   return (
     <section ref={inViewRef} className="relative pt-20 md:pt-24 lg:pt-28">
       <div className="container mx-auto max-w-288 px-5 md:px-8">
-        <Reveal>
-          <HeroCopy />
-        </Reveal>
+        <HeroCopy />
 
-        <Reveal delay={0.1} className="mt-16">
+        <div className="mt-16">
           <HeroLiveUi step={step} isPersonalized={isPersonalized} />
-        </Reveal>
+        </div>
 
-        <Reveal delay={0.16} className="mt-5 flex flex-col items-center gap-4">
+        <div className="mt-5 flex flex-col items-center gap-4">
           <UrlPersonalizer onSubmit={handleSubmit} />
           {status === "fallback" && errorMessage && (
             <FallbackAlertSlot>
               <BrandAlert message={errorMessage} />
             </FallbackAlertSlot>
           )}
-        </Reveal>
+        </div>
       </div>
     </section>
   )
