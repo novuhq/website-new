@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
-import ogImage from "@/images/pages/channels/web-chat/og-image.webp"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { WebChatBrandProvider } from "@/components/pages/channels/web-chat/brand-provider"
@@ -20,7 +19,7 @@ export const metadata: Metadata = getMetadata({
   description:
     "Web Chat uses product context, takes action, and continues conversations across channels. Live in two minutes.",
   pathname: "/channels/web-chat",
-  imagePath: ogImage.src,
+  imagePath: "/og-images/og-image-web-chat.jpg",
   imageAlt: "Novu Web Chat: your agent, live inside your product",
 })
 
