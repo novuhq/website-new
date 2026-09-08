@@ -369,6 +369,66 @@ on a third-party site being reachable.
    never replays step 0
 2. `accentForeground` luminance derivation, including a pale accent
 
+## Known accessibility debt: white-on-accent contrast
+
+**Decided by the page owner on 2026-09-08: keep Figma fidelity, ship as-is, raise
+with the designer.** Recorded here so the choice is explicit rather than accidental.
+
+Measured on the built page:
+
+| Accent | White text ratio | WCAG AA needs |
+| --- | --- | --- |
+| `#C25CD6` (default) | **3.62:1** | 4.5:1 |
+| `#E65006` (recent.dev, spec reference) | **3.80:1** | 4.5:1 |
+| black on `#C25CD6`, for comparison | 7.0:1 | — |
+
+This is systemic, not an edge case. `accentForeground` in `src/lib/accent.ts`
+flips white→black at relative luminance **0.5**; the WCAG crossover is **~0.18**
+(white clears 4.5:1 only when the fill's luminance ≤ 0.183). And `usableAccent` in
+`src/lib/site-brand.ts` clamps every extracted brand accent into HSL lightness
+[0.48, 0.68] — squarely inside the failing band. So essentially every accent a
+visitor can produce yields sub-AA white text.
+
+Affected surfaces: hero user message bubbles, the sidebar active `Sources` row, the
+composer send glyph, the selected table row's checkbox, and §2/§3's accent
+elements.
+
+The 0.5 threshold was a controller ruling during planning, chosen to match the
+Figma frames (which show white on orange) after the spec flagged that assuming
+white was wrong for pale accents. The correction was made; the resulting ratios
+were never computed. `tests/web-chat-accent.test.ts` pins
+`accentForeground("#e65006") === "#ffffff"`, so the choice is encoded in the suite
+and a future change must update it deliberately.
+
+Fixing it means moving the crossover to ~0.18, which flips most brand colours to
+black text and visibly diverges from every Figma frame — a design decision, not a
+code fix. That is why it sits here rather than in the implementation.
+
+## Follow-up: code and dependencies orphaned by this redesign
+
+**Decided by the page owner on 2026-09-08: out of scope for this branch, do it as
+a deliberate follow-up.**
+
+The old Web Chat page and the deleted `agent-chat-showcase.tsx` were the only
+importers of `src/components/ai-elements/`. With both gone:
+
+- `src/components/ai-elements/` — **~3,075 lines, zero importers** outside itself
+- eight `src/components/ui/*` primitives (`command`, `dropdown-menu`, `hover-card`,
+  `input-group`, `button-group`, `spinner`, `textarea`, `select`) — ~950 lines,
+  imported **only** by that orphaned tree
+- nine dependencies needed only by it: `streamdown`, `@streamdown/cjk`,
+  `@streamdown/code`, `@streamdown/math`, `@streamdown/mermaid`, `ai`, `cmdk`,
+  `nanoid`, `use-stick-to-bottom`, `@radix-ui/react-use-controllable-state`
+
+Also worth a conscious decision: `@novu/react` is newly declared as
+`3.20.0-rc.d57e78e026` — a release candidate pinned by commit hash — in
+`dependencies`. Declaring it was a genuine fix (the base branch imported it without
+declaring it, which is why `node_modules` was broken on checkout), but the RC pin
+should be reviewed rather than inherited.
+
+Deleting ~4,000 lines and nine packages is its own change with its own risk, on top
+of a 51-commit branch. Left intact deliberately.
+
 ## Out of scope
 
 - The `navbar` frame — Web Chat in the header nav is follow-up work
