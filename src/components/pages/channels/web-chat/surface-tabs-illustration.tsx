@@ -16,6 +16,24 @@ interface Box {
   height: number
 }
 
+/**
+ * CSS stand-in for Figma's `bg` group (`45487-80927` / `45497-141552`, ~70%
+ * opacity): a layered composition of blurred colour ellipses behind the
+ * dashboard, present on both tabs at both breakpoints. A previous pass
+ * downloaded the actual asset and found it a 19.7 MB PNG relative to its
+ * cropped, faded, ~70%-opacity footprint, so it's approximated here with
+ * blurred radial gradients in the same five colours instead — zero asset
+ * weight, and it scales at any breakpoint. Not pixel-identical, but it
+ * restores the frame's intended ambient colour behind the dashboard chrome.
+ */
+const DASHBOARD_GLOW_BACKGROUND = [
+  "radial-gradient(38% 55% at 12% 15%, #4B73EC 0%, transparent 70%)",
+  "radial-gradient(34% 46% at 88% 8%, #523FFD 0%, transparent 70%)",
+  "radial-gradient(46% 58% at 78% 85%, #FFA3F4 0%, transparent 72%)",
+  "radial-gradient(34% 42% at 18% 90%, #FFA488 0%, transparent 70%)",
+  "radial-gradient(55% 65% at 48% 45%, #664BEC 0%, transparent 75%)",
+].join(", ")
+
 export interface SurfaceTabsIllustrationProps {
   /** Overall canvas size in px — 1344×613 desktop, 528×242 mobile. */
   canvasWidth: number
@@ -75,13 +93,18 @@ export function SurfaceTabsIllustration({
           compact ? "rounded-[9px]" : "rounded-3xl"
         )}
       >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 opacity-70 blur-3xl"
+          style={{ backgroundImage: DASHBOARD_GLOW_BACKGROUND }}
+        />
         <SurfaceTabsSidebar
           items={sidebarItems}
           compact={compact}
-          className="h-full"
+          className="relative z-10 h-full"
           style={{ width: sidebarWidth }}
         />
-        <div className="relative flex-1 overflow-hidden">
+        <div className="relative z-10 flex-1 overflow-hidden">
           {showTable && (
             <div className="opacity-40">
               <SurfaceTabsDashboardTable compact={compact} />

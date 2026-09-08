@@ -30,10 +30,16 @@ export const SURFACE_TABS_TAB_LABELS = {
 /** Chat window header (both tabs render the same mock agent identity). */
 export const SURFACE_TABS_AGENT_NAME = "Your Agent"
 
-/** Sidebar chrome shared by both tab states (`SidebarHeader`/`SidebarFooter`). */
+/**
+ * Sidebar chrome shared by both tab states (`SidebarHeader`/`SidebarFooter`).
+ * The footer row is genuinely present in both frames (`45487-80516` /
+ * `45497-141141`), but Figma's own content there is shadcn/ui's canonical
+ * demo placeholder ("shadcn" / "m@example.com") — real name-and-email demo
+ * content left in the mockup, not something this page should reproduce on a
+ * public marketing site. The row stays (per review), reusing this page's own
+ * "Your company" convention instead of a fake person, with no email line.
+ */
 export const SURFACE_TABS_SIDEBAR_COMPANY = "Your company"
-export const SURFACE_TABS_SIDEBAR_ACCOUNT_NAME = "shadcn"
-export const SURFACE_TABS_SIDEBAR_ACCOUNT_EMAIL = "m@example.com"
 export const SURFACE_TABS_SIDEBAR_SETTINGS_LABEL = "Settings"
 
 export interface SurfaceTabsSidebarSubItem {

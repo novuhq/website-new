@@ -1,7 +1,5 @@
 import type { CSSProperties } from "react"
 import {
-  SURFACE_TABS_SIDEBAR_ACCOUNT_EMAIL,
-  SURFACE_TABS_SIDEBAR_ACCOUNT_NAME,
   SURFACE_TABS_SIDEBAR_COMPANY,
   SURFACE_TABS_SIDEBAR_SETTINGS_LABEL,
   type SurfaceTabsSidebarItem,
@@ -187,7 +185,14 @@ export function SurfaceTabsSidebar({
         </nav>
       </div>
 
-      {/* SidebarFooter */}
+      {/*
+        SidebarFooter — genuinely present in both frames (`45487-80516` /
+        `45497-141141`), but Figma's own content there is shadcn/ui's
+        canonical demo placeholder (a fake name + email address), which has
+        no place shipping on a public page. Kept the row, swapped the
+        identity for this page's own "Your company" mark (matching the
+        header above) instead, with no email line.
+      */}
       <div
         className={cn(
           "flex items-center rounded-lg bg-[#171717]",
@@ -196,29 +201,21 @@ export function SurfaceTabsSidebar({
       >
         <span
           className={cn(
-            "flex shrink-0 items-center justify-center rounded-[10px] bg-[#0A0A0A] font-semibold text-[#FAFAFA]",
-            compact ? "size-[13px] rounded-[4px] text-[4px]" : "size-8 text-xs"
+            "flex shrink-0 items-center justify-center rounded-[10px] bg-purple-1",
+            compact ? "size-[13px] rounded-[4px]" : "size-8"
           )}
         >
-          CN
+          <GalleryVerticalEnd
+            className={cn("text-black", compact ? "size-[8px]" : "size-4")}
+          />
         </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span
-            className={cn(
-              "truncate font-semibold text-[#FAFAFA]",
-              compact ? "text-[5.5px]" : "text-sm"
-            )}
-          >
-            {SURFACE_TABS_SIDEBAR_ACCOUNT_NAME}
-          </span>
-          <span
-            className={cn(
-              "truncate text-[#FAFAFA]",
-              compact ? "text-[4px]" : "text-xs"
-            )}
-          >
-            {SURFACE_TABS_SIDEBAR_ACCOUNT_EMAIL}
-          </span>
+        <span
+          className={cn(
+            "min-w-0 flex-1 truncate font-semibold text-[#FAFAFA]",
+            compact ? "text-[5.5px]" : "text-sm"
+          )}
+        >
+          {SURFACE_TABS_SIDEBAR_COMPANY}
         </span>
       </div>
     </aside>
