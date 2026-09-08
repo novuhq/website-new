@@ -7,8 +7,8 @@ import {
   COMPARE_WEB_CHAT_BUBBLE,
   COMPARE_WEB_CHAT_TITLE,
 } from "@/data/pages/web-chat-compare"
-import illustrationMobile from "@/images/pages/channels/web-chat/compare-web-chat-illustration-mobile.png"
-import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-chat-illustration.png"
+import illustrationMobile from "@/images/pages/channels/web-chat/compare-web-chat-illustration-mobile.webp"
+import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-chat-illustration.webp"
 
 import { IllustrationBubble } from "@/components/pages/channels/web-chat/compare-illustration-bubble"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"

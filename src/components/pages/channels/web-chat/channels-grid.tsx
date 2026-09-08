@@ -13,7 +13,7 @@ import {
   type IChannelsGridTile,
   type ILinkedChannelsGridTile,
 } from "@/data/pages/web-chat-channels"
-import mascotTileImage from "@/images/pages/channels/web-chat/channels-grid-mascot.png"
+import mascotTileImage from "@/images/pages/channels/web-chat/channels-grid-mascot.webp"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
