@@ -144,4 +144,36 @@ test.describe("web chat personalizer", () => {
 
     expectHealthyPage(applicationErrors)
   })
+
+  test(`[${webChatContract.id}] configurator switches result and action together`, async ({
+    page,
+  }) => {
+    const applicationErrors = observeApplicationErrors(page)
+
+    await gotoCriticalPage(page, webChatContract.route)
+
+    await expect(
+      page.getByRole("heading", { name: webChatContract.configuratorHeading })
+    ).toBeVisible()
+
+    await expect(
+      page.getByRole("button", { name: webChatContract.configuratorCopyPrompt })
+    ).toBeVisible()
+
+    await page
+      .getByRole("tab", { name: webChatContract.configuratorCliTab })
+      .click()
+
+    await expect(
+      page.getByText(webChatContract.configuratorCommand)
+    ).toBeVisible()
+    await expect(
+      page.getByRole("button", { name: webChatContract.configuratorCopyCli })
+    ).toBeVisible()
+    await expect(
+      page.getByRole("button", { name: webChatContract.configuratorCopyPrompt })
+    ).toBeHidden()
+
+    expectHealthyPage(applicationErrors)
+  })
 })

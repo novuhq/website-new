@@ -202,6 +202,12 @@ export const webChatContract = {
   personalizedTableTitle: "Form submissions",
   fallbackAlert:
     "We couldn’t load your brand styles. Showing the default preview.",
+  configuratorHeading: "Build your connection. Ship it from any builder.",
+  configuratorCommand: "npx novu connect --channel web-chat --runtime ai-sdk",
+  configuratorPromptTab: "AI prompt",
+  configuratorCliTab: "CLI command",
+  configuratorCopyPrompt: "Copy prompt",
+  configuratorCopyCli: "Copy CLI command",
 } as const
 
 export const careersContract = {
