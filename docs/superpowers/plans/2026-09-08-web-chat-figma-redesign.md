@@ -25,7 +25,8 @@
 - Where the Figma frames and the designer's spec text disagree, **the spec text wins** (see *Known Figma/spec mismatches* in the spec).
 - Node tests run under `--conditions=react-server`, so they cannot render client components. Anything unit-tested must be a pure function.
 - Node test runner only picks up `tests/*.test.ts` — not nested directories.
-- Commands: `pnpm test` (node), `pnpm test:critical:quick` (Playwright, desktop-chromium), `pnpm typecheck`, `pnpm lint`, `pnpm format:fix`.
+- Commands: `pnpm test` (node), `pnpm test:critical:quick` (Playwright, desktop-chromium), `pnpm typecheck`, `pnpm lint`.
+- **Never run `pnpm format:fix`.** It is `prettier --write .` — repo-wide — and rewrote 148 unrelated files when Task 1 ran it, `tsconfig.json` included. Format only what you touched: `npx prettier --write <your files>`. `pnpm format` (check-only) is safe.
 
 ## Convention for visual tasks
 
@@ -2063,9 +2064,13 @@ Expected: no matches.
 
 - [ ] **Step 5: Run the full gate**
 
-Run: `pnpm test && pnpm typecheck && pnpm lint && pnpm format:fix && pnpm test:critical`
+Run: `pnpm test && pnpm typecheck && pnpm lint && pnpm test:critical`
 Expected: all pass across all four Playwright projects. Pre-existing repo-wide
 failures unrelated to web-chat should be reported, not silently fixed.
+
+Then check formatting on this branch's files only:
+`git diff --name-only $(git merge-base main HEAD) HEAD | grep -E '\.(ts|tsx|css|md)$' | xargs npx prettier --check`
+Do **not** run `pnpm format:fix` — it rewrites the whole repo.
 
 - [ ] **Step 6: Walk the finished page**
 
