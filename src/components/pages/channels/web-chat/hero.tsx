@@ -197,13 +197,20 @@ function HeroCopy() {
  * mockup, visible even before personalization (confirmed against the
  * `hero-default` reference frame, not just the loading/personalized ones).
  *
- * The brand-accent hue shift is the node map's `❖color` ellipse: it sits
- * below the `ui` group in Figma's layer order, so it recolours this glow via
- * `HueLayer`'s `mix-blend-mode: hue`, never the product/agent cards
- * themselves — those recolour through their own accent-derived fills
- * (`wc-agent-panel-surface`, `wc-agent-avatar-surface`). The base glow below
- * is intentionally a fixed violet-to-blue gradient (not `var(--wc-accent)`)
- * so it doesn't double-recolour once `HueLayer` blends on top.
+ * Re-checked against the Figma MCP dump of `45487-82746`: the DEFAULT frame
+ * has no `❖color` ellipse at all — that layer exists only in the
+ * *personalized* frames, filled with the brand accent at `blur(174px)`. So
+ * the base glow here is a fixed violet-to-deep-blue treatment that never
+ * reads `var(--wc-accent)` (it's the fallback for "no brand extracted
+ * yet"), and `HueLayer` is the only thing that ever tints it — visible
+ * only at loading/personalized, per its own `group-data-[wc-state=...]`
+ * classes, exactly mirroring "the `❖color` ellipse only exists once
+ * personalized." Colours picked to land clearly blue-violet (B channel
+ * well above R) rather than the pink-magenta a `--wc-accent`-adjacent hue
+ * would read as — this is deliberately *not* derived from the same accent
+ * family. `HueLayer` blends on top of this glow only, never over the
+ * product/agent cards — those recolour through their own accent-derived
+ * fills (`wc-agent-panel-surface`, `wc-agent-avatar-surface`).
  */
 function HeroBackdrop() {
   return (
@@ -215,11 +222,29 @@ function HeroBackdrop() {
         className="absolute top-[6%] left-1/2 h-[85%] w-[150%] -translate-x-1/2 rounded-full blur-[120px]"
         style={{
           background:
-            "radial-gradient(60% 55% at 50% 35%, rgba(140,92,239,0.55) 0%, rgba(76,42,163,0.4) 45%, rgba(5,8,120,0.28) 75%, rgba(5,8,120,0) 100%)",
+            "radial-gradient(60% 55% at 50% 35%, rgba(66,58,183,0.6) 0%, rgba(35,28,110,0.42) 45%, rgba(8,10,46,0.3) 75%, rgba(8,10,46,0) 100%)",
         }}
       />
       <HueLayer />
-      <div className="absolute inset-0 wc-noise-overlay opacity-[0.18]" />
+      {/* Noise grain: Figma's `noise` instance sits at 0.32 opacity. */}
+      <div className="absolute inset-0 wc-noise-overlay opacity-[0.32]" />
+      {/* Dotted band beneath the card (Figma `dots-pattern`, `45487:82767`
+          — a radial white mask blurred over a repeating pixel texture).
+          Approximated as a CSS dot-grid, masked and blurred to the same
+          soft, subtle band rather than shipping the source texture image
+          for one low-opacity decorative strip. */}
+      <div
+        className="absolute inset-x-0 top-[83%] mx-auto h-24 w-[70%] max-w-3xl opacity-25 blur-[6px]"
+        style={{
+          maskImage:
+            "radial-gradient(closest-side, black 0%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(closest-side, black 0%, transparent 100%)",
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1.5px)",
+          backgroundSize: "14px 14px",
+        }}
+      />
     </div>
   )
 }
@@ -234,17 +259,33 @@ function HeroLiveUi({
   return (
     <div
       className={cn(
-        "flex flex-col items-start gap-4",
-        // Figma's `dashboard` frame (`45487-89843`, 1364x680, radius 24) is
-        // ONE continuous card: the sidebar/table mock and the floating
-        // agent panel share its background/border/shadow/blur, rather than
-        // being two separately-chromed boxes with a visible seam between
-        // them.
-        "md:relative md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
+        // Mobile: `-mx-5` cancels the section's own `px-5` padding so this
+        // frame clips against the true viewport edge — Figma's `ui` group
+        // (`45487-112600`) is positioned "at x-296 on a 360 viewport",
+        // i.e. relative to the device edge, not the padded content column.
+        "relative -mx-5 overflow-hidden",
+        // Desktop: Figma's `dashboard` frame (`45487-89843`, 1364x680,
+        // radius 24) is ONE continuous card — the sidebar/table mock and
+        // the floating agent panel share its background/border/shadow/
+        // blur, rather than being two separately-chromed boxes with a
+        // visible seam between them.
+        "md:relative md:mx-0 md:flex md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
       )}
     >
-      <HeroProductUI step={step} isPersonalized={isPersonalized} />
-      <HeroAgentPanel step={step} />
+      {/*
+        Mobile only: the dashboard slice (`HeroProductUI`, 438x317) and the
+        agent panel (190.2x301.62) sit side by side as one 628px-wide row,
+        shifted left by 296px so only the dashboard's right sliver shows
+        beside the fully-visible agent panel — reproducing Figma's bleed
+        instead of stacking them as two separate boxes. `md:contents`
+        hands the two children back to the desktop flex row above at md+
+        (where this wrapper's own sizing/transform stop applying, since a
+        `display:contents` box generates no box for them to apply to).
+      */}
+      <div className="flex w-max -translate-x-[296px] items-start md:contents">
+        <HeroProductUI step={step} isPersonalized={isPersonalized} />
+        <HeroAgentPanel step={step} />
+      </div>
     </div>
   )
 }

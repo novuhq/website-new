@@ -350,7 +350,10 @@ export function HeroAgentPanel({ step }: HeroAgentPanelProps) {
       <div className="hidden md:my-4 md:mr-4 md:block">
         <AgentPanel step={step} />
       </div>
-      <div className="md:hidden">
+      {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
+          slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
+          flex item can shrink below its content size and get squeezed. */}
+      <div className="shrink-0 md:hidden">
         <AgentPanel step={step} compact />
       </div>
     </div>

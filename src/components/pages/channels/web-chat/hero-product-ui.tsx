@@ -61,28 +61,30 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
         </div>
       </div>
 
-      {/* Mobile: its own composition (not a scaled desktop). Figma
-          45487-112573: the 636×317 `ui` group sits at absolute x -296 on a
-          360 viewport, so the dashboard piece (sidebar 119 + main 319 = 438
-          wide) bleeds off the left edge — only its right sliver is visible
-          before Task 8's conversation panel picks up beside it. */}
-      <div className="relative h-[318px] w-full max-w-[360px] overflow-hidden rounded-xl border border-white/10 bg-black md:hidden">
-        <div className="absolute top-0 left-[-296px] flex w-[438px] flex-col">
-          <ChromeBar domain={domainLabel} compact />
-          <div
-            className={cn(
-              "flex transition-[filter] ease-out",
-              isTransitioning && "blur-md"
-            )}
-            style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
-          >
-            <Sidebar
-              companyLabel={companyLabel}
-              faviconUrl={faviconUrl}
-              compact
-            />
-            <DataTable table={table} compact />
-          </div>
+      {/* Mobile: the dashboard slice only, at its natural size — not a
+          scaled desktop. Figma `45487-112573`: the `ui` group
+          (`45487-112600`, 636×317) sits at absolute x -296 on a 360
+          viewport, bleeding off the left edge with the dashboard on the
+          left (mostly clipped) and the agent panel immediately beside it,
+          fully visible. Sizing that bleed needs a shared frame around both
+          pieces, so the clipping, the -296px offset and the adjacency to
+          `HeroAgentPanel` all live one level up, in `HeroLiveUi`
+          (hero.tsx) — this piece just renders at its own fixed 438×317. */}
+      <div className="flex h-[317px] w-[438px] shrink-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-black md:hidden">
+        <ChromeBar domain={domainLabel} compact />
+        <div
+          className={cn(
+            "flex flex-1 transition-[filter] ease-out",
+            isTransitioning && "blur-md"
+          )}
+          style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
+        >
+          <Sidebar
+            companyLabel={companyLabel}
+            faviconUrl={faviconUrl}
+            compact
+          />
+          <DataTable table={table} compact />
         </div>
       </div>
     </div>
