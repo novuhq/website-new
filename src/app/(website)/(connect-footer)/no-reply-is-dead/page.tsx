@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Geist_Mono } from "next/font/google"
 import NextLink from "next/link"
 import { ROUTE } from "@/constants/routes"
+import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { cn } from "@/lib/utils"
@@ -24,12 +25,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 })
 
-export const metadata: Metadata = getMetadata({
-  title: "Turn every notification into a conversation | Novu",
-  description:
-    "A notification used to be a dead end. Assign an agent to a Novu workflow and the reply becomes a real conversation, with the workflow, message, and payload already in context. Slack, Microsoft Teams, WhatsApp, Telegram, iMessage, and email.",
-  pathname: "/no-reply-is-dead",
-})
+export const metadata: Metadata = getMetadata(SEO_DATA.noReplyIsDead)
 
 export default function NoReplyIsDeadPage() {
   return (
