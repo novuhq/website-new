@@ -1,3 +1,6 @@
+import type { StaticImageData } from "next/image"
+import heroGlow from "@/images/pages/channels/web-chat/hero-glow.webp"
+
 /**
  * Content for the Web Chat hero product UI (Task 6): the mock browser chrome,
  * app sidebar and data table that fill the hero. Verbatim per the task brief —
@@ -9,6 +12,22 @@
  * CTAs. Character-for-character against the Task 8 brief and the
  * `typography` Figma node (`45487-111212` desktop, `45487-113230` mobile).
  */
+/**
+ * The hero backdrop glow, exported from Figma's `bg` group (`45487-79056`):
+ * a 1408x1127 ellipse, `blur(246px)`, masking a stack of ten coloured
+ * ellipses (`#523FFD` and `#664BEC` violets, `#4B73EC` blue, `#FFA3F4` pink,
+ * `#D0A3FF` lavender, `#FFA488` peach). Shipped as an image rather than
+ * reproduced in CSS because those ten layers sit at coordinates inside a
+ * 7050x3336 group that do not map onto the masked region without guesswork,
+ * and a hand-built approximation is what read as too dark and too flat.
+ *
+ * The export is downscaled to 800px and pre-blurred: Figma bakes gradient
+ * dither into a render this soft, which cost 248KB at 1200px to preserve
+ * detail that is not there. At 800px it is 66KB, and it carries no detail
+ * that survives being scaled up under a 0.32-opacity noise layer anyway.
+ */
+export const HERO_GLOW_IMAGE: StaticImageData = heroGlow
+
 export const HERO_BADGE_LABEL = "Web Chat"
 
 export const HERO_HEADING = "Your agent, live inside your product"

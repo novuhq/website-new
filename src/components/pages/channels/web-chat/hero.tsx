@@ -6,6 +6,7 @@ import {
   HERO_CLI_COMMAND,
   HERO_COPY_PROMPT_LABEL,
   HERO_DESCRIPTION_TEXT,
+  HERO_GLOW_IMAGE,
   HERO_HEADING,
   HERO_IMPLEMENT_PROMPT,
   HERO_META_LINE,
@@ -205,10 +206,18 @@ function HeroCopy() {
  * yet"), and `HueLayer` is the only thing that ever tints it — visible
  * only at loading/personalized, per its own `group-data-[wc-state=...]`
  * classes, exactly mirroring "the `❖color` ellipse only exists once
- * personalized." Colours picked to land clearly blue-violet (B channel
- * well above R) rather than the pink-magenta a `--wc-accent`-adjacent hue
- * would read as — this is deliberately *not* derived from the same accent
- * family. `HueLayer` blends on top of this glow only, never over the
+ * personalized." The base glow's colours are Figma's own, straight from the
+ * `HERO_GLOW_IMAGE` export, so it is not derived from `--wc-accent` and
+ * needs no hand-tuning to stay distinct from it. An earlier pass wrote the
+ * gradient by hand and deliberately pushed it blue (B well above R) to keep
+ * it clear of the accent's pink-magenta; that turned out to be the reason it
+ * read as a faint wash, since the design's own base is a bright violet with
+ * pink and lavender highlights. Being multi-hue costs nothing here: `hue`
+ * blending keeps saturation and luminance, so a multi-hue base becomes a
+ * multi-shade single hue once tinted, which is what Figma's own `❖color`
+ * ellipse does over this same artwork.
+ *
+ * `HueLayer` blends on top of this glow only, never over the
  * product/agent cards — those recolour through their own accent-derived
  * fills (`wc-agent-panel-surface`, `wc-agent-avatar-surface`).
  */
@@ -218,11 +227,35 @@ function HeroBackdrop() {
       aria-hidden
       className="pointer-events-none absolute inset-0 isolate overflow-hidden"
     >
+      {/*
+        Sized and placed from the Figma group's own geometry rather than by
+        eye: the ellipse is 1408x1127 at (275, 169) in a 1920x1320 hero, so
+        its centre is (51.0%, 55.5%). The export is 2392x2111 because
+        `blur(246px)` bleeds symmetrically past that box, which makes the
+        render 124.6% of the hero's width — hence the width below, with the
+        aspect ratio pinned so it scales as one piece at any viewport.
+
+        This replaced a single hand-written `rgba(66,58,183,...)` radial at
+        150% width. That was both too wide (Figma's is 73% of the hero, so
+        the light was spread thin) and far too dark: its core was #423AB7
+        against the design's #523FFD, with none of the pink, lavender or
+        peach highlights. It read as a faint wash where the design has the
+        hero's dominant light source.
+      */}
+      {/*
+        A CSS background rather than `next/image`: the asset is an 800px
+        pre-blurred gradient, so the optimizer has nothing to win, and with
+        `fill` + `sizes` it picked a 537px variant to stretch across 2570px.
+        A background paints the source itself, and skips lazy-loading for a
+        layer that is above the fold by definition.
+      */}
       <div
-        className="absolute top-[6%] left-1/2 h-[85%] w-[150%] -translate-x-1/2 rounded-full blur-[120px]"
+        className="absolute top-[55.5%] left-[51%] w-[124.6%] -translate-x-1/2 -translate-y-1/2"
         style={{
-          background:
-            "radial-gradient(60% 55% at 50% 35%, rgba(66,58,183,0.6) 0%, rgba(35,28,110,0.42) 45%, rgba(8,10,46,0.3) 75%, rgba(8,10,46,0) 100%)",
+          aspectRatio: "2392 / 2111",
+          backgroundImage: `url(${HERO_GLOW_IMAGE.src})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
         }}
       />
       <HueLayer />
