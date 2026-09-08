@@ -83,7 +83,7 @@ export function HowItWorks() {
                   "w-full rounded-2xl lg:w-152 lg:shrink-0",
                   i % 2 === 1 && "lg:order-2"
                 )}
-                sizes="(min-width: 1280px) 608px, (min-width: 768px) calc(50vw - 4rem), 100vw"
+                sizes="(min-width: 1024px) 608px, 100vw"
               />
               <div className={i % 2 === 1 ? "lg:order-1" : undefined}>
                 <div className="text-[0.8125rem] leading-none font-medium tracking-normal text-purple-1 uppercase">
