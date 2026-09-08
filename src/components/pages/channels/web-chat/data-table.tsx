@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
+  CheckCircle2,
+  CirclePause,
+  Info,
+  Loader2,
   MoreHorizontal,
   Search,
   Settings2,
@@ -24,24 +24,31 @@ export type HeroTable = {
   selectedRow?: string
 }
 
-const STATUS_DOT_CLASS: Record<string, string> = {
-  Synced: "bg-emerald-400",
-  Complete: "bg-emerald-400",
-  "Needs review": "bg-amber-400",
-  Processing: "bg-sky-400",
-  Paused: "bg-gray-60",
+/**
+ * Figma's status cells (`45487:83107` and friends) are icon + muted label —
+ * check-circle / info-circle / spinner / pause, all the same grey — never a
+ * coloured status dot.
+ */
+const STATUS_ICON: Record<string, typeof CheckCircle2> = {
+  Synced: CheckCircle2,
+  Complete: CheckCircle2,
+  "Needs review": Info,
+  Processing: Loader2,
+  Paused: CirclePause,
 }
 
-function statusDotClass(status: string): string {
-  return STATUS_DOT_CLASS[status] ?? "bg-gray-60"
+function statusIcon(status: string) {
+  return STATUS_ICON[status] ?? CheckCircle2
 }
 
 /**
  * The data table: search/status/view controls, then the table itself with a
  * fixed checkbox column, a fixed name column, a flexible "updated" column, a
  * fixed status column and a fixed actions column — matching the Figma column
- * widths (32/215/fill/164/64 desktop, 15/100/fill/76/30 mobile). Rows fade
- * toward the bottom via an overlay gradient, in both states.
+ * widths (32/215/fill/164/64 desktop, 15/100/fill/76/30 mobile). Rows are
+ * 47px tall on desktop (Figma `45487:83079` and friends) and fade toward the
+ * bottom via an overlay gradient, in both states — no pagination footer:
+ * the Figma frame has none, the fade is what stands in for "more below."
  */
 export function DataTable({
   table,
@@ -85,7 +92,7 @@ export function DataTable({
                 "flex items-center rounded-lg border border-white/15 bg-white/5 text-gray-60",
                 compact
                   ? "gap-0.5 px-1 py-0.5 text-[6.5px]"
-                  : "gap-1 px-3 py-2 text-sm"
+                  : "w-[373px] gap-1 px-3 py-2 text-sm"
               )}
             >
               <Search className={compact ? "size-2" : "size-3.5"} />
@@ -113,7 +120,13 @@ export function DataTable({
           </div>
         </div>
 
-        <div className="relative min-h-0 flex-1 overflow-hidden rounded-lg border border-white/10">
+        {/* Hugs its own row content rather than stretching to fill the
+            card — with only 6-7 rows of real data (vs. Figma's fuller
+            mock), forcing it to fill the available height just left an
+            empty bordered box below the last row. Any leftover height
+            shows as plain card background instead, and the fade below now
+            covers the last row or two it actually has. */}
+        <div className="relative overflow-hidden rounded-lg border border-white/10">
           <div className={cn("grid", gridCols)}>
             {/* Head row */}
             <div
@@ -144,10 +157,15 @@ export function DataTable({
             {table.rows.map((row) => {
               const isSelected = row.name === table.selectedRow
 
+              const StatusIcon = statusIcon(row.status)
+
               return (
                 <div
                   key={row.name}
-                  className="col-span-5 grid grid-cols-subgrid"
+                  className={cn(
+                    "col-span-5 grid grid-cols-subgrid",
+                    !compact && "h-[47px]"
+                  )}
                   style={
                     isSelected
                       ? { backgroundColor: "var(--wc-accent-soft)" }
@@ -194,11 +212,11 @@ export function DataTable({
                       compact ? "px-1 text-[6.5px]" : "px-2 text-sm"
                     )}
                   >
-                    <span
+                    <StatusIcon
                       className={cn(
-                        "inline-block shrink-0 rounded-full",
-                        compact ? "size-1" : "size-2",
-                        statusDotClass(row.status)
+                        "shrink-0 text-gray-60",
+                        compact ? "size-2" : "size-3.5",
+                        row.status === "Processing" && "animate-spin"
                       )}
                     />
                     {row.status}
@@ -216,47 +234,14 @@ export function DataTable({
             })}
           </div>
 
-          {/* Fade toward the bottom of the panel, in both states. */}
+          {/* Fade toward the bottom of the panel, in both states — Figma
+              has no pagination footer below the table; this fade (plus the
+              row count we actually have data for) is the whole "more below"
+              cue. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-black"
           />
-        </div>
-
-        <div
-          className={cn(
-            "flex shrink-0 items-center justify-center text-gray-60",
-            compact ? "gap-1 text-[6.5px]" : "gap-2 text-sm"
-          )}
-        >
-          <span>0 of 100 row(s) selected.</span>
-          <span
-            className={cn("flex items-center", compact ? "gap-2" : "gap-8")}
-          >
-            <span className="font-medium text-gray-90">Page 1 of 10</span>
-            <span
-              className={cn("flex items-center", compact ? "gap-0.5" : "gap-1")}
-            >
-              <ChevronsLeft
-                className={cn(
-                  "text-gray-60/50",
-                  compact ? "size-2.5" : "size-4"
-                )}
-              />
-              <ChevronLeft
-                className={cn(
-                  "text-gray-60/50",
-                  compact ? "size-2.5" : "size-4"
-                )}
-              />
-              <ChevronRight
-                className={cn("text-gray-90", compact ? "size-2.5" : "size-4")}
-              />
-              <ChevronsRight
-                className={cn("text-gray-90", compact ? "size-2.5" : "size-4")}
-              />
-            </span>
-          </span>
         </div>
       </div>
     </div>
