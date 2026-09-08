@@ -344,6 +344,15 @@
   .wc-agent-panel-recolor {
     transition: none !important;
   }
+
+  /* Hero table's "Processing" status icon (`data-table.tsx`) — the only
+     animation on this page with no reduced-motion guard until now. Scoped
+     to `wc-status-spin` rather than Tailwind's `animate-spin` globally, so
+     real loading spinners elsewhere in the app (search dialog, etc.) are
+     unaffected. */
+  .wc-status-spin {
+    animation: none;
+  }
 }
 
 /*

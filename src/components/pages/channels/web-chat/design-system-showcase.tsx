@@ -118,7 +118,7 @@ function DesignSystemTrio() {
 
 function DesignSystemCard() {
   return (
-    <div className="relative mt-14 overflow-hidden rounded-3xl border border-[#191A1F] bg-[#0B0C0E] px-4 pt-8 pb-4 md:mt-13 md:max-h-130 md:px-0 md:pt-0">
+    <div className="relative isolate mt-14 overflow-hidden rounded-3xl border border-[#191A1F] bg-[#0B0C0E] px-4 pt-8 pb-4 md:mt-13 md:max-h-130 md:px-0 md:pt-0">
       {/* Decorative ambient glow (`45487:82565`, a large blurred multi-colour
           blob) approximated as layered CSS gradients rather than shipping a
           6390×5250 raster export for a low-opacity backdrop — same call the

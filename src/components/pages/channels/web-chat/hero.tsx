@@ -356,11 +356,15 @@ export function WebChatHero() {
 
         <div className="mt-5 flex flex-col items-center gap-4">
           <UrlPersonalizer onSubmit={handleSubmit} />
-          {status === "fallback" && errorMessage && (
-            <FallbackAlertSlot>
-              <BrandAlert message={errorMessage} />
-            </FallbackAlertSlot>
-          )}
+          {/*
+            Mounted unconditionally (final-review Fix 5) so the alert's
+            `role="status"` node exists before, not just during, a fallback
+            — only `message` toggles between `null` and the real string.
+            See `brand-alert.tsx` for why that ordering matters.
+          */}
+          <FallbackAlertSlot>
+            <BrandAlert message={status === "fallback" ? errorMessage : null} />
+          </FallbackAlertSlot>
         </div>
       </div>
     </section>

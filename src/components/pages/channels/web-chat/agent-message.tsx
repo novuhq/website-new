@@ -87,6 +87,15 @@ export function AgentMessage({ role, text, compact }: AgentMessageProps) {
  * convention, not invented prose), with no visible text label. The phrase
  * "Agent is thinking" appears only inside the `sr-only` span below, giving
  * the indicator an accessible name without rendering any copy on screen.
+ *
+ * Deliberately NOT `role="status" aria-live="polite"` (final-review Fix 5):
+ * the hero's storyboard is a decorative, looping marketing animation, and
+ * this indicator mounts and unmounts on every lap for as long as the hero
+ * is on screen — as a live region it would announce "Agent is thinking" to
+ * screen-reader users every few seconds, indefinitely, while the tab is
+ * simply open. The `sr-only` label stays so the indicator still has an
+ * accessible name for anyone who navigates onto it directly; it just never
+ * proactively interrupts.
  */
 export function AgentThinking({ compact }: { compact?: boolean }) {
   return (
@@ -95,8 +104,6 @@ export function AgentThinking({ compact }: { compact?: boolean }) {
         "flex animate-wc-message-enter items-center gap-1.5",
         compact && "gap-0.5"
       )}
-      role="status"
-      aria-live="polite"
     >
       <span className="sr-only">Agent is thinking</span>
       <Sparkles

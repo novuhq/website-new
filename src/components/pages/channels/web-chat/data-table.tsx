@@ -217,7 +217,14 @@ export function DataTable({
                       className={cn(
                         "shrink-0 text-gray-60",
                         compact ? "size-2" : "size-3.5",
-                        row.status === "Processing" && "animate-spin"
+                        // `wc-status-spin` is a scoping hook only — the
+                        // spin itself is Tailwind's `animate-spin`; the
+                        // extra class lets globals.css cancel just this
+                        // instance under reduced motion (final-review "also
+                        // fix": this was the only animation on the page
+                        // with no such guard, unlike `wc-message-enter`).
+                        row.status === "Processing" &&
+                          "animate-spin wc-status-spin"
                       )}
                     />
                     {row.status}

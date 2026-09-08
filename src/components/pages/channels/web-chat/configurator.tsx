@@ -61,7 +61,7 @@ type ConfiguratorTab = "prompt" | "cli"
 function BuilderLogoRow() {
   return (
     <div
-      className="group flex w-full items-center gap-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent_3%,rgba(0,0,0,.5)_20%,#000_30%,#000_70%,rgba(0,0,0,.5)_80%,transparent_97%)]"
+      className="flex w-full items-center gap-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent_3%,rgba(0,0,0,.5)_20%,#000_30%,#000_70%,rgba(0,0,0,.5)_80%,transparent_97%)]"
       role="presentation"
     >
       {[false, true].map((ariaHidden, listIndex) => (
