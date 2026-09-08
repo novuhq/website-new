@@ -37,7 +37,7 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
  */
 export function DeployAci() {
   return (
-    <section className="py-20 md:py-28">
+    <section>
       <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-16">
           <h2 className="text-[32px] leading-[1.25em] font-normal tracking-[-0.04em] text-white md:max-w-[840px] md:text-[48px] md:leading-[1.04em]">

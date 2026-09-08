@@ -50,7 +50,7 @@ const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
  */
 export function ProductBento() {
   return (
-    <section className="mt-24 md:mt-32">
+    <section>
       <div className="container mx-auto max-w-[1408px] px-5 md:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
           <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[560px] md:text-[48px] md:leading-[1.04]">

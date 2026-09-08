@@ -134,7 +134,7 @@ export function WebChatConfigurator() {
   const isPromptTab = activeTab === "prompt"
 
   return (
-    <section className="mt-24 md:mt-32">
+    <section>
       <div className="container mx-auto max-w-[1312px] px-5 md:px-8">
         <div className="flex flex-col gap-14 xl:flex-row xl:items-start xl:justify-between">
           <div className="flex w-full flex-col xl:max-w-[532px] xl:shrink-0">

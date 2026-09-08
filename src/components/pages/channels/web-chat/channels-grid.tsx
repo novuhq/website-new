@@ -148,7 +148,7 @@ function ChannelsGridActions() {
 
 function ChannelsGrid() {
   return (
-    <section className="mt-24 md:mt-32">
+    <section>
       <div className="container mx-auto flex max-w-288 flex-col gap-10 px-5 md:flex-row-reverse md:items-center md:gap-12 md:px-8">
         <div className="flex flex-col gap-10 md:w-[544px] md:shrink-0 md:gap-8">
           <div className="flex flex-col gap-5 md:gap-[18px]">

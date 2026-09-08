@@ -23,7 +23,7 @@ import { WebChatCard } from "@/components/pages/channels/web-chat/compare-card-w
  */
 export function CompareBento() {
   return (
-    <section className="py-20 md:py-28">
+    <section>
       <div className="container mx-auto max-w-[1408px] px-5 md:px-8">
         <div className="flex flex-col gap-7 md:flex-row md:items-start md:justify-between md:gap-16">
           <h2 className="text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[564px] md:text-[48px] md:leading-[1.04em]">

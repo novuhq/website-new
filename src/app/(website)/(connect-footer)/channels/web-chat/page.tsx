@@ -24,21 +24,48 @@ export const metadata: Metadata = getMetadata({
   imageAlt: "Novu Web Chat: your agent, live inside your product",
 })
 
+/**
+ * The single inter-section gap for every mounted section below the hero.
+ * Each section's own root used to carry its own margin or padding (`mt-24
+ * md:mt-32` on most, `py-20 md:py-28` on compare-bento/deploy-aci, nothing
+ * at all on surface-tabs) — three incompatible conventions that fought each
+ * other at the boundaries and drifted from Figma's rhythm. Sections no
+ * longer carry their own vertical spacing; this page owns it exclusively,
+ * so no future section can arrive with its own idea of spacing.
+ */
+const SECTION_GAP = "mt-36 md:mt-48"
+
 export default function WebChatPage() {
   return (
     <div className="overflow-clip">
       <WebChatBrandProvider>
         <WebChatHero />
-        <CompareBento />
-        <ProductBento />
+        <div className={SECTION_GAP}>
+          <CompareBento />
+        </div>
+        <div className={SECTION_GAP}>
+          <ProductBento />
+        </div>
       </WebChatBrandProvider>
 
-      <SurfaceTabs />
-      <ChannelsGrid />
-      <DeployAci />
-      <DesignSystemShowcase />
-      <WebChatConfigurator />
-      <Ownership />
+      <div className={SECTION_GAP}>
+        <SurfaceTabs />
+      </div>
+      <div className={SECTION_GAP}>
+        <ChannelsGrid />
+      </div>
+      <div className={SECTION_GAP}>
+        <DeployAci />
+      </div>
+      <div className={SECTION_GAP}>
+        <DesignSystemShowcase />
+      </div>
+      <div className={SECTION_GAP}>
+        <WebChatConfigurator />
+      </div>
+      <div className={SECTION_GAP}>
+        <Ownership />
+      </div>
 
       <Cta
         title="Put your agent inside your product"

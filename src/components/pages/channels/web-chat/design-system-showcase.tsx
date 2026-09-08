@@ -143,7 +143,7 @@ function DesignSystemCard() {
 
 export function DesignSystemShowcase() {
   return (
-    <section className="mt-24 md:mt-32">
+    <section>
       <div className="mx-auto max-w-320 px-5 md:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <DesignSystemHeading />

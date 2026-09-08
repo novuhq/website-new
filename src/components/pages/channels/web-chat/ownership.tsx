@@ -79,7 +79,7 @@ function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
 
 function Ownership() {
   return (
-    <section className="mt-24 md:mt-32">
+    <section>
       <div className="container mx-auto flex max-w-[1280px] flex-col gap-10 px-5 md:gap-[72px] md:px-8">
         <OwnershipTagline />
 
