@@ -1,7 +1,8 @@
-"use client"
-
 import Image from "next/image"
-import { DEPLOY_ACI_FRAMEWORK_LOGOS } from "@/data/pages/web-chat-deploy-aci"
+import {
+  DEPLOY_ACI_BAKED_LOGO,
+  DEPLOY_ACI_FRAMEWORK_LOGOS,
+} from "@/data/pages/web-chat-deploy-aci"
 
 import { cn } from "@/lib/utils"
 
@@ -137,16 +138,18 @@ export function FrameworkLogoCycle({
       <style dangerouslySetInnerHTML={{ __html: STYLE_TAG }} />
 
       {/* Permanent fallback, unanimated: the same mark the flattened
-          illustration bakes in behind this slot. Whatever moment this is
-          inspected — no JS, mid-transition, a `prefers-reduced-motion`
-          visitor, or the animated tiles fully faded out between turns —
-          this is always painted underneath at full opacity, so the plate
-          is never blank. */}
+          illustration bakes in behind this slot (`DEPLOY_ACI_BAKED_LOGO`,
+          read directly rather than `LOGOS[0]` — reordering the cycle below
+          can't break this). Whatever moment this is inspected — no JS,
+          mid-transition, a `prefers-reduced-motion` visitor, or the
+          animated tiles fully faded out between turns — this is always
+          painted underneath at full opacity, so the plate is never
+          blank. */}
       <div className="absolute inset-0 flex items-center justify-center bg-black">
         <Image
-          alt={LOGOS[0].name}
+          alt={DEPLOY_ACI_BAKED_LOGO.name}
           className="size-full object-contain"
-          src={LOGOS[0].icon}
+          src={DEPLOY_ACI_BAKED_LOGO.icon}
         />
       </div>
 

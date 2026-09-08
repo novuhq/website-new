@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image"
-import gdprBadge from "@/svgs/pages/channels/web-chat/compliance/gdpr.svg"
-import hipaaBadge from "@/svgs/pages/channels/web-chat/compliance/hipaa.svg"
-import isoBadge from "@/svgs/pages/channels/web-chat/compliance/iso-27001.svg"
-import soc2Badge from "@/svgs/pages/channels/web-chat/compliance/soc-2.svg"
+import gdprBadge from "@/images/pages/home/certifications/gdpr.svg"
+import hipaaBadge from "@/images/pages/home/certifications/hipaa.svg"
+import isoBadge from "@/images/pages/home/certifications/iso-27001.svg"
+import soc2Badge from "@/images/pages/home/certifications/soc-2-type-2.svg"
 import awsLogo from "@/svgs/pages/channels/web-chat/frameworks/aws.svg"
 import chatSdkVercelLogo from "@/svgs/pages/channels/web-chat/frameworks/chat-sdk-vercel.svg"
 import claudeLogo from "@/svgs/pages/channels/web-chat/frameworks/claude.svg"
@@ -68,7 +68,10 @@ export interface IDeployAciComplianceBadge {
 }
 
 // Compliance badge row (`45487-81517` desktop, `45497-147508` mobile),
-// reading left to right: SOC 2 Type II, ISO 27001, GDPR, HIPAA.
+// reading left to right: SOC 2 Type II, ISO 27001, GDPR, HIPAA. Reuses the
+// existing marks from `src/images/pages/home/certifications/` rather than
+// re-exporting from Figma — same vectors (same fill `#C2C4CC`), and this
+// avoids a second, driftable copy of the same icon set.
 export const DEPLOY_ACI_COMPLIANCE_BADGES: IDeployAciComplianceBadge[] = [
   { label: "SOC 2 Type II", icon: soc2Badge },
   { label: "ISO 27001", icon: isoBadge },
@@ -81,13 +84,25 @@ export interface IDeployAciFrameworkLogo {
   icon: StaticImageData
 }
 
+// The illustration's "Your agent / Your stack" plate bakes this exact mark
+// in as its static placeholder (see `45487-81073` desktop, `45497-147085`
+// mobile). `FrameworkLogoCycle` reads this constant directly for its
+// permanent fallback tile — never `DEPLOY_ACI_FRAMEWORK_LOGOS[0]` — so
+// reordering the array below can't silently break the seamless-fallback
+// premise: whichever logo is first, this named export is still the one
+// the fallback (and the baked art) actually shows.
+export const DEPLOY_ACI_BAKED_LOGO: IDeployAciFrameworkLogo = {
+  name: "Chat SDK & Vercel",
+  icon: chatSdkVercelLogo,
+}
+
 // Framework logo set (`45497-146963`, layer order top-left to bottom-right:
 // langchain, chat-sdk & vercel, claude, aws, custom-code). These cycle
 // through the illustration's "Your agent / Your stack" plate via
-// `FrameworkLogoCycle`; the plate's static baked-in placeholder is this same
-// Vercel/Chat SDK mark, so the cycle's first frame matches the static image.
+// `FrameworkLogoCycle`. Built from `DEPLOY_ACI_BAKED_LOGO` above rather than
+// a fifth literal, so there's exactly one place that mark is defined.
 export const DEPLOY_ACI_FRAMEWORK_LOGOS: IDeployAciFrameworkLogo[] = [
-  { name: "Chat SDK & Vercel", icon: chatSdkVercelLogo },
+  DEPLOY_ACI_BAKED_LOGO,
   { name: "LangChain", icon: langchainLogo },
   { name: "Claude", icon: claudeLogo },
   { name: "AWS", icon: awsLogo },

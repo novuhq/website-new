@@ -24,7 +24,11 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
  * breakpoints (see the percentage insets below, computed from the Figma
  * frame's own pixel coordinates). The stage renders a solid black backing
  * so it fully covers the flattened image's static placeholder logo
- * underneath — the two are the same colour, so the seam is invisible.
+ * underneath — the two are the same colour, so the seam is invisible. On
+ * mobile the slot IS the whole plate (`45497-147085`, itself radius 16px),
+ * so the overlay is rounded to match; on desktop the slot only covers the
+ * plate's inner icon area, away from its own rounded corners, so it stays
+ * a plain rectangle there.
  *
  * Container: the desktop frame places the image flush with the section's
  * own left edge while the heading/badges/items sit 32px further in — i.e.
@@ -62,7 +66,7 @@ export function DeployAci() {
             src={illustrationMobile}
           />
 
-          <FrameworkLogoCycle className="absolute top-[5.62%] left-[33.44%] h-[16.11%] w-[33.13%] md:top-[38.96%] md:left-[7.58%] md:h-[22.08%] md:w-[8.28%]" />
+          <FrameworkLogoCycle className="absolute top-[5.62%] left-[33.44%] h-[16.11%] w-[33.13%] rounded-[16px] md:top-[38.96%] md:left-[7.58%] md:h-[22.08%] md:w-[8.28%] md:rounded-none" />
         </div>
 
         <div className="mt-8 flex flex-col gap-8 md:mt-14 md:flex-row md:items-start md:justify-between md:gap-16">
