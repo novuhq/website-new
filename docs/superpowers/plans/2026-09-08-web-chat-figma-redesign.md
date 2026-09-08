@@ -24,6 +24,8 @@
 - Every `mix-blend-mode: hue` host needs `isolation: isolate`.
 - Where the Figma frames and the designer's spec text disagree, **the spec text wins** (see *Known Figma/spec mismatches* in the spec).
 - Node tests run under `--conditions=react-server`, so they cannot render client components. Anything unit-tested must be a pure function.
+- `pnpm typecheck` is **clean repo-wide** as of `pnpm install --frozen-lockfile`. Commit `c5435ef`'s message claims pre-existing type errors; that was an artifact of 13 declared-but-uninstalled packages and is no longer true. Any typecheck error is therefore yours — do not wave one through as pre-existing.
+- A Next dev server may already be running on port 3000. Do not start, restart or kill it. To run Playwright against it, use `PLAYWRIGHT_SKIP_WEB_SERVER=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000`; without that, Playwright tries to start a second server and Next refuses.
 - Node test runner only picks up `tests/*.test.ts` — not nested directories.
 - Commands: `pnpm test` (node), `pnpm test:critical:quick` (Playwright, desktop-chromium), `pnpm typecheck`, `pnpm lint`.
 - **Never run `pnpm format:fix`.** It is `prettier --write .` — repo-wide — and rewrote 148 unrelated files when Task 1 ran it, `tsconfig.json` included. Format only what you touched: `npx prettier --write <your files>`. `pnpm format` (check-only) is safe.
