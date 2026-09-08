@@ -102,8 +102,17 @@ function ConfiguratorResult({
       <span className="text-sm font-medium tracking-[-0.02em] text-gray-60">
         {label}
       </span>
+      {/*
+        One truncated line, not a wrapping block. Figma (`45487-81913`) makes
+        this the third item in the same `dropdowns` stack as the two selects —
+        label + a single `12px 14px` control — and clips the prompt text with
+        an ellipsis. It is a preview, not a reader: the full value stays in the
+        DOM (so it is still announced and selectable) and `Copy prompt` is how
+        you actually take it. Wrapping it instead made the card 610px tall
+        against the design's 525px, which was most of this section's drift.
+      */}
       <div className="rounded-[6px] border border-[#313349] bg-black/30 px-3.5 py-3">
-        <code className="block font-mono text-sm leading-normal break-words text-white">
+        <code className="block truncate font-mono text-sm leading-[1.5] text-white">
           {value}
         </code>
       </div>
@@ -151,10 +160,23 @@ export function WebChatConfigurator() {
           </div>
 
           <div className="relative isolate mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
+            {/*
+              The asset is the 640x680 window Figma's `form` frame
+              (`45487-81722`) clips onto its background group — not the whole
+              blob. The previous export was the entire unclipped nebula
+              squeezed into 640x668, so `object-cover` shrank it ~2.2x and the
+              panel read as near-black with a faint glow instead of the
+              design's saturated blue-violet. Re-cropped from the group render
+              at 2x (1280x1360, and 122KB smaller for being the right region).
+
+              No `opacity-80` here: Figma applies 0.8 to that group, and a node
+              export bakes its own opacity in, so re-applying it double-dimmed
+              the panel. The noise overlay below is the separate 0.3 layer.
+            */}
             <Image
               alt=""
               aria-hidden
-              className="object-cover opacity-80"
+              className="object-cover"
               fill
               sizes="(min-width: 640px) 640px, 100vw"
               src={CONFIGURATOR_BLOB_IMAGE}
@@ -193,13 +215,13 @@ export function WebChatConfigurator() {
                   >
                     <TabsList className="grid h-auto w-full grid-cols-2 gap-0 rounded-[6px] border border-[#313349] bg-black/50 p-0">
                       <TabsTrigger
-                        className="h-full rounded-[6px] px-6 py-3.5 text-base tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-[6px] px-6 py-3.5 text-base leading-none tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
                         value="prompt"
                       >
                         {CONFIGURATOR_PROMPT_TAB_LABEL}
                       </TabsTrigger>
                       <TabsTrigger
-                        className="h-full rounded-[6px] px-6 py-3.5 text-base tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-[6px] px-6 py-3.5 text-base leading-none tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
                         value="cli"
                       >
                         {CONFIGURATOR_CLI_TAB_LABEL}
@@ -237,7 +259,7 @@ export function WebChatConfigurator() {
 
                   {isPromptTab ? (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="Generated prompt copied to clipboard"
                       key="copy-prompt"
                       label={CONFIGURATOR_COPY_PROMPT_LABEL}
@@ -249,7 +271,7 @@ export function WebChatConfigurator() {
                     />
                   ) : (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="npx command copied to clipboard"
                       key="copy-cli"
                       label={CONFIGURATOR_COPY_CLI_LABEL}
