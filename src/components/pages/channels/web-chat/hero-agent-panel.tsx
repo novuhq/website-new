@@ -1,0 +1,304 @@
+"use client"
+
+import type { CSSProperties } from "react"
+import {
+  HERO_AGENT_EMPTY_STATE,
+  HERO_COMPOSER_PLACEHOLDER,
+  HERO_MESSAGES,
+  HERO_PANEL_TITLE,
+} from "@/data/pages/web-chat"
+import {
+  STORYBOARD_TIMING,
+  type StoryboardStep,
+} from "@/data/pages/web-chat-storyboard"
+import { ArrowUp } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { AgentFieldTable } from "@/components/pages/channels/web-chat/agent-field-table"
+import {
+  AgentMessage,
+  AgentThinking,
+} from "@/components/pages/channels/web-chat/agent-message"
+
+export interface HeroAgentPanelProps {
+  /** `null` is the pre-submit empty state. 0-5 are live storyboard steps. */
+  step: StoryboardStep | null
+}
+
+const AVATAR_GRADIENT =
+  "linear-gradient(26deg, rgba(217, 115, 87, 1) 12%, rgba(194, 92, 214, 1) 40%, rgba(140, 107, 239, 1) 77%)"
+
+/**
+ * The agent's circular mark: the Figma logomark is a ~15-layer stack of
+ * blurred, masked gradient shapes (`45487:90367` and friends) that isn't
+ * practical to reproduce in a static/pure component, so this keeps its exact
+ * gradient stops and adds the accent ring the brief calls for ("the send
+ * button and the avatar ring use --wc-accent") in place of that stack.
+ */
+function AgentAvatar({
+  className,
+  ringWidth = 2,
+}: {
+  className?: string
+  ringWidth?: number
+}) {
+  return (
+    <span
+      aria-hidden
+      className={cn("inline-block shrink-0 rounded-full", className)}
+      style={{
+        background: AVATAR_GRADIENT,
+        boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)`,
+      }}
+    />
+  )
+}
+
+/**
+ * Header bar: avatar + `HERO_PANEL_TITLE`. Figma desktop `45487:90366`
+ * (h-56, border-b `rgba(255,255,255,0.3)`, avatar 40x40 at 8/8, title Inter
+ * Regular 18px/`-0.02em` at x60/y17); mobile `45487:113162` (~0.4662x).
+ * The two unlabeled icon frames at the header's right edge
+ * (`45487:90403`/template `EL-eade9af0`) have no extractable glyph or name
+ * and no behavioural role in the brief, so they're omitted rather than
+ * guessed.
+ */
+function PanelHeader({ compact }: { compact?: boolean }) {
+  return (
+    <div
+      className={cn(
+        "flex shrink-0 items-center gap-3 border-b border-white/30 px-2",
+        compact ? "h-[26px] gap-[5.6px] px-1" : "h-14"
+      )}
+    >
+      <AgentAvatar
+        className={compact ? "size-[18.65px]" : "size-10"}
+        ringWidth={compact ? 1 : 2}
+      />
+      <span
+        className={cn(
+          "text-lg leading-[1.2] tracking-tighter text-white",
+          compact && "text-[8.4px]"
+        )}
+      >
+        {HERO_PANEL_TITLE}
+      </span>
+    </div>
+  )
+}
+
+/**
+ * Composer input. Figma desktop `45487:90361` (384x42, radius 12,
+ * `rgba(0,0,0,0.88)` fill, border `rgba(255,255,255,0.3)`, placeholder
+ * Inter Medium 15px/`-0.01em` `rgba(255,255,255,0.4)`, send icon 34x34
+ * radius 8 filled with the accent); mobile `45487:113116` (~0.4662x).
+ */
+function Composer({ compact }: { compact?: boolean }) {
+  return (
+    <div className={cn("shrink-0 p-3", compact && "p-[5.6px]")}>
+      <div
+        className={cn(
+          "flex h-[42px] items-center justify-between rounded-xl border border-white/30 bg-black/88 pr-1 pl-3.5",
+          compact && "h-[19.6px] rounded-[5.6px] pr-0.5 pl-1.5"
+        )}
+      >
+        <span
+          className={cn(
+            "truncate text-[15px] leading-[1.2] font-medium tracking-[-0.01em] text-white/40",
+            compact && "text-[7px]"
+          )}
+        >
+          {HERO_COMPOSER_PLACEHOLDER}
+        </span>
+        <span
+          className={cn(
+            "flex size-[34px] shrink-0 items-center justify-center rounded-lg",
+            compact && "size-[15.85px] rounded-[3.7px]"
+          )}
+          style={{ backgroundColor: "var(--wc-accent)" }}
+        >
+          <ArrowUp
+            className={cn("size-4", compact && "size-2")}
+            style={{ color: "var(--wc-accent-foreground)" }}
+            aria-hidden
+          />
+        </span>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Pre-submit state: orb, title and body, no messages. Figma desktop
+ * `45487:79602`-`45487:79605` (title 20px, body 14px/50% white, both
+ * centred, width 255); mobile ~0.4662x. Also reused verbatim (per the
+ * decisions in the task brief) for step 0, wrapped by the panel's grayscale
+ * filter.
+ */
+function EmptyState({ compact }: { compact?: boolean }) {
+  return (
+    <div
+      className={cn(
+        "flex flex-1 flex-col items-center justify-center gap-8 px-8 text-center",
+        compact && "gap-[3.7px] px-[3.7px]"
+      )}
+    >
+      <AgentAvatar
+        className={compact ? "size-[65px]" : "size-[140px]"}
+        ringWidth={compact ? 2 : 3}
+      />
+      <div
+        className={cn(
+          "flex max-w-[255px] flex-col items-center gap-2",
+          compact && "max-w-[119px] gap-1"
+        )}
+      >
+        <p
+          className={cn(
+            "text-xl leading-[1.2] tracking-tighter text-white",
+            compact && "text-[9.3px]"
+          )}
+        >
+          {HERO_AGENT_EMPTY_STATE.title}
+        </p>
+        <p
+          className={cn(
+            "text-sm leading-[1.25] tracking-tighter text-white/50",
+            compact && "text-[6.5px]"
+          )}
+        >
+          {HERO_AGENT_EMPTY_STATE.body}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * The scripted conversation. Message visibility is cumulative — at step N,
+ * every `HERO_MESSAGES` entry with `step <= N` is shown (brief Behaviour).
+ * Step 2 additionally shows `AgentThinking`, which disappears once step 3's
+ * real reply lands. The step-5 message also carries `AgentFieldTable`.
+ */
+function ConversationBody({
+  step,
+  compact,
+}: {
+  step: Exclude<StoryboardStep, 0>
+  compact?: boolean
+}) {
+  const visibleMessages = HERO_MESSAGES.filter(
+    (message) => message.step <= step
+  )
+
+  return (
+    <div
+      className={cn(
+        "flex flex-1 flex-col justify-end gap-4 overflow-hidden px-4 py-4",
+        compact && "gap-2 px-2 py-2"
+      )}
+    >
+      {visibleMessages.map((message) => (
+        <div
+          key={message.text}
+          className={cn("flex flex-col gap-2", compact && "gap-1")}
+        >
+          <AgentMessage
+            role={message.role}
+            text={message.text}
+            compact={compact}
+          />
+          {message.step === 5 && <AgentFieldTable compact={compact} />}
+        </div>
+      ))}
+      {step === 2 && <AgentThinking compact={compact} />}
+    </div>
+  )
+}
+
+/**
+ * The card itself. Figma desktop `45487:90358`/`45487:88247` (408x647,
+ * radius 14, border `rgba(255,255,255,0.9)`, shadow
+ * `0 12px 32px rgba(0,0,0,0.64), 0 4px 4px rgba(0,0,0,0.25)`,
+ * `backdrop-filter: blur(48px)`, fill a fixed purple/pink radial gradient —
+ * not accent-tied, confirmed by this same gradient appearing unchanged in
+ * the recent.dev-orange-personalized step-5 frame); mobile
+ * `45487:113113` (190.2x301.62, ~0.4662x, real measured values, not a
+ * guess). Step 0 desaturates the body via a CSS filter transition reading
+ * `STORYBOARD_TIMING.grayscaleMs`/`recolorMs` — the panel's analogue of
+ * Task 6's dashboard blur (which hardcodes `duration-500` against
+ * `blurMs: 600`; this file reads the constants directly instead, so Task 8
+ * should reconcile the two).
+ */
+function AgentPanel({
+  step,
+  compact,
+}: {
+  step: StoryboardStep | null
+  compact?: boolean
+}) {
+  const isGrayscale = step === 0
+
+  return (
+    <div
+      className={cn(
+        "relative flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px]",
+        compact
+          ? "h-[301.62px] w-[190.2px] rounded-[6.5px]"
+          : "h-[647px] w-[408px]"
+      )}
+      style={{
+        background:
+          "radial-gradient(circle at 89% 164%, rgba(0, 0, 0, 0.56) 15%, rgba(148, 72, 225, 0.56) 57%, rgba(234, 136, 239, 0.56) 79%)",
+      }}
+    >
+      <PanelHeader compact={compact} />
+      <div
+        className="wc-agent-panel-recolor flex min-h-0 flex-1 flex-col ease-out"
+        style={{
+          filter: isGrayscale ? "grayscale(1)" : "grayscale(0)",
+          transitionProperty: "filter",
+          transitionDuration: `${
+            isGrayscale
+              ? STORYBOARD_TIMING.grayscaleMs
+              : STORYBOARD_TIMING.recolorMs
+          }ms`,
+        }}
+      >
+        {step === null || step === 0 ? (
+          <EmptyState compact={compact} />
+        ) : (
+          <ConversationBody step={step} compact={compact} />
+        )}
+      </div>
+      <Composer compact={compact} />
+    </div>
+  )
+}
+
+/**
+ * The hero agent chat panel: pure function of `step`, no state/effects/
+ * timers — every visual change (message reveal, thinking indicator,
+ * grayscale-to-color) is driven by CSS reading the current render's props.
+ * `--wc-message-reveal-ms` is set here (not per-message) since every message
+ * shares the same reveal duration.
+ */
+export function HeroAgentPanel({ step }: HeroAgentPanelProps) {
+  return (
+    <div
+      className="contents"
+      style={
+        {
+          "--wc-message-reveal-ms": `${STORYBOARD_TIMING.messageRevealMs}ms`,
+        } as CSSProperties
+      }
+    >
+      <div className="hidden md:block">
+        <AgentPanel step={step} />
+      </div>
+      <div className="md:hidden">
+        <AgentPanel step={step} compact />
+      </div>
+    </div>
+  )
+}

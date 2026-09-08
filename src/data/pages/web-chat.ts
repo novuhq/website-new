@@ -59,3 +59,38 @@ export const HERO_TABLE_PERSONALIZED = {
     { name: "Summit Works", updated: "Yesterday", status: "Complete" },
   ],
 } as const
+
+export const HERO_AGENT_EMPTY_STATE = {
+  title: "Ask about your workspace",
+  body: "The agent understands what's on screen, finds relevant data, and can take action in your product.",
+} as const
+
+export const HERO_COMPOSER_PLACEHOLDER = "Message the agent ..."
+
+export const HERO_PANEL_TITLE = "Your Agent"
+
+/** Which storyboard step each message first appears on. */
+export const HERO_MESSAGES = [
+  { step: 1, role: "user", text: "Why does this form submission need review?" },
+  {
+    step: 3,
+    role: "agent",
+    text: "Should I check the missing fields or review the full submission?",
+  },
+  { step: 4, role: "user", text: "Missing fields" },
+  {
+    step: 5,
+    role: "agent",
+    text: "In this form (#1048), the Email field is not filled out.",
+  },
+] as const
+
+/** Shown inside the step-5 agent message. */
+export const HERO_FIELD_TABLE = {
+  rows: [
+    { label: "Full name", value: "Jordan Lee", missing: false },
+    { label: "Email address", value: "Not provided", missing: true },
+    { label: "Phone number", value: "+1 415 555 0148", missing: false },
+    { label: "Message", value: "I'd like to learn more", missing: false },
+  ],
+} as const

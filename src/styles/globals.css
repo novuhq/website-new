@@ -219,6 +219,8 @@
   --animate-logos: logos 60s linear infinite;
   --animate-logos-backward: backward 160s linear infinite;
   --animate-logos-forward: forward 160s linear infinite;
+  --animate-wc-message-enter: wc-message-enter
+    var(--wc-message-reveal-ms, 700ms) cubic-bezier(0.22, 1, 0.36, 1) both;
 
   --leading-dense: 1.125;
 
@@ -311,6 +313,36 @@
     100% {
       transform: translateX(0);
     }
+  }
+  /*
+    Web Chat hero agent panel (Task 7): a message bubble's one-shot entrance,
+    blurred-and-transparent to sharp. Values lifted from `ENTER_FROM` ->
+    `VISIBLE` in focus-blur-text-cycle.tsx rather than invented here.
+  */
+  @keyframes wc-message-enter {
+    from {
+      filter: blur(14px);
+      opacity: 0;
+      transform: translate3d(0, 8.12px, 0) scale(1.01);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wc-message-enter {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .wc-agent-panel-recolor {
+    transition: none !important;
   }
 }
 
