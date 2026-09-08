@@ -27,8 +27,10 @@ const NAV_ICONS: Record<
 }
 
 /**
- * The app sidebar: header (mark + company name), nav (with the expanded
- * "Data" group showing Sources as the active sub-item), footer (account row).
+ * The app sidebar: header (mark + company name) and nav (with the expanded
+ * "Data" group showing Sources as the active sub-item). Per the actual
+ * `hero-personalization-05-recent.dev` frame, the sidebar ends after
+ * "Settings" — there is no footer/account row in the design.
  * Figma: desktop #45487:79083 (w-256), mobile #45487:112602 (w-119.34).
  */
 export function Sidebar({
@@ -155,42 +157,6 @@ export function Sidebar({
           )
         })}
       </nav>
-
-      {/* SidebarFooter */}
-      <div
-        className={cn(
-          "flex shrink-0 items-center rounded-lg bg-[#171717]",
-          compact ? "gap-1 p-1" : "gap-2 p-2"
-        )}
-      >
-        <span
-          className={cn(
-            "shrink-0 rounded-[10px] bg-black",
-            compact ? "size-4" : "size-8"
-          )}
-        />
-        <div className="min-w-0 flex-1">
-          <p
-            className={cn(
-              "truncate font-semibold text-gray-90",
-              compact ? "text-[6.5px]" : "text-sm"
-            )}
-          >
-            shadcn
-          </p>
-          <p
-            className={cn(
-              "truncate text-gray-90/60",
-              compact ? "text-[5px]" : "text-xs"
-            )}
-          >
-            m@example.com
-          </p>
-        </div>
-        <ChevronsUpDown
-          className={cn("shrink-0 text-gray-90", compact ? "size-2" : "size-4")}
-        />
-      </div>
     </aside>
   )
 }

@@ -15,7 +15,11 @@ import { cn } from "@/lib/utils"
 export type HeroTableRow = { name: string; updated: string; status: string }
 export type HeroTable = {
   title: string
-  columns: readonly string[]
+  /**
+   * Exactly 3 header labels, for the name/updated/status columns in that
+   * order. The checkbox and actions columns have no header text.
+   */
+  columns: readonly [string, string, string]
   rows: readonly HeroTableRow[]
   selectedRow?: string
 }
@@ -118,30 +122,17 @@ export function DataTable({
                 compact ? "h-[19px]" : "h-10"
               )}
             />
-            <div
-              className={cn(
-                "flex items-center border-b border-white/10 font-medium text-gray-60",
-                compact ? "px-1 text-[6.5px]" : "px-2 text-sm"
-              )}
-            >
-              {table.columns[0]}
-            </div>
-            <div
-              className={cn(
-                "flex items-center border-b border-white/10 font-medium text-gray-60",
-                compact ? "px-1 text-[6.5px]" : "px-2 text-sm"
-              )}
-            >
-              {table.columns[1]}
-            </div>
-            <div
-              className={cn(
-                "flex items-center border-b border-white/10 font-medium text-gray-60",
-                compact ? "px-1 text-[6.5px]" : "px-2 text-sm"
-              )}
-            >
-              {table.columns[2]}
-            </div>
+            {table.columns.map((column) => (
+              <div
+                key={column}
+                className={cn(
+                  "flex items-center border-b border-white/10 font-medium text-gray-60",
+                  compact ? "px-1 text-[6.5px]" : "px-2 text-sm"
+                )}
+              >
+                {column}
+              </div>
+            ))}
             <div
               className={cn(
                 "border-b border-white/10",
