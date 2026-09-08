@@ -186,6 +186,24 @@ export const subscriptionContract = {
   success: "Thank you for subscribing!",
 } as const
 
+export const webChatContract = {
+  ...monitorContract,
+  id: "TC-WEBCHAT-001",
+  priority: "P0",
+  mode: "submit",
+  route: "/channels/web-chat",
+  heading: "Your agent, live inside your product",
+  command: "npx novu connect --channel web-chat",
+  domain: "recent.dev",
+  accent: "#e65006",
+  submitLabel: "See it in your product",
+  firstMessage: "Why does this form submission need review?",
+  defaultTableTitle: "Data sources",
+  personalizedTableTitle: "Form submissions",
+  fallbackAlert:
+    "We couldn't load your brand styles. Showing the default preview.",
+} as const
+
 export const careersContract = {
   ...monitorContract,
   id: "TC-LEAD-001",

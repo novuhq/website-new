@@ -6,7 +6,10 @@ import {
   HERO_TABLE_DEFAULT,
   HERO_TABLE_PERSONALIZED,
 } from "@/data/pages/web-chat"
-import type { StoryboardStep } from "@/data/pages/web-chat-storyboard"
+import {
+  STORYBOARD_TIMING,
+  type StoryboardStep,
+} from "@/data/pages/web-chat-storyboard"
 
 import { cn } from "@/lib/utils"
 import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
@@ -67,9 +70,10 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
         <ChromeBar domain={domainLabel} />
         <div
           className={cn(
-            "flex min-h-[680px] transition-[filter] duration-500 ease-out",
+            "flex min-h-[680px] transition-[filter] ease-out",
             isTransitioning && "blur-md"
           )}
+          style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
         >
           <Sidebar companyLabel={companyLabel} faviconUrl={faviconUrl} />
           <DataTable table={table} />
@@ -87,9 +91,10 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
           <ChromeBar domain={domainLabel} compact />
           <div
             className={cn(
-              "flex transition-[filter] duration-500 ease-out",
+              "flex transition-[filter] ease-out",
               isTransitioning && "blur-md"
             )}
+            style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
           >
             <Sidebar
               companyLabel={companyLabel}
