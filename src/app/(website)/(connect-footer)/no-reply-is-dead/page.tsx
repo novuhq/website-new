@@ -38,8 +38,10 @@ export default function NoReplyIsDeadPage() {
       <section className="pt-24 md:pt-28 lg:pt-23">
         <div className="mx-auto max-w-304 px-5 md:px-8 2xl:px-0">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,38rem)] lg:gap-16">
-            <div>
-              <span className="flex items-center gap-3.25">
+            {/* Below lg the hero stacks, so the copy centres over the visual
+                in the same 608px column and only goes left-aligned at lg. */}
+            <div className="mx-auto w-full max-w-152 text-center lg:mx-0 lg:max-w-none lg:text-left">
+              <span className="flex items-center justify-center gap-3.25 lg:justify-start">
                 <span className="size-2.5 shrink-0 bg-purple-3" aria-hidden />
                 <span className="text-[0.8125rem] leading-none font-medium tracking-normal text-purple-1 uppercase">
                   Agent-Assigned Workflows
@@ -51,13 +53,13 @@ export default function NoReplyIsDeadPage() {
                 a conversation
               </h1>
 
-              <p className="mt-8 max-w-130 text-base leading-[1.5] tracking-tight text-gray-70 md:text-lg">
+              <p className="mx-auto mt-8 max-w-130 text-base leading-[1.5] tracking-tight text-gray-70 md:text-lg lg:mx-0">
                 Your product sends a notification. The user has a question, but
                 no-reply makes it a dead end. Assign an agent to the workflow,
                 and every notification becomes the start of a real conversation.
               </p>
 
-              <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
                 <Button
                   size="none"
                   variant="default"
