@@ -5,10 +5,18 @@
  * personalized: no brand-accent tokens here, only the shared design system.
  */
 
-import type { TaglineWord } from "@/components/pages/channels/web-chat-tagline"
+/**
+ * Was imported from a shared word-reveal component, since deleted along with
+ * the old section that used it (superseded by this section's static tagline
+ * render — see `ownership.tsx`). Inlined here as its only remaining consumer.
+ */
+export interface TaglineWord {
+  text: string
+  accent: boolean
+}
 
 /**
- * The boundary line (`45487:81962`), split for `TaglineReveal`: the first
+ * The boundary line (`45487:81962`), split into words for a reveal: the first
  * sentence reveals in white, the rest in grey (`#707280`, `text-gray-50`).
  * Figma's raw text run has no space after the em dash inside the accented
  * portion ("agent to the web and carries..."); the run itself has none

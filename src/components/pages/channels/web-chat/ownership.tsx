@@ -13,13 +13,13 @@ import keepLogicIcon from "@/svgs/pages/channels/web-chat/ownership-keep-logic.s
  * `45487-81961`, desktop only. Not personalized — no `HueLayer`, no
  * `var(--wc-accent*)`.
  *
- * Not mounted by this task: the integration pass wires it into
- * `page.tsx`.
+ * Mounted by the integration pass in `page.tsx`.
  *
- * Deliberately NOT using `TaglineReveal` here (see that component's export
- * for the generalized `words` prop this task added). Verified against a
- * rendered, un-hydrated snapshot: `TaglineReveal` SSRs every word's
- * `initial={{opacity: 0.22}}` inline (confirmed in the served HTML —
+ * Deliberately NOT using the shared word-reveal component here (the one
+ * generalized with a `words` prop, since deleted along with the old section
+ * that called it). Verified against a rendered, un-hydrated snapshot: that
+ * component SSRs every word's `initial={{opacity: 0.22}}` inline (confirmed
+ * in the served HTML —
  * `style="opacity:0.22"` on every span, accent and non-accent alike) and,
  * since `useInView` never fires without hydration, that initial value is
  * the permanent, only state real visitors see. For the *white* run that
@@ -29,8 +29,8 @@ import keepLogicIcon from "@/svgs/pages/channels/web-chat/ownership-keep-logic.s
  * body-text grey, not nearly as bright as the old copy's purple accent);
  * compounding another ×0.22 on top composites to ~rgb(25,25,28) on black,
  * which in the actual screenshot is indistinguishable from the background —
- * i.e. invisible, not "faint." That is exactly the `Reveal` failure mode
- * this task warned about, just short of literal 0. So the whole line is
+ * i.e. invisible, not "faint." That is exactly the reveal-component failure
+ * mode this task warned about, just short of literal 0. So the whole line is
  * rendered statically, at full opacity, matching Figma exactly at all
  * times instead of only after a hydration that this app confirms doesn't
  * happen. `OWNERSHIP_TAGLINE_WORDS` still carries the per-word split the
