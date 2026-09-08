@@ -4,10 +4,16 @@ import { cn } from "@/lib/utils"
 
 export interface IllustrationBubbleProps {
   text: string
-  /** Absolute `left`/`top`/`width` in px, measured against the exported illustration at 1x (CSS) scale. */
-  left: number
-  top: number
-  width: number
+  /**
+   * Position/size as percentages of the illustration's own box (not the
+   * outer card) — same convention as §3's `product-bento-accents.tsx`, so
+   * this tracks the image losslessly at any rendered width rather than
+   * drifting once the box stops matching the 320px-wide Figma mobile
+   * design (fix round 1, Important 2).
+   */
+  leftPct: number
+  topPct: number
+  widthPct: number
   compact?: boolean
 }
 
@@ -18,10 +24,11 @@ export interface IllustrationBubbleProps {
  * position/size (whatever colour the exported reference happened to use) —
  * this div is sized and positioned to sit pixel-for-pixel on top of it, so
  * its opaque `var(--wc-accent)` fill fully occludes the baked pixels rather
- * than blending with them. Position/size verified empirically against the
- * exported PNGs (pixel-sampled the bubble's fill boundary), not solely
- * derived from the Figma JSON — the JSON's nested-group offsets undershot
- * the true render position by a few px in one case (card 2 desktop).
+ * than blending with them. Percentages were derived from px positions
+ * verified empirically against the exported PNGs (pixel-sampled the
+ * bubble's fill boundary), not solely the Figma JSON — the JSON's
+ * nested-group offsets undershot the true render position by a few px in
+ * one case (card 2 desktop).
  *
  * Desktop style: Figma `style_daa6c90d` (Inter 16px/1.2/-0.01em) + bubble
  * frame padding `9px 20px 9px 10px`, border `rgba(255,255,255,0.2)`, radius
@@ -33,9 +40,9 @@ export interface IllustrationBubbleProps {
  */
 export function IllustrationBubble({
   text,
-  left,
-  top,
-  width,
+  leftPct,
+  topPct,
+  widthPct,
   compact,
 }: IllustrationBubbleProps) {
   return (
@@ -47,9 +54,9 @@ export function IllustrationBubble({
       )}
       style={
         {
-          left,
-          top,
-          width,
+          left: `${leftPct}%`,
+          top: `${topPct}%`,
+          width: `${widthPct}%`,
           backgroundColor: "var(--wc-accent)",
           color: "var(--wc-accent-foreground)",
         } as CSSProperties

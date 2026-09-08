@@ -24,18 +24,21 @@ const GLOW_CLASSES =
  * `45487:79906` vs `45503:149685` — confirming that particular wash is fixed,
  * not accent-driven); this translucent `var(--wc-accent-soft)` layer sits on
  * top of it so the row reads as accent-tinted, same technique as the hero's
- * `DataTable` selected row.
+ * `DataTable` selected row. Percentages of the illustration's own box, same
+ * convention as `IllustrationBubble` (fix round 1, Important 2) — the mobile
+ * `widthPct` intentionally exceeds 100 so the row keeps overflowing past the
+ * box's right edge exactly like Figma's own crop there.
  */
 function SelectedRow({
-  left,
-  top,
-  width,
-  height,
+  leftPct,
+  topPct,
+  widthPct,
+  heightPct,
 }: {
-  left: number
-  top: number
-  width: number
-  height: number
+  leftPct: number
+  topPct: number
+  widthPct: number
+  heightPct: number
 }) {
   return (
     <div
@@ -43,10 +46,10 @@ function SelectedRow({
       className="absolute"
       style={
         {
-          left,
-          top,
-          width,
-          height,
+          left: `${leftPct}%`,
+          top: `${topPct}%`,
+          width: `${widthPct}%`,
+          height: `${heightPct}%`,
           backgroundColor: "var(--wc-accent-soft)",
         } as CSSProperties
       }
@@ -56,7 +59,8 @@ function SelectedRow({
 
 /**
  * Card 2, "Web Chat". Figma desktop `45487:79840` (909×480); mobile
- * `45510:177623` (fill×457). Personalized reference `45503:149616`.
+ * `45510:177623` (fill×457, border ~0.78px, radius ~18.69px). Personalized
+ * reference `45503:149616`.
  *
  * Mobile is its own composition, not a scaled desktop: the mobile frame's
  * "ui" (chat + floating table) group is a *sibling* of its background frame
@@ -67,26 +71,56 @@ function SelectedRow({
  * `45510:177623`) with the baked "Web Chat" title/body cropped back off the
  * bottom (that text is coded separately below, from the data module, not
  * baked into the image) — everything above the crop line renders exactly as
- * designed, edge-crop included.
+ * designed, edge-crop included. The mobile illustration wrapper is
+ * aspect-ratio locked (`640/645`, the exported PNG's own ratio) so the
+ * bubble/row percentages track it at any phone width (fix round 1,
+ * Important 2).
+ *
+ * `<Image>` renders *before* the glow/`HueLayer` pair in both breakpoints'
+ * `isolate` hosts — fix round 1's Critical: a `fill` image paints over
+ * anything earlier in the DOM, so glow/HueLayer must come after it, not
+ * before, to be visible at all. Same order §3's `product-bento-card.tsx`
+ * uses.
  */
 export function WebChatCard() {
   return (
-    <div className="relative isolate flex h-[457px] w-full flex-col overflow-hidden rounded-[24px] border border-[#2A2B33] bg-[#101114] md:h-[480px] md:w-[909px]">
-      <div
-        aria-hidden
-        className={GLOW_CLASSES}
-        style={{ background: "var(--wc-hue)" }}
-      />
-      <HueLayer />
+    <div className="relative flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-[#2A2B33] bg-[#101114] md:h-[480px] md:w-[909px] md:rounded-[24px] md:border">
+      {/* Desktop illustration */}
+      <div className="hidden md:absolute md:inset-0 md:isolate md:block">
+        <Image
+          alt=""
+          aria-hidden
+          className="object-cover"
+          fill
+          src={illustrationDesktop}
+        />
+        <div
+          aria-hidden
+          className={GLOW_CLASSES}
+          style={{ background: "var(--wc-hue)" }}
+        />
+        <HueLayer />
+      </div>
+      <div className="hidden md:block">
+        <SelectedRow
+          heightPct={9.17}
+          leftPct={44.0}
+          topPct={40.21}
+          widthPct={51.16}
+        />
+        <IllustrationBubble
+          leftPct={15.4}
+          text={COMPARE_WEB_CHAT_BUBBLE}
+          topPct={6.67}
+          widthPct={31.79}
+        />
+      </div>
 
-      <Image
-        alt=""
-        aria-hidden
-        className="hidden object-cover md:block"
-        fill
-        src={illustrationDesktop}
-      />
-      <div className="relative h-[322px] w-full shrink-0 md:hidden">
+      {/* Mobile illustration */}
+      <div
+        className="relative isolate w-full shrink-0 overflow-hidden md:hidden"
+        style={{ aspectRatio: "640/645" }}
+      >
         <Image
           alt=""
           aria-hidden
@@ -94,31 +128,40 @@ export function WebChatCard() {
           fill
           src={illustrationMobile}
         />
-        <SelectedRow height={30} left={46} top={198} width={400} />
+        <div
+          aria-hidden
+          className={GLOW_CLASSES}
+          style={{ background: "var(--wc-hue)" }}
+        />
+        <HueLayer />
+        <SelectedRow
+          heightPct={9.3}
+          leftPct={14.38}
+          topPct={61.4}
+          widthPct={125}
+        />
         <IllustrationBubble
-          left={90}
-          text={COMPARE_WEB_CHAT_BUBBLE}
-          top={16}
-          width={196}
           compact
-        />
-      </div>
-
-      <div className="hidden md:block">
-        <SelectedRow height={44} left={400} top={193} width={465} />
-        <IllustrationBubble
-          left={140}
+          leftPct={28.13}
           text={COMPARE_WEB_CHAT_BUBBLE}
-          top={32}
-          width={289}
+          topPct={4.96}
+          widthPct={61.25}
         />
       </div>
 
-      <div className="flex flex-1 flex-col justify-center gap-2.5 px-4 md:absolute md:top-[369px] md:left-7 md:block md:w-[555px] md:px-0">
-        <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white md:text-[20px]">
+      <div className="flex flex-1 flex-col justify-center gap-2.5 px-4 md:hidden">
+        <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
           {COMPARE_WEB_CHAT_TITLE}
         </h3>
-        <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70 md:text-[16px]">
+        <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
+          {COMPARE_WEB_CHAT_BODY}
+        </p>
+      </div>
+      <div className="hidden md:absolute md:top-[369px] md:left-7 md:flex md:w-[555px] md:flex-col md:gap-2.5">
+        <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">
+          {COMPARE_WEB_CHAT_TITLE}
+        </h3>
+        <p className="text-[16px] leading-[1.5] tracking-[-0.02em] text-white/70">
           {COMPARE_WEB_CHAT_BODY}
         </p>
       </div>
