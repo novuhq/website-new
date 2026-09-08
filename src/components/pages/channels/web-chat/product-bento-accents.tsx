@@ -34,6 +34,24 @@ const BUBBLE_SHADOW =
 /**
  * Card 1 (`45487:79970`, left 6.67%/top 9.68%/width 45%) and card 2
  * (`45487:80132`, left 40.45%/top 34.48%/width 43.79%) chat bubbles.
+ *
+ * Fill is idle/fallback `linear-gradient(134deg, rgba(129,91,212,.94),
+ * rgba(248,106,203,.94))` (the fixed violet-to-pink Figma shows in the
+ * un-personalized `45487:79958` frame) switching to flat `var(--wc-accent)`
+ * only while `loading`/`personalized` (`45503-149086` shows a flat
+ * `#E65006`) — same two states `HueLayer` treats as "actively branded", via
+ * the same `group-data-[wc-state=…]` selector. Text stays white in both:
+ * Figma keeps it white on both the idle gradient and the orange reference,
+ * a common chat-bubble convention, so it isn't switched to
+ * `var(--wc-accent-foreground)` here.
+ *
+ * The personalized override is written as `linear-gradient(var(--wc-accent),
+ * var(--wc-accent))`, not a bare `var(--wc-accent)` — verified at runtime
+ * that Tailwind's arbitrary-value type inference reads a bare `var()` as a
+ * plain colour and emits `background-color`, which a preceding
+ * `background-image` (the idle gradient) simply paints over, so the accent
+ * never appeared. Wrapping it as a flat two-stop gradient keeps both rules
+ * on `background-image`, so the cascade actually overrides.
  */
 export function MessageBubble({
   text,
@@ -48,12 +66,11 @@ export function MessageBubble({
 }) {
   return (
     <p
-      className="absolute rounded-[9px_9px_1px_9px] p-[6px_12px_6px_7px] text-[11px] leading-[1.2] tracking-[-0.01em] text-white md:rounded-[14px_14px_2px_14px] md:p-[9px_20px_9px_10px] md:text-base"
+      className="absolute rounded-[9px_9px_1px_9px] bg-[linear-gradient(134deg,rgba(129,91,212,.94),rgba(248,106,203,.94))] p-[6px_12px_6px_7px] text-[11px] leading-[1.2] tracking-[-0.01em] text-white group-data-[wc-state=loading]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] group-data-[wc-state=personalized]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] md:rounded-[14px_14px_2px_14px] md:p-[9px_20px_9px_10px] md:text-base"
       style={{
         left: `${leftPct}%`,
         top: `${topPct}%`,
         width: `${widthPct}%`,
-        background: "var(--wc-accent)",
         border: "1px solid rgba(255,255,255,0.2)",
         boxShadow: BUBBLE_SHADOW,
       }}
@@ -72,7 +89,7 @@ export function MessageBubble({
 export function ActionsStepBullet() {
   return (
     <div
-      className="absolute flex aspect-square items-center justify-center rounded-full border border-black text-[10px] font-medium tracking-[-0.02em] text-white md:text-lg"
+      className="absolute flex aspect-square items-center justify-center rounded-full border border-black text-[10px] font-medium tracking-[-0.02em] md:text-lg"
       style={{
         left: "10.19%",
         top: "41.33%",
@@ -81,6 +98,12 @@ export function ActionsStepBullet() {
         // occludes the baked pixel underneath instead of letting it bleed
         // through and double the "3" as a ghosted ring.
         background: "color-mix(in srgb, var(--wc-accent) 80%, #0b0b0d)",
+        // Figma always shows white here, but that's a one-persona blind
+        // spot — a pale accent (e.g. `#FFE066`) would read unreadable at
+        // 80% strength with fixed white. `--wc-accent-foreground` is the
+        // same luminance-threshold token the hero's send button/avatar ring
+        // already use for this exact problem.
+        color: "var(--wc-accent-foreground)",
       }}
     >
       {PRODUCT_BENTO_ACTIONS_STEP}
@@ -91,8 +114,12 @@ export function ActionsStepBullet() {
 /**
  * Card 4's confirm/Approve/Cancel panel (`45487:80341`-`45487:80350`, left
  * 22.22%/top 42.14%/width 67.82%). The panel fill/border are accent-derived;
- * the Approve (white/black) and Cancel (outline) buttons are not — both stay
- * identical between the idle and personalized reference frames.
+ * Approve and Cancel's own fills (white / transparent) are not — both stay
+ * identical between the idle and personalized reference frames. Approve's
+ * black label sits on that static white fill, so it's unaffected by the
+ * accent and stays `text-black`. Cancel has no fill of its own — its label
+ * sits directly on the accent-tinted panel behind it — so it reads
+ * `var(--wc-accent-foreground)` rather than a fixed `text-white`.
  */
 export function AgentActionsConfirmPanel() {
   return (
@@ -124,7 +151,10 @@ export function AgentActionsConfirmPanel() {
         <span className="flex flex-1 items-center justify-center rounded-md bg-white p-[4px_8px] text-[10px] font-medium tracking-[-0.01em] text-black md:p-[6px_12px_7px] md:text-sm">
           {PRODUCT_BENTO_APPROVE_LABEL}
         </span>
-        <span className="flex flex-1 items-center justify-center rounded-md border border-white/20 p-[4px_8px] text-[10px] font-medium tracking-[-0.01em] text-white md:p-[6px_12px_7px] md:text-sm">
+        <span
+          className="flex flex-1 items-center justify-center rounded-md border border-white/20 p-[4px_8px] text-[10px] font-medium tracking-[-0.01em] md:p-[6px_12px_7px] md:text-sm"
+          style={{ color: "var(--wc-accent-foreground)" }}
+        >
           {PRODUCT_BENTO_CANCEL_LABEL}
         </span>
       </div>
@@ -135,10 +165,12 @@ export function AgentActionsConfirmPanel() {
 /**
  * Card 5's "View updater order" button (`45487:80387`/`45487:80388`, left
  * 27.55%/top 47.78%/width 74.07% — it deliberately overflows the card's right
- * edge, matching Figma's own crop there). Text stays the fixed near-black
- * `#050505` Figma uses in both the idle and personalized reference frames,
- * not `var(--wc-accent-foreground)` — flagged in the task report as a
- * possible contrast risk for very dark brand accents.
+ * edge, matching Figma's own crop there). Figma fixes this text at a
+ * near-black `#050505` in both the idle and orange-personalized reference
+ * frames — but that's a one-persona blind spot (Figma never has to render a
+ * dark brand accent), so it reads `var(--wc-accent-foreground)` instead,
+ * which resolves to the same near-black look for light/mid accents and
+ * flips to white only when the accent itself is dark.
  */
 export function ViewOrderButton() {
   return (
@@ -156,7 +188,7 @@ export function ViewOrderButton() {
         // visible underneath, ghosting the text.
         height: "6.85%",
         background: "var(--wc-accent)",
-        color: "#050505",
+        color: "var(--wc-accent-foreground)",
       }}
     >
       {PRODUCT_BENTO_VIEW_ORDER_LABEL}
