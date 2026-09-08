@@ -5,11 +5,10 @@ import type { IStackOption } from "@/data/pages/connect-stack-options"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
 /**
- * Shared configurator core (see `connect-stack-options.ts` for why this file
- * exists as a net-new recreation of Task 3's still-BLOCKED deliverable).
- * Moved verbatim out of `connect-stack.tsx` — same markup, same Tailwind
- * classes, same behaviour. `connect-stack.tsx` keeps its own private copy for
- * now; a future pass should have it import this instead.
+ * Shared configurator core (see `connect-stack-options.ts` for background on
+ * why this file exists as a net-new extraction). Moved verbatim out of
+ * `connect-stack.tsx` — same markup, same Tailwind classes, same behaviour.
+ * `connect-stack.tsx` and `web-chat/configurator.tsx` both import this now.
  */
 
 function OptionLabel({ option }: { option: IStackOption }) {

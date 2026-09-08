@@ -14,19 +14,11 @@ import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 
 /**
  * Shared configurator core (originally Task 3 of the web-chat Figma redesign
- * plan). Task 3 itself is still BLOCKED in this branch's history (its own
- * report: `.superpowers/sdd/2026-09-08-web-chat-figma-redesign/task-3-report.md`
- * — a sandboxed Playwright baseline never ran, so it made no source changes).
- * Its brief specified this exact module: move `IStackOption`, `DEFAULT_CHANNELS`
- * and `DEFAULT_FRAMEWORKS` out of `connect-stack.tsx` verbatim (same values,
- * same icon imports, same order) and add `WEB_CHAT_CHANNEL`.
- *
- * Task 15 (§8 configurator) depends on this module and cannot import something
- * that does not exist, so this file recreates Task 3's deliverable exactly as
- * specified, as net-new files only. `connect-stack.tsx` and
- * `channel-connect-stack.tsx` are NOT touched here — they keep their own
- * inline copies of these same lists for now. A future pass (Task 3, redone)
- * should point those two files at this module and delete their inline copies.
+ * plan). `IStackOption`, `DEFAULT_CHANNELS` and `DEFAULT_FRAMEWORKS` were
+ * moved here verbatim out of `connect-stack.tsx` (same values, same icon
+ * imports, same order); `WEB_CHAT_CHANNEL` was added for the Web Chat page's
+ * own configurator. `connect-stack.tsx` and `channel-connect-stack.tsx` both
+ * import from this module now.
  */
 
 export interface IStackOption {
