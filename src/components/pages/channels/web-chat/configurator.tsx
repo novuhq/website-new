@@ -25,7 +25,10 @@ import {
   CONFIGURATOR_PROMPT_TAB_LABEL,
 } from "@/data/pages/web-chat-configurator"
 
-import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
+import {
+  buildConnectCommand,
+  buildFrameworkChannelConnectPrompt,
+} from "@/lib/connect-prompt"
 import { SelectField } from "@/components/ui/select-field"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
@@ -37,8 +40,9 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
  *
  * `SelectField` and the option lists come from `@/components/ui/select-field`
  * and `@/data/pages/connect-stack-options` — see that data module's file
- * header for why those files were created here rather than by the Task 3 this
- * plan expected to have shipped them (it's still BLOCKED; see its report).
+ * header for background on why those files were originally created here as
+ * a net-new extraction. `connect-stack.tsx` now imports from both modules
+ * too, so this configurator and the homepage share one implementation.
  *
  * Layout: no Figma frame authors this section below desktop (the mobile page
  * `45487-98982` jumps from §6 straight to its end, three separate fetches
@@ -120,7 +124,7 @@ export function WebChatConfigurator() {
 
   const channelSlug = channel.cliSlug ?? channel.value
   const frameworkSlug = framework.cliSlug ?? framework.value
-  const command = `npx novu connect --channel ${channelSlug} --runtime ${frameworkSlug}`
+  const command = buildConnectCommand({ channelSlug, frameworkSlug })
   const prompt = buildFrameworkChannelConnectPrompt({
     frameworkName: framework.promptLabel ?? framework.label,
     channelName: channel.promptLabel ?? channel.label,

@@ -7,7 +7,10 @@ import {
   type IStackOption,
 } from "@/data/pages/connect-stack-options"
 
-import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
+import {
+  buildConnectCommand,
+  buildFrameworkChannelConnectPrompt,
+} from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { SelectField } from "@/components/ui/select-field"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -57,7 +60,10 @@ function ConnectStack({
   const frameworkLabel = framework.promptLabel ?? framework.label
   const channelLabel = channel.promptLabel ?? channel.label
   const channelSlug = channel.cliSlug ?? channel.value
-  const command = `npx novu connect --channel ${channelSlug} --runtime ${framework.cliSlug ?? framework.value}`
+  const command = buildConnectCommand({
+    channelSlug,
+    frameworkSlug: framework.cliSlug ?? framework.value,
+  })
   const prompt = buildFrameworkChannelConnectPrompt({
     frameworkName: frameworkLabel,
     channelName: channelLabel,

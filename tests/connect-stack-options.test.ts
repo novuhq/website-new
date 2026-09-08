@@ -2,7 +2,10 @@ import assert from "node:assert/strict"
 import Module from "node:module"
 import { before, describe, it } from "node:test"
 
-import { buildFrameworkChannelConnectPrompt } from "@/lib/connect-prompt"
+import {
+  buildConnectCommand,
+  buildFrameworkChannelConnectPrompt,
+} from "@/lib/connect-prompt"
 
 /**
  * `connect-stack-options.ts` imports channel/framework icons as `*.svg`
@@ -49,14 +52,16 @@ before(async () => {
 })
 
 /**
- * Mirrors the derivation in `connect-stack.tsx` / `web-chat/configurator.tsx`:
- * the CLI command uses `cliSlug ?? value` for both the channel and the
- * framework, and the prompt is built from `promptLabel ?? label`.
+ * Delegates to the same `buildConnectCommand` that `connect-stack.tsx` and
+ * `web-chat/configurator.tsx` call, so this test guards the shipped command
+ * construction rather than a parallel copy of it. Only the slug derivation
+ * (`cliSlug ?? value`, mirroring both components) lives here.
  */
 function buildCommand(channel: IStackOption, framework: IStackOption): string {
-  const channelSlug = channel.cliSlug ?? channel.value
-  const frameworkSlug = framework.cliSlug ?? framework.value
-  return `npx novu connect --channel ${channelSlug} --runtime ${frameworkSlug}`
+  return buildConnectCommand({
+    channelSlug: channel.cliSlug ?? channel.value,
+    frameworkSlug: framework.cliSlug ?? framework.value,
+  })
 }
 
 function buildPrompt(channel: IStackOption, framework: IStackOption): string {
