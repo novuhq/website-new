@@ -11,7 +11,7 @@ import {
   STORYBOARD_TIMING,
   type StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
-import { ArrowUp } from "lucide-react"
+import { ArrowUp, Maximize2, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { AgentFieldTable } from "@/components/pages/channels/web-chat/agent-field-table"
@@ -55,13 +55,18 @@ function AgentAvatar({
 }
 
 /**
- * Header bar: avatar + `HERO_PANEL_TITLE`. Figma desktop `45487:90366`
- * (h-56, border-b `rgba(255,255,255,0.3)`, avatar 40x40 at 8/8, title Inter
- * Regular 18px/`-0.02em` at x60/y17); mobile `45487:113162` (~0.4662x).
- * The two unlabeled icon frames at the header's right edge
- * (`45487:90403`/template `EL-eade9af0`) have no extractable glyph or name
- * and no behavioural role in the brief, so they're omitted rather than
- * guessed.
+ * Header bar: avatar + `HERO_PANEL_TITLE` + a decorative expand/close pair.
+ * Figma desktop `45487:90366` (h-56, border-b `rgba(255,255,255,0.3)`,
+ * avatar 40x40 at 8/8, title Inter Regular 18px/`-0.02em` at x60/y17, icon
+ * pair 20x20 each with 16px gap at x332/y18 — confirmed present across
+ * every rendered frame, `45487-79055`/`87703`/`89814`/`94116`); mobile
+ * `45487:113162`/`113199` (~0.4662x, icons 9.32px, gap 7.46px). The API's
+ * extracted data returned empty fills for these icon nodes with no name
+ * beyond generic "Frame", so the glyphs (expand/maximize + close) are taken
+ * from direct visual confirmation rather than the API. They're inert in
+ * this mock — `aria-hidden`, no handlers, and (being plain `<svg>`s, not
+ * buttons) never enter the tab order — and muted like the rest of the
+ * header chrome rather than accented, matching the frames.
  */
 function PanelHeader({ compact }: { compact?: boolean }) {
   return (
@@ -83,6 +88,16 @@ function PanelHeader({ compact }: { compact?: boolean }) {
       >
         {HERO_PANEL_TITLE}
       </span>
+      <div
+        aria-hidden
+        className={cn(
+          "ml-auto flex shrink-0 items-center gap-4 pr-2 text-white/40",
+          compact && "gap-[7.46px] pr-1"
+        )}
+      >
+        <Maximize2 className={cn("size-5", compact && "size-[9.32px]")} />
+        <X className={cn("size-5", compact && "size-[9.32px]")} />
+      </div>
     </div>
   )
 }
