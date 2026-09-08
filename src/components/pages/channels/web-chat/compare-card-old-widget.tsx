@@ -38,6 +38,18 @@ const GLOW_CLASSES =
  * opaque `position:absolute;inset:0` box, so a DOM-earlier glow/HueLayer
  * gets fully painted over and never shows. Same order §3's
  * `product-bento-card.tsx` uses.
+ *
+ * Mobile title/body are an absolute overlay on top of the illustration
+ * (percentages of the aspect-ratio box, same technique as
+ * `IllustrationBubble`), not a flow block below it — fix round 2. Card 1's
+ * mobile PNG (640×748 = 320×374 at 1x) reserves its own bottom ~30% as flat
+ * empty background for this text (confirmed with `sips`: no crop, no baked
+ * copy there), unlike card 2's mobile asset, which really is cropped short
+ * to make room below it. Rendering this card's text as a flow sibling below
+ * the *full* image therefore left a blank gap where the image's reserved
+ * region already was, plus a spurious tail below Figma's authored ~374px
+ * frame height. The overlay puts the text back exactly where the image's
+ * empty region expects it.
  */
 export function OldWidgetCard() {
   return (
@@ -66,12 +78,20 @@ export function OldWidgetCard() {
           widthPct={55.23}
         />
       </div>
+      <div className="hidden md:absolute md:top-[369px] md:left-7 md:flex md:w-[355px] md:flex-col md:gap-2.5">
+        <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">
+          {COMPARE_OLD_WIDGET_TITLE}
+        </h3>
+        <p className="text-[16px] leading-[1.5] tracking-[-0.02em] text-white/70">
+          {COMPARE_OLD_WIDGET_BODY}
+        </p>
+      </div>
 
-      {/* Mobile illustration — aspect-ratio locked so the bubble's percentage
-          position tracks the image at any phone width, not just Figma's
-          authored 320px (fix round 1, Important 2). */}
+      {/* Mobile illustration — aspect-ratio locked so the bubble's and
+          text's percentage positions track the image at any phone width,
+          not just Figma's authored 320px (fix round 1, Important 2). */}
       <div
-        className="relative isolate w-full shrink-0 overflow-hidden md:hidden"
+        className="relative isolate w-full overflow-hidden md:hidden"
         style={{ aspectRatio: "320/374" }}
       >
         <Image
@@ -94,23 +114,17 @@ export function OldWidgetCard() {
           topPct={5.88}
           widthPct={55.31}
         />
-      </div>
-
-      <div className="flex flex-1 flex-col justify-center gap-2.5 px-4 md:hidden">
-        <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
-          {COMPARE_OLD_WIDGET_TITLE}
-        </h3>
-        <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
-          {COMPARE_OLD_WIDGET_BODY}
-        </p>
-      </div>
-      <div className="hidden md:absolute md:top-[369px] md:left-7 md:flex md:w-[355px] md:flex-col md:gap-2.5">
-        <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">
-          {COMPARE_OLD_WIDGET_TITLE}
-        </h3>
-        <p className="text-[16px] leading-[1.5] tracking-[-0.02em] text-white/70">
-          {COMPARE_OLD_WIDGET_BODY}
-        </p>
+        <div
+          className="absolute flex flex-col gap-2.5"
+          style={{ left: "5%", top: "71.39%", width: "90%" }}
+        >
+          <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
+            {COMPARE_OLD_WIDGET_TITLE}
+          </h3>
+          <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
+            {COMPARE_OLD_WIDGET_BODY}
+          </p>
+        </div>
       </div>
     </div>
   )
