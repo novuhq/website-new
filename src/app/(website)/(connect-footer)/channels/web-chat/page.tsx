@@ -6,7 +6,6 @@ import { getMetadata } from "@/lib/get-metadata"
 import AciPackage from "@/components/pages/channels/aci-package"
 import AgentCenterSurface from "@/components/pages/channels/agent-center-surface"
 import ChatThemeShowcase from "@/components/pages/channels/chat-theme-showcase"
-import { Reveal } from "@/components/pages/channels/web-chat-reveal"
 import { TaglineReveal } from "@/components/pages/channels/web-chat-tagline"
 import { WebChatBrandProvider } from "@/components/pages/channels/web-chat/brand-provider"
 import { WebChatHero } from "@/components/pages/channels/web-chat/hero"
@@ -74,25 +73,20 @@ export default function WebChatPage() {
       {/* A new era: this is Web Chat */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              A new era
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              You know the old chat widget. This is Web Chat.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              The old chat widget answered from a script, then handed you a
-              ticket form. Web Chat puts your real AI agent inside your product,
-              where it can read the context, take the action, and render the
-              result as real UI.
-            </p>
-          </Reveal>
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            A new era
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            You know the old chat widget. This is Web Chat.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            The old chat widget answered from a script, then handed you a ticket
+            form. Web Chat puts your real AI agent inside your product, where it
+            can read the context, take the action, and render the result as real
+            UI.
+          </p>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
-            <Reveal
-              className="rounded-xl border border-gray-20 bg-[#05050b] p-6"
-              delay={0.06}
-            >
+            <div className="rounded-xl border border-gray-20 bg-[#05050b] p-6">
               <span className="font-mono text-xs tracking-[0.14em] text-gray-60 uppercase">
                 The old chat widget
               </span>
@@ -104,11 +98,8 @@ export default function WebChatPage() {
                 <li>Walls of text, bolted onto one page</li>
                 <li>Its own silo, forgets you when you leave</li>
               </ul>
-            </Reveal>
-            <Reveal
-              className="rounded-xl border border-purple-3/50 bg-purple-3/5 p-6"
-              delay={0.12}
-            >
+            </div>
+            <div className="rounded-xl border border-purple-3/50 bg-purple-3/5 p-6">
               <span className="font-mono text-xs tracking-[0.14em] text-purple-1 uppercase">
                 Web Chat
               </span>
@@ -118,7 +109,7 @@ export default function WebChatPage() {
                 <li>Renders your components, right in the thread</li>
                 <li>One conversation across every channel</li>
               </ul>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -126,26 +117,21 @@ export default function WebChatPage() {
       {/* Pillar 1: lives in your product */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              Lives in your product
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              Not a chat box on your site. An agent inside your app.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Web Chat is embedded in your product, so it can do the work in
-              place: understand the context, act on it, and answer with real
-              interface built from your own components.
-            </p>
-          </Reveal>
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            Lives in your product
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            Not a chat box on your site. An agent inside your app.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            Web Chat is embedded in your product, so it can do the work in
+            place: understand the context, act on it, and answer with real
+            interface built from your own components.
+          </p>
           <ul className="mt-10 grid gap-4 md:grid-cols-3">
-            {IN_PRODUCT.map((card, i) => (
+            {IN_PRODUCT.map((card) => (
               <li key={card.title} className="h-full">
-                <Reveal
-                  delay={i * 0.08}
-                  className="h-full rounded-xl border border-gray-20 bg-[#05050b] p-6 transition-colors duration-500 hover:border-purple-3/40"
-                >
+                <div className="h-full rounded-xl border border-gray-20 bg-[#05050b] p-6 transition-colors duration-500 hover:border-purple-3/40">
                   <span className="font-mono text-xs tracking-[0.14em] text-gray-60 uppercase">
                     {card.label}
                   </span>
@@ -155,7 +141,7 @@ export default function WebChatPage() {
                   <p className="mt-2 text-sm leading-normal text-pretty text-gray-70">
                     {card.body}
                   </p>
-                </Reveal>
+                </div>
               </li>
             ))}
           </ul>
@@ -165,47 +151,38 @@ export default function WebChatPage() {
       {/* Second install pattern: the agent as the main surface */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              Ship it your way
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              Dock it beside your app, or make it the main event.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Same agent, same hook. Put it in a side panel next to your
-              product, like the demo up top, or give it the whole screen as the
-              primary surface. This one is centered, and it is just as live.
-            </p>
-          </Reveal>
-          <Reveal delay={0.1} className="mt-10">
-            <AgentCenterSurface />
-          </Reveal>
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            Ship it your way
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            Dock it beside your app, or make it the main event.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            Same agent, same hook. Put it in a side panel next to your product,
+            like the demo up top, or give it the whole screen as the primary
+            surface. This one is centered, and it is just as live.
+          </p>
+          <AgentCenterSurface className="mt-10" />
         </div>
       </section>
 
       {/* Pillar 2: same agent, every channel */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              Same agent, every channel
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              The one thing an in-app agent alone can never do.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Web Chat runs on the same rails as every channel, through Novu
-              Connect, our ACI, Agent Communication Infrastructure. It is the
-              same agent in your product and on Slack, Microsoft Teams,
-              iMessage, WhatsApp, Telegram, and email. Connect a new channel and
-              your agent code does not change.
-            </p>
-          </Reveal>
-          <Reveal
-            delay={0.06}
-            className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7"
-          >
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            Same agent, every channel
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            The one thing an in-app agent alone can never do.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            Web Chat runs on the same rails as every channel, through Novu
+            Connect, our ACI, Agent Communication Infrastructure. It is the same
+            agent in your product and on Slack, Microsoft Teams, iMessage,
+            WhatsApp, Telegram, and email. Connect a new channel and your agent
+            code does not change.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
             {CHANNELS.map((channel) => (
               <div key={channel.key}>
                 <div
@@ -235,7 +212,7 @@ export default function WebChatPage() {
                 </div>
               </div>
             ))}
-          </Reveal>
+          </div>
           <p className="mt-8 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-60">
             A user starts a task with your agent inside your app, then closes
             the tab. An hour later your agent follows up by email, in the same
@@ -248,31 +225,27 @@ export default function WebChatPage() {
       {/* The ACI package: production infrastructure, not just a connection */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              The ACI package
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              You are not connecting a chat. You are deploying the ACI.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Add the agent and you inherit the whole ACI, Agent Communication
-              Infrastructure: identity for every user, one durable thread,
-              delivery that lands, and the compliance and scale to run it for
-              real. Not a prototype and not a widget. Production ready in under
-              two minutes.
-            </p>
-          </Reveal>
-          <Reveal delay={0.1} className="mt-10">
-            <AciPackage />
-          </Reveal>
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            The ACI package
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            You are not connecting a chat. You are deploying the ACI.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            Add the agent and you inherit the whole ACI, Agent Communication
+            Infrastructure: identity for every user, one durable thread,
+            delivery that lands, and the compliance and scale to run it for
+            real. Not a prototype and not a widget. Production ready in under
+            two minutes.
+          </p>
+          <AciPackage className="mt-10" />
         </div>
       </section>
 
       {/* Customizable UI */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal className="rounded-2xl border border-gray-20 bg-[#05050b] p-6 md:p-10">
+          <div className="rounded-2xl border border-gray-20 bg-[#05050b] p-6 md:p-10">
             <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
               Yours to style
             </span>
@@ -307,29 +280,27 @@ export default function WebChatPage() {
               </a>
               <span className="text-gray-60">or any similar library</span>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
       {/* Ship from any builder + copy prompt */}
       <section className="mt-24 md:mt-32">
         <div className="container mx-auto max-w-288 px-5 md:px-8">
-          <Reveal>
-            <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
-              Works anywhere
-            </span>
-            <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
-              It's just a prompt. Ship it from any builder.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
-              Web Chat is React and a hook, so it runs in whatever you build
-              with. Paste the prompt into Lovable, Base44, Bolt, or any coding
-              agent, or drop it into Next.js, Vite, or Remix by hand. Your agent
-              goes live inside your app, no matter where you build.
-            </p>
-          </Reveal>
+          <span className="font-mono text-xs tracking-[0.16em] text-gray-60 uppercase">
+            Works anywhere
+          </span>
+          <h2 className="mt-3 max-w-2xl text-[1.75rem] leading-[1.125] font-normal tracking-[-0.04em] text-balance text-white md:text-[2rem]">
+            It's just a prompt. Ship it from any builder.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-normal tracking-tighter text-pretty text-gray-70">
+            Web Chat is React and a hook, so it runs in whatever you build with.
+            Paste the prompt into Lovable, Base44, Bolt, or any coding agent, or
+            drop it into Next.js, Vite, or Remix by hand. Your agent goes live
+            inside your app, no matter where you build.
+          </p>
 
-          <Reveal className="mt-8 flex flex-wrap gap-2" delay={0.06}>
+          <div className="mt-8 flex flex-wrap gap-2">
             {BUILDERS.map((name) => (
               <span
                 className="rounded-full border border-gray-20 bg-[#05050b] px-3.5 py-1.5 font-mono text-sm text-gray-80"
@@ -341,12 +312,9 @@ export default function WebChatPage() {
             <span className="rounded-full px-3.5 py-1.5 font-mono text-sm text-gray-60">
               or any framework
             </span>
-          </Reveal>
+          </div>
 
-          <Reveal
-            className="mt-10 rounded-2xl border border-gray-20 bg-[#05050b] p-6 md:p-8"
-            delay={0.1}
-          >
+          <div className="mt-10 rounded-2xl border border-gray-20 bg-[#05050b] p-6 md:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <h3 className="text-lg font-normal tracking-tighter text-white">
@@ -369,7 +337,7 @@ export default function WebChatPage() {
             <pre className="mt-5 max-h-44 overflow-auto rounded-lg border border-gray-20 bg-black p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap text-gray-70">
               {HERO_IMPLEMENT_PROMPT}
             </pre>
-          </Reveal>
+          </div>
         </div>
       </section>
 
