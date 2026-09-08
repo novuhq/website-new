@@ -29,8 +29,8 @@ const SURFACE_THEME = {
     bubbleBg:
       "linear-gradient(90deg, rgba(153,80,43,0.4) 0%, rgba(255,133,71,0.4) 100%)",
     bubbleRadius: "9px",
-    accent: "rgba(252,131,70,0.9)",
-    labelColor: "rgba(252,131,70,0.9)",
+    accent: "rgba(252,131,70,0.8)",
+    labelColor: "rgba(252,131,70,0.8)",
   },
   purple: {
     cardBg: "rgba(0,0,0,0.74)",
@@ -190,12 +190,7 @@ function Composer({
           : "border-white/10 bg-black/70"
       )}
     >
-      <span
-        className={cn(
-          "text-[13px] leading-[1.2] tracking-[-0.01em]",
-          isLight ? "text-[#707280]" : "text-[#707280]"
-        )}
-      >
+      <span className="text-[13px] leading-[1.2] tracking-[-0.01em] text-[#707280]">
         {DESIGN_SYSTEM_COMPOSER_PLACEHOLDER}
       </span>
       <span
