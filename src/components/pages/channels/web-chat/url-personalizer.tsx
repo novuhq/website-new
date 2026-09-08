@@ -115,7 +115,7 @@ export function UrlPersonalizer({
               className="min-w-0 flex-1 bg-transparent text-lg text-white placeholder:text-white/40 focus:outline-none"
             />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pr-3">
             <Button
               type="submit"
               disabled={isLoading}
@@ -137,7 +137,7 @@ export function UrlPersonalizer({
         </div>
       </form>
 
-      <p className="text-center text-sm leading-[1.38em] tracking-tight text-white/40">
+      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40">
         {CAPTION}
       </p>
     </div>
