@@ -1,18 +1,9 @@
 /**
  * Server-side brand extraction for the Agent Chat "try it on your site"
  * personalizer. Fetches a URL's HTML, pulls a small brand profile (name, color,
- * logo inlined as a data URI, and a coarse vertical guess), and never touches
- * the client with an arbitrary external asset. No screenshot service, no LLM.
+ * and logo inlined as a data URI), and never touches the client with an
+ * arbitrary external asset. No screenshot service, no LLM.
  */
-
-export type Vertical =
-  | "saas"
-  | "ecommerce"
-  | "fintech"
-  | "support"
-  | "healthcare"
-  | "developer"
-  | "generic"
 
 export type BrandProfile = {
   url: string
@@ -21,7 +12,6 @@ export type BrandProfile = {
   description: string
   accent: string | null // hex, validated
   logo: string | null // data URI
-  vertical: Vertical
 }
 
 const FETCH_TIMEOUT = 6000
@@ -33,7 +23,9 @@ const UA =
 /** Normalize user input into a safe http(s) URL, or throw. */
 export function normalizeUrl(input: string): URL {
   const trimmed = input.trim()
-  const withProto = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
+  const withProto = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`
   const url = new URL(withProto) // throws on garbage
 
   if (url.protocol !== "http:" && url.protocol !== "https:") {
@@ -58,7 +50,12 @@ function isBlockedHost(hostname: string): boolean {
     if (a === 192 && b === 168) return true
     if (a === 172 && b >= 16 && b <= 31) return true
   }
-  if (h === "::1" || h.startsWith("fe80") || h.startsWith("fc") || h.startsWith("fd"))
+  if (
+    h === "::1" ||
+    h.startsWith("fe80") ||
+    h.startsWith("fc") ||
+    h.startsWith("fd")
+  )
     return true
   return false
 }
@@ -97,7 +94,11 @@ async function fetchHtml(url: URL): Promise<string> {
 
 // --- HTML parsing (regex-based; this is preview copy, not a DOM contract) ---
 
-function metaContent(html: string, keyAttr: string, key: string): string | null {
+function metaContent(
+  html: string,
+  keyAttr: string,
+  key: string
+): string | null {
   // matches <meta name="..." content="..."> in either attribute order
   const re = new RegExp(
     `<meta[^>]+${keyAttr}=["']${key}["'][^>]*content=["']([^"']+)["']`,
@@ -128,7 +129,9 @@ function decodeEntities(s: string): string {
 function cleanName(raw: string, domain: string): string {
   // Site names often read "Product | Tagline" or "Product - Tagline". Take the
   // strongest segment, cap length, fall back to the domain.
-  const first = decodeEntities(raw).split(/\s[|\-–—·:]\s/)[0]?.trim()
+  const first = decodeEntities(raw)
+    .split(/\s[|\-–—·:]\s/)[0]
+    ?.trim()
   const name = (first || domain).slice(0, 40)
   return name || domain
 }
@@ -141,8 +144,16 @@ function validHex(input: string | null): string | null {
 
 function toRgb(hex: string): [number, number, number] {
   let h = hex.slice(1)
-  if (h.length === 3) h = h.split("").map((c) => c + c).join("")
-  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]
+  if (h.length === 3)
+    h = h
+      .split("")
+      .map((c) => c + c)
+      .join("")
+  return [
+    parseInt(h.slice(0, 2), 16),
+    parseInt(h.slice(2, 4), 16),
+    parseInt(h.slice(4, 6), 16),
+  ]
 }
 
 /**
@@ -173,8 +184,21 @@ function usableAccent(hex: string | null): string | null {
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
   const m = nl - c / 2
   const [r1, g1, b1] =
-    h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x]
-  const hx = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, "0")
+    h < 60
+      ? [c, x, 0]
+      : h < 120
+        ? [x, c, 0]
+        : h < 180
+          ? [0, c, x]
+          : h < 240
+            ? [0, x, c]
+            : h < 300
+              ? [x, 0, c]
+              : [c, 0, x]
+  const hx = (v: number) =>
+    Math.round((v + m) * 255)
+      .toString(16)
+      .padStart(2, "0")
   return `#${hx(r1)}${hx(g1)}${hx(b1)}`
 }
 
@@ -201,7 +225,11 @@ function iconCandidates(html: string, base: URL): string[] {
 async function inlineLogo(candidates: string[]): Promise<string | null> {
   for (const src of candidates) {
     try {
-      const res = await fetchWithTimeout(src, { headers: { accept: "image/*" } }, 4000)
+      const res = await fetchWithTimeout(
+        src,
+        { headers: { accept: "image/*" } },
+        4000
+      )
       if (!res.ok) continue
       const ct = res.headers.get("content-type") || ""
       if (!ct.startsWith("image/")) continue
@@ -216,67 +244,13 @@ async function inlineLogo(candidates: string[]): Promise<string | null> {
   return null
 }
 
-const VERTICAL_KEYWORDS: Array<[Vertical, RegExp]> = [
-  [
-    // Commerce-specific signals only ("product" is too common on all SaaS sites).
-    "ecommerce",
-    /\b(add to cart|shopping cart|checkout|storefront|ecommerce|e-commerce|online store|retail|apparel|boutique|free shipping|add to bag)\b/i,
-  ],
-  [
-    "fintech",
-    /\b(bank|payment|invoic\w*|fintech|crypto|wallet|transactions?|lending|trading|billing|finance|payroll)\b/i,
-  ],
-  [
-    "healthcare",
-    /\b(health|patients?|clinic|medical|therapy|wellness|hospital|care team|telehealth)\b/i,
-  ],
-  [
-    "support",
-    /\b(help ?desk|support|tickets?|customer service|service ?desk|contact center)\b/i,
-  ],
-  [
-    "developer",
-    /\b(api|sdk|developer|deploy\w*|devops|infrastructure|open ?source|repos?|git|ci\/cd)\b/i,
-  ],
-  [
-    "saas",
-    /\b(dashboard|platform|workspace|workflow|analytics|crm|saas|b2b|software|teams?|automation)\b/i,
-  ],
-]
-
-/** Visible-text approximation: drop script/style, strip tags, collapse space. */
-function visibleText(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .slice(0, 8000)
-}
-
-function inferVertical(text: string): Vertical {
-  let best: Vertical = "generic"
-  let bestScore = 0
-  for (const [vertical, re] of VERTICAL_KEYWORDS) {
-    const matches = text.match(new RegExp(re, "gi"))
-    const score = matches ? matches.length : 0
-    if (score > bestScore) {
-      best = vertical
-      bestScore = score
-    }
-  }
-  return best
-}
-
 export async function getBrandProfile(rawUrl: string): Promise<BrandProfile> {
   const url = normalizeUrl(rawUrl)
   const domain = url.hostname.replace(/^www\./, "")
   const html = await fetchHtml(url)
 
   const name = cleanName(
-    metaContent(html, "property", "og:site_name") ||
-      firstTitle(html) ||
-      domain,
+    metaContent(html, "property", "og:site_name") || firstTitle(html) || domain,
     domain
   )
   const description = decodeEntities(
@@ -292,8 +266,5 @@ export async function getBrandProfile(rawUrl: string): Promise<BrandProfile> {
 
   const logo = await inlineLogo(iconCandidates(html, url))
 
-  const haystack = `${name} ${description} ${visibleText(html)}`
-  const vertical = inferVertical(haystack)
-
-  return { url: url.toString(), domain, name, description, accent, logo, vertical }
+  return { url: url.toString(), domain, name, description, accent, logo }
 }
