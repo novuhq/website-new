@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import Image, { type StaticImageData } from "next/image"
 
 import { cn } from "@/lib/utils"
@@ -12,6 +12,17 @@ export interface ProductBentoCardProps {
    * the full-width mobile stack, which Figma has no authored frame for —
    * see the task report). */
   aspectRatio: `${number}/${number}`
+  /**
+   * Mobile-only override, found and fixed during the integration pass's
+   * whole-page screenshot check. Row-one cards' `660/496` ratio renders far
+   * shorter at full mobile width than at 660px desktop, so the fixed-pixel
+   * overlay text below intrudes on the illustration itself (confirmed on a
+   * real 360px render: the title sat directly on top of the mock UI's
+   * copy). Row-two's `432/496` ratio reserves enough height at any width, so
+   * this defaults to `aspectRatio` and only the two row-one cards pass a
+   * taller value here.
+   */
+  mobileAspectRatio?: `${number}/${number}`
   illustration: StaticImageData
   sizes: string
   title: string
@@ -35,6 +46,7 @@ export interface ProductBentoCardProps {
  */
 export function ProductBentoCard({
   aspectRatio,
+  mobileAspectRatio,
   illustration,
   sizes,
   title,
@@ -43,8 +55,13 @@ export function ProductBentoCard({
 }: ProductBentoCardProps) {
   return (
     <div
-      className="relative w-full overflow-hidden rounded-3xl border border-[#2A2B33] bg-[#101114]"
-      style={{ aspectRatio }}
+      className="relative aspect-[var(--card-aspect-mobile)] w-full overflow-hidden rounded-3xl border border-[#2A2B33] bg-[#101114] md:aspect-[var(--card-aspect-desktop)]"
+      style={
+        {
+          "--card-aspect-mobile": mobileAspectRatio ?? aspectRatio,
+          "--card-aspect-desktop": aspectRatio,
+        } as CSSProperties
+      }
     >
       <div className="absolute inset-0 isolate">
         <Image

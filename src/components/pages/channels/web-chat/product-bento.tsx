@@ -65,6 +65,7 @@ export function ProductBento() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
             <ProductBentoCard
               aspectRatio="660/496"
+              mobileAspectRatio="360/496"
               illustration={productBentoSubscriber}
               sizes={ROW_ONE_SIZES}
               title={subscriberCopy.title}
@@ -80,6 +81,7 @@ export function ProductBento() {
 
             <ProductBentoCard
               aspectRatio="660/496"
+              mobileAspectRatio="360/496"
               illustration={productBentoActivity}
               sizes={ROW_ONE_SIZES}
               title={activityCopy.title}
