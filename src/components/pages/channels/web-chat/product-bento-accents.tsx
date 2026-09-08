@@ -40,10 +40,19 @@ const BUBBLE_SHADOW =
  * un-personalized `45487:79958` frame) switching to flat `var(--wc-accent)`
  * only while `loading`/`personalized` (`45503-149086` shows a flat
  * `#E65006`) — same two states `HueLayer` treats as "actively branded", via
- * the same `group-data-[wc-state=…]` selector. Text stays white in both:
- * Figma keeps it white on both the idle gradient and the orange reference,
- * a common chat-bubble convention, so it isn't switched to
- * `var(--wc-accent-foreground)` here.
+ * the same `group-data-[wc-state=…]` selector. Text stays a fixed white over
+ * the idle gradient (not accent-dependent — that gradient is a fixed
+ * violet-to-pink literal, not derived from the visitor's brand colour), but
+ * switches to `var(--wc-accent-foreground)` once the fill itself becomes
+ * `var(--wc-accent)` (`loading`/`personalized`) — the same contrast fix
+ * applied to the other four accent-filled text spots in this file, and
+ * consistent with the hero's own message bubbles, which already do this.
+ *
+ * The idle bubble's `#E18CF2` (a pre-branded pink) also drove white text in
+ * the un-personalized Figma frame, and the personalized reference's flat
+ * `#E65006` also happens to read white — Figma never renders a persona pale
+ * enough to expose that the *personalized* fill needs the same threshold as
+ * the other accent surfaces in this file.
  *
  * The personalized override is written as `linear-gradient(var(--wc-accent),
  * var(--wc-accent))`, not a bare `var(--wc-accent)` — verified at runtime
@@ -66,7 +75,7 @@ export function MessageBubble({
 }) {
   return (
     <p
-      className="absolute rounded-[9px_9px_1px_9px] bg-[linear-gradient(134deg,rgba(129,91,212,.94),rgba(248,106,203,.94))] p-[6px_12px_6px_7px] text-[11px] leading-[1.2] tracking-[-0.01em] text-white group-data-[wc-state=loading]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] group-data-[wc-state=personalized]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] md:rounded-[14px_14px_2px_14px] md:p-[9px_20px_9px_10px] md:text-base"
+      className="absolute rounded-[9px_9px_1px_9px] bg-[linear-gradient(134deg,rgba(129,91,212,.94),rgba(248,106,203,.94))] p-[6px_12px_6px_7px] text-[11px] leading-[1.2] tracking-[-0.01em] text-white group-data-[wc-state=loading]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] group-data-[wc-state=loading]:text-[var(--wc-accent-foreground)] group-data-[wc-state=personalized]:bg-[linear-gradient(var(--wc-accent),var(--wc-accent))] group-data-[wc-state=personalized]:text-[var(--wc-accent-foreground)] md:rounded-[14px_14px_2px_14px] md:p-[9px_20px_9px_10px] md:text-base"
       style={{
         left: `${leftPct}%`,
         top: `${topPct}%`,
