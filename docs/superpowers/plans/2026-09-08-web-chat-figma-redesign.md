@@ -1343,8 +1343,33 @@ Phase 1 is shippable on its own; the sections below the Hero are still the old o
 
 # Phase 2 — The remaining sections
 
-Each task replaces one old section with its Figma counterpart. The page stays
-renderable after every commit.
+**Amended for parallel execution.** Originally each task also mounted its section
+in `page.tsx` and appended copy to the shared `src/data/pages/web-chat.ts`, which
+forced them to run one at a time. They now run concurrently under these rules:
+
+- Each section task creates **only** its own component file(s) plus its own data
+  module, `src/data/pages/web-chat-<section>.ts`.
+- No section task touches `page.tsx`, `src/data/pages/web-chat.ts`,
+  `tests/critical-flows/contracts.ts`, or anything under `tests/`. No section task
+  performs a deletion.
+- A single serial **integration task** afterwards mounts every section in
+  `page.tsx`, performs all the deletions the individual tasks would have done
+  (`aci-package.tsx`, `chat-theme-showcase.tsx`, `agent-center-surface.tsx`,
+  `agent-chat-showcase.tsx`), and carries out Task 16's `site-brand.ts` /
+  `agent-preview.ts` cleanup and Task 15's contract/spec additions.
+- Each section is still independently reviewed. Reviewers are read-only, so they
+  parallelise freely.
+
+**The integration task must end with a whole-page visual check** — a screenshot of
+the finished page compared against the full-page Figma frames (`45487-79054`
+desktop, `45487-98982` mobile), not merely per-section value checks. The hero
+regressed precisely because three tasks each verified their own piece in isolation
+and every one of them passed while the composition drifted. That whole-page
+comparison is the safety net the hero never had; it is not optional.
+
+Sections are independent stacked blocks rather than one composite surface, so their
+coupling is far lower than the hero's — but the failure mode is the same shape, and
+the check above is what catches it.
 
 ---
 
