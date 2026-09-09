@@ -229,10 +229,24 @@ function HeroBackdrop({ personalized }: { personalized: boolean }) {
           backgroundSize: "100% 100%",
         }}
       />
+      {/*
+        Fixed `h-[1788px]`, not an aspect ratio. The hero's composition is
+        vertically fixed — the card sits at y439 and is 680 tall at every
+        desktop width — so the backdrop's height has to be fixed too. Tying
+        it to `1920 / 1788` meant that past 1920px the growing width dragged
+        the height with it (2384px at 2560, 3204px at 3440), sinking the
+        glow's core from 24.6% of the backdrop's height to 18.4% and then
+        13.7% relative to the card. It read as the background floating away
+        toward the bottom on wide screens.
+
+        Width still stretches: `min-w-[1920px]` keeps the authored canvas and
+        clips it, centred, below 1920, and `w-full` fills wider viewports so
+        no seam shows at the edges. This matches the mobile layer above,
+        which already pairs a full-width box with a fixed height.
+      */}
       <div
-        className="absolute -top-16 left-1/2 hidden w-full min-w-[1920px] -translate-x-1/2 lg:block"
+        className="absolute -top-16 left-1/2 hidden h-[1788px] w-full min-w-[1920px] -translate-x-1/2 lg:block"
         style={{
-          aspectRatio: "1920 / 1788",
           backgroundImage: `url(${HERO_DESKTOP_BACKGROUND_IMAGE.src})`,
           backgroundSize: "100% 100%",
         }}
