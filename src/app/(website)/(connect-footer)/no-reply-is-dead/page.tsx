@@ -14,6 +14,7 @@ import { AciFit } from "@/components/pages/no-reply-is-dead/aci-fit"
 import { Channels } from "@/components/pages/no-reply-is-dead/channels"
 import { HeroVisual } from "@/components/pages/no-reply-is-dead/hero-visual"
 import { HowItWorks } from "@/components/pages/no-reply-is-dead/how-it-works"
+import { SeeItInAction } from "@/components/pages/no-reply-is-dead/see-it-in-action"
 import { WhatIsAWorkflow } from "@/components/pages/no-reply-is-dead/what-is-a-workflow"
 
 /* Only this route renders the command string the design sets in Geist Mono,
@@ -94,6 +95,9 @@ export default function NoReplyIsDeadPage() {
 
       {/* The centerpiece: how it works, 4 steps */}
       <HowItWorks />
+
+      {/* Demo video of the whole flow */}
+      <SeeItInAction />
 
       {/* Zoom out: name the category */}
       <AciFit />
