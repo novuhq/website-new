@@ -1,145 +1,67 @@
-/**
- * Server-side brand extraction for the Agent Chat "try it on your site"
- * personalizer. Fetches a URL's HTML, pulls a small brand profile (name, color,
- * and logo inlined as a data URI), and never touches the client with an
- * arbitrary external asset. No screenshot service, no LLM.
- */
+/** Server-side website identity and accent extraction for the Web Chat hero. */
+import { Element, htmlToDOM, type DOMNode } from "html-react-parser"
+
+import { createCachedReader } from "@/lib/site-brand/cache"
+import { selectAccent, type AccentCandidate } from "@/lib/site-brand/colors"
+import { collectCssCandidates } from "@/lib/site-brand/css"
+import {
+  createResourceLoader,
+  normalizeUrl,
+  type ResourceLoader,
+} from "@/lib/site-brand/fetch"
+import { collectLogoCandidates } from "@/lib/site-brand/logo"
+
+export { normalizeUrl } from "@/lib/site-brand/fetch"
 
 export type BrandProfile = {
   url: string
   domain: string
   name: string
   description: string
-  accent: string | null // hex, validated
-  logo: string | null // data URI
+  accent: string | null
+  accentSource?: AccentCandidate["source"] | null
+  logo: string | null
 }
 
-const FETCH_TIMEOUT = 6000
-const MAX_HTML_BYTES = 512 * 1024
+// Modern server-rendered marketing pages include substantial serialized state.
+const MAX_HTML_BYTES = 2 * 1024 * 1024
+const MAX_MANIFEST_BYTES = 64 * 1024
+const MAX_CSS_BYTES = 256 * 1024
 const MAX_LOGO_BYTES = 200 * 1024
-const UA =
-  "Mozilla/5.0 (compatible; NovuAgentChatPreview/1.0; +https://novu.co)"
 
-/** Normalize user input into a safe http(s) URL, or throw. */
-export function normalizeUrl(input: string): URL {
-  const trimmed = input.trim()
-  const withProto = /^https?:\/\//i.test(trimmed)
-    ? trimmed
-    : `https://${trimmed}`
-  const url = new URL(withProto) // throws on garbage
+type HtmlNode = DOMNode | Element["children"][number]
 
-  if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error("Only http and https URLs are supported")
+function elementsIn(nodes: DOMNode[]): Element[] {
+  const elements: Element[] = []
+  const pending: HtmlNode[] = [...nodes].reverse()
+  while (pending.length) {
+    const node = pending.pop()!
+    if (node instanceof Element) elements.push(node)
+    if ("children" in node) pending.push(...[...node.children].reverse())
   }
-  if (isBlockedHost(url.hostname)) {
-    throw new Error("That host is not allowed")
-  }
-  return url
+  return elements
 }
 
-/** Lightweight SSRF guard: reject localhost and private IP literals. */
-function isBlockedHost(hostname: string): boolean {
-  const h = hostname.toLowerCase()
-  if (h === "localhost" || h.endsWith(".local")) return true
-  // IPv4 private / loopback / link-local literals
-  const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
-  if (m) {
-    const [a, b] = [Number(m[1]), Number(m[2])]
-    if (a === 127 || a === 10 || a === 0) return true
-    if (a === 169 && b === 254) return true
-    if (a === 192 && b === 168) return true
-    if (a === 172 && b >= 16 && b <= 31) return true
-  }
-  if (
-    h === "::1" ||
-    h.startsWith("fe80") ||
-    h.startsWith("fc") ||
-    h.startsWith("fd")
+function textIn(node: HtmlNode): string {
+  if (node.type === "text") return node.data
+  return "children" in node ? node.children.map(textIn).join("") : ""
+}
+
+function cleanText(value: string): string {
+  return value.replace(/\s+/g, " ").trim()
+}
+
+function isTransientFailure(error: unknown): boolean {
+  const status =
+    error && typeof error === "object" && "statusCode" in error
+      ? error.statusCode
+      : undefined
+  return (
+    typeof status !== "number" ||
+    status >= 500 ||
+    status === 408 ||
+    status === 429
   )
-    return true
-  return false
-}
-
-async function fetchWithTimeout(
-  url: string,
-  init: RequestInit = {},
-  timeout = FETCH_TIMEOUT
-) {
-  const controller = new AbortController()
-  const id = setTimeout(() => controller.abort(), timeout)
-  try {
-    return await fetch(url, {
-      ...init,
-      redirect: "follow",
-      cache: "no-store",
-      signal: controller.signal,
-      headers: { "user-agent": UA, ...(init.headers || {}) },
-    })
-  } finally {
-    clearTimeout(id)
-  }
-}
-
-async function fetchHtml(url: URL): Promise<string> {
-  const res = await fetchWithTimeout(url.toString(), {
-    headers: { accept: "text/html,application/xhtml+xml" },
-  })
-  if (!res.ok) throw new Error(`Site returned ${res.status}`)
-  const ct = res.headers.get("content-type") || ""
-  if (!ct.includes("html")) throw new Error("That URL is not an HTML page")
-  const buf = await res.arrayBuffer()
-  const bytes = new Uint8Array(buf).subarray(0, MAX_HTML_BYTES)
-  return new TextDecoder("utf-8").decode(bytes)
-}
-
-// --- HTML parsing (regex-based; this is preview copy, not a DOM contract) ---
-
-function metaContent(
-  html: string,
-  keyAttr: string,
-  key: string
-): string | null {
-  // matches <meta name="..." content="..."> in either attribute order
-  const re = new RegExp(
-    `<meta[^>]+${keyAttr}=["']${key}["'][^>]*content=["']([^"']+)["']`,
-    "i"
-  )
-  const re2 = new RegExp(
-    `<meta[^>]+content=["']([^"']+)["'][^>]*${keyAttr}=["']${key}["']`,
-    "i"
-  )
-  return html.match(re)?.[1] ?? html.match(re2)?.[1] ?? null
-}
-
-function firstTitle(html: string): string | null {
-  return html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]?.trim() ?? null
-}
-
-function decodeEntities(s: string): string {
-  return s
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/\s+/g, " ")
-    .trim()
-}
-
-function cleanName(raw: string, domain: string): string {
-  // Site names often read "Product | Tagline" or "Product - Tagline". Take the
-  // strongest segment, cap length, fall back to the domain.
-  const first = decodeEntities(raw)
-    .split(/\s[|\-–—·:]\s/)[0]
-    ?.trim()
-  const name = (first || domain).slice(0, 40)
-  return name || domain
-}
-
-function validHex(input: string | null): string | null {
-  if (!input) return null
-  const v = input.trim()
-  return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v) ? v : null
 }
 
 function toRgb(hex: string): [number, number, number] {
@@ -202,69 +124,225 @@ function usableAccent(hex: string | null): string | null {
   return `#${hx(r1)}${hx(g1)}${hx(b1)}`
 }
 
-function iconCandidates(html: string, base: URL): string[] {
-  const out: string[] = []
-  const linkRe = /<link[^>]+>/gi
-  const links = html.match(linkRe) || []
-  for (const tag of links) {
-    if (!/rel=["'][^"']*icon[^"']*["']/i.test(tag)) continue
-    const href = tag.match(/href=["']([^"']+)["']/i)?.[1]
-    if (!href) continue
-    try {
-      out.push(new URL(href, base).toString())
-    } catch {
-      /* ignore malformed href */
-    }
-  }
-  // apple-touch-icon and default favicon fallbacks
-  out.push(new URL("/apple-touch-icon.png", base).toString())
-  out.push(new URL("/favicon.ico", base).toString())
-  return [...new Set(out)]
+/** Each reader owns a bounded cache; upstream loading is supplied at the IO boundary. */
+export function createBrandProfileReader({
+  createLoader = createResourceLoader,
+}: { createLoader?: () => ResourceLoader } = {}) {
+  const read = createCachedReader<BrandProfile>({
+    ttl: (brand) => (brand.accent ? 24 * 60 * 60 * 1000 : 15 * 60 * 1000),
+    read: async (key) => {
+      const url = normalizeUrl(key)
+      const loader = createLoader()
+      let cacheable = true
+      try {
+        const page = await loader.load(url, {
+          maxBytes: MAX_HTML_BYTES,
+          accept: "text/html,application/xhtml+xml",
+        })
+        if (
+          !/^(text\/html|application\/xhtml\+xml)(;|$)/i.test(page.contentType)
+        ) {
+          throw new Error("That URL is not an HTML page")
+        }
+        const nodes = htmlToDOM(page.body.toString("utf8"))
+        const elements = elementsIn(nodes)
+        const metas = elements.filter((element) => element.name === "meta")
+        const links = elements.filter((element) => element.name === "link")
+        const meta = (key: string) =>
+          metas.find((element) =>
+            [element.attribs.name, element.attribs.property].some(
+              (value) => value?.toLowerCase() === key
+            )
+          )?.attribs.content
+        const domain = url.hostname.replace(/^www\./, "")
+        const title = elements.find((element) => element.name === "title")
+        const name = (
+          cleanText(
+            meta("og:site_name") || (title && textIn(title)) || domain
+          ).split(/\s[|\-–—·:]\s/)[0] || domain
+        ).slice(0, 40)
+        const description = cleanText(
+          meta("description") || meta("og:description") || ""
+        ).slice(0, 160)
+        let base = page.url
+        const baseHref = elements.find(
+          (element) => element.name === "base" && element.attribs.href
+        )?.attribs.href
+        if (baseHref) {
+          try {
+            base = normalizeUrl(new URL(baseHref, page.url).href)
+          } catch {
+            /* use the final page URL */
+          }
+        }
+        const resolve = (href: string): URL | null => {
+          try {
+            return normalizeUrl(new URL(href, base).href)
+          } catch {
+            return null
+          }
+        }
+        const hasRel = (element: Element, rel: string) =>
+          element.attribs.rel?.toLowerCase().split(/\s+/).includes(rel)
+        const optionalLoad = async (
+          resource: URL,
+          maxBytes: number,
+          accept: string
+        ) => {
+          try {
+            return await loader.load(resource, { maxBytes, accept })
+          } catch (error) {
+            if (isTransientFailure(error)) cacheable = false
+            return null
+          }
+        }
+        const candidates: AccentCandidate[] = []
+        for (const element of metas) {
+          const kind = element.attribs.name?.toLowerCase()
+          if (
+            (kind === "theme-color" || kind === "msapplication-tilecolor") &&
+            element.attribs.content
+          ) {
+            candidates.push({
+              color: element.attribs.content,
+              source: "meta",
+              score: kind === "theme-color" ? 50 : 40,
+              reason: `${kind}${element.attribs.media ? ` (${element.attribs.media})` : ""}`,
+            })
+          }
+        }
+        const manifestHref = links.find((element) =>
+          hasRel(element, "manifest")
+        )?.attribs.href
+        const manifestUrl = manifestHref ? resolve(manifestHref) : null
+        const styleLinks = [
+          ...new Set(
+            links
+              .filter(
+                (element) =>
+                  hasRel(element, "stylesheet") &&
+                  !("disabled" in element.attribs) &&
+                  (!element.attribs.media ||
+                    /^(all|screen)$/i.test(element.attribs.media.trim()))
+              )
+              .map((element) => element.attribs.href)
+              .filter(Boolean)
+          ),
+        ]
+          .map((href) => ({ href, url: resolve(href) }))
+          .filter(
+            (value): value is { href: string; url: URL } => value.url !== null
+          )
+          .slice(0, 3)
+        const iconUrls = [
+          ...new Set([
+            ...links
+              .filter(
+                (element) =>
+                  hasRel(element, "icon") || hasRel(element, "apple-touch-icon")
+              )
+              .map((element) => element.attribs.href)
+              .filter(Boolean)
+              .map(resolve)
+              .filter((value): value is URL => value !== null)
+              .map((value) => value.href),
+            new URL("/apple-touch-icon.png", page.url).href,
+            new URL("/favicon.ico", page.url).href,
+          ]),
+        ].slice(0, 6)
+
+        const manifestTask = async () => {
+          if (!manifestUrl) return
+          const resource = await optionalLoad(
+            manifestUrl,
+            MAX_MANIFEST_BYTES,
+            "application/manifest+json,application/json,text/plain"
+          )
+          if (!resource) return
+          try {
+            const manifest: unknown = JSON.parse(resource.body.toString("utf8"))
+            if (
+              manifest &&
+              typeof manifest === "object" &&
+              !Array.isArray(manifest) &&
+              "theme_color" in manifest &&
+              typeof manifest.theme_color === "string"
+            ) {
+              candidates.push({
+                color: manifest.theme_color,
+                source: "manifest",
+                score: 45,
+                reason: "manifest theme_color",
+              })
+            }
+          } catch {
+            /* A malformed optional manifest does not invalidate the site. */
+          }
+        }
+        const stylesTask = Promise.all(
+          styleLinks.map(async ({ href, url: styleUrl }) => {
+            const resource = await optionalLoad(
+              styleUrl,
+              MAX_CSS_BYTES,
+              "text/css"
+            )
+            const css =
+              resource &&
+              /^(text\/(css|plain)|application\/octet-stream)(;|$)/i.test(
+                resource.contentType
+              )
+                ? resource.body.toString("utf8")
+                : ""
+            return { href, css }
+          })
+        )
+        const logoTask = async (): Promise<string | null> => {
+          for (const href of iconUrls) {
+            const resource = await optionalLoad(
+              new URL(href),
+              MAX_LOGO_BYTES,
+              "image/*"
+            )
+            if (
+              resource?.body.length &&
+              /^image\//i.test(resource.contentType)
+            ) {
+              return `data:${resource.contentType.split(";")[0]};base64,${resource.body.toString("base64")}`
+            }
+          }
+          return null
+        }
+        const [, stylesheets, logo] = await Promise.all([
+          manifestTask(),
+          stylesTask,
+          logoTask(),
+        ])
+        candidates.push(...collectCssCandidates(nodes, stylesheets))
+        let selected = selectAccent(candidates)
+        if (!selected.color && logo) {
+          candidates.push(...(await collectLogoCandidates(logo, candidates)))
+          selected = selectAccent(candidates)
+        }
+        const accent = usableAccent(selected.color)
+        return {
+          value: {
+            url: url.href,
+            domain,
+            name,
+            description,
+            accent,
+            accentSource: accent ? selected.source : null,
+            logo,
+          },
+          cacheable,
+        }
+      } finally {
+        loader.close()
+      }
+    },
+  })
+  return async (rawUrl: string): Promise<BrandProfile> =>
+    read(normalizeUrl(rawUrl).href)
 }
 
-async function inlineLogo(candidates: string[]): Promise<string | null> {
-  for (const src of candidates) {
-    try {
-      const res = await fetchWithTimeout(
-        src,
-        { headers: { accept: "image/*" } },
-        4000
-      )
-      if (!res.ok) continue
-      const ct = res.headers.get("content-type") || ""
-      if (!ct.startsWith("image/")) continue
-      const buf = await res.arrayBuffer()
-      if (buf.byteLength === 0 || buf.byteLength > MAX_LOGO_BYTES) continue
-      const b64 = Buffer.from(buf).toString("base64")
-      return `data:${ct.split(";")[0]};base64,${b64}`
-    } catch {
-      /* try next candidate */
-    }
-  }
-  return null
-}
-
-export async function getBrandProfile(rawUrl: string): Promise<BrandProfile> {
-  const url = normalizeUrl(rawUrl)
-  const domain = url.hostname.replace(/^www\./, "")
-  const html = await fetchHtml(url)
-
-  const name = cleanName(
-    metaContent(html, "property", "og:site_name") || firstTitle(html) || domain,
-    domain
-  )
-  const description = decodeEntities(
-    metaContent(html, "name", "description") ||
-      metaContent(html, "property", "og:description") ||
-      ""
-  ).slice(0, 160)
-
-  const accent = usableAccent(
-    validHex(metaContent(html, "name", "theme-color")) ||
-      validHex(metaContent(html, "name", "msapplication-TileColor"))
-  )
-
-  const logo = await inlineLogo(iconCandidates(html, url))
-
-  return { url: url.toString(), domain, name, description, accent, logo }
-}
+export const getBrandProfile = createBrandProfileReader()
