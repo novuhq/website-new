@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
+import { brandCssVars, buildBrandTheme } from "@/lib/web-chat-theme"
 import { WebChatBrandProvider } from "@/components/pages/channels/web-chat/brand-provider"
 import { ChannelsGrid } from "@/components/pages/channels/web-chat/channels-grid"
 import { CompareBento } from "@/components/pages/channels/web-chat/compare-bento"
@@ -54,18 +55,48 @@ const GAP = {
   cta: "md:mt-60 lg:mt-60", // 240px, overriding Cta's own md:mt-32 lg:mt-44
 } as const
 
+/**
+ * The default accent custom properties, applied to the whole page.
+ *
+ * `WebChatBrandProvider` now scopes personalization to the hero, so anything
+ * below it needs these values from somewhere — the compare and product bento
+ * both read `var(--wc-accent-soft)` directly for a couple of tinted rows, and
+ * would render those transparent without a definition in scope. Emitting the
+ * default theme here keeps them painted while leaving them fixed: the
+ * provider overrides these variables only inside its own subtree.
+ */
+const DEFAULT_BRAND_VARS = brandCssVars(buildBrandTheme(null))
+
 export default function WebChatPage() {
   return (
-    <div className="overflow-clip">
+    <div className="overflow-clip" style={DEFAULT_BRAND_VARS}>
+      {/*
+        The provider wraps the hero alone. Personalization is scoped to the
+        surface the visitor is actually interacting with, so submitting a
+        domain no longer restyles the sections below it.
+
+        This is a deliberate departure from the approved spec, which had the
+        provider "wrapping only the Hero and the two bento sections" and the
+        bentos "restyle to their brand" — and Figma does carry personalized
+        bento references (`45503-149086`, `45503-149553`), which are now
+        unused. Changed on the owner's instruction on 2026-09-09; the spec
+        has been updated to match rather than left contradicting this.
+
+        Both bentos keep their authored default appearance without any
+        further change: their accent glows, hue layers and bubble gradients
+        are all gated on `group-data-[wc-state=...]`, and with no
+        `data-wc-state` ancestor those variants simply never match.
+      */}
       <WebChatBrandProvider>
         <WebChatHero />
-        <div className={GAP.compareBento}>
-          <CompareBento />
-        </div>
-        <div className={GAP.productBento}>
-          <ProductBento />
-        </div>
       </WebChatBrandProvider>
+
+      <div className={GAP.compareBento}>
+        <CompareBento />
+      </div>
+      <div className={GAP.productBento}>
+        <ProductBento />
+      </div>
 
       <div className={GAP.surfaceTabs}>
         <SurfaceTabs />

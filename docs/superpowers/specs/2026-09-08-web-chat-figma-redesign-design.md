@@ -19,6 +19,8 @@ Route: `/channels/web-chat`
 - Configurator states: `45497-147645` (open dropdown), `45501-148681` (CLI tab)
 - Framework logo set: `items-for-animation (logos-ai-framework)` — node `45497-146963`
 - Personalized bento references: `personalized-cards-preview` — nodes `45503-149086`, `45503-149553`
+  (superseded 2026-09-09 — see "Personalization scope" below; these frames are
+  no longer implemented)
 - Designer spec: `Novu-Web-Chat-Specification.docx` (Russian, 3 pages)
 
 Brand reference variants in Figma: `recent.dev` (accent `#E65006`) and `todesktop.com` (accent `#0036FF`).
@@ -32,20 +34,21 @@ supersedes the page's current copy. The page keeps its route and its SEO framing
 Two behaviours carry most of the risk and most of the value:
 
 1. A visitor types their domain, presses **See it in your product**, and the Hero
-   plus two bento sections restyle to their brand while a four-message agent
-   conversation plays and loops.
+   restyles to their brand while a four-message agent conversation plays and
+   loops. (Amended 2026-09-09: the two bento sections no longer restyle — see
+   "Personalization scope".)
 2. If brand extraction fails, the default theme is kept, an alert appears, and the
    conversation plays anyway.
 
 ## Decisions
 
-| Decision | Choice | Reason |
-| --- | --- | --- |
-| Bento illustrations | Exported image + hue overlay + coded accent elements | Mirrors the two mechanisms the designer's spec describes; keeps effort proportionate; separate mobile exports are cheap |
-| Animation engine | `motion/react` + a step hook; remove Remotion | `motion` is already the site's motion language; Remotion adds a large player bundle to a marketing page for no gain |
-| Hero labels on personalization | Follow the spec text | Spec states it explicitly and the step-00 frame agrees; later frames are stale |
-| Navbar | Out of scope | Web Chat is not in the header today; a global nav change deserves its own branch |
-| Architecture | Brand provider + CSS variables; storyboard local to the Hero | Keeps brand and timeline independent, which is the seam the fallback requirement draws |
+| Decision                       | Choice                                                       | Reason                                                                                                                  |
+| ------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Bento illustrations            | Exported image + hue overlay + coded accent elements         | Mirrors the two mechanisms the designer's spec describes; keeps effort proportionate; separate mobile exports are cheap |
+| Animation engine               | `motion/react` + a step hook; remove Remotion                | `motion` is already the site's motion language; Remotion adds a large player bundle to a marketing page for no gain     |
+| Hero labels on personalization | Follow the spec text                                         | Spec states it explicitly and the step-00 frame agrees; later frames are stale                                          |
+| Navbar                         | Out of scope                                                 | Web Chat is not in the header today; a global nav change deserves its own branch                                        |
+| Architecture                   | Brand provider + CSS variables; storyboard local to the Hero | Keeps brand and timeline independent, which is the seam the fallback requirement draws                                  |
 
 ### Known Figma/spec mismatches
 
@@ -62,8 +65,25 @@ re-synced:
 ## Architecture
 
 `page.tsx` stays a server component. `WebChatBrandProvider` is a client component
-wrapping only the Hero and the two bento sections; §4–§9 and the CTA stay
-server-rendered.
+wrapping only the Hero; §2-§9 and the CTA stay server-rendered and unbranded.
+
+### Personalization scope (amended 2026-09-09)
+
+Personalization is scoped to the Hero. The owner's instruction: "the
+personalization should not affect the sections below hero." This supersedes the
+original design, in which the provider also wrapped §2 and §3 so both bentos
+restyled to the extracted brand, and it leaves Figma's personalized bento
+frames (`45503-149086`, `45503-149553`) unimplemented.
+
+Nothing in either bento needed changing to achieve it. Their accent glows, hue
+layers and bubble gradients were all gated on `group-data-[wc-state=...]`, so
+outside the provider those variants never match and each section holds the
+default appearance it was already authored with.
+
+`page.tsx` does now emit the default theme's custom properties on its root
+wrapper. Both bentos read `var(--wc-accent-soft)` directly for a tinted row,
+which would resolve to nothing once they left the provider's scope; the
+provider still overrides the same variables inside the Hero.
 
 The provider owns `{ status, accent, accentForeground, domain, favicon }` and writes
 `--wc-accent`, `--wc-accent-soft` and `--wc-hue` onto its wrapper element, plus a
@@ -107,7 +127,7 @@ src/components/pages/channels/web-chat/
    `status: "personalized"`, and writes the CSS variables.
 3. On failure it sets `status: "fallback"`, keeps the default accent, and renders
    `BrandAlert`.
-4. The storyboard is started by the *submit*, not by the fetch resolving. A failed
+4. The storyboard is started by the _submit_, not by the fetch resolving. A failed
    or slow fetch never blocks or delays it.
 
 ## Personalization
@@ -172,14 +192,14 @@ or malformed extraction shows the fallback alert.
 Before submit the Hero shows the default `Data sources` table and an interactive
 agent panel, initially showing the orb and "Ask about your workspace".
 
-| Step | Content |
-| --- | --- |
-| 0 | Agent panel desaturates to grayscale, dashboard content blurs; then the `Form submissions` table and accent-coloured chat resolve in. **Plays once.** |
-| 1 | User: "Why does this form submission need review?" |
-| 2 | Agent thinking dwell |
-| 3 | Agent: "Should I check the missing fields or review the full submission?" |
-| 4 | User: "Missing fields" |
-| 5 | Agent: "In this form (#1048), the Email field is not filled out." plus the compact field table with `Not provided` highlighted. Holds, then loops to **step 1**. |
+| Step | Content                                                                                                                                                          |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0    | Agent panel desaturates to grayscale, dashboard content blurs; then the `Form submissions` table and accent-coloured chat resolve in. **Plays once.**            |
+| 1    | User: "Why does this form submission need review?"                                                                                                               |
+| 2    | Agent thinking dwell                                                                                                                                             |
+| 3    | Agent: "Should I check the missing fields or review the full submission?"                                                                                        |
+| 4    | User: "Missing fields"                                                                                                                                           |
+| 5    | Agent: "In this form (#1048), the Email field is not filled out." plus the compact field table with `Not provided` highlighted. Holds, then loops to **step 1**. |
 
 The loop re-enters at step 1. Step 0 never repeats and the personalized theme
 persists across loops.
@@ -270,8 +290,8 @@ components. Personalized.
 
 **§4 Side panel or full screen.** Tabs over `ui/tabs.tsx`. Two full compositions,
 not one that resizes — the Full screen state also changes the sidebar (`Overview /
-Conversations` expanded to *Launch readiness review, Q3 usage report, Team access
-review*) and carries its own conversation about workspace launch readiness with a
+Conversations` expanded to _Launch readiness review, Q3 usage report, Team access
+review_) and carries its own conversation about workspace launch readiness with a
 three-item checklist and a partially-typed composer. Four layouts total across two
 tabs and two breakpoints; two message scripts in the data file. Not personalized.
 
@@ -344,18 +364,18 @@ From `url-states` (node `45487-94047`): background black, border
 `rgba(255,255,255,0.1)` 1px, radius 40px, padding `12px 20px 12px 12px`, gap 20px,
 shadow `0 12px 56px rgba(0,0,0,0.64), 0 4px 28px rgba(0,0,0,0.35)`.
 
-| State | Appearance |
-| --- | --- |
+| State   | Appearance                                                            |
+| ------- | --------------------------------------------------------------------- |
 | default | Placeholder `yourdomain.com`; white button; reset icon at 40% opacity |
-| hover | Button background lightens; reset icon at 100% |
-| active | Caret in field, partial value |
-| filled | Full value, e.g. `recent.dev` |
+| hover   | Button background lightens; reset icon at 100%                        |
+| active  | Caret in field, partial value                                         |
+| filled  | Full value, e.g. `recent.dev`                                         |
 
 ## Refactors to existing code
 
 **Extract the configurator core.** `ConnectStack`
 (`src/components/pages/home/connect-stack.tsx`, 402 lines) fuses layout with the
-select UI the new configurator needs. Prompt derivation is *already* shared —
+select UI the new configurator needs. Prompt derivation is _already_ shared —
 `buildFrameworkChannelConnectPrompt` lives in `src/lib/connect-prompt.ts` and both
 shells can call it directly, so nothing needs extracting there. What does need
 lifting:
@@ -416,11 +436,11 @@ with the designer.** Recorded here so the choice is explicit rather than acciden
 
 Measured on the built page:
 
-| Accent | White text ratio | WCAG AA needs |
-| --- | --- | --- |
-| `#C25CD6` (default) | **3.62:1** | 4.5:1 |
-| `#E65006` (recent.dev, spec reference) | **3.80:1** | 4.5:1 |
-| black on `#C25CD6`, for comparison | 7.0:1 | — |
+| Accent                                 | White text ratio | WCAG AA needs |
+| -------------------------------------- | ---------------- | ------------- |
+| `#C25CD6` (default)                    | **3.62:1**       | 4.5:1         |
+| `#E65006` (recent.dev, spec reference) | **3.80:1**       | 4.5:1         |
+| black on `#C25CD6`, for comparison     | 7.0:1            | —             |
 
 This is systemic, not an edge case. `accentForeground` in `src/lib/accent.ts`
 flips white→black at relative luminance **0.5**; the WCAG crossover is **~0.18**
@@ -478,5 +498,5 @@ of a 51-commit branch. Left intact deliberately.
 
 - The `navbar` frame — Web Chat in the header nav is follow-up work
 - Any other channel page
-- Re-syncing the stale Figma frames (a designer task; see *Known Figma/spec
-  mismatches*)
+- Re-syncing the stale Figma frames (a designer task; see _Known Figma/spec
+  mismatches_)

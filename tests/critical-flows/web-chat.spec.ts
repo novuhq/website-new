@@ -46,6 +46,57 @@ async function openWebChat(page: Page) {
 }
 
 test.describe("web chat personalizer", () => {
+  test("scopes personalization to the hero, leaving the sections below it", async ({
+    page,
+  }) => {
+    const errors = observeApplicationErrors(page)
+    await page.route(PREVIEW_ROUTE, (route) =>
+      route.fulfill({
+        json: {
+          brand: {
+            domain: webChatContract.domain,
+            accent: webChatContract.accent,
+            logo: null,
+          },
+        },
+      })
+    )
+    await openWebChat(page)
+
+    // The two bento sections read `--wc-accent-soft` directly, so they need a
+    // definition in scope even though they never restyle. The page root
+    // supplies the default theme; the provider overrides it inside the hero.
+    const root = page.locator("main div.overflow-clip").first()
+    const hero = page.getByTestId("web-chat-hero")
+    const bentoGlow = page.locator('div[class*="blur-[90px]"]').first()
+
+    await expect(root).toHaveCSS("--wc-accent", "#c25cd6")
+    await expect(bentoGlow).toHaveCSS("--wc-accent-soft", "#c25cd61f")
+    await expect(bentoGlow).toHaveCSS("opacity", "0")
+
+    await page
+      .getByRole("textbox", { name: "Your website URL" })
+      .fill(webChatContract.domain)
+    await page
+      .getByRole("button", { name: webChatContract.submitLabel })
+      .click()
+
+    // The hero takes the brand...
+    await expect(hero).toHaveCSS("--wc-accent", webChatContract.accent)
+    await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
+
+    // ...and nothing below it does. The bentos' accent glow stays off because
+    // it is gated on a `data-wc-state` ancestor they no longer have.
+    await expect(root).toHaveCSS("--wc-accent", "#c25cd6")
+    await expect(bentoGlow).toHaveCSS("--wc-accent-soft", "#c25cd61f")
+    await expect(bentoGlow).toHaveCSS("opacity", "0")
+    await expect(
+      page.locator("[data-wc-state]").locator('div[class*="blur-[90px]"]')
+    ).toHaveCount(0)
+
+    expectHealthyPage(errors)
+  })
+
   test("keeps the extracted identity when a website has no accent color", async ({
     page,
   }) => {
