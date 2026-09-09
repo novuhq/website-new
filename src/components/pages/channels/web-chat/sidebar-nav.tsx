@@ -45,7 +45,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "flex shrink-0 flex-col bg-[rgba(23,23,23,0.6)]",
+        "flex shrink-0 flex-col bg-[rgba(23,23,23,0.12)]",
         compact ? "w-[119px] gap-1 p-1" : "w-64 gap-2 p-2"
       )}
     >
@@ -144,8 +144,17 @@ export function Sidebar({
                         style={
                           isActive
                             ? {
-                                backgroundColor: "var(--wc-accent)",
-                                color: "var(--wc-accent-foreground)",
+                                // Figma's active pill samples #AD92B1 with
+                                // near-black text — a heavily desaturated
+                                // tint of the accent, not the accent itself.
+                                // Mixing toward a neutral keeps it
+                                // brand-reactive while landing on the
+                                // frame's colour, and the light fill makes
+                                // dark text correct for any brand (the raw
+                                // accent with white text measured 3.6:1).
+                                backgroundColor:
+                                  "color-mix(in srgb, var(--wc-accent) 33%, #A5A3AD)",
+                                color: "#0A090A",
                               }
                             : undefined
                         }

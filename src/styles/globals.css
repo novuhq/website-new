@@ -374,16 +374,35 @@
   is retuned again.
 */
 @utility wc-agent-panel-surface {
+  /*
+    `--wc-panel-tint` is the accent pushed toward violet. Sampling Figma's
+    panel gives B/R ~1.52 at G/R ~0.47 — the accent's own saturation but far
+    past its blue (the accent sits at B/R 1.10), which no accent-and-white
+    mix can reach; mixing in the violet explicitly does, and the accent still
+    drives half of it so the panel stays brand-reactive.
+  */
+  --wc-panel-tint: color-mix(in srgb, var(--wc-accent) 50%, #6a32f2);
+  /*
+    Figma's radial geometry (centre 89% 164%, i.e. below-right of the panel,
+    so the top-left corner is the outermost stop). The stop strengths are
+    calibrated against the frame rather than chosen: sampling the panel in
+    Figma's own render gives, as a fraction of the accent over black,
+    ~0.65 at the upper-left, ~0.42 mid-left, ~0.26 lower-left and ~0.18 at
+    the lower-right. The previous stops topped out at 32% accent and read as
+    near-grey (R-G of 13 against the frame's 47), which is why the panel
+    looked untinted next to the design.
+  */
   background: radial-gradient(
     circle at 89% 164%,
-    rgba(0, 0, 0, 0.7) 15%,
-    color-mix(in srgb, var(--wc-accent) 32%, transparent) 57%,
+    rgba(0, 0, 0, 0.92) 15%,
+    color-mix(in srgb, var(--wc-panel-tint) 22%, transparent) 50%,
+    color-mix(in srgb, var(--wc-panel-tint) 50%, transparent) 78%,
     color-mix(
         in srgb,
-        color-mix(in srgb, var(--wc-accent) 45%, white) 28%,
+        color-mix(in srgb, var(--wc-panel-tint) 70%, white) 60%,
         transparent
       )
-      79%
+      100%
   );
 }
 

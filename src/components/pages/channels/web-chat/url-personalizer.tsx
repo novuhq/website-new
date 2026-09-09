@@ -59,8 +59,8 @@ export function UrlPersonalizer({
     <div className="flex flex-col gap-4">
       <form onSubmit={handleSubmit}>
         {/* Desktop (md and up): a single pill — input, submit, reset icon in one row. */}
-        <div className="hidden w-full items-center gap-5 rounded-[40px] border border-white/10 bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] md:flex">
-          <div className="flex min-w-0 flex-1 items-center gap-2.5">
+        <div className="hidden items-center gap-5 rounded-[40px] border border-white/10 bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] md:flex">
+          <div className="flex w-[756px] min-w-0 items-center gap-2.5">
             <div className={cn(FIELD_CLASSES, "min-w-0 flex-1")}>
               <Globe className="size-6 shrink-0 text-white/40" aria-hidden />
               <label htmlFor={desktopInputId} className="sr-only">
@@ -137,7 +137,7 @@ export function UrlPersonalizer({
         </div>
       </form>
 
-      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40">
+      <p className="px-6 text-center text-[15px] leading-[1.38em] tracking-tight text-white/40">
         {CAPTION}
       </p>
     </div>

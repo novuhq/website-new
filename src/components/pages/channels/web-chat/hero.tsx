@@ -32,6 +32,9 @@ import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-person
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
+const HERO_GRAIN_SVG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
+
 const COPY_PROMPT_BUTTON_CLASSES =
   "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case sm:w-auto"
 
@@ -183,7 +186,7 @@ function HeroCtaColumnMobile() {
 
 function HeroCopy() {
   return (
-    <div className="flex flex-col gap-10 font-inter md:flex-row md:items-start md:justify-between md:gap-16">
+    <div className="mx-auto flex max-w-[1280px] flex-col gap-10 font-inter md:flex-row md:items-end md:justify-between md:gap-16">
       <HeroTitleColumn />
       <HeroCtaColumnDesktop />
       <HeroCtaColumnMobile />
@@ -259,8 +262,30 @@ function HeroBackdrop() {
         }}
       />
       <HueLayer />
-      {/* Noise grain: Figma's `noise` instance sits at 0.32 opacity. */}
-      <div className="absolute inset-0 wc-noise-overlay opacity-[0.32]" />
+      {/* Noise grain, inline rather than via a utility class.
+
+          Two things were wrong with reusing `wc-noise-overlay` here. Its
+          `mix-blend-mode: overlay` has no backdrop to blend against inside
+          this isolated stacking context wherever the glow has not painted,
+          so it fell through at full strength and lifted the black areas to
+          ~30/255 against the design's ~8/255 — which was most of the
+          whole-frame pixel difference. And Figma's instance
+          (`45487-79075`) is a normal-blend white texture that is *sparse*
+          (measured from the source image: mean alpha 14.7%), so its 0.32
+          opacity yields only that ~8/255 mean lift; this SVG turbulence
+          covers every pixel, so it needs 0.086 to land in the same place.
+
+          Inline because a custom `@utility` for this silently failed to be
+          emitted, leaving the layer invisible. One decorative layer used
+          once does not need to travel through the theme. */}
+      <div
+        className="absolute inset-0 opacity-[0.086]"
+        style={{
+          backgroundImage: `url("${HERO_GRAIN_SVG}")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "180px 180px",
+        }}
+      />
       {/* Dotted band beneath the card (Figma `dots-pattern`, `45487:82767`
           — a radial white mask blurred over a repeating pixel texture).
           Approximated as a CSS dot-grid, masked and blurred to the same
@@ -302,7 +327,12 @@ function HeroLiveUi({
         // the floating agent panel share its background/border/shadow/
         // blur, rather than being two separately-chromed boxes with a
         // visible seam between them.
-        "md:relative md:mx-0 md:flex md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
+        // `md:h-[680px]` pins that 680 exactly rather than letting the
+        // table's row count set it: the mock has more rows than fit, and
+        // Figma clips them against the card with the fade the table
+        // already draws. Left to grow, it reached 734 and pushed the URL
+        // field and caption ~53px below their designed positions.
+        "md:relative md:mx-0 md:flex md:h-[680px] md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
       )}
     >
       {/*
@@ -367,18 +397,24 @@ export function WebChatHero() {
   return (
     <section
       ref={inViewRef}
-      className="relative pt-20 md:pt-24 lg:pt-28"
+      className="relative pt-20 md:pt-24 lg:pt-[91px]"
       data-testid="web-chat-hero"
     >
       <HeroBackdrop />
       {/*
-        Figma's card spans x278-1640 in a 1920 frame (1364 wide, centred).
-        With the standard site container (max-w-288/px-8) that content edge
-        lands at x417 — too narrow by ~290px for the card and too far right
-        for the title column. 1428 = 1364 (card) + 2*32 (px-8), so at 1920
-        this container reproduces the card's x278 start and its 1364 width
-        exactly; the title column (Figma x320) lands ~42px short of that,
-        an accepted trade-off over pushing the CTA column out of place too.
+        Figma puts the card and the copy on DIFFERENT columns: the card's `ui`
+        group spans x278-1642 (1364 wide) and the `typography` group spans
+        x320-1600 (1280). This container serves the card — 1428 = 1364 + 2*32
+        (`px-8`), so at 1920 it reproduces x278 and 1364 exactly — and
+        `HeroCopy` re-centres itself to 1280 inside it, which lands at x320
+        because (1364 - 1280) / 2 = 42.
+
+        An earlier pass ran the copy on the card's column too and recorded the
+        resulting 42px offset as "an accepted trade-off over pushing the CTA
+        column out of place." That was a false dilemma: centring the copy
+        block moves both of its edges at once, so the title column reaches
+        x320 and the CTA column's right edge reaches Figma's x1600 (it had
+        overshot to x1642). Verified by pixel diff against the frame.
       */}
       <div className="relative z-10 container mx-auto max-w-[1428px] px-5 md:px-8">
         <HeroCopy />

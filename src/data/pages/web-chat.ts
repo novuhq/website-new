@@ -89,6 +89,11 @@ export const HERO_TABLE_DEFAULT = {
     { name: "Activity events", updated: "1 hr ago", status: "Processing" },
     { name: "Messages", updated: "Yesterday", status: "Paused" },
     { name: "Uploaded files", updated: "Yesterday", status: "Synced" },
+    // Seventh row, per the frame. The card is a fixed 680px, so this one
+    // only ever shows through the table's bottom fade — which is exactly
+    // what Figma does with it, and without it that band reads as empty
+    // where the design still has rows.
+    { name: "Summit Works", updated: "Yesterday", status: "Synced" },
   ],
 } as const
 

@@ -47,7 +47,12 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
           card (`HeroLiveUi` in hero.tsx) leaves it next to the agent panel
           — no border/bg/shadow of its own, since that chrome now lives on
           the shared outer card so the two don't read as separate boxes. */}
-      <div className="relative hidden overflow-hidden md:flex md:h-full md:flex-col">
+      {/* `md:bg-black`: Figma's card fill fades to transparent below 58%
+          (we match that gradient exactly), but the frame never shows it —
+          the dashboard's own children are opaque, so every point inside the
+          card measures 1-6/255. Without this the glow came through the
+          card's lower third at up to 137/255. */}
+      <div className="relative hidden overflow-hidden md:flex md:h-full md:flex-col md:bg-black">
         <ChromeBar domain={domainLabel} />
         <div
           className={cn(

@@ -127,7 +127,7 @@ export function DataTable({
             empty bordered box below the last row. Any leftover height
             shows as plain card background instead, and the fade below now
             covers the last row or two it actually has. */}
-        <div className="relative overflow-hidden rounded-lg border border-white/10">
+        <div className="relative min-h-0 flex-1 overflow-hidden rounded-lg border border-white/10">
           <div className={cn("grid", gridCols)}>
             {/* Head row */}
             <div
@@ -224,7 +224,7 @@ export function DataTable({
                         // fix": this was the only animation on the page
                         // with no such guard, unlike `wc-message-enter`).
                         row.status === "Processing" &&
-                          "animate-spin wc-status-spin"
+                          "wc-status-spin animate-spin"
                       )}
                     />
                     {row.status}
