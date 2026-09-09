@@ -5,10 +5,44 @@ import videoPoster from "@/images/pages/no-reply-is-dead/see-it-in-action-poster
 
 import VideoPlayButton from "@/components/ui/video-play-button"
 
-/* Encode the same way as the /mcp hero video — see the ffmpeg recipes in
-   src/components/pages/mcp/hero-video.tsx. */
-const VIDEO_WEBM_SRC = "/videos/no-reply-is-dead.webm"
-const VIDEO_MP4_SRC = "/videos/no-reply-is-dead.hevc.mp4"
+const VIDEO_WEBM_SRC = "/videos/pages/no-reply-is-dead/see-it-in-action.webm"
+const VIDEO_MP4_SRC = "/videos/pages/no-reply-is-dead/see-it-in-action.hevc.mp4"
+
+/**
+ * The master is a 3840x2158 60fps screen recording, so unlike the other
+ * videos on the site it is downscaled and halved in frame rate: 1920 wide
+ * still resolves the dashboard's small UI text at this section's 1210px slot,
+ * where the references' 1280 would not, and 30fps is plenty for a screen
+ * capture. `-preset slow` / `-cpu-used 2` stand in for the references'
+ * `veryslow` / `best`, which are impractical for 35s at this size for a
+ * difference of a percent or two. The master's audio track is digital silence
+ * (-91dB peak), so it is dropped rather than shipped empty.
+ *
+ * HEVC (Safari, Chrome 107+, Edge):
+ * ffmpeg -y -i see-it-in-action-origin.mp4 \
+   -c:v libx265 \
+   -crf 22 \
+   -vf "scale=1920:-2,fps=30" \
+   -preset slow \
+   -tag:v hvc1 \
+   -movflags +faststart \
+   -an \
+   see-it-in-action.hevc.mp4
+ *
+ * VP9 WebM (Chrome, Firefox, Safari 16+); -b:v 0 enables true CRF mode:
+ * ffmpeg -y -i see-it-in-action-origin.mp4 \
+   -c:v libvpx-vp9 \
+   -crf 30 \
+   -b:v 0 \
+   -vf "scale=1920:-2,fps=30" \
+   -deadline good \
+   -cpu-used 2 \
+   -an \
+   see-it-in-action.webm
+ *
+ * The poster is the designed still from Figma, not frame 0 — the recording
+ * opens on the dashboard, so the two deliberately differ.
+ */
 
 export function SeeItInAction() {
   const videoRef = useRef<HTMLVideoElement>(null)
