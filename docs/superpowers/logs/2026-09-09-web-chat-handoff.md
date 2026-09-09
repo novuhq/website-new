@@ -38,6 +38,18 @@ transition. Messages are top-anchored to the supplied Figma frames. See
 [the transition log](2026-09-09-web-chat-hero-transition.md) for current behavior
 and validation.
 
+**2026-09-09 brand extraction:** missing or neutral manifest colors now fall
+through to matching CSS variables/interface colors, then a bounded favicon
+palette fallback when needed. Static evidence remains deliberately conservative;
+rendered-browser extraction is not implemented. See
+[the extraction log](2026-09-09-web-chat-brand-extraction.md) for supported
+signals, current real-site results, and validation.
+
+**2026-09-09 URL states:** the hero URL control now follows `45487:94047` for
+default, hover, active, and filled states, including the exported reset icon,
+gray submit hover, and rounded field focus indicator. See
+[the URL states log](2026-09-09-web-chat-url-states.md) for comparison and validation.
+
 Read these first, in this order:
 
 1. `docs/superpowers/specs/2026-09-08-web-chat-figma-redesign-design.md` — the
@@ -402,15 +414,20 @@ Ordered by how much they matter.
 9. **Two sections sit off-centre in Figma** — `§8` by 16px and `§9` by 32px,
    while `§6`/`§7` at the same 1280px width are centred. Read as designer nudge
    rather than intent and kept centred here. Confirm with the designer.
-10. **The reference domains do not currently produce extracted accents.** Live
-    checks on 2026-09-09 returned HTTP 200 with `accent: null` for both `recent.dev`
-    and `todesktop.com`. `src/lib/site-brand.ts` only reads `theme-color` and
-    `msapplication-TileColor` metadata: Recent supplies white/near-black theme
-    colors (rejected as grayscale), and ToDesktop supplies neither tag. Their
-    Figma orange/blue accents in the mocked tests do not prove real extraction.
-    Successful extraction now keeps domain/logo and plays the conversation in
-    default purple without an error alert. Broader brand-color extraction remains
-    a separate follow-up.
+10. **Brand extraction now includes manifest, static CSS and icon evidence.** The
+    [2026-09-09 extraction follow-up](2026-09-09-web-chat-brand-extraction.md)
+    resolves the original metadata-only limitation: `todesktop.com` now produces
+    `#0036ff` from its primary-button CSS in the real endpoint. `recent.dev`
+    now produces `#f15406`: its favicon corroborates the CSS `--brand-red` token
+    despite a loading skeleton and neutral manifest. A focused retest found
+    that two similar orange variables received identical logo scores; the
+    corrected scoring favors the closer favicon match. Desktop/mobile live
+    checks confirm the orange theme and retained identity.
+    `neon.com` now extracts `#37c38f` from its SVG favicon after adding
+    restricted support for embedded literal color rules; its manifest declares
+    no theme color. Conditional SVG media rules remain excluded.
+    Browser rendering remains a follow-up; mocked Figma colors do not establish
+    live extraction accuracy.
 
 ---
 

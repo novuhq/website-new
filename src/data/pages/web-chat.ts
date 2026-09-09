@@ -6,6 +6,7 @@ import heroChatSurface from "@/images/pages/channels/web-chat/hero-chat-surface.
 import heroDesktopBackground from "@/images/pages/channels/web-chat/hero-desktop-background.webp"
 import heroGlobe from "@/images/pages/channels/web-chat/hero-globe.svg"
 import heroMobileBackground from "@/images/pages/channels/web-chat/hero-mobile-background.webp"
+import heroReset from "@/images/pages/channels/web-chat/hero-reset.svg"
 
 /**
  * Content for the Web Chat hero product UI (Task 6): the mock browser chrome,
@@ -31,6 +32,8 @@ export const HERO_DESKTOP_BACKGROUND_IMAGE: StaticImageData =
 export const HERO_MOBILE_BACKGROUND_IMAGE: StaticImageData =
   heroMobileBackground
 export const HERO_GLOBE_IMAGE: StaticImageData = heroGlobe
+/** Reset glyph exported from the URL hover state, Figma 45487:94076. */
+export const HERO_RESET_IMAGE: StaticImageData = heroReset
 
 /** Fine panel grain; the backdrop exports already contain Figma’s texture. */
 export const NOISE_GRAIN_SVG =

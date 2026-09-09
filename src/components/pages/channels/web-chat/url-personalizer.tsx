@@ -2,8 +2,7 @@
 
 import { useId, useState, type FormEvent } from "react"
 import Image from "next/image"
-import { HERO_GLOBE_IMAGE } from "@/data/pages/web-chat"
-import { RotateCw } from "lucide-react"
+import { HERO_GLOBE_IMAGE, HERO_RESET_IMAGE } from "@/data/pages/web-chat"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -16,16 +15,35 @@ const CAPTION =
 const RESET_LABEL = "Reset personalization"
 
 const FIELD_CLASSES =
-  "relative flex h-11 items-center gap-3 rounded-3xl border border-white/10 bg-white/10 pl-2.5 pr-4 transition-colors duration-200 hover:border-white/60 hover:bg-white/[0.14] focus-within:border-white/60 focus-within:bg-white/[0.14]"
+  "relative flex h-11 items-center gap-3 rounded-3xl border border-white/10 bg-white/10 pl-2.25 pr-4 transition-colors duration-200 hover:border-white/60 hover:bg-white/[0.14] focus-within:border-white/60 focus-within:bg-white/[0.14]"
+
+// The rounded field border indicates focus; retain an outline for forced colors.
+const INPUT_CLASSES =
+  "min-w-0 flex-1 bg-transparent text-base leading-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden lg:text-lg"
 
 const RESET_ICON_CLASSES =
   "size-6 opacity-40 transition-opacity duration-200 group-hover/reset:opacity-100 group-focus-visible/reset:opacity-100"
 
-// `bg-white`: the shared Button default is #E6E6E6, but the frame's submit
-// pill is pure white — measured at 255 across 150 sampled pixels of
-// `hero-personalization-05` (`45487-89814`).
+// Figma 45487:94047: white by default; the hover state uses the gray-10 token.
 const SUBMIT_BUTTON_CLASSES =
-  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-white lg:w-[205px]"
+  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-gray-10 focus-visible:bg-gray-10 lg:w-[205px]"
+
+function ResetIcon() {
+  return (
+    <span
+      className={cn("grid place-items-center", RESET_ICON_CLASSES)}
+      aria-hidden
+    >
+      <Image
+        src={HERO_RESET_IMAGE}
+        alt=""
+        width={21}
+        height={21}
+        className="size-[20.5px]"
+      />
+    </span>
+  )
+}
 
 /**
  * The control that starts the hero interaction: a visitor types their own
@@ -85,7 +103,7 @@ export function UrlPersonalizer({
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
                 placeholder={PLACEHOLDER}
-                className="min-w-0 flex-1 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none lg:text-lg"
+                className={INPUT_CLASSES}
               />
             </div>
             <Button
@@ -104,7 +122,7 @@ export function UrlPersonalizer({
             aria-label={RESET_LABEL}
             className="group/reset shrink-0"
           >
-            <RotateCw className={RESET_ICON_CLASSES} aria-hidden />
+            <ResetIcon />
           </button>
         </div>
 
@@ -129,7 +147,7 @@ export function UrlPersonalizer({
               value={value}
               onChange={(event) => setValue(event.target.value)}
               placeholder={PLACEHOLDER}
-              className="min-w-0 flex-1 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none lg:text-lg"
+              className={INPUT_CLASSES}
             />
           </div>
           <div className="flex items-center gap-3 pr-3">
@@ -148,7 +166,7 @@ export function UrlPersonalizer({
               aria-label={RESET_LABEL}
               className="group/reset shrink-0"
             >
-              <RotateCw className={RESET_ICON_CLASSES} aria-hidden />
+              <ResetIcon />
             </button>
           </div>
         </div>
