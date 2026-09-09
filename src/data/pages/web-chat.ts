@@ -1,4 +1,5 @@
 import type { StaticImageData } from "next/image"
+import agentMark from "@/images/pages/channels/web-chat/agent-mark.webp"
 import heroGlow from "@/images/pages/channels/web-chat/hero-glow.webp"
 
 /**
@@ -6,6 +7,25 @@ import heroGlow from "@/images/pages/channels/web-chat/hero-glow.webp"
  * app sidebar and data table that fill the hero. Verbatim per the task brief —
  * later tests assert these exact strings and row values.
  */
+
+/**
+ * The agent's logomark blob (Figma `45487-79608`): the multi-hue gradient
+ * stack behind the header avatar and the empty-state orb. Exported at 300px
+ * because it is drawn at 140px and 40px, and the export is 208 units wide for
+ * a 140-unit core — the blur bleeds past the group box, so consumers inset it
+ * to size the core rather than the export.
+ */
+export const AGENT_MARK_IMAGE: StaticImageData = agentMark
+
+/**
+ * Tiled noise used by both the hero backdrop and the agent panel. Figma
+ * layers a sparse white grain texture over each (`45487-79075` at 0.32 and
+ * `45487-79595` at 0.10); this is a full-coverage SVG stand-in, so each
+ * consumer scales its own opacity down by the same ~0.27 factor to land on
+ * the texture's measured mean lift rather than reusing Figma's numbers.
+ */
+export const NOISE_GRAIN_SVG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
 /**
  * The hero shell copy (Task 8): badge, heading, description, meta line and

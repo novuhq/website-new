@@ -375,34 +375,30 @@
 */
 @utility wc-agent-panel-surface {
   /*
-    `--wc-panel-tint` is the accent pushed toward violet. Sampling Figma's
-    panel gives B/R ~1.52 at G/R ~0.47 — the accent's own saturation but far
-    past its blue (the accent sits at B/R 1.10), which no accent-and-white
-    mix can reach; mixing in the violet explicitly does, and the accent still
-    drives half of it so the panel stays brand-reactive.
+    Figma's `chat` frame (`45487-79594`) states this fill outright:
+
+      radial-gradient(circle at 89% 164%,
+        rgba(0, 0, 0, 0.56) 15%,
+        rgba(148, 72, 225, 0.56) 57%,
+        rgba(234, 136, 239, 0.56) 79%)
+
+    Both stops are expressed here as mixes that evaluate to exactly those
+    colours at the default accent (#c25cd6) while still tracking the brand,
+    so the panel keeps recolouring on personalization:
+      50% accent + #6634ec -> rgb(148, 72, 225)
+      30% accent + #fb9bfa -> rgb(234, 136, 239)
+    An earlier pass fitted this curve by sampling the render, which got the
+    shape right but not the colours — the mid stop needs to be markedly
+    bluer than the accent (B/R 1.52 against the accent's 1.10) and the outer
+    stop markedly lighter, which is exactly what these two are.
   */
-  --wc-panel-tint: color-mix(in srgb, var(--wc-accent) 50%, #6a32f2);
-  /*
-    Figma's radial geometry (centre 89% 164%, i.e. below-right of the panel,
-    so the top-left corner is the outermost stop). The stop strengths are
-    calibrated against the frame rather than chosen: sampling the panel in
-    Figma's own render gives, as a fraction of the accent over black,
-    ~0.65 at the upper-left, ~0.42 mid-left, ~0.26 lower-left and ~0.18 at
-    the lower-right. The previous stops topped out at 32% accent and read as
-    near-grey (R-G of 13 against the frame's 47), which is why the panel
-    looked untinted next to the design.
-  */
+  --wc-panel-mid: color-mix(in srgb, var(--wc-accent) 50%, #6634ec);
+  --wc-panel-outer: color-mix(in srgb, var(--wc-accent) 30%, #fb9bfa);
   background: radial-gradient(
     circle at 89% 164%,
-    rgba(0, 0, 0, 0.92) 15%,
-    color-mix(in srgb, var(--wc-panel-tint) 22%, transparent) 50%,
-    color-mix(in srgb, var(--wc-panel-tint) 50%, transparent) 78%,
-    color-mix(
-        in srgb,
-        color-mix(in srgb, var(--wc-panel-tint) 70%, white) 60%,
-        transparent
-      )
-      100%
+    rgba(0, 0, 0, 0.56) 28%,
+    color-mix(in srgb, var(--wc-panel-mid) 56%, transparent) 73%,
+    color-mix(in srgb, var(--wc-panel-outer) 56%, transparent) 98%
   );
 }
 

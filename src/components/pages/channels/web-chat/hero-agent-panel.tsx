@@ -2,15 +2,18 @@
 
 import type { CSSProperties } from "react"
 import {
+  AGENT_MARK_IMAGE,
   HERO_AGENT_EMPTY_STATE,
   HERO_COMPOSER_PLACEHOLDER,
   HERO_MESSAGES,
   HERO_PANEL_TITLE,
+  NOISE_GRAIN_SVG,
 } from "@/data/pages/web-chat"
 import {
   STORYBOARD_TIMING,
   type StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
+import agentGlyph from "@/svgs/pages/channels/web-chat/agent-glyph.svg"
 import { ChevronUp, Maximize2, Sparkles, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -19,6 +22,7 @@ import {
   AgentMessage,
   AgentThinking,
 } from "@/components/pages/channels/web-chat/agent-message"
+import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 export interface HeroAgentPanelProps {
   /** `null` is the pre-submit empty state. 0-5 are live storyboard steps. */
@@ -26,57 +30,84 @@ export interface HeroAgentPanelProps {
 }
 
 /**
- * The agent's circular mark: the Figma logomark is a ~15-layer stack of
- * blurred, masked gradient shapes (`45487:90367` and friends) that isn't
- * practical to reproduce in a static/pure component, so this keeps a
- * simplified gradient disc and adds the accent ring the brief calls for
- * ("the send button and the avatar ring use --wc-accent"). A larger, more
- * blurred copy of the same gradient sits behind it as a halo so the mark
- * reads as a soft blended blob rather than a flat disc, and a small white
- * glyph sits centred on top — both per the diff's read of the Figma frame
- * (a blurred multi-colour blob with a centred glyph), approximated rather
- * than reproducing the full layer stack. The gradient
- * (`wc-agent-avatar-surface`, globals.css) and the ring read `var(--wc-accent)`
- * directly in CSS — confirmed against a second persona
- * (`hero-personalization-05-todesktop.com`, `45487:93325`) that this mark
- * recolours per visitor, not just the message bubbles — so recolouring
- * costs zero React re-renders.
+ * The agent's mark, as Figma builds it (`45487-79645` header, `45487-79608`
+ * orb): a soft multi-hue blob — violet top-right, magenta through the middle,
+ * peach bottom-left — with the Novu glyph centred on top.
+ *
+ * The blob ships as an image. It is a ~15-layer stack of blurred, masked
+ * gradient shapes, and the previous stand-in (a single accent linear gradient
+ * plus a lucide `Sparkles`) is what made the avatar read as a flat magenta
+ * disc instead. The export is 208 units wide for a 140-unit core, because the
+ * blur bleeds past the group box — hence the negative insets below, which size
+ * the *core* rather than the export.
+ *
+ * `HueLayer` preserves the recolour behaviour a personalized frame confirms
+ * (`hero-personalization-05-todesktop.com`, `45487:93325`): the blob's own
+ * colours are Figma's at rest, and the hue overlay shifts them to the visitor's
+ * brand only once `data-wc-state` says so — the same mechanism the hero glow
+ * uses, and still zero React re-renders. `isolate` scopes both that blend and
+ * the glyph's to this mark.
+ *
+ * The glyph is `white` at 50% in `plus-lighter` (per the exported SVG), which
+ * is what gives it its pale lavender cast over the blob rather than flat white.
  */
 function AgentAvatar({
   className,
   glyphClassName,
-  ringWidth = 2,
   square = false,
 }: {
   className?: string
   glyphClassName?: string
-  ringWidth?: number
-  /** Header avatar (`45487:90366`) is a rounded square, not a circle. */
+  /**
+   * Header avatar. Figma's frame clips the logomark to its 40px circle
+   * (`borderRadius` 72.58 on a 40x40 box) and insets it to 36.67; the
+   * empty-state orb is unclipped, so its blurred edges spill as designed.
+   */
   square?: boolean
 }) {
-  const shape = square ? "rounded-[28%]" : "rounded-full"
-
   return (
     <span
       aria-hidden
       className={cn(
-        "relative inline-flex shrink-0 items-center justify-center",
-        shape,
+        "relative isolate inline-flex shrink-0 items-center justify-center rounded-full",
+        square && "overflow-hidden",
         className
       )}
     >
+      {/*
+        Background spans rather than `next/image`: a static import carries
+        intrinsic width/height, so `left`/`right` stop stretching the box and
+        the negative insets that size the blob's core are ignored — the blob
+        rendered at 300px or not at all. A background also skips lazy-loading
+        for two marks that are on screen from the first paint.
+      */}
       <span
+        aria-hidden
         className={cn(
-          "absolute inset-[-35%] opacity-40 blur-lg wc-agent-avatar-surface",
-          shape
+          "pointer-events-none absolute",
+          // The export is 208x201 for a 140x140 core, so the bleed is not
+          // square: -24.3% horizontally, -21.8% vertically. Insetting equally
+          // stretched the blob and shifted its colour distribution.
+          square
+            ? "-inset-x-[18.1%] -inset-y-[16.2%]"
+            : "-inset-x-[24.3%] -inset-y-[21.8%]"
         )}
+        style={{
+          backgroundImage: `url(${AGENT_MARK_IMAGE.src})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+        }}
       />
+      <HueLayer />
       <span
-        className={cn("absolute inset-0 wc-agent-avatar-surface", shape)}
-        style={{ boxShadow: `inset 0 0 0 ${ringWidth}px var(--wc-accent)` }}
-      />
-      <Sparkles
-        className={cn("relative fill-white text-white", glyphClassName)}
+        aria-hidden
+        className={cn("relative", glyphClassName)}
+        style={{
+          backgroundImage: `url(${agentGlyph.src})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+          mixBlendMode: "plus-lighter",
+        }}
       />
     </span>
   )
@@ -106,8 +137,7 @@ function PanelHeader({ compact }: { compact?: boolean }) {
     >
       <AgentAvatar
         className={compact ? "size-[18.65px]" : "size-10"}
-        glyphClassName={compact ? "size-2" : "size-4"}
-        ringWidth={compact ? 1 : 2}
+        glyphClassName={compact ? "size-[9.3px]" : "size-5"}
         square
       />
       <span
@@ -190,8 +220,7 @@ function EmptyState({ compact }: { compact?: boolean }) {
     >
       <AgentAvatar
         className={compact ? "size-[65px]" : "size-[140px]"}
-        glyphClassName={compact ? "size-5" : "size-10"}
-        ringWidth={compact ? 2 : 3}
+        glyphClassName={compact ? "size-[18.6px]" : "size-10"}
       />
       <div
         className={cn(
@@ -301,6 +330,41 @@ function AgentPanel({
             "h-full w-[408px]"
       )}
     >
+      {!compact && (
+        <>
+          {/*
+            Two layers Figma's `chat` frame carries over the gradient that
+            were missing here, both at 0.10 opacity:
+
+            `light` (`45487-79596`) — a 746x1082 #E4C1EA ellipse at
+            (-348, -652), `blur(54px)`. It sits almost entirely off the
+            panel's top-left, and what reaches inside is the soft lift that
+            makes the frame's upper half read lighter than its lower.
+
+            `noise` (`45487-79595`) — the same grain as the hero backdrop.
+            Figma's texture is sparse, so 0.10 there corresponds to 0.027 of
+            this full-coverage stand-in (the same ~0.27 factor calibrated for
+            the hero).
+
+            `-z-10` keeps both above the root's gradient background but below
+            the header and body, which are in normal flow. The root already
+            establishes a stacking context via `backdrop-blur`.
+          */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-[652px] -left-[348px] -z-10 h-[1082px] w-[746px] rounded-[50%] bg-[#E4C1EA] opacity-10 blur-[54px]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.027]"
+            style={{
+              backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
+              backgroundRepeat: "repeat",
+              backgroundSize: "180px 180px",
+            }}
+          />
+        </>
+      )}
       <PanelHeader compact={compact} />
       <div
         className="wc-agent-panel-recolor flex min-h-0 flex-1 flex-col ease-out"

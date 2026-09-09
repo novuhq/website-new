@@ -12,6 +12,7 @@ import {
   HERO_META_LINE,
   HERO_TOOLTIP_LINK_LABEL,
   HERO_TOOLTIP_TEXT,
+  NOISE_GRAIN_SVG,
 } from "@/data/pages/web-chat"
 import type { StoryboardStep } from "@/data/pages/web-chat-storyboard"
 import { useInView } from "motion/react"
@@ -31,9 +32,6 @@ import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-personalizer"
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
-
-const HERO_GRAIN_SVG =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
 const COPY_PROMPT_BUTTON_CLASSES =
   "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case sm:w-auto"
@@ -281,7 +279,7 @@ function HeroBackdrop() {
       <div
         className="absolute inset-0 opacity-[0.086]"
         style={{
-          backgroundImage: `url("${HERO_GRAIN_SVG}")`,
+          backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
           backgroundRepeat: "repeat",
           backgroundSize: "180px 180px",
         }}
@@ -332,7 +330,16 @@ function HeroLiveUi({
         // Figma clips them against the card with the fade the table
         // already draws. Left to grow, it reached 734 and pushed the URL
         // field and caption ~53px below their designed positions.
-        "md:relative md:mx-0 md:flex md:h-[680px] md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
+        // `md:bg-black` under the gradient: Figma's fill fades to
+        // transparent below 58% and we match it exactly, but the frame never
+        // shows that fade — every point inside the card measures 1-6/255,
+        // because the dashboard's children are opaque. Two things went wrong
+        // without an opaque base: the glow came through the card's lower
+        // third at up to 137/255, and the chat panel (whose own fill is only
+        // 0.56 alpha) composited over glow instead of over black, which lit
+        // it ~40/255 too bright. `bg-black` sets background-color and the
+        // gradient sets background-image, so both apply.
+        "md:relative md:mx-0 md:flex md:h-[680px] md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
       )}
     >
       {/*
