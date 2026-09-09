@@ -165,11 +165,11 @@ export function DataTable({
                   key={row.name}
                   className={cn(
                     "col-span-5 grid grid-cols-subgrid",
-                    !compact && "h-[47px]"
+                    compact ? "h-[22px]" : "h-[47px]"
                   )}
                   style={
                     isSelected
-                      ? { backgroundColor: "var(--wc-accent-soft)" }
+                      ? { backgroundColor: "var(--wc-accent-row)" }
                       : undefined
                   }
                 >

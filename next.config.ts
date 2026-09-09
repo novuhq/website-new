@@ -56,6 +56,8 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  // Playwright uses this loopback host; allow its HMR/React debug connection.
+  allowedDevOrigins: ["127.0.0.1"],
   trailingSlash: true,
   poweredByHeader: false,
   transpilePackages: ["three"],

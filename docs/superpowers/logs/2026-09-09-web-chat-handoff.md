@@ -1,8 +1,8 @@
 # Web Chat redesign — handoff
 
-**Branch:** `feat/web-chat-figma-redesign` — 60 commits ahead of
+**Original handoff snapshot:** `feat/web-chat-figma-redesign` — 60 commits ahead of
 `feat/web-chat-in-app-agent` (`c5435ef`), 63 ahead of `main`. Nothing pushed,
-nothing merged. Working tree clean.
+nothing merged. The follow-up work below is now present as uncommitted changes.
 
 **Scope:** rebuild `/channels/web-chat` to Figma. One page, ten sections, plus a
 live "enter your domain → the UI recolours to your brand" personalizer.
@@ -11,6 +11,32 @@ live "enter your domain → the UI recolours to your brand" personalizer.
 
 **State:** `pnpm typecheck` clean, 49/49 unit tests pass, ESLint clean across
 the feature, page assets 732KB.
+
+**2026-09-09 debugging follow-up:** the hydration blocker below is resolved.
+`next.config.ts` now allows the `127.0.0.1` development origin used by Playwright.
+All eight Web Chat critical-flow tests pass on desktop and mobile Chromium.
+The branch and validation summary above describe the original handoff snapshot.
+
+**2026-09-09 live chat restoration:** the original PR #176 Novu integration is
+restored inside the redesigned hero. Idle/reset now render a real composer;
+submitting a URL plays the existing storyboard. Accent-less brands keep their
+domain/logo with default purple. All 12 personalization browser cases and four
+Novu SDK integration cases pass across desktop/mobile Chromium. The SDK cases
+mock HTTP/WebSocket responses; the local environment still needs
+`NEXT_PUBLIC_NOVU_APP_IDENTIFIER` to connect to the real agent.
+
+**2026-09-09 hero alignment:** the current hero reference is the owner's
+`45440:66780`, with mobile composition from `45487:98982`. The completed changes
+and fresh browser evidence are in
+[the hero alignment log](2026-09-09-web-chat-hero-figma-alignment.md).
+That log supersedes the older hero export, gradient and typography advice below.
+
+**2026-09-09 storyboard clarification:** the hero now waits for brand extraction
+between grayscale/blur and recoloring. The table and local theme update at full
+blur; the conversation begins after recoloring and loops without replaying that
+transition. Messages are top-anchored to the supplied Figma frames. See
+[the transition log](2026-09-09-web-chat-hero-transition.md) for current behavior
+and validation.
 
 Read these first, in this order:
 
@@ -39,24 +65,102 @@ Confirmed by fetching the compiled stylesheet and diffing it against source
 after several edits. Arbitrary utilities in `.tsx` files (`bg-[rgba(...)]`) _do_
 regenerate; only `@utility` definitions are stuck.
 
-**Consequences:** `wc-agent-panel-surface` in this repo is correct in source but
-will not be live on a warm dev server. Restart before judging it. And when
-verifying, inject the utility _read from the source file_ rather than
-hand-copying it — see `panelCss()` in the script below.
+**Current consequence:** the obsolete `wc-agent-panel-surface` utility has been
+removed. The hero now uses the exported affine gradient and a
+`[data-slot="web-chat-panel"]` inspection hook. Do not inject the old
+`panelCss()` helper below: it belongs to the historical snapshot and would add a
+second gradient. Restart a warm server when checking other global utility edits.
 
-### React hydration is broken repo-wide
+### React hydration was blocked on `127.0.0.1` — resolved
 
-Not caused by this branch. Verified on `/`, `/pricing/` and
-`/channels/web-chat/`: zero nodes carry `__reactFiber$`, and dispatching a
-`submit` event leaves `defaultPrevented === false`.
+The dev server accepted the page and JavaScript requests but rejected the HMR
+WebSocket's `Origin: http://127.0.0.1:3000`. Its log explicitly reported
+`Blocked cross-origin request ... /_next/webpack-hmr from "127.0.0.1"`.
+Next.js 16.2.4 sends React debug data through that socket; hydration waited for
+the missing stream, leaving the rendered page without event handlers.
 
-**Nothing interactive on this page has ever been executed** — not the recolour,
-not the message loop, not the fallback alert, not reset, not the configurator's
-tab switch, not a resubmit. Four of the feature's five selling points are
-unverified. The Playwright specs in `tests/critical-flows/web-chat.spec.ts` are
-written and their locators verified against real DOM, but have never run green.
+An unchanged page on `localhost:3000` hydrated with 1,775 React-bound DOM nodes,
+while `127.0.0.1:3000` had zero. Adding
+`allowedDevOrigins: ["127.0.0.1"]` to `next.config.ts` fixed the actual origin
+rejection. The dev server restarted automatically after the config edit.
+No React debug flag or hero component change was needed.
 
-Do not treat "the rule isn't on the live page" as evidence about the code here.
+`tests/critical-flows/web-chat.spec.ts` now passes all eight cases across desktop
+and mobile Chromium: personalization and conversation, fallback and conversation,
+reset, and configurator tab switching. These tests mock brand extraction at the
+network boundary.
+
+A separate browser check using the real endpoint verified the final reply, loop
+back to the first message, and reset on desktop (1440px) and mobile (390px), with
+the HMR connection receiving frames and no browser page errors. Both runs used
+`recent.dev` and entered fallback because extraction returned no accent. The
+restoration below corrects that classification.
+
+The PR comparison found a decorative hero composer: only the website URL form
+started a scripted conversation. This was a regression from
+[PR #176](https://github.com/novuhq/website-new/pull/176), whose head was verified
+as `c5435ef7fe8f2506cd5cf7383bcde4faa15dd153` on 2026-09-09:
+
+- Before personalization, `AgentInProduct` rendered `AgentChatProvider` and
+  `AgentChatWidget`. The widget called `useAgentChat({ agentId: "webchat" })`,
+  submitted real messages, rendered responses and pending approvals, and exposed
+  a working textarea/send button.
+- Successful URL extraction switched to the branded scripted Remotion preview;
+  reset returned to the live widget. The redesign's replacement of Remotion with
+  a storyboard does not account for removing the separate live-chat state.
+- Commit `e6cb4f3` replaced the hero and removed `agent-in-product.tsx`.
+  Commit `1883ec7` then deleted `agent-chat-showcase.tsx`, including its provider
+  and hook integration. At that point, the new hero composer was only spans.
+- The original preview accepted a successful brand response even without an
+  accent, retaining its domain/logo and using default purple. The redesign had
+  classified a missing accent as fallback and hidden the extracted identity.
+  Accent extraction itself was not broadened or narrowed; its metadata-only
+  strategy already existed in the original branch.
+
+The restoration uses `live-agent-chat.tsx` with one provider/hook shared by both
+responsive frames. It reuses AI Elements for messages, scrolling, reasoning,
+tools, and approvals; the real composer fits the existing hero frame. Failed
+sends retain the draft, switching breakpoints retains the conversation, URL
+submit unmounts it, and reset starts a fresh session. Missing configuration shows
+an unavailable status and disabled composer. `.env.example` documents the
+required public identifier; `.env.local` was not changed.
+
+Final restoration validation:
+
+- `pnpm test`: 49/49 passed; `pnpm typecheck` passed.
+- `pnpm lint --ignore-pattern '.claude/worktrees/**'`: passed, five existing
+  image warnings. The exclusion avoids linting another checkout.
+- `PLAYWRIGHT_SKIP_WEB_SERVER=1 pnpm exec playwright test
+tests/critical-flows/web-chat.spec.ts --project=desktop-chromium
+--project=mobile-chromium`: 12/12 passed on the normal local server.
+- `PLAYWRIGHT_NOVU_FIXTURE=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3002
+PLAYWRIGHT_SKIP_WEB_SERVER=1 pnpm exec playwright test
+tests/critical-flows/web-chat-live.spec.ts --project=desktop-chromium
+--project=mobile-chromium`: 4/4 passed. This requires a separate dev server
+  started with a fixture `NEXT_PUBLIC_NOVU_APP_IDENTIFIER`; the test intercepts
+  Novu session/conversation HTTP requests and `wss://socket.novu.co` events.
+  It verifies sends, streamed replies, retry, breakpoint continuity, approval,
+  and reset. Desktop/mobile panel screenshots were inspected.
+- `pnpm build`: compiled and passed TypeScript, then failed collecting
+  `/careers/[slug]` with `Missing Notion careers read configuration`.
+
+The real live backend remains unverified until the app identifier is supplied.
+The original PR's successful deployment at
+`https://website-4hs59mom6-novuhq.vercel.app/channels/web-chat/` was inspected; its
+public bundle also retains an unresolved app-identifier environment reference,
+so no valid identifier could be recovered there.
+
+A final unmocked brand check on the normal server returned HTTP 200 for
+`recent.dev`, with `accent: null` and `data-wc-state="personalized"`, at 1440px
+and 390px. Reset restored the disabled composer and unavailable status in this
+unconfigured environment. Both panels were visually inspected.
+
+Follow-up validation: `TC-HOME-003` also passes, `pnpm typecheck` passes, and the
+two changed files pass Prettier. `pnpm lint` was stopped after it traversed the
+separate `.claude/worktrees` checkout; rerunning as
+`pnpm lint --ignore-pattern '.claude/worktrees/**'` passes with five existing
+`no-img-element` warnings. `pnpm build` compiles and passes TypeScript, then fails
+collecting `/careers/[slug]` with `Missing Notion careers read configuration`.
 
 ### Playwright: `networkidle` never settles
 
@@ -102,6 +206,10 @@ rounds (a 42px column offset, a 54px card overflow, a grain layer contributing
 4× what it should).
 
 ### Building a reference you can trust
+
+**Historical reference:** this subsection and its helper script describe
+`45487:79055`. The current `45440:66780` reference includes its title and URL
+groups and exports from `(0, 0)` at 1920px; no sibling-copy composite is needed.
 
 Figma image exports **bleed past the node's geometry** wherever there is a blur,
 so you cannot assume the export lines up with the frame. Two things make this
@@ -233,12 +341,10 @@ shared constant; it cannot express this.
 
 Ordered by how much they matter.
 
-1. **Run the critical-flow specs.** `tests/critical-flows/web-chat.spec.ts` has
-   never executed because hydration is broken. This is the single largest gap in
-   confidence — the personalizer, the message loop, the fallback path and reset
-   are all unverified. Needs either the hydration cause found or a working
-   production build (blocked on Sanity/Notion/BetterStack credentials; a build
-   currently dies at `Missing Notion careers read configuration`).
+1. **Critical-flow blocker resolved in the follow-up above.** The Web Chat specs
+   pass on desktop and mobile Chromium. Production-build validation remains
+   separate from this dev-origin fix; the original handoff's build was blocked by
+   missing external-service configuration.
 2. **The orb region still reads ~27** in the panel diff. The blob export itself
    is faithful, so what remains is how its soft edges meet the panel gradient.
    Worth a fresh look rather than another curve fit.
@@ -250,6 +356,8 @@ Ordered by how much they matter.
 4. **`font-mono` is not bound to Geist Mono anywhere in the repo**, so every
    "Geist Mono" line in the designer's spec is unmet — on this page and every
    other. One-line theme fix, but it is a site-wide decision.
+   The 2026-09-09 hero pass resolves this locally for the CLI control by loading
+   Geist Mono with `next/font`; it does not change the site-wide mono font.
 5. **Contrast debt, partially paid.** The spec logs white-on-accent at 3.62:1.
    The sidebar's active pill is fixed (it now matches Figma's desaturated mauve
    with dark text, which also passes at 7.5:1), but `accentForeground` in
@@ -265,6 +373,15 @@ Ordered by how much they matter.
 7. **Two sections sit off-centre in Figma** — `§8` by 16px and `§9` by 32px,
    while `§6`/`§7` at the same 1280px width are centred. Read as designer nudge
    rather than intent and kept centred here. Confirm with the designer.
+8. **The reference domains do not currently produce extracted accents.** Live
+   checks on 2026-09-09 returned HTTP 200 with `accent: null` for both `recent.dev`
+   and `todesktop.com`. `src/lib/site-brand.ts` only reads `theme-color` and
+   `msapplication-TileColor` metadata: Recent supplies white/near-black theme
+   colors (rejected as grayscale), and ToDesktop supplies neither tag. Their
+   Figma orange/blue accents in the mocked tests do not prove real extraction.
+   Successful extraction now keeps domain/logo and plays the conversation in
+   default purple without an error alert. Broader brand-color extraction remains
+   a separate follow-up.
 
 ---
 

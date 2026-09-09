@@ -1,6 +1,7 @@
 "use client"
 
-import { Sparkles } from "lucide-react"
+import Image from "next/image"
+import agentReplyMark from "@/images/pages/channels/web-chat/agent-reply-mark.svg"
 
 import { cn } from "@/lib/utils"
 
@@ -8,6 +9,8 @@ export interface AgentMessageProps {
   role: "user" | "agent"
   text: string
   compact?: boolean
+  className?: string
+  animate?: boolean
 }
 
 /**
@@ -29,15 +32,27 @@ export interface AgentMessageProps {
  * `rgba(255,255,255,0.5)`, reply 15px white). Mobile scaled ~0.4662x
  * (`45487:114507`), matching the mobile "ui" group's measured scale factor.
  */
-export function AgentMessage({ role, text, compact }: AgentMessageProps) {
+export function AgentMessage({
+  role,
+  text,
+  compact,
+  className,
+  animate = true,
+}: AgentMessageProps) {
   if (role === "user") {
     return (
-      <div className="flex animate-wc-message-enter justify-end">
+      <div
+        className={cn(
+          "flex justify-end",
+          animate && "animate-wc-message-enter",
+          className
+        )}
+      >
         <p
           className={cn(
-            "max-w-[85%] rounded-tl-[14px] rounded-tr-[14px] rounded-br-[4px] rounded-bl-[14px] border border-white/20 py-2 pr-5 pl-3 text-[15px] leading-[1.2] tracking-[-0.01em] shadow-[0_6px_14px_rgba(0,0,0,0.1)]",
+            "max-w-full rounded-tl-[14.5px] rounded-tr-[14.5px] rounded-br-[3.6px] rounded-bl-[14.5px] border border-white/20 pt-2 pr-5 pb-[9px] pl-3 text-[15px] leading-[1.2] tracking-[-0.01em] shadow-[0_6px_14px_rgba(0,0,0,0.1)]",
             compact &&
-              "rounded-tl-[6.5px] rounded-tr-[6.5px] rounded-br-[2px] rounded-bl-[6.5px] py-1 pr-2.5 pl-1.5 text-[7px] shadow-[0_3px_7px_rgba(0,0,0,0.1)]"
+              "rounded-tl-[6.76px] rounded-tr-[6.76px] rounded-br-[1.69px] rounded-bl-[6.76px] border-0 pt-[4.2px] pr-[9.79px] pb-[4.66px] pl-[6.06px] text-[7px] leading-[1.2] shadow-[0_3px_7px_rgba(0,0,0,0.1)] ring-[0.466px] ring-white/20 ring-inset"
           )}
           style={{
             backgroundColor: "var(--wc-accent)",
@@ -53,23 +68,25 @@ export function AgentMessage({ role, text, compact }: AgentMessageProps) {
   return (
     <div
       className={cn(
-        "flex max-w-[85%] animate-wc-message-enter flex-col gap-2",
-        compact && "gap-1"
+        "flex w-[281px] max-w-full flex-col gap-2",
+        animate && "animate-wc-message-enter",
+        compact && "w-[131px] gap-[3.73px]",
+        className
       )}
     >
       <div
         className={cn(
           "flex items-center gap-1.5 text-[13px] leading-none tracking-[-0.01em] text-white/50",
-          compact && "gap-0.5 text-[6px]"
+          compact && "gap-[2.8px] text-[6.06px] leading-none"
         )}
       >
-        <Sparkles className={cn("size-3.5 shrink-0", compact && "size-1.5")} />
+        <AgentReplyMark compact={compact} />
         <span>Agent</span>
       </div>
       <p
         className={cn(
-          "text-[15px] leading-[1.2] tracking-[-0.01em] text-white",
-          compact && "text-[7px]"
+          "text-[15px] leading-[1.2] tracking-[-0.01em] whitespace-pre-line text-white",
+          compact && "text-[7px] leading-[1.2]"
         )}
       >
         {text}
@@ -78,12 +95,30 @@ export function AgentMessage({ role, text, compact }: AgentMessageProps) {
   )
 }
 
+function AgentReplyMark({ compact }: { compact?: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "relative block size-4 shrink-0",
+        compact && "size-[7.46px]"
+      )}
+    >
+      <Image
+        src={agentReplyMark}
+        alt=""
+        className="absolute top-[0.24%] left-[4.15%] h-[87.28%] w-[91.67%]"
+      />
+    </span>
+  )
+}
+
 /**
  * The step-2-only "agent is thinking" state (brief Behaviour: shown at step
  * 2, gone once step 3 lands). No literal copy for this exists in either the
  * brief's content block or a Figma text node for it — no frame shows a
  * hero-storyboard thinking label at all — so this is dots-only: the
- * `Sparkles` icon plus three plain dots (a standard typing-indicator
+ * agent mark plus three plain dots (a standard typing-indicator
  * convention, not invented prose), with no visible text label. The phrase
  * "Agent is thinking" appears only inside the `sr-only` span below, giving
  * the indicator an accessible name without rendering any copy on screen.
@@ -106,10 +141,7 @@ export function AgentThinking({ compact }: { compact?: boolean }) {
       )}
     >
       <span className="sr-only">Agent is thinking</span>
-      <Sparkles
-        className={cn("size-3.5 shrink-0 text-white/50", compact && "size-1.5")}
-        aria-hidden
-      />
+      <AgentReplyMark compact={compact} />
       <span
         className={cn("flex items-center gap-0.5", compact && "gap-px")}
         aria-hidden

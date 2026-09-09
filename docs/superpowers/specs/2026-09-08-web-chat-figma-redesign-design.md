@@ -7,6 +7,10 @@ Route: `/channels/web-chat`
 ## Sources
 
 - Desktop design: Figma `web-chat-general-1920` — node `45487-79054`
+- Hero refinement (2026-09-09): the page owner supplied `45440-66780` as the
+  current hero reference. It includes the heading, CTA and URL groups. Use the
+  [hero alignment log](../logs/2026-09-09-web-chat-hero-figma-alignment.md) for
+  current assets, geometry and verification; other sections retain their references.
 - Hero storyboard + personalization: Figma section `hero-storyboard&personalization` — node `45487-82743`
 - Mobile page: `web-chat-general-360` — node `45487-98982`
 - Mobile hero storyboard: `hero-360 (pesronalization)` — node `45487-112573`
@@ -145,13 +149,28 @@ Figma default frame.
 
 The reset icon (24px, 40% opacity, 100% on hover) restores the initial state:
 default theme, the `Data sources` table with its original rows, `yourdomain.com` in
-the chrome, `Your company` and the generic mark in the sidebar, the empty-state
-agent panel, storyboard stopped, alert cleared, input cleared.
+the chrome, `Your company` and the generic mark in the sidebar, a fresh live
+agent conversation, storyboard stopped, alert cleared, input cleared.
+
+### Live chat restoration (approved 2026-09-09)
+
+The idle and reset states retain PR #176's real Novu chat inside the redesigned
+hero frame. One `NovuProvider` and `useAgentChat({ agentId: "webchat" })` serve both
+responsive panels. The message composer supports Enter to send, Shift+Enter for
+a newline, streamed responses, tool approvals, and retry after a failed request.
+The existing showcase subscriber and `NEXT_PUBLIC_NOVU_APP_IDENTIFIER` wiring
+remain in use. Missing configuration shows an unavailable status and disabled
+composer; the website preview remains usable.
+
+Submitting a URL switches from live chat to the existing scripted storyboard.
+Reset starts a fresh live conversation. Successful extraction with no accent
+retains the extracted domain/logo and uses the default purple theme. Only failed
+or malformed extraction shows the fallback alert.
 
 ## Hero storyboard
 
-Before submit the Hero is the static default: `Data sources` table, agent panel
-showing the orb and "Ask about your workspace".
+Before submit the Hero shows the default `Data sources` table and an interactive
+agent panel, initially showing the orb and "Ask about your workspace".
 
 | Step | Content |
 | --- | --- |
@@ -165,6 +184,21 @@ showing the orb and "Ask about your workspace".
 The loop re-enters at step 1. Step 0 never repeats and the personalized theme
 persists across loops.
 
+The owner's 2026-09-09 storyboard references (`45487:94116`, `45487:87013`,
+`45487:87703`, `45487:88406`, `45487:89109`, `45487:89814`) clarify step 0:
+
+- Fade the entire chat panel to grayscale while the current dashboard blurs.
+- Hold that frame until brand extraction settles, including failure fallback.
+- At full blur, publish the extracted theme and identity and swap the dashboard
+  to `Form submissions`; then recolor and unblur before showing message 1.
+- A new submission repeats the transition from the currently displayed brand.
+  Conversation loops retain the theme and do not repeat it.
+
+Messages are top-anchored and cumulative. At desktop size, their group tops are
+81, 150, 242, and 311px relative to the panel; the final table starts at 379px.
+The final reply and table share one entrance animation. The compact composition
+uses the same sequence at the design's 0.4662 scale.
+
 `Form submissions` rows: Contact form #1048 (Needs review, selected),
 Newsletter signup #1047, Support request #1046, Feedback form #1045,
 General inquiry #1044, Callback request #1042, Summit Works — remainder fading out.
@@ -173,7 +207,7 @@ The step-5 field table: Full name `Jordan Lee`, Email address `Not provided`
 
 ### Timings
 
-A single exported block in `src/data/pages/web-chat.ts`:
+A single exported block in `src/data/pages/web-chat-storyboard.ts`:
 
 ```ts
 export const STORYBOARD_TIMING = {
@@ -200,7 +234,8 @@ rather than introduce a second motion vocabulary.
 
 ### Lifecycle
 
-- `useReducedMotion` renders step 5 directly, no loop, no blur transitions
+- `useReducedMotion` waits for brand extraction, then renders step 5 directly,
+  with no loop or blur transitions
 - The loop pauses when the Hero leaves the viewport (`useInView`)
 
 ## Sections
@@ -297,6 +332,11 @@ second card, §4's two tab states, and §6.
 
 Built fluid between Figma's 360 and 1920 against the repo's existing container
 conventions (`max-w-288`, `px-5 md:px-8`).
+
+The hero uses a 1364px product card and 1280px copy column at 1920px, with its
+two-column layout beginning at `lg` (1024px). Smaller widths keep the authored
+mobile CTA order and cropped product composition. Inter applies throughout the
+hero; its CLI control loads Geist Mono locally through `next/font`.
 
 ## URL component states
 
@@ -405,6 +445,11 @@ black text and visibly diverges from every Figma frame — a design decision, no
 code fix. That is why it sits here rather than in the implementation.
 
 ## Follow-up: code and dependencies orphaned by this redesign
+
+**2026-09-09 update:** live chat restoration reuses AI Elements conversation,
+message, reasoning, and tool components, plus the textarea and Novu SDK. The
+zero-importer inventory below is historical and must be re-audited before any
+deletion; these components and their transitive dependencies are now in use.
 
 **Decided by the page owner on 2026-09-08: out of scope for this branch, do it as
 a deliberate follow-up.**

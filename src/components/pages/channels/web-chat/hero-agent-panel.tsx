@@ -1,9 +1,13 @@
 "use client"
 
 import type { CSSProperties } from "react"
+import dynamic from "next/dynamic"
 import {
   AGENT_MARK_IMAGE,
   HERO_AGENT_EMPTY_STATE,
+  HERO_AGENT_IMAGE,
+  HERO_CHAT_LIGHT_IMAGE,
+  HERO_CHAT_SURFACE_IMAGE,
   HERO_COMPOSER_PLACEHOLDER,
   HERO_MESSAGES,
   HERO_PANEL_TITLE,
@@ -11,10 +15,12 @@ import {
 } from "@/data/pages/web-chat"
 import {
   STORYBOARD_TIMING,
+  type StoryboardPhase,
   type StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
 import agentGlyph from "@/svgs/pages/channels/web-chat/agent-glyph.svg"
 import { ChevronUp, Maximize2, X } from "lucide-react"
+import { motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { AgentFieldTable } from "@/components/pages/channels/web-chat/agent-field-table"
@@ -24,9 +30,18 @@ import {
 } from "@/components/pages/channels/web-chat/agent-message"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
+import type { LiveAgentRenderer } from "./live-agent-chat"
+
+const LiveAgentChat = dynamic(() => import("./live-agent-chat"), {
+  ssr: false,
+  loading: () => <HeroAgentPanels step={null} />,
+})
+
 export interface HeroAgentPanelProps {
-  /** `null` is the pre-submit empty state. 0-5 are live storyboard steps. */
+  /** `null` is interactive live chat. 0-5 are scripted preview steps. */
   step: StoryboardStep | null
+  phase?: StoryboardPhase
+  personalized?: boolean
 }
 
 /**
@@ -55,6 +70,7 @@ function AgentAvatar({
   className,
   glyphClassName,
   square = false,
+  personalized = false,
 }: {
   className?: string
   glyphClassName?: string
@@ -64,6 +80,7 @@ function AgentAvatar({
    * empty-state orb is unclipped, so its blurred edges spill as designed.
    */
   square?: boolean
+  personalized?: boolean
 }) {
   return (
     <span
@@ -84,7 +101,7 @@ function AgentAvatar({
       <span
         aria-hidden
         className={cn(
-          "pointer-events-none absolute",
+          "pointer-events-none absolute isolate",
           // The export is 208x201 for a 140x140 core, so the bleed is not
           // square: -24.3% horizontally, -21.8% vertically. Insetting equally
           // stretched the blob and shifted its colour distribution.
@@ -97,8 +114,9 @@ function AgentAvatar({
           backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
         }}
-      />
-      <HueLayer />
+      >
+        <HueLayer active={personalized} maskImage={AGENT_MARK_IMAGE.src} />
+      </span>
       <span
         aria-hidden
         className={cn("relative", glyphClassName)}
@@ -127,7 +145,13 @@ function AgentAvatar({
  * buttons) never enter the tab order — and muted like the rest of the
  * header chrome rather than accented, matching the frames.
  */
-function PanelHeader({ compact }: { compact?: boolean }) {
+function PanelHeader({
+  compact,
+  personalized,
+}: {
+  compact?: boolean
+  personalized: boolean
+}) {
   return (
     <div
       className={cn(
@@ -139,10 +163,11 @@ function PanelHeader({ compact }: { compact?: boolean }) {
         className={compact ? "size-[18.65px]" : "size-10"}
         glyphClassName={compact ? "size-[9.3px]" : "size-5"}
         square
+        personalized={personalized}
       />
       <span
         className={cn(
-          "text-lg leading-[1.2] tracking-tighter text-white",
+          "text-lg leading-[1.2] tracking-[-0.02em] text-white",
           compact && "text-[8.4px]"
         )}
       >
@@ -151,7 +176,7 @@ function PanelHeader({ compact }: { compact?: boolean }) {
       <div
         aria-hidden
         className={cn(
-          "ml-auto flex shrink-0 items-center gap-4 pr-2 text-white/40",
+          "ml-auto flex shrink-0 items-center gap-4 pr-2 text-white",
           compact && "gap-[7.46px] pr-1"
         )}
       >
@@ -170,7 +195,7 @@ function PanelHeader({ compact }: { compact?: boolean }) {
  */
 function Composer({ compact }: { compact?: boolean }) {
   return (
-    <div className={cn("shrink-0 p-3", compact && "p-[5.6px]")}>
+    <div className={cn("shrink-0 p-[11px]", compact && "p-[5.6px]")}>
       <div
         className={cn(
           "flex h-[42px] items-center justify-between rounded-xl border border-white/30 bg-black/88 pr-1 pl-3.5",
@@ -203,34 +228,38 @@ function Composer({ compact }: { compact?: boolean }) {
   )
 }
 
-/**
- * Pre-submit state: orb, title and body, no messages. Figma desktop
- * `45487:79602`-`45487:79605` (title 20px, body 14px/50% white, both
- * centred, width 255); mobile ~0.4662x. Also reused verbatim (per the
- * decisions in the task brief) for step 0, wrapped by the panel's grayscale
- * filter.
- */
-function EmptyState({ compact }: { compact?: boolean }) {
+/** Figma positions the orb and copy relative to the panel, at both sizes. */
+function EmptyState({
+  compact,
+  personalized = false,
+}: {
+  compact?: boolean
+  personalized?: boolean
+}) {
   return (
-    <div
-      className={cn(
-        "flex flex-1 flex-col items-center justify-center gap-8 px-8 text-center",
-        compact && "gap-[3.7px] px-[3.7px]"
-      )}
-    >
-      <AgentAvatar
-        className={compact ? "size-[65px]" : "size-[140px]"}
-        glyphClassName={compact ? "size-[18.6px]" : "size-10"}
-      />
+    <div className="min-h-0 flex-1">
+      <span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute left-1/2 isolate aspect-[350/262] w-[350px] -translate-x-1/2 ease-out motion-reduce:transition-none!",
+          compact ? "top-[39.16px] w-[163.16px]" : "top-[84px]"
+        )}
+        style={{
+          backgroundImage: `url(${HERO_AGENT_IMAGE.src})`,
+          backgroundSize: "100% 100%",
+        }}
+      >
+        <HueLayer active={personalized} maskImage={HERO_AGENT_IMAGE.src} />
+      </span>
       <div
         className={cn(
-          "flex max-w-[255px] flex-col items-center gap-2",
-          compact && "max-w-[119px] gap-1"
+          "absolute top-[53.3%] left-1/2 flex w-[255px] -translate-x-1/2 flex-col items-center gap-2 text-center tracking-[-0.02em]",
+          compact && "w-[118.875px] gap-[3.7px]"
         )}
       >
         <p
           className={cn(
-            "text-xl leading-[1.2] tracking-tighter text-white",
+            "text-xl leading-[1.2] text-white",
             compact && "text-[9.3px]"
           )}
         >
@@ -238,7 +267,7 @@ function EmptyState({ compact }: { compact?: boolean }) {
         </p>
         <p
           className={cn(
-            "text-sm leading-[1.25] tracking-tighter text-white/50",
+            "text-sm leading-[1.25] text-white/50",
             compact && "text-[6.5px]"
           )}
         >
@@ -269,19 +298,30 @@ function ConversationBody({
   return (
     <div
       className={cn(
-        "flex flex-1 flex-col justify-end gap-4 overflow-hidden px-4 py-4",
-        compact && "gap-2 px-2 py-2"
+        "flex flex-1 flex-col gap-8 overflow-hidden px-[15px] pt-6 pb-4",
+        compact && "gap-[14.92px] px-[6.46px] pt-[10.76px] pb-2"
       )}
     >
       {visibleMessages.map((message) => (
         <div
           key={message.text}
-          className={cn("flex flex-col gap-2", compact && "gap-1")}
+          className={cn(
+            "flex shrink-0 animate-wc-message-enter flex-col gap-2",
+            compact && "gap-[3.73px]"
+          )}
         >
           <AgentMessage
             role={message.role}
             text={message.text}
             compact={compact}
+            animate={false}
+            className={
+              message.step === 5
+                ? compact
+                  ? "w-[118.875px]"
+                  : "w-[255px]"
+                : undefined
+            }
           />
           {message.step === 5 && <AgentFieldTable compact={compact} />}
         </div>
@@ -292,37 +332,44 @@ function ConversationBody({
 }
 
 /**
- * The card itself. Figma desktop `45487:90358`/`45487:88247` (408x647,
- * radius 14, border `rgba(255,255,255,0.9)`, shadow
- * `0 12px 32px rgba(0,0,0,0.64), 0 4px 4px rgba(0,0,0,0.25)`,
- * `backdrop-filter: blur(48px)`); mobile `45487:113113` (190.2x301.62,
- * ~0.4662x, real measured values, not a guess). The fill IS accent-driven —
- * confirmed against a second persona (`hero-personalization-05-
- * todesktop.com`, `45487:93325`: panel reads blue, vs. orange for
- * recent.dev) — so `wc-agent-panel-surface` (globals.css) derives its
- * radial-gradient stops from `var(--wc-accent)` via `color-mix()`, keeping
- * the original black base stop and the 0.56 alpha feel. Step 0 desaturates
- * the body via a CSS filter transition reading
- * `STORYBOARD_TIMING.grayscaleMs`/`recolorMs` — the panel's analogue of
- * Task 6's dashboard blur (which hardcodes `duration-500` against
- * `blurMs: 600`; this file reads the constants directly instead, so Task 8
- * should reconcile the two).
+ * Figma's 408×647 panel and 0.4662-scale mobile panel share its exported
+ * gradient. HueLayer preserves that lighting while tinting brand previews.
  */
 function AgentPanel({
   step,
   compact,
+  renderLive,
+  phase = "idle",
+  personalized = false,
 }: {
   step: StoryboardStep | null
   compact?: boolean
+  renderLive?: LiveAgentRenderer
+  phase?: StoryboardPhase
+  personalized?: boolean
 }) {
-  const isGrayscale = step === 0
+  const isGrayscale = phase === "grayscale" || phase === "waiting"
+  const reducedMotion = useReducedMotion()
 
   return (
-    <div
+    <motion.div
+      data-slot="web-chat-panel"
+      initial={{ filter: "grayscale(0)" }}
+      animate={{
+        filter: isGrayscale && !reducedMotion ? "grayscale(1)" : "grayscale(0)",
+      }}
+      transition={{
+        duration: reducedMotion
+          ? 0
+          : (isGrayscale
+              ? STORYBOARD_TIMING.grayscaleMs
+              : STORYBOARD_TIMING.recolorMs) / 1000,
+        ease: "easeOut",
+      }}
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] wc-agent-panel-surface",
+        "relative isolate flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px]",
         compact
-          ? "h-[301.62px] w-[190.2px] rounded-[6.5px]"
+          ? "h-[301.62px] w-[190.2px] rounded-[6.5px] backdrop-blur-[22.38px]"
           : // Desktop: fills whatever height the shared card (`HeroLiveUi`
             // in hero.tsx) gives its margined wrapper, matching Figma's
             // `❖chat` panel filling ~647 of the 680-tall card rather than a
@@ -330,73 +377,72 @@ function AgentPanel({
             "h-full w-[408px]"
       )}
     >
-      {!compact && (
-        <>
-          {/*
-            Two layers Figma's `chat` frame carries over the gradient that
-            were missing here, both at 0.10 opacity:
-
-            `light` (`45487-79596`) — a 746x1082 #E4C1EA ellipse at
-            (-348, -652), `blur(54px)`. It sits almost entirely off the
-            panel's top-left, and what reaches inside is the soft lift that
-            makes the frame's upper half read lighter than its lower.
-
-            `noise` (`45487-79595`) — the same grain as the hero backdrop.
-            Figma's texture is sparse, so 0.10 there corresponds to 0.027 of
-            this full-coverage stand-in (the same ~0.27 factor calibrated for
-            the hero).
-
-            `-z-10` keeps both above the root's gradient background but below
-            the header and body, which are in normal flow. The root already
-            establishes a stacking context via `backdrop-blur`.
-          */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-[652px] -left-[348px] -z-10 h-[1082px] w-[746px] rounded-[50%] bg-[#E4C1EA] opacity-10 blur-[54px]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.027]"
-            style={{
-              backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
-              backgroundRepeat: "repeat",
-              backgroundSize: "180px 180px",
-            }}
-          />
-        </>
-      )}
-      <PanelHeader compact={compact} />
       <div
-        className="wc-agent-panel-recolor flex min-h-0 flex-1 flex-col ease-out"
+        className="pointer-events-none absolute inset-0 isolate -z-10 bg-black"
         style={{
-          filter: isGrayscale ? "grayscale(1)" : "grayscale(0)",
-          transitionProperty: "filter",
-          transitionDuration: `${
-            isGrayscale
-              ? STORYBOARD_TIMING.grayscaleMs
-              : STORYBOARD_TIMING.recolorMs
-          }ms`,
+          backgroundImage: `url(${HERO_CHAT_SURFACE_IMAGE.src})`,
+          backgroundSize: "100% 100%",
         }}
       >
-        {step === null || step === 0 ? (
-          <EmptyState compact={compact} />
-        ) : (
-          <ConversationBody step={step} compact={compact} />
-        )}
+        <HueLayer active={personalized} />
       </div>
-      <Composer compact={compact} />
-    </div>
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute -z-10 -translate-x-1/2 -translate-y-1/2 rotate-[62.9deg] transition-opacity duration-700 motion-reduce:transition-none",
+          personalized && "opacity-0",
+          compact
+            ? "top-[-52.28px] left-[11.29px] h-[237.57px] w-[597.12px]"
+            : "top-[-112.14px] left-[24.22px] h-[509.6px] w-[1280.88px]"
+        )}
+        style={{
+          backgroundImage: `url(${HERO_CHAT_LIGHT_IMAGE.src})`,
+          backgroundSize: "100% 100%",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-10 mix-blend-overlay"
+        style={{
+          backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "180px 180px",
+        }}
+      />
+      <PanelHeader compact={compact} personalized={personalized} />
+      {renderLive ? (
+        renderLive(
+          Boolean(compact),
+          <EmptyState compact={compact} personalized={personalized} />
+        )
+      ) : (
+        <>
+          <div className="flex min-h-0 flex-1 flex-col">
+            {step === null || step === 0 ? (
+              <EmptyState compact={compact} personalized={personalized} />
+            ) : (
+              <ConversationBody step={step} compact={compact} />
+            )}
+          </div>
+          <Composer compact={compact} />
+        </>
+      )}
+    </motion.div>
   )
 }
 
 /**
- * The hero agent chat panel: pure function of `step`, no state/effects/
- * timers — every visual change (message reveal, thinking indicator,
- * grayscale-to-color) is driven by CSS reading the current render's props.
+ * Both responsive frames share one live chat session. Preview visuals remain
+ * driven by `step`, with no additional storyboard timers here.
  * `--wc-message-reveal-ms` is set here (not per-message) since every message
  * shares the same reveal duration.
  */
-export function HeroAgentPanel({ step }: HeroAgentPanelProps) {
+function HeroAgentPanels({
+  step,
+  renderLive,
+  phase,
+  personalized,
+}: HeroAgentPanelProps & { renderLive?: LiveAgentRenderer }) {
   return (
     <div
       className="contents"
@@ -411,15 +457,43 @@ export function HeroAgentPanel({ step }: HeroAgentPanelProps) {
           panel 408 wide at x16); the left inset is already the `gap-4`
           between this and `HeroProductUI` in `HeroLiveUi`. Auto height lets
           it stretch to match the card's real height as a flex sibling. */}
-      <div className="hidden md:my-4 md:mr-4 md:block">
-        <AgentPanel step={step} />
+      <div className="hidden lg:mt-[15px] lg:mr-[15px] lg:mb-4 lg:block">
+        <AgentPanel
+          step={step}
+          phase={phase}
+          personalized={personalized}
+          renderLive={renderLive}
+        />
       </div>
       {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
           slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
           flex item can shrink below its content size and get squeezed. */}
-      <div className="shrink-0 md:hidden">
-        <AgentPanel step={step} compact />
+      <div className="mt-[7.46px] mr-[7.46px] shrink-0 lg:hidden">
+        <AgentPanel
+          step={step}
+          phase={phase}
+          personalized={personalized}
+          compact
+          renderLive={renderLive}
+        />
       </div>
     </div>
+  )
+}
+
+export function HeroAgentPanel({
+  step,
+  phase,
+  personalized,
+}: HeroAgentPanelProps) {
+  if (step !== null)
+    return (
+      <HeroAgentPanels step={step} phase={phase} personalized={personalized} />
+    )
+
+  return (
+    <LiveAgentChat>
+      {(renderLive) => <HeroAgentPanels step={null} renderLive={renderLive} />}
+    </LiveAgentChat>
   )
 }

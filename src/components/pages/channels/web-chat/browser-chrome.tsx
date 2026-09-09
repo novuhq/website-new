@@ -1,5 +1,8 @@
 "use client"
 
+import Image from "next/image"
+import { HERO_GLOBE_IMAGE } from "@/data/pages/web-chat"
+
 import { cn } from "@/lib/utils"
 
 /**
@@ -28,18 +31,13 @@ export function ChromeBar({
         )}
         style={{ backgroundColor: "rgba(42, 43, 51, 0.3)" }}
       >
-        <svg
-          aria-hidden
-          viewBox="0 0 24 24"
-          className={cn(
-            "shrink-0 fill-none stroke-white/40",
-            compact ? "size-2.5" : "size-4"
-          )}
-          strokeWidth={2}
-        >
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9Z" />
-        </svg>
+        <Image
+          src={HERO_GLOBE_IMAGE}
+          alt=""
+          width={16}
+          height={16}
+          className={cn("shrink-0 opacity-40", compact ? "size-2.5" : "size-4")}
+        />
         <span
           className={cn(
             "truncate text-white/60",

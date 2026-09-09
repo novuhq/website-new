@@ -35,7 +35,89 @@ function heroMessage(page: Page, text: string) {
     .filter({ visible: true })
 }
 
+// The dynamically loaded composer proves the hero has hydrated before typing.
+async function openWebChat(page: Page) {
+  await gotoCriticalPage(page, webChatContract.route)
+  await expect(
+    page
+      .getByTestId("web-chat-hero")
+      .getByRole("textbox", { name: "Message the agent" })
+  ).toBeVisible()
+}
+
 test.describe("web chat personalizer", () => {
+  test("keeps the extracted identity when a website has no accent color", async ({
+    page,
+  }) => {
+    const logo =
+      "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4="
+    await page.route(PREVIEW_ROUTE, (route) =>
+      route.fulfill({
+        json: { brand: { domain: "todesktop.com", accent: null, logo } },
+      })
+    )
+    await openWebChat(page)
+    await page
+      .getByRole("textbox", { name: "Your website URL" })
+      .fill("todesktop.com")
+    await page
+      .getByRole("button", { name: webChatContract.submitLabel })
+      .click()
+
+    await expect(page.locator("[data-wc-state]")).toHaveAttribute(
+      "data-wc-state",
+      "personalized"
+    )
+    await expect(heroMessage(page, "todesktop.com").first()).toBeVisible()
+    await expect(page.locator("[data-wc-state]")).toHaveCSS(
+      "--wc-accent",
+      "#c25cd6"
+    )
+    await expect(
+      page
+        .getByRole("status")
+        .filter({ hasText: webChatContract.fallbackAlert })
+    ).toBeHidden()
+    await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
+    // The sidebar is desktop-only; verify the actual extracted logo when shown.
+    const sidebarLogo = page
+      .getByTestId("web-chat-hero")
+      .locator(`img[src="${logo}"]`)
+    await expect(sidebarLogo.first()).toHaveAttribute("src", logo)
+  })
+
+  test("restores the live message composer after resetting a preview", async ({
+    page,
+  }) => {
+    await page.route(PREVIEW_ROUTE, (route) =>
+      route.fulfill({
+        json: {
+          brand: { domain: "recent.dev", accent: "#e65006", logo: null },
+        },
+      })
+    )
+    await openWebChat(page)
+    const composer = page
+      .getByTestId("web-chat-hero")
+      .getByRole("textbox", { name: "Message the agent" })
+    await expect(composer).toBeVisible()
+    await page
+      .getByRole("textbox", { name: "Your website URL" })
+      .fill("recent.dev")
+    await page
+      .getByRole("button", { name: webChatContract.submitLabel })
+      .click()
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.personalizedTableTitle
+    )
+    await expect(composer).toBeHidden()
+    await page.getByRole("button", { name: "Reset personalization" }).click()
+    await expect(composer).toBeVisible()
+    await expect(heroTableTitle(page)).toHaveText(
+      webChatContract.defaultTableTitle
+    )
+  })
+
   test(`[${webChatContract.id}] personalizes the hero and plays the conversation`, async ({
     page,
   }) => {
@@ -58,7 +140,7 @@ test.describe("web chat personalizer", () => {
       })
     )
 
-    await gotoCriticalPage(page, webChatContract.route)
+    await openWebChat(page)
 
     await expect(
       page.getByRole("heading", { level: 1, name: webChatContract.heading })
@@ -117,7 +199,7 @@ test.describe("web chat personalizer", () => {
       })
     )
 
-    await gotoCriticalPage(page, webChatContract.route)
+    await openWebChat(page)
 
     await page
       .getByRole("textbox", { name: /site|domain|url/i })
@@ -160,7 +242,7 @@ test.describe("web chat personalizer", () => {
       })
     )
 
-    await gotoCriticalPage(page, webChatContract.route)
+    await openWebChat(page)
 
     await page
       .getByRole("textbox", { name: /site|domain|url/i })
@@ -187,7 +269,7 @@ test.describe("web chat personalizer", () => {
   }) => {
     const applicationErrors = observeApplicationErrors(page)
 
-    await gotoCriticalPage(page, webChatContract.route)
+    await openWebChat(page)
 
     // §8's configurator has its own "Copy prompt" button whose accessible
     // name differs from the hero's "Copy Prompt" only by case — Playwright's

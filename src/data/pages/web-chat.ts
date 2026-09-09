@@ -1,6 +1,11 @@
 import type { StaticImageData } from "next/image"
 import agentMark from "@/images/pages/channels/web-chat/agent-mark.webp"
-import heroGlow from "@/images/pages/channels/web-chat/hero-glow.webp"
+import heroAgent from "@/images/pages/channels/web-chat/hero-agent.png"
+import heroChatLight from "@/images/pages/channels/web-chat/hero-chat-light.svg"
+import heroChatSurface from "@/images/pages/channels/web-chat/hero-chat-surface.svg"
+import heroDesktopBackground from "@/images/pages/channels/web-chat/hero-desktop-background.webp"
+import heroGlobe from "@/images/pages/channels/web-chat/hero-globe.svg"
+import heroMobileBackground from "@/images/pages/channels/web-chat/hero-mobile-background.webp"
 
 /**
  * Content for the Web Chat hero product UI (Task 6): the mock browser chrome,
@@ -10,20 +15,24 @@ import heroGlow from "@/images/pages/channels/web-chat/hero-glow.webp"
 
 /**
  * The agent's logomark blob (Figma `45487-79608`): the multi-hue gradient
- * stack behind the header avatar and the empty-state orb. Exported at 300px
+ * stack behind the header avatar. Exported at 300px
  * because it is drawn at 140px and 40px, and the export is 208 units wide for
  * a 140-unit core — the blur bleeds past the group box, so consumers inset it
  * to size the core rather than the export.
  */
 export const AGENT_MARK_IMAGE: StaticImageData = agentMark
 
-/**
- * Tiled noise used by both the hero backdrop and the agent panel. Figma
- * layers a sparse white grain texture over each (`45487-79075` at 0.32 and
- * `45487-79595` at 0.10); this is a full-coverage SVG stand-in, so each
- * consumer scales its own opacity down by the same ~0.27 factor to land on
- * the texture's measured mean lift rather than reusing Figma's numbers.
- */
+/** Exact hero artwork and gradient from Figma 45440:67330 / 45440:67319. */
+export const HERO_AGENT_IMAGE: StaticImageData = heroAgent
+export const HERO_CHAT_SURFACE_IMAGE: StaticImageData = heroChatSurface
+export const HERO_CHAT_LIGHT_IMAGE: StaticImageData = heroChatLight
+export const HERO_DESKTOP_BACKGROUND_IMAGE: StaticImageData =
+  heroDesktopBackground
+export const HERO_MOBILE_BACKGROUND_IMAGE: StaticImageData =
+  heroMobileBackground
+export const HERO_GLOBE_IMAGE: StaticImageData = heroGlobe
+
+/** Fine panel grain; the backdrop exports already contain Figma’s texture. */
 export const NOISE_GRAIN_SVG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
@@ -32,22 +41,6 @@ export const NOISE_GRAIN_SVG =
  * CTAs. Character-for-character against the Task 8 brief and the
  * `typography` Figma node (`45487-111212` desktop, `45487-113230` mobile).
  */
-/**
- * The hero backdrop glow, exported from Figma's `bg` group (`45487-79056`):
- * a 1408x1127 ellipse, `blur(246px)`, masking a stack of ten coloured
- * ellipses (`#523FFD` and `#664BEC` violets, `#4B73EC` blue, `#FFA3F4` pink,
- * `#D0A3FF` lavender, `#FFA488` peach). Shipped as an image rather than
- * reproduced in CSS because those ten layers sit at coordinates inside a
- * 7050x3336 group that do not map onto the masked region without guesswork,
- * and a hand-built approximation is what read as too dark and too flat.
- *
- * The export is downscaled to 800px and pre-blurred: Figma bakes gradient
- * dither into a render this soft, which cost 248KB at 1200px to preserve
- * detail that is not there. At 800px it is 66KB, and it carries no detail
- * that survives being scaled up under a 0.32-opacity noise layer anyway.
- */
-export const HERO_GLOW_IMAGE: StaticImageData = heroGlow
-
 export const HERO_BADGE_LABEL = "Web Chat"
 
 export const HERO_HEADING = "Your agent, live inside your product"
@@ -159,7 +152,7 @@ export const HERO_MESSAGES = [
   {
     step: 3,
     role: "agent",
-    text: "Should I check the missing fields or review the full submission?",
+    text: "Should I check the missing fields\nor review the full submission?",
   },
   { step: 4, role: "user", text: "Missing fields" },
   {

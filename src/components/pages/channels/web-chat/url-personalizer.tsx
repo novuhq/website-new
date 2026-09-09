@@ -1,7 +1,9 @@
 "use client"
 
 import { useId, useState, type FormEvent } from "react"
-import { Globe, RotateCcw } from "lucide-react"
+import Image from "next/image"
+import { HERO_GLOBE_IMAGE } from "@/data/pages/web-chat"
+import { RotateCw } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,8 +21,11 @@ const FIELD_CLASSES =
 const RESET_ICON_CLASSES =
   "size-6 opacity-40 transition-opacity duration-200 group-hover/reset:opacity-100 group-focus-visible/reset:opacity-100"
 
+// `bg-white`: the shared Button default is #E6E6E6, but the frame's submit
+// pill is pure white — measured at 255 across 150 sampled pixels of
+// `hero-personalization-05` (`45487-89814`).
 const SUBMIT_BUTTON_CLASSES =
-  "h-11 shrink-0 rounded-full px-9 py-3.5 text-base font-medium tracking-tight normal-case"
+  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-white lg:w-[205px]"
 
 /**
  * The control that starts the hero interaction: a visitor types their own
@@ -56,13 +61,19 @@ export function UrlPersonalizer({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full max-w-[832px] flex-col gap-4">
       <form onSubmit={handleSubmit}>
-        {/* Desktop (md and up): a single pill — input, submit, reset icon in one row. */}
-        <div className="hidden items-center gap-5 rounded-[40px] border border-white/10 bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] md:flex">
-          <div className="flex w-[756px] min-w-0 items-center gap-2.5">
+        {/* Desktop: input, submit and reset share one pill. */}
+        <div className="hidden h-[68px] items-center gap-5 rounded-[40px] bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset lg:flex">
+          <div className="flex min-w-0 flex-1 items-center gap-2.5">
             <div className={cn(FIELD_CLASSES, "min-w-0 flex-1")}>
-              <Globe className="size-6 shrink-0 text-white/40" aria-hidden />
+              <Image
+                src={HERO_GLOBE_IMAGE}
+                alt=""
+                width={24}
+                height={24}
+                className="size-6 shrink-0"
+              />
               <label htmlFor={desktopInputId} className="sr-only">
                 Your website URL
               </label>
@@ -74,7 +85,7 @@ export function UrlPersonalizer({
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
                 placeholder={PLACEHOLDER}
-                className="min-w-0 flex-1 bg-transparent text-lg text-white placeholder:text-white/40 focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none lg:text-lg"
               />
             </div>
             <Button
@@ -93,14 +104,20 @@ export function UrlPersonalizer({
             aria-label={RESET_LABEL}
             className="group/reset shrink-0"
           >
-            <RotateCcw className={RESET_ICON_CLASSES} aria-hidden />
+            <RotateCw className={RESET_ICON_CLASSES} aria-hidden />
           </button>
         </div>
 
         {/* Mobile: a rounded dark card with two rows — full-width input, then submit + reset. */}
-        <div className="flex w-full flex-col gap-2.5 rounded-[20px] border border-white/10 bg-black p-2 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] md:hidden">
+        <div className="flex w-full flex-col gap-2.5 rounded-[20px] bg-black p-2 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset lg:hidden">
           <div className={FIELD_CLASSES}>
-            <Globe className="size-6 shrink-0 text-white/40" aria-hidden />
+            <Image
+              src={HERO_GLOBE_IMAGE}
+              alt=""
+              width={24}
+              height={24}
+              className="size-6 shrink-0"
+            />
             <label htmlFor={mobileInputId} className="sr-only">
               Your website URL
             </label>
@@ -112,7 +129,7 @@ export function UrlPersonalizer({
               value={value}
               onChange={(event) => setValue(event.target.value)}
               placeholder={PLACEHOLDER}
-              className="min-w-0 flex-1 bg-transparent text-lg text-white placeholder:text-white/40 focus:outline-none"
+              className="min-w-0 flex-1 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none lg:text-lg"
             />
           </div>
           <div className="flex items-center gap-3 pr-3">
@@ -131,13 +148,13 @@ export function UrlPersonalizer({
               aria-label={RESET_LABEL}
               className="group/reset shrink-0"
             >
-              <RotateCcw className={RESET_ICON_CLASSES} aria-hidden />
+              <RotateCw className={RESET_ICON_CLASSES} aria-hidden />
             </button>
           </div>
         </div>
       </form>
 
-      <p className="px-6 text-center text-[15px] leading-[1.38em] tracking-tight text-white/40">
+      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40 lg:text-[15px]">
         {CAPTION}
       </p>
     </div>

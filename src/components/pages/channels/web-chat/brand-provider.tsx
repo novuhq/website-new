@@ -11,7 +11,6 @@ import {
 } from "react"
 
 import type { BrandProfile } from "@/lib/site-brand"
-
 import {
   brandCssVars,
   buildBrandTheme,
@@ -28,7 +27,7 @@ export interface WebChatBrand {
   errorMessage: string | null
 }
 
-/** Fixed copy for a failed or accent-less personalization. Task 5 renders it. */
+/** An absent accent uses the default theme; only extraction failures show this. */
 const FALLBACK_ERROR_MESSAGE =
   "We couldn’t load your brand styles. Showing the default preview."
 
@@ -110,7 +109,7 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
       const domain = brand?.domain ?? null
       const favicon = brand?.logo ?? null
 
-      if (!brand?.accent) {
+      if (!brand || !domain) {
         setState(fallbackState(domain, favicon))
         return
       }

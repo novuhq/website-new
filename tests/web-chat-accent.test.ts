@@ -70,6 +70,9 @@ describe("buildBrandTheme", () => {
 
   it("derives a translucent soft variant of the accent", () => {
     assert.equal(buildBrandTheme("#e65006").accentSoft, "#e650061f")
+    // Measured off `hero-personalization-05` (`45487-89814`).
+    assert.equal(buildBrandTheme("#e65006").accentRow, "#e6500630")
+    assert.equal(buildBrandTheme("#e65006").accentNav, "#e65006b8")
   })
 })
 
@@ -79,6 +82,8 @@ describe("brandCssVars", () => {
       "--wc-accent": "#0036ff",
       "--wc-accent-foreground": "#ffffff",
       "--wc-accent-soft": "#0036ff1f",
+      "--wc-accent-row": "#0036ff30",
+      "--wc-accent-nav": "#0036ffb8",
       "--wc-hue": "#0036ff",
     })
   })

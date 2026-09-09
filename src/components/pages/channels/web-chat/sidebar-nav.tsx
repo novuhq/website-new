@@ -139,25 +139,20 @@ export function Sidebar({
                           compact
                             ? "px-1 py-0.5 text-[6.5px]"
                             : "px-2 py-1 text-sm",
-                          isActive ? "font-normal" : "text-gray-90/60"
+                          isActive ? "font-normal" : "text-gray-90/60",
+                          // The two frames treat this pill differently and
+                          // both are right. Idle (`45487-79055`) samples
+                          // #AD92B1 with near-black text — a neutral
+                          // placeholder, not a tint of the accent, since no
+                          // brand exists yet. Personalized (`45487-89814`)
+                          // samples the accent at 72% with light text. So it
+                          // switches on `data-wc-state` rather than being
+                          // derived from `--wc-accent` alone, which cannot
+                          // tell the two apart (the default accent is the
+                          // same value in both states).
+                          isActive &&
+                            "bg-[#AD92B1] text-[#0A090A] group-data-[wc-state=loading]:bg-[var(--wc-accent-nav)] group-data-[wc-state=loading]:text-white group-data-[wc-state=personalized]:bg-[var(--wc-accent-nav)] group-data-[wc-state=personalized]:text-white"
                         )}
-                        style={
-                          isActive
-                            ? {
-                                // Figma's active pill samples #AD92B1 with
-                                // near-black text — a heavily desaturated
-                                // tint of the accent, not the accent itself.
-                                // Mixing toward a neutral keeps it
-                                // brand-reactive while landing on the
-                                // frame's colour, and the light fill makes
-                                // dark text correct for any brand (the raw
-                                // accent with white text measured 3.6:1).
-                                backgroundColor:
-                                  "color-mix(in srgb, var(--wc-accent) 33%, #A5A3AD)",
-                                color: "#0A090A",
-                              }
-                            : undefined
-                        }
                       >
                         {subItem}
                       </span>

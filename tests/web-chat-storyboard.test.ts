@@ -48,11 +48,10 @@ describe("nextStoryboardStep", () => {
 })
 
 describe("storyboardDwellMs", () => {
-  it("overlaps grayscale and blur in the transition, then adds the recolour", () => {
+  it("lets grayscale and blur finish together before the brand can change", () => {
     assert.equal(
       storyboardDwellMs(0, STORYBOARD_TIMING),
-      Math.max(STORYBOARD_TIMING.grayscaleMs, STORYBOARD_TIMING.blurMs) +
-        STORYBOARD_TIMING.recolorMs
+      Math.max(STORYBOARD_TIMING.grayscaleMs, STORYBOARD_TIMING.blurMs)
     )
   })
 
@@ -86,32 +85,73 @@ describe("storyboardDwellMs", () => {
 })
 
 describe("advanceStoryboard", () => {
-  it("starts on the transition step", () => {
+  it("starts with the old content fading to grayscale", () => {
     const state = initialStoryboardState(STORYBOARD_TIMING)
 
     assert.equal(state.step, 0)
+    assert.equal(state.phase, "grayscale")
     assert.equal(state.dwellMs, storyboardDwellMs(0, STORYBOARD_TIMING))
   })
 
-  it("carries the dwell for the step it moves to", () => {
-    const state = advanceStoryboard(
+  it("waits at full grayscale when extraction takes longer than the fade", () => {
+    const waiting = advanceStoryboard(
       initialStoryboardState(STORYBOARD_TIMING),
       STORYBOARD_TIMING
     )
 
-    assert.equal(state.step, 1)
-    assert.equal(state.dwellMs, storyboardDwellMs(1, STORYBOARD_TIMING))
+    assert.equal(waiting.step, 0)
+    assert.equal(waiting.phase, "waiting")
+    assert.equal(waiting.dwellMs, 0)
+    assert.equal(advanceStoryboard(waiting, STORYBOARD_TIMING), waiting)
+  })
+
+  it("does not bypass grayscale or recoloring for a cached brand response", () => {
+    const initial = initialStoryboardState(STORYBOARD_TIMING)
+    const waiting = advanceStoryboard(initial, STORYBOARD_TIMING, true)
+    const recoloring = advanceStoryboard(waiting, STORYBOARD_TIMING, true)
+    const firstMessage = advanceStoryboard(recoloring, STORYBOARD_TIMING, true)
+
+    assert.equal(waiting.phase, "waiting")
+    assert.equal(recoloring.phase, "recolor")
+    assert.equal(recoloring.step, 0)
+    assert.equal(recoloring.dwellMs, STORYBOARD_TIMING.recolorMs)
+    assert.equal(firstMessage.phase, "conversation")
+    assert.equal(firstMessage.step, 1)
+    assert.equal(firstMessage.dwellMs, storyboardDwellMs(1, STORYBOARD_TIMING))
+  })
+
+  it("releases the waiting phase only after a brand or fallback is ready", () => {
+    const waiting = advanceStoryboard(
+      initialStoryboardState(STORYBOARD_TIMING),
+      STORYBOARD_TIMING
+    )
+
+    assert.equal(advanceStoryboard(waiting, STORYBOARD_TIMING, false), waiting)
+    assert.equal(
+      advanceStoryboard(waiting, STORYBOARD_TIMING, true).phase,
+      "recolor"
+    )
   })
 
   it("produces the full cycle then repeats from the first message", () => {
     let state = initialStoryboardState(STORYBOARD_TIMING)
-    const steps = [state.step]
+    const steps = [`${state.phase}:${state.step}`]
 
-    for (let i = 0; i < 6; i += 1) {
-      state = advanceStoryboard(state, STORYBOARD_TIMING)
-      steps.push(state.step)
+    for (let i = 0; i < 8; i += 1) {
+      state = advanceStoryboard(state, STORYBOARD_TIMING, true)
+      steps.push(`${state.phase}:${state.step}`)
     }
 
-    assert.deepEqual(steps, [0, 1, 2, 3, 4, 5, 1])
+    assert.deepEqual(steps, [
+      "grayscale:0",
+      "waiting:0",
+      "recolor:0",
+      "conversation:1",
+      "conversation:2",
+      "conversation:3",
+      "conversation:4",
+      "conversation:5",
+      "conversation:1",
+    ])
   })
 })

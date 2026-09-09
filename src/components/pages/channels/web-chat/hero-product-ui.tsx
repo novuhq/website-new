@@ -8,11 +8,11 @@ import {
 } from "@/data/pages/web-chat"
 import {
   STORYBOARD_TIMING,
-  type StoryboardStep,
+  type StoryboardPhase,
 } from "@/data/pages/web-chat-storyboard"
 
 import { cn } from "@/lib/utils"
-import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
+import type { WebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
 import { ChromeBar } from "@/components/pages/channels/web-chat/browser-chrome"
 import {
   DataTable,
@@ -21,44 +21,54 @@ import {
 import { Sidebar } from "@/components/pages/channels/web-chat/sidebar-nav"
 
 export interface HeroProductUIProps {
-  /** `null` is the pre-submit default state. 0-5 are live storyboard steps. */
-  step: StoryboardStep | null
-  /**
-   * Whether brand extraction actually succeeded (`status === "personalized"`).
-   * Separate from `step`: the table and accents advance on the fallback path
-   * too, but labels (domain/company/favicon) only change here.
-   */
-  isPersonalized: boolean
+  phase: StoryboardPhase
+  /** The brand currently revealed by the hero, rather than the pending fetch. */
+  brand: WebChatBrand
+  personalizedTable: boolean
 }
 
-export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
-  const { domain, favicon } = useWebChatBrand()
+export function HeroProductUI({
+  phase,
+  brand,
+  personalizedTable,
+}: HeroProductUIProps) {
+  const { domain, favicon } = brand
+  const isPersonalized = brand.status === "personalized"
 
-  const table: HeroTable =
-    step === null ? HERO_TABLE_DEFAULT : HERO_TABLE_PERSONALIZED
+  const table: HeroTable = personalizedTable
+    ? HERO_TABLE_PERSONALIZED
+    : HERO_TABLE_DEFAULT
   const domainLabel = isPersonalized && domain ? domain : HERO_DEFAULT_DOMAIN
   const companyLabel = isPersonalized && domain ? domain : HERO_DEFAULT_COMPANY
   const faviconUrl = isPersonalized ? favicon : null
-  const isTransitioning = step === 0
+  const isTransitioning = phase === "grayscale" || phase === "waiting"
+  const duration = isTransitioning
+    ? STORYBOARD_TIMING.blurMs
+    : STORYBOARD_TIMING.recolorMs
 
   return (
-    <div className="relative md:min-w-0 md:flex-1">
+    <div className="relative lg:min-w-0 lg:flex-1">
       {/* Desktop: chrome + sidebar + table. Fills whatever width the shared
           card (`HeroLiveUi` in hero.tsx) leaves it next to the agent panel
           — no border/bg/shadow of its own, since that chrome now lives on
           the shared outer card so the two don't read as separate boxes. */}
-      <div className="relative hidden overflow-hidden md:flex md:h-full md:flex-col">
+      <div className="relative hidden overflow-hidden lg:flex lg:h-full lg:flex-col">
         <ChromeBar domain={domainLabel} />
         <div
+          data-slot="hero-dashboard-content"
           className={cn(
-            "flex min-h-[680px] flex-1 transition-[filter] ease-out",
+            "flex min-h-0 flex-1 transition-[filter] ease-out motion-reduce:blur-none! motion-reduce:transition-none!",
             isTransitioning && "blur-md"
           )}
-          style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
+          style={{ transitionDuration: `${duration}ms` }}
         >
           <Sidebar companyLabel={companyLabel} faviconUrl={faviconUrl} />
           <DataTable table={table} />
         </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[52px] bottom-0 bg-linear-to-b from-transparent to-black to-[86.463%]"
+        />
       </div>
 
       {/* Mobile: the dashboard slice only, at its natural size — not a
@@ -70,14 +80,15 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
           pieces, so the clipping, the -296px offset and the adjacency to
           `HeroAgentPanel` all live one level up, in `HeroLiveUi`
           (hero.tsx) — this piece just renders at its own fixed 438×317. */}
-      <div className="flex h-[317px] w-[438px] shrink-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-black md:hidden">
+      <div className="flex h-[317px] w-[438px] shrink-0 flex-col overflow-hidden lg:hidden">
         <ChromeBar domain={domainLabel} compact />
         <div
+          data-slot="hero-dashboard-content"
           className={cn(
-            "flex flex-1 transition-[filter] ease-out",
+            "flex flex-1 transition-[filter] ease-out motion-reduce:blur-none! motion-reduce:transition-none!",
             isTransitioning && "blur-md"
           )}
-          style={{ transitionDuration: `${STORYBOARD_TIMING.blurMs}ms` }}
+          style={{ transitionDuration: `${duration}ms` }}
         >
           <Sidebar
             companyLabel={companyLabel}
@@ -86,6 +97,10 @@ export function HeroProductUI({ step, isPersonalized }: HeroProductUIProps) {
           />
           <DataTable table={table} compact />
         </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[24.24px] bottom-0 bg-linear-to-b from-transparent to-black to-[86.463%]"
+        />
       </div>
     </div>
   )

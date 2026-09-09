@@ -1,23 +1,28 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
+import { Geist_Mono } from "next/font/google"
 import {
   HERO_BADGE_LABEL,
   HERO_CLI_COMMAND,
   HERO_COPY_PROMPT_LABEL,
   HERO_DESCRIPTION_TEXT,
-  HERO_GLOW_IMAGE,
+  HERO_DESKTOP_BACKGROUND_IMAGE,
   HERO_HEADING,
   HERO_IMPLEMENT_PROMPT,
   HERO_META_LINE,
+  HERO_MOBILE_BACKGROUND_IMAGE,
   HERO_TOOLTIP_LINK_LABEL,
   HERO_TOOLTIP_TEXT,
-  NOISE_GRAIN_SVG,
 } from "@/data/pages/web-chat"
-import type { StoryboardStep } from "@/data/pages/web-chat-storyboard"
+import type {
+  StoryboardPhase,
+  StoryboardStep,
+} from "@/data/pages/web-chat-storyboard"
 import { useInView } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import { brandCssVars } from "@/lib/web-chat-theme"
 import { CopyCommand } from "@/components/ui/copy-command"
 import {
   Tooltip,
@@ -25,7 +30,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { BrandAlert } from "@/components/pages/channels/web-chat/brand-alert"
-import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
+import {
+  useWebChatBrand,
+  type WebChatBrand,
+} from "@/components/pages/channels/web-chat/brand-provider"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
 import { HeroProductUI } from "@/components/pages/channels/web-chat/hero-product-ui"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
@@ -33,8 +41,15 @@ import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-person
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-web-chat-mono",
+})
+
 const COPY_PROMPT_BUTTON_CLASSES =
-  "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case sm:w-auto"
+  "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case lg:w-34"
 
 /**
  * "Copy Prompt" plus its hover tooltip. Figma (`45487-111197`) styles
@@ -50,11 +65,12 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
           Radix needs a real DOM node to anchor the popper and attach its
           hover/focus listeners to. */}
       <TooltipTrigger asChild>
-        <span className={cn("inline-flex w-full sm:w-auto", className)}>
+        <span className={cn("inline-flex w-full lg:w-auto", className)}>
           <CopyPromptButton
             className={COPY_PROMPT_BUTTON_CLASSES}
             label={HERO_COPY_PROMPT_LABEL}
             size="none"
+            showCopyIcon={false}
             value={HERO_IMPLEMENT_PROMPT}
             variant="default"
           />
@@ -87,10 +103,14 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
 function CliPill({ className }: { className?: string }) {
   return (
     <CopyCommand
-      className={cn("sm:w-auto", className)}
+      className={cn("min-w-0 lg:w-[393px]", className)}
       command={HERO_CLI_COMMAND}
-      commandClassName="pointer-events-auto select-text"
-      controlClassName="border-[#41434D] bg-black text-white"
+      commandClassName="pointer-events-auto min-w-0 flex-1 text-base leading-none tracking-[-0.02em] text-white select-text"
+      copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
+      controlClassName={cn(
+        "h-11 gap-6 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
+        geistMono.className
+      )}
     />
   )
 }
@@ -99,7 +119,7 @@ function MetaLine({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "text-[14px] leading-[1.38em] tracking-[-0.025em] text-white/40 md:max-w-[369px] md:text-[15px]",
+        "text-sm leading-[1.375] tracking-tight text-white/40 lg:max-w-[369px] lg:text-[15px]",
         className
       )}
     >
@@ -111,8 +131,8 @@ function MetaLine({ className }: { className?: string }) {
 function HeroBadge() {
   return (
     <span className="inline-flex items-center gap-3">
-      <span aria-hidden className="size-2 bg-[#C25CD6]" />
-      <span className="text-[13px] leading-[1em] font-medium tracking-normal text-[#F5CFFC] uppercase">
+      <span aria-hidden className="size-2 bg-purple-3" />
+      <span className="text-[13px] leading-[1em] font-medium tracking-normal text-purple-1 uppercase">
         {HERO_BADGE_LABEL}
       </span>
     </span>
@@ -122,7 +142,7 @@ function HeroBadge() {
 // Figma breaks the heading after "live" (`45487-83391`, a fixed 557px-wide
 // frame). Real browser Inter at 56px/-0.04em doesn't reach that wrap point
 // on its own — the whole first line fits inside 557px — so the break is
-// pinned explicitly (desktop only, via a `<br>`) rather than left to
+// pinned explicitly at both sizes rather than left to
 // reflow. Derived from `HERO_HEADING` itself, not a separate literal, so it
 // can't drift from the data file.
 const HERO_HEADING_BREAK_AFTER = "Your agent, live"
@@ -137,12 +157,12 @@ const HERO_HEADING_AFTER_BREAK = HERO_HEADING.slice(
 
 function HeroTitleColumn() {
   return (
-    <div className="flex flex-col gap-4 md:max-w-[557px] md:gap-5">
+    <div className="flex min-w-0 flex-col gap-5 lg:max-w-[557px] lg:flex-1">
       <div className="flex flex-col gap-3.5 md:gap-4">
         <HeroBadge />
-        <h1 className="text-[36px] leading-[1.04em] tracking-[-0.04em] text-white md:text-[56px]">
+        <h1 className="text-[36px] leading-[1.04em] tracking-[-0.04em] text-white md:text-5xl xl:text-[56px]">
           {HERO_HEADING_BEFORE_BREAK}
-          <br className="hidden md:inline" />
+          <br />
           {HERO_HEADING_AFTER_BREAK}
         </h1>
       </div>
@@ -161,7 +181,7 @@ function HeroTitleColumn() {
  */
 function HeroCtaColumnDesktop() {
   return (
-    <div className="hidden md:flex md:flex-col md:items-start md:gap-5">
+    <div className="hidden lg:flex lg:shrink-0 lg:flex-col lg:items-start lg:gap-5 lg:pb-2">
       <MetaLine />
       <div className="flex w-full items-center gap-4">
         <CopyPromptWithTooltip />
@@ -174,17 +194,17 @@ function HeroCtaColumnDesktop() {
 /** Mobile-only: CLI pill, then `Copy Prompt`, then the meta line below — the CTA order flips. */
 function HeroCtaColumnMobile() {
   return (
-    <div className="flex flex-col gap-4 md:hidden">
+    <div className="flex flex-col gap-4 lg:hidden">
       <CliPill />
       <CopyPromptWithTooltip />
-      <MetaLine />
+      <MetaLine className="mt-0.5" />
     </div>
   )
 }
 
 function HeroCopy() {
   return (
-    <div className="mx-auto flex max-w-[1280px] flex-col gap-10 font-inter md:flex-row md:items-end md:justify-between md:gap-16">
+    <div className="mx-auto flex max-w-7xl flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
       <HeroTitleColumn />
       <HeroCtaColumnDesktop />
       <HeroCtaColumnMobile />
@@ -193,124 +213,45 @@ function HeroCopy() {
 }
 
 /**
- * Section-level ambient background. Figma's `hero-section` carries a `bg`
- * group (`45487-82746`, sibling of the `ui`/card group) — a large blurred
- * glow plus a fine noise grain — behind BOTH the copy and the product/agent
- * mockup, visible even before personalization (confirmed against the
- * `hero-default` reference frame, not just the loading/personalized ones).
- *
- * Re-checked against the Figma MCP dump of `45487-82746`: the DEFAULT frame
- * has no `❖color` ellipse at all — that layer exists only in the
- * *personalized* frames, filled with the brand accent at `blur(174px)`. So
- * the base glow here is a fixed violet-to-deep-blue treatment that never
- * reads `var(--wc-accent)` (it's the fallback for "no brand extracted
- * yet"), and `HueLayer` is the only thing that ever tints it — visible
- * only at loading/personalized, per its own `group-data-[wc-state=...]`
- * classes, exactly mirroring "the `❖color` ellipse only exists once
- * personalized." The base glow's colours are Figma's own, straight from the
- * `HERO_GLOW_IMAGE` export, so it is not derived from `--wc-accent` and
- * needs no hand-tuning to stay distinct from it. An earlier pass wrote the
- * gradient by hand and deliberately pushed it blue (B well above R) to keep
- * it clear of the accent's pink-magenta; that turned out to be the reason it
- * read as a faint wash, since the design's own base is a bright violet with
- * pink and lavender highlights. Being multi-hue costs nothing here: `hue`
- * blending keeps saturation and luminance, so a multi-hue base becomes a
- * multi-shade single hue once tinted, which is what Figma's own `❖color`
- * ellipse does over this same artwork.
- *
- * `HueLayer` blends on top of this glow only, never over the
- * product/agent cards — those recolour through their own accent-derived
- * fills (`wc-agent-panel-surface`, `wc-agent-avatar-surface`).
+ * Exported against Figma's black canvas so pass-through blends, masks,
+ * grain and dots survive compositing. Only decorative layers are flattened.
  */
-function HeroBackdrop() {
+function HeroBackdrop({ personalized }: { personalized: boolean }) {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 isolate overflow-hidden"
+      className="pointer-events-none absolute inset-x-0 top-0 -bottom-20 isolate overflow-hidden"
     >
-      {/*
-        Sized and placed from the Figma group's own geometry rather than by
-        eye: the ellipse is 1408x1127 at (275, 169) in a 1920x1320 hero, so
-        its centre is (51.0%, 55.5%). The export is 2392x2111 because
-        `blur(246px)` bleeds symmetrically past that box, which makes the
-        render 124.6% of the hero's width — hence the width below, with the
-        aspect ratio pinned so it scales as one piece at any viewport.
-
-        This replaced a single hand-written `rgba(66,58,183,...)` radial at
-        150% width. That was both too wide (Figma's is 73% of the hero, so
-        the light was spread thin) and far too dark: its core was #423AB7
-        against the design's #523FFD, with none of the pink, lavender or
-        peach highlights. It read as a faint wash where the design has the
-        hero's dominant light source.
-      */}
-      {/*
-        A CSS background rather than `next/image`: the asset is an 800px
-        pre-blurred gradient, so the optimizer has nothing to win, and with
-        `fill` + `sizes` it picked a 537px variant to stretch across 2570px.
-        A background paints the source itself, and skips lazy-loading for a
-        layer that is above the fold by definition.
-      */}
       <div
-        className="absolute top-[55.5%] left-[51%] w-[124.6%] -translate-x-1/2 -translate-y-1/2"
+        className="absolute inset-x-0 -top-16 h-[1407px] lg:hidden"
         style={{
-          aspectRatio: "2392 / 2111",
-          backgroundImage: `url(${HERO_GLOW_IMAGE.src})`,
+          backgroundImage: `url(${HERO_MOBILE_BACKGROUND_IMAGE.src})`,
           backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
         }}
       />
-      <HueLayer />
-      {/* Noise grain, inline rather than via a utility class.
-
-          Two things were wrong with reusing `wc-noise-overlay` here. Its
-          `mix-blend-mode: overlay` has no backdrop to blend against inside
-          this isolated stacking context wherever the glow has not painted,
-          so it fell through at full strength and lifted the black areas to
-          ~30/255 against the design's ~8/255 — which was most of the
-          whole-frame pixel difference. And Figma's instance
-          (`45487-79075`) is a normal-blend white texture that is *sparse*
-          (measured from the source image: mean alpha 14.7%), so its 0.32
-          opacity yields only that ~8/255 mean lift; this SVG turbulence
-          covers every pixel, so it needs 0.086 to land in the same place.
-
-          Inline because a custom `@utility` for this silently failed to be
-          emitted, leaving the layer invisible. One decorative layer used
-          once does not need to travel through the theme. */}
       <div
-        className="absolute inset-0 opacity-[0.086]"
+        className="absolute -top-16 left-1/2 hidden w-full min-w-[1920px] -translate-x-1/2 lg:block"
         style={{
-          backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "180px 180px",
+          aspectRatio: "1920 / 1788",
+          backgroundImage: `url(${HERO_DESKTOP_BACKGROUND_IMAGE.src})`,
+          backgroundSize: "100% 100%",
         }}
       />
-      {/* Dotted band beneath the card (Figma `dots-pattern`, `45487:82767`
-          — a radial white mask blurred over a repeating pixel texture).
-          Approximated as a CSS dot-grid, masked and blurred to the same
-          soft, subtle band rather than shipping the source texture image
-          for one low-opacity decorative strip. */}
-      <div
-        className="absolute inset-x-0 top-[83%] mx-auto h-24 w-[70%] max-w-3xl opacity-25 blur-[6px]"
-        style={{
-          maskImage:
-            "radial-gradient(closest-side, black 0%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(closest-side, black 0%, transparent 100%)",
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1.5px)",
-          backgroundSize: "14px 14px",
-        }}
-      />
+      <HueLayer active={personalized} />
     </div>
   )
 }
 
 function HeroLiveUi({
   step,
-  isPersonalized,
+  phase,
+  brand,
+  personalizedTable,
 }: {
   step: StoryboardStep | null
-  isPersonalized: boolean
+  phase: StoryboardPhase
+  brand: WebChatBrand
+  personalizedTable: boolean
 }) {
   return (
     <div
@@ -325,12 +266,12 @@ function HeroLiveUi({
         // the floating agent panel share its background/border/shadow/
         // blur, rather than being two separately-chromed boxes with a
         // visible seam between them.
-        // `md:h-[680px]` pins that 680 exactly rather than letting the
+        // `lg:h-[680px]` pins that 680 exactly rather than letting the
         // table's row count set it: the mock has more rows than fit, and
         // Figma clips them against the card with the fade the table
         // already draws. Left to grow, it reached 734 and pushed the URL
         // field and caption ~53px below their designed positions.
-        // `md:bg-black` under the gradient: Figma's fill fades to
+        // `lg:bg-black` under the gradient: Figma's fill fades to
         // transparent below 58% and we match it exactly, but the frame never
         // shows that fade — every point inside the card measures 1-6/255,
         // because the dashboard's children are opaque. Two things went wrong
@@ -339,22 +280,30 @@ function HeroLiveUi({
         // 0.56 alpha) composited over glow instead of over black, which lit
         // it ~40/255 too bright. `bg-black` sets background-color and the
         // gradient sets background-image, so both apply.
-        "md:relative md:mx-0 md:flex md:h-[680px] md:flex-row md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]"
+        "lg:relative lg:mx-0 lg:flex lg:h-[680px] lg:flex-row lg:items-stretch lg:overflow-hidden lg:rounded-3xl lg:border lg:border-white/10 lg:bg-black lg:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] lg:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] lg:backdrop-blur-[48px]"
       )}
     >
       {/*
         Mobile only: the dashboard slice (`HeroProductUI`, 438x317) and the
-        agent panel (190.2x301.62) sit side by side as one 628px-wide row,
+        agent panel (190.2x301.62) sit side by side as one 636px-wide row,
         shifted left by 296px so only the dashboard's right sliver shows
         beside the fully-visible agent panel — reproducing Figma's bleed
-        instead of stacking them as two separate boxes. `md:contents`
-        hands the two children back to the desktop flex row above at md+
+        instead of stacking them as two separate boxes. `lg:contents`
+        hands the two children back to the desktop flex row above at lg+
         (where this wrapper's own sizing/transform stop applying, since a
         `display:contents` box generates no box for them to apply to).
       */}
-      <div className="flex w-max -translate-x-[296px] items-start md:contents">
-        <HeroProductUI step={step} isPersonalized={isPersonalized} />
-        <HeroAgentPanel step={step} />
+      <div className="relative isolate flex w-[636px] -translate-x-[296px] items-start overflow-hidden rounded-xl bg-black ring-1 ring-white/10 ring-inset sm:mx-auto sm:-translate-x-20 lg:contents">
+        <HeroProductUI
+          phase={phase}
+          brand={brand}
+          personalizedTable={personalizedTable}
+        />
+        <HeroAgentPanel
+          step={step}
+          phase={phase}
+          personalized={brand.status === "personalized"}
+        />
       </div>
     </div>
   )
@@ -372,7 +321,12 @@ function FallbackAlertSlot({ children }: { children: ReactNode }) {
  * `HeroBackdrop` below.
  */
 export function WebChatHero() {
-  const { status, errorMessage } = useWebChatBrand()
+  const brand = useWebChatBrand()
+  const { status, errorMessage } = brand
+  // Keep the previous frame visible while it blurs. Extraction can finish
+  // earlier or later than the fade; only recolor publishes its visual result.
+  const [previousBrand, setPreviousBrand] = useState<WebChatBrand>(brand)
+  const [previousTable, setPreviousTable] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
   // Bumped on every submit, including a resubmit while already running.
   // `isRunning` alone can't signal "a new submission just landed" — on a
@@ -385,8 +339,16 @@ export function WebChatHero() {
   // the hero scrolls out of and back into view, for the whole page lifetime.
   const isInView = useInView(inViewRef, { margin: "-10% 0px" })
 
-  const step = useStoryboard({ isRunning, isInView, submitEpoch })
-  const isPersonalized = status === "personalized"
+  const { step, phase } = useStoryboard({
+    isRunning: isRunning && status !== "idle",
+    isInView,
+    isBrandReady: status === "personalized" || status === "fallback",
+    submitEpoch,
+  })
+  const showNewBrand = phase === "recolor" || phase === "conversation"
+  const displayedBrand =
+    phase === "idle" || showNewBrand ? brand : previousBrand
+  const personalizedTable = phase !== "idle" && (showNewBrand || previousTable)
 
   // `UrlPersonalizer` calls `personalize()` itself and owns the reset button;
   // it exposes no reset callback. Its `reset()` is the only path back to
@@ -397,17 +359,25 @@ export function WebChatHero() {
   }, [status])
 
   const handleSubmit = useCallback(() => {
+    setPreviousBrand(displayedBrand)
+    setPreviousTable(personalizedTable)
     setIsRunning(true)
     setSubmitEpoch((epoch) => epoch + 1)
-  }, [])
+  }, [displayedBrand, personalizedTable])
 
   return (
     <section
       ref={inViewRef}
-      className="relative pt-20 md:pt-24 lg:pt-[91px]"
+      className={cn(
+        "relative pt-13 font-inter md:pt-20 lg:pt-[92px]",
+        geistMono.variable
+      )}
       data-testid="web-chat-hero"
+      data-storyboard-phase={phase}
+      data-storyboard-step={step ?? "idle"}
+      style={brandCssVars(displayedBrand.theme)}
     >
-      <HeroBackdrop />
+      <HeroBackdrop personalized={displayedBrand.status === "personalized"} />
       {/*
         Figma puts the card and the copy on DIFFERENT columns: the card's `ui`
         group spans x278-1642 (1364 wide) and the `typography` group spans
@@ -426,11 +396,16 @@ export function WebChatHero() {
       <div className="relative z-10 container mx-auto max-w-[1428px] px-5 md:px-8">
         <HeroCopy />
 
-        <div className="mt-16">
-          <HeroLiveUi step={step} isPersonalized={isPersonalized} />
+        <div className="mt-17.5 lg:mt-16">
+          <HeroLiveUi
+            step={step}
+            phase={phase}
+            brand={displayedBrand}
+            personalizedTable={personalizedTable}
+          />
         </div>
 
-        <div className="mt-5 flex flex-col items-center gap-4">
+        <div className="mt-7 flex flex-col items-center gap-4 lg:mt-5">
           <UrlPersonalizer onSubmit={handleSubmit} />
           {/*
             Mounted unconditionally (final-review Fix 5) so the alert's

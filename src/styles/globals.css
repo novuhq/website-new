@@ -341,10 +341,6 @@
     transform: none;
   }
 
-  .wc-agent-panel-recolor {
-    transition: none !important;
-  }
-
   /* Hero table's "Processing" status icon (`data-table.tsx`) — the only
      animation on this page with no reduced-motion guard until now. Scoped
      to `wc-status-spin` rather than Tailwind's `animate-spin` globally, so
@@ -355,53 +351,7 @@
   }
 }
 
-/*
-  Web Chat hero agent panel (Task 7): the panel card and the avatar mark
-  read `--wc-accent` directly here, so recolouring the personalizer never
-  costs a React re-render. Both preserve their original gradient structure
-  (stop count/positions, the black base stop on the panel) with the
-  accent-derived stops swapped in via `color-mix()`.
-
-  Fidelity pass (2026-09-08): the original 55-56% accent mix read as a flat,
-  heavily-saturated purple against the Figma reference, which is a darker,
-  more subdued tinted-glass look — the same `circle at 89% 164%` shape sits
-  mostly off-canvas below-right, so most of the visible card should read
-  closer to the near-black centre stop than the lightened outer one. Lowered
-  the accent mix on both outer stops (56/55% -> 32/28%) so more of the card
-  reads dark; still purely `--wc-accent`-derived, so it still recolours for
-  every persona, just less saturated. Re-check against a warm accent
-  (`#E65006`, recent.dev) and a cool one (`#0036FF`, todesktop.com) if this
-  is retuned again.
-*/
-@utility wc-agent-panel-surface {
-  /*
-    Figma's `chat` frame (`45487-79594`) states this fill outright:
-
-      radial-gradient(circle at 89% 164%,
-        rgba(0, 0, 0, 0.56) 15%,
-        rgba(148, 72, 225, 0.56) 57%,
-        rgba(234, 136, 239, 0.56) 79%)
-
-    Both stops are expressed here as mixes that evaluate to exactly those
-    colours at the default accent (#c25cd6) while still tracking the brand,
-    so the panel keeps recolouring on personalization:
-      50% accent + #6634ec -> rgb(148, 72, 225)
-      30% accent + #fb9bfa -> rgb(234, 136, 239)
-    An earlier pass fitted this curve by sampling the render, which got the
-    shape right but not the colours — the mid stop needs to be markedly
-    bluer than the accent (B/R 1.52 against the accent's 1.10) and the outer
-    stop markedly lighter, which is exactly what these two are.
-  */
-  --wc-panel-mid: color-mix(in srgb, var(--wc-accent) 50%, #6634ec);
-  --wc-panel-outer: color-mix(in srgb, var(--wc-accent) 30%, #fb9bfa);
-  background: radial-gradient(
-    circle at 89% 164%,
-    rgba(0, 0, 0, 0.56) 28%,
-    color-mix(in srgb, var(--wc-panel-mid) 56%, transparent) 73%,
-    color-mix(in srgb, var(--wc-panel-outer) 56%, transparent) 98%
-  );
-}
-
+/* Accent-driven avatar surface shared by Web Chat previews. */
 @utility wc-agent-avatar-surface {
   background: linear-gradient(
     26deg,

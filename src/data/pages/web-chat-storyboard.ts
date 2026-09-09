@@ -1,13 +1,21 @@
 /**
  * The Hero storyboard, as a pure state machine.
  *
- * Step 0 is the transition into the personalized theme and plays exactly once.
+ * Step 0 fades to grayscale, waits for the extracted brand, then recolors.
+ * The transition plays exactly once per submitted domain.
  * Steps 1-5 are the conversation, and the loop re-enters at step 1 so the
  * grayscale-and-blur transition never replays. Reference frames:
  * hero-personalization-00(transition) through -05 in Figma node 45487-82743.
  */
 
 export type StoryboardStep = 0 | 1 | 2 | 3 | 4 | 5
+
+export type StoryboardPhase =
+  | "idle"
+  | "grayscale"
+  | "waiting"
+  | "recolor"
+  | "conversation"
 
 export interface StoryboardTiming {
   /** Chat desaturating to grayscale. Runs concurrently with the blur. */
@@ -42,7 +50,8 @@ export const STORYBOARD_TIMING: StoryboardTiming = {
 
 export interface StoryboardState {
   step: StoryboardStep
-  /** How long to stay on `step` before advancing. */
+  phase: Exclude<StoryboardPhase, "idle">
+  /** How long to stay in this phase. Waiting has no timer. */
   dwellMs: number
 }
 
@@ -56,7 +65,7 @@ export function storyboardDwellMs(
 ): number {
   switch (step) {
     case 0:
-      return Math.max(timing.grayscaleMs, timing.blurMs) + timing.recolorMs
+      return Math.max(timing.grayscaleMs, timing.blurMs)
     case 2:
       return timing.thinkingMs
     case 5:
@@ -77,15 +86,31 @@ export function initialStoryboardState(
 ): StoryboardState {
   return {
     step: STORYBOARD_FIRST_STEP,
+    phase: "grayscale",
     dwellMs: storyboardDwellMs(STORYBOARD_FIRST_STEP, timing),
   }
 }
 
 export function advanceStoryboard(
   state: StoryboardState,
-  timing: StoryboardTiming
+  timing: StoryboardTiming,
+  isBrandReady = false
 ): StoryboardState {
+  if (state.phase === "grayscale") {
+    return { step: 0, phase: "waiting", dwellMs: 0 }
+  }
+
+  if (state.phase === "waiting") {
+    return isBrandReady
+      ? { step: 0, phase: "recolor", dwellMs: timing.recolorMs }
+      : state
+  }
+
   const step = nextStoryboardStep(state.step)
 
-  return { step, dwellMs: storyboardDwellMs(step, timing) }
+  return {
+    step,
+    phase: "conversation",
+    dwellMs: storyboardDwellMs(step, timing),
+  }
 }
