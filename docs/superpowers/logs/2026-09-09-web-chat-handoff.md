@@ -320,10 +320,18 @@ Two variants are worth keeping around:
 Measured at 1920×1320, deviceScaleFactor 1, mean absolute difference per channel
 over the whole frame.
 
-| Surface                                 | Start       | Now       |
-| --------------------------------------- | ----------- | --------- |
-| Hero frame (`45487-79055` + typography) | 28.01 / 255 | **10.95** |
-| Chat panel (`45487-79593`), at 2×       | 35.80 / 255 | **16.19** |
+| Surface                                   | Start       | Now       |
+| ----------------------------------------- | ----------- | --------- |
+| Hero frame (`45487-79055` + typography)   | 28.01 / 255 | **10.95** |
+| Chat panel (`45487-79593`), at 2×         | 35.80 / 255 | **16.19** |
+| Transition, waiting phase (`45487-94116`) | —           | **5.96**  |
+| Conversation step 5 (`45487-89814`)       | 4.86 / 255  | **4.71**  |
+
+The hero-frame figure predates the 2026-09-09 background replacement and the
+move to reference `45440:66780`; treat it as historical rather than current.
+The transition and step-5 figures are post-change, and both are tighter than
+the default hero — the storyboard states match the frames more closely than
+the idle state does.
 
 Exact or within 2px after this work: badge dot `x320 y158`, card
 `1364×680 @ x278 y439`, agent panel `408×646 @ x1217 y455`, URL field
@@ -341,47 +349,68 @@ shared constant; it cannot express this.
 
 Ordered by how much they matter.
 
-1. **Critical-flow blocker resolved in the follow-up above.** The Web Chat specs
+1. **Figma keeps the agent orb coloured while the panel desaturates.** In the
+   transition frame (`45487-94116`) the panel chrome is grey (saturation 6) but
+   the orb is still vividly violet (saturation 165) and the header avatar is
+   coloured (70). The current implementation desaturates the whole panel, so all
+   three read 0. This is the worst cell in that frame's diff grid (21.4), and it
+   needs a decision rather than a guess: `filter` applies to a subtree as a
+   whole, so excluding the mark means moving it out of the filtered element, and
+   an earlier pass deliberately moved _to_ whole-panel filtering from an
+   orb-only filter. Three readings exist — orb only, whole panel,
+   everything-but-orb — and the frame supports the third. Confirm with the
+   designer before restructuring.
+2. **The active nav pill renders at alpha 0.513 where its CSS says 0.72.**
+   Isolated and cosmetic (25/255 on one small element), but unexplained. Ruled
+   out by direct test: the computed background is `rgba(230, 80, 6, 0.72)` and
+   forcing it inline with `!important` changes nothing; no ancestor has
+   `opacity != 1`, `filter != none` or a blend mode; nothing sits above it in
+   `elementsFromPoint`; it is not an in-flight transition (unchanged after a 3s
+   settle); it is not the dashboard's settled `blur(0px)` layer; and there is no
+   global dimming (the h1 and the Copy Prompt button are 255 in both). The
+   effective alpha is almost exactly 0.72², the signature of the same alpha
+   applied twice. Worth fresh eyes rather than more probing.
+3. **Critical-flow blocker resolved in the follow-up above.** The Web Chat specs
    pass on desktop and mobile Chromium. Production-build validation remains
    separate from this dev-origin fix; the original handoff's build was blocked by
    missing external-service configuration.
-2. **The orb region still reads ~27** in the panel diff. The blob export itself
+4. **The orb region still reads ~27** in the panel diff. The blob export itself
    is faithful, so what remains is how its soft edges meet the panel gradient.
    Worth a fresh look rather than another curve fit.
-3. **Mobile is half-unauthored.** Figma's mobile frame (`45487-98982`) contains
+5. **Mobile is half-unauthored.** Figma's mobile frame (`45487-98982`) contains
    only four of the ten sections: `§2`, `§4`, `§5`, `§6`. `§3`, `§7`, `§8`, `§9`
    and the CTA have **no authored mobile frame** and are extrapolated. Three
    separate implementers reported this independently. This needs the designer,
    not code.
-4. **`font-mono` is not bound to Geist Mono anywhere in the repo**, so every
+6. **`font-mono` is not bound to Geist Mono anywhere in the repo**, so every
    "Geist Mono" line in the designer's spec is unmet — on this page and every
    other. One-line theme fix, but it is a site-wide decision.
    The 2026-09-09 hero pass resolves this locally for the CLI control by loading
    Geist Mono with `next/font`; it does not change the site-wide mono font.
-5. **Contrast debt, partially paid.** The spec logs white-on-accent at 3.62:1.
+7. **Contrast debt, partially paid.** The spec logs white-on-accent at 3.62:1.
    The sidebar's active pill is fixed (it now matches Figma's desaturated mauve
    with dark text, which also passes at 7.5:1), but `accentForeground` in
    `src/lib/accent.ts` still flips at luminance 0.5 where the WCAG crossover is
    ~0.18, and `usableAccent` clamps lightness into [0.48, 0.68] — squarely in the
    failing band. Any other white-on-accent surface still fails.
-6. **Orphaned code.** `src/components/ai-elements/` is ~3,075 lines with zero
+8. **Orphaned code.** `src/components/ai-elements/` is ~3,075 lines with zero
    importers, plus eight `ui/*` primitives (~950 lines) and nine unused deps
    (`streamdown`, `@streamdown/{cjk,code,math,mermaid}`, `ai`, `cmdk`, `nanoid`,
    `use-stick-to-bottom`, `@radix-ui/react-use-controllable-state`). `@novu/react`
    is pinned to RC `3.20.0-rc.d57e78e026`. The owner chose to leave this; it is a
    follow-up, not a defect.
-7. **Two sections sit off-centre in Figma** — `§8` by 16px and `§9` by 32px,
+9. **Two sections sit off-centre in Figma** — `§8` by 16px and `§9` by 32px,
    while `§6`/`§7` at the same 1280px width are centred. Read as designer nudge
    rather than intent and kept centred here. Confirm with the designer.
-8. **The reference domains do not currently produce extracted accents.** Live
-   checks on 2026-09-09 returned HTTP 200 with `accent: null` for both `recent.dev`
-   and `todesktop.com`. `src/lib/site-brand.ts` only reads `theme-color` and
-   `msapplication-TileColor` metadata: Recent supplies white/near-black theme
-   colors (rejected as grayscale), and ToDesktop supplies neither tag. Their
-   Figma orange/blue accents in the mocked tests do not prove real extraction.
-   Successful extraction now keeps domain/logo and plays the conversation in
-   default purple without an error alert. Broader brand-color extraction remains
-   a separate follow-up.
+10. **The reference domains do not currently produce extracted accents.** Live
+    checks on 2026-09-09 returned HTTP 200 with `accent: null` for both `recent.dev`
+    and `todesktop.com`. `src/lib/site-brand.ts` only reads `theme-color` and
+    `msapplication-TileColor` metadata: Recent supplies white/near-black theme
+    colors (rejected as grayscale), and ToDesktop supplies neither tag. Their
+    Figma orange/blue accents in the mocked tests do not prove real extraction.
+    Successful extraction now keeps domain/logo and plays the conversation in
+    default purple without an error alert. Broader brand-color extraction remains
+    a separate follow-up.
 
 ---
 
