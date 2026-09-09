@@ -1,22 +1,14 @@
 import {
-  PRODUCT_BENTO_BUBBLE_ACTIVITY,
-  PRODUCT_BENTO_BUBBLE_SUBSCRIBER,
   PRODUCT_BENTO_CARDS,
   PRODUCT_BENTO_DESCRIPTION,
   PRODUCT_BENTO_HEADING,
 } from "@/data/pages/web-chat-product-bento"
-import productBentoActions from "@/images/pages/channels/web-chat/product-bento-actions.webp"
-import productBentoActivity from "@/images/pages/channels/web-chat/product-bento-activity.webp"
-import productBentoOrder from "@/images/pages/channels/web-chat/product-bento-order.webp"
-import productBentoRender from "@/images/pages/channels/web-chat/product-bento-render.webp"
-import productBentoSubscriber from "@/images/pages/channels/web-chat/product-bento-subscriber.webp"
+import productBentoActions from "@/images/pages/channels/web-chat/product-bento-actions.jpg"
+import productBentoActivity from "@/images/pages/channels/web-chat/product-bento-activity.jpg"
+import productBentoOrder from "@/images/pages/channels/web-chat/product-bento-order.jpg"
+import productBentoRender from "@/images/pages/channels/web-chat/product-bento-render.jpg"
+import productBentoSubscriber from "@/images/pages/channels/web-chat/product-bento-subscriber.jpg"
 
-import {
-  ActionsStepBullet,
-  AgentActionsConfirmPanel,
-  MessageBubble,
-  ViewOrderButton,
-} from "@/components/pages/channels/web-chat/product-bento-accents"
 import { ProductBentoCard } from "@/components/pages/channels/web-chat/product-bento-card"
 
 const ROW_ONE_SIZES = "(min-width: 1344px) 628px, (min-width: 768px) 47vw, 92vw"
@@ -26,33 +18,9 @@ const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
   PRODUCT_BENTO_CARDS
 
 /**
- * §3 "Not a chat box on your site. An agent inside your app" (Task 10): a
- * five-card bento, two cards on row one and three on row two, matching
- * Figma's `section` node (`45487-79958`) `bento` group's proportions — a
- * `grid-cols-2`/`grid-cols-3` `gap-6` pair reproduces the 24px gap both
- * ways, with each card sized by the grid's `1fr` tracks rather than a fixed
- * px width. Final-review Fix 3 normalised this section's container to the
- * canonical `max-w-[1344px]` (previously a bespoke 1408 chosen to make the
- * row math land on Figma's literal 660×496/432×496 card sizes exactly); at
- * the new 1280px content width the grid tracks now render ~628px (row one)
- * and ~411px (row two) — a few percent smaller than Figma's literal sizes,
- * reflected in `ROW_ONE_SIZES`/`ROW_TWO_SIZES` below so `next/image`'s
- * `sizes` hint still matches what's actually rendered.
- *
- * This section is personalized (all five cards recolour) — see
- * `ProductBentoCard` for the `HueLayer` illustration recolour and
- * `product-bento-accents.tsx` for the discrete accent elements rebuilt as
- * real DOM on top of each illustration.
- *
- * Mobile: Figma's mobile page (`45487-98982`) has no authored frame for this
- * section — it jumps directly from §2 "compare bento" (`45496-139032`,
- * ends ~y2400) to the "Full screen tab" section (`45497-139684`, y3810),
- * confirmed via three separate fetches (page depth 1, depth 2, and the
- * canvas root) — see the task report. Each card keeps its own desktop aspect
- * ratio (`660/496` or `432/496`, Figma's literal card proportions — unaffected
- * by Fix 3's container change, since it's a ratio, not a pixel size) at full
- * width instead, a reasoned, flagged extrapolation — not a guess at unrelated
- * numbers.
+ * Five static Figma illustrations, exported at 2× from section 45487:79958.
+ * The artwork includes its own chat bubbles and action controls; captions
+ * remain live text. The two wide cards keep extra mobile height for captions.
  */
 export function ProductBento() {
   return (
@@ -76,14 +44,7 @@ export function ProductBento() {
               sizes={ROW_ONE_SIZES}
               title={subscriberCopy.title}
               body={subscriberCopy.body}
-            >
-              <MessageBubble
-                text={PRODUCT_BENTO_BUBBLE_SUBSCRIBER}
-                leftPct={6.67}
-                topPct={9.68}
-                widthPct={45}
-              />
-            </ProductBentoCard>
+            />
 
             <ProductBentoCard
               aspectRatio="660/496"
@@ -92,14 +53,7 @@ export function ProductBento() {
               sizes={ROW_ONE_SIZES}
               title={activityCopy.title}
               body={activityCopy.body}
-            >
-              <MessageBubble
-                text={PRODUCT_BENTO_BUBBLE_ACTIVITY}
-                leftPct={40.45}
-                topPct={34.48}
-                widthPct={43.79}
-              />
-            </ProductBentoCard>
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
@@ -117,10 +71,7 @@ export function ProductBento() {
               sizes={ROW_TWO_SIZES}
               title={actionsCopy.title}
               body={actionsCopy.body}
-            >
-              <ActionsStepBullet />
-              <AgentActionsConfirmPanel />
-            </ProductBentoCard>
+            />
 
             <ProductBentoCard
               aspectRatio="432/496"
@@ -128,9 +79,7 @@ export function ProductBento() {
               sizes={ROW_TWO_SIZES}
               title={renderCopy.title}
               body={renderCopy.body}
-            >
-              <ViewOrderButton />
-            </ProductBentoCard>
+            />
           </div>
         </div>
       </div>

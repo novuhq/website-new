@@ -1,13 +1,13 @@
 import type { StaticImageData } from "next/image"
-import builderBase44 from "@/images/pages/channels/web-chat/builder-base44.webp"
-import builderBolt from "@/images/pages/channels/web-chat/builder-bolt.webp"
-import builderClaude from "@/images/pages/channels/web-chat/builder-claude.webp"
-import builderCursor from "@/images/pages/channels/web-chat/builder-cursor.webp"
-import builderLovable from "@/images/pages/channels/web-chat/builder-lovable.webp"
-import builderReplit from "@/images/pages/channels/web-chat/builder-replit.webp"
-import builderV0 from "@/images/pages/channels/web-chat/builder-v0.webp"
-import builderWindsurf from "@/images/pages/channels/web-chat/builder-windsurf.webp"
-import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.webp"
+import builderBase44 from "@/images/pages/channels/web-chat/builder-base44.svg"
+import builderBolt from "@/images/pages/channels/web-chat/builder-bolt.svg"
+import builderClaude from "@/images/pages/channels/web-chat/builder-claude.svg"
+import builderCursor from "@/images/pages/channels/web-chat/builder-cursor.svg"
+import builderLovable from "@/images/pages/channels/web-chat/builder-lovable.svg"
+import builderReplit from "@/images/pages/channels/web-chat/builder-replit.svg"
+import builderV0 from "@/images/pages/channels/web-chat/builder-v0.svg"
+import builderWindsurf from "@/images/pages/channels/web-chat/builder-windsurf.svg"
+import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.jpg"
 
 /**
  * §8 "Build your connection. Ship it from any builder." (Task 15). Figma

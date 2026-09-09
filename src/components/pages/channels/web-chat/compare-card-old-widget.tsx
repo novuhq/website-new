@@ -3,53 +3,20 @@
 import Image from "next/image"
 import {
   COMPARE_OLD_WIDGET_BODY,
-  COMPARE_OLD_WIDGET_BUBBLE,
   COMPARE_OLD_WIDGET_TITLE,
 } from "@/data/pages/web-chat-compare"
-import illustrationMobile from "@/images/pages/channels/web-chat/compare-old-widget-illustration-mobile.webp"
-import illustrationDesktop from "@/images/pages/channels/web-chat/compare-old-widget-illustration.webp"
+import illustrationMobile from "@/images/pages/channels/web-chat/compare-old-widget-illustration-mobile.jpg"
+import illustrationDesktop from "@/images/pages/channels/web-chat/compare-old-widget-illustration.jpg"
 
-import { IllustrationBubble } from "@/components/pages/channels/web-chat/compare-illustration-bubble"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 const GLOW_CLASSES =
   "pointer-events-none absolute inset-0 opacity-0 blur-[90px] transition-opacity duration-500 group-data-[wc-state=loading]:opacity-60 group-data-[wc-state=personalized]:opacity-60"
 
 /**
- * Card 1, "The old chat widget". Figma desktop `45487:79781` (411×480,
- * border `#2A2B33` 1px, radius 24px); mobile `45510:177564` (fill×374,
- * border ~0.78px, radius ~18.69px — the mobile section scales every
- * stroke/radius by ~0.7786x, not a separate design). Personalized reference
- * `45503:149556`.
- *
- * Per the brief's hybrid decision, the whole illustration (dark card mockup,
- * support-service reply, form fields) is one exported PNG per breakpoint
- * (`45487:79782` neutral default desktop, `45510:177565` mobile — the mobile
- * frame only exists inside the recent.dev-personalized storyboard, so its
- * bubble is baked orange; that's fine, since `IllustrationBubble` fully
- * occludes it with the current visitor's own accent). The only coded accent
- * element is that bubble; the "Support service" icon/label and form fields
- * never change with brand (checked at runtime: overriding `--wc-accent`
- * only ever recolours the bubble, never those), so they stay baked into the
- * image.
- *
- * `<Image>` must render *before* the glow/`HueLayer` pair inside their
- * shared `isolate` host — fix round 1's Critical: a `fill` image is an
- * opaque `position:absolute;inset:0` box, so a DOM-earlier glow/HueLayer
- * gets fully painted over and never shows. Same order §3's
- * `product-bento-card.tsx` uses.
- *
- * Mobile title/body are an absolute overlay on top of the illustration
- * (percentages of the aspect-ratio box, same technique as
- * `IllustrationBubble`), not a flow block below it — fix round 2. Card 1's
- * mobile PNG (640×748 = 320×374 at 1x) reserves its own bottom ~30% as flat
- * empty background for this text (confirmed with `sips`: no crop, no baked
- * copy there), unlike card 2's mobile asset, which really is cropped short
- * to make room below it. Rendering this card's text as a flow sibling below
- * the *full* image therefore left a blank gap where the image's reserved
- * region already was, plus a spurious tail below Figma's authored ~374px
- * frame height. The overlay puts the text back exactly where the image's
- * empty region expects it.
+ * Comparison artwork from Figma 45487:79782 / 45510:177565, exported at 2×.
+ * Bubbles are part of the artwork; live title/body copy remains separate.
+ * Serve the quality-95 JPG directly to avoid a second lossy conversion.
  */
 export function OldWidgetCard() {
   return (
@@ -68,6 +35,7 @@ export function OldWidgetCard() {
           aria-hidden
           className="object-cover"
           fill
+          unoptimized
           sizes="(min-width: 1344px) 391px, 29vw"
           src={illustrationDesktop}
         />
@@ -77,14 +45,6 @@ export function OldWidgetCard() {
           style={{ background: "var(--wc-hue)" }}
         />
         <HueLayer />
-      </div>
-      <div className="hidden md:block">
-        <IllustrationBubble
-          leftPct={34.06}
-          text={COMPARE_OLD_WIDGET_BUBBLE}
-          topPct={5.83}
-          widthPct={55.23}
-        />
       </div>
       <div className="hidden md:absolute md:top-[369px] md:left-7 md:flex md:w-[355px] md:flex-col md:gap-2.5">
         <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">
@@ -107,6 +67,7 @@ export function OldWidgetCard() {
           aria-hidden
           className="object-cover"
           fill
+          unoptimized
           sizes="92vw"
           src={illustrationMobile}
         />
@@ -116,13 +77,6 @@ export function OldWidgetCard() {
           style={{ background: "var(--wc-hue)" }}
         />
         <HueLayer />
-        <IllustrationBubble
-          compact
-          leftPct={34.06}
-          text={COMPARE_OLD_WIDGET_BUBBLE}
-          topPct={5.88}
-          widthPct={55.31}
-        />
         <div
           className="absolute flex flex-col gap-2.5"
           style={{ left: "5%", top: "71.39%", width: "90%" }}

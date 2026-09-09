@@ -27,6 +27,13 @@ export const SURFACE_TABS_TAB_LABELS = {
   fullScreen: "Full screen",
 } as const
 
+export const SURFACE_TABS_IMAGE_ALT = {
+  sidePanel:
+    "Web Chat beside an application's data sources, showing a personalized update conversation.",
+  fullScreen:
+    "Web Chat as the application's main view, showing a launch readiness conversation and checklist.",
+} as const
+
 /** Chat window header (both tabs render the same mock agent identity). */
 export const SURFACE_TABS_AGENT_NAME = "Your Agent"
 

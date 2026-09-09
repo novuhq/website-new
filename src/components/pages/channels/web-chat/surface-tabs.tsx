@@ -1,19 +1,17 @@
 "use client"
 
 import {
-  FULL_SCREEN_CHECKLIST,
-  FULL_SCREEN_COMPOSER_DRAFT,
-  FULL_SCREEN_MESSAGES,
-  FULL_SCREEN_SIDEBAR_ITEMS,
-  SIDE_PANEL_COMPOSER_PLACEHOLDER,
-  SIDE_PANEL_MESSAGES,
-  SIDE_PANEL_SIDEBAR_ITEMS,
   SURFACE_TABS_BUTTON_HREF,
   SURFACE_TABS_BUTTON_LABEL,
   SURFACE_TABS_DESCRIPTION,
   SURFACE_TABS_HEADING,
+  SURFACE_TABS_IMAGE_ALT,
   SURFACE_TABS_TAB_LABELS,
 } from "@/data/pages/web-chat-surface-tabs"
+import fullScreenMobile from "@/images/pages/channels/web-chat/surface-full-screen-mobile.jpg"
+import fullScreen from "@/images/pages/channels/web-chat/surface-full-screen.jpg"
+import sidePanelMobile from "@/images/pages/channels/web-chat/surface-side-panel-mobile.jpg"
+import sidePanel from "@/images/pages/channels/web-chat/surface-side-panel.jpg"
 
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -28,21 +26,8 @@ const TAB_TRIGGER_CLASS = cn(
 const TABS_CONTENT_CLASS = "mt-10 data-[state=inactive]:hidden lg:mt-14"
 
 /**
- * §4 "Side panel or full screen. Your choice" (Task 11). A tabbed
- * comparison of the two ways to embed Web Chat: docked in a side panel, or
- * as the full-screen primary surface. Full screen is not a resize of Side
- * panel — it swaps the sidebar's nav group and carries a different
- * conversation (a launch-readiness review with a checklist and a
- * partially-typed composer). Not personalized: every colour here is a fixed
- * Figma literal, no `--wc-accent*` custom properties.
- *
- * Figma: Side panel desktop `45487-80419`, Full screen desktop
- * `45497-141044`, Full screen mobile `45497-139685`, Side panel mobile read
- * from the mobile page frame `45487-98982` (its `45497-139684` section).
- * Desktop puts heading+button left, description+tabs right, with the
- * illustration spanning the full width below; mobile stacks
- * heading → button → description+tabs → illustration, and both mobile
- * illustrations bleed off the viewport edges.
+ * Both tab states use the original desktop and mobile Figma illustrations.
+ * Tabs and the AI Elements link remain interactive; preview UI is decorative.
  */
 export function SurfaceTabs() {
   return (
@@ -83,34 +68,11 @@ export function SurfaceTabs() {
           forceMount
           className={TABS_CONTENT_CLASS}
         >
-          {/* desktop */}
-          <div className="hidden overflow-x-auto lg:block">
-            <SurfaceTabsIllustration
-              canvasWidth={1344}
-              canvasHeight={613}
-              sidebarWidth={304}
-              sidebarItems={SIDE_PANEL_SIDEBAR_ITEMS}
-              chatBox={{ left: 882, top: 16, width: 444, height: 488 }}
-              showTable
-              messages={SIDE_PANEL_MESSAGES}
-              composerPlaceholder={SIDE_PANEL_COMPOSER_PLACEHOLDER}
-            />
-          </div>
-          {/* mobile — the section itself has no horizontal padding below its 1344px cap, so this spans flush edge-to-edge, matching the Figma mobile frame's inset-0 illustration */}
-          <div className="relative h-[242px] w-full overflow-hidden lg:hidden">
-            <SurfaceTabsIllustration
-              canvasWidth={528}
-              canvasHeight={242}
-              sidebarWidth={119}
-              sidebarItems={SIDE_PANEL_SIDEBAR_ITEMS}
-              chatBox={{ left: 347, top: 6, width: 174, height: 193 }}
-              showTable
-              messages={SIDE_PANEL_MESSAGES}
-              composerPlaceholder={SIDE_PANEL_COMPOSER_PLACEHOLDER}
-              compact
-              className="absolute left-1/2 -translate-x-1/2"
-            />
-          </div>
+          <SurfaceTabsIllustration
+            alt={SURFACE_TABS_IMAGE_ALT.sidePanel}
+            desktop={sidePanel}
+            mobile={sidePanelMobile}
+          />
         </TabsContent>
 
         <TabsContent
@@ -118,34 +80,11 @@ export function SurfaceTabs() {
           forceMount
           className={TABS_CONTENT_CLASS}
         >
-          {/* desktop */}
-          <div className="hidden overflow-x-auto lg:block">
-            <SurfaceTabsIllustration
-              canvasWidth={1344}
-              canvasHeight={613}
-              sidebarWidth={341}
-              sidebarItems={FULL_SCREEN_SIDEBAR_ITEMS}
-              chatBox={{ left: 357, top: 16, width: 969, height: 488 }}
-              messages={FULL_SCREEN_MESSAGES}
-              checklist={FULL_SCREEN_CHECKLIST}
-              composerDraft={FULL_SCREEN_COMPOSER_DRAFT}
-            />
-          </div>
-          {/* mobile — the section itself has no horizontal padding below its 1344px cap, so this spans flush edge-to-edge, matching the Figma mobile frame's inset-0 illustration */}
-          <div className="relative h-[242px] w-full overflow-hidden lg:hidden">
-            <SurfaceTabsIllustration
-              canvasWidth={528}
-              canvasHeight={242}
-              sidebarWidth={134}
-              sidebarItems={FULL_SCREEN_SIDEBAR_ITEMS}
-              chatBox={{ left: 178, top: 6, width: 343, height: 193 }}
-              messages={FULL_SCREEN_MESSAGES}
-              checklist={FULL_SCREEN_CHECKLIST}
-              composerDraft={FULL_SCREEN_COMPOSER_DRAFT}
-              compact
-              className="absolute left-1/2 -translate-x-1/2"
-            />
-          </div>
+          <SurfaceTabsIllustration
+            alt={SURFACE_TABS_IMAGE_ALT.fullScreen}
+            desktop={fullScreen}
+            mobile={fullScreenMobile}
+          />
         </TabsContent>
       </Tabs>
     </section>

@@ -6,8 +6,8 @@ import {
   DEPLOY_ACI_ILLUSTRATION_ALT,
   DEPLOY_ACI_ITEMS,
 } from "@/data/pages/web-chat-deploy-aci"
-import illustrationDesktop from "@/images/pages/channels/web-chat/deploy-aci-illustration-desktop.webp"
-import illustrationMobile from "@/images/pages/channels/web-chat/deploy-aci-illustration-mobile.webp"
+import illustrationDesktop from "@/images/pages/channels/web-chat/deploy-aci-illustration-desktop.jpg"
+import illustrationMobile from "@/images/pages/channels/web-chat/deploy-aci-illustration-mobile.jpg"
 
 import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framework-logo-cycle"
 
@@ -16,9 +16,9 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
  * mobile `45497-147576`, framework logo set `45497-146963`. Not
  * personalized — no `HueLayer`, no `--wc-accent*` custom properties.
  *
- * The illustration is exported as a flattened image (a hybrid decision:
+ * The illustration uses fresh 2× JPGs served without recompression:
  * it's a dense composite of glass-tile grids, blurred spheres and gradient
- * glows that isn't worth reproducing node-for-node in CSS) with
+ * glows, with
  * `FrameworkLogoCycle` absolutely positioned over the "Your agent / Your
  * stack" plate's icon slot, matching the same 106x106 slot at both
  * breakpoints (see the percentage insets below, computed from the Figma
@@ -49,28 +49,21 @@ export function DeployAci() {
         </div>
 
         <div className="relative mt-8 aspect-[320/658] w-full overflow-hidden rounded-[16px] border-[0.5px] border-gray-20 bg-black md:-mx-8 md:mt-14 md:aspect-[1280/480] md:w-[calc(100%+4rem)] md:rounded-[24px] md:border-[0.75px]">
-          <Image
-            alt={DEPLOY_ACI_ILLUSTRATION_ALT}
-            className="hidden object-cover md:block"
-            fill
-            priority={false}
-            // The wrapper bleeds past the container's own padding
-            // (`md:-mx-8 md:w-[calc(100%+4rem)]`, see the file header), so
-            // it isn't a fixed 1280px — it's edge-to-edge with the viewport
-            // below the `max-w-[1344px]` cap and pinned at 1344px (its
-            // padding-inclusive bleed width) above it. The flat "1280px"
-            // here under-declared the real render width by ~64px.
-            sizes="(min-width: 1344px) 1344px, 100vw"
-            src={illustrationDesktop}
-          />
-          <Image
-            alt={DEPLOY_ACI_ILLUSTRATION_ALT}
-            className="object-cover md:hidden"
-            fill
-            priority={false}
-            sizes="320px"
-            src={illustrationMobile}
-          />
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet={illustrationMobile.src}
+              width={illustrationMobile.width}
+              height={illustrationMobile.height}
+            />
+            <Image
+              alt={DEPLOY_ACI_ILLUSTRATION_ALT}
+              className="object-cover"
+              fill
+              unoptimized
+              src={illustrationDesktop}
+            />
+          </picture>
 
           <FrameworkLogoCycle className="absolute top-[5.62%] left-[33.44%] h-[16.11%] w-[33.13%] rounded-[16px] md:top-[38.96%] md:left-[7.58%] md:h-[22.08%] md:w-[8.28%] md:rounded-none" />
         </div>

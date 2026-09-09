@@ -13,7 +13,7 @@ import {
   type IChannelsGridTile,
   type ILinkedChannelsGridTile,
 } from "@/data/pages/web-chat-channels"
-import mascotTileImage from "@/images/pages/channels/web-chat/channels-grid-mascot.webp"
+import mascotTileImage from "@/images/pages/channels/web-chat/channels-grid-mascot.jpg"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -32,6 +32,7 @@ function ChannelTileIcon({ icon }: { icon: IChannelsGridTile["icon"] }) {
     <Image
       alt=""
       aria-hidden
+      unoptimized
       className="size-11 object-contain md:size-17"
       src={icon}
     />
@@ -87,6 +88,7 @@ function MascotTile() {
         alt=""
         className="object-cover"
         fill
+        unoptimized
         sizes="(min-width: 768px) 328px, 212px"
         src={mascotTileImage}
       />

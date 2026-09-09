@@ -78,6 +78,7 @@ function BuilderLogoRow() {
               <Image
                 alt={ariaHidden ? "" : logo.name}
                 className="h-8 w-auto object-contain"
+                unoptimized
                 height={logo.height}
                 src={logo.src}
                 width={logo.width}
@@ -160,24 +161,14 @@ export function WebChatConfigurator() {
           </div>
 
           <div className="relative isolate mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
-            {/*
-              The asset is the 640x680 window Figma's `form` frame
-              (`45487-81722`) clips onto its background group — not the whole
-              blob. The previous export was the entire unclipped nebula
-              squeezed into 640x668, so `object-cover` shrank it ~2.2x and the
-              panel read as near-black with a faint glow instead of the
-              design's saturated blue-violet. Re-cropped from the group render
-              at 2x (1280x1360, and 122KB smaller for being the right region).
-
-              No `opacity-80` here: Figma applies 0.8 to that group, and a node
-              export bakes its own opacity in, so re-applying it double-dimmed
-              the panel. The noise overlay below is the separate 0.3 layer.
-            */}
+            {/* Original 2× crop of the form's background group (45487:81723).
+                Its opacity is baked in; the separate grain layer remains below. */}
             <Image
               alt=""
               aria-hidden
               className="object-cover"
               fill
+              unoptimized
               sizes="(min-width: 640px) 640px, 100vw"
               src={CONFIGURATOR_BLOB_IMAGE}
             />
