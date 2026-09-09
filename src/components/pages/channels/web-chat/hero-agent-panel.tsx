@@ -14,7 +14,7 @@ import {
   type StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
 import agentGlyph from "@/svgs/pages/channels/web-chat/agent-glyph.svg"
-import { ChevronUp, Maximize2, Sparkles, X } from "lucide-react"
+import { ChevronUp, Maximize2, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { AgentFieldTable } from "@/components/pages/channels/web-chat/agent-field-table"
