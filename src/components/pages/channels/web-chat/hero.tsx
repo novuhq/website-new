@@ -376,7 +376,7 @@ export function WebChatHero() {
     <section
       ref={inViewRef}
       className={cn(
-        "relative pt-10 font-inter md:pt-14 lg:pt-18 xl:pt-23",
+        "relative pt-10 font-inter md:pt-14 lg:pt-18 xl:min-h-314 xl:pt-23",
         geistMono.variable
       )}
       data-testid="web-chat-hero"

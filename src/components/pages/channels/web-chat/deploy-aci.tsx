@@ -20,26 +20,24 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
  * are rendered by one full-image SVG track. Its responsive coordinates come
  * from the original outer and center logo positions in Figma.
  *
- * Container: the desktop frame places the image flush with the section's
- * own left edge while the heading/badges/items sit 32px further in — i.e.
- * the image bleeds past the standard `px-8` page margin. `max-w-[1344px]`
- * is that 32px margin plus the image's true 1280px width on both sides.
+ * Desktop artwork is 1280px wide at x320 in the 1920px frame. The heading
+ * and badges start 32px inside it; the feature list starts at x992.
  */
 export function DeployAci() {
   return (
     <section>
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
-          <h2 className="text-[32px] leading-[1.25em] font-normal tracking-[-0.04em] text-white md:max-w-[840px] md:text-[48px] md:leading-[1.04em]">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-12 xl:pl-8">
+          <h2 className="text-[32px] leading-[1.25em] font-normal tracking-[-0.04em] text-white md:max-w-[840px] md:text-[48px] md:leading-[1.04em] xl:pt-1.25">
             {DEPLOY_ACI_HEADING}
           </h2>
-          <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-[18px] md:text-gray-70 lg:max-w-[604px] lg:pt-2">
+          <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-[18px] md:text-gray-70 lg:max-w-[604px] lg:pt-2 xl:pt-0">
             {DEPLOY_ACI_DESCRIPTION}
           </p>
         </div>
 
-        {/* The portrait export already includes its rounded outer border. */}
-        <div className="relative mx-auto mt-8 aspect-[320/658] w-full max-w-104 overflow-hidden rounded-[16px] bg-black md:mt-14 lg:-mx-8 lg:aspect-[1280/480] lg:w-[calc(100%+4rem)] lg:max-w-none lg:rounded-[24px] lg:border-[0.75px] lg:border-gray-20">
+        {/* Both exports already include their rounded outer border. */}
+        <div className="relative mx-auto mt-8 aspect-[320/658] w-full max-w-104 overflow-hidden rounded-[16px] bg-black md:mt-14 lg:aspect-[1280/480] lg:max-w-none lg:rounded-[24px]">
           <picture>
             <source
               media="(width < 64rem)"
@@ -59,7 +57,7 @@ export function DeployAci() {
           <FrameworkLogoCycle />
         </div>
 
-        <div className="mt-8 flex flex-col gap-8 md:mt-14 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
+        <div className="mt-8 flex flex-col gap-8 md:mt-14 lg:flex-row lg:items-start lg:justify-between lg:gap-12 xl:pr-24 xl:pl-8">
           <ul className="flex items-center gap-7 md:gap-10" role="list">
             {DEPLOY_ACI_COMPLIANCE_BADGES.map((badge) => (
               <li key={badge.label}>

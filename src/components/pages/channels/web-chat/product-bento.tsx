@@ -18,6 +18,7 @@ const ROW_TWO_SIZES =
 
 const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
   PRODUCT_BENTO_CARDS
+const [headingIntro, headingConclusion] = PRODUCT_BENTO_HEADING.split(". ")
 
 /**
  * Five static Figma illustrations, exported at 2× from section 45487:79958.
@@ -28,16 +29,17 @@ export function ProductBento() {
   return (
     <section>
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
-          <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[560px] md:text-[48px] md:leading-[1.04]">
-            {PRODUCT_BENTO_HEADING}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-9">
+          <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[560px] md:text-[48px] md:leading-[1.04] xl:w-160 xl:max-w-160 xl:shrink-0">
+            {headingIntro}.<br className="hidden xl:block" />{" "}
+            {headingConclusion}
           </h2>
-          <p className="max-w-[480px] text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-lg md:text-[#A3A6B2] lg:max-w-[420px] lg:pt-3">
+          <p className="max-w-[480px] text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-lg md:text-[#A3A6B2] lg:max-w-[420px] lg:pt-3 xl:max-w-151 xl:pt-11.25">
             {PRODUCT_BENTO_DESCRIPTION}
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-5 md:mt-14 md:gap-6">
+        <div className="mt-10 flex flex-col gap-5 md:mt-14 md:gap-6 xl:-mx-8">
           <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
             <ProductBentoCard
               aspectRatio="660/496"

@@ -47,7 +47,7 @@ const DEFAULT_BRAND_VARS = brandCssVars(buildBrandTheme(null))
 
 export default function WebChatPage() {
   return (
-    <div className="overflow-clip" style={DEFAULT_BRAND_VARS}>
+    <div className="overflow-clip font-inter" style={DEFAULT_BRAND_VARS}>
       {/*
         Share the submitted brand with the two bento sections. Their existing
         hue layers recolor the current artwork; later sections keep the default

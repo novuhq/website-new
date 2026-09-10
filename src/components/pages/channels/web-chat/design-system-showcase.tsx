@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 /** Figma section 45487:82563, with its existing mobile panel arrangement. */
 function DesignSystemHeading() {
   return (
-    <div className="flex flex-col gap-5 md:max-w-157 md:gap-4">
+    <div className="flex flex-col gap-5 md:max-w-157 md:gap-6">
       <h2 className="text-[32px] leading-[1.25] font-normal tracking-[-0.04em] text-white md:text-[48px] md:leading-[1.04]">
         {DESIGN_SYSTEM_HEADING}
       </h2>
@@ -32,7 +32,7 @@ function DesignSystemHeading() {
 
 function DesignSystemActions() {
   return (
-    <div className="flex shrink-0 flex-col-reverse gap-4 sm:flex-row sm:items-center">
+    <div className="flex shrink-0 flex-col-reverse gap-4 sm:flex-row sm:items-center xl:pb-1.5">
       <Button
         asChild
         className="w-full px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] normal-case sm:w-fit"
@@ -115,7 +115,7 @@ export function DesignSystemShowcase() {
   return (
     <section>
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between xl:px-8">
           <DesignSystemHeading />
           <DesignSystemActions />
         </div>
@@ -124,7 +124,7 @@ export function DesignSystemShowcase() {
           src={illustration}
           alt={DESIGN_SYSTEM_IMAGE_ALT.desktop}
           unoptimized
-          className="mt-13 hidden h-auto w-full rounded-3xl md:block"
+          className="mt-14 hidden h-auto w-full rounded-3xl md:block"
         />
         <DesignSystemCard />
       </div>

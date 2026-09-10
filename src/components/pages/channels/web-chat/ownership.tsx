@@ -39,11 +39,12 @@ import keepLogicIcon from "@/svgs/pages/channels/web-chat/ownership-keep-logic.s
  */
 function OwnershipTagline() {
   return (
-    <h2 className="max-w-[1120px] text-[28px] leading-[1.25] font-normal tracking-[-0.04em] text-balance md:text-[40px]">
+    <h2 className="max-w-[1120px] text-[28px] leading-[1.25] font-normal tracking-[-0.04em] text-balance md:text-[40px] xl:text-wrap">
       {OWNERSHIP_TAGLINE_WORDS.map((word, i) => (
         <span key={i} className={word.accent ? "text-gray-50" : "text-white"}>
           {word.text}
           {i < OWNERSHIP_TAGLINE_WORDS.length - 1 ? " " : ""}
+          {word.text === "web" && <br className="hidden xl:block" />}
         </span>
       ))}
     </h2>
@@ -80,7 +81,7 @@ function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
 function Ownership() {
   return (
     <section>
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 md:gap-[72px] md:px-8 lg:max-w-336">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 md:gap-[72px] md:px-8 lg:max-w-336 xl:relative xl:left-8">
         <OwnershipTagline />
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">

@@ -9,7 +9,7 @@ test("keeps channel links and bento captions within their responsive layouts", a
   await page.emulateMedia({ reducedMotion: "reduce" })
   await gotoCriticalPage(page, webChatContract.route)
 
-  for (const width of [320, 390, 639, 640, 768, 1023, 1024, 1280, 1440]) {
+  for (const width of [320, 390, 639, 640, 768, 1023, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 })
     const panel = page
       .locator('[data-slot="web-chat-panel"]')

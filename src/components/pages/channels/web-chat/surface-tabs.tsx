@@ -24,7 +24,8 @@ const TAB_TRIGGER_CLASS = cn(
   "focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-gray-60 focus-visible:outline-solid"
 )
 
-const TABS_CONTENT_CLASS = "mt-10 data-[state=inactive]:hidden lg:mt-14"
+const TABS_CONTENT_CLASS =
+  "mt-8 data-[state=inactive]:hidden md:mt-10 lg:mt-14 xl:mt-16"
 
 /**
  * Both tab states use the original desktop and mobile Figma illustrations.
@@ -34,8 +35,8 @@ export function SurfaceTabs() {
   return (
     <section className="mx-auto w-full max-w-3xl lg:max-w-336">
       <Tabs defaultValue="side-panel">
-        <div className="flex flex-col gap-8 px-5 md:px-8 lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:px-8">
-          <div className="flex flex-col gap-6 lg:max-w-[495px]">
+        <div className="flex flex-col gap-14 px-5 md:gap-8 md:px-8 lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:px-8">
+          <div className="flex flex-col gap-7 md:gap-6 lg:max-w-[495px]">
             <h2 className="text-[32px] leading-[1.04] tracking-[-0.04em] text-balance text-white md:text-[48px]">
               {SURFACE_TABS_HEADING}
             </h2>
@@ -43,13 +44,13 @@ export function SurfaceTabs() {
               href={SURFACE_TABS_BUTTON_HREF}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-1.5 rounded-md border border-white px-5 py-3.5 text-base font-medium tracking-[-0.025em] text-white transition-colors hover:bg-white hover:text-black"
+              className="flex h-11 items-center justify-center gap-1.5 rounded-md border border-white px-5 text-base leading-none font-medium tracking-[-0.025em] text-white transition-colors hover:bg-white hover:text-black lg:self-start"
             >
               {SURFACE_TABS_BUTTON_LABEL}
             </a>
           </div>
 
-          <div className="flex flex-col gap-6 lg:max-w-[416px]">
+          <div className="flex flex-col gap-5 md:gap-6 lg:max-w-[416px]">
             <p className="text-base leading-[1.5] tracking-[-0.025em] text-[#A3A6B2] md:text-lg">
               {SURFACE_TABS_DESCRIPTION}
             </p>

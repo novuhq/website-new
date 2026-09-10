@@ -63,7 +63,7 @@ export function ProductBentoCard({
 
       <div
         className={cn(
-          "inset-x-0 bottom-0 flex flex-col gap-2.5 p-5 sm:absolute md:max-w-136 md:p-7 lg:max-w-[376px] lg:p-5 xl:p-7",
+          "inset-x-0 bottom-0 flex flex-col gap-2.5 p-5 sm:absolute md:max-w-136 md:p-7 lg:max-w-[376px] lg:p-5 xl:max-w-108 xl:p-7",
           !mobileArtworkAspectRatio && "absolute"
         )}
       >

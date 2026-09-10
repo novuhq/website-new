@@ -33,7 +33,7 @@ function ChannelTileIcon({ icon }: { icon: IChannelsGridTile["icon"] }) {
       alt=""
       aria-hidden
       unoptimized
-      className="size-9 object-contain min-[360px]:size-11 md:size-15 xl:size-17"
+      className="size-9 object-contain p-1 min-[360px]:size-11 min-[360px]:p-1.25 md:size-15 md:p-1.75 xl:size-17 xl:p-2"
       src={icon}
     />
   )
