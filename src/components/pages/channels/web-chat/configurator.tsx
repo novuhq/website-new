@@ -53,6 +53,18 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
  * copy, a reasoned fallback rather than an invented frame.
  */
 
+/**
+ * The card's stroke, as a ring whose colour varies with angle.
+ *
+ * These stops are read off Figma's own render rather than guessed: the ring
+ * was sampled at 184 points around the card's perimeter (skipping the rounded
+ * corners), each point's angle taken from the card's centre, then reduced to
+ * 21 stops. A conic gradient fits that far better than the two radial paints
+ * it appears to be built from, which left the mid-left 106/255 too dim.
+ */
+const RING_GRADIENT =
+  "conic-gradient(from 0deg at 50% 50%, rgb(111 74 162) 1.4deg, rgb(52 45 80) 18.6deg, rgb(26 24 37) 33deg, rgb(28 28 51) 52.3deg, rgb(45 51 101) 68.5deg, rgb(72 95 175) 89.1deg, rgb(94 131 226) 110deg, rgb(93 131 226) 126.6deg, rgb(65 86 192) 146.2deg, rgb(67 90 182) 160.3deg, rgb(64 86 180) 177.4deg, rgb(44 58 159) 195deg, rgb(25 31 93) 210.1deg, rgb(27 35 101) 229.4deg, rgb(49 71 162) 244.4deg, rgb(98 123 226) 264.3deg, rgb(166 162 226) 285.6deg, rgb(222 162 226) 303.4deg, rgb(240 145 240) 316.1deg, rgb(222 123 251) 336.9deg, rgb(146 92 211) 353.5deg, rgb(111 74 162) 361.4deg)"
+
 const CHANNEL_OPTIONS: IStackOption[] = [WEB_CHAT_CHANNEL, ...DEFAULT_CHANNELS]
 const FRAMEWORK_OPTIONS = DEFAULT_FRAMEWORKS
 
@@ -161,8 +173,12 @@ export function WebChatConfigurator() {
           </div>
 
           <div className="relative isolate mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
-            {/* Original 2× crop of the form's background group (45487:81723).
-                Its opacity is baked in; the separate grain layer remains below. */}
+            {/* The form's background field, cropped to the 640x680 window the
+                Figma frame clips onto its `bg` group — see
+                `CONFIGURATOR_BLOB_IMAGE` for how that window is derived. The
+                group's own 0.8 opacity is baked into the export, so it must
+                not be re-applied here. The grain is the separate layer below,
+                matching Figma's own `noise` group. */}
             <Image
               alt=""
               aria-hidden
@@ -179,9 +195,41 @@ export function WebChatConfigurator() {
 
             <div className="relative flex items-center justify-center px-5 py-14 sm:px-13 sm:py-20">
               <div
-                className="w-full max-w-[428px] rounded-[32px] border border-white p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)] backdrop-blur-[90px]"
+                className="relative w-full max-w-[428px] rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)] backdrop-blur-[90px]"
                 style={{ backgroundColor: "rgba(255, 255, 255, 0.12)" }}
               >
+                {/*
+                  The card's stroke is a coloured gradient, not the flat white
+                  the design-context output reports — the same flattening the
+                  hero's borders hit (see
+                  `docs/superpowers/logs/2026-09-09-web-chat-hero-borders.md`).
+                  Rendering the card node on its own still shows the ring
+                  running vivid magenta at the top left, through violet down
+                  the left side, to blue along the lower right, with both
+                  opposite corners falling dark. That is two radial paints, so
+                  it is reproduced as two here over a dark base, sampled from
+                  the render at 2x:
+
+                    top-left      rgb(254, 134, 254)
+                    left, 58%     rgb(86, 114, 222)
+                    right, ~78%   rgb(95, 133, 226)
+                    dark corners  rgb(22-30, 22-30, 33-45)
+
+                  `border-gradient` masks the background down to the 1px band,
+                  so this sits on its own layer rather than fighting the card's
+                  translucent fill.
+                */}
+                <span
+                  aria-hidden
+                  // `-inset-px`, not `inset-0`: an absolutely positioned child
+                  // resolves `inset` against the containing block's padding
+                  // box, which sits 1px inside the card's border box. Ringing
+                  // the padding box left no crisp band at all — the bottom
+                  // edge faded continuously where Figma has a distinct 1px
+                  // step. The radius grows by the same pixel to stay concentric.
+                  className="pointer-events-none absolute -inset-px rounded-[33px] border-gradient"
+                  style={{ backgroundImage: RING_GRADIENT }}
+                />
                 <div
                   className="flex w-full flex-col gap-6 rounded-[20px] border border-white/10 p-6 shadow-[0_12px_39px_-10px_rgba(0,0,0,0.9)] backdrop-blur-[64px]"
                   style={{

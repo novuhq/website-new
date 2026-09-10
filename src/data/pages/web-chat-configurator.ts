@@ -7,7 +7,7 @@ import builderLovable from "@/images/pages/channels/web-chat/builder-lovable.svg
 import builderReplit from "@/images/pages/channels/web-chat/builder-replit.svg"
 import builderV0 from "@/images/pages/channels/web-chat/builder-v0.svg"
 import builderWindsurf from "@/images/pages/channels/web-chat/builder-windsurf.svg"
-import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.jpg"
+import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.webp"
 
 /**
  * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
@@ -15,6 +15,22 @@ import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob
  * `45487-81876`/`45487-81877`). Not personalized: no `--wc-accent*` tokens.
  */
 
+/**
+ * The form's background field, cropped to the 640x680 window Figma's `form`
+ * frame (`45440-69447`) clips onto its `bg` group.
+ *
+ * The window is derived from geometry rather than eyeballed: the `bg` and
+ * `form` renders share a coordinate frame, and the Copy prompt button — 360
+ * wide, at a known offset inside the card — locates the form's origin in that
+ * frame at (398.5, 362). The previous asset was the right size but roughly
+ * half the correct brightness (mean 27.7/28.0/57.3 against 58.0/61.0/121.5),
+ * which is why the panel read as near-black and lost the bright streak that
+ * sweeps through its lower left.
+ *
+ * WebP rather than JPEG: this is a smooth gradient, so it encodes to 18KB
+ * against the JPEG's 101KB at comparable quality. The `bg` group's own 0.8
+ * opacity is baked in by the export, so it must not be re-applied in CSS.
+ */
 export const CONFIGURATOR_BLOB_IMAGE: StaticImageData = configuratorBlob
 
 export const CONFIGURATOR_HEADING =
