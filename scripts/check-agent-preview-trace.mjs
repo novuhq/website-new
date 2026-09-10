@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { readFileSync, realpathSync } from "node:fs"
+import { lstatSync, readFileSync, realpathSync } from "node:fs"
 import { dirname, resolve } from "node:path"
 
 const tracePath = resolve(
@@ -7,9 +7,23 @@ const tracePath = resolve(
     ".next/server/app/(website)/api/agent-preview/route.js.nft.json"
 )
 const trace = JSON.parse(readFileSync(tracePath, "utf8"))
-const files = new Set(
-  trace.files.map((file) => realpathSync(resolve(dirname(tracePath), file)))
+const tracedPaths = new Set(
+  trace.files.map((file) => resolve(dirname(tracePath), file))
 )
+// A deployment cannot contain both a directory symlink and files beneath it.
+for (const file of tracedPaths) {
+  for (
+    let parent = dirname(file);
+    parent !== dirname(parent);
+    parent = dirname(parent)
+  ) {
+    assert.ok(
+      !tracedPaths.has(parent) || !lstatSync(parent).isSymbolicLink(),
+      `The branding API deployment contains a file under a symlink: ${file}`
+    )
+  }
+}
+const files = new Set([...tracedPaths].map((file) => realpathSync(file)))
 const libvipsPackages = [...files].filter((file) =>
   /[/\\]@img[/\\]sharp-libvips-[^/\\]+[/\\]package\.json$/.test(file)
 )
