@@ -82,14 +82,41 @@ async function expectStep(page: Page, step: number) {
 }
 
 test.describe("web chat hero transition", () => {
+  test("renders grayscale and blur while waiting, then resolves both filters with the brand", async ({
+    page,
+  }) => {
+    const errors = observeApplicationErrors(page)
+    const { request } = await holdPreviewResponse(page)
+    // CSS/WAAPI filters use the native animation timeline, outside page.clock.
+    // Check their stable endpoints separately from the brief conversation steps.
+    await openWebChat(page, false)
+    await submitDomain(page)
+    const pendingResponse = await request
+    await expect(hero(page)).toHaveAttribute("data-storyboard-phase", "waiting")
+    await expect(panel(page)).toHaveCSS("filter", "grayscale(1)")
+    await expect(dashboard(page)).toHaveCSS("filter", /^blur\([1-9]/)
+    await expect(hero(page)).toHaveCSS("--wc-accent", DEFAULT_ACCENT)
+    await expect(tableTitle(page)).toHaveText(webChatContract.defaultTableTitle)
+    await expect(message(page, webChatContract.firstMessage)).toBeHidden()
+
+    await pendingResponse.fulfill({ json: { brand: BRAND } })
+    await expect(hero(page)).toHaveCSS("--wc-accent", BRAND.accent)
+    await expect(tableTitle(page)).toHaveText(
+      webChatContract.personalizedTableTitle
+    )
+    await expect(message(page, webChatContract.firstMessage)).toBeVisible()
+    await expect(panel(page)).toHaveCSS("filter", /^(none|grayscale\(0\))$/)
+    await expect(dashboard(page)).toHaveCSS("filter", /^(none|blur\(0px\))$/)
+    expectHealthyPage(errors)
+  })
+
   test("waits for branding, resolves the table, then plays and loops the conversation", async ({
     page,
   }) => {
     const errors = observeApplicationErrors(page)
     const { request } = await holdPreviewResponse(page)
-    // Motion uses the browser animation timeline for filters. Keep real time
-    // here so these checks verify the rendered fade as well as React state.
-    await openWebChat(page, false)
+    // Advance the storyboard explicitly so slow assertions cannot skip a step.
+    await openWebChat(page)
     await submitDomain(page)
     const pendingResponse = await request
 
@@ -100,13 +127,12 @@ test.describe("web chat hero transition", () => {
     await expect(tableTitle(page)).toHaveText(webChatContract.defaultTableTitle)
     await expect(message(page, webChatContract.firstMessage)).toBeHidden()
 
+    await page.clock.runFor(FADE_MS)
     await expect(hero(page)).toHaveAttribute("data-storyboard-phase", "waiting")
-    await expect(panel(page)).toHaveCSS("filter", "grayscale(1)")
-    await expect(dashboard(page)).toHaveCSS("filter", /^blur\([1-9]/)
 
     // Regression: the old 1.4-second timer began the conversation before a
     // slow extraction returned, displaying the wrong theme and table.
-    await page.waitForTimeout(2500)
+    await page.clock.runFor(2500)
     await expect(hero(page)).toHaveAttribute("data-storyboard-phase", "waiting")
     await expectStep(page, 0)
     await expect(hero(page)).toHaveCSS("--wc-accent", DEFAULT_ACCENT)
@@ -121,25 +147,39 @@ test.describe("web chat hero transition", () => {
     )
     await expect(message(page, webChatContract.firstMessage)).toBeHidden()
 
+    await page.clock.runFor(STORYBOARD_TIMING.recolorMs)
     await expectStep(page, 1)
     await expect(message(page, webChatContract.firstMessage)).toBeVisible()
     await expect(message(page, REPLY)).toBeHidden()
     await expect(message(page, "Missing fields")).toBeHidden()
     await expect(message(page, FINAL_REPLY)).toBeHidden()
-    await expect(panel(page)).toHaveCSS("filter", /^(none|grayscale\(0\))$/)
-    await expect(dashboard(page)).toHaveCSS("filter", /^(none|blur\(0px\))$/)
-
+    await page.clock.runFor(
+      STORYBOARD_TIMING.messageRevealMs + STORYBOARD_TIMING.gapMs
+    )
     await expectStep(page, 2)
+    await expect(
+      panel(page).getByText("Agent is thinking", { exact: true })
+    ).toHaveCount(1)
     await expect(message(page, REPLY)).toBeHidden()
+    await page.clock.runFor(STORYBOARD_TIMING.thinkingMs)
     await expectStep(page, 3)
+    await expect(
+      panel(page).getByText("Agent is thinking", { exact: true })
+    ).toHaveCount(0)
     await expect(message(page, webChatContract.firstMessage)).toBeVisible()
     await expect(message(page, REPLY)).toBeVisible()
     await expect(message(page, "Missing fields")).toBeHidden()
 
+    await page.clock.runFor(
+      STORYBOARD_TIMING.messageRevealMs + STORYBOARD_TIMING.gapMs
+    )
     await expectStep(page, 4)
     await expect(message(page, "Missing fields")).toBeVisible()
     await expect(message(page, FINAL_REPLY)).toBeHidden()
 
+    await page.clock.runFor(
+      STORYBOARD_TIMING.messageRevealMs + STORYBOARD_TIMING.gapMs
+    )
     await expectStep(page, 5)
     await expect(message(page, FINAL_REPLY)).toBeVisible()
     const missingEmail = panel(page).getByText("Not provided", { exact: true })
@@ -151,6 +191,9 @@ test.describe("web chat hero transition", () => {
       "rgba(0, 0, 0, 0)"
     )
 
+    await page.clock.runFor(
+      STORYBOARD_TIMING.messageRevealMs + STORYBOARD_TIMING.finalHoldMs
+    )
     await expectStep(page, 1)
     await expect(hero(page)).toHaveAttribute(
       "data-storyboard-phase",
@@ -165,7 +208,6 @@ test.describe("web chat hero transition", () => {
     await expect(tableTitle(page)).toHaveText(
       webChatContract.personalizedTableTitle
     )
-    await expect(panel(page)).toHaveCSS("filter", /^(none|grayscale\(0\))$/)
     expectHealthyPage(errors)
   })
 

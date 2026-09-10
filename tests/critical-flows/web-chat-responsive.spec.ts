@@ -8,6 +8,13 @@ test("keeps channel links and bento captions within their responsive layouts", a
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" })
   await gotoCriticalPage(page, webChatContract.route)
+  // The lazy live-chat module replaces the initial panel tree on hydration.
+  // Its textbox only exists once that replacement has finished.
+  await expect(
+    page
+      .getByTestId("web-chat-hero")
+      .getByRole("textbox", { name: "Message the agent" })
+  ).toBeVisible()
 
   for (const width of [320, 390, 639, 640, 768, 1023, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 })
@@ -15,10 +22,13 @@ test("keeps channel links and bento captions within their responsive layouts", a
       .locator('[data-slot="web-chat-panel"]')
       .filter({ visible: true })
       .first()
-    const panelBox = await panel.boundingBox()
-    expect(panelBox).not.toBeNull()
-    expect(panelBox!.x).toBeGreaterThanOrEqual(0)
-    expect(panelBox!.x + panelBox!.width).toBeLessThanOrEqual(width)
+    // Re-resolve the visible panel if a breakpoint changes during measurement.
+    await expect(async () => {
+      const panelBox = await panel.boundingBox()
+      expect(panelBox).not.toBeNull()
+      expect(panelBox!.x).toBeGreaterThanOrEqual(0)
+      expect(panelBox!.x + panelBox!.width).toBeLessThanOrEqual(width)
+    }).toPass({ timeout: 10_000 })
 
     const links = page.locator(
       'main a[aria-label$="connect this channel to your agent"]'
