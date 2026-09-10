@@ -1,8 +1,14 @@
-import { selectAll } from "css-select"
+import { compile } from "css-select"
 import { Element, type DOMNode } from "html-react-parser"
 import postcss, { type Declaration, type Rule } from "postcss"
 
 import { normalizeColor, type AccentCandidate } from "./colors"
+import {
+  createCssAdapter,
+  CssAnalysisBudget,
+  CssAnalysisLimitError,
+  cssTextContent,
+} from "./css-budget"
 
 type StyledValue = {
   value: string
@@ -44,13 +50,6 @@ const PRIMARY_CLASS = /(?:^|[-_])(primary|cta)(?:$|[-_])/i
 const CTA_TEXT =
   /\b(get started|sign\s?up|start (?:for free|free|your|a trial)|try (?:it|for free|now)|book (?:a |your )?demo|contact sales|download|subscribe|join (?:us|now))\b/i
 
-function textContent(node: DOMNode): string {
-  if ("data" in node) return node.type === "text" ? node.data : ""
-  return "children" in node
-    ? node.children.map((child) => textContent(child as DOMNode)).join(" ")
-    : ""
-}
-
 function higherPriority(a: StyledValue, b: StyledValue): number {
   return (
     Number(a.important) - Number(b.important) ||
@@ -75,9 +74,10 @@ function selectorWeight(selector: string): number | null {
   return ids * 1_000_000 + classes * 1_000 + tags
 }
 
-function supportedRule(rule: Rule): boolean {
+function supportedRule(rule: Rule, budget: CssAnalysisBudget): boolean {
   let parent = rule.parent
   while (parent && parent.type !== "root") {
+    budget.spend()
     // Layers are unconditional. Media/supports/container/keyframes and nested
     // selectors need browser context and are deliberately not evaluated.
     if (parent.type !== "atrule" || parent.name.toLowerCase() !== "layer")
@@ -95,9 +95,11 @@ function isScreenStylesheet(media: string | undefined): boolean {
 function resolveValue(
   value: string,
   variables: Variables,
+  budget: CssAnalysisBudget,
   visited = new Set<string>(),
   depth = 0
 ): ResolvedValue | null {
+  budget.spend(value.length + visited.size + 1)
   if (depth > 24 || value.length > 4096) return null
   const references = new Set<string>()
   let output = ""
@@ -120,30 +122,44 @@ function resolveValue(
     if (nesting) return null
     const name = value.slice(start + 4, comma < 0 ? end - 1 : comma).trim()
     if (!/^--[\w-]+$/.test(name) || visited.has(name)) return null
-    references.add(name)
+    if (!references.has(name)) {
+      budget.allocate(1)
+      references.add(name)
+    }
     const nextVisited = new Set(visited).add(name)
     const variable = variables.get(name)
     let resolved =
       typeof variable === "string"
-        ? resolveValue(variable, variables, nextVisited, depth + 1)
+        ? resolveValue(variable, variables, budget, nextVisited, depth + 1)
         : (variable ?? null)
     if (!resolved && comma >= 0)
       resolved = resolveValue(
         value.slice(comma + 1, end - 1),
         variables,
+        budget,
         nextVisited,
         depth + 1
       )
     if (!resolved) return null
+    budget.spend(resolved.value.length)
     output += resolved.value
     if (output.length > 4096) return null
-    for (const reference of resolved.references) references.add(reference)
+    budget.spend(resolved.references.size)
+    for (const reference of resolved.references) {
+      if (!references.has(reference)) {
+        budget.allocate(1)
+        references.add(reference)
+      }
+    }
     cursor = end
   }
   return { value: output, references }
 }
 
-function actionEvidence(element: Element): {
+function actionEvidence(
+  element: Element,
+  budget: CssAnalysisBudget
+): {
   action: boolean
   link: boolean
   active: boolean
@@ -158,10 +174,12 @@ function actionEvidence(element: Element): {
     link ||
     attrs.role === "button" ||
     (element.name === "input" && /^(submit|button)$/i.test(attrs.type ?? ""))
+  budget.spend((attrs.class?.length ?? 0) + (attrs.id?.length ?? 0))
   const classes = (attrs.class ?? "")
     .split(/\s+/)
     .filter((name) => !name.includes(":"))
-  const label = `${attrs["aria-label"] ?? ""} ${attrs.value ?? ""} ${action ? textContent(element).slice(0, 200) : ""}`
+  const label = `${attrs["aria-label"] ?? ""} ${attrs.value ?? ""} ${action ? cssTextContent(element, budget, 200) : ""}`
+  budget.spend(label.length + (attrs["data-variant"]?.length ?? 0))
   const excluded =
     "disabled" in attrs ||
     attrs["aria-disabled"] === "true" ||
@@ -194,6 +212,21 @@ export function collectCssCandidates(
   nodes: DOMNode[],
   stylesheets: (string | LinkedStylesheet)[]
 ): AccentCandidate[] {
+  try {
+    return analyzeCss(nodes, stylesheets, new CssAnalysisBudget())
+  } catch (error) {
+    // Partial evidence can pick a color whose later override was never read.
+    // Leave metadata/manifest/logo candidates available to the caller instead.
+    if (error instanceof CssAnalysisLimitError) return []
+    throw error
+  }
+}
+
+function analyzeCss(
+  nodes: DOMNode[],
+  stylesheets: (string | LinkedStylesheet)[],
+  budget: CssAnalysisBudget
+): AccentCandidate[] {
   const elements: Element[] = []
   // Records preserve link/style source order. Bare strings are detached fixture
   // sheets and precede document styles because they have no document position.
@@ -205,13 +238,15 @@ export function collectCssCandidates(
       .filter((sheet): sheet is LinkedStylesheet => typeof sheet !== "string")
       .map((sheet) => [sheet.href, sheet.css])
   )
+  budget.spend(nodes.length)
   const stack = [...nodes].reverse()
   while (stack.length && elements.length < 8000) {
+    budget.spend()
     const node = stack.pop()!
     if (!(node instanceof Element)) continue
     if (node.name === "style") {
       if (isScreenStylesheet(node.attribs.media))
-        documentSheets.push(textContent(node))
+        documentSheets.push(cssTextContent(node, budget))
       continue
     }
     if (
@@ -230,9 +265,12 @@ export function collectCssCandidates(
     if ("hidden" in node.attribs || node.attribs["aria-hidden"] === "true")
       continue
     elements.push(node)
-    stack.push(...[...(node.children as DOMNode[])].reverse())
+    budget.spend(node.children.length)
+    for (let i = node.children.length - 1; i >= 0; i--)
+      stack.push(node.children[i] as DOMNode)
   }
-  const allowedElements = new Set(elements)
+  if (stack.length) throw new CssAnalysisLimitError()
+  const adapter = createCssAdapter(budget)
   const styles = new Map<Element, ElementStyles>()
   let order = 0
   function add(
@@ -242,6 +280,7 @@ export function collectCssCandidates(
   ) {
     const prop = declaration.prop
     if (!prop.startsWith("--") && !TRACKED_PROPERTY.test(prop)) return
+    budget.allocate(1)
     let style = styles.get(element)
     if (!style) {
       style = { variables: new Map(), backgrounds: [], properties: new Map() }
@@ -268,6 +307,7 @@ export function collectCssCandidates(
   }
   let rules = 0
   for (const sheet of documentSheets) {
+    budget.parse(sheet)
     let root
     try {
       root = postcss.parse(sheet)
@@ -275,7 +315,9 @@ export function collectCssCandidates(
       continue
     }
     root.walkRules((rule) => {
-      if (++rules > 8000 || !supportedRule(rule)) return
+      if (++rules > 8000) throw new CssAnalysisLimitError()
+      budget.spend(rule.nodes.length)
+      if (!supportedRule(rule, budget)) return
       const declarations = rule.nodes.filter(
         (node): node is Declaration =>
           node.type === "decl" &&
@@ -283,16 +325,21 @@ export function collectCssCandidates(
       )
       if (!declarations.length) return
       for (const selector of rule.selectors) {
+        budget.spend(selector.length)
         const weight = selectorWeight(selector)
         if (weight === null) continue
-        let matches: Element[]
+        let matches
         try {
-          matches = selectAll(selector, [...nodes])
-        } catch {
+          matches = compile(selector, { adapter })
+        } catch (error) {
+          if (error instanceof CssAnalysisLimitError) throw error
           continue
         }
-        for (const element of matches) {
-          if (!allowedElements.has(element)) continue
+        // Match only the bounded, visible candidate set. Adapter calls also
+        // account for work inside descendant and sibling combinators.
+        for (const element of elements) {
+          budget.spend()
+          if (!matches(element)) continue
           for (const declaration of declarations)
             add(element, declaration, weight)
         }
@@ -301,37 +348,69 @@ export function collectCssCandidates(
   }
   for (const element of elements) {
     if (!element.attribs.style) continue
+    const inline = `x{${element.attribs.style}}`
+    budget.parse(inline)
+    let root
     try {
-      postcss.parse(`x{${element.attribs.style}}`).walkDecls((decl) => {
-        add(element, decl, 1_000_000_000)
-      })
+      root = postcss.parse(inline)
     } catch {
       /* An invalid inline declaration must not lose other evidence. */
+      continue
     }
+    root.walkDecls((decl) => add(element, decl, 1_000_000_000))
   }
   const inherited = new Map<Element, Variables>()
   const contexts = new Map<Element, InterfaceContext>()
   const visibility = new Map<Element, Visibility>()
   const textColors = new Map<Element, TextColor | null>()
   const candidates: AccentCandidate[] = []
+  const emptyVariables: Variables = new Map()
   for (const element of elements) {
+    budget.spend()
     const parentElement =
       element.parent instanceof Element ? element.parent : undefined
-    const parent = parentElement ? inherited.get(parentElement) : undefined
-    const variables = new Map(parent)
+    const parent =
+      (parentElement && inherited.get(parentElement)) || emptyVariables
     const style = styles.get(element)
-    for (const [name, value] of style?.variables ?? [])
-      variables.set(name, value.value)
-    // Custom properties inherit their computed value. An alias defined on the
-    // root must not bind to a child's override of one of its dependencies.
-    const computed = new Map(parent)
-    for (const [name, value] of style?.variables ?? []) {
-      computed.set(name, resolveValue(value.value, variables, new Set([name])))
+    let variables = parent
+    let computed = parent
+    budget.spend(style?.variables.size ?? 0)
+    const localVariables = [...(style?.variables ?? [])].filter(
+      ([name, value]) => {
+        const inheritedValue = parent.get(name)
+        // Framework resets repeat the same literal custom properties on every
+        // element. Aliases must still resolve in the new scope, and a literal
+        // override must clear any provenance inherited from an earlier alias.
+        return !(
+          inheritedValue &&
+          typeof inheritedValue !== "string" &&
+          inheritedValue.references.size === 0 &&
+          !value.value.includes("var(") &&
+          inheritedValue.value === value.value
+        )
+      }
+    )
+    if (localVariables.length) {
+      // Unchanged descendants share immutable computed values. Charge both
+      // copies before allocating when local overrides actually require them.
+      budget.allocate(2 * (parent.size + localVariables.length))
+      variables = new Map(parent)
+      for (const [name, value] of localVariables)
+        variables.set(name, value.value)
+      // Aliases inherit their computed value, not a child's overridden input.
+      computed = new Map(parent)
+      for (const [name, value] of localVariables)
+        computed.set(
+          name,
+          resolveValue(value.value, variables, budget, new Set([name]))
+        )
     }
     inherited.set(element, computed)
     const property = (name: string): ResolvedValue | null => {
       const declaration = style?.properties.get(name)
-      return declaration ? resolveValue(declaration.value, computed) : null
+      return declaration
+        ? resolveValue(declaration.value, computed, budget)
+        : null
     }
     const parentVisibility = parentElement
       ? visibility.get(parentElement)
@@ -352,7 +431,7 @@ export function collectCssCandidates(
             Boolean(parentVisibility?.visibilityHidden),
     }
     visibility.set(element, state)
-    const ownContext = actionEvidence(element)
+    const ownContext = actionEvidence(element, budget)
     const parentContext = parentElement
       ? contexts.get(parentElement)
       : undefined
@@ -380,7 +459,12 @@ export function collectCssCandidates(
     if (element.name === "html" || element.name === "body") {
       for (const [name, value] of style?.variables ?? []) {
         if (!BRAND_TOKEN.test(name) || EXCLUDED_TOKEN.test(name)) continue
-        const resolved = resolveValue(value.value, variables, new Set([name]))
+        const resolved = resolveValue(
+          value.value,
+          variables,
+          budget,
+          new Set([name])
+        )
         const color = resolved && normalizeColor(resolved.value)
         if (color)
           candidates.push({
@@ -396,7 +480,7 @@ export function collectCssCandidates(
     for (const declaration of (style?.backgrounds ?? []).sort((a, b) =>
       higherPriority(b, a)
     )) {
-      const resolved = resolveValue(declaration.value, computed)
+      const resolved = resolveValue(declaration.value, computed, budget)
       if (!resolved) break
       const color = normalizeColor(resolved.value)
       if (!color) break

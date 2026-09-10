@@ -130,6 +130,24 @@ it("uses matching primary-button CSS instead of neutral metadata", async () => {
   assert.equal(brand.accentSource, "css")
 })
 
+it("retains identity and metadata when CSS exceeds its analysis budget", async () => {
+  const rules = Array.from(
+    { length: 2000 },
+    (_, i) => `.absent-${i} { background:red }`
+  ).join("")
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: `<html><head><title>Brand</title><meta name="theme-color" content="#f15406"><link rel="icon" href="/logo.png"><style>.primary { background:#0036ff }${rules}</style></head><body>${'<button class="primary">Get started</button>'.repeat(4000)}</body></html>`,
+    },
+    "https://brand.example/logo.png": { body: "logo", type: "image/png" },
+  })
+  const brand = await read("brand.example")
+  assert.equal(brand.name, "Brand")
+  assert.equal(brand.accent, "#f15406")
+  assert.equal(brand.accentSource, "meta")
+  assert.equal(brand.logo, "data:image/png;base64,bG9nbw==")
+})
+
 it("reads linked CSS and resolves HSL channels through their consuming rule", async () => {
   const { read } = fixtureReader({
     "https://brand.example/": {

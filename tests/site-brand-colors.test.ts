@@ -117,6 +117,16 @@ describe("selectAccent", () => {
 })
 
 describe("collectCssCandidates", () => {
+  it("clears inherited alias provenance when a local literal has the same color", () => {
+    assert.deepEqual(
+      extract(`<html><style>
+        :root { --danger:#f15406; --brand:var(--danger) }
+        .primary { --brand:#f15406; background:var(--brand) }
+      </style><body><button class="primary">Get started</button></body></html>`),
+      { color: "#f15406", source: "css" }
+    )
+  })
+
   it("preserves inline and linked stylesheet order in the document", () => {
     const linked = {
       href: "/brand.css",
