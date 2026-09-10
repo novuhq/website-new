@@ -19,6 +19,7 @@ import {
   CONFIGURATOR_COPY_CLI_LABEL,
   CONFIGURATOR_COPY_PROMPT_LABEL,
   CONFIGURATOR_DESCRIPTION,
+  CONFIGURATOR_FRAME_IMAGE,
   CONFIGURATOR_FRAMEWORK_SELECT_LABEL,
   CONFIGURATOR_HEADING,
   CONFIGURATOR_PROMPT_RESULT_LABEL,
@@ -35,7 +36,7 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 /**
  * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
- * section `45487-81721` (open-dropdown state `45497-147645`, CLI-tab state
+ * section `45440-69446` (open-dropdown state `45497-147645`, CLI-tab state
  * `45501-148681`). Not personalized: no `HueLayer`, no `--wc-accent*`.
  *
  * `SelectField` and the option lists come from `@/components/ui/select-field`
@@ -44,29 +45,16 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
  * a net-new extraction. `connect-stack.tsx` now imports from both modules
  * too, so this configurator and the homepage share one implementation.
  *
- * Layout: no Figma frame authors this section below desktop (the mobile page
- * `45487-98982` jumps from §6 straight to its end, three separate fetches
- * confirmed — the same gap `product-bento.tsx` already documents for §3). The
- * two-column split only activates at `xl` (1280px+, where the section's own
- * content width — 1280px after Fix 3's `max-w-[1344px]` normalisation —
- * plus padding actually fits); narrower viewports stack the card under the
- * copy, a reasoned fallback rather than an invented frame.
+ * The supplied design only includes this section at desktop width. The
+ * two-column layout starts at `xl`; narrower screens stack the form below
+ * the copy and retain its corner radii and control spacing.
  */
-
-/**
- * The card's stroke, as a ring whose colour varies with angle.
- *
- * These stops are read off Figma's own render rather than guessed: the ring
- * was sampled at 184 points around the card's perimeter (skipping the rounded
- * corners), each point's angle taken from the card's centre, then reduced to
- * 21 stops. A conic gradient fits that far better than the two radial paints
- * it appears to be built from, which left the mid-left 106/255 too dim.
- */
-const RING_GRADIENT =
-  "conic-gradient(from 0deg at 50% 50%, rgb(111 74 162) 1.4deg, rgb(52 45 80) 18.6deg, rgb(26 24 37) 33deg, rgb(28 28 51) 52.3deg, rgb(45 51 101) 68.5deg, rgb(72 95 175) 89.1deg, rgb(94 131 226) 110deg, rgb(93 131 226) 126.6deg, rgb(65 86 192) 146.2deg, rgb(67 90 182) 160.3deg, rgb(64 86 180) 177.4deg, rgb(44 58 159) 195deg, rgb(25 31 93) 210.1deg, rgb(27 35 101) 229.4deg, rgb(49 71 162) 244.4deg, rgb(98 123 226) 264.3deg, rgb(166 162 226) 285.6deg, rgb(222 162 226) 303.4deg, rgb(240 145 240) 316.1deg, rgb(222 123 251) 336.9deg, rgb(146 92 211) 353.5deg, rgb(111 74 162) 361.4deg)"
 
 const CHANNEL_OPTIONS: IStackOption[] = [WEB_CHAT_CHANNEL, ...DEFAULT_CHANNELS]
 const FRAMEWORK_OPTIONS = DEFAULT_FRAMEWORKS
+
+const SELECT_TRIGGER_CLASS_NAME =
+  "h-10.5 rounded-md border-[#313349] bg-transparent px-3 text-base leading-none tracking-[-0.02em] [&>span:first-child>span]:gap-2"
 
 type ConfiguratorTab = "prompt" | "cli"
 
@@ -112,19 +100,12 @@ function ConfiguratorResult({
 }) {
   return (
     <div className="flex flex-col gap-2.5">
-      <span className="text-sm font-medium tracking-[-0.02em] text-gray-60">
+      <span className="h-4.5 text-sm leading-tight font-medium tracking-[-0.02em] text-gray-60">
         {label}
       </span>
-      {/*
-        One truncated line, not a wrapping block. Figma (`45487-81913`) makes
-        this the third item in the same `dropdowns` stack as the two selects —
-        label + a single `12px 14px` control — and clips the prompt text with
-        an ellipsis. It is a preview, not a reader: the full value stays in the
-        DOM (so it is still announced and selectable) and `Copy prompt` is how
-        you actually take it. Wrapping it instead made the card 610px tall
-        against the design's 525px, which was most of this section's drift.
-      */}
-      <div className="rounded-[6px] border border-[#313349] bg-black/30 px-3.5 py-3">
+      {/* Figma truncates this preview to one line. The full generated value
+          remains selectable and is used by the copy button. */}
+      <div className="rounded-md bg-black/30 px-3.5 py-3 outline outline-[#313349]">
         <code className="block truncate font-mono text-sm leading-[1.5] text-white">
           {value}
         </code>
@@ -157,10 +138,10 @@ export function WebChatConfigurator() {
   const isPromptTab = activeTab === "prompt"
 
   return (
-    <section data-testid="web-chat-configurator">
+    <section className="font-inter" data-testid="web-chat-configurator">
       <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
         <div className="flex flex-col gap-14 xl:flex-row xl:items-start xl:justify-between">
-          <div className="flex w-full flex-col xl:max-w-[532px] xl:shrink-0">
+          <div className="relative z-10 flex w-full flex-col xl:ml-8 xl:max-w-[532px] xl:shrink-0 xl:pt-37">
             <h2 className="max-w-[420px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[532px] md:text-[48px] md:leading-[1.04]">
               {CONFIGURATOR_HEADING}
             </h2>
@@ -172,76 +153,51 @@ export function WebChatConfigurator() {
             </div>
           </div>
 
-          <div className="relative isolate mx-auto w-full max-w-[640px] overflow-hidden rounded-[28px] xl:mx-0 xl:w-[640px] xl:shrink-0">
-            {/* The form's background field, cropped to the 640x680 window the
-                Figma frame clips onto its `bg` group — see
-                `CONFIGURATOR_BLOB_IMAGE` for how that window is derived. The
-                group's own 0.8 opacity is baked into the export, so it must
-                not be re-applied here. The grain is the separate layer below,
-                matching Figma's own `noise` group. */}
+          <div className="relative mx-auto w-full max-w-160 xl:mx-0 xl:w-160 xl:shrink-0">
+            {/* Figma's form does not clip its glow. These percentages map the
+                full export's render bounds into the authored 640 × 680 frame;
+                its 80% group opacity is already included in the asset.
+                Screen removes the export's black canvas without covering
+                content in adjacent sections as the artwork overflows. */}
             <Image
               alt=""
               aria-hidden
-              className="object-cover"
-              fill
+              className="pointer-events-none absolute top-[-61.2104%] left-[-62.0935%] h-[229.267%] w-[212.0935%] max-w-none mix-blend-screen"
               unoptimized
-              sizes="(min-width: 640px) 640px, 100vw"
               src={CONFIGURATOR_BLOB_IMAGE}
             />
-            <div
-              className="absolute inset-0 wc-noise-overlay opacity-30"
-              aria-hidden
-            />
 
-            <div className="relative flex items-center justify-center px-5 py-14 sm:px-13 sm:py-20">
-              <div
-                className="relative w-full max-w-[428px] rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)] backdrop-blur-[90px]"
-                style={{ backgroundColor: "rgba(255, 255, 255, 0.12)" }}
-              >
-                {/*
-                  The card's stroke is a coloured gradient, not the flat white
-                  the design-context output reports — the same flattening the
-                  hero's borders hit (see
-                  `docs/superpowers/logs/2026-09-09-web-chat-hero-borders.md`).
-                  Rendering the card node on its own still shows the ring
-                  running vivid magenta at the top left, through violet down
-                  the left side, to blue along the lower right, with both
-                  opposite corners falling dark. That is two radial paints, so
-                  it is reproduced as two here over a dark base, sampled from
-                  the render at 2x:
-
-                    top-left      rgb(254, 134, 254)
-                    left, 58%     rgb(86, 114, 222)
-                    right, ~78%   rgb(95, 133, 226)
-                    dark corners  rgb(22-30, 22-30, 33-45)
-
-                  `border-gradient` masks the background down to the 1px band,
-                  so this sits on its own layer rather than fighting the card's
-                  translucent fill.
-                */}
+            <div className="relative flex items-center justify-center px-5 py-14 sm:h-170 sm:px-13 sm:py-0">
+              <div className="relative w-full max-w-107.5 rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)]">
+                {/* Figma's glass frame, including its blurred color and stroke,
+                    is baked into this decorative asset. Nine-slice scaling
+                    preserves the 32px corners on narrow screens without live
+                    backdrop filters, which caused repaint flicker. */}
                 <span
                   aria-hidden
-                  // `-inset-px`, not `inset-0`: an absolutely positioned child
-                  // resolves `inset` against the containing block's padding
-                  // box, which sits 1px inside the card's border box. Ringing
-                  // the padding box left no crisp band at all — the bottom
-                  // edge faded continuously where Figma has a distinct 1px
-                  // step. The radius grows by the same pixel to stay concentric.
-                  className="pointer-events-none absolute -inset-px rounded-[33px] border-gradient"
-                  style={{ backgroundImage: RING_GRADIENT }}
+                  className="pointer-events-none absolute -inset-px border-[32px] border-transparent"
+                  style={{
+                    borderImageSource: `url(${CONFIGURATOR_FRAME_IMAGE.src})`,
+                    borderImageSlice: 32,
+                    borderImageRepeat: "stretch",
+                  }}
                 />
                 <div
-                  className="flex w-full flex-col gap-6 rounded-[20px] border border-white/10 p-6 shadow-[0_12px_39px_-10px_rgba(0,0,0,0.9)] backdrop-blur-[64px]"
+                  className="relative flex w-full flex-col gap-6 rounded-[20px] p-6"
                   style={{
                     backgroundImage:
-                      "linear-gradient(146deg, rgba(63, 14, 167, 0.14) 0%, rgba(63, 14, 167, 0) 75%), linear-gradient(-34deg, rgba(5, 15, 196, 0.1) 0%, rgba(142, 146, 226, 0) 98%), radial-gradient(circle at 50% 50%, rgba(9, 10, 11, 1) 0%, rgba(11, 12, 14, 0.9) 80%)",
+                      "linear-gradient(152.826deg, rgba(63, 14, 167, 0.14) 2.9963%, rgba(63, 14, 167, 0) 72.647%), linear-gradient(-26.589deg, rgba(5, 15, 196, 0.1) 12.214%, rgba(142, 146, 226, 0) 83.219%), radial-gradient(ellipse 107.18% 50% at 50% 50%, rgba(9, 10, 11, 1) 0%, rgba(11, 12, 14, 0.9) 80.147%)",
                   }}
                 >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -inset-px rounded-[20px] border border-white/10 mix-blend-soft-light"
+                  />
                   <div className="flex flex-col gap-1.5">
-                    <h3 className="text-xl font-medium tracking-[-0.01em] text-white">
+                    <h3 className="text-xl leading-none font-medium tracking-[-0.01em] text-white">
                       {CONFIGURATOR_CARD_TITLE}
                     </h3>
-                    <p className="text-base tracking-[-0.02em] text-gray-60">
+                    <p className="text-base leading-snug tracking-[-0.02em] text-gray-60">
                       {CONFIGURATOR_CARD_SUBTITLE}
                     </p>
                   </div>
@@ -252,15 +208,15 @@ export function WebChatConfigurator() {
                       setActiveTab(value as ConfiguratorTab)
                     }
                   >
-                    <TabsList className="grid h-auto w-full grid-cols-2 gap-0 rounded-[6px] border border-[#313349] bg-black/50 p-0">
+                    <TabsList className="grid h-11 w-full grid-cols-2 gap-0 overflow-hidden rounded-md bg-black/50 p-0 ring-1 ring-[#313349]">
                       <TabsTrigger
-                        className="h-full rounded-[6px] px-6 py-3.5 text-base leading-none tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-none px-6 py-3.5 text-base leading-none font-normal tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
                         value="prompt"
                       >
                         {CONFIGURATOR_PROMPT_TAB_LABEL}
                       </TabsTrigger>
                       <TabsTrigger
-                        className="h-full rounded-[6px] px-6 py-3.5 text-base leading-none tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-none px-6 py-3.5 text-base leading-none font-normal tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
                         value="cli"
                       >
                         {CONFIGURATOR_CLI_TAB_LABEL}
@@ -269,15 +225,19 @@ export function WebChatConfigurator() {
 
                     <div className="mt-[18px] flex flex-col gap-[18px]">
                       <SelectField
+                        className="gap-2.5 [&>span]:tracking-[-0.02em]"
                         label={CONFIGURATOR_CHANNEL_SELECT_LABEL}
                         onValueChange={setChannelValue}
                         options={CHANNEL_OPTIONS}
+                        triggerClassName={SELECT_TRIGGER_CLASS_NAME}
                         value={channel.value}
                       />
                       <SelectField
+                        className="gap-2.5 [&>span]:tracking-[-0.02em]"
                         label={CONFIGURATOR_FRAMEWORK_SELECT_LABEL}
                         onValueChange={setFrameworkValue}
                         options={FRAMEWORK_OPTIONS}
+                        triggerClassName={SELECT_TRIGGER_CLASS_NAME}
                         value={framework.value}
                       />
 

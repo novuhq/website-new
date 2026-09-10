@@ -8,30 +8,31 @@ import builderReplit from "@/images/pages/channels/web-chat/builder-replit.svg"
 import builderV0 from "@/images/pages/channels/web-chat/builder-v0.svg"
 import builderWindsurf from "@/images/pages/channels/web-chat/builder-windsurf.svg"
 import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.webp"
+import configuratorFrame from "@/images/pages/channels/web-chat/configurator-frame.png"
 
 /**
  * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
- * section `45487-81721` ("left" title+logos node `45516-189696`, card node
- * `45487-81876`/`45487-81877`). Not personalized: no `--wc-accent*` tokens.
+ * section `45440-69446`, card `45440-69601`.
+ * Not personalized: no `--wc-accent*` tokens.
  */
 
 /**
- * The form's background field, cropped to the 640x680 window Figma's `form`
- * frame (`45440-69447`) clips onto its `bg` group.
- *
- * The window is derived from geometry rather than eyeballed: the `bg` and
- * `form` renders share a coordinate frame, and the Copy prompt button — 360
- * wide, at a known offset inside the card — locates the form's origin in that
- * frame at (398.5, 362). The previous asset was the right size but roughly
- * half the correct brightness (mean 27.7/28.0/57.3 against 58.0/61.0/121.5),
- * which is why the panel read as near-black and lost the bright streak that
- * sweeps through its lower left.
- *
- * WebP rather than JPEG: this is a smooth gradient, so it encodes to 18KB
- * against the JPEG's 101KB at comparable quality. The `bg` group's own 0.8
- * opacity is baked in by the export, so it must not be re-applied in CSS.
+ * Lossless 2x export of Figma's `bg` group (`45440-69448`). Its render
+ * bounds start at (-397.3984, -416.2309) relative to the 640 × 680 form and
+ * measure 1357.3984 × 1559.0155. The form has `clipsContent: false`.
+ * The group's 80% opacity is baked into the export; do not apply it again.
+ * The black backdrop preserves Figma's overlay blend modes during export;
+ * screen blending removes that canvas around the light in the browser.
  */
 export const CONFIGURATOR_BLOB_IMAGE: StaticImageData = configuratorBlob
+
+/**
+ * Decorative perimeter of card `45440-69601`, extracted from Figma's complete
+ * form render so its backdrop blur and overlay stroke retain their colors.
+ * The center is transparent; the interactive controls are rendered in React.
+ * Use 32px border-image slices to preserve the corner radii at mobile widths.
+ */
+export const CONFIGURATOR_FRAME_IMAGE: StaticImageData = configuratorFrame
 
 export const CONFIGURATOR_HEADING =
   "Build your connection. Ship it from any builder."

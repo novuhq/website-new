@@ -4,6 +4,8 @@ import Image from "next/image"
 import type { IStackOption } from "@/data/pages/connect-stack-options"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
+import { cn } from "@/lib/utils"
+
 /**
  * Shared configurator core (see `connect-stack-options.ts` for background on
  * why this file exists as a net-new extraction). Moved verbatim out of
@@ -32,28 +34,35 @@ function OptionLabel({ option }: { option: IStackOption }) {
 }
 
 interface ISelectFieldProps {
+  className?: string
   label: string
   onValueChange: (value: string) => void
   options: IStackOption[]
+  triggerClassName?: string
   value: string
 }
 
 export function SelectField({
+  className,
   label,
   options,
   value,
   onValueChange,
+  triggerClassName,
 }: ISelectFieldProps) {
   const current = options.find((option) => option.value === value) ?? options[0]
 
   return (
-    <label className="flex min-w-0 flex-col gap-2">
+    <label className={cn("flex min-w-0 flex-col gap-2", className)}>
       <span className="h-4.5 text-sm leading-tight font-medium tracking-tighter text-gray-60">
         {label}
       </span>
       <SelectPrimitive.Root value={current.value} onValueChange={onValueChange}>
         <SelectPrimitive.Trigger
-          className="group relative flex h-10 w-full min-w-0 items-center justify-between gap-1.5 rounded-[0.25rem] border border-gray-20 bg-[#040406] px-[13px] text-left text-sm font-normal tracking-tighter text-foreground transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:border-foreground/30 focus-visible:ring-2 focus-visible:ring-foreground/30"
+          className={cn(
+            "group relative flex h-10 w-full min-w-0 items-center justify-between gap-1.5 rounded-[0.25rem] border border-gray-20 bg-[#040406] px-[13px] text-left text-sm font-normal tracking-tighter text-foreground transition-colors outline-none before:absolute before:inset-x-0 before:-inset-y-0.5 hover:border-foreground/30 focus-visible:ring-2 focus-visible:ring-foreground/30",
+            triggerClassName
+          )}
           aria-label={label}
         >
           <SelectPrimitive.Value>
