@@ -7,11 +7,9 @@ import {
   HERO_CLI_COMMAND,
   HERO_COPY_PROMPT_LABEL,
   HERO_DESCRIPTION_TEXT,
-  HERO_DESKTOP_BACKGROUND_IMAGE,
   HERO_HEADING,
   HERO_IMPLEMENT_PROMPT,
   HERO_META_LINE,
-  HERO_MOBILE_BACKGROUND_IMAGE,
   HERO_TOOLTIP_LINK_LABEL,
   HERO_TOOLTIP_TEXT,
 } from "@/data/pages/web-chat"
@@ -35,8 +33,8 @@ import {
   type WebChatBrand,
 } from "@/components/pages/channels/web-chat/brand-provider"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
+import { HeroBackdrop } from "@/components/pages/channels/web-chat/hero-backdrop"
 import { HeroProductUI } from "@/components/pages/channels/web-chat/hero-product-ui"
-import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-personalizer"
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
@@ -208,50 +206,6 @@ function HeroCopy() {
       <HeroTitleColumn />
       <HeroCtaColumnDesktop />
       <HeroCtaColumnMobile />
-    </div>
-  )
-}
-
-/**
- * Exported against Figma's black canvas so pass-through blends, masks,
- * grain and dots survive compositing. Only decorative layers are flattened.
- */
-function HeroBackdrop({ personalized }: { personalized: boolean }) {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-0 -bottom-20 isolate overflow-hidden"
-    >
-      <div
-        className="absolute inset-x-0 -top-16 h-[1407px] lg:hidden"
-        style={{
-          backgroundImage: `url(${HERO_MOBILE_BACKGROUND_IMAGE.src})`,
-          backgroundSize: "100% 100%",
-        }}
-      />
-      {/*
-        Fixed `h-[1788px]`, not an aspect ratio. The hero's composition is
-        vertically fixed — the card sits at y439 and is 680 tall at every
-        desktop width — so the backdrop's height has to be fixed too. Tying
-        it to `1920 / 1788` meant that past 1920px the growing width dragged
-        the height with it (2384px at 2560, 3204px at 3440), sinking the
-        glow's core from 24.6% of the backdrop's height to 18.4% and then
-        13.7% relative to the card. It read as the background floating away
-        toward the bottom on wide screens.
-
-        Width still stretches: `min-w-[1920px]` keeps the authored canvas and
-        clips it, centred, below 1920, and `w-full` fills wider viewports so
-        no seam shows at the edges. This matches the mobile layer above,
-        which already pairs a full-width box with a fixed height.
-      */}
-      <div
-        className="absolute -top-16 left-1/2 hidden h-[1788px] w-full min-w-[1920px] -translate-x-1/2 lg:block"
-        style={{
-          backgroundImage: `url(${HERO_DESKTOP_BACKGROUND_IMAGE.src})`,
-          backgroundSize: "100% 100%",
-        }}
-      />
-      <HueLayer active={personalized} />
     </div>
   )
 }

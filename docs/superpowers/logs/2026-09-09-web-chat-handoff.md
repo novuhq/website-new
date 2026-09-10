@@ -56,6 +56,12 @@ those properties, including the 0.466px mobile strokes. See
 [the border correction log](2026-09-09-web-chat-hero-borders.md). Do not restore
 ordinary white borders or isolate the outside strokes from the hero backdrop.
 
+**2026-09-10 CSS bloom:** the hero backdrop now uses CSS radial gradients and a
+separate 2× Figma dot-pattern export, replacing the undersized WebP backgrounds. Fine grain uses the
+existing fixed-size SVG noise tile. See [the CSS bloom log](2026-09-10-web-chat-css-bloom.md)
+for the implementation, scope, and validation; this supersedes the background
+export guidance in the hero alignment log.
+
 Read these first, in this order:
 
 1. `docs/superpowers/specs/2026-09-08-web-chat-figma-redesign-design.md` — the

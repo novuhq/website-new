@@ -3,9 +3,7 @@ import agentMark from "@/images/pages/channels/web-chat/agent-mark.webp"
 import heroAgent from "@/images/pages/channels/web-chat/hero-agent.png"
 import heroChatLight from "@/images/pages/channels/web-chat/hero-chat-light.svg"
 import heroChatSurface from "@/images/pages/channels/web-chat/hero-chat-surface.svg"
-import heroDesktopBackground from "@/images/pages/channels/web-chat/hero-desktop-background.webp"
 import heroGlobe from "@/images/pages/channels/web-chat/hero-globe.svg"
-import heroMobileBackground from "@/images/pages/channels/web-chat/hero-mobile-background.webp"
 import heroReset from "@/images/pages/channels/web-chat/hero-reset.svg"
 
 /**
@@ -27,15 +25,11 @@ export const AGENT_MARK_IMAGE: StaticImageData = agentMark
 export const HERO_AGENT_IMAGE: StaticImageData = heroAgent
 export const HERO_CHAT_SURFACE_IMAGE: StaticImageData = heroChatSurface
 export const HERO_CHAT_LIGHT_IMAGE: StaticImageData = heroChatLight
-export const HERO_DESKTOP_BACKGROUND_IMAGE: StaticImageData =
-  heroDesktopBackground
-export const HERO_MOBILE_BACKGROUND_IMAGE: StaticImageData =
-  heroMobileBackground
 export const HERO_GLOBE_IMAGE: StaticImageData = heroGlobe
 /** Reset glyph exported from the URL hover state, Figma 45487:94076. */
 export const HERO_RESET_IMAGE: StaticImageData = heroReset
 
-/** Fine panel grain; the backdrop exports already contain Figma’s texture. */
+/** Fine panel grain; the CSS backdrop uses the shared wc-noise-overlay utility. */
 export const NOISE_GRAIN_SVG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
