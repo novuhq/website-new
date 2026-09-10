@@ -58,7 +58,8 @@ export function Sidebar({
       >
         <span
           className={cn(
-            "flex shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-purple-1",
+            "flex shrink-0 items-center justify-center overflow-hidden rounded-[10px]",
+            faviconUrl ? "bg-black scheme-dark" : "bg-purple-1",
             compact ? "size-4" : "size-8"
           )}
         >

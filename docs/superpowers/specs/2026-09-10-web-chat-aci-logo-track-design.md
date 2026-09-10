@@ -24,11 +24,11 @@ phase offsets for five logos; no JavaScript timer or hydration dependency.
 
 During each hold, one logo is centered at full opacity, with the previous and
 next logos at the outer positions at 40% opacity. All positions advance together
-after a 3000ms hold, over a 700ms movement. Desktop defaults to upward travel;
-the existing optional downward direction remains supported. Mobile always moves
+after a 3000ms hold, over a 700ms movement. Desktop defaults to downward travel per the September 10 user preference;
+the existing optional upward direction remains supported. Mobile always moves
 left to right. Logos fade to zero outside the track; no stationary fallback is
-visible beneath moving logos. Corner frames travel with logos and fade away at
-the center, matching Figma's plain center mark.
+visible beneath moving logos. Corner frames travel with logos and remain visible at
+the center, including during the hold, per the September 10 user correction.
 
 The initial composition is Vercel in the center, LangChain outgoing, Claude
 incoming. The subsequent centers are Claude, AWS, Custom code, and LangChain.
@@ -39,7 +39,7 @@ Desktop positions relative to the 1280×480 image: center `(97,187)`, upper
 320×658 image: center `(125,55)`, left `(7,55)`, right `(242,55)`, each 70⅔ square.
 Scale positions proportionally with the image; do not change section geometry.
 
-Reduced motion shows only one static centered Vercel mark. The decorative
+Reduced motion shows only one static centered Vercel mark with its corner frame. The decorative
 animation is hidden from assistive technology; the illustration retains its
 existing descriptive alt text. This section remains outside personalization.
 

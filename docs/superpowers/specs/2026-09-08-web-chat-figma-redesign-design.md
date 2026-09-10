@@ -307,11 +307,16 @@ tabs and two breakpoints; two message scripts in the data file. Not personalized
 column carrying the description, `Book a demo`, and the `npx novu connect` copy
 pill. Reuses `connect/connect-channels-data.ts` and `ui/copy-command.tsx`.
 
-**§6 Deploy the ACI, not just chat.** Exported illustration with one coded overlay:
-`framework-logo-cycle`. Logos pass through the central "Your agent / Your stack"
-plate, reach full opacity at centre, hold ~3s, then exit and fade. Vertical on
-desktop, horizontal left-to-right on mobile. Travel direction is a prop with a
-constant default, since the spec defers it to first preview. Below: the compliance
+**§6 Deploy the ACI, not just chat.** Clean exported illustration with one coded
+`framework-logo-cycle` spanning the full framework track. The outer logos are
+part of the animation, not part of the static export: incoming, centered, and
+outgoing marks advance together. The center holds at full opacity for 3s; outer
+marks hold at 40%, then all advance over 700ms. Corner frames move with the marks
+and remain visible at the center. Desktop defaults to downward movement, with upward
+movement supported by the existing direction prop; mobile moves left to right.
+Reduced motion shows one static center mark. See the approved
+[full-track design](2026-09-10-web-chat-aci-logo-track-design.md) for geometry and
+loop order. Below: the compliance
 badge row (SOC 2 Type II, ISO 27001, GDPR, HIPAA) and five items — Identity &
 subscribers / One durable thread / Delivery that lands / Compliance, built in /
 Scale from day one. Separate vertical mobile illustration.

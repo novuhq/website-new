@@ -3,11 +3,11 @@ import gdprBadge from "@/images/pages/home/certifications/gdpr.svg"
 import hipaaBadge from "@/images/pages/home/certifications/hipaa.svg"
 import isoBadge from "@/images/pages/home/certifications/iso-27001.svg"
 import soc2Badge from "@/images/pages/home/certifications/soc-2-type-2.svg"
-import awsLogo from "@/svgs/pages/channels/web-chat/frameworks/aws.svg"
-import chatSdkVercelLogo from "@/svgs/pages/channels/web-chat/frameworks/chat-sdk-vercel.svg"
-import claudeLogo from "@/svgs/pages/channels/web-chat/frameworks/claude.svg"
-import customCodeLogo from "@/svgs/pages/channels/web-chat/frameworks/custom-code.svg"
-import langchainLogo from "@/svgs/pages/channels/web-chat/frameworks/langchain.svg"
+import awsLogo from "@/svgs/pages/channels/web-chat/frameworks/aws-mark.svg"
+import chatSdkVercelLogo from "@/svgs/pages/channels/web-chat/frameworks/chat-sdk-vercel-mark.svg"
+import claudeLogo from "@/svgs/pages/channels/web-chat/frameworks/claude-mark.svg"
+import customCodeLogo from "@/svgs/pages/channels/web-chat/frameworks/custom-code-mark.svg"
+import langchainLogo from "@/svgs/pages/channels/web-chat/frameworks/langchain-mark.svg"
 
 /**
  * §6 "Deploy the ACI, not just chat" (Task 13). Figma desktop `45487-81046`,
@@ -84,27 +84,13 @@ export interface IDeployAciFrameworkLogo {
   icon: StaticImageData
 }
 
-// The illustration's "Your agent / Your stack" plate bakes this exact mark
-// in as its static placeholder (see `45487-81073` desktop, `45497-147085`
-// mobile). `FrameworkLogoCycle` reads this constant directly for its
-// permanent fallback tile — never `DEPLOY_ACI_FRAMEWORK_LOGOS[0]` — so
-// reordering the array below can't silently break the seamless-fallback
-// premise: whichever logo is first, this named export is still the one
-// the fallback (and the baked art) actually shows.
-export const DEPLOY_ACI_BAKED_LOGO: IDeployAciFrameworkLogo = {
-  name: "Chat SDK & Vercel",
-  icon: chatSdkVercelLogo,
-}
-
-// Framework logo set (`45497-146963`, layer order top-left to bottom-right:
-// langchain, chat-sdk & vercel, claude, aws, custom-code). These cycle
-// through the illustration's "Your agent / Your stack" plate via
-// `FrameworkLogoCycle`. Built from `DEPLOY_ACI_BAKED_LOGO` above rather than
-// a fifth literal, so there's exactly one place that mark is defined.
+// Center order follows the downward desktop / left-to-right mobile track.
+// At first paint: Vercel in the center, LangChain outgoing, Claude incoming.
+// Marks and corner frames stay together throughout the track, including the plate.
 export const DEPLOY_ACI_FRAMEWORK_LOGOS: IDeployAciFrameworkLogo[] = [
-  DEPLOY_ACI_BAKED_LOGO,
-  { name: "LangChain", icon: langchainLogo },
+  { name: "Chat SDK & Vercel", icon: chatSdkVercelLogo },
   { name: "Claude", icon: claudeLogo },
   { name: "AWS", icon: awsLogo },
   { name: "Custom code", icon: customCodeLogo },
+  { name: "LangChain", icon: langchainLogo },
 ]

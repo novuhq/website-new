@@ -45,10 +45,11 @@ Files:
 3. Define a shared 18.5s cycle: center hold, outgoing hold, invisible return,
    incoming hold, then center. Apply staggered negative delays so three logos
    occupy the intended positions immediately and advance in the documented order.
-4. Animate corner opacity separately on the same timeline; retain transparent
-   logo backgrounds and remove the permanent fallback beneath moving logos.
+4. Keep corner frames attached to each logo, including its center hold and
+   reduced-motion state; retain transparent logo backgrounds.
 5. Disable animations under reduced motion and show only the first centered mark.
-6. Preserve desktop direction support and force horizontal mobile travel.
+6. Default desktop travel downward per the user preference, preserve the upward option, and force
+   left-to-right mobile travel.
 
 ### Task 4: Verify and document
 

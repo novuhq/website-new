@@ -173,12 +173,62 @@ The running API then returned HTTP 200 and `accentSource: logo` at both desktop
 horizontal overflow were observed. Screenshots with entrance animations
 completed are `/tmp/web-chat-neon-live-{1440,390}.png`.
 
+## September 10: sharper identity icons
+
+The previous selection used the first downloadable HTML icon. Recent and
+ToDesktop therefore supplied 16×16 PNGs for a 32px CSS slot (64 physical pixels
+at DPR 2), despite declaring better sources later in the document.
+
+Selection now ranks SVG declarations first, followed by declared raster sizes.
+Apple touch icons without a size hint use a 180px ranking estimate. Manifest
+icons are considered independently of `theme_color`, with paths resolved
+against the final manifest URL. Duplicate URLs are fetched once; the shared
+six-icon attempt limit, 200 KiB per icon, and existing network deadline remain.
+A page icon loads alongside the manifest, then a higher-ranked manifest source
+can replace it. Failed preferred downloads retain the available fallback.
+
+Fresh extraction and desktop/mobile browser checks selected Recent's SVG,
+ToDesktop's 192×192 PNG, and Neon's existing SVG. The respective accents remain
+`#f15406`, `#0036ff`, and `#37c38f`. All 181 brand tests pass, including six new
+source-selection cases. Screenshots are `/tmp/logo-source-browser-*.png` and
+`/tmp/logo-source-hero-*.png`. The personalized logo wrapper is unchanged.
+Lint and typecheck pass. `pnpm build` compiles and passes TypeScript, then fails
+collecting `/careers/[slug]` because the existing Notion careers read
+configuration is missing.
+
+## September 10: dark logo preference
+
+Neon's SVG declares default green `#37c38f` and dark green `#34d59a`. Personalized
+logo tiles now use a black background and `color-scheme: dark`; the default
+placeholder keeps its purple tile. Explicit dark icon links rank ahead of
+unqualified links, then light links, with format/size ranking within each group.
+Failed dark sources fall back through the same bounded download pipeline.
+
+Chromium honors the SVG image's inherited color scheme, but the tested WebKit
+does not. `src/lib/site-brand/icons.ts` therefore resolves simple dark/light
+SVG media rules to `all`/`not all` before returning the image. Vector paths and
+unrelated media queries stay intact. This applies after accent extraction, so
+Neon's page accent remains `#37c38f` while its logo uses `#34d59a`.
+
+All 187 brand tests pass. Live API/browser checks at 1440px and 390px in Chromium
+and WebKit confirm dark-green pixels even with a light OS preference, black
+logo tiles, and no page exceptions. Screenshots: `/tmp/neon-dark-hero-*.png` and
+`/tmp/neon-dark-logo-*.png`. Lint and typecheck pass. After another workspace
+build released its lock, `pnpm build` compiled and passed TypeScript, then
+encountered the existing missing Notion careers read configuration for
+`/careers/[slug]`.
+
 ## Remaining limits
 
 This is static extraction. It does not execute website JavaScript, inspect a
 rendered browser, crawl CSS imports, evaluate conditional media/supports rules,
-or implement the full CSS layer cascade. Logo analysis reuses the first identity
+or implement the full CSS layer cascade. Logo analysis reuses the selected identity
 icon; it does not locate header logos or inspect screenshots, and unsupported
 image variants stay inconclusive. A browser-based step remains separate. The current
 hero foreground/lightness policy is preserved; lightness clamping alone is not
 a general accessibility guarantee.
+Icon ranking uses published size/type hints; arbitrary sites can mislabel those
+hints. It does not upscale or reconstruct missing source detail.
+Dark-variant detection recognizes explicit standalone scheme queries, optionally
+qualified by `screen` or `all`; it does not infer filename conventions or evaluate
+arbitrary compound/negated queries. Unsupported SVG styles retain their source.

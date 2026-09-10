@@ -16,19 +16,9 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
  * mobile `45497-147576`, framework logo set `45497-146963`. Not
  * personalized — no `HueLayer`, no `--wc-accent*` custom properties.
  *
- * The illustration uses fresh 2× JPGs served without recompression:
- * it's a dense composite of glass-tile grids, blurred spheres and gradient
- * glows, with
- * `FrameworkLogoCycle` absolutely positioned over the "Your agent / Your
- * stack" plate's icon slot, matching the same 106x106 slot at both
- * breakpoints (see the percentage insets below, computed from the Figma
- * frame's own pixel coordinates). The stage renders a solid black backing
- * so it fully covers the flattened image's static placeholder logo
- * underneath — the two are the same colour, so the seam is invisible. On
- * mobile the slot IS the whole plate (`45497-147085`, itself radius 16px),
- * so the overlay is rounded to match; on desktop the slot only covers the
- * plate's inner icon area, away from its own rounded corners, so it stays
- * a plain rectangle there.
+ * Clean 2× exports preserve the lighting and plate while all framework logos
+ * are rendered by one full-image SVG track. Its responsive coordinates come
+ * from the original outer and center logo positions in Figma.
  *
  * Container: the desktop frame places the image flush with the section's
  * own left edge while the heading/badges/items sit 32px further in — i.e.
@@ -65,7 +55,7 @@ export function DeployAci() {
             />
           </picture>
 
-          <FrameworkLogoCycle className="absolute top-[5.62%] left-[33.44%] h-[16.11%] w-[33.13%] rounded-[16px] md:top-[38.96%] md:left-[7.58%] md:h-[22.08%] md:w-[8.28%] md:rounded-none" />
+          <FrameworkLogoCycle />
         </div>
 
         <div className="mt-8 flex flex-col gap-8 md:mt-14 md:flex-row md:items-start md:justify-between md:gap-16">

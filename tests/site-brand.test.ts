@@ -1,6 +1,8 @@
 import assert from "node:assert/strict"
 import { it } from "node:test"
 
+import sharp from "sharp"
+
 import { createBrandProfileReader } from "@/lib/site-brand"
 import type { ResourceLoader } from "@/lib/site-brand/fetch"
 
@@ -203,6 +205,178 @@ it("rejects a non-HTML page instead of returning a misleading successful profile
 
 const blueLogo =
   '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path fill="#0036ff" d="M0 0h32v32H0z"/></svg>'
+
+const logoUri = (body: Buffer | string, type = "image/png") =>
+  `data:${type};base64,${Buffer.from(body).toString("base64")}`
+
+async function iconPng(size: number) {
+  return sharp({
+    create: { width: size, height: size, channels: 4, background: "blue" },
+  })
+    .png()
+    .toBuffer()
+}
+
+it("prefers a later SVG over small and large raster favicon declarations", async () => {
+  const { read, calls } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="icon" href="/tiny.png" sizes="16x16"><link rel="icon" href="/large.png" sizes="512x512"><link rel="icon" href="/logo.svg" type="image/svg+xml">',
+    },
+    "https://brand.example/tiny.png": {
+      body: await iconPng(16),
+      type: "image/png",
+    },
+    "https://brand.example/large.png": {
+      body: await iconPng(512),
+      type: "image/png",
+    },
+    "https://brand.example/logo.svg": { body: blueLogo, type: "image/svg+xml" },
+  })
+  assert.equal(
+    (await read("brand.example")).logo,
+    logoUri(blueLogo, "image/svg+xml")
+  )
+  assert.equal(calls.filter((url) => /tiny|large/.test(url)).length, 0)
+})
+
+it("prefers a high resolution PNG when no vector icon is available", async () => {
+  const large = await iconPng(192)
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="icon" href="/tiny.png" sizes="16x16"><link rel="icon" href="/large.png" sizes="192x192">',
+    },
+    "https://brand.example/tiny.png": {
+      body: await iconPng(16),
+      type: "image/png",
+    },
+    "https://brand.example/large.png": { body: large, type: "image/png" },
+  })
+  assert.equal((await read("brand.example")).logo, logoUri(large))
+})
+
+it("reads manifest icons without theme_color and resolves them against the final manifest URL", async () => {
+  const large = await iconPng(192)
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: '<base href="/assets/"><link rel="manifest" href="app.json"><link rel="icon" href="/tiny.png" sizes="16x16">',
+    },
+    "https://brand.example/assets/app.json": {
+      body: '{"icons":[{"src":"icon.png","sizes":"192x192","purpose":"any"}]}',
+      type: "application/json",
+      finalUrl: "https://cdn.example/app/manifest.json",
+    },
+    "https://brand.example/tiny.png": {
+      body: await iconPng(16),
+      type: "image/png",
+    },
+    "https://cdn.example/app/icon.png": { body: large, type: "image/png" },
+  })
+  assert.equal((await read("brand.example")).logo, logoUri(large))
+})
+
+it("falls back from unavailable preferred icons and retains a small icon if needed", async () => {
+  const small = await iconPng(16)
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="icon" href="/tiny.png" sizes="16x16"><link rel="icon" href="/large.png" sizes="192x192"><link rel="icon" href="/missing.svg">',
+    },
+    "https://brand.example/tiny.png": { body: small, type: "image/png" },
+    "https://brand.example/large.png": {
+      body: "not an image",
+      type: "text/html",
+    },
+  })
+  assert.equal((await read("brand.example")).logo, logoUri(small))
+})
+
+it("can upgrade a good page icon to a manifest SVG within the shared icon budget", async () => {
+  const { read, calls } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="manifest" href="/app.json"><link rel="icon" href="/large.png" sizes="192x192">',
+    },
+    "https://brand.example/app.json": {
+      body: '{"icons":[{"src":"/logo.svg","sizes":"any","type":"image/svg+xml"}]}',
+      type: "application/json",
+    },
+    "https://brand.example/large.png": {
+      body: await iconPng(192),
+      type: "image/png",
+    },
+    "https://brand.example/logo.svg": { body: blueLogo, type: "image/svg+xml" },
+  })
+  assert.equal(
+    (await read("brand.example")).logo,
+    logoUri(blueLogo, "image/svg+xml")
+  )
+  assert.equal(calls.length, 4)
+})
+
+it("ranks before limiting downloads and does not treat an ICO sizes=any as a vector", async () => {
+  const large = await iconPng(192)
+  const { read, calls } = fixtureReader({
+    "https://brand.example/": {
+      body:
+        Array.from(
+          { length: 8 },
+          (_, i) => `<link rel="icon" href="/${i}.png" sizes="16x16">`
+        ).join("") +
+        '<link rel="icon" href="/legacy.ico" sizes="any"><link rel="icon" href="/large.png" sizes="192x192">',
+    },
+    "https://brand.example/large.png": { body: large, type: "image/png" },
+  })
+  assert.equal((await read("brand.example")).logo, logoUri(large))
+  assert.equal(calls.length, 2)
+})
+
+it("prefers an explicitly dark icon over light and unqualified icons", async () => {
+  const dark = await iconPng(192)
+  const { read, calls } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="icon" href="/light.svg" media="(prefers-color-scheme: light)"><link rel="icon" href="/generic.svg"><link rel="icon" href="/dark.png" sizes="192x192" media="screen and (prefers-color-scheme: dark)">',
+    },
+    "https://brand.example/light.svg": {
+      body: blueLogo,
+      type: "image/svg+xml",
+    },
+    "https://brand.example/generic.svg": {
+      body: blueLogo,
+      type: "image/svg+xml",
+    },
+    "https://brand.example/dark.png": { body: dark, type: "image/png" },
+  })
+  assert.equal((await read("brand.example")).logo, logoUri(dark))
+  assert.equal(calls.length, 2)
+})
+
+it("falls back to a generic icon if the declared dark variant fails", async () => {
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: '<link rel="icon" href="/dark.svg" media="(prefers-color-scheme: dark)"><link rel="icon" href="/generic.svg">',
+    },
+    "https://brand.example/generic.svg": {
+      body: blueLogo,
+      type: "image/svg+xml",
+    },
+  })
+  assert.equal(
+    (await read("brand.example")).logo,
+    logoUri(blueLogo, "image/svg+xml")
+  )
+})
+
+it("renders SVG dark rules without changing the color extraction policy", async () => {
+  const adaptive =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><style>:root { fill:#37c38f } @media (prefers-color-scheme: dark) { :root { fill:#34d59a } } @media (prefers-color-scheme: light) { :root { fill:#37c38f } }</style><path d="M0 0h32v32H0z"/></svg>'
+  const { read } = fixtureReader({
+    "https://brand.example/": { body: '<link rel="icon" href="/logo.svg">' },
+    "https://brand.example/logo.svg": { body: adaptive, type: "image/svg+xml" },
+  })
+  const brand = await read("brand.example")
+  const svg = Buffer.from(brand.logo!.split(",")[1], "base64").toString()
+  assert.match(svg, /@media all\s*\{/)
+  assert.match(svg, /@media not all\s*\{/)
+  assert.equal(brand.accent, "#37c38f")
+})
 
 it("falls back to the downloaded logo when the manifest has no theme color", async () => {
   const { read, calls } = fixtureReader({

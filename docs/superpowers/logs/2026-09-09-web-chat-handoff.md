@@ -83,6 +83,40 @@ Both states and arrow-key switching were verified in Chromium and WebKit on
 desktop/mobile, followed by full-page visual checks. Lint and typecheck pass;
 the production build encounters the same Notion careers configuration blocker.
 
+**2026-09-10 ACI framework track:** the upper/lower desktop logos and left/right
+mobile logos were baked into the illustration. Clean 2× Figma exports now keep
+only the background and plate; separate SVG marks and corner frames move
+together across the full track. Each center logo holds for 3 seconds, then all
+positions advance over 700ms. Desktop moves downward (the upward prop remains
+supported), mobile moves left to right, and outer logos stay at 40% opacity.
+Corner frames remain attached and visible at the center, including in reduced
+motion, which shows one static center logo. See the
+[approved track design](../specs/2026-09-10-web-chat-aci-logo-track-design.md).
+All 12 dedicated ACI browser cases pass across desktop/mobile Chromium and
+WebKit, covering every framework, synchronized
+movement, loop continuity, reduced motion, and rendering without JavaScript.
+Chromium and WebKit section checks pass at desktop/mobile widths, followed by
+full-page visual checks. `pnpm lint --ignore-pattern '.claude/worktrees/**'` and
+`pnpm typecheck` pass. `pnpm build` compiles and passes TypeScript, then fails
+collecting `/careers/[slug]` with `Missing Notion careers read configuration`.
+The user-level Figma MCP connection successfully rechecked `45487:81046` after
+the project-level token expired. Its motion context contains no authored tracks;
+downward desktop movement and persistent center corners follow the user's
+September 10 preferences.
+
+**2026-09-10 personalized logo quality:** identity selection now prefers SVGs
+and larger declared icons, including manifest icons. Recent uses its SVG and
+ToDesktop uses its 192×192 PNG instead of their first 16×16 favicons; Neon keeps
+its SVG. Desktop/mobile browser checks preserve the three existing accents.
+All 181 brand tests pass. See the September 10 update in
+[the extraction log](2026-09-09-web-chat-brand-extraction.md).
+
+**2026-09-10 dark logo preference:** explicitly dark icon links now take priority.
+Adaptive SVG logos use their simple dark media rules consistently in Chromium
+and WebKit, with a black personalized logo tile. Neon renders its `#34d59a`
+dark variant while retaining its existing page accent. All 187 brand tests and
+the four desktop/mobile live Neon browser checks pass; see the extraction log.
+
 Read these first, in this order:
 
 1. `docs/superpowers/specs/2026-09-08-web-chat-figma-redesign-design.md` — the

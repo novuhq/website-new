@@ -9,6 +9,7 @@ import {
   normalizeUrl,
   type ResourceLoader,
 } from "@/lib/site-brand/fetch"
+import { iconColorScheme, preferDarkLogo } from "@/lib/site-brand/icons"
 import { collectLogoCandidates } from "@/lib/site-brand/logo"
 
 export { normalizeUrl } from "@/lib/site-brand/fetch"
@@ -28,6 +29,51 @@ const MAX_HTML_BYTES = 2 * 1024 * 1024
 const MAX_MANIFEST_BYTES = 64 * 1024
 const MAX_CSS_BYTES = 256 * 1024
 const MAX_LOGO_BYTES = 200 * 1024
+
+type IconCandidate = { url: URL; quality: number; schemePriority: number }
+const VECTOR_ICON_QUALITY = Number.MAX_SAFE_INTEGER
+
+function iconCandidate(
+  url: URL,
+  sizes = "",
+  type = "",
+  media = ""
+): IconCandidate {
+  const scheme = iconColorScheme(media)
+  const vector =
+    type.toLowerCase() === "image/svg+xml" || /\.svg$/i.test(url.pathname)
+  const dimension = sizes
+    .toLowerCase()
+    .split(/\s+/)
+    .reduce((largest, size) => {
+      const match = /^(\d+)x(\d+)$/.exec(size)
+      return match
+        ? Math.max(largest, Math.min(Number(match[1]), Number(match[2])))
+        : largest
+    }, 0)
+  return {
+    url,
+    quality: vector ? VECTOR_ICON_QUALITY : Math.min(4096, dimension),
+    schemePriority: scheme === "dark" ? 1 : scheme === "light" ? -1 : 0,
+  }
+}
+
+function compareIcons(
+  a: Pick<IconCandidate, "quality" | "schemePriority">,
+  b: Pick<IconCandidate, "quality" | "schemePriority">
+) {
+  return b.schemePriority - a.schemePriority || b.quality - a.quality
+}
+
+function rankedIcons(icons: IconCandidate[]): IconCandidate[] {
+  const unique = new Map<string, IconCandidate>()
+  for (const icon of icons) {
+    const previous = unique.get(icon.url.href)
+    if (!previous || compareIcons(icon, previous) < 0)
+      unique.set(icon.url.href, icon)
+  }
+  return [...unique.values()].sort(compareIcons)
+}
 
 type HtmlNode = DOMNode | Element["children"][number]
 
@@ -234,22 +280,40 @@ export function createBrandProfileReader({
             (value): value is { href: string; url: URL } => value.url !== null
           )
           .slice(0, 3)
-        const iconUrls = [
-          ...new Set([
-            ...links
-              .filter(
-                (element) =>
-                  hasRel(element, "icon") || hasRel(element, "apple-touch-icon")
-              )
-              .map((element) => element.attribs.href)
-              .filter(Boolean)
-              .map(resolve)
-              .filter((value): value is URL => value !== null)
-              .map((value) => value.href),
-            new URL("/apple-touch-icon.png", page.url).href,
-            new URL("/favicon.ico", page.url).href,
-          ]),
-        ].slice(0, 6)
+        const pageIcons = rankedIcons([
+          ...links
+            .filter(
+              (element) =>
+                hasRel(element, "icon") || hasRel(element, "apple-touch-icon")
+            )
+            .flatMap((element) => {
+              const url = element.attribs.href
+                ? resolve(element.attribs.href)
+                : null
+              return url
+                ? [
+                    iconCandidate(
+                      url,
+                      element.attribs.sizes ||
+                        (hasRel(element, "apple-touch-icon") ? "180x180" : ""),
+                      element.attribs.type,
+                      element.attribs.media
+                    ),
+                  ]
+                : []
+            }),
+          {
+            url: new URL("/apple-touch-icon.png", page.url),
+            quality: -1,
+            schemePriority: -2,
+          },
+          {
+            url: new URL("/favicon.ico", page.url),
+            quality: -1,
+            schemePriority: -2,
+          },
+        ])
+        const manifestIcons: IconCandidate[] = []
 
         const manifestTask = async () => {
           if (!manifestUrl) return
@@ -261,6 +325,34 @@ export function createBrandProfileReader({
           if (!resource) return
           try {
             const manifest: unknown = JSON.parse(resource.body.toString("utf8"))
+            if (
+              manifest &&
+              typeof manifest === "object" &&
+              "icons" in manifest &&
+              Array.isArray(manifest.icons)
+            ) {
+              for (const icon of manifest.icons.slice(0, 64)) {
+                if (
+                  !icon ||
+                  typeof icon !== "object" ||
+                  typeof icon.src !== "string"
+                )
+                  continue
+                // Manifest icon paths are relative to the manifest, not the HTML base.
+                try {
+                  const url = normalizeUrl(new URL(icon.src, resource.url).href)
+                  manifestIcons.push(
+                    iconCandidate(
+                      url,
+                      typeof icon.sizes === "string" ? icon.sizes : "",
+                      typeof icon.type === "string" ? icon.type : ""
+                    )
+                  )
+                } catch {
+                  /* Ignore invalid optional icon URLs. */
+                }
+              }
+            }
             if (
               manifest &&
               typeof manifest === "object" &&
@@ -296,10 +388,14 @@ export function createBrandProfileReader({
             return { href, css }
           })
         )
-        const logoTask = async (): Promise<string | null> => {
-          for (const href of iconUrls) {
+        const triedIcons = new Set<string>()
+        const logoTask = async (icons: IconCandidate[]) => {
+          for (const icon of icons) {
+            if (triedIcons.has(icon.url.href)) continue
+            if (triedIcons.size >= 6) break
+            triedIcons.add(icon.url.href)
             const resource = await optionalLoad(
-              new URL(href),
+              icon.url,
               MAX_LOGO_BYTES,
               "image/*"
             )
@@ -307,16 +403,31 @@ export function createBrandProfileReader({
               resource?.body.length &&
               /^image\//i.test(resource.contentType)
             ) {
-              return `data:${resource.contentType.split(";")[0]};base64,${resource.body.toString("base64")}`
+              return {
+                schemePriority: icon.schemePriority,
+                quality: /^image\/svg\+xml(;|$)/i.test(resource.contentType)
+                  ? VECTOR_ICON_QUALITY
+                  : icon.quality,
+                uri: `data:${resource.contentType.split(";")[0]};base64,${resource.body.toString("base64")}`,
+              }
             }
           }
           return null
         }
-        const [, stylesheets, logo] = await Promise.all([
-          manifestTask(),
-          stylesTask,
-          logoTask(),
-        ])
+        // Fetch a page icon while the manifest loads, preserving identity even
+        // if the optional manifest consumes the remaining network deadline.
+        const readLogo = async () => {
+          const [, pageLogo] = await Promise.all([
+            manifestTask(),
+            logoTask(pageIcons.slice(0, 1)),
+          ])
+          const betterIcons = rankedIcons([
+            ...pageIcons,
+            ...manifestIcons,
+          ]).filter((icon) => !pageLogo || compareIcons(icon, pageLogo) < 0)
+          return (await logoTask(betterIcons))?.uri ?? pageLogo?.uri ?? null
+        }
+        const [stylesheets, logo] = await Promise.all([stylesTask, readLogo()])
         candidates.push(...collectCssCandidates(nodes, stylesheets))
         let selected = selectAccent(candidates)
         if (!selected.color && logo) {
@@ -332,7 +443,7 @@ export function createBrandProfileReader({
             description,
             accent,
             accentSource: accent ? selected.source : null,
-            logo,
+            logo: preferDarkLogo(logo),
           },
           cacheable,
         }
