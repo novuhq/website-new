@@ -10,12 +10,10 @@ import illustrationDesktop from "@/images/pages/channels/web-chat/compare-old-wi
 
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
-const GLOW_CLASSES =
-  "pointer-events-none absolute inset-0 opacity-0 blur-[90px] transition-opacity duration-500 group-data-[wc-state=loading]:opacity-60 group-data-[wc-state=personalized]:opacity-60"
-
 /**
  * Comparison artwork from Figma 45487:79782 / 45510:177565, exported at 2×.
  * Bubbles are part of the artwork; live title/body copy remains separate.
+ * The artwork includes its glow; only shift its hue to preserve text contrast.
  * Serve the quality-95 JPG directly to avoid a second lossy conversion.
  */
 export function OldWidgetCard() {
@@ -38,11 +36,6 @@ export function OldWidgetCard() {
           unoptimized
           sizes="(min-width: 1344px) 391px, 29vw"
           src={illustrationDesktop}
-        />
-        <div
-          aria-hidden
-          className={GLOW_CLASSES}
-          style={{ background: "var(--wc-hue)" }}
         />
         <HueLayer />
       </div>
@@ -70,11 +63,6 @@ export function OldWidgetCard() {
           unoptimized
           sizes="92vw"
           src={illustrationMobile}
-        />
-        <div
-          aria-hidden
-          className={GLOW_CLASSES}
-          style={{ background: "var(--wc-hue)" }}
         />
         <HueLayer />
         <div

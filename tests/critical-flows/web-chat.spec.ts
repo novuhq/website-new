@@ -46,53 +46,89 @@ async function openWebChat(page: Page) {
 }
 
 test.describe("web chat personalizer", () => {
-  test("scopes personalization to the hero, leaving the sections below it", async ({
+  test("personalizes the hero and two bentos, with reset and fallback", async ({
     page,
   }) => {
     const errors = observeApplicationErrors(page)
+    let extractionFails = false
     await page.route(PREVIEW_ROUTE, (route) =>
-      route.fulfill({
-        json: {
-          brand: {
-            domain: webChatContract.domain,
-            accent: webChatContract.accent,
-            logo: null,
-          },
-        },
-      })
+      extractionFails
+        ? route.fulfill({ status: 503, json: { error: "Unavailable" } })
+        : route.fulfill({
+            json: {
+              brand: {
+                domain: webChatContract.domain,
+                accent: webChatContract.accent,
+                logo: null,
+              },
+            },
+          })
     )
     await openWebChat(page)
 
-    // The two bento sections read `--wc-accent-soft` directly, so they need a
-    // definition in scope even though they never restyle. The page root
-    // supplies the default theme; the provider overrides it inside the hero.
     const root = page.locator("main div.overflow-clip").first()
     const hero = page.getByTestId("web-chat-hero")
-    const bentoGlow = page.locator('div[class*="blur-[90px]"]').first()
+    const bentos = [
+      page.getByRole("heading", {
+        name: "You know the old chat widget. This is Web Chat",
+      }),
+      page.getByRole("heading", {
+        name: "Not a chat box on your site. An agent inside your app",
+      }),
+    ].map((heading) => heading.locator("xpath=ancestor::section"))
+    const laterSection = page
+      .getByRole("heading", { name: webChatContract.configuratorHeading })
+      .locator("xpath=ancestor::section")
+    const hueLayer = (section: (typeof bentos)[number]) =>
+      section
+        .locator('div[style*="mix-blend-mode"]')
+        .filter({ visible: true })
+        .first()
 
-    await expect(root).toHaveCSS("--wc-accent", "#c25cd6")
-    await expect(bentoGlow).toHaveCSS("--wc-accent-soft", "#c25cd61f")
-    await expect(bentoGlow).toHaveCSS("opacity", "0")
+    for (const section of bentos) {
+      await expect(section).toHaveCSS("--wc-accent", "#c25cd6")
+      await expect(hueLayer(section)).toHaveCSS("mix-blend-mode", "hue")
+      await expect(hueLayer(section)).toHaveCSS("opacity", "0")
+    }
 
-    await page
-      .getByRole("textbox", { name: "Your website URL" })
-      .fill(webChatContract.domain)
-    await page
-      .getByRole("button", { name: webChatContract.submitLabel })
-      .click()
+    const submit = async () => {
+      await page
+        .getByRole("textbox", { name: "Your website URL" })
+        .fill(webChatContract.domain)
+      await page
+        .getByRole("button", { name: webChatContract.submitLabel })
+        .click()
+    }
 
-    // The hero takes the brand...
+    await submit()
     await expect(hero).toHaveCSS("--wc-accent", webChatContract.accent)
     await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
-
-    // ...and nothing below it does. The bentos' accent glow stays off because
-    // it is gated on a `data-wc-state` ancestor they no longer have.
+    for (const section of bentos) {
+      await expect(section).toHaveCSS("--wc-accent", webChatContract.accent)
+      await expect(hueLayer(section)).toHaveCSS("opacity", "1")
+    }
     await expect(root).toHaveCSS("--wc-accent", "#c25cd6")
-    await expect(bentoGlow).toHaveCSS("--wc-accent-soft", "#c25cd61f")
-    await expect(bentoGlow).toHaveCSS("opacity", "0")
-    await expect(
-      page.locator("[data-wc-state]").locator('div[class*="blur-[90px]"]')
-    ).toHaveCount(0)
+    await expect(laterSection).toHaveCSS("--wc-accent", "#c25cd6")
+
+    await page.getByRole("button", { name: "Reset personalization" }).click()
+    for (const section of [hero, ...bentos]) {
+      await expect(section).toHaveCSS("--wc-accent", "#c25cd6")
+    }
+    for (const section of bentos) {
+      await expect(hueLayer(section)).toHaveCSS("opacity", "0")
+    }
+
+    extractionFails = true
+    await submit()
+    await expect(page.locator("[data-wc-state]")).toHaveAttribute(
+      "data-wc-state",
+      "fallback"
+    )
+    for (const section of bentos) {
+      await expect(section).toHaveCSS("--wc-accent", "#c25cd6")
+      await expect(hueLayer(section)).toHaveCSS("opacity", "0")
+    }
+    await expect(laterSection).toHaveCSS("--wc-accent", "#c25cd6")
 
     expectHealthyPage(errors)
   })

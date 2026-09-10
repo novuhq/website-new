@@ -10,13 +10,11 @@ import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-ch
 
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
-const GLOW_CLASSES =
-  "pointer-events-none absolute inset-0 opacity-0 blur-[90px] transition-opacity duration-500 group-data-[wc-state=loading]:opacity-60 group-data-[wc-state=personalized]:opacity-60"
-
 /**
  * Comparison artwork from Figma 45487:79841 / 45510:177623, exported at 2×.
  * The mobile image is cropped above its caption; title/body stay live below it.
  * Baked bubbles and the selected table row render once, without extra overlays.
+ * The artwork includes its glow; only shift its hue to preserve text contrast.
  */
 export function WebChatCard() {
   return (
@@ -39,11 +37,6 @@ export function WebChatCard() {
           sizes="(min-width: 1344px) 865px, 63vw"
           src={illustrationDesktop}
         />
-        <div
-          aria-hidden
-          className={GLOW_CLASSES}
-          style={{ background: "var(--wc-hue)" }}
-        />
         <HueLayer />
       </div>
       {/* Mobile illustration */}
@@ -59,11 +52,6 @@ export function WebChatCard() {
           unoptimized
           sizes="92vw"
           src={illustrationMobile}
-        />
-        <div
-          aria-hidden
-          className={GLOW_CLASSES}
-          style={{ background: "var(--wc-hue)" }}
         />
         <HueLayer />
       </div>

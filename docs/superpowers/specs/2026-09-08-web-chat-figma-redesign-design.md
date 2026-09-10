@@ -19,8 +19,8 @@ Route: `/channels/web-chat`
 - Configurator states: `45497-147645` (open dropdown), `45501-148681` (CLI tab)
 - Framework logo set: `items-for-animation (logos-ai-framework)` — node `45497-146963`
 - Personalized bento references: `personalized-cards-preview` — nodes `45503-149086`, `45503-149553`
-  (superseded 2026-09-09 — see "Personalization scope" below; these frames are
-  no longer implemented)
+  (scope restored for the 2026-09-10 image-tint trial; see "Personalization scope"
+  below for the remaining limitation on individual accents)
 - Designer spec: `Novu-Web-Chat-Specification.docx` (Russian, 3 pages)
 
 Brand reference variants in Figma: `recent.dev` (accent `#E65006`) and `todesktop.com` (accent `#0036FF`).
@@ -65,25 +65,33 @@ re-synced:
 ## Architecture
 
 `page.tsx` stays a server component. `WebChatBrandProvider` is a client component
-wrapping only the Hero; §2-§9 and the CTA stay server-rendered and unbranded.
+wrapping the Hero, comparison bento (§2), and product bento (§3). Route-composed
+server children remain server-rendered; §4-§9 and the CTA keep the default theme.
 
-### Personalization scope (amended 2026-09-09)
+### Personalization scope (amended 2026-09-10)
 
-Personalization is scoped to the Hero. The owner's instruction: "the
-personalization should not affect the sections below hero." This supersedes the
-original design, in which the provider also wrapped §2 and §3 so both bentos
-restyled to the extracted brand, and it leaves Figma's personalized bento
-frames (`45503-149086`, `45503-149553`) unimplemented.
+The owner requested re-enabling personalization in the two sections below the
+hero as a trial. The shared provider now includes §2 and §3, restoring the
+original scope and superseding the September 9 hero-only amendment.
 
-Nothing in either bento needed changing to achieve it. Their accent glows, hue
-layers and bubble gradients were all gated on `group-data-[wc-state=...]`, so
-outside the provider those variants never match and each section holds the
-default appearance it was already authored with.
+The trial uses the current 2× illustrations and existing hue overlays.
+Both bentos respond to the provider's existing loading/personalized states;
+reset or extraction failure restores their authored default appearance. Later
+sections stay outside the provider and retain the page's default theme variables.
 
-`page.tsx` does now emit the default theme's custom properties on its root
-wrapper. Both bentos read `var(--wc-accent-soft)` directly for a tinted row,
-which would resolve to nothing once they left the provider's scope; the
-provider still overrides the same variables inside the Hero.
+Comparison cards no longer add a second blurred color fill over their baked-in
+glows, which washed out the artwork and text. Product cards paint the inherited
+card background inside their isolated blend host so mobile space below the
+contained images does not become a solid brand-color block.
+
+This restores overall illustration recoloring, not the full discrete-accent
+behavior described below. The newer JPG exports bake in bubbles, selected rows,
+and controls; the older accent-overlay components are not mounted. Precise
+per-element brand colors remain a separate follow-up if the tinting trial is
+insufficient. The hero's conversation choreography remains unchanged.
+
+The existing mobile comparison exports already contain orange accents in their
+idle artwork. This trial retains those exports; reset restores them as authored.
 
 The provider owns `{ status, accent, accentForeground, domain, favicon }` and writes
 `--wc-accent`, `--wc-accent-soft` and `--wc-hue` onto its wrapper element, plus a

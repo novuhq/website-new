@@ -19,8 +19,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SurfaceTabsIllustration } from "./surface-tabs-illustration"
 
 const TAB_TRIGGER_CLASS = cn(
-  "flex-1 rounded-[6px] px-6 py-3.5 text-base font-medium tracking-[-0.02em] text-[#8A8C99]",
-  "data-[state=active]:bg-white data-[state=active]:text-black"
+  "h-full min-w-0 flex-1 rounded-none px-6 py-0 text-base leading-none font-normal tracking-[-0.02em] text-gray-60",
+  "data-[state=active]:bg-white data-[state=active]:font-medium data-[state=active]:tracking-[-0.025em] data-[state=active]:text-black",
+  "focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-gray-60 focus-visible:outline-solid"
 )
 
 const TABS_CONTENT_CLASS = "mt-10 data-[state=inactive]:hidden lg:mt-14"
@@ -52,7 +53,7 @@ export function SurfaceTabs() {
             <p className="text-base leading-[1.5] tracking-[-0.025em] text-[#A3A6B2] lg:text-lg">
               {SURFACE_TABS_DESCRIPTION}
             </p>
-            <TabsList className="h-11 w-full gap-0 rounded-md border border-[#41434D] bg-black/50 p-0">
+            <TabsList className="h-11 w-full gap-0 overflow-hidden rounded-md border border-gray-30 bg-black/50 p-0">
               <TabsTrigger value="side-panel" className={TAB_TRIGGER_CLASS}>
                 {SURFACE_TABS_TAB_LABELS.sidePanel}
               </TabsTrigger>

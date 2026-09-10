@@ -62,6 +62,27 @@ existing fixed-size SVG noise tile. See [the CSS bloom log](2026-09-10-web-chat-
 for the implementation, scope, and validation; this supersedes the background
 export guidance in the hero alignment log.
 
+**2026-09-10 bento personalization trial:** the CSS bloom and Figma dots are
+committed as `7a82f5f`. The shared brand provider now includes the comparison and
+product bentos, restoring their existing image hue overlays. The obsolete
+comparison glow overlays were removed to preserve text contrast, and product
+cards now supply an opaque blend backdrop to prevent solid color blocks below
+the images on mobile. The trial keeps the 2× JPGs; individual UI accents still
+need separate layers for exact brand colors. See the amended personalization
+scope in the design spec.
+All 14 Web Chat critical-flow cases pass on desktop/mobile Chromium; orange,
+blue, reset, layout, and full-page rendering were also checked in-browser, with
+section checks in WebKit at both widths. Lint and typecheck pass. `pnpm build`
+compiles and passes TypeScript, then fails collecting `/careers/[slug]` because
+the existing Notion careers read configuration is missing.
+
+**2026-09-10 surface switcher:** the tabs now fit the 44px container from
+`45440:68753`, with square inner corners, 16px line height, and regular inactive
+labels. The clipped outer border retains an inset keyboard focus outline.
+Both states and arrow-key switching were verified in Chromium and WebKit on
+desktop/mobile, followed by full-page visual checks. Lint and typecheck pass;
+the production build encounters the same Notion careers configuration blocker.
+
 Read these first, in this order:
 
 1. `docs/superpowers/specs/2026-09-08-web-chat-figma-redesign-design.md` — the

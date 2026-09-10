@@ -9,11 +9,8 @@ import { cn } from "@/lib/utils"
  * Defaults to the provider's `data-wc-state`. Choreographed previews can
  * control visibility explicitly and mask transparent artwork to its alpha.
  *
- * `transition-opacity duration-500` (final-review "also fix" item) matches
- * the sibling accent glow's `transition-opacity duration-500` (see
- * `GLOW_CLASSES` in the compare cards) — without it this layer had no
- * transition at all, so at the personalize moment the glow faded in over
- * 500ms while this hue overlay popped in instantly.
+ * Fade the tint over 500ms. Isolated hosts must supply an opaque backdrop
+ * wherever the artwork does not cover them, or mask this layer to its alpha.
  */
 export function HueLayer({
   className,

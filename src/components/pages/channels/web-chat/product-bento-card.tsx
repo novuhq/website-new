@@ -34,7 +34,9 @@ export function ProductBentoCard({
         } as CSSProperties
       }
     >
-      <div className="absolute inset-0 isolate">
+      {/* Contained images leave space below on mobile. Give the isolated hue
+          layer a painted backdrop there so it cannot become a solid fill. */}
+      <div className="absolute inset-0 isolate bg-inherit">
         <Image
           src={illustration}
           alt=""
