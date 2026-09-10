@@ -76,14 +76,16 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
       </TooltipTrigger>
       <TooltipContent
         align="center"
-        className="w-[332px] max-w-[calc(100vw-2.5rem)] flex-col items-stretch gap-3 rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left before:hidden after:hidden"
-        side="bottom"
+        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left before:hidden after:hidden"
+        side="top"
       >
-        <p className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#C2C4CC]">
-          {HERO_TOOLTIP_TEXT}
-        </p>
-        <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5] underline">
-          {HERO_TOOLTIP_LINK_LABEL}
+        <span className="flex flex-col gap-3">
+          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#C2C4CC]">
+            {HERO_TOOLTIP_TEXT}
+          </span>
+          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5] underline decoration-1 underline-offset-2">
+            {HERO_TOOLTIP_LINK_LABEL}
+          </span>
         </span>
       </TooltipContent>
     </Tooltip>
