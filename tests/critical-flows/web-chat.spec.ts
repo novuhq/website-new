@@ -130,6 +130,12 @@ test.describe("web chat personalizer", () => {
     }
     await expect(laterSection).toHaveCSS("--wc-accent", "#c25cd6")
 
+    const fallbackMessage = hero
+      .getByText(webChatContract.firstMessage, { exact: true })
+      .filter({ visible: true })
+    await expect(fallbackMessage).toHaveCSS("background-color", "rgb(0, 0, 0)")
+    await expect(fallbackMessage).toHaveCSS("color", "rgb(255, 255, 255)")
+
     expectHealthyPage(errors)
   })
 

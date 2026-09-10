@@ -13,8 +13,13 @@ import {
 } from "@/data/pages/web-chat-storyboard"
 
 describe("storyboard timings", () => {
-  it("holds the designer-fixed three-second values", () => {
-    assert.equal(STORYBOARD_TIMING.gapMs, 3000)
+  it("reaches the final reply in six seconds and leaves time to read it", () => {
+    const timeToFinalReply = [1, 2, 3, 4].reduce(
+      (total, step) =>
+        total + storyboardDwellMs(step as StoryboardStep, STORYBOARD_TIMING),
+      0
+    )
+    assert.equal(timeToFinalReply, 6000)
     assert.equal(STORYBOARD_TIMING.finalHoldMs, 3000)
   })
 })

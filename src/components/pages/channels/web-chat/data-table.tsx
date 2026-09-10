@@ -1,5 +1,6 @@
 "use client"
 
+import selectedCheckbox from "@/images/pages/channels/web-chat/hero-selected-checkbox.svg"
 import {
   CheckCircle2,
   CirclePause,
@@ -53,9 +54,11 @@ function statusIcon(status: string) {
 export function DataTable({
   table,
   compact,
+  personalized = false,
 }: {
   table: HeroTable
   compact?: boolean
+  personalized?: boolean
 }) {
   const gridCols = compact
     ? "grid-cols-[15px_100px_1fr_76px_30px]"
@@ -165,10 +168,11 @@ export function DataTable({
                   key={row.name}
                   className={cn(
                     "col-span-5 grid grid-cols-subgrid",
+                    isSelected && "bg-purple-1/30",
                     compact ? "h-[22px]" : "h-[47px]"
                   )}
                   style={
-                    isSelected
+                    isSelected && personalized
                       ? { backgroundColor: "var(--wc-accent-row)" }
                       : undefined
                   }
@@ -181,15 +185,21 @@ export function DataTable({
                   >
                     <span
                       className={cn(
-                        "shrink-0 rounded-[4px] border border-white/15",
+                        "relative shrink-0 rounded-[4px]",
+                        !isSelected && "border border-white/15",
                         compact ? "size-2" : "size-4"
                       )}
-                      style={
-                        isSelected
-                          ? { backgroundColor: "var(--wc-accent)" }
-                          : undefined
-                      }
-                    />
+                    >
+                      {isSelected && (
+                        <span
+                          aria-hidden
+                          className="absolute -inset-x-[12.5%] -top-[6.25%] -bottom-[18.75%] bg-size-[100%_100%] bg-no-repeat"
+                          style={{
+                            backgroundImage: `url(${selectedCheckbox.src})`,
+                          }}
+                        />
+                      )}
+                    </span>
                   </div>
                   <div
                     className={cn(
@@ -216,15 +226,7 @@ export function DataTable({
                     <StatusIcon
                       className={cn(
                         "shrink-0 text-gray-60",
-                        compact ? "size-2" : "size-3.5",
-                        // `wc-status-spin` is a scoping hook only — the
-                        // spin itself is Tailwind's `animate-spin`; the
-                        // extra class lets globals.css cancel just this
-                        // instance under reduced motion (final-review "also
-                        // fix": this was the only animation on the page
-                        // with no such guard, unlike `wc-message-enter`).
-                        row.status === "Processing" &&
-                          "wc-status-spin animate-spin"
+                        compact ? "size-2" : "size-3.5"
                       )}
                     />
                     {row.status}

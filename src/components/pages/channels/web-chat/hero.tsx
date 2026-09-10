@@ -76,7 +76,7 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
       </TooltipTrigger>
       <TooltipContent
         align="center"
-        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left before:hidden after:hidden"
+        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left before:left-1/2 before:-translate-x-1/2 before:border-[#2A2B33] before:bg-[#0B0C0E] after:left-1/2 after:-translate-x-1/2 after:bg-[#0B0C0E] data-[side=bottom]:before:-top-1 data-[side=bottom]:after:top-px data-[side=top]:before:-bottom-1 data-[side=top]:after:bottom-px"
         side="top"
       >
         <span className="flex flex-col gap-3">

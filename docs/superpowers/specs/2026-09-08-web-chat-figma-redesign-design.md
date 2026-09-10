@@ -202,7 +202,7 @@ agent panel, initially showing the orb and "Ask about your workspace".
 
 | Step | Content                                                                                                                                                          |
 | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0    | Agent panel desaturates to grayscale, dashboard content blurs; then the `Form submissions` table and accent-coloured chat resolve in. **Plays once.**            |
+| 0    | Chat background desaturates to grayscale, dashboard content blurs; then the `Form submissions` table and accent-coloured chat resolve in. **Plays once.**        |
 | 1    | User: "Why does this form submission need review?"                                                                                                               |
 | 2    | Agent thinking dwell                                                                                                                                             |
 | 3    | Agent: "Should I check the missing fields or review the full submission?"                                                                                        |
@@ -215,7 +215,9 @@ persists across loops.
 The owner's 2026-09-09 storyboard references (`45487:94116`, `45487:87013`,
 `45487:87703`, `45487:88406`, `45487:89109`, `45487:89814`) clarify step 0:
 
-- Fade the entire chat panel to grayscale while the current dashboard blurs.
+- Fade the chat background to grayscale while the current dashboard blurs.
+  The September 10 design feedback clarifies that the header avatar,
+  empty-state orb, and send button keep their colors during this transition.
 - Hold that frame until brand extraction settles, including failure fallback.
 - At full blur, publish the extracted theme and identity and swap the dashboard
   to `Form submissions`; then recolor and unblur before showing message 1.
@@ -242,16 +244,23 @@ export const STORYBOARD_TIMING = {
   grayscaleMs: 600,
   blurMs: 600,
   recolorMs: 800,
-  messageRevealMs: 700,
-  thinkingMs: 900,
-  gapMs: 3000,
+  messageRevealMs: 350,
+  thinkingMs: 450,
+  gapMs: 1500,
   finalHoldMs: 3000,
 }
 ```
 
-`gapMs` and `finalHoldMs` are the two values the spec fixes at 3s; the rest are the
-developer's proposal for the first preview, per the spec, and are meant to be tuned
-in one edit afterwards.
+The September 10 feedback halves message reveal, thinking, and gap durations.
+The final reply arrives six seconds after the first message; `finalHoldMs`
+stays at three seconds so visitors can read the table. Branding transition
+durations and the existing entrance easing remain unchanged.
+
+Default and failed-brand previews use black user bubbles with white text,
+a `purple-2` send button with a black chevron, and a `purple-1/30` selected
+table row with a checked white translucent checkbox. Successful personalization
+uses the extracted accent and its readable foreground for the bubbles and send
+button. The default `Processing` status icon is static.
 
 ### Reveal mechanic
 

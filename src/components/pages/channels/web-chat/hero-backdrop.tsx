@@ -1,5 +1,6 @@
 import desktopDots from "@/images/pages/channels/web-chat/hero-dots-desktop.png"
 import mobileDots from "@/images/pages/channels/web-chat/hero-dots-mobile.png"
+import heroNoise from "@/images/pages/channels/web-chat/hero-noise.png"
 
 import { cn } from "@/lib/utils"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
@@ -52,6 +53,8 @@ const DESKTOP_BACKGROUND = bloomBackground(DESKTOP_LIGHTS)
 const MOBILE_BACKGROUND = bloomBackground(MOBILE_LIGHTS)
 
 function BloomCanvas({ compact = false }: { compact?: boolean }) {
+  const dots = compact ? mobileDots : desktopDots
+
   return (
     <div
       data-slot="hero-bloom"
@@ -66,7 +69,13 @@ function BloomCanvas({ compact = false }: { compact?: boolean }) {
       }}
     >
       {/* Texture stays at its own scale as the bloom grows with the viewport. */}
-      <div className="absolute inset-0 wc-noise-overlay opacity-10" />
+      <div
+        className="absolute inset-0 opacity-32 mix-blend-overlay"
+        style={{
+          backgroundImage: `url(${heroNoise.src})`,
+          backgroundSize: `${heroNoise.width}px ${heroNoise.height}px`,
+        }}
+      />
       {/* Figma's original texture and blurred mask, exported together at 2×.
           Position by the rendered bounds, including the mask's blur bleed:
           desktop (255.508, 1039), mobile (0, 887.09) in their hero canvases. */}
@@ -75,11 +84,12 @@ function BloomCanvas({ compact = false }: { compact?: boolean }) {
         className={cn(
           "absolute bg-size-[100%_100%] bg-no-repeat mix-blend-plus-lighter",
           compact
-            ? "inset-x-0 top-[887.09px] h-[117.547px]"
-            : "top-[1039px] left-[13.3077%] h-53 w-[73.3846%]"
+            ? "inset-x-0 top-[887.09px]"
+            : "top-[1039px] left-[13.3077%] w-[73.3846%]"
         )}
         style={{
-          backgroundImage: `url(${compact ? mobileDots.src : desktopDots.src})`,
+          backgroundImage: `url(${dots.src})`,
+          aspectRatio: `${dots.width} / ${dots.height}`,
         }}
       />
     </div>

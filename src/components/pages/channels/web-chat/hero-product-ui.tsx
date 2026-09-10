@@ -63,7 +63,7 @@ export function HeroProductUI({
           style={{ transitionDuration: `${duration}ms` }}
         >
           <Sidebar companyLabel={companyLabel} faviconUrl={faviconUrl} />
-          <DataTable table={table} />
+          <DataTable table={table} personalized={isPersonalized} />
         </div>
         <div
           aria-hidden
@@ -95,7 +95,7 @@ export function HeroProductUI({
             faviconUrl={faviconUrl}
             compact
           />
-          <DataTable table={table} compact />
+          <DataTable table={table} personalized={isPersonalized} compact />
         </div>
         <div
           aria-hidden

@@ -35,16 +35,16 @@ export interface StoryboardTiming {
 }
 
 /**
- * gapMs and finalHoldMs are fixed by the designer at 3s. The rest are the
- * first-preview proposal and are meant to be tuned here, in one place.
+ * Message pacing is twice as fast as the first preview. Keep the final
+ * table visible for 3s so visitors have time to read the missing fields.
  */
 export const STORYBOARD_TIMING: StoryboardTiming = {
   grayscaleMs: 600,
   blurMs: 600,
   recolorMs: 800,
-  messageRevealMs: 700,
-  thinkingMs: 900,
-  gapMs: 3000,
+  messageRevealMs: 350,
+  thinkingMs: 450,
+  gapMs: 1500,
   finalHoldMs: 3000,
 }
 

@@ -11,10 +11,12 @@ export interface AgentMessageProps {
   compact?: boolean
   className?: string
   animate?: boolean
+  personalized?: boolean
 }
 
 /**
- * One chat bubble. User turns fill with the personalized accent and align
+ * One chat bubble. User turns are black by default, use the brand accent
+ * after successful personalization, and align
  * right; agent replies are plain text under a small "Agent" label and align
  * left — both per the brief's Behaviour section. Every message plays a
  * one-shot blurred-to-sharp entrance via `animate-wc-message-enter`
@@ -38,6 +40,7 @@ export function AgentMessage({
   compact,
   className,
   animate = true,
+  personalized = false,
 }: AgentMessageProps) {
   if (role === "user") {
     return (
@@ -50,14 +53,18 @@ export function AgentMessage({
       >
         <p
           className={cn(
-            "max-w-full rounded-tl-[14.5px] rounded-tr-[14.5px] rounded-br-[3.6px] rounded-bl-[14.5px] border border-white/20 pt-2 pr-5 pb-[9px] pl-3 text-[15px] leading-[1.2] tracking-[-0.01em] shadow-[0_6px_14px_rgba(0,0,0,0.1)]",
+            "max-w-full rounded-tl-[14.5px] rounded-tr-[14.5px] rounded-br-[3.6px] rounded-bl-[14.5px] border border-white/20 bg-black pt-2 pr-5 pb-[9px] pl-3 text-[15px] leading-[1.2] tracking-[-0.01em] text-white shadow-[0_6px_14px_rgba(0,0,0,0.1)]",
             compact &&
               "rounded-tl-[6.76px] rounded-tr-[6.76px] rounded-br-[1.69px] rounded-bl-[6.76px] border-0 pt-[4.2px] pr-[9.79px] pb-[4.66px] pl-[6.06px] text-[7px] leading-[1.2] shadow-[0_3px_7px_rgba(0,0,0,0.1)] ring-[0.466px] ring-white/20 ring-inset"
           )}
-          style={{
-            backgroundColor: "var(--wc-accent)",
-            color: "var(--wc-accent-foreground)",
-          }}
+          style={
+            personalized
+              ? {
+                  backgroundColor: "var(--wc-accent)",
+                  color: "var(--wc-accent-foreground)",
+                }
+              : undefined
+          }
         >
           {text}
         </p>

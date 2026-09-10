@@ -69,17 +69,10 @@ export interface HeroAgentPanelProps {
 function AgentAvatar({
   className,
   glyphClassName,
-  square = false,
   personalized = false,
 }: {
   className?: string
   glyphClassName?: string
-  /**
-   * Header avatar. Figma's frame clips the logomark to its 40px circle
-   * (`borderRadius` 72.58 on a 40x40 box) and insets it to 36.67; the
-   * empty-state orb is unclipped, so its blurred edges spill as designed.
-   */
-  square?: boolean
   personalized?: boolean
 }) {
   return (
@@ -87,7 +80,6 @@ function AgentAvatar({
       aria-hidden
       className={cn(
         "relative isolate inline-flex shrink-0 items-center justify-center rounded-full",
-        square && "overflow-hidden",
         className
       )}
     >
@@ -100,15 +92,9 @@ function AgentAvatar({
       */}
       <span
         aria-hidden
-        className={cn(
-          "pointer-events-none absolute isolate",
-          // The export is 208x201 for a 140x140 core, so the bleed is not
-          // square: -24.3% horizontally, -21.8% vertically. Insetting equally
-          // stretched the blob and shifted its colour distribution.
-          square
-            ? "-inset-x-[18.1%] -inset-y-[16.2%]"
-            : "-inset-x-[24.3%] -inset-y-[21.8%]"
-        )}
+        // Figma's 36.67px core sits inside a 40px frame without clipping
+        // the glow. The unequal insets preserve the export's blur bounds.
+        className="pointer-events-none absolute -inset-x-[18.1%] -inset-y-[16.2%] isolate"
         style={{
           backgroundImage: `url(${AGENT_MARK_IMAGE.src})`,
           backgroundSize: "100% 100%",
@@ -162,7 +148,6 @@ function PanelHeader({
       <AgentAvatar
         className={compact ? "size-[18.65px]" : "size-10"}
         glyphClassName={compact ? "size-[9.3px]" : "size-5"}
-        square
         personalized={personalized}
       />
       <span
@@ -180,7 +165,9 @@ function PanelHeader({
           compact && "gap-[7.46px] pr-1"
         )}
       >
-        <Maximize2 className={cn("size-5", compact && "size-[9.32px]")} />
+        <Maximize2
+          className={cn("size-5 -scale-x-100", compact && "size-[9.32px]")}
+        />
         <X className={cn("size-5", compact && "size-[9.32px]")} />
       </div>
     </div>
@@ -191,9 +178,16 @@ function PanelHeader({
  * Composer input. Figma desktop `45487:90361` (384x42, radius 12,
  * `rgba(0,0,0,0.88)` fill, border `rgba(255,255,255,0.3)`, placeholder
  * Inter Medium 15px/`-0.01em` `rgba(255,255,255,0.4)`, send icon 34x34
- * radius 8 filled with the accent); mobile `45487:113116` (~0.4662x).
+ * radius 8 filled with purple-2 by default, or the personalized accent);
+ * mobile `45487:113116` (~0.4662x).
  */
-function Composer({ compact }: { compact?: boolean }) {
+function Composer({
+  compact,
+  personalized,
+}: {
+  compact?: boolean
+  personalized: boolean
+}) {
   return (
     <div className={cn("shrink-0 p-[11px]", compact && "p-[5.6px]")}>
       <div
@@ -212,14 +206,20 @@ function Composer({ compact }: { compact?: boolean }) {
         </span>
         <span
           className={cn(
-            "flex size-[34px] shrink-0 items-center justify-center rounded-lg",
+            "flex size-[34px] shrink-0 items-center justify-center rounded-lg bg-purple-2 text-black",
             compact && "size-[15.85px] rounded-[3.7px]"
           )}
-          style={{ backgroundColor: "var(--wc-accent)" }}
+          style={
+            personalized
+              ? {
+                  backgroundColor: "var(--wc-accent)",
+                  color: "var(--wc-accent-foreground)",
+                }
+              : undefined
+          }
         >
           <ChevronUp
             className={cn("size-4", compact && "size-2")}
-            style={{ color: "var(--wc-accent-foreground)" }}
             aria-hidden
           />
         </span>
@@ -287,9 +287,11 @@ function EmptyState({
 function ConversationBody({
   step,
   compact,
+  personalized,
 }: {
   step: Exclude<StoryboardStep, 0>
   compact?: boolean
+  personalized: boolean
 }) {
   const visibleMessages = HERO_MESSAGES.filter(
     (message) => message.step <= step
@@ -314,6 +316,7 @@ function ConversationBody({
             role={message.role}
             text={message.text}
             compact={compact}
+            personalized={personalized}
             animate={false}
             className={
               message.step === 5
@@ -352,22 +355,10 @@ function AgentPanel({
   const reducedMotion = useReducedMotion()
 
   return (
-    <motion.div
+    <div
       data-slot="web-chat-panel"
-      initial={{ filter: "grayscale(0)" }}
-      animate={{
-        filter: isGrayscale && !reducedMotion ? "grayscale(1)" : "grayscale(0)",
-      }}
-      transition={{
-        duration: reducedMotion
-          ? 0
-          : (isGrayscale
-              ? STORYBOARD_TIMING.grayscaleMs
-              : STORYBOARD_TIMING.recolorMs) / 1000,
-        ease: "easeOut",
-      }}
       className={cn(
-        "relative isolate flex flex-col overflow-hidden rounded-[14px] p-px shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-[inherit] after:mix-blend-soft-light after:inset-ring-1 after:inset-ring-white/90",
+        "relative isolate flex flex-col overflow-hidden rounded-[14px] bg-black p-px shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-[inherit] after:mix-blend-soft-light after:inset-ring-1 after:inset-ring-white/90",
         compact
           ? "h-[301.62px] w-[190.2px] rounded-[6.526px] p-[0.466px] backdrop-blur-[22.38px] after:inset-ring-[0.466px]"
           : // Desktop: fills whatever height the shared card (`HeroLiveUi`
@@ -377,38 +368,59 @@ function AgentPanel({
             "h-full w-[408px]"
       )}
     >
-      <div
-        className="pointer-events-none absolute inset-0 isolate -z-10 bg-black"
-        style={{
-          backgroundImage: `url(${HERO_CHAT_SURFACE_IMAGE.src})`,
-          backgroundSize: "100% 100%",
+      <motion.div
+        aria-hidden
+        data-slot="web-chat-panel-background"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        initial={{ filter: "grayscale(0)", opacity: 1 }}
+        animate={{
+          filter:
+            isGrayscale && !reducedMotion ? "grayscale(1)" : "grayscale(0)",
+          // Figma lowers the surface fill from 56% to 36% while waiting.
+          opacity: isGrayscale && !reducedMotion ? 0.36 / 0.56 : 1,
+        }}
+        transition={{
+          duration: reducedMotion
+            ? 0
+            : (isGrayscale
+                ? STORYBOARD_TIMING.grayscaleMs
+                : STORYBOARD_TIMING.recolorMs) / 1000,
+          ease: "easeOut",
         }}
       >
-        <HueLayer active={personalized} />
-      </div>
-      <div
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute -z-10 -translate-x-1/2 -translate-y-1/2 rotate-[62.9deg] transition-opacity duration-700 motion-reduce:transition-none",
-          personalized && "opacity-0",
-          compact
-            ? "top-[-52.28px] left-[11.29px] h-[237.57px] w-[597.12px]"
-            : "top-[-112.14px] left-[24.22px] h-[509.6px] w-[1280.88px]"
-        )}
-        style={{
-          backgroundImage: `url(${HERO_CHAT_LIGHT_IMAGE.src})`,
-          backgroundSize: "100% 100%",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-10 mix-blend-overlay"
-        style={{
-          backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "180px 180px",
-        }}
-      />
+        <div
+          className="pointer-events-none absolute inset-0 isolate -z-10 bg-black"
+          style={{
+            backgroundImage: `url(${HERO_CHAT_SURFACE_IMAGE.src})`,
+            backgroundSize: "100% 100%",
+          }}
+        >
+          <HueLayer active={personalized} />
+        </div>
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute -z-10 -translate-x-1/2 -translate-y-1/2 rotate-[62.9deg] transition-opacity duration-700 motion-reduce:transition-none",
+            personalized && "opacity-0",
+            compact
+              ? "top-[-52.28px] left-[11.29px] h-[237.57px] w-[597.12px]"
+              : "top-[-112.14px] left-[24.22px] h-[509.6px] w-[1280.88px]"
+          )}
+          style={{
+            backgroundImage: `url(${HERO_CHAT_LIGHT_IMAGE.src})`,
+            backgroundSize: "100% 100%",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 opacity-10 mix-blend-overlay"
+          style={{
+            backgroundImage: `url("${NOISE_GRAIN_SVG}")`,
+            backgroundRepeat: "repeat",
+            backgroundSize: "180px 180px",
+          }}
+        />
+      </motion.div>
       <PanelHeader compact={compact} personalized={personalized} />
       {renderLive ? (
         renderLive(
@@ -421,13 +433,17 @@ function AgentPanel({
             {step === null || step === 0 ? (
               <EmptyState compact={compact} personalized={personalized} />
             ) : (
-              <ConversationBody step={step} compact={compact} />
+              <ConversationBody
+                step={step}
+                compact={compact}
+                personalized={personalized}
+              />
             )}
           </div>
-          <Composer compact={compact} />
+          <Composer compact={compact} personalized={personalized} />
         </>
       )}
-    </motion.div>
+    </div>
   )
 }
 

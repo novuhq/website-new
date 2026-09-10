@@ -220,7 +220,7 @@
   --animate-logos-backward: backward 160s linear infinite;
   --animate-logos-forward: forward 160s linear infinite;
   --animate-wc-message-enter: wc-message-enter
-    var(--wc-message-reveal-ms, 700ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+    var(--wc-message-reveal-ms, 350ms) cubic-bezier(0.22, 1, 0.36, 1) both;
 
   --leading-dense: 1.125;
 
@@ -339,15 +339,6 @@
     filter: none;
     opacity: 1;
     transform: none;
-  }
-
-  /* Hero table's "Processing" status icon (`data-table.tsx`) — the only
-     animation on this page with no reduced-motion guard until now. Scoped
-     to `wc-status-spin` rather than Tailwind's `animate-spin` globally, so
-     real loading spinners elsewhere in the app (search dialog, etc.) are
-     unaffected. */
-  .wc-status-spin {
-    animation: none;
   }
 }
 

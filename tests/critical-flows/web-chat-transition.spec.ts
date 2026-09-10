@@ -93,7 +93,10 @@ test.describe("web chat hero transition", () => {
     await submitDomain(page)
     const pendingResponse = await request
     await expect(hero(page)).toHaveAttribute("data-storyboard-phase", "waiting")
-    await expect(panel(page)).toHaveCSS("filter", "grayscale(1)")
+    await expect(panel(page)).toHaveCSS("filter", "none")
+    await expect(
+      panel(page).locator('[data-slot="web-chat-panel-background"]')
+    ).toHaveCSS("filter", "grayscale(1)")
     await expect(dashboard(page)).toHaveCSS("filter", /^blur\([1-9]/)
     await expect(hero(page)).toHaveCSS("--wc-accent", DEFAULT_ACCENT)
     await expect(tableTitle(page)).toHaveText(webChatContract.defaultTableTitle)
@@ -105,7 +108,9 @@ test.describe("web chat hero transition", () => {
       webChatContract.personalizedTableTitle
     )
     await expect(message(page, webChatContract.firstMessage)).toBeVisible()
-    await expect(panel(page)).toHaveCSS("filter", /^(none|grayscale\(0\))$/)
+    await expect(
+      panel(page).locator('[data-slot="web-chat-panel-background"]')
+    ).toHaveCSS("filter", /^(none|grayscale\(0\))$/)
     await expect(dashboard(page)).toHaveCSS("filter", /^(none|blur\(0px\))$/)
     expectHealthyPage(errors)
   })
