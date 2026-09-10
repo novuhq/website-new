@@ -24,35 +24,17 @@ export const metadata: Metadata = getMetadata({
   imageAlt: "Novu Web Chat: your agent, live inside your product",
 })
 
-/**
- * The inter-section gaps, one per boundary. Sections never carry their own
- * vertical spacing — this page owns it exclusively, so no future section can
- * arrive with its own idea of rhythm. (They used to: `mt-24 md:mt-32` on
- * most, `py-20 md:py-28` on compare-bento/deploy-aci, nothing at all on
- * surface-tabs — three conventions that fought each other at the boundaries.)
- *
- * Desktop values are measured from Figma's `45487-79054`, each one the
- * whitespace between consecutive section content boxes. The rhythm is
- * deliberately NOT uniform, so a single shared constant cannot express it:
- * 240px is the norm, the deploy-ACI → ownership run tightens to 228px, the
- * hero exits at 180px, and the channels grid is pulled in to 144px because
- * its tile grid carries its own visual air.
- *
- * Mobile stays a uniform 144px. Figma's mobile frame (`45487-98982`) authors
- * only four of these sections, so there is no per-boundary mobile value to
- * match — see the mobile-coverage audit in
- * `docs/superpowers/logs/2026-09-08-web-chat-figma-node-map.md`.
- */
+/** Follow the homepage's mobile/tablet/laptop rhythm; retain Figma's wide-screen gaps. */
 const GAP = {
-  compareBento: "mt-36 md:mt-45", // 180px — hero frame bottom → §2
-  productBento: "mt-36 md:mt-60", // 240px
-  surfaceTabs: "mt-36 md:mt-60", // 240px
-  channelsGrid: "mt-36 md:mt-36", // 144px — tightened around the tile grid
-  deployAci: "mt-36 md:mt-60", // 240px
-  designSystem: "mt-36 md:mt-57", // 228px
-  configurator: "mt-36 md:mt-57", // 228px
-  ownership: "mt-36 md:mt-57", // 228px
-  cta: "md:mt-60 lg:mt-60", // 240px, overriding Cta's own md:mt-32 lg:mt-44
+  compareBento: "mt-24 md:mt-28 lg:mt-32 xl:mt-45",
+  productBento: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
+  surfaceTabs: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
+  channelsGrid: "mt-24 md:mt-28 lg:mt-32 xl:mt-36",
+  deployAci: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
+  designSystem: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",
+  configurator: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",
+  ownership: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",
+  cta: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
 } as const
 
 /**

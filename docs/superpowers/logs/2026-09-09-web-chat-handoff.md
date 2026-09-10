@@ -602,3 +602,52 @@ npx playwright test tests/critical-flows/web-chat.spec.ts
 
 **Restart the dev server** before judging anything that lives in an `@utility`
 block in `globals.css`.
+
+
+## September 10: responsive layout aligned with homepage
+
+The user requested applying the homepage's breakpoint patterns to web chat where applicable.
+The homepage uses capped 768px tablet containers, 20px/32px gutters, mostly stacked
+layouts below 1024px, and 96/112/128px section spacing before wide-desktop spacing.
+
+Applied those patterns locally to web chat, retaining its existing wide Figma container
+widths and section-specific gaps at 1280px+. The comparison row and hero copy/CTA row
+wait until 1280px because their content is wider; the hero product UI remains at 1024px.
+Product cards stack below 1024px and reserve caption space at intermediate widths.
+Channel tiles now fit the available width, with flexible desktop columns. Tablet
+headers, ownership cards, and ACI compliance content stack. ACI artwork and logo
+coordinates both change at 1024px; the portrait image is capped on tablets.
+
+The configurator's pre-existing bloom/border edits were preserved; this pass changes
+only its outer responsive container. Its large two-column layout remains at 1280px.
+No shared homepage components, global breakpoints, or personalization logic changed.
+
+Verification: browser inspection at 320–1440px, including 1023/1024px boundary checks;
+Chromium and WebKit checks cover channel visibility, caption containment, ACI aspect
+ratio and logo placement, full-page rendering, and existing motion behavior.
+Lint and typecheck pass. Production compilation passes, but `pnpm build` cannot
+collect `/careers/[slug]` page data without the existing Notion careers read configuration.
+
+
+### Mobile wide-card height follow-up
+
+At 639px the two wide product cards still used a 360/496 portrait aspect ratio,
+producing an 825px card for artwork that rendered about 450px high. Below 640px,
+these two cards now use a 660/360 artwork crop followed by a caption in normal flow,
+with a short fade into the caption background. Height follows the content rather
+than scaling an empty portrait frame. At 639px the profile card is about 451px high.
+The 640px+ layouts and the three supporting cards retain their existing sizing.
+Responsive coverage now includes both sides of the 639/640 boundary and asserts
+that the wide-card captions follow the artwork without an empty layout gap.
+
+
+### Purple default mobile comparison artwork
+
+The mobile comparison JPGs incorrectly came from an orange personalized storyboard
+(`45510:177550`). Re-exported the default purple design requested by the user,
+`45496:139032`: old-widget artwork `45496:138552` at 640×748; Web Chat card
+`45496:138744` at 640×914, cropped above its live caption to 640×626. Both use
+quality-95, 4:4:4 JPGs from true 2× Figma PNG exports. Figma nodes were not modified.
+Mobile heading/body spacing is 20px, the card gap is 20px, and captions use 16px
+insets with 8px title/body gaps. At 360px viewport the Web Chat card matches the
+457px authored height. Desktop assets and brand-driven HueLayer behavior remain.

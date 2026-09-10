@@ -139,7 +139,7 @@ export function WebChatConfigurator() {
 
   return (
     <section className="font-inter" data-testid="web-chat-configurator">
-      <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
+      <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
         <div className="flex flex-col gap-14 xl:flex-row xl:items-start xl:justify-between">
           <div className="relative z-10 flex w-full flex-col xl:ml-8 xl:max-w-[532px] xl:shrink-0 xl:pt-37">
             <h2 className="max-w-[420px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[532px] md:text-[48px] md:leading-[1.04]">

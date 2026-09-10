@@ -58,7 +58,7 @@ const CARD_ICONS: Record<OwnershipCardCopy["id"], typeof bringAnyAgentIcon> = {
 
 function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
   return (
-    <div className="flex flex-col gap-2.5 rounded-lg bg-[#101114] px-5 py-5 md:flex-1 md:px-6">
+    <div className="flex flex-col gap-2.5 rounded-lg bg-[#101114] px-5 py-5 md:px-6 lg:min-w-0 lg:flex-1">
       <div className="flex items-center gap-2.5">
         <Image
           alt=""
@@ -80,10 +80,10 @@ function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
 function Ownership() {
   return (
     <section>
-      <div className="container mx-auto flex max-w-[1344px] flex-col gap-10 px-5 md:gap-[72px] md:px-8">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 md:gap-[72px] md:px-8 lg:max-w-336">
         <OwnershipTagline />
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-stretch md:gap-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">
           {OWNERSHIP_CARDS.map((card) => (
             <OwnershipCard key={card.id} {...card} />
           ))}

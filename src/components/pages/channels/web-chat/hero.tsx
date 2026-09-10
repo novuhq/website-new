@@ -47,7 +47,7 @@ const geistMono = Geist_Mono({
 })
 
 const COPY_PROMPT_BUTTON_CLASSES =
-  "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case lg:w-34"
+  "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case xl:w-34"
 
 /**
  * "Copy Prompt" plus its hover tooltip. Figma (`45487-111197`) styles
@@ -63,7 +63,7 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
           Radix needs a real DOM node to anchor the popper and attach its
           hover/focus listeners to. */}
       <TooltipTrigger asChild>
-        <span className={cn("inline-flex w-full lg:w-auto", className)}>
+        <span className={cn("inline-flex w-full xl:w-auto", className)}>
           <CopyPromptButton
             className={COPY_PROMPT_BUTTON_CLASSES}
             label={HERO_COPY_PROMPT_LABEL}
@@ -101,10 +101,10 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
 function CliPill({ className }: { className?: string }) {
   return (
     <CopyCommand
-      className={cn("min-w-0 lg:w-[393px]", className)}
+      className={cn("min-w-0 xl:w-[393px]", className)}
       command={HERO_CLI_COMMAND}
       commandClassName="pointer-events-auto min-w-0 flex-1 text-base leading-none tracking-[-0.02em] text-white select-text"
-      copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
+      copyButtonClassName="size-4 xl:size-4 [&_svg]:size-4"
       controlClassName={cn(
         "h-11 gap-6 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
         geistMono.className
@@ -117,7 +117,7 @@ function MetaLine({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "text-sm leading-[1.375] tracking-tight text-white/40 lg:max-w-[369px] lg:text-[15px]",
+        "text-sm leading-[1.375] tracking-tight text-white/40 xl:max-w-[369px] xl:text-[15px]",
         className
       )}
     >
@@ -155,7 +155,7 @@ const HERO_HEADING_AFTER_BREAK = HERO_HEADING.slice(
 
 function HeroTitleColumn() {
   return (
-    <div className="flex min-w-0 flex-col gap-5 lg:max-w-[557px] lg:flex-1">
+    <div className="flex max-w-184 min-w-0 flex-col gap-5 xl:max-w-[557px] xl:flex-1">
       <div className="flex flex-col gap-3.5 md:gap-4">
         <HeroBadge />
         <h1 className="text-[36px] leading-[1.04em] tracking-[-0.04em] text-white md:text-5xl xl:text-[56px]">
@@ -179,7 +179,7 @@ function HeroTitleColumn() {
  */
 function HeroCtaColumnDesktop() {
   return (
-    <div className="hidden lg:flex lg:shrink-0 lg:flex-col lg:items-start lg:gap-5 lg:pb-2">
+    <div className="hidden xl:flex xl:shrink-0 xl:flex-col xl:items-start xl:gap-5 xl:pb-2">
       <MetaLine />
       <div className="flex w-full items-center gap-4">
         <CopyPromptWithTooltip />
@@ -192,17 +192,17 @@ function HeroCtaColumnDesktop() {
 /** Mobile-only: CLI pill, then `Copy Prompt`, then the meta line below — the CTA order flips. */
 function HeroCtaColumnMobile() {
   return (
-    <div className="flex flex-col gap-4 lg:hidden">
+    <div className="grid gap-4 sm:grid-cols-[minmax(0,24.5625rem)_8.5rem] xl:hidden">
       <CliPill />
       <CopyPromptWithTooltip />
-      <MetaLine className="mt-0.5" />
+      <MetaLine className="mt-0.5 sm:col-span-2" />
     </div>
   )
 }
 
 function HeroCopy() {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+    <div className="mx-auto flex max-w-7xl flex-col gap-10 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
       <HeroTitleColumn />
       <HeroCtaColumnDesktop />
       <HeroCtaColumnMobile />
@@ -286,14 +286,14 @@ function HeroLiveUi({
         {/*
         Mobile only: the dashboard slice (`HeroProductUI`, 438x317) and the
         agent panel (190.2x301.62) sit side by side as one 636px-wide row,
-        shifted left by 296px so only the dashboard's right sliver shows
+        aligned 20px from the right edge (−296px at 360px) so the dashboard's right sliver shows
         beside the fully-visible agent panel — reproducing Figma's bleed
         instead of stacking them as two separate boxes. `lg:contents`
         hands the two children back to the desktop flex row above at lg+
         (where this wrapper's own sizing/offset stop applying, since a
         `display:contents` box generates no box for them to apply to).
       */}
-        <div className="relative -left-[296px] w-[636px] rounded-xl sm:-left-20 sm:mx-auto lg:contents">
+        <div className="relative left-[calc(100%-656px)] w-[636px] rounded-xl sm:left-0 sm:mx-auto lg:contents">
           <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black lg:contents">
             <HeroProductUI
               phase={phase}
@@ -374,7 +374,7 @@ export function WebChatHero() {
     <section
       ref={inViewRef}
       className={cn(
-        "relative pt-13 font-inter md:pt-20 lg:pt-[92px]",
+        "relative pt-10 font-inter md:pt-14 lg:pt-18 xl:pt-23",
         geistMono.variable
       )}
       data-testid="web-chat-hero"
@@ -399,7 +399,7 @@ export function WebChatHero() {
         overshot to x1642). Verified by pixel diff against the frame.
       */}
       {/* Avoid an isolated stacking context: outside border blends need the backdrop. */}
-      <div className="relative container mx-auto max-w-[1428px] px-5 md:px-8">
+      <div className="relative mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-357">
         <HeroCopy />
 
         <div className="mt-17.5 lg:mt-16">

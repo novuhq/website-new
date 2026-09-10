@@ -1,7 +1,7 @@
 /**
  * Content for §2 "You know the old chat widget. This is Web Chat" (Task 9).
  * Figma: desktop `45487-79779`, personalized reference `45503-149553`, mobile
- * `45510-177550`. Every string here is verbatim against the task brief /
+ * `45496-139032`. Every string here is verbatim against the task brief /
  * those frames' text nodes.
  */
 

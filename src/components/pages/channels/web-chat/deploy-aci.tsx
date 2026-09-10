@@ -28,20 +28,21 @@ import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framewo
 export function DeployAci() {
   return (
     <section>
-      <div className="container mx-auto max-w-[1344px] px-5 md:px-8">
-        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between md:gap-16">
+      <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
           <h2 className="text-[32px] leading-[1.25em] font-normal tracking-[-0.04em] text-white md:max-w-[840px] md:text-[48px] md:leading-[1.04em]">
             {DEPLOY_ACI_HEADING}
           </h2>
-          <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:max-w-[604px] md:pt-2 md:text-[18px] md:text-gray-70">
+          <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-[18px] md:text-gray-70 lg:max-w-[604px] lg:pt-2">
             {DEPLOY_ACI_DESCRIPTION}
           </p>
         </div>
 
-        <div className="relative mt-8 aspect-[320/658] w-full overflow-hidden rounded-[16px] border-[0.5px] border-gray-20 bg-black md:-mx-8 md:mt-14 md:aspect-[1280/480] md:w-[calc(100%+4rem)] md:rounded-[24px] md:border-[0.75px]">
+        {/* The portrait export already includes its rounded outer border. */}
+        <div className="relative mx-auto mt-8 aspect-[320/658] w-full max-w-104 overflow-hidden rounded-[16px] bg-black md:mt-14 lg:-mx-8 lg:aspect-[1280/480] lg:w-[calc(100%+4rem)] lg:max-w-none lg:rounded-[24px] lg:border-[0.75px] lg:border-gray-20">
           <picture>
             <source
-              media="(max-width: 767px)"
+              media="(width < 64rem)"
               srcSet={illustrationMobile.src}
               width={illustrationMobile.width}
               height={illustrationMobile.height}
@@ -58,7 +59,7 @@ export function DeployAci() {
           <FrameworkLogoCycle />
         </div>
 
-        <div className="mt-8 flex flex-col gap-8 md:mt-14 md:flex-row md:items-start md:justify-between md:gap-16">
+        <div className="mt-8 flex flex-col gap-8 md:mt-14 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
           <ul className="flex items-center gap-7 md:gap-10" role="list">
             {DEPLOY_ACI_COMPLIANCE_BADGES.map((badge) => (
               <li key={badge.label}>
@@ -71,7 +72,10 @@ export function DeployAci() {
             ))}
           </ul>
 
-          <ul className="flex flex-col gap-4 md:w-128 md:gap-7" role="list">
+          <ul
+            className="flex flex-col gap-4 md:gap-7 lg:w-128 lg:shrink-0"
+            role="list"
+          >
             {DEPLOY_ACI_ITEMS.map((item, index) => (
               <li key={item.title}>
                 {index > 0 && (

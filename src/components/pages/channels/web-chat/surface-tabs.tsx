@@ -32,11 +32,11 @@ const TABS_CONTENT_CLASS = "mt-10 data-[state=inactive]:hidden lg:mt-14"
  */
 export function SurfaceTabs() {
   return (
-    <section className="mx-auto max-w-[1344px]">
+    <section className="mx-auto w-full max-w-3xl lg:max-w-336">
       <Tabs defaultValue="side-panel">
         <div className="flex flex-col gap-8 px-5 md:px-8 lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:px-8">
           <div className="flex flex-col gap-6 lg:max-w-[495px]">
-            <h2 className="text-[32px] leading-[1.04] tracking-[-0.04em] text-balance text-white lg:text-[48px]">
+            <h2 className="text-[32px] leading-[1.04] tracking-[-0.04em] text-balance text-white md:text-[48px]">
               {SURFACE_TABS_HEADING}
             </h2>
             <a
@@ -50,7 +50,7 @@ export function SurfaceTabs() {
           </div>
 
           <div className="flex flex-col gap-6 lg:max-w-[416px]">
-            <p className="text-base leading-[1.5] tracking-[-0.025em] text-[#A3A6B2] lg:text-lg">
+            <p className="text-base leading-[1.5] tracking-[-0.025em] text-[#A3A6B2] md:text-lg">
               {SURFACE_TABS_DESCRIPTION}
             </p>
             <TabsList className="h-11 w-full gap-0 overflow-hidden rounded-md border border-gray-30 bg-black/50 p-0">

@@ -88,7 +88,7 @@ test.describe("web chat ACI framework track", () => {
     await page.emulateMedia({ reducedMotion: "no-preference" })
     const track = await openTrack(page)
     const mobile = await page.evaluate(
-      () => matchMedia("(max-width: 767px)").matches
+      () => matchMedia("(width < 64rem)").matches
     )
     const first = await sample(track, 1_000)
     expect(first.animationCount).toBeGreaterThan(0)

@@ -40,7 +40,7 @@ const STYLE_TAG = `
   animation-iteration-count: infinite;
   animation-fill-mode: both;
 }
-@media (min-width: 768px) {
+@media (width >= 64rem) {
   .wc-flc-track {
     --wc-logo-entry-x: 0%;
     --wc-logo-entry-y: ${(176 / 106) * 100}%;

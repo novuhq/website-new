@@ -37,7 +37,9 @@ All five return to the initial composition after 18.5 seconds.
 Desktop positions relative to the 1280×480 image: center `(97,187)`, upper
 `(97,12)`, lower `(97,363)`, each 106×106. Mobile positions relative to the
 320×658 image: center `(125,55)`, left `(7,55)`, right `(242,55)`, each 70⅔ square.
-Scale positions proportionally with the image; do not change section geometry.
+Scale positions proportionally with the image. Following the September 10 responsive audit,
+use the vertical artwork and downward motion at 1024px and above. Below 1024px,
+use the capped portrait artwork and horizontal motion together.
 
 Reduced motion shows only one static centered Vercel mark with its corner frame. The decorative
 animation is hidden from assistive technology; the illustration retains its

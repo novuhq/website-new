@@ -32,10 +32,10 @@ function DesignSystemHeading() {
 
 function DesignSystemActions() {
   return (
-    <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-4">
+    <div className="flex shrink-0 flex-col-reverse gap-4 sm:flex-row sm:items-center">
       <Button
         asChild
-        className="w-full px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] normal-case md:w-fit"
+        className="w-full px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] normal-case sm:w-fit"
         size="none"
         variant="default"
       >
@@ -46,7 +46,7 @@ function DesignSystemActions() {
 
       <Button
         asChild
-        className="w-full px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-white normal-case md:w-fit"
+        className="w-full px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-white normal-case sm:w-fit"
         size="none"
         variant="outline"
       >
@@ -114,8 +114,8 @@ function DesignSystemCard() {
 export function DesignSystemShowcase() {
   return (
     <section>
-      <div className="mx-auto max-w-[1344px] px-5 md:px-8">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <DesignSystemHeading />
           <DesignSystemActions />
         </div>
