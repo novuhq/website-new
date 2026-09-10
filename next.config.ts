@@ -236,6 +236,11 @@ const nextConfig: NextConfig = {
     "typescript",
   ],
   outputFileTracingIncludes: {
+    // Sharp's native libvips binary is not picked up by automatic tracing.
+    "/api/agent-preview": [
+      "./node_modules/@img/sharp-libvips-*/lib/**/*",
+      "./node_modules/.pnpm/@img+sharp-libvips-*/node_modules/@img/sharp-libvips-*/lib/**/*",
+    ],
     "/integrations/channels": ["./src/content/integrations/**/*.mdx"],
     "/integrations/sources": ["./src/content/integrations/**/*.mdx"],
     "/integrations/[slug]": ["./src/content/integrations/**/*.mdx"],
