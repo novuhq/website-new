@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useRef, useState, type ReactNode } from "react"
 import { NovuProvider, useAgentChat } from "@novu/react"
 import type { DynamicToolUIPart } from "ai"
 import { ChevronUp, ExternalLink } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import type { WebChatSession } from "@/lib/web-chat-session"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -26,7 +25,9 @@ import {
 } from "@/components/ai-elements/reasoning"
 import { Tool, ToolHeader } from "@/components/ai-elements/tool"
 
+// The same integration and showcase subscriber as the original working demo.
 const AGENT_ID = "webchat"
+const SUBSCRIBER_ID = "69b008bc508e082a4f4f8322"
 
 export type LiveAgentRenderer = (
   compact: boolean,
@@ -312,64 +313,28 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
 }
 
 export default function LiveAgentChat({ children }: LiveAgentChatProps) {
-  const [session, setSession] = useState<WebChatSession | null>(null)
-  const [initializing, setInitializing] = useState(true)
-  useEffect(() => {
-    const controller = new AbortController()
-    void fetch("/api/web-chat/session", {
-      method: "POST",
-      credentials: "same-origin",
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) return
-        const value = await response.json()
-        if (
-          typeof value.applicationIdentifier === "string" &&
-          value.applicationIdentifier &&
-          typeof value.subscriberId === "string" &&
-          /^web-chat-[0-9a-f-]{36}$/.test(value.subscriberId) &&
-          typeof value.subscriberHash === "string" &&
-          /^[0-9a-f]{64}$/.test(value.subscriberHash) &&
-          !controller.signal.aborted
-        )
-          setSession({
-            applicationIdentifier: value.applicationIdentifier,
-            subscriberId: value.subscriberId,
-            subscriberHash: value.subscriberHash,
-          })
-      })
-      .catch(() => {
-        /* Keep the preview available when authentication fails. */
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setInitializing(false)
-      })
-    return () => controller.abort()
-  }, [])
-
-  if (!session) {
-    const reason = initializing
-      ? "Connecting to live chat…"
-      : "Live chat is unavailable. Try the website preview."
+  const applicationIdentifier = process.env.NEXT_PUBLIC_NOVU_APP_IDENTIFIER
+  if (!applicationIdentifier) {
     return children((compact, emptyState) => (
       <>
         {emptyState}
         <p role="status" className="sr-only">
-          {reason}
+          Live chat is unavailable. Try the website preview.
         </p>
         <LiveComposer
           compact={compact}
           disabled
           value=""
-          disabledReason={reason}
+          disabledReason="Live chat is unavailable. Try the website preview."
         />
       </>
     ))
   }
   return (
-    <NovuProvider {...session}>
+    <NovuProvider
+      applicationIdentifier={applicationIdentifier}
+      subscriberId={SUBSCRIBER_ID}
+    >
       <ConnectedAgentChat>{children}</ConnectedAgentChat>
     </NovuProvider>
   )

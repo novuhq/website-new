@@ -7,11 +7,11 @@ import {
   observeApplicationErrors,
 } from "./helpers"
 
-// Run against a server with the dedicated NOVU_WEB_CHAT_* fixture configuration.
+// Run against a server started with NEXT_PUBLIC_NOVU_APP_IDENTIFIER set.
 // All Novu traffic is intercepted; no real subscriber receives test messages.
 test.skip(
   process.env.PLAYWRIGHT_NOVU_FIXTURE !== "1",
-  "Set PLAYWRIGHT_NOVU_FIXTURE=1 and configure the server's signed Web Chat session fixture."
+  "Set PLAYWRIGHT_NOVU_FIXTURE=1 and start the app with a public Novu app identifier."
 )
 
 async function mockNovu(page: Page) {
@@ -108,10 +108,7 @@ test("sends to the original agent, streams a reply, and preserves a failed draft
   await expect(composer(page)).toBeEnabled()
   await expect.poll(novu.connected).toBe(true)
   expect(novu.sessions[0]).toMatchObject({
-    subscriber: {
-      subscriberId: expect.stringMatching(/^web-chat-[0-9a-f-]{36}$/),
-    },
-    subscriberHash: expect.stringMatching(/^[0-9a-f]{64}$/),
+    subscriber: { subscriberId: "69b008bc508e082a4f4f8322" },
   })
   const send = page.getByRole("button", { name: "Send message", exact: true })
   await expect(send).toBeDisabled()
@@ -239,70 +236,3 @@ test("handles approvals and starts a fresh live conversation after preview reset
     text: "New conversation",
   })
 })
-
-test("uses separate signed subscribers for separate visitors and reuses its own cookie", async ({
-  page,
-  browser,
-}) => {
-  const first = await mockNovu(page)
-  const otherContext = await browser.newContext()
-  try {
-    const otherPage = await otherContext.newPage()
-    const second = await mockNovu(otherPage)
-    await gotoCriticalPage(page, webChatContract.route)
-    await expect(composer(page)).toBeEnabled()
-    await gotoCriticalPage(otherPage, webChatContract.route)
-    await expect(composer(otherPage)).toBeEnabled()
-    const a = first.sessions[0] as {
-      subscriber: { subscriberId: string }
-      subscriberHash: string
-    }
-    const b = second.sessions[0] as {
-      subscriber: { subscriberId: string }
-      subscriberHash: string
-    }
-    expect(a.subscriber.subscriberId).not.toBe(b.subscriber.subscriberId)
-    expect(a.subscriberHash).toMatch(/^[0-9a-f]{64}$/)
-    expect(b.subscriberHash).toMatch(/^[0-9a-f]{64}$/)
-    expect(a.subscriberHash).not.toBe(b.subscriberHash)
-    await page.reload()
-    await expect(composer(page)).toBeEnabled()
-    await expect.poll(() => first.sessions.length).toBeGreaterThan(1)
-    expect(first.sessions.at(-1)).toMatchObject({
-      subscriber: a.subscriber,
-      subscriberHash: a.subscriberHash,
-    })
-  } finally {
-    await otherContext.close()
-  }
-})
-
-for (const sessionFailure of ["unavailable", "unsigned"]) {
-  test(`keeps Novu disconnected when the visitor session is ${sessionFailure}`, async ({
-    page,
-  }) => {
-    const novu = await mockNovu(page)
-    await page.route("**/api/web-chat/session{,/}", (route) =>
-      route.fulfill(
-        sessionFailure === "unavailable"
-          ? { status: 503, json: { error: "Live chat is unavailable" } }
-          : {
-              json: {
-                applicationIdentifier: "fixture",
-                subscriberId: "web-chat-00000000-0000-4000-8000-000000000000",
-              },
-            }
-      )
-    )
-    await gotoCriticalPage(page, webChatContract.route)
-    await expect(
-      page
-        .getByTestId("web-chat-hero")
-        .getByRole("status")
-        .filter({ hasText: "Live chat is unavailable" })
-    ).toHaveCount(1)
-    await expect(composer(page)).toBeDisabled()
-    expect(novu.sessions).toHaveLength(0)
-    expect(novu.requests).toHaveLength(0)
-  })
-}

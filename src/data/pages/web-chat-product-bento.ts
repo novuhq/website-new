@@ -48,37 +48,3 @@ export const PRODUCT_BENTO_CARDS: ProductBentoCardCopy[] = [
     body: "Renders your components, tool calls, and approvals directly in the thread.",
   },
 ]
-
-/**
- * The two chat bubbles rebuilt as real DOM over the exported illustrations
- * (card 1 `Subscriber Profile`, card 2 `Activity`) — the "bubbles" the shared
- * rules call out as discrete accent elements, per Figma text nodes
- * `45487:79971` and `45487:80133`.
- */
-export const PRODUCT_BENTO_BUBBLE_SUBSCRIBER =
-  "How many orders were placed on our website yesterday?"
-
-export const PRODUCT_BENTO_BUBBLE_ACTIVITY =
-  "Can you prepare the Q3 usage report for finance?"
-
-/**
- * Card 4 "Agent actions" confirm panel, rebuilt as real DOM (Figma
- * `45487:80341`-`45487:80350`) since its fill and border are accent-derived
- * (confirmed against the personalized reference: `fill_55063cc3`/
- * `fill_16012195` become `fill_d6a0b74a`/`fill_d1a4086e`).
- */
-export const PRODUCT_BENTO_ACTIONS_STEP = "3"
-export const PRODUCT_BENTO_CONFIRM_TITLE = "Confirm change"
-export const PRODUCT_BENTO_CONFIRM_BODY = "Review and confirm update"
-export const PRODUCT_BENTO_APPROVE_LABEL = "Approve"
-export const PRODUCT_BENTO_CANCEL_LABEL = "Cancel"
-
-/**
- * Card 5 "Renders your components" CTA button, rebuilt as real DOM (Figma
- * `45487:80387`/`45487:80388`) since its fill is accent-derived (confirmed:
- * `fill_1b6486b7` `#E18CF2` becomes `fill_9e958814` `#E65006` in the
- * personalized reference). The label is shipped verbatim from Figma,
- * including its apparent typo ("updater" for "updated") — not corrected,
- * per the shared rule against inventing copy.
- */
-export const PRODUCT_BENTO_VIEW_ORDER_LABEL = "View updater order"
