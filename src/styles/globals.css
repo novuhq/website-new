@@ -87,6 +87,8 @@
   --background: 240 37% 3%;
   --foreground: 0 0% 100%;
 
+  --card-surface: 225 11% 7%; /* #101114 */
+
   --destructive: 0 60% 50%;
   --ring: 215 90% 81%;
   --chart-1: 220 70% 50%;
@@ -177,6 +179,8 @@
   --color-gray-80: hsl(var(--gray-80));
   --color-gray-90: hsl(var(--gray-90));
 
+  --color-card-surface: hsl(var(--card-surface));
+
   --color-integration-card: hsl(var(--integration-card-surface));
   --color-integration-card-border: hsl(240 16% 24% / 0.6);
   --color-integration-card-category-border: var(
@@ -209,6 +213,9 @@
     "Noto Color Emoji";
   --font-inter:
     var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-geist-mono:
+    var(--font-geist-mono), "Geist Mono", ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 
   --font-weight-book: 350;
 
