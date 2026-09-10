@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import Image from "next/image"
 import type { IStackOption } from "@/data/pages/connect-stack-options"
 import * as SelectPrimitive from "@radix-ui/react-select"
@@ -35,19 +36,25 @@ function OptionLabel({ option }: { option: IStackOption }) {
 
 interface ISelectFieldProps {
   className?: string
+  contentClassName?: string
+  indicator?: ReactNode
   label: string
   onValueChange: (value: string) => void
   options: IStackOption[]
+  renderOptionIndicator?: (selected: boolean) => ReactNode
   triggerClassName?: string
   value: string
 }
 
 export function SelectField({
   className,
+  contentClassName,
+  indicator,
   label,
   options,
   value,
   onValueChange,
+  renderOptionIndicator,
   triggerClassName,
 }: ISelectFieldProps) {
   const current = options.find((option) => option.value === value) ?? options[0]
@@ -69,25 +76,30 @@ export function SelectField({
             <OptionLabel option={current} />
           </SelectPrimitive.Value>
           <SelectPrimitive.Icon asChild>
-            <svg
-              className="relative -mr-0.5 w-2.5 shrink-0 text-gray-60 transition-transform group-data-[state=open]:rotate-180"
-              viewBox="0 0 8 5"
-              fill="none"
-              aria-hidden
-            >
-              <path
-                d="M1 1L4 4L7 1"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            {indicator ?? (
+              <svg
+                className="relative -mr-0.5 w-2.5 shrink-0 text-gray-60 transition-transform group-data-[state=open]:rotate-180"
+                viewBox="0 0 8 5"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M1 1L4 4L7 1"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
 
         <SelectPrimitive.Portal>
           <SelectPrimitive.Content
-            className="z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black font-inter shadow-xl outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className={cn(
+              "z-50 min-w-(--radix-select-trigger-width) overflow-hidden rounded-[0.25rem] border border-gray-20 bg-black font-inter shadow-xl outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+              contentClassName
+            )}
             position="popper"
             sideOffset={2}
           >
@@ -101,21 +113,25 @@ export function SelectField({
                   <SelectPrimitive.ItemText>
                     <OptionLabel option={option} />
                   </SelectPrimitive.ItemText>
-                  <SelectPrimitive.ItemIndicator>
-                    <svg
-                      className="size-3.5"
-                      viewBox="0 0 15 15"
-                      fill="none"
-                      aria-hidden
-                    >
-                      <path
-                        d="M2 8L6 12L14 4"
-                        stroke="currentColor"
-                        strokeMiterlimit="10"
-                        strokeLinecap="square"
-                      />
-                    </svg>
-                  </SelectPrimitive.ItemIndicator>
+                  {renderOptionIndicator ? (
+                    renderOptionIndicator(option.value === current.value)
+                  ) : (
+                    <SelectPrimitive.ItemIndicator>
+                      <svg
+                        className="size-3.5"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        aria-hidden
+                      >
+                        <path
+                          d="M2 8L6 12L14 4"
+                          stroke="currentColor"
+                          strokeMiterlimit="10"
+                          strokeLinecap="square"
+                        />
+                      </svg>
+                    </SelectPrimitive.ItemIndicator>
+                  )}
                 </SelectPrimitive.Item>
               ))}
             </SelectPrimitive.Viewport>

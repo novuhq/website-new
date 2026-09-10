@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Geist_Mono } from "next/font/google"
 import Image from "next/image"
 import {
   DEFAULT_CHANNELS,
@@ -25,19 +26,30 @@ import {
   CONFIGURATOR_PROMPT_RESULT_LABEL,
   CONFIGURATOR_PROMPT_TAB_LABEL,
 } from "@/data/pages/web-chat-configurator"
+import ConfiguratorCheckboxIcon from "@/svgs/pages/channels/web-chat/configurator-checkbox.inline.svg"
+import ConfiguratorChevronIcon from "@/svgs/pages/channels/web-chat/configurator-chevron.inline.svg"
+import configuratorEmailIcon from "@/svgs/pages/channels/web-chat/configurator-email.svg"
+import configuratorSlackIcon from "@/svgs/pages/channels/web-chat/configurator-slack.svg"
+import configuratorTeamsIcon from "@/svgs/pages/channels/web-chat/configurator-teams.svg"
+import configuratorTelegramIcon from "@/svgs/pages/channels/web-chat/configurator-telegram.svg"
+import configuratorVercelIcon from "@/svgs/pages/channels/web-chat/configurator-vercel.svg"
+import configuratorWebChatIcon from "@/svgs/pages/channels/web-chat/configurator-web-chat.svg"
+import configuratorWhatsappIcon from "@/svgs/pages/channels/web-chat/configurator-whatsapp.svg"
+import { preload } from "react-dom"
 
 import {
   buildConnectCommand,
   buildFrameworkChannelConnectPrompt,
 } from "@/lib/connect-prompt"
+import { cn } from "@/lib/utils"
 import { SelectField } from "@/components/ui/select-field"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 /**
  * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
- * section `45440-69446` (open-dropdown state `45497-147645`, CLI-tab state
- * `45501-148681`). Not personalized: no `HueLayer`, no `--wc-accent*`.
+ * section `45440-69446` (open-selector UI `45497-148452`, CLI-tab UI
+ * `45501-148837`). Not personalized: no `HueLayer`, no `--wc-accent*`.
  *
  * `SelectField` and the option lists come from `@/components/ui/select-field`
  * and `@/data/pages/connect-stack-options` — see that data module's file
@@ -50,13 +62,63 @@ import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
  * the copy and retain its corner radii and control spacing.
  */
 
-const CHANNEL_OPTIONS: IStackOption[] = [WEB_CHAT_CHANNEL, ...DEFAULT_CHANNELS]
-const FRAMEWORK_OPTIONS = DEFAULT_FRAMEWORKS
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+})
+
+const CHANNEL_ICONS: Record<string, IStackOption["icon"]> = {
+  email: configuratorEmailIcon,
+  telegram: configuratorTelegramIcon,
+  slack: configuratorSlackIcon,
+  teams: configuratorTeamsIcon,
+  whatsapp: configuratorWhatsappIcon,
+}
+
+const CHANNEL_OPTIONS: IStackOption[] = [
+  { ...WEB_CHAT_CHANNEL, icon: configuratorWebChatIcon },
+  ...DEFAULT_CHANNELS.map((option) => ({
+    ...option,
+    icon: CHANNEL_ICONS[option.value] ?? option.icon,
+  })),
+]
+const FRAMEWORK_OPTIONS = DEFAULT_FRAMEWORKS.map((option) =>
+  option.value === "ai-sdk"
+    ? { ...option, icon: configuratorVercelIcon }
+    : option
+)
 
 const SELECT_TRIGGER_CLASS_NAME =
-  "h-10.5 rounded-md border-[#313349] bg-transparent px-3 text-base leading-none tracking-[-0.02em] [&>span:first-child>span]:gap-2"
+  "h-10.5 rounded-md border-[#313349] bg-transparent px-3 text-base leading-none tracking-tighter focus-visible:bg-white/5 focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=open]:border-white [&>span:first-child]:min-w-0 [&>span:first-child>span]:gap-2"
+
+const SELECT_CONTENT_CLASS_NAME =
+  "origin-(--radix-select-content-transform-origin) duration-150 motion-safe:data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1 motion-reduce:animate-none"
+
+const SELECT_INDICATOR = (
+  <ConfiguratorChevronIcon
+    className="size-4 shrink-0 transition-transform group-data-[state=open]:rotate-180"
+    aria-hidden="true"
+    focusable="false"
+  />
+)
 
 type ConfiguratorTab = "prompt" | "cli"
+
+function renderOptionCheckbox(selected: boolean) {
+  return selected ? (
+    <ConfiguratorCheckboxIcon
+      className="size-4 shrink-0"
+      aria-hidden="true"
+      focusable="false"
+    />
+  ) : (
+    <span
+      className="size-4 shrink-0 rounded-xs border border-white"
+      aria-hidden="true"
+    />
+  )
+}
 
 function BuilderLogoRow() {
   return (
@@ -100,13 +162,18 @@ function ConfiguratorResult({
 }) {
   return (
     <div className="flex flex-col gap-2.5">
-      <span className="h-4.5 text-sm leading-tight font-medium tracking-[-0.02em] text-gray-60">
+      <span className="h-4.5 text-sm leading-tight font-medium tracking-tighter text-gray-60">
         {label}
       </span>
       {/* Figma truncates this preview to one line. The full generated value
           remains selectable and is used by the copy button. */}
       <div className="rounded-md bg-black/30 px-3.5 py-3 outline outline-[#313349]">
-        <code className="block truncate font-mono text-sm leading-[1.5] text-white">
+        <code
+          className={cn(
+            "block truncate text-sm leading-normal text-white",
+            geistMono.className
+          )}
+        >
           {value}
         </code>
       </div>
@@ -118,6 +185,12 @@ export function WebChatConfigurator() {
   const [channelValue, setChannelValue] = useState(WEB_CHAT_CHANNEL.value)
   const [frameworkValue, setFrameworkValue] = useState("ai-sdk")
   const [activeTab, setActiveTab] = useState<ConfiguratorTab>("prompt")
+
+  for (const { icon } of [...CHANNEL_OPTIONS, ...FRAMEWORK_OPTIONS]) {
+    if (icon) {
+      preload(typeof icon === "string" ? icon : icon.src, { as: "image" })
+    }
+  }
 
   const channel =
     CHANNEL_OPTIONS.find((option) => option.value === channelValue) ??
@@ -167,7 +240,7 @@ export function WebChatConfigurator() {
               src={CONFIGURATOR_BLOB_IMAGE}
             />
 
-            <div className="relative flex items-center justify-center px-5 py-14 sm:h-170 sm:px-13 sm:py-0">
+            <div className="relative flex items-center justify-center py-14 sm:h-170 sm:px-13 sm:py-0">
               <div className="relative w-full max-w-107.5 rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)]">
                 {/* Figma's glass frame, including its blurred color and stroke,
                     is baked into this decorative asset. Nine-slice scaling
@@ -210,33 +283,39 @@ export function WebChatConfigurator() {
                   >
                     <TabsList className="grid h-11 w-full grid-cols-2 gap-0 overflow-hidden rounded-md bg-black/50 p-0 ring-1 ring-[#313349]">
                       <TabsTrigger
-                        className="h-full rounded-none px-6 py-3.5 text-base leading-none font-normal tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-none px-2 py-3.5 text-sm leading-none font-normal tracking-tighter text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white sm:px-6 sm:text-base"
                         value="prompt"
                       >
                         {CONFIGURATOR_PROMPT_TAB_LABEL}
                       </TabsTrigger>
                       <TabsTrigger
-                        className="h-full rounded-none px-6 py-3.5 text-base leading-none font-normal tracking-[-0.02em] text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white"
+                        className="h-full rounded-none px-2 py-3.5 text-sm leading-none font-normal tracking-tighter text-gray-60 data-[state=active]:bg-[#211F37] data-[state=active]:text-white sm:px-6 sm:text-base"
                         value="cli"
                       >
                         {CONFIGURATOR_CLI_TAB_LABEL}
                       </TabsTrigger>
                     </TabsList>
 
-                    <div className="mt-[18px] flex flex-col gap-[18px]">
+                    <div className="mt-4.5 flex flex-col gap-4.5">
                       <SelectField
-                        className="gap-2.5 [&>span]:tracking-[-0.02em]"
+                        className="gap-2.5"
+                        contentClassName={SELECT_CONTENT_CLASS_NAME}
+                        indicator={SELECT_INDICATOR}
                         label={CONFIGURATOR_CHANNEL_SELECT_LABEL}
                         onValueChange={setChannelValue}
                         options={CHANNEL_OPTIONS}
+                        renderOptionIndicator={renderOptionCheckbox}
                         triggerClassName={SELECT_TRIGGER_CLASS_NAME}
                         value={channel.value}
                       />
                       <SelectField
-                        className="gap-2.5 [&>span]:tracking-[-0.02em]"
+                        className="gap-2.5"
+                        contentClassName={SELECT_CONTENT_CLASS_NAME}
+                        indicator={SELECT_INDICATOR}
                         label={CONFIGURATOR_FRAMEWORK_SELECT_LABEL}
                         onValueChange={setFrameworkValue}
                         options={FRAMEWORK_OPTIONS}
+                        renderOptionIndicator={renderOptionCheckbox}
                         triggerClassName={SELECT_TRIGGER_CLASS_NAME}
                         value={framework.value}
                       />
