@@ -32,9 +32,9 @@ export function WebChatCard() {
         />
         <HueLayer />
       </div>
-      {/* Mobile illustration */}
+      {/* Fade the artwork and its hue layer together into the caption backdrop. */}
       <div
-        className="relative isolate w-full shrink-0 overflow-hidden md:hidden"
+        className="relative isolate w-full shrink-0 overflow-hidden bg-inherit mask-b-from-80% md:hidden"
         style={{ aspectRatio: "640/626" }}
       >
         <Image

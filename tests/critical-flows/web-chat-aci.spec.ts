@@ -101,10 +101,13 @@ test.describe("web chat ACI framework track", () => {
         (logo) => logo.opacity > 0.05 && logo.opacity < 0.9
       )
       expect(outer).toHaveLength(2)
-      for (const logo of outer) expect(logo.opacity).toBeCloseTo(0.4, 2)
+      for (const logo of outer) {
+        expect(logo.opacity).toBeCloseTo(0.4, 2)
+        expect(logo.cornerOpacity).toBe(1)
+      }
 
       const center = centered[0]
-      expect(center.cornerOpacity).toBe(1)
+      expect(center.cornerOpacity).toBe(0)
       const incoming = held.logos.find(
         (logo) => logo.name === FRAMEWORKS[(step + 1) % FRAMEWORKS.length]
       )!
@@ -139,7 +142,11 @@ test.describe("web chat ACI framework track", () => {
         )!
         if (mobile) expect(moved.x).toBeGreaterThan(logo.x + 0.01)
         else expect(moved.y).toBeGreaterThan(logo.y + 0.01)
-        expect(moved.cornerOpacity).toBe(1)
+        if (logo === outgoing) expect(moved.cornerOpacity).toBe(1)
+        else {
+          expect(moved.cornerOpacity).toBeGreaterThan(0)
+          expect(moved.cornerOpacity).toBeLessThan(1)
+        }
       }
       // Check the entire handoff, rather than just its beginning and end, so
       // a stationary fallback behind the entering logo cannot go unnoticed.
@@ -156,6 +163,7 @@ test.describe("web chat ACI framework track", () => {
       expect(repeated.x).toBeCloseTo(logo.x, 3)
       expect(repeated.y).toBeCloseTo(logo.y, 3)
       expect(repeated.opacity).toBeCloseTo(logo.opacity, 3)
+      expect(repeated.cornerOpacity).toBeCloseTo(logo.cornerOpacity, 3)
     }
     expectHealthyPage(errors)
   })
@@ -171,7 +179,7 @@ test.describe("web chat ACI framework track", () => {
     const center = snapshot.logos.find((logo) => logo.opacity > 0)!
     expect(center.name).toBe(FRAMEWORKS[0])
     expect(center.opacity).toBe(1)
-    expect(center.cornerOpacity).toBe(1)
+    expect(center.cornerOpacity).toBe(0)
 
     // Switching the preference at runtime also cancels motion without waiting
     // for a reload or a client-side state update.

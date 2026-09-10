@@ -299,6 +299,8 @@ interactive. Paste your site to see the agent in your product."
 **§2 Comparison bento.** "You know the old chat widget. This is Web Chat" with a
 right-hand description. Two cards — `The old chat widget` (narrow) and `Web Chat`
 (wide, with a floating agent-response table). Personalized.
+The mobile Web Chat artwork and its hue layer fade together over the bottom 20%
+into the card backdrop, blending the cropped image into its live caption.
 
 **§3 Product bento.** "Not a chat box on your site. An agent inside your app".
 Five cards, two then three: Connects users to their profiles / Keeps every
@@ -311,6 +313,9 @@ Conversations` expanded to _Launch readiness review, Q3 usage report, Team acces
 review_) and carries its own conversation about workspace launch readiness with a
 three-item checklist and a partially-typed composer. Four layouts total across two
 tabs and two breakpoints; two message scripts in the data file. Not personalized.
+Switch compositions with a 400ms opacity and blur crossfade in one shared grid
+cell, preserving the illustration height. Only the active panel is focusable or
+exposed to assistive technology. Reduced motion switches instantly without blur.
 
 **§5 Channels grid.** 3×3 channel tiles with a two-wide mascot card, and a right
 column carrying the description, `Book a demo`, and the `npx novu connect` copy
@@ -320,8 +325,8 @@ pill. Reuses `connect/connect-channels-data.ts` and `ui/copy-command.tsx`.
 `framework-logo-cycle` spanning the full framework track. The outer logos are
 part of the animation, not part of the static export: incoming, centered, and
 outgoing marks advance together. The center holds at full opacity for 3s; outer
-marks hold at 40%, then all advance over 700ms. Corner frames move with the marks
-and remain visible at the center. Desktop defaults to downward movement, with upward
+marks hold at 40%, then all advance over 700ms. Corner frames move with the marks,
+fade away at the center, and remain visible at the outer positions. Desktop defaults to downward movement, with upward
 movement supported by the existing direction prop; mobile moves left to right.
 Reduced motion shows one static center mark. See the approved
 [full-track design](2026-09-10-web-chat-aci-logo-track-design.md) for geometry and

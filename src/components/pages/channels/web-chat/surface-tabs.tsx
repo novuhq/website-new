@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   SURFACE_TABS_BUTTON_HREF,
   SURFACE_TABS_BUTTON_LABEL,
@@ -25,16 +26,18 @@ const TAB_TRIGGER_CLASS = cn(
 )
 
 const TABS_CONTENT_CLASS =
-  "mt-8 data-[state=inactive]:hidden md:mt-10 lg:mt-14 xl:mt-16"
+  "col-start-1 row-start-1 mt-0 min-w-0 transition-[opacity,filter] duration-400 ease-out data-[state=active]:opacity-100 data-[state=active]:blur-none data-[state=inactive]:pointer-events-none data-[state=inactive]:opacity-0 data-[state=inactive]:blur-sm motion-reduce:transition-none motion-reduce:data-[state=inactive]:blur-none"
 
 /**
  * Both tab states use the original desktop and mobile Figma illustrations.
  * Tabs and the AI Elements link remain interactive; preview UI is decorative.
  */
 export function SurfaceTabs() {
+  const [activeTab, setActiveTab] = useState("side-panel")
+
   return (
     <section className="mx-auto w-full max-w-3xl lg:max-w-336">
-      <Tabs defaultValue="side-panel">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="flex flex-col gap-14 px-5 md:gap-8 md:px-8 lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:px-8">
           <div className="flex flex-col gap-7 md:gap-6 lg:max-w-[495px]">
             <h2 className="text-[32px] leading-[1.04] tracking-[-0.04em] text-balance text-white md:text-[48px]">
@@ -65,29 +68,39 @@ export function SurfaceTabs() {
           </div>
         </div>
 
-        <TabsContent
-          value="side-panel"
-          forceMount
-          className={TABS_CONTENT_CLASS}
-        >
-          <SurfaceTabsIllustration
-            alt={SURFACE_TABS_IMAGE_ALT.sidePanel}
-            desktop={sidePanel}
-            mobile={sidePanelMobile}
-          />
-        </TabsContent>
+        {/* Keep both illustrations in one grid cell so interrupted fades can
+            reverse smoothly without changing the section's height. */}
+        <div className="mt-8 grid md:mt-10 lg:mt-14 xl:mt-16">
+          <TabsContent
+            value="side-panel"
+            forceMount
+            aria-hidden={activeTab !== "side-panel"}
+            inert={activeTab !== "side-panel"}
+            tabIndex={activeTab === "side-panel" ? 0 : -1}
+            className={TABS_CONTENT_CLASS}
+          >
+            <SurfaceTabsIllustration
+              alt={SURFACE_TABS_IMAGE_ALT.sidePanel}
+              desktop={sidePanel}
+              mobile={sidePanelMobile}
+            />
+          </TabsContent>
 
-        <TabsContent
-          value="full-screen"
-          forceMount
-          className={TABS_CONTENT_CLASS}
-        >
-          <SurfaceTabsIllustration
-            alt={SURFACE_TABS_IMAGE_ALT.fullScreen}
-            desktop={fullScreen}
-            mobile={fullScreenMobile}
-          />
-        </TabsContent>
+          <TabsContent
+            value="full-screen"
+            forceMount
+            aria-hidden={activeTab !== "full-screen"}
+            inert={activeTab !== "full-screen"}
+            tabIndex={activeTab === "full-screen" ? 0 : -1}
+            className={TABS_CONTENT_CLASS}
+          >
+            <SurfaceTabsIllustration
+              alt={SURFACE_TABS_IMAGE_ALT.fullScreen}
+              desktop={fullScreen}
+              mobile={fullScreenMobile}
+            />
+          </TabsContent>
+        </div>
       </Tabs>
     </section>
   )

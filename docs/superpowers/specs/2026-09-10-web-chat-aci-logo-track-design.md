@@ -27,8 +27,9 @@ next logos at the outer positions at 40% opacity. All positions advance together
 after a 3000ms hold, over a 700ms movement. Desktop defaults to downward travel per the September 10 user preference;
 the existing optional upward direction remains supported. Mobile always moves
 left to right. Logos fade to zero outside the track; no stationary fallback is
-visible beneath moving logos. Corner frames travel with logos and remain visible at
-the center, including during the hold, per the September 10 user correction.
+visible beneath moving logos. Per the latest September 10 screenshot feedback,
+corner frames remain visible at the outer positions, fade away as a logo enters
+the center, and fade back in as it leaves. The centered hold has no corner frame.
 
 The initial composition is Vercel in the center, LangChain outgoing, Claude
 incoming. The subsequent centers are Claude, AWS, Custom code, and LangChain.
@@ -41,7 +42,7 @@ Scale positions proportionally with the image. Following the September 10 respon
 use the vertical artwork and downward motion at 1024px and above. Below 1024px,
 use the capped portrait artwork and horizontal motion together.
 
-Reduced motion shows only one static centered Vercel mark with its corner frame. The decorative
+Reduced motion shows only one static centered Vercel mark without a corner frame. The decorative
 animation is hidden from assistive technology; the illustration retains its
 existing descriptive alt text. This section remains outside personalization.
 
@@ -49,7 +50,8 @@ existing descriptive alt text. This section remains outside personalization.
 
 Freeze the browser's actual CSS timeline at each hold and during movement.
 Verify the same logo travels through outer and center positions, all five logos
-reach the center in order, outer opacity stays at 40% while held, and the loop
+reach the center in order, outer opacity stays at 40% while held, corner frames
+disappear only at the center and fade during the handoff, and the loop
 wraps without a duplicate centered logo. Check desktop/mobile, upward/downward
 travel, reduced motion, and JavaScript-disabled rendering. Inspect both clean
 exports, section screenshots, and full-page screenshots in Chromium and WebKit.

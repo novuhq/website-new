@@ -34,6 +34,11 @@ const STYLE_TAG = `
   top: ${(55 / 658) * 100}%;
   width: ${(212 / 3 / 320) * 100}%;
   animation-name: wcDeployAciLogoTrack;
+}
+.wc-flc-corners {
+  animation-name: wcDeployAciLogoCorners;
+}
+.wc-flc-logo, .wc-flc-corners {
   animation-duration: ${CYCLE_MS}ms;
   animation-delay: var(--wc-logo-delay);
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -79,8 +84,12 @@ const STYLE_TAG = `
     transform: translate3d(var(--wc-logo-entry-x), var(--wc-logo-entry-y), 0);
   }
 }
+@keyframes wcDeployAciLogoCorners {
+  0%, ${HOLD_PCT}%, 100% { opacity: 0; }
+  ${STEP_PCT}%, ${4 * STEP_PCT + HOLD_PCT}% { opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .wc-flc-logo { animation: none; opacity: 0; }
+  .wc-flc-logo, .wc-flc-corners { animation: none; opacity: 0; }
   .wc-flc-logo[data-wc-first] { opacity: 1; transform: none; }
 }
 `
@@ -88,8 +97,8 @@ const STYLE_TAG = `
 /**
  * One coordinated track: center → outgoing → offscreen → incoming → center.
  * Negative phase offsets populate the three Figma positions on first paint.
- * SVG glyphs remain transparent and corner frames stay attached at every slot;
- * no stationary logo or black tile sits underneath the moving artwork.
+ * Corner frames travel with the outer logos and fade away in the center.
+ * No stationary logo or black tile sits underneath the moving artwork.
  */
 export function FrameworkLogoCycle({
   className,
