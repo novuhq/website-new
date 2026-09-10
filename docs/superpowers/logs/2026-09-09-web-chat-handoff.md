@@ -50,6 +50,12 @@ default, hover, active, and filled states, including the exported reset icon,
 gray submit hover, and rounded field focus indicator. See
 [the URL states log](2026-09-09-web-chat-url-states.md) for comparison and validation.
 
+**2026-09-09 hero borders:** Figma's dashboard strokes use overlay blending and
+outside alignment; the chat stroke uses soft-light blending. Both now retain
+those properties, including the 0.466px mobile strokes. See
+[the border correction log](2026-09-09-web-chat-hero-borders.md). Do not restore
+ordinary white borders or isolate the outside strokes from the hero backdrop.
+
 Read these first, in this order:
 
 1. `docs/superpowers/specs/2026-09-08-web-chat-figma-redesign-design.md` — the

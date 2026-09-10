@@ -367,9 +367,9 @@ function AgentPanel({
         ease: "easeOut",
       }}
       className={cn(
-        "relative isolate flex flex-col overflow-hidden rounded-[14px] border border-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px]",
+        "relative isolate flex flex-col overflow-hidden rounded-[14px] p-px shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-[inherit] after:mix-blend-soft-light after:inset-ring-1 after:inset-ring-white/90",
         compact
-          ? "h-[301.62px] w-[190.2px] rounded-[6.5px] backdrop-blur-[22.38px]"
+          ? "h-[301.62px] w-[190.2px] rounded-[6.526px] p-[0.466px] backdrop-blur-[22.38px] after:inset-ring-[0.466px]"
           : // Desktop: fills whatever height the shared card (`HeroLiveUi`
             // in hero.tsx) gives its margined wrapper, matching Figma's
             // `❖chat` panel filling ~647 of the 680-tall card rather than a

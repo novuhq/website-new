@@ -256,6 +256,36 @@ function HeroBackdrop({ personalized }: { personalized: boolean }) {
   )
 }
 
+/** Figma 45487:79082 / 112601: outside strokes blend with the hero backdrop.
+ * The inverse gradient transforms give these axis-aligned ellipses. Paint
+ * bottom to top, keeping each overlay blend separate. A padding mask retains
+ * the fractional mobile stroke, which CSS border widths round to a full pixel.
+ */
+function DashboardBorder({ compact = false }: { compact?: boolean }) {
+  return (
+    <>
+      {[
+        "bg-[radial-gradient(ellipse_44.7845%_37.5%_at_50%_105.6618%,white_0%,transparent_76.3849%)]",
+        "bg-[radial-gradient(ellipse_57.8614%_102.0107%_at_50%_-2.0107%,white_0%,transparent_41.0963%)]",
+        "bg-white",
+      ].map((paint) => (
+        <span
+          key={paint}
+          aria-hidden
+          data-slot="hero-dashboard-border"
+          className={cn(
+            "pointer-events-none absolute -inset-(--wc-frame-stroke) z-20 rounded-[calc(var(--wc-frame-radius)+var(--wc-frame-stroke))] mask-[linear-gradient(white,white),linear-gradient(white,white)] mask-exclude [mask-clip:content-box,border-box] p-(--wc-frame-stroke) mix-blend-overlay",
+            compact
+              ? "[--wc-frame-radius:12px] [--wc-frame-stroke:0.466px] lg:hidden"
+              : "hidden [--wc-frame-radius:24px] [--wc-frame-stroke:1px] lg:block",
+            paint
+          )}
+        />
+      ))}
+    </>
+  )
+}
+
 function HeroLiveUi({
   step,
   phase,
@@ -268,57 +298,64 @@ function HeroLiveUi({
   personalizedTable: boolean
 }) {
   return (
-    <div
-      className={cn(
-        // Mobile: `-mx-5` cancels the section's own `px-5` padding so this
-        // frame clips against the true viewport edge — Figma's `ui` group
-        // (`45487-112600`) is positioned "at x-296 on a 360 viewport",
-        // i.e. relative to the device edge, not the padded content column.
-        "relative -mx-5 overflow-hidden",
-        // Desktop: Figma's `dashboard` frame (`45487-89843`, 1364x680,
-        // radius 24) is ONE continuous card — the sidebar/table mock and
-        // the floating agent panel share its background/border/shadow/
-        // blur, rather than being two separately-chromed boxes with a
-        // visible seam between them.
-        // `lg:h-[680px]` pins that 680 exactly rather than letting the
-        // table's row count set it: the mock has more rows than fit, and
-        // Figma clips them against the card with the fade the table
-        // already draws. Left to grow, it reached 734 and pushed the URL
-        // field and caption ~53px below their designed positions.
-        // `lg:bg-black` under the gradient: Figma's fill fades to
-        // transparent below 58% and we match it exactly, but the frame never
-        // shows that fade — every point inside the card measures 1-6/255,
-        // because the dashboard's children are opaque. Two things went wrong
-        // without an opaque base: the glow came through the card's lower
-        // third at up to 137/255, and the chat panel (whose own fill is only
-        // 0.56 alpha) composited over glow instead of over black, which lit
-        // it ~40/255 too bright. `bg-black` sets background-color and the
-        // gradient sets background-image, so both apply.
-        "lg:relative lg:mx-0 lg:flex lg:h-[680px] lg:flex-row lg:items-stretch lg:overflow-hidden lg:rounded-3xl lg:border lg:border-white/10 lg:bg-black lg:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] lg:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] lg:backdrop-blur-[48px]"
-      )}
-    >
-      {/*
+    // Keep the stroke outside the clipped surfaces so it blends with the glow.
+    <div className="relative -mx-5 overflow-x-clip lg:mx-0 lg:overflow-visible">
+      <div
+        className={cn(
+          // Mobile: the outer wrapper cancels the section's `px-5` padding and
+          // clips against the true viewport edge — Figma's `ui` group
+          // (`45487-112600`) is positioned "at x-296 on a 360 viewport",
+          // i.e. relative to the device edge, not the padded content column.
+          "relative",
+          // Desktop: Figma's `dashboard` frame (`45487-89843`, 1364x680,
+          // radius 24) is ONE continuous card — the sidebar/table mock and
+          // the floating agent panel share its background/border/shadow/
+          // blur, rather than being two separately-chromed boxes with a
+          // visible seam between them.
+          // `lg:h-[680px]` pins that 680 exactly rather than letting the
+          // table's row count set it: the mock has more rows than fit, and
+          // Figma clips them against the card with the fade the table
+          // already draws. Left to grow, it reached 734 and pushed the URL
+          // field and caption ~53px below their designed positions.
+          // `lg:bg-black` under the gradient: Figma's fill fades to
+          // transparent below 58% and we match it exactly, but the frame never
+          // shows that fade — every point inside the card measures 1-6/255,
+          // because the dashboard's children are opaque. Two things went wrong
+          // without an opaque base: the glow came through the card's lower
+          // third at up to 137/255, and the chat panel (whose own fill is only
+          // 0.56 alpha) composited over glow instead of over black, which lit
+          // it ~40/255 too bright. `bg-black` sets background-color and the
+          // gradient sets background-image, so both apply.
+          "lg:relative lg:mx-0 lg:flex lg:h-[680px] lg:flex-row lg:items-stretch lg:overflow-hidden lg:rounded-3xl lg:border lg:border-transparent lg:bg-black lg:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] lg:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] lg:backdrop-blur-[48px]"
+        )}
+      >
+        {/*
         Mobile only: the dashboard slice (`HeroProductUI`, 438x317) and the
         agent panel (190.2x301.62) sit side by side as one 636px-wide row,
         shifted left by 296px so only the dashboard's right sliver shows
         beside the fully-visible agent panel — reproducing Figma's bleed
         instead of stacking them as two separate boxes. `lg:contents`
         hands the two children back to the desktop flex row above at lg+
-        (where this wrapper's own sizing/transform stop applying, since a
+        (where this wrapper's own sizing/offset stop applying, since a
         `display:contents` box generates no box for them to apply to).
       */}
-      <div className="relative isolate flex w-[636px] -translate-x-[296px] items-start overflow-hidden rounded-xl bg-black ring-1 ring-white/10 ring-inset sm:mx-auto sm:-translate-x-20 lg:contents">
-        <HeroProductUI
-          phase={phase}
-          brand={brand}
-          personalizedTable={personalizedTable}
-        />
-        <HeroAgentPanel
-          step={step}
-          phase={phase}
-          personalized={brand.status === "personalized"}
-        />
+        <div className="relative -left-[296px] w-[636px] rounded-xl sm:-left-20 sm:mx-auto lg:contents">
+          <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black lg:contents">
+            <HeroProductUI
+              phase={phase}
+              brand={brand}
+              personalizedTable={personalizedTable}
+            />
+            <HeroAgentPanel
+              step={step}
+              phase={phase}
+              personalized={brand.status === "personalized"}
+            />
+          </div>
+          <DashboardBorder compact />
+        </div>
       </div>
+      <DashboardBorder />
     </div>
   )
 }
@@ -407,7 +444,8 @@ export function WebChatHero() {
         x320 and the CTA column's right edge reaches Figma's x1600 (it had
         overshot to x1642). Verified by pixel diff against the frame.
       */}
-      <div className="relative z-10 container mx-auto max-w-[1428px] px-5 md:px-8">
+      {/* Avoid an isolated stacking context: outside border blends need the backdrop. */}
+      <div className="relative container mx-auto max-w-[1428px] px-5 md:px-8">
         <HeroCopy />
 
         <div className="mt-17.5 lg:mt-16">
