@@ -82,12 +82,14 @@ export function SeeItInAction() {
         {/* Glass frame: a 10px inset rail around the video, per the design. */}
         <div className="relative mx-auto mt-12 w-full max-w-308 rounded-2xl border border-transparent p-1.5 shadow-[0_12px_23.37px_0_rgba(0,0,0,0.3)] md:mt-14 md:rounded-4xl md:p-2.5">
           {/* The complete Figma backdrop includes its bloom, masks, and grain.
-              Keep its 1920px canvas aligned to the 1232px frame at y=312. */}
+              Keep its 1920px canvas aligned to the 1232px frame at y=312.
+              Serve the lossless 2x export directly to preserve the fine grain
+              and dark gradients through the image delivery pipeline. */}
           <Image
             src={glow}
             alt=""
             aria-hidden
-            sizes="(min-width: 1280px) 1920px, 160vw"
+            unoptimized
             className="pointer-events-none absolute top-[-44.13%] left-1/2 -z-10 h-auto w-[155.84%] max-w-none -translate-x-1/2"
           />
           <div
