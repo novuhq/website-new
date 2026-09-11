@@ -57,7 +57,7 @@ export const HERO_TOOLTIP_TEXT =
  * text but carries no hyperlink target in the file data, so it renders as
  * inert text rather than a link to an invented URL.
  */
-export const HERO_TOOLTIP_LINK_LABEL = "How agent onboarding works →"
+export const HERO_TOOLTIP_LINK_LABEL = "How agent onboarding works"
 
 /**
  * The prompt behind every "Copy Prompt" / "Copy the prompt" control on this

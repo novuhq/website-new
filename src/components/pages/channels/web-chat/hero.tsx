@@ -17,6 +17,8 @@ import type {
   StoryboardPhase,
   StoryboardStep,
 } from "@/data/pages/web-chat-storyboard"
+import TooltipLinkArrow from "@/images/pages/channels/web-chat/tooltip-link-arrow.inline.svg"
+import TooltipPointer from "@/images/pages/channels/web-chat/tooltip-pointer.inline.svg"
 import { useInView } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -76,15 +78,31 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
       </TooltipTrigger>
       <TooltipContent
         align="center"
-        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left before:left-1/2 before:-translate-x-1/2 before:border-[#2A2B33] before:bg-[#0B0C0E] after:left-1/2 after:-translate-x-1/2 after:bg-[#0B0C0E] data-[side=bottom]:before:-top-1 data-[side=bottom]:after:top-px data-[side=top]:before:-bottom-1 data-[side=top]:after:bottom-px"
+        arrow={
+          <TooltipPointer
+            aria-hidden="true"
+            className="-translate-y-px"
+            width={30}
+            height={8}
+            viewBox="0 0 30 8"
+          />
+        }
+        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left"
         side="top"
+        sideOffset={12}
       >
         <span className="flex flex-col gap-3">
           <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#C2C4CC]">
             {HERO_TOOLTIP_TEXT}
           </span>
-          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5] underline decoration-1 underline-offset-2">
-            {HERO_TOOLTIP_LINK_LABEL}
+          <span className="flex items-center gap-1 text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5]">
+            <span className="underline decoration-1 underline-offset-2">
+              {HERO_TOOLTIP_LINK_LABEL}
+            </span>
+            <TooltipLinkArrow
+              aria-hidden="true"
+              className="size-3.5 shrink-0"
+            />
           </span>
         </span>
       </TooltipContent>
