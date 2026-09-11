@@ -31,6 +31,22 @@ export function buildChannelConnectPrompt(channelName: string): string {
   return buildConnectPrompt({ target: channelName })
 }
 
+/**
+ * Framework × channel CLI command, e.g.
+ * "npx novu connect --channel slack --runtime langchain". Shared by
+ * connect-stack.tsx and web-chat/configurator.tsx so both derive the same
+ * command from identical channel/framework selections.
+ */
+export function buildConnectCommand({
+  channelSlug,
+  frameworkSlug,
+}: {
+  channelSlug: string
+  frameworkSlug: string
+}): string {
+  return `npx novu connect --channel ${channelSlug} --runtime ${frameworkSlug}`
+}
+
 type FrameworkConnectPath = "bridge" | "managed"
 
 /**
