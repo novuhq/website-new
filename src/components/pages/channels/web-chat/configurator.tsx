@@ -128,7 +128,7 @@ function BuilderLogoRow() {
     >
       {[false, true].map((ariaHidden, listIndex) => (
         <ul
-          className="flex shrink-0 items-center gap-14 motion-safe:animate-logos-forward"
+          className="flex shrink-0 items-center gap-14 motion-safe:animate-logos-forward motion-safe:[animation-duration:80s]"
           aria-hidden={ariaHidden}
           key={listIndex}
         >

@@ -1,6 +1,6 @@
 /**
  * Copy and image descriptions for "Works with your design system. Ship to production".
- * Figma desktop frame: `45487-82563`.
+ * Figma desktop frame: `45487-82563`; mobile frame: `45789-26399`.
  */
 
 export const DESIGN_SYSTEM_HEADING =
@@ -16,8 +16,6 @@ export const DESIGN_SYSTEM_SECONDARY_CTA_HREF = "https://elements.ai-sdk.dev/"
 export const DESIGN_SYSTEM_IMAGE_ALT = {
   desktop:
     "Three Web Chat previews styled in amber, purple, and blue design systems.",
-  purple:
-    "Purple Web Chat preview rescheduling a product demo and inviting a teammate.",
-  amber: "Amber Web Chat preview changing a subscription to annual billing.",
-  blue: "Blue Web Chat preview granting dashboard access and notifying a teammate in Slack.",
+  mobile:
+    "Overlapping blue and amber Web Chat previews granting dashboard access and changing a subscription to annual billing.",
 } as const

@@ -13,6 +13,8 @@ Route: `/channels/web-chat`
   current assets, geometry and verification; other sections retain their references.
 - Hero storyboard + personalization: Figma section `hero-storyboard&personalization` — node `45487-82743`
 - Mobile page: `web-chat-general-360` — node `45487-98982`
+- Mobile illustration refresh (2026-09-11): comparison `45496-139032`,
+  first two product cards `45789-25089`, design-system section `45789-26399`.
 - Mobile hero storyboard: `hero-360 (pesronalization)` — node `45487-112573`
 - Mobile hero fallback: `hero-360 (pesronalization-fallback)` — node `45509-163367`
 - Full screen tab: desktop `45497-141044`, mobile `45497-139685`
@@ -90,8 +92,8 @@ and controls; the older accent-overlay components are not mounted. Precise
 per-element brand colors remain a separate follow-up if the tinting trial is
 insufficient. The hero's conversation choreography remains unchanged.
 
-The existing mobile comparison exports already contain orange accents in their
-idle artwork. This trial retains those exports; reset restores them as authored.
+The September 11 mobile comparison exports use the authored purple accents.
+Reset restores those default colors.
 
 The provider owns `{ status, accent, accentForeground, domain, favicon }` and writes
 `--wc-accent`, `--wc-accent-soft` and `--wc-hue` onto its wrapper element, plus a
@@ -296,16 +298,25 @@ Cursor, or Codex — your coding agent will set up Web Chat for you." with a
 Below: the product UI mock, then the URL personalizer, then the caption "Live and
 interactive. Paste your site to see the agent in your product."
 
+Avatar alignment follows `45440:71829`: the empty-state glyph starts at (155, 168)
+inside the 350×262 glow export. The header glow starts at (-8.336, -9) within its
+40px avatar, preserving the asymmetric blur padding around the centered core.
+Both glows use fresh 2× exports, with proportional placement in the compact panel.
+
 **§2 Comparison bento.** "You know the old chat widget. This is Web Chat" with a
 right-hand description. Two cards — `The old chat widget` (narrow) and `Web Chat`
 (wide, with a floating agent-response table). Personalized.
-The mobile Web Chat artwork and its hue layer fade together over the bottom 20%
-into the card backdrop, blending the cropped image into its live caption.
+Mobile uses fresh 2× JPG exports of `45496:138552` (old widget) and
+`45496:138745` (Web Chat). The complete 320×457 Web Chat composition includes
+its natural fade behind the live caption, positioned 16px from the bottom.
 
 **§3 Product bento.** "Not a chat box on your site. An agent inside your app".
 Five cards, two then three: Connects users to their profiles / Keeps every
 conversation / Works in your app's context / Takes real actions / Renders your
-components. Personalized.
+components. Personalized. Below 640px, the first two cards use the authored
+portrait artwork from `45789:24774` and `45789:25023`, exported at 2× as JPGs.
+Their live captions stay in normal flow with 16px titles, 14px descriptions,
+8px gaps, and 16px padding. Desktop artwork and captions retain their sizing.
 
 **§4 Side panel or full screen.** Tabs over `ui/tabs.tsx`. Two full compositions,
 not one that resizes — the Full screen state also changes the sidebar (`Overview /
@@ -320,6 +331,8 @@ exposed to assistive technology. Reduced motion switches instantly without blur.
 **§5 Channels grid.** 3×3 channel tiles with a two-wide mascot card, and a right
 column carrying the description, `Book a demo`, and the `npx novu connect` copy
 pill. Reuses `connect/connect-channels-data.ts` and `ui/copy-command.tsx`.
+Mobile channel labels use 11px text with 1.125 line height per `45497:144406`;
+desktop labels retain 14px text.
 
 **§6 Deploy the ACI, not just chat.** Clean exported illustration with one coded
 `framework-logo-cycle` spanning the full framework track. The outer logos are
@@ -335,9 +348,11 @@ badge row (SOC 2 Type II, ISO 27001, GDPR, HIPAA) and five items — Identity &
 subscribers / One durable thread / Delivery that lands / Compliance, built in /
 Scale from day one. Separate vertical mobile illustration.
 
-**§7 Works with your design system.** Three themed chat surfaces with the centre
-one prominent, plus `Start building` and `Explore AI elements`. Refit from
-`chat-theme-showcase.tsx`. Not personalized.
+**§7 Works with your design system.** Desktop retains the three themed chat
+surfaces. Mobile uses the authored overlapping blue and amber panels from
+`45789:25935`, exported as a 640×904 JPG, 48px below the actions. `Start building`
+precedes `Explore AI elements`. The three unused individual PNGs were removed.
+Not personalized.
 
 **§8 Build your connection.** Left: title, description, builder logos. Right: the
 configurator card on an exported blob illustration — "Configure your agent / Pick a
@@ -347,6 +362,8 @@ the result field, and a primary button that switches between `Copy prompt` and
 `Copy CLI command`. The copied value always matches the active tab and the current
 selections — prompt and CLI never mix. Open-dropdown styling per
 `configurator-1920 (open-dropdown)`.
+The builder logo strip loops linearly in 80 seconds (twice its original speed,
+per September 11 feedback). Reduced motion keeps the logos static.
 
 **§9 Ownership.** "We never run your brain." in white, then "Novu brings your agent
 to the web and carries every conversation, while your code, model, prompts, tools,

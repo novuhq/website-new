@@ -13,15 +13,12 @@ import heroReset from "@/images/pages/channels/web-chat/hero-reset.svg"
  */
 
 /**
- * The agent's logomark blob (Figma `45487-79608`): the multi-hue gradient
- * stack behind the header avatar. Exported at 300px
- * because it is drawn at 140px and 40px, and the export is 208 units wide for
- * a 140-unit core — the blur bleeds past the group box, so consumers inset it
- * to size the core rather than the export.
+ * Header glow from Figma `45440:71881`, exported at 2× with its blur bounds.
+ * Consumers preserve the asymmetric padding around its 36.667px core.
  */
 export const AGENT_MARK_IMAGE: StaticImageData = agentMark
 
-/** Hero glow (without the glyph) and gradient from Figma 45440:67331 / 45440:67319. */
+/** 2× hero glow from 45440:71842; panel gradient/light from 45440:67319. */
 export const HERO_AGENT_IMAGE: StaticImageData = heroAgent
 export const HERO_CHAT_SURFACE_IMAGE: StaticImageData = heroChatSurface
 export const HERO_CHAT_LIGHT_IMAGE: StaticImageData = heroChatLight

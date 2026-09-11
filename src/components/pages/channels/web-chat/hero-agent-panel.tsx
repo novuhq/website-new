@@ -45,16 +45,16 @@ export interface HeroAgentPanelProps {
 }
 
 /**
- * The agent's mark, as Figma builds it (`45487-79645` header, `45487-79608`
- * orb): a soft multi-hue blob — violet top-right, magenta through the middle,
+ * The agent's mark, as Figma builds it (`45440:71881` header): a soft
+ * multi-hue blob — violet top-right, magenta through the middle,
  * peach bottom-left — with the Novu glyph centred on top.
  *
  * The blob ships as an image. It is a ~15-layer stack of blurred, masked
  * gradient shapes, and the previous stand-in (a single accent linear gradient
  * plus a lucide `Sparkles`) is what made the avatar read as a flat magenta
- * disc instead. The export is 208 units wide for a 140-unit core, because the
- * blur bleeds past the group box — hence the negative insets below, which size
- * the *core* rather than the export.
+ * disc instead. The 2× export includes asymmetric blur padding; its measured
+ * origin is (-8.336, -9) within the 40px avatar, with a 59.219×57.332 footprint.
+ * Preserve those bounds so its 36.667px core shares the glyph's center.
  *
  * `HueLayer` preserves the recolour behaviour a personalized frame confirms
  * (`hero-personalization-05-todesktop.com`, `45487:93325`): the blob's own
@@ -92,9 +92,8 @@ function AgentAvatar({
       */}
       <span
         aria-hidden
-        // Figma's 36.67px core sits inside a 40px frame without clipping
-        // the glow. The unequal insets preserve the export's blur bounds.
-        className="pointer-events-none absolute -inset-x-[18.1%] -inset-y-[16.2%] isolate"
+        // Scale Figma's measured export bounds with both avatar sizes.
+        className="pointer-events-none absolute top-[-22.5%] left-[-20.84%] isolate h-[143.33%] w-[148.047%]"
         style={{
           backgroundImage: `url(${AGENT_MARK_IMAGE.src})`,
           backgroundSize: "100% 100%",
@@ -250,9 +249,9 @@ function EmptyState({
         }}
       >
         <HueLayer active={personalized} maskImage={HERO_AGENT_IMAGE.src} />
-        {/* Center the visible glyph on the glow, excluding export padding. */}
+        {/* Figma places the 40px glyph 168px down in the 350×262 glow export. */}
         <span
-          className="absolute top-[58.4%] left-1/2 aspect-square w-[11.4286%] -translate-x-1/2 mix-blend-plus-lighter"
+          className="absolute top-[64.1221%] left-1/2 aspect-square w-[11.4286%] -translate-x-1/2 mix-blend-plus-lighter"
           style={{
             backgroundImage: `url(${agentGlyph.src})`,
             backgroundSize: "100% 100%",

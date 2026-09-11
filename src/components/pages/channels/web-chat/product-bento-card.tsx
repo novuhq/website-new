@@ -10,6 +10,7 @@ export interface ProductBentoCardProps {
   /** Crop the artwork above a caption that stays in normal flow below sm. */
   mobileArtworkAspectRatio?: `${number}/${number}`
   illustration: StaticImageData
+  mobileIllustration?: StaticImageData
   sizes: string
   title: string
   body: string
@@ -20,6 +21,7 @@ export function ProductBentoCard({
   aspectRatio,
   mobileArtworkAspectRatio,
   illustration,
+  mobileIllustration,
   sizes,
   title,
   body,
@@ -37,7 +39,7 @@ export function ProductBentoCard({
         } as CSSProperties
       }
     >
-      {/* Wide mobile artwork and its caption determine the card height together.
+      {/* Mobile artwork and its caption determine the card height together.
           Keep the painted backdrop for the isolated personalization hue layer. */}
       <div
         className={cn(
@@ -47,34 +49,51 @@ export function ProductBentoCard({
             : "absolute inset-0"
         )}
       >
-        <Image
-          src={illustration}
-          alt=""
-          fill
-          unoptimized
-          sizes={sizes}
-          className={cn(
-            "object-top sm:object-contain",
-            mobileArtworkAspectRatio ? "object-cover" : "object-contain"
+        <picture className="block size-full">
+          {mobileIllustration && (
+            <source
+              media="(max-width: 639px)"
+              srcSet={mobileIllustration.src}
+              width={mobileIllustration.width}
+              height={mobileIllustration.height}
+            />
           )}
-        />
+          <Image
+            src={illustration}
+            alt=""
+            fill
+            unoptimized
+            sizes={sizes}
+            className={cn(
+              "object-top sm:object-contain",
+              mobileArtworkAspectRatio ? "object-cover" : "object-contain"
+            )}
+          />
+        </picture>
         <HueLayer />
       </div>
 
       <div
         className={cn(
           "inset-x-0 bottom-0 flex flex-col gap-2.5 p-5 sm:absolute md:max-w-136 md:p-7 lg:max-w-[376px] lg:p-5 xl:max-w-108 xl:p-7",
+          mobileIllustration && "gap-2 p-4 sm:gap-2.5 sm:p-5",
           !mobileArtworkAspectRatio && "absolute"
         )}
       >
         <h3
           className={cn(
-            "text-[20px] leading-[1.25] tracking-[-0.02em] text-white"
+            "text-xl leading-[1.25] tracking-[-0.02em] text-white",
+            mobileIllustration && "text-base sm:text-xl"
           )}
         >
           {title}
         </h3>
-        <p className="text-base leading-[1.5] tracking-[-0.02em] text-white/70">
+        <p
+          className={cn(
+            "text-base leading-[1.5] tracking-[-0.02em] text-white/70",
+            mobileIllustration && "text-sm sm:text-base"
+          )}
+        >
           {body}
         </p>
       </div>

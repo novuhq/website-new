@@ -4,9 +4,11 @@ import {
   PRODUCT_BENTO_HEADING,
 } from "@/data/pages/web-chat-product-bento"
 import productBentoActions from "@/images/pages/channels/web-chat/product-bento-actions.jpg"
+import productBentoActivityMobile from "@/images/pages/channels/web-chat/product-bento-activity-mobile.jpg"
 import productBentoActivity from "@/images/pages/channels/web-chat/product-bento-activity.jpg"
 import productBentoOrder from "@/images/pages/channels/web-chat/product-bento-order.jpg"
 import productBentoRender from "@/images/pages/channels/web-chat/product-bento-render.jpg"
+import productBentoSubscriberMobile from "@/images/pages/channels/web-chat/product-bento-subscriber-mobile.jpg"
 import productBentoSubscriber from "@/images/pages/channels/web-chat/product-bento-subscriber.jpg"
 
 import { ProductBentoCard } from "@/components/pages/channels/web-chat/product-bento-card"
@@ -23,7 +25,8 @@ const [headingIntro, headingConclusion] = PRODUCT_BENTO_HEADING.split(". ")
 /**
  * Five static Figma illustrations, exported at 2× from section 45487:79958.
  * The artwork includes its own chat bubbles and action controls; captions
- * remain live text. The two wide cards stack cropped artwork above their captions on mobile.
+ * remain live text. The first two cards use portrait artwork from 45789:25089
+ * above their captions on mobile.
  */
 export function ProductBento() {
   return (
@@ -43,8 +46,9 @@ export function ProductBento() {
           <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
             <ProductBentoCard
               aspectRatio="660/496"
-              mobileArtworkAspectRatio="660/360"
+              mobileArtworkAspectRatio="320/302"
               illustration={productBentoSubscriber}
+              mobileIllustration={productBentoSubscriberMobile}
               sizes={ROW_ONE_SIZES}
               title={subscriberCopy.title}
               body={subscriberCopy.body}
@@ -52,8 +56,9 @@ export function ProductBento() {
 
             <ProductBentoCard
               aspectRatio="660/496"
-              mobileArtworkAspectRatio="660/360"
+              mobileArtworkAspectRatio="320/323"
               illustration={productBentoActivity}
+              mobileIllustration={productBentoActivityMobile}
               sizes={ROW_ONE_SIZES}
               title={activityCopy.title}
               body={activityCopy.body}

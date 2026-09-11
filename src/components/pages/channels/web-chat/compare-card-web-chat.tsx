@@ -11,8 +11,8 @@ import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-ch
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 /**
- * Comparison artwork from Figma 45487:79841 / 45496:138744, exported at 2×.
- * The mobile image is cropped above its caption; title/body stay live below it.
+ * Comparison artwork from Figma 45487:79841 / 45496:138745, exported at 2×.
+ * The complete mobile frame includes the fade behind its live caption.
  * Baked bubbles and the selected table row render once, without extra overlays.
  * The artwork includes its glow; only shift its hue to preserve text contrast.
  */
@@ -32,10 +32,10 @@ export function WebChatCard() {
         />
         <HueLayer />
       </div>
-      {/* Fade the artwork and its hue layer together into the caption backdrop. */}
+      {/* Keep Figma's full portrait composition and its original caption backdrop. */}
       <div
-        className="relative isolate w-full shrink-0 overflow-hidden bg-inherit mask-b-from-80% md:hidden"
-        style={{ aspectRatio: "640/626" }}
+        className="relative isolate w-full overflow-hidden md:hidden"
+        style={{ aspectRatio: "320/457" }}
       >
         <Image
           alt=""
@@ -47,15 +47,14 @@ export function WebChatCard() {
           src={illustrationMobile}
         />
         <HueLayer />
-      </div>
-
-      <div className="flex flex-1 flex-col justify-center gap-2 p-4 md:hidden">
-        <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
-          {COMPARE_WEB_CHAT_TITLE}
-        </h3>
-        <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
-          {COMPARE_WEB_CHAT_BODY}
-        </p>
+        <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
+          <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
+            {COMPARE_WEB_CHAT_TITLE}
+          </h3>
+          <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
+            {COMPARE_WEB_CHAT_BODY}
+          </p>
+        </div>
       </div>
       <div className="hidden md:absolute md:inset-x-7 md:bottom-7 md:flex md:max-w-[555px] md:flex-col md:gap-2.5">
         <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">

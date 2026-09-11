@@ -41,7 +41,7 @@ function ChannelTileIcon({ icon }: { icon: IChannelsGridTile["icon"] }) {
 
 function ChannelTileLabel({ children }: { children: string }) {
   return (
-    <span className="px-2 text-center text-[9px] leading-[1.13] tracking-[-0.02em] text-gray-60 md:text-sm">
+    <span className="px-2 text-center text-[11px] leading-dense tracking-[-0.02em] text-gray-60 md:text-sm">
       {children}
     </span>
   )

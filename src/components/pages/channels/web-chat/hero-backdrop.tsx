@@ -51,6 +51,8 @@ function bloomBackground(lights: readonly BloomLight[]) {
 
 const DESKTOP_BACKGROUND = bloomBackground(DESKTOP_LIGHTS)
 const MOBILE_BACKGROUND = bloomBackground(MOBILE_LIGHTS)
+// The desktop Figma image fill tiles the 1024px noise source at 57.0623%.
+const DESKTOP_NOISE_SIZE = heroNoise.width * 0.57062304
 
 function BloomCanvas({ compact = false }: { compact?: boolean }) {
   const dots = compact ? mobileDots : desktopDots
@@ -70,22 +72,29 @@ function BloomCanvas({ compact = false }: { compact?: boolean }) {
     >
       {/* Texture stays at its own scale as the bloom grows with the viewport. */}
       <div
-        className="absolute inset-0 opacity-32 mix-blend-overlay"
+        className={cn(
+          "absolute inset-0 opacity-32 mix-blend-overlay",
+          !compact && "-scale-x-100"
+        )}
         style={{
           backgroundImage: `url(${heroNoise.src})`,
-          backgroundSize: `${heroNoise.width}px ${heroNoise.height}px`,
+          backgroundSize: compact
+            ? `${heroNoise.width}px ${heroNoise.height}px`
+            : `${DESKTOP_NOISE_SIZE}px ${DESKTOP_NOISE_SIZE}px`,
         }}
       />
       {/* Figma's original texture and blurred mask, exported together at 2×.
           Position by the rendered bounds, including the mask's blur bleed:
-          desktop (255.508, 1039), mobile (0, 887.09) in their hero canvases. */}
+          desktop (255.508, 1039), mobile (0, 887.09) in their hero canvases.
+          Snap the desktop export to whole pixels and keep its authored size
+          as the bloom grows, so the small dots stay sharp and evenly spaced. */}
       <div
         data-slot="hero-dots"
         className={cn(
           "absolute bg-size-[100%_100%] bg-no-repeat mix-blend-plus-lighter",
           compact
             ? "inset-x-0 top-[887.09px]"
-            : "top-[1039px] left-[13.3077%] w-[73.3846%]"
+            : "top-[1039px] left-[calc(50%-704px)] h-53 w-[1409px]"
         )}
         style={{
           backgroundImage: `url(${dots.src})`,
