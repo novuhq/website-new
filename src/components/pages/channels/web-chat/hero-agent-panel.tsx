@@ -250,6 +250,15 @@ function EmptyState({
         }}
       >
         <HueLayer active={personalized} maskImage={HERO_AGENT_IMAGE.src} />
+        {/* Center the visible glyph on the glow, excluding export padding. */}
+        <span
+          className="absolute top-[58.4%] left-1/2 aspect-square w-[11.4286%] -translate-x-1/2 mix-blend-plus-lighter"
+          style={{
+            backgroundImage: `url(${agentGlyph.src})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
       </span>
       <div
         className={cn(

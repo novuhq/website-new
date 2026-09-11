@@ -21,7 +21,7 @@ import heroReset from "@/images/pages/channels/web-chat/hero-reset.svg"
  */
 export const AGENT_MARK_IMAGE: StaticImageData = agentMark
 
-/** Exact hero artwork and gradient from Figma 45440:67330 / 45440:67319. */
+/** Hero glow (without the glyph) and gradient from Figma 45440:67331 / 45440:67319. */
 export const HERO_AGENT_IMAGE: StaticImageData = heroAgent
 export const HERO_CHAT_SURFACE_IMAGE: StaticImageData = heroChatSurface
 export const HERO_CHAT_LIGHT_IMAGE: StaticImageData = heroChatLight
