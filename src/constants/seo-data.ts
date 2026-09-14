@@ -93,4 +93,12 @@ export const SEO_DATA = {
     pathname: ROUTE.aci as string,
     imagePath: "/og-images/og-image-aci.jpg",
   },
+  noReplyIsDead: {
+    title: "Turn every notification into a conversation | Novu",
+    description:
+      "A notification used to be a dead end. Assign an agent to a Novu workflow and the reply becomes a real conversation, with the workflow, message, and payload already in context. Slack, Microsoft Teams, WhatsApp, Telegram, iMessage, and email.",
+    pathname: ROUTE.noReplyIsDead as string,
+    imagePath: "/og-images/og-image-no-reply-is-dead.jpg",
+    imageAlt: "Agent-Assigned Workflows social preview",
+  },
 }

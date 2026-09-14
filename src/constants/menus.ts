@@ -280,6 +280,11 @@ export const MENUS = {
             },
             { label: "Novu ACI", href: ROUTE.aci, menuIcon: "aci" },
             {
+              label: "Agent-assigned workflows",
+              href: ROUTE.noReplyIsDead,
+              menuIcon: "notifications",
+            },
+            {
               label: "Skills",
               href: ROUTE.githubSkills,
               menuIcon: "skills",
