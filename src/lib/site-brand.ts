@@ -425,13 +425,24 @@ export function createBrandProfileReader({
             ...pageIcons,
             ...manifestIcons,
           ]).filter((icon) => !pageLogo || compareIcons(icon, pageLogo) < 0)
-          return (await logoTask(betterIcons))?.uri ?? pageLogo?.uri ?? null
+          return {
+            logo: (await logoTask(betterIcons))?.uri ?? pageLogo?.uri ?? null,
+            pageLogo: pageLogo?.uri ?? null,
+          }
         }
-        const [stylesheets, logo] = await Promise.all([stylesTask, readLogo()])
+        const [stylesheets, { logo, pageLogo }] = await Promise.all([
+          stylesTask,
+          readLogo(),
+        ])
         candidates.push(...collectCssCandidates(nodes, stylesheets))
         let selected = selectAccent(candidates)
-        if (!selected.color && logo) {
-          candidates.push(...(await collectLogoCandidates(logo, candidates)))
+        // A higher-resolution app icon can be monochrome even when the page's
+        // downloaded favicon carries its brand color. Keep display quality and
+        // accent evidence independent without fetching any additional icons.
+        for (const icon of new Set([logo, pageLogo])) {
+          if (selected.color) break
+          if (!icon) continue
+          candidates.push(...(await collectLogoCandidates(icon, candidates)))
           selected = selectAccent(candidates)
         }
         const accent = usableAccent(selected.color)

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="704" height="480" viewBox="0 0 704 480" fill="none" aria-hidden="true">
+  <g id="wc-compare-old-tablet-1" clip-path="url(#wc-compare-old-tablet-33)">
+    <g id="wc-compare-old-tablet-2">
+      <mask id="wc-compare-old-tablet-3" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-24.0" y="-209.0" width="758.0" height="587.0">
+        <g filter="url(#wc-compare-old-tablet-35)">
+          <g id="wc-compare-old-tablet-5" style="mix-blend-mode:plus-lighter">
+            <path d="M316.318 -160.118C406.865 -172.894 492.693 -157.014 558.258 -121.036C623.823 -85.0571 669.098 -28.9993 678.635 38.5874C691.956 132.996 691.586 196.767 680.745 239.73C669.914 282.654 648.641 304.782 620.107 315.981C591.514 327.203 555.582 327.472 515.378 326.515C475.208 325.559 430.816 323.382 385.444 329.784C294.923 342.557 208.204 320.363 142.178 281.215C76.135 242.057 30.8759 185.99 23.1278 131.08C13.5913 63.4932 41.5877 -2.90317 94.6379 -55.6185C147.688 -108.334 225.771 -147.342 316.318 -160.118Z" fill="#2A2B33" />
+            <path d="M316.318 -160.118C406.865 -172.894 492.693 -157.014 558.258 -121.036C623.823 -85.0571 669.098 -28.9993 678.635 38.5874C691.956 132.996 691.586 196.767 680.745 239.73C669.914 282.654 648.641 304.782 620.107 315.981C591.514 327.203 555.582 327.472 515.378 326.515C475.208 325.559 430.816 323.382 385.444 329.784C294.923 342.557 208.204 320.363 142.178 281.215C76.135 242.057 30.8759 185.99 23.1278 131.08C13.5913 63.4932 41.5877 -2.90317 94.6379 -55.6185C147.688 -108.334 225.771 -147.342 316.318 -160.118Z" stroke="#41434D" />
+          </g>
+        </g>
+      </mask>
+      <g mask="url(#wc-compare-old-tablet-3)">
+        <g id="wc-compare-old-tablet-9">
+          <g id="wc-compare-old-tablet-10" data-figma-bg-blur-radius="152">
+            <g id="wc-compare-old-tablet-11" filter="url(#wc-compare-old-tablet-18)">
+              <path d="M287 42.4C287 34.5593 287 30.6389 288.526 27.6441C289.868 25.0099 292.01 22.8681 294.644 21.5259C297.639 20 301.559 20 309.4 20H491.6C499.441 20 503.361 20 506.356 21.5259C508.99 22.8681 511.132 25.0099 512.474 27.6441C514 30.6389 514 34.5593 514 42.4V74.8C514 75.9201 514 76.4802 513.782 76.908C513.59 77.2843 513.284 77.5903 512.908 77.782C512.48 78 511.92 78 510.8 78H309.4C301.559 78 297.639 78 294.644 76.4741C292.01 75.1319 289.868 72.9901 288.526 70.3559C287 67.3611 287 63.4407 287 55.6V42.4Z" fill="var(--wc-accent)" data-accent-fill="" />
+              <path d="M309.4 20.5H491.6C495.528 20.5 498.445 20.5008 500.755 20.6895C503.058 20.8777 504.714 21.2507 506.129 21.9717C508.669 23.266 510.734 25.331 512.028 27.8711C512.749 29.2861 513.122 30.9417 513.311 33.2451C513.499 35.5546 513.5 38.4718 513.5 42.4004V74.7998C513.5 75.3681 513.5 75.7648 513.475 76.0732C513.45 76.3753 513.404 76.5491 513.337 76.6807C513.193 76.9629 512.963 77.1931 512.681 77.3369C512.549 77.4039 512.375 77.4499 512.073 77.4746C511.765 77.4998 511.368 77.5 510.8 77.5H309.4C305.472 77.5 302.555 77.4992 300.245 77.3105C297.942 77.1223 296.286 76.7493 294.871 76.0283C292.331 74.734 290.266 72.669 288.972 70.1289C288.251 68.7139 287.878 67.0583 287.689 64.7549C287.501 62.4454 287.5 59.5282 287.5 55.5996V42.4004C287.5 38.4718 287.501 35.5546 287.689 33.2451C287.878 30.9417 288.251 29.2861 288.972 27.8711C290.266 25.331 292.331 23.266 294.871 21.9717C296.286 21.2507 297.942 20.8777 300.245 20.6895C302.555 20.5008 305.472 20.5 309.4 20.5Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" />
+              <text id="wc-compare-old-tablet-14" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="298" y="45.3182">Find creators we haven’t </tspan>
+                <tspan x="298" y="64.3182">worked with yet.</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-compare-old-tablet-18" x="279.742" y="16.3709" width="241.516" height="72.5163" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45920_8766" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45920_8766" result="effect2_dropShadow_45920_8766" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45920_8766" result="shape" />
+    </filter>
+    <clipPath id="wc-compare-old-tablet-33">
+      <rect width="704" height="480" fill="white" />
+    </clipPath>
+    <filter id="wc-compare-old-tablet-35" filterUnits="userSpaceOnUse" x="-24.0" y="-209.0" width="758.0" height="587.0">
+      <feGaussianBlur stdDeviation="22.0" />
+    </filter>
+  </defs>
+</svg>

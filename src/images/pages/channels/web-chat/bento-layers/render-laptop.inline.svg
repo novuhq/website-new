@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="304" height="448" viewBox="0 0 304 448" fill="none" aria-hidden="true">
+  <g id="wc-bento-render-laptop-1" clip-path="url(#wc-bento-render-laptop-119)">
+    <g id="wc-bento-render-laptop-33">
+      <mask id="wc-bento-render-laptop-34" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-166.253" y="-207.253" width="472.506" height="669.506">
+        <g filter="url(#wc-bento-render-laptop-soft-mask-2)">
+          <ellipse id="wc-bento-render-laptop-37" data-figma-bg-blur-radius="25.7326" cx="70.0703" cy="127.644" rx="201.93" ry="300.214" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-render-laptop-34)">
+        <g id="wc-bento-render-laptop-39">
+          <g id="wc-bento-render-laptop-42" data-figma-bg-blur-radius="86.7491">
+            <g id="wc-bento-render-laptop-45">
+              <rect x="96.2578" y="199.871" width="257.034" height="27.3099" rx="6.42586" fill="var(--wc-accent)" data-accent-fill="" />
+              <text id="wc-bento-render-laptop-47" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="11.2452" font-weight="500" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="173.773" y="217.214">View updater order</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="wc-bento-render-laptop-119">
+      <rect width="304" height="448" fill="white" />
+    </clipPath>
+    <filter id="wc-bento-render-laptop-soft-mask-2" filterUnits="userSpaceOnUse" x="-166.253" y="-207.253" width="472.506" height="669.506">
+      <feGaussianBlur stdDeviation="17.1265" />
+    </filter>
+  </defs>
+</svg>

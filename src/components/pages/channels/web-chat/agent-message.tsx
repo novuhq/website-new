@@ -29,7 +29,7 @@ export interface AgentMessageProps {
  *
  * Figma (desktop): user bubble `45487:90415` (padding `8px 20px 9px 12px`,
  * radius `14.5px 14.5px 3.6px 14.5px`, border `rgba(255,255,255,0.2)`,
- * shadow `0 6px 14px rgba(0,0,0,0.1)`, fill/text = accent/accent-foreground);
+ * shadow `0 6px 14px rgba(0,0,0,0.1)`, fill/text = accent/accent-contrast);
  * agent reply label+text `45487:90421`/`45487:90426` ("Agent" label 13px
  * `rgba(255,255,255,0.5)`, reply 15px white). Mobile scaled ~0.4662x
  * (`45487:114507`), matching the mobile "ui" group's measured scale factor.
@@ -61,7 +61,7 @@ export function AgentMessage({
             personalized
               ? {
                   backgroundColor: "var(--wc-accent)",
-                  color: "var(--wc-accent-foreground)",
+                  color: "var(--wc-accent-contrast)",
                 }
               : undefined
           }

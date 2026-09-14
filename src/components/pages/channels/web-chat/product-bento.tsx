@@ -23,28 +23,28 @@ const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
 const [headingIntro, headingConclusion] = PRODUCT_BENTO_HEADING.split(". ")
 
 /**
- * Five static Figma illustrations, exported at 2× from section 45487:79958.
- * The artwork includes its own chat bubbles and action controls; captions
- * remain live text. The first two cards use portrait artwork from 45789:25089
- * above their captions on mobile.
+ * Original default artwork plus independently personalized background and UI
+ * layers from 45839:21901. The first two cards retain the mobile compositions
+ * from 45789:25089 above captions in normal flow.
  */
 export function ProductBento() {
   return (
     <section>
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-9">
-          <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-[560px] md:text-[48px] md:leading-[1.04] xl:w-160 xl:max-w-160 xl:shrink-0">
-            {headingIntro}.<br className="hidden xl:block" />{" "}
+        <div className="flex flex-col gap-6 md:min-h-37.5 lg:min-h-21 lg:flex-row lg:items-start lg:justify-between lg:gap-13 xl:min-h-0 xl:gap-9">
+          <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-112 md:text-4xl md:leading-[1.04] lg:w-[492px] lg:max-w-[492px] lg:shrink-0 lg:text-[40px] xl:w-160 xl:max-w-160 xl:shrink-0 xl:text-[48px]">
+            {headingIntro}.<br className="hidden lg:block" />{" "}
             {headingConclusion}
           </h2>
-          <p className="max-w-[480px] text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-lg md:text-[#A3A6B2] lg:max-w-[420px] lg:pt-3 xl:max-w-151 xl:pt-11.25">
+          <p className="max-w-[480px] text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:max-w-112 md:text-gray-70 lg:max-w-104 lg:pt-9 xl:max-w-151 xl:pt-11.25 xl:text-lg">
             {PRODUCT_BENTO_DESCRIPTION}
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-5 md:mt-14 md:gap-6 xl:-mx-8">
-          <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
+        <div className="mt-10 flex flex-col gap-5 md:mt-10 lg:mt-12 lg:gap-6 xl:-mx-8 xl:mt-14">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
             <ProductBentoCard
+              id="subscriber"
               aspectRatio="660/496"
               mobileArtworkAspectRatio="320/302"
               illustration={productBentoSubscriber}
@@ -55,6 +55,7 @@ export function ProductBento() {
             />
 
             <ProductBentoCard
+              id="activity"
               aspectRatio="660/496"
               mobileArtworkAspectRatio="320/323"
               illustration={productBentoActivity}
@@ -65,8 +66,9 @@ export function ProductBento() {
             />
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             <ProductBentoCard
+              id="order"
               aspectRatio="432/496"
               illustration={productBentoOrder}
               sizes={ROW_TWO_SIZES}
@@ -75,6 +77,7 @@ export function ProductBento() {
             />
 
             <ProductBentoCard
+              id="actions"
               aspectRatio="432/496"
               illustration={productBentoActions}
               sizes={ROW_TWO_SIZES}
@@ -83,6 +86,7 @@ export function ProductBento() {
             />
 
             <ProductBentoCard
+              id="render"
               aspectRatio="432/496"
               illustration={productBentoRender}
               sizes={ROW_TWO_SIZES}

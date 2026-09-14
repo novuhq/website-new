@@ -2,11 +2,10 @@
  * Content for §3 "Not a chat box on your site. An agent inside your app"
  * (Task 10). Every string here is verbatim against the task brief and the
  * Figma `section` node (`45487-79958`, desktop) / its personalized reference
- * (`45503-149086`). Illustration-only copy that is baked into the exported
- * card images ("Subscriber Profile", "User recognized", "Activity",
- * "Q3 usage report", "Order #4821", "Agent context", "Delivery has been
- * rescheduled.", etc.) is not duplicated here since it is pixels, not DOM
- * text — see the task report for the full per-string trace.
+ * (`45503-149086`). Decorative UI copy remains in the Figma image exports.
+ * Personalized bubbles and controls use editable SVG text exported from
+ * `45839:21901`; their copy stays with those artwork assets instead of being
+ * duplicated in the caption data.
  */
 
 export const PRODUCT_BENTO_HEADING =

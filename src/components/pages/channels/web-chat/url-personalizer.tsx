@@ -19,14 +19,14 @@ const FIELD_CLASSES =
 
 // The rounded field border indicates focus; retain an outline for forced colors.
 const INPUT_CLASSES =
-  "min-w-0 flex-1 bg-transparent text-base leading-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden lg:text-lg"
+  "min-w-0 flex-1 bg-transparent text-base leading-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden md:text-lg"
 
 const RESET_ICON_CLASSES =
   "size-6 opacity-40 transition-opacity duration-200 group-hover/reset:opacity-100 group-focus-visible/reset:opacity-100"
 
 // Figma 45487:94047: white by default; the hover state uses the gray-10 token.
 const SUBMIT_BUTTON_CLASSES =
-  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-gray-10 focus-visible:bg-gray-10 lg:w-[205px]"
+  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-gray-10 focus-visible:bg-gray-10 md:w-[205px]"
 
 function ResetIcon() {
   return (
@@ -80,9 +80,12 @@ export function UrlPersonalizer({
 
   return (
     <div className="flex w-full max-w-[832px] flex-col gap-4">
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="md:mx-auto md:w-full md:max-w-160 lg:max-w-none"
+      >
         {/* Desktop: input, submit and reset share one pill. */}
-        <div className="hidden h-[68px] items-center gap-5 rounded-[40px] bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset lg:flex">
+        <div className="hidden h-[68px] items-center gap-5 rounded-[40px] bg-black py-3 pr-5 pl-3 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset md:flex">
           <div className="flex min-w-0 flex-1 items-center gap-2.5">
             <div className={cn(FIELD_CLASSES, "min-w-0 flex-1")}>
               <Image
@@ -127,7 +130,7 @@ export function UrlPersonalizer({
         </div>
 
         {/* Mobile: a rounded dark card with two rows — full-width input, then submit + reset. */}
-        <div className="flex w-full flex-col gap-2.5 rounded-[20px] bg-black p-2 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset lg:hidden">
+        <div className="flex w-full flex-col gap-2.5 rounded-[20px] bg-black p-2 shadow-[0_12px_56px_rgba(0,0,0,0.64),0_4px_28px_rgba(0,0,0,0.35)] ring-1 ring-white/10 ring-inset md:hidden">
           <div className={FIELD_CLASSES}>
             <Image
               src={HERO_GLOBE_IMAGE}
@@ -172,7 +175,7 @@ export function UrlPersonalizer({
         </div>
       </form>
 
-      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40 lg:text-[15px]">
+      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40 md:text-[15px]">
         {CAPTION}
       </p>
     </div>

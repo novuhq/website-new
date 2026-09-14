@@ -68,6 +68,74 @@ test("keeps channel links and bento captions within their responsive layouts", a
       )
     expect(clippedCaptions, `clipped captions at ${width}px`).toEqual([])
 
+    if (width === 768 || width === 1024) {
+      const hero = page.getByTestId("web-chat-hero")
+      await expect(hero.locator("h1")).toHaveCSS(
+        "font-size",
+        width === 768 ? "40px" : "48px"
+      )
+      const copy = await hero
+        .getByRole("button", { name: "Copy Prompt", exact: true })
+        .boundingBox()
+      const cli = hero
+        .getByText("npx novu connect --channel web-chat", { exact: true })
+        .filter({ visible: true })
+      const cliBox = await cli.boundingBox()
+      expect(copy!.x + copy!.width).toBeLessThan(cliBox!.x)
+      expect(
+        await cli.evaluate((node) => node.scrollWidth <= node.clientWidth)
+      ).toBe(true)
+      expect((await panel.boundingBox())!.width).toBeCloseTo(285.6, 0)
+
+      const card = (name: string) =>
+        page
+          .getByRole("heading", { name, exact: true })
+          .filter({ visible: true })
+          .locator("..")
+          .locator("..")
+      const oldWidget = (await card("The old chat widget").boundingBox())!
+      const webChat = (await card("Web Chat").boundingBox())!
+      expect(oldWidget.width).toBe(width === 768 ? 704 : 468)
+      expect(webChat.y - oldWidget.y).toBe(width === 768 ? 500 : 0)
+      const subscriber = (await card(
+        "Connects users to their profiles"
+      ).boundingBox())!
+      const activity = (await card("Keeps every conversation").boundingBox())!
+      expect(subscriber.height).toBe(480)
+      expect(activity.y - subscriber.y).toBe(width === 768 ? 500 : 0)
+      const order = (await card("Works in your app's context").boundingBox())!
+      const actions = (await card("Takes real actions").boundingBox())!
+      const render = (await card("Renders your components").boundingBox())!
+      expect(actions.y).toBe(order.y)
+      expect(render.y - order.y).toBe(width === 768 ? 500 : 0)
+      expect(order.height).toBe(width === 768 ? 480 : 448)
+
+      const sideTab = page.getByRole("tab", { name: "Side panel", exact: true })
+      await sideTab.focus()
+      await page.keyboard.press("ArrowRight")
+      await expect(
+        page.getByRole("tab", { name: "Full screen", exact: true })
+      ).toHaveAttribute("aria-selected", "true")
+      const preview = page
+        .getByRole("tabpanel", { name: "Full screen", exact: true })
+        .locator("img")
+      await expect(preview).toBeVisible()
+      await expect
+        .poll(() =>
+          preview.evaluate((image) => (image as HTMLImageElement).currentSrc)
+        )
+        .toContain(
+          width === 768
+            ? "surface-full-screen-tablet"
+            : "surface-full-screen-laptop"
+        )
+      expect((await preview.boundingBox())!.height).toBe(
+        width === 768 ? 528 : 613
+      )
+      await page.keyboard.press("ArrowLeft")
+      await expect(sideTab).toHaveAttribute("aria-selected", "true")
+    }
+
     if (width < 640) {
       for (const title of [
         "Connects users to their profiles",

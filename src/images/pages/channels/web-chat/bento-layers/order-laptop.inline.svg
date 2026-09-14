@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="304" height="448" viewBox="0 0 304 448" fill="none" aria-hidden="true">
+  <g id="wc-bento-order-laptop-1" clip-path="url(#wc-bento-order-laptop-159)">
+    <g id="wc-bento-order-laptop-3">
+      <mask id="wc-bento-order-laptop-4" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-187.7362" y="-206.7362" width="675.4725" height="549.4725">
+        <g filter="url(#wc-bento-order-laptop-soft-mask-0)">
+          <ellipse id="wc-bento-order-laptop-5" cx="149.928" cy="68.2158" rx="230.858" ry="167.786" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-order-laptop-4)">
+        <g id="wc-bento-order-laptop-7">
+          <g id="wc-bento-order-laptop-10" filter="url(#wc-bento-order-laptop-122)" data-figma-bg-blur-radius="239.348">
+            <g clip-path="url(#wc-bento-order-laptop-161)">
+              <g id="wc-bento-order-laptop-17">
+                <g id="wc-bento-order-laptop-27">
+                  <text id="wc-bento-order-laptop-31" fill="var(--wc-accent)" style="white-space: pre" xml:space="preserve" font-family="var(--font-web-chat-mono), monospace" font-size="9.70329" letter-spacing="-0.02em" data-accent-fill="">
+                    <tspan x="199.281" y="103.226">#T43353</tspan>
+                  </text>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g id="wc-bento-order-laptop-84" filter="url(#wc-bento-order-laptop-133)" data-figma-bg-blur-radius="265.949">
+            <g id="wc-bento-order-laptop-93">
+              <g id="wc-bento-order-laptop-103">
+                <g id="wc-bento-order-laptop-104" clip-path="url(#wc-bento-order-laptop-173)">
+                  <g id="wc-bento-order-laptop-105">
+                    <path id="wc-bento-order-laptop-106" d="M141.349 201.855H140.151C139.489 201.855 138.953 202.392 138.953 203.053V212.038C138.953 212.7 139.489 213.236 140.151 213.236H141.349M146.141 201.855H147.339C148.001 201.855 148.537 202.392 148.537 203.053V205.449" stroke="var(--wc-accent)" stroke-width="1.34771" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="wc-bento-order-laptop-107" d="M145.547 213.836L149.44 209.943C149.937 209.446 149.937 208.642 149.44 208.146C148.944 207.649 148.14 207.649 147.643 208.146L143.75 212.039V213.836H145.547Z" stroke="var(--wc-accent)" stroke-width="1.34771" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="wc-bento-order-laptop-108" d="M141.656 206.647L143.154 208.145L145.849 205.449" stroke="var(--wc-accent)" stroke-width="1.34771" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="wc-bento-order-laptop-109" d="M141.352 203.052V201.255C141.352 200.924 141.62 200.656 141.951 200.656H145.544C145.875 200.656 146.143 200.924 146.143 201.255V203.052H141.352Z" stroke="var(--wc-accent)" stroke-width="1.34771" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </g>
+                <text id="wc-bento-order-laptop-110" fill="var(--wc-accent)" style="white-space: pre" xml:space="preserve" font-family="var(--font-web-chat-mono), monospace" font-size="10.7817" letter-spacing="-0.02em" data-accent-fill="">
+                  <tspan x="159.93" y="211.074">#T43353</tspan>
+                </text>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-bento-order-laptop-122" x="-304.106" y="-219.242" width="811.04" height="823.165" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.23443" />
+      <feGaussianBlur stdDeviation="8.08608" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45925_10770" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45925_10770" result="shape" />
+    </filter>
+    <filter id="wc-bento-order-laptop-133" x="-172.512" y="-151.137" width="901.172" height="893.984" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dx="-7.18781" dy="3.59391" />
+      <feGaussianBlur stdDeviation="16.1726" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45925_10770" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45925_10770" result="shape" />
+    </filter>
+    <clipPath id="wc-bento-order-laptop-159">
+      <rect width="304" height="448" fill="white" />
+    </clipPath>
+    <clipPath id="wc-bento-order-laptop-161">
+      <path d="M-63.9453 41.6144C-63.9453 34.3686 -63.9453 30.7457 -62.5352 27.9782C-61.2948 25.5438 -59.3156 23.5646 -56.8812 22.3242C-54.1137 20.9141 -50.4908 20.9141 -43.245 20.9141H246.075C253.321 20.9141 256.944 20.9141 259.711 22.3242C262.146 23.5646 264.125 25.5438 265.365 27.9782C266.775 30.7457 266.775 34.3686 266.775 41.6144V343.063C266.775 350.309 266.775 353.932 265.365 356.7C264.125 359.134 262.146 361.113 259.711 362.354C256.944 363.764 253.321 363.764 246.075 363.764H-43.245C-50.4908 363.764 -54.1137 363.764 -56.8812 362.354C-59.3156 361.113 -61.2948 359.134 -62.5352 356.7C-63.9453 353.932 -63.9453 350.309 -63.9453 343.063V41.6144Z" fill="white" />
+    </clipPath>
+    <clipPath id="wc-bento-order-laptop-173">
+      <rect width="14.3756" height="14.3756" fill="white" transform="translate(136.57 200.059)" />
+    </clipPath>
+    <filter id="wc-bento-order-laptop-soft-mask-0" filterUnits="userSpaceOnUse" x="-187.7362" y="-206.7362" width="675.4725" height="549.4725">
+      <feGaussianBlur stdDeviation="53.3681" />
+    </filter>
+  </defs>
+</svg>

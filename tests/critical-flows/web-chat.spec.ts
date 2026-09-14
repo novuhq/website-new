@@ -139,7 +139,7 @@ test.describe("web chat personalizer", () => {
     expectHealthyPage(errors)
   })
 
-  test("keeps the extracted identity when a website has no accent color", async ({
+  test("keeps identity and default preview colors when a website has no accent", async ({
     page,
   }) => {
     const logo =
@@ -172,6 +172,17 @@ test.describe("web chat personalizer", () => {
         .filter({ hasText: webChatContract.fallbackAlert })
     ).toBeHidden()
     await expect(heroMessage(page, webChatContract.firstMessage)).toBeVisible()
+    await expect(heroMessage(page, webChatContract.firstMessage)).toHaveCSS(
+      "background-color",
+      "rgb(0, 0, 0)"
+    )
+    await expect(heroMessage(page, webChatContract.firstMessage)).toHaveCSS(
+      "color",
+      "rgb(255, 255, 255)"
+    )
+    for (const layer of await page.locator("[data-brand-artwork]").all()) {
+      await expect(layer).toHaveCSS("opacity", "0")
+    }
     // The sidebar is desktop-only; verify the actual extracted logo when shown.
     const sidebarLogo = page
       .getByTestId("web-chat-hero")

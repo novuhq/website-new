@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="320" height="425" viewBox="0 0 320 425" fill="none" aria-hidden="true">
+  <g id="wc-bento-subscriber-mobile-1" clip-path="url(#wc-bento-subscriber-mobile-142)">
+    <g id="wc-bento-subscriber-mobile-2">
+      <g id="wc-bento-subscriber-mobile-3" filter="url(#wc-bento-subscriber-mobile-81)">
+        <path d="M29.9844 71.9755C29.9844 66.6324 29.9844 63.9608 31.0242 61.92C31.9389 60.1249 33.3984 58.6654 35.1935 57.7508C37.2343 56.7109 39.9058 56.7109 45.2489 56.7109H217.111C222.454 56.7109 225.126 56.7109 227.166 57.7508C228.962 58.6654 230.421 60.1249 231.336 61.92C232.376 63.9608 232.376 66.6324 232.376 71.9755V98.1593C232.376 98.9226 232.376 99.3043 232.227 99.5958C232.096 99.8523 231.888 100.061 231.631 100.191C231.34 100.34 230.958 100.34 230.195 100.34H45.2489C39.9058 100.34 37.2343 100.34 35.1935 99.3001C33.3984 98.3855 31.9389 96.926 31.0242 95.1309C29.9844 93.0901 29.9844 90.4185 29.9844 85.0755V71.9755Z" fill="var(--wc-accent)" fill-opacity="0.94" shape-rendering="crispEdges" data-accent-fill="" />
+        <path d="M45.249 57.0518H217.111C219.788 57.0518 221.776 57.0521 223.35 57.1807C224.919 57.3089 226.047 57.5634 227.012 58.0547C228.743 58.9367 230.15 60.3442 231.032 62.0752C231.523 63.0395 231.778 64.1677 231.906 65.7373C232.035 67.311 232.035 69.2985 232.035 71.9756V98.1592C232.035 98.5462 232.035 98.8162 232.018 99.0264C232.001 99.2326 231.97 99.3517 231.924 99.4414C231.826 99.6337 231.669 99.7897 231.477 99.8877C231.387 99.9334 231.269 99.9646 231.062 99.9814C230.852 99.9986 230.582 99.999 230.195 99.999H45.249C42.5719 99.999 40.5845 99.9987 39.0107 99.8701C37.441 99.7419 36.3129 99.4874 35.3486 98.9961C33.6178 98.1142 32.2101 96.7074 31.3281 94.9766C30.8368 94.0122 30.5824 92.8833 30.4541 91.3135C30.3255 89.7397 30.3252 87.7522 30.3252 85.0752V71.9756C30.3252 69.2985 30.3255 67.3111 30.4541 65.7373C30.5823 64.1676 30.8368 63.0395 31.3281 62.0752C32.2101 60.3442 33.6176 58.9367 35.3486 58.0547C36.3129 57.5634 37.4411 57.3089 39.0107 57.1807C40.5845 57.0521 42.5719 57.0518 45.249 57.0518Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" stroke-width="0.681452" shape-rendering="crispEdges" />
+        <text id="wc-bento-subscriber-mobile-6" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="12.1556" letter-spacing="-0.01em" data-accent-text="">
+          <tspan x="37.4766" y="75.4437">How many orders were placed </tspan>
+          <tspan x="37.4766" y="90.4437">on our website yesterday?</tspan>
+        </text>
+      </g>
+      <g id="wc-bento-subscriber-mobile-9">
+        <g clip-path="url(#wc-bento-subscriber-mobile-144)">
+          <rect id="wc-bento-subscriber-mobile-11" x="236.609" y="56.0312" width="31.6306" height="39.5242" fill="url(#wc-bento-subscriber-mobile-96)" />
+        </g>
+      </g>
+    </g>
+    <g id="wc-bento-subscriber-mobile-13">
+      <mask id="wc-bento-subscriber-mobile-14" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-72.1034" y="-66.1034" width="577.2068" height="414.2068">
+        <g filter="url(#wc-bento-subscriber-mobile-soft-mask-0)">
+          <g id="wc-bento-subscriber-mobile-15" style="mix-blend-mode:plus-lighter">
+            <ellipse cx="216.474" cy="140.851" rx="197.413" ry="104.441" transform="rotate(-13.6392 216.474 140.851)" fill="#575A66" />
+          </g>
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-subscriber-mobile-14)">
+        <g id="wc-bento-subscriber-mobile-18">
+          <g id="wc-bento-subscriber-mobile-21" data-figma-bg-blur-radius="103.581">
+            <g clip-path="url(#wc-bento-subscriber-mobile-146)">
+              <mask id="wc-bento-subscriber-mobile-24" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-74.1034" y="-38.1034" width="408.2068" height="400.2068">
+                <g filter="url(#wc-bento-subscriber-mobile-soft-mask-1)">
+                  <g id="wc-bento-subscriber-mobile-25" style="mix-blend-mode:plus-lighter">
+                    <ellipse cx="130.299" cy="161.761" rx="108.738" ry="104.441" transform="rotate(-13.6392 130.299 161.761)" fill="#575A66" />
+                  </g>
+                </g>
+              </mask>
+              <g mask="url(#wc-bento-subscriber-mobile-24)">
+                <g id="wc-bento-subscriber-mobile-28">
+                  <g id="wc-bento-subscriber-mobile-31">
+                    <g id="wc-bento-subscriber-mobile-32">
+                      <g id="wc-bento-subscriber-mobile-34">
+                        <g id="wc-bento-subscriber-mobile-35">
+                          <path id="wc-bento-subscriber-mobile-36" d="M85.7144 181.921C87.2825 181.921 88.5538 180.65 88.5538 179.082C88.5538 177.513 87.2825 176.242 85.7144 176.242C84.1462 176.242 82.875 177.513 82.875 179.082C82.875 180.65 84.1462 181.921 85.7144 181.921Z" stroke="var(--wc-accent)" stroke-width="1.3629" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="wc-bento-subscriber-mobile-37" d="M92.4405 191.061C91.9215 187.813 89.115 185.328 85.7202 185.328C82.3255 185.328 79.519 187.813 79 191.061" stroke="var(--wc-accent)" stroke-width="1.3629" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="wc-bento-subscriber-mobile-38" d="M85.7091 193.278C91.9817 193.278 97.0666 188.193 97.0666 181.92C97.0666 175.647 91.9817 170.562 85.7091 170.562C79.4365 170.562 74.3516 175.647 74.3516 181.92C74.3516 188.193 79.4365 193.278 85.7091 193.278Z" stroke="var(--wc-accent)" stroke-width="1.3629" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-bento-subscriber-mobile-81" x="25.0383" y="54.2379" width="212.283" height="53.525" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="2.47304" />
+      <feGaussianBlur stdDeviation="2.47304" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45889_29143" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="2.47304" />
+      <feGaussianBlur stdDeviation="2.47304" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45889_29143" result="effect2_dropShadow_45889_29143" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45889_29143" result="shape" />
+    </filter>
+    <pattern id="wc-bento-subscriber-mobile-96" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#wc-bento-subscriber-mobile-148" transform="scale(0.000891266 0.000713267)" />
+    </pattern>
+    <clipPath id="wc-bento-subscriber-mobile-142">
+      <rect width="320" height="425" fill="white" />
+    </clipPath>
+    <clipPath id="wc-bento-subscriber-mobile-144">
+      <path d="M238.117 71.7029C238.117 63.4231 244.829 56.7109 253.109 56.7109C261.389 56.7109 268.101 63.4231 268.101 71.7029C268.101 79.9827 261.389 86.6948 253.109 86.6948C244.829 86.6948 238.117 79.9827 238.117 71.7029Z" fill="white" />
+    </clipPath>
+    <clipPath id="wc-bento-subscriber-mobile-146">
+      <path d="M53 129.442C53 123.421 57.8815 118.539 63.9032 118.539H415.532C421.554 118.539 426.435 123.421 426.435 129.442V576.323C426.435 582.344 421.554 587.226 415.532 587.226H63.9032C57.8815 587.226 53 582.344 53 576.323V129.442Z" fill="white" />
+    </clipPath>
+    <image id="wc-bento-subscriber-mobile-148" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait.jpg" />
+    <filter id="wc-bento-subscriber-mobile-soft-mask-0" filterUnits="userSpaceOnUse" x="-72.1034" y="-66.1034" width="577.2068" height="414.2068">
+      <feGaussianBlur stdDeviation="47.5517" />
+    </filter>
+    <filter id="wc-bento-subscriber-mobile-soft-mask-1" filterUnits="userSpaceOnUse" x="-74.1034" y="-38.1034" width="408.2068" height="400.2068">
+      <feGaussianBlur stdDeviation="47.5517" />
+    </filter>
+  </defs>
+</svg>

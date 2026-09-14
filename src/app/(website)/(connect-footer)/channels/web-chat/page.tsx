@@ -26,9 +26,9 @@ export const metadata: Metadata = getMetadata({
 
 /** Follow the homepage's mobile/tablet/laptop rhythm; retain Figma's wide-screen gaps. */
 const GAP = {
-  compareBento: "mt-24 md:mt-28 lg:mt-32 xl:mt-45",
-  productBento: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
-  surfaceTabs: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
+  compareBento: "mt-24 md:mt-33 lg:mt-45 xl:mt-45",
+  productBento: "mt-24 md:mt-40 lg:mt-45 xl:mt-60",
+  surfaceTabs: "mt-24 md:mt-40 lg:mt-45 xl:mt-60",
   channelsGrid: "mt-24 md:mt-28 lg:mt-32 xl:mt-36",
   deployAci: "mt-24 md:mt-28 lg:mt-32 xl:mt-60",
   designSystem: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",

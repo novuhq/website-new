@@ -25,6 +25,17 @@ const DESKTOP_LIGHTS: readonly BloomLight[] = [
   [50.74, 33.36, 88.82, 38.53, "44 37 81"],
 ]
 
+// Sampled independently from the tablet bloom (45902:55543). Its masked
+// lights differ from a scaled copy of the desktop composition.
+const TABLET_LIGHTS: readonly BloomLight[] = [
+  [33.06, 33.77, 40.44, 29.46, "122 20 100"],
+  [59.05, 44.45, 62.87, 40.72, "57 23 224"],
+  [35.08, 48.23, 52.39, 37.36, "26 22 170"],
+  [48.34, 56.93, 42.79, 13.31, "105 73 142"],
+  [59.69, 50.9, 64.51, 21.42, "134 77 120"],
+  [52.29, 35.02, 88.07, 40.03, "60 48 106"],
+]
+
 const MOBILE_LIGHTS: readonly BloomLight[] = [
   [39.17, 48.92, 72.17, 29.04, "110 37 92"],
   [61.26, 55.43, 110.24, 37.34, "71 51 230"],
@@ -50,24 +61,33 @@ function bloomBackground(lights: readonly BloomLight[]) {
 }
 
 const DESKTOP_BACKGROUND = bloomBackground(DESKTOP_LIGHTS)
+const TABLET_BACKGROUND = bloomBackground(TABLET_LIGHTS)
 const MOBILE_BACKGROUND = bloomBackground(MOBILE_LIGHTS)
 // The desktop Figma image fill tiles the 1024px noise source at 57.0623%.
 const DESKTOP_NOISE_SIZE = heroNoise.width * 0.57062304
 
-function BloomCanvas({ compact = false }: { compact?: boolean }) {
+function BloomCanvas({ variant }: { variant: "phone" | "tablet" | "desktop" }) {
+  const compact = variant === "phone"
   const dots = compact ? mobileDots : desktopDots
 
   return (
     <div
       data-slot="hero-bloom"
       className={cn(
-        "absolute -top-16 bg-black bg-blend-screen",
-        compact
-          ? "inset-x-0 h-[1407px] lg:hidden"
-          : "left-1/2 hidden h-[1788px] w-full min-w-[1920px] -translate-x-1/2 lg:block"
+        "absolute bg-black bg-blend-screen",
+        variant === "phone" && "inset-x-0 top-0 h-[1407px] md:hidden",
+        variant === "tablet" &&
+          "top-0 left-[-176px] hidden h-329 w-344 md:block",
+        variant === "desktop" &&
+          "top-45.5 left-[-176px] h-329 w-344 xl:-top-16 xl:left-1/2 xl:h-[1788px] xl:w-full xl:min-w-[1920px] xl:-translate-x-1/2"
       )}
       style={{
-        backgroundImage: compact ? MOBILE_BACKGROUND : DESKTOP_BACKGROUND,
+        backgroundImage:
+          variant === "phone"
+            ? MOBILE_BACKGROUND
+            : variant === "tablet"
+              ? TABLET_BACKGROUND
+              : DESKTOP_BACKGROUND,
       }}
     >
       {/* Texture stays at its own scale as the bloom grows with the viewport. */}
@@ -78,9 +98,10 @@ function BloomCanvas({ compact = false }: { compact?: boolean }) {
         )}
         style={{
           backgroundImage: `url(${heroNoise.src})`,
-          backgroundSize: compact
-            ? `${heroNoise.width}px ${heroNoise.height}px`
-            : `${DESKTOP_NOISE_SIZE}px ${DESKTOP_NOISE_SIZE}px`,
+          backgroundSize:
+            variant === "desktop"
+              ? `${DESKTOP_NOISE_SIZE}px ${DESKTOP_NOISE_SIZE}px`
+              : `${heroNoise.width}px ${heroNoise.height}px`,
         }}
       />
       {/* Figma's original texture and blurred mask, exported together at 2×.
@@ -94,7 +115,7 @@ function BloomCanvas({ compact = false }: { compact?: boolean }) {
           "absolute bg-size-[100%_100%] bg-no-repeat mix-blend-plus-lighter",
           compact
             ? "inset-x-0 top-[887.09px]"
-            : "top-[1039px] left-[calc(50%-704px)] h-53 w-[1409px]"
+            : "top-[745px] left-[183px] h-38 w-[1010px] xl:top-[1039px] xl:left-[calc(50%-704px)] xl:h-53 xl:w-[1409px]"
         )}
         style={{
           backgroundImage: `url(${dots.src})`,
@@ -109,12 +130,31 @@ export function HeroBackdrop({ personalized }: { personalized: boolean }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 -bottom-20 isolate overflow-hidden"
+      className="pointer-events-none absolute inset-x-0 top-0 -bottom-20 isolate hidden overflow-hidden lg:block"
     >
       {/* Fixed canvas heights keep the bloom aligned to the fixed-height UI.
           Desktop stays centered/cropped below 1920px and stretches above it. */}
-      <BloomCanvas compact />
-      <BloomCanvas />
+      <BloomCanvas variant="desktop" />
+      <HueLayer active={personalized} />
+    </div>
+  )
+}
+
+/** Anchor smaller canvases to the UI so copy wrapping cannot displace the glow. */
+export function HeroResponsiveBackdrop({
+  personalized,
+}: {
+  personalized: boolean
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -top-[570.09px] left-1/2 isolate -z-10 h-[1407px] w-screen -translate-x-1/2 overflow-hidden md:-top-[307px] md:h-329 lg:hidden"
+    >
+      {/* Phone dots start at the 317px dashboard's lower edge. The tablet
+          canvas starts 307px above its 476px dashboard in 45902:52824. */}
+      <BloomCanvas variant="phone" />
+      <BloomCanvas variant="tablet" />
       <HueLayer active={personalized} />
     </div>
   )

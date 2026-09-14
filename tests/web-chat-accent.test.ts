@@ -3,7 +3,9 @@ import { describe, it } from "node:test"
 
 import {
   accentForeground,
+  bubbleForeground,
   DEFAULT_ACCENT,
+  maxContrastForeground,
   normalizeHex,
   relativeLuminance,
 } from "@/lib/accent"
@@ -54,6 +56,40 @@ describe("accentForeground", () => {
   })
 })
 
+describe("maxContrastForeground", () => {
+  it("chooses black for Figma's green bubble and white for dark blue", () => {
+    assert.equal(maxContrastForeground("#34d59a"), "#000000")
+    assert.equal(maxContrastForeground("#0036ff"), "#ffffff")
+    assert.equal(maxContrastForeground("#ffffff"), "#000000")
+    assert.equal(maxContrastForeground("#000000"), "#ffffff")
+  })
+
+  it("switches where black becomes more readable than white", () => {
+    assert.equal(maxContrastForeground("#757575"), "#ffffff")
+    assert.equal(maxContrastForeground("#767676"), "#000000")
+    // The legacy control rule intentionally keeps white on this orange.
+    assert.equal(maxContrastForeground("#e65006"), "#000000")
+  })
+})
+
+describe("bubbleForeground", () => {
+  it("matches white text in the Recent and ToDesktop Figma references", () => {
+    assert.equal(bubbleForeground("#E65006"), "#ffffff")
+    assert.equal(bubbleForeground("#0036ff"), "#ffffff")
+    assert.equal(
+      brandCssVars(buildBrandTheme("#e65006"))["--wc-accent-contrast"],
+      "#ffffff"
+    )
+  })
+
+  it("keeps automatic contrast for other brand colors", () => {
+    assert.equal(bubbleForeground("#34d59a"), "#000000")
+    assert.equal(bubbleForeground("#d97757"), "#000000")
+    assert.equal(bubbleForeground("#ffe066"), "#000000")
+    assert.equal(bubbleForeground("#000000"), "#ffffff")
+  })
+})
+
 describe("buildBrandTheme", () => {
   it("falls back to the default accent when extraction produced nothing", () => {
     assert.equal(buildBrandTheme(null).accent, DEFAULT_ACCENT)
@@ -77,10 +113,17 @@ describe("buildBrandTheme", () => {
 })
 
 describe("brandCssVars", () => {
+  it("chooses the highest-contrast bubble text without changing other foregrounds", () => {
+    const vars = brandCssVars(buildBrandTheme("#d97757"))
+    assert.equal(vars["--wc-accent-contrast"], "#000000")
+    assert.equal(vars["--wc-accent-foreground"], "#ffffff")
+  })
+
   it("maps a theme onto the page's custom properties", () => {
     assert.deepEqual(brandCssVars(buildBrandTheme("#0036ff")), {
       "--wc-accent": "#0036ff",
       "--wc-accent-foreground": "#ffffff",
+      "--wc-accent-contrast": "#ffffff",
       "--wc-accent-soft": "#0036ff1f",
       "--wc-accent-row": "#0036ff30",
       "--wc-accent-nav": "#0036ffb8",

@@ -51,7 +51,7 @@ export function relativeLuminance(hex: string): number {
 }
 
 /**
- * Text colour to sit on an accent fill.
+ * Legacy foreground for accent controls. Bubbles use bubbleForeground.
  *
  * Deliberately a luminance threshold rather than a max-contrast rule: the design
  * uses white on #E65006 even though black has the higher contrast ratio there.
@@ -59,4 +59,22 @@ export function relativeLuminance(hex: string): number {
  */
 export function accentForeground(hex: string): "#ffffff" | "#000000" {
   return relativeLuminance(hex) > 0.5 ? "#000000" : "#ffffff"
+}
+
+/** Choose the more readable of black and white on an opaque accent fill. */
+export function maxContrastForeground(hex: string): "#ffffff" | "#000000" {
+  const luminance = relativeLuminance(hex)
+  const blackContrast = (luminance + 0.05) / 0.05
+  const whiteContrast = 1.05 / (luminance + 0.05)
+
+  return blackContrast >= whiteContrast ? "#000000" : "#ffffff"
+}
+
+/** Honor Figma's orange bubble text; use maximum contrast for other accents. */
+export function bubbleForeground(hex: string): "#ffffff" | "#000000" {
+  // Recent reference 45487:87614 explicitly uses white on #E65006.
+  // ToDesktop's #0036FF already selects white through the contrast rule.
+  if (normalizeHex(hex) === "#e65006") return "#ffffff"
+
+  return maxContrastForeground(hex)
 }

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="304" height="448" viewBox="0 0 304 448" fill="none" aria-hidden="true">
+  <g id="wc-bento-actions-laptop-1" clip-path="url(#wc-bento-actions-laptop-94)">
+    <g id="wc-bento-actions-laptop-3">
+      <mask id="wc-bento-actions-laptop-4" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-245.3819" y="-184.3819" width="645.7639" height="506.7639">
+        <g filter="url(#wc-bento-actions-laptop-soft-mask-0)">
+          <ellipse id="wc-bento-actions-laptop-5" cx="77.4282" cy="68.8496" rx="209.496" ry="138.368" transform="rotate(6.84118 77.4282 68.8496)" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-actions-laptop-4)">
+        <g id="wc-bento-actions-laptop-7">
+          <g id="wc-bento-actions-laptop-10" filter="url(#wc-bento-actions-laptop-71)" data-figma-bg-blur-radius="254.25">
+            <g id="wc-bento-actions-laptop-13">
+              <g id="wc-bento-actions-laptop-20">
+                <g id="wc-bento-actions-laptop-21">
+                  <g id="wc-bento-actions-laptop-22">
+                    <rect x="36.406" y="78.2849" width="33.4992" height="33.4992" rx="16.7496" fill="var(--wc-accent)" fill-opacity="0.16" data-accent-fill="" />
+                    <rect x="36.406" y="78.2849" width="33.4992" height="33.4992" rx="16.7496" stroke="black" stroke-width="0.858954" />
+                    <text id="wc-bento-actions-laptop-25" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="15.5793" letter-spacing="-0.02em">
+                      <tspan x="49.1052" y="100.751">1</tspan>
+                    </text>
+                  </g>
+                  <g id="wc-bento-actions-laptop-27">
+                    <path d="M97.1328 73.1328H315.822C318.716 73.1328 320.86 73.1328 322.558 73.2715C324.25 73.4097 325.46 73.6833 326.491 74.209C328.35 75.156 329.861 76.6677 330.808 78.5264C331.333 79.5581 331.608 80.7678 331.746 82.46C331.885 84.1572 331.885 86.3019 331.885 89.1953V100.877C331.885 103.77 331.885 105.914 331.746 107.611C331.608 109.304 331.333 110.514 330.808 111.546C329.861 113.404 328.35 114.915 326.491 115.862C325.459 116.388 324.25 116.662 322.558 116.8C320.86 116.938 318.716 116.939 315.822 116.939H97.1328C94.2394 116.939 92.0947 116.938 90.3975 116.8C88.7054 116.662 87.4956 116.388 86.4639 115.862C84.6052 114.915 83.0935 113.405 82.1465 111.546C81.6208 110.514 81.3472 109.304 81.209 107.611C81.0704 105.914 81.0703 103.77 81.0703 100.877V89.1953C81.0703 86.3019 81.0703 84.1572 81.209 82.46C81.3472 80.768 81.6209 79.5581 82.1465 78.5264C83.0935 76.6677 84.6052 75.156 86.4639 74.209C87.4956 73.6834 88.7055 73.4097 90.3975 73.2715C92.0947 73.1328 94.2394 73.1328 97.1328 73.1328Z" stroke="var(--wc-accent)" stroke-opacity="0.3" stroke-width="0.858954" />
+                  </g>
+                </g>
+                <g id="wc-bento-actions-laptop-32">
+                  <g id="wc-bento-actions-laptop-33">
+                    <rect x="36.406" y="129.824" width="33.4992" height="33.4992" rx="16.7496" fill="var(--wc-accent)" fill-opacity="0.16" data-accent-fill="" />
+                    <rect x="36.406" y="129.824" width="33.4992" height="33.4992" rx="16.7496" stroke="black" stroke-width="0.858954" />
+                    <text id="wc-bento-actions-laptop-36" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="15.5793" letter-spacing="-0.02em">
+                      <tspan x="48.0098" y="152.29">2</tspan>
+                    </text>
+                  </g>
+                  <g id="wc-bento-actions-laptop-38">
+                    <path d="M97.1328 124.672H315.822C318.716 124.672 320.86 124.672 322.558 124.811C324.25 124.949 325.46 125.222 326.491 125.748C328.35 126.695 329.861 128.207 330.808 130.065C331.333 131.097 331.608 132.307 331.746 133.999C331.885 135.696 331.885 137.841 331.885 140.734V152.416C331.885 155.309 331.885 157.453 331.746 159.15C331.608 160.843 331.333 162.053 330.808 163.085C329.861 164.943 328.35 166.454 326.491 167.401C325.459 167.927 324.25 168.201 322.558 168.339C320.86 168.478 318.716 168.479 315.822 168.479H97.1328C94.2394 168.479 92.0947 168.478 90.3975 168.339C88.7054 168.201 87.4956 167.927 86.4639 167.401C84.6052 166.454 83.0935 164.944 82.1465 163.085C81.6208 162.053 81.3472 160.843 81.209 159.15C81.0704 157.453 81.0703 155.309 81.0703 152.416V140.734C81.0703 137.841 81.0703 135.696 81.209 133.999C81.3472 132.307 81.6209 131.097 82.1465 130.065C83.0935 128.207 84.6052 126.695 86.4639 125.748C87.4956 125.222 88.7055 124.949 90.3975 124.811C92.0947 124.672 94.2394 124.672 97.1328 124.672Z" stroke="var(--wc-accent)" stroke-opacity="0.3" stroke-width="0.858954" />
+                  </g>
+                </g>
+              </g>
+              <path id="wc-bento-actions-laptop-44" opacity="0.2" d="M53.1484 112.219L53.1484 129.398" stroke="var(--wc-accent)" stroke-width="0.858954" />
+              <path id="wc-bento-actions-laptop-45" opacity="0.2" d="M53.1484 181.789L53.1484 163.751" stroke="var(--wc-accent)" stroke-width="0.858954" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="wc-bento-actions-laptop-46">
+      <g id="wc-bento-actions-laptop-47">
+        <rect x="35.5315" y="181.363" width="35.2171" height="33.6022" rx="16.8011" fill="var(--wc-accent)" fill-opacity="0.8" data-accent-fill="" />
+        <rect x="35.5315" y="181.363" width="35.2171" height="33.6022" rx="16.8011" stroke="black" stroke-width="0.858954" />
+        <text id="wc-bento-actions-laptop-50" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="15.5793" font-weight="500" letter-spacing="-0.02em" data-accent-text="">
+          <tspan x="48.1194" y="203.829">3</tspan>
+        </text>
+      </g>
+    </g>
+    <g id="wc-bento-actions-laptop-52" filter="url(#wc-bento-actions-laptop-82)">
+      <path d="M81 195.492C81 189.719 81 186.833 82.1234 184.628C83.1117 182.688 84.6885 181.112 86.628 180.123C88.8328 179 91.7192 179 97.4919 179H274.508C280.281 179 283.167 179 285.372 180.123C287.312 181.112 288.888 182.688 289.877 184.628C291 186.833 291 189.719 291 195.492V281.635C291 287.408 291 290.294 289.877 292.499C288.888 294.438 287.312 296.015 285.372 297.003C283.167 298.127 280.281 298.127 274.508 298.127H97.4919C91.7192 298.127 88.8328 298.127 86.628 297.003C84.6885 296.015 83.1117 294.438 82.1234 292.499C81 290.294 81 287.408 81 281.635V195.492Z" fill="var(--wc-accent)" fill-opacity="0.14" data-accent-fill="" />
+      <path d="M97.4922 179.43H274.508C277.401 179.43 279.546 179.43 281.243 179.568C282.935 179.707 284.145 179.98 285.177 180.506C287.035 181.453 288.547 182.965 289.494 184.823C290.02 185.855 290.293 187.065 290.432 188.757C290.57 190.454 290.57 192.599 290.57 195.492V281.635C290.57 284.528 290.57 286.673 290.432 288.37C290.293 290.062 290.02 291.272 289.494 292.304C288.547 294.162 287.035 295.674 285.177 296.621C284.145 297.147 282.935 297.42 281.243 297.559C279.546 297.697 277.401 297.697 274.508 297.697H97.4922C94.5987 297.697 92.4541 297.697 90.7568 297.559C89.0649 297.42 87.8549 297.147 86.8232 296.621C84.9646 295.674 83.4529 294.162 82.5059 292.304C81.9802 291.272 81.7066 290.062 81.5684 288.37C81.4297 286.673 81.4297 284.528 81.4297 281.635V195.492C81.4297 192.599 81.4297 190.454 81.5684 188.757C81.7066 187.065 81.9803 185.855 82.5059 184.823C83.4529 182.965 84.9646 181.453 86.8232 180.506C87.8549 179.98 89.0649 179.707 90.7568 179.568C92.4541 179.43 94.5987 179.43 97.4922 179.43Z" stroke="var(--wc-accent)" stroke-opacity="0.4" stroke-width="0.858954" />
+      <g id="wc-bento-actions-laptop-55">
+        <text id="wc-bento-actions-laptop-56" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="13.7433" letter-spacing="-0.02em">
+          <tspan x="92.1641" y="200.228">Confirm change</tspan>
+        </text>
+        <g id="wc-bento-actions-laptop-58">
+          <text id="wc-bento-actions-laptop-59" opacity="0.4" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="11.1664" letter-spacing="-0.02em">
+            <tspan x="92.1641" y="216.51">Review and confirm update</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="wc-bento-actions-laptop-61">
+        <g id="wc-bento-actions-laptop-62">
+          <rect x="92.1641" y="229.758" width="187.667" height="25.1664" rx="5.15372" fill="white" />
+          <text id="wc-bento-actions-laptop-64" fill="black" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="12.0254" font-weight="500" letter-spacing="-0.01em">
+            <tspan x="162" y="246.283">Approve</tspan>
+          </text>
+        </g>
+        <g id="wc-bento-actions-laptop-66">
+          <rect x="91.7346" y="261.367" width="188.526" height="26.0254" rx="5.5832" stroke="white" stroke-opacity="0.2" stroke-width="0.858954" />
+          <text id="wc-bento-actions-laptop-68" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="12.0254" font-weight="500" letter-spacing="-0.01em">
+            <tspan x="166" y="278.322">Cancel</tspan>
+          </text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-bento-actions-laptop-71" x="-232.875" y="-231.368" width="941.415" height="943.989" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dx="-6.87163" dy="3.43582" />
+      <feGaussianBlur stdDeviation="15.4612" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45925_11055" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45925_11055" result="shape" />
+    </filter>
+    <filter id="wc-bento-actions-laptop-82" x="63.8209" y="177.282" width="244.358" height="153.483" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="15.4612" />
+      <feGaussianBlur stdDeviation="8.58954" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45925_11055" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45925_11055" result="shape" />
+    </filter>
+    <clipPath id="wc-bento-actions-laptop-94">
+      <rect width="304" height="448" fill="white" />
+    </clipPath>
+    <filter id="wc-bento-actions-laptop-soft-mask-0" filterUnits="userSpaceOnUse" x="-245.3819" y="-184.3819" width="645.7639" height="506.7639">
+      <feGaussianBlur stdDeviation="56.691" />
+    </filter>
+  </defs>
+</svg>

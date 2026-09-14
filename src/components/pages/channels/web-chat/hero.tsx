@@ -35,7 +35,10 @@ import {
   type WebChatBrand,
 } from "@/components/pages/channels/web-chat/brand-provider"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
-import { HeroBackdrop } from "@/components/pages/channels/web-chat/hero-backdrop"
+import {
+  HeroBackdrop,
+  HeroResponsiveBackdrop,
+} from "@/components/pages/channels/web-chat/hero-backdrop"
 import { HeroProductUI } from "@/components/pages/channels/web-chat/hero-product-ui"
 import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-personalizer"
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
@@ -124,7 +127,7 @@ function CliPill({ className }: { className?: string }) {
       className={cn("min-w-0 xl:w-[393px]", className)}
       command={HERO_CLI_COMMAND}
       commandClassName="pointer-events-auto min-w-0 flex-1 text-base leading-none tracking-[-0.02em] text-white select-text"
-      copyButtonClassName="size-4 xl:size-4 [&_svg]:size-4"
+      copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
       controlClassName={cn(
         "h-11 gap-6 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
         geistMono.className
@@ -137,7 +140,7 @@ function MetaLine({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "text-sm leading-[1.375] tracking-tight text-white/40 xl:max-w-[369px] xl:text-[15px]",
+        "text-sm leading-[1.375] tracking-tight text-white/40 md:max-w-[369px] md:text-[15px]",
         className
       )}
     >
@@ -175,16 +178,16 @@ const HERO_HEADING_AFTER_BREAK = HERO_HEADING.slice(
 
 function HeroTitleColumn() {
   return (
-    <div className="flex max-w-184 min-w-0 flex-col gap-5 xl:max-w-[557px] xl:flex-1">
+    <div className="flex max-w-184 min-w-0 flex-col gap-5 md:max-w-[557px] md:gap-4 lg:gap-4.5 xl:flex-1 xl:gap-5">
       <div className="flex flex-col gap-3.5 md:gap-4">
         <HeroBadge />
-        <h1 className="text-[36px] leading-[1.04em] tracking-[-0.04em] text-white md:text-5xl xl:text-[56px]">
+        <h1 className="text-[36px] leading-[1.04em] tracking-[-0.04em] text-white md:text-[40px] lg:text-5xl xl:text-[56px]">
           {HERO_HEADING_BEFORE_BREAK}
           <br />
           {HERO_HEADING_AFTER_BREAK}
         </h1>
       </div>
-      <p className="text-[16px] leading-[1.5em] tracking-[-0.025em] text-white/80 md:text-[18px]">
+      <p className="text-[16px] leading-[1.5em] tracking-[-0.025em] text-white/80 md:max-w-125 xl:max-w-none xl:text-[18px]">
         {HERO_DESCRIPTION_TEXT}
       </p>
     </div>
@@ -209,20 +212,20 @@ function HeroCtaColumnDesktop() {
   )
 }
 
-/** Mobile-only: CLI pill, then `Copy Prompt`, then the meta line below — the CTA order flips. */
+/** Phones lead with the CLI; tablets put Copy Prompt first, with meta below. */
 function HeroCtaColumnMobile() {
   return (
-    <div className="grid gap-4 sm:grid-cols-[minmax(0,24.5625rem)_8.5rem] xl:hidden">
-      <CliPill />
-      <CopyPromptWithTooltip />
-      <MetaLine className="mt-0.5 sm:col-span-2" />
+    <div className="grid gap-4 sm:grid-cols-[minmax(0,24.5625rem)_8.5rem] md:w-[545px] md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-y-4.5 lg:gap-y-5 xl:hidden">
+      <CliPill className="md:col-start-2 md:row-start-1" />
+      <CopyPromptWithTooltip className="md:col-start-1 md:row-start-1" />
+      <MetaLine className="mt-0.5 sm:col-span-2 md:mt-0" />
     </div>
   )
 }
 
 function HeroCopy() {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-10 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
+    <div className="mx-auto flex max-w-7xl flex-col gap-10 md:min-h-[319px] md:gap-9 lg:min-h-[341px] lg:gap-10 xl:min-h-0 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
       <HeroTitleColumn />
       <HeroCtaColumnDesktop />
       <HeroCtaColumnMobile />
@@ -250,8 +253,8 @@ function DashboardBorder({ compact = false }: { compact?: boolean }) {
           className={cn(
             "pointer-events-none absolute -inset-(--wc-frame-stroke) z-20 rounded-[calc(var(--wc-frame-radius)+var(--wc-frame-stroke))] mask-[linear-gradient(white,white),linear-gradient(white,white)] mask-exclude [mask-clip:content-box,border-box] p-(--wc-frame-stroke) mix-blend-overlay",
             compact
-              ? "[--wc-frame-radius:12px] [--wc-frame-stroke:0.466px] lg:hidden"
-              : "hidden [--wc-frame-radius:24px] [--wc-frame-stroke:1px] lg:block",
+              ? "[--wc-frame-radius:12px] [--wc-frame-stroke:0.466px] md:hidden"
+              : "hidden [--wc-frame-radius:16.8px] [--wc-frame-stroke:0.7px] md:block xl:[--wc-frame-radius:24px] xl:[--wc-frame-stroke:1px]",
             paint
           )}
         />
@@ -272,61 +275,26 @@ function HeroLiveUi({
   personalizedTable: boolean
 }) {
   return (
-    // Keep the stroke outside the clipped surfaces so it blends with the glow.
-    <div className="relative -mx-5 overflow-x-clip lg:mx-0 lg:overflow-visible">
-      <div
-        className={cn(
-          // Mobile: the outer wrapper cancels the section's `px-5` padding and
-          // clips against the true viewport edge — Figma's `ui` group
-          // (`45487-112600`) is positioned "at x-296 on a 360 viewport",
-          // i.e. relative to the device edge, not the padded content column.
-          "relative",
-          // Desktop: Figma's `dashboard` frame (`45487-89843`, 1364x680,
-          // radius 24) is ONE continuous card — the sidebar/table mock and
-          // the floating agent panel share its background/border/shadow/
-          // blur, rather than being two separately-chromed boxes with a
-          // visible seam between them.
-          // `lg:h-[680px]` pins that 680 exactly rather than letting the
-          // table's row count set it: the mock has more rows than fit, and
-          // Figma clips them against the card with the fade the table
-          // already draws. Left to grow, it reached 734 and pushed the URL
-          // field and caption ~53px below their designed positions.
-          // `lg:bg-black` under the gradient: Figma's fill fades to
-          // transparent below 58% and we match it exactly, but the frame never
-          // shows that fade — every point inside the card measures 1-6/255,
-          // because the dashboard's children are opaque. Two things went wrong
-          // without an opaque base: the glow came through the card's lower
-          // third at up to 137/255, and the chat panel (whose own fill is only
-          // 0.56 alpha) composited over glow instead of over black, which lit
-          // it ~40/255 too bright. `bg-black` sets background-color and the
-          // gradient sets background-image, so both apply.
-          "lg:relative lg:mx-0 lg:flex lg:h-[680px] lg:flex-row lg:items-stretch lg:overflow-hidden lg:rounded-3xl lg:border lg:border-transparent lg:bg-black lg:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] lg:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] lg:backdrop-blur-[48px]"
-        )}
-      >
-        {/*
-        Mobile only: the dashboard slice (`HeroProductUI`, 438x317) and the
-        agent panel (190.2x301.62) sit side by side as one 636px-wide row,
-        aligned 20px from the right edge (−296px at 360px) so the dashboard's right sliver shows
-        beside the fully-visible agent panel — reproducing Figma's bleed
-        instead of stacking them as two separate boxes. `lg:contents`
-        hands the two children back to the desktop flex row above at lg+
-        (where this wrapper's own sizing/offset stop applying, since a
-        `display:contents` box generates no box for them to apply to).
-      */}
-        <div className="relative left-[calc(100%-656px)] w-[636px] rounded-xl sm:left-0 sm:mx-auto lg:contents">
-          <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black lg:contents">
-            <HeroProductUI
-              phase={phase}
-              brand={brand}
-              personalizedTable={personalizedTable}
-            />
-            <HeroAgentPanel
-              step={step}
-              phase={phase}
-              personalized={brand.status === "personalized"}
-            />
+    // Tablets use the desktop scene at 70%; the chat overlaps the fixed-width
+    // dashboard at 768px. Scale the outside stroke with the scene as well.
+    <div className="relative -mx-5 overflow-x-clip md:mx-auto md:h-119 md:max-w-[955px] md:overflow-visible xl:h-170 xl:max-w-none">
+      <div className="relative md:w-[calc(100%/0.7)] md:origin-top-left md:scale-70 xl:w-full xl:scale-100">
+        <div className="relative md:flex md:h-170 md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-transparent md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]">
+          <div className="relative left-[calc(100%-656px)] w-[636px] rounded-xl sm:left-0 sm:mx-auto md:contents">
+            <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black md:contents">
+              <HeroProductUI
+                phase={phase}
+                brand={brand}
+                personalizedTable={personalizedTable}
+              />
+              <HeroAgentPanel
+                step={step}
+                phase={phase}
+                personalized={brand.hasAccent}
+              />
+            </div>
+            <DashboardBorder compact />
           </div>
-          <DashboardBorder compact />
         </div>
       </div>
       <DashboardBorder />
@@ -335,7 +303,13 @@ function HeroLiveUi({
 }
 
 function FallbackAlertSlot({ children }: { children: ReactNode }) {
-  return <div className="flex justify-center md:justify-start">{children}</div>
+  return (
+    <div className="relative w-full">
+      <div className="absolute inset-x-0 top-0 flex justify-center">
+        {children}
+      </div>
+    </div>
+  )
 }
 
 /**
@@ -394,7 +368,9 @@ export function WebChatHero() {
     <section
       ref={inViewRef}
       className={cn(
-        "relative pt-10 font-inter md:pt-14 lg:pt-18 xl:min-h-314 xl:pt-23",
+        // Preserve the backdrop's 80px bleed without letting its opaque canvas
+        // cover the next section. The upper allowance keeps tooltips visible.
+        "relative pt-10 font-inter max-lg:[clip-path:inset(-100vh_0_-80px)] md:pt-12 lg:pt-14 xl:min-h-314 xl:pt-23",
         geistMono.variable
       )}
       data-testid="web-chat-hero"
@@ -402,7 +378,7 @@ export function WebChatHero() {
       data-storyboard-step={step ?? "idle"}
       style={brandCssVars(displayedBrand.theme)}
     >
-      <HeroBackdrop personalized={displayedBrand.status === "personalized"} />
+      <HeroBackdrop personalized={displayedBrand.hasAccent} />
       {/*
         Figma puts the card and the copy on DIFFERENT columns: the card's `ui`
         group spans x278-1642 (1364 wide) and the `typography` group spans
@@ -418,11 +394,13 @@ export function WebChatHero() {
         x320 and the CTA column's right edge reaches Figma's x1600 (it had
         overshot to x1642). Verified by pixel diff against the frame.
       */}
-      {/* Avoid an isolated stacking context: outside border blends need the backdrop. */}
-      <div className="relative mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-357">
+      {/* The smaller-screen backdrop lives inside this stacking context.
+          Desktop strokes still blend with the section-level backdrop. */}
+      <div className="relative isolate mx-auto w-full max-w-3xl px-5 md:px-8 lg:isolation-auto lg:max-w-357">
         <HeroCopy />
 
-        <div className="mt-17.5 lg:mt-16">
+        <div className="relative mt-17.5 md:mt-26.5 lg:mt-23 xl:mt-16">
+          <HeroResponsiveBackdrop personalized={displayedBrand.hasAccent} />
           <HeroLiveUi
             step={step}
             phase={phase}
@@ -431,7 +409,7 @@ export function WebChatHero() {
           />
         </div>
 
-        <div className="mt-7 flex flex-col items-center gap-4 lg:mt-5">
+        <div className="mt-7 flex flex-col items-center gap-4 md:mt-8.25 xl:mt-5">
           <UrlPersonalizer onSubmit={handleSubmit} />
           {/*
             Mounted unconditionally (final-review Fix 5) so the alert's

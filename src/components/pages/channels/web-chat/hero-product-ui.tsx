@@ -47,12 +47,12 @@ export function HeroProductUI({
     : STORYBOARD_TIMING.recolorMs
 
   return (
-    <div className="relative lg:min-w-0 lg:flex-1">
+    <div className="relative md:w-235 md:shrink-0 xl:min-w-0 xl:flex-1">
       {/* Desktop: chrome + sidebar + table. Fills whatever width the shared
           card (`HeroLiveUi` in hero.tsx) leaves it next to the agent panel
           — no border/bg/shadow of its own, since that chrome now lives on
           the shared outer card so the two don't read as separate boxes. */}
-      <div className="relative hidden overflow-hidden lg:flex lg:h-full lg:flex-col">
+      <div className="relative hidden overflow-hidden md:flex md:h-full md:flex-col">
         <ChromeBar domain={domainLabel} />
         <div
           data-slot="hero-dashboard-content"
@@ -63,7 +63,7 @@ export function HeroProductUI({
           style={{ transitionDuration: `${duration}ms` }}
         >
           <Sidebar companyLabel={companyLabel} faviconUrl={faviconUrl} />
-          <DataTable table={table} personalized={isPersonalized} />
+          <DataTable table={table} personalized={brand.hasAccent} />
         </div>
         <div
           aria-hidden
@@ -80,7 +80,7 @@ export function HeroProductUI({
           pieces, so the clipping, the -296px offset and the adjacency to
           `HeroAgentPanel` all live one level up, in `HeroLiveUi`
           (hero.tsx) — this piece just renders at its own fixed 438×317. */}
-      <div className="flex h-[317px] w-[438px] shrink-0 flex-col overflow-hidden lg:hidden">
+      <div className="flex h-[317px] w-[438px] shrink-0 flex-col overflow-hidden md:hidden">
         <ChromeBar domain={domainLabel} compact />
         <div
           data-slot="hero-dashboard-content"
@@ -95,7 +95,7 @@ export function HeroProductUI({
             faviconUrl={faviconUrl}
             compact
           />
-          <DataTable table={table} personalized={isPersonalized} compact />
+          <DataTable table={table} personalized={brand.hasAccent} compact />
         </div>
         <div
           aria-hidden

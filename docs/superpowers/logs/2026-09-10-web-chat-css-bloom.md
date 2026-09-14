@@ -1,5 +1,22 @@
 # Web Chat hero — CSS bloom, 2026-09-10
 
+## Tablet correction, 2026-09-14
+
+The 768px reference (`45902:52824`, bloom `45902:55543`) has independently
+transformed lights; scaling the desktop gradients did not preserve its pink
+highlight or blue falloff. `TABLET_LIGHTS` now samples an isolated export of
+that bloom, with the existing CSS gradient renderer. Tablet noise uses the
+authored 1024px tile size. No raster bloom asset is added to the page.
+
+Below 1024px the backdrop is positioned relative to the dashboard: the tablet
+canvas starts 307px above it, and the phone dot band starts at the 317px
+dashboard's lower edge. This keeps the glow aligned when hero text wraps or
+the URL fallback message changes height. The content container isolates this
+backdrop beneath the UI so the outside border still blends with the light.
+The hero clips its lower bleed at 80px, preventing the opaque canvas from
+painting over the comparison heading while keeping room above for tooltips.
+At 1024px and above, the existing section-level backdrop remains unchanged.
+
 The owner requested a CSS alternative to the low-quality hero bloom and asked
 whether PNG or JPEG would improve it. This supersedes the background export
 strategy in the September 9 hero alignment log.

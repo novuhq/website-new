@@ -1,4 +1,9 @@
-import { accentForeground, DEFAULT_ACCENT, normalizeHex } from "@/lib/accent"
+import {
+  accentForeground,
+  bubbleForeground,
+  DEFAULT_ACCENT,
+  normalizeHex,
+} from "@/lib/accent"
 
 export interface BrandTheme {
   accent: string
@@ -40,6 +45,7 @@ export function brandCssVars(theme: BrandTheme): Record<string, string> {
   return {
     "--wc-accent": theme.accent,
     "--wc-accent-foreground": theme.accentForeground,
+    "--wc-accent-contrast": bubbleForeground(theme.accent),
     "--wc-accent-soft": theme.accentSoft,
     "--wc-accent-row": theme.accentRow,
     "--wc-accent-nav": theme.accentNav,

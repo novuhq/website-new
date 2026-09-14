@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="468" height="480" viewBox="0 0 468 480" fill="none" aria-hidden="true">
+  <g id="wc-compare-web-laptop-1" clip-path="url(#wc-compare-web-laptop-31)">
+    <g id="wc-compare-web-laptop-2">
+      <mask id="wc-compare-web-laptop-3" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-258.5247" y="-386.5247" width="841.0494" height="785.0494">
+        <g filter="url(#wc-compare-web-laptop-33)">
+          <ellipse id="wc-compare-web-laptop-5" cx="162.312" cy="6.30888" rx="330.526" ry="298.169" transform="rotate(14.7502 162.312 6.30888)" fill="white" />
+        </g>
+      </mask>
+      <g mask="url(#wc-compare-web-laptop-3)">
+        <g id="wc-compare-web-laptop-7">
+          <g id="wc-compare-web-laptop-8" data-figma-bg-blur-radius="142.276">
+            <g id="wc-compare-web-laptop-9" filter="url(#wc-compare-web-laptop-16)">
+              <path d="M131.797 43.1545C131.797 35.8153 131.797 32.1458 133.225 29.3426C134.482 26.8769 136.486 24.8721 138.952 23.6158C141.755 22.1875 145.425 22.1875 152.764 22.1875H381.341C388.68 22.1875 392.35 22.1875 395.153 23.6158C397.619 24.8721 399.623 26.8769 400.88 29.3426C402.308 32.1458 402.308 35.8153 402.308 43.1545V73.9127C402.308 74.9612 402.308 75.4854 402.104 75.8858C401.925 76.2381 401.638 76.5245 401.286 76.704C400.885 76.908 400.361 76.908 399.313 76.908H152.764C145.425 76.908 141.755 76.908 138.952 75.4797C136.486 74.2233 134.482 72.2186 133.225 69.7529C131.797 66.9497 131.797 63.2802 131.797 55.941V43.1545Z" fill="var(--wc-accent)" data-accent-fill="" />
+              <path d="M152.764 22.6553H381.341C385.018 22.6553 387.748 22.6554 389.91 22.832C392.066 23.0082 393.616 23.3583 394.94 24.0332C397.318 25.2447 399.251 27.1772 400.463 29.5547C401.138 30.8793 401.487 32.4297 401.663 34.5859C401.84 36.7476 401.84 39.4773 401.84 43.1543V73.9131C401.84 74.4448 401.84 74.8159 401.816 75.1045C401.793 75.3875 401.75 75.5506 401.688 75.6738C401.553 75.9379 401.337 76.1525 401.073 76.2871C400.95 76.3498 400.787 76.3929 400.504 76.416C400.215 76.4396 399.844 76.4404 399.312 76.4404H152.764C149.087 76.4404 146.357 76.4393 144.195 76.2627C142.039 76.0865 140.489 75.7374 139.164 75.0625C136.787 73.851 134.854 71.9176 133.643 69.54C132.968 68.2155 132.618 66.6659 132.441 64.5098C132.265 62.3482 132.265 59.6184 132.265 55.9414V43.1543C132.265 39.4773 132.265 36.7476 132.441 34.5859C132.618 32.4297 132.968 30.8793 133.643 29.5547C134.854 27.1774 136.787 25.2446 139.164 24.0332C140.489 23.3583 142.039 23.0082 144.195 22.832C146.357 22.6554 149.087 22.6553 152.764 22.6553Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" stroke-width="0.936025" />
+              <text id="wc-compare-web-laptop-12" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="14.9764" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="142.094" y="45.9928">Which new creator best fits </tspan>
+                <tspan x="142.094" y="63.9928">our brand?</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-compare-web-laptop-16" x="125.003" y="18.7906" width="284.095" height="68.3064" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.3969" />
+      <feGaussianBlur stdDeviation="3.3969" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45920_9550" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.3969" />
+      <feGaussianBlur stdDeviation="3.3969" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45920_9550" result="effect2_dropShadow_45920_9550" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45920_9550" result="shape" />
+    </filter>
+    <clipPath id="wc-compare-web-laptop-31">
+      <rect width="468" height="480" fill="white" />
+    </clipPath>
+    <filter id="wc-compare-web-laptop-33" filterUnits="userSpaceOnUse" x="-258.5247" y="-386.5247" width="841.0494" height="785.0494">
+      <feGaussianBlur stdDeviation="45.7624" />
+    </filter>
+  </defs>
+</svg>

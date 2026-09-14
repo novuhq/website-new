@@ -205,7 +205,7 @@ function Composer({
         </span>
         <span
           className={cn(
-            "flex size-[34px] shrink-0 items-center justify-center rounded-lg bg-purple-2 text-black",
+            "flex size-[34px] shrink-0 items-center justify-center rounded-[8px] bg-purple-2 text-black",
             compact && "size-[15.85px] rounded-[3.7px]"
           )}
           style={
@@ -481,7 +481,7 @@ function HeroAgentPanels({
           panel 408 wide at x16); the left inset is already the `gap-4`
           between this and `HeroProductUI` in `HeroLiveUi`. Auto height lets
           it stretch to match the card's real height as a flex sibling. */}
-      <div className="hidden lg:mt-[15px] lg:mr-[15px] lg:mb-4 lg:block">
+      <div className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static">
         <AgentPanel
           step={step}
           phase={phase}
@@ -492,7 +492,7 @@ function HeroAgentPanels({
       {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
           slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
           flex item can shrink below its content size and get squeezed. */}
-      <div className="mt-[7.46px] mr-[7.46px] shrink-0 lg:hidden">
+      <div className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden">
         <AgentPanel
           step={step}
           phase={phase}

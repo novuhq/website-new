@@ -147,12 +147,12 @@ export function Sidebar({
                           // placeholder, not a tint of the accent, since no
                           // brand exists yet. Personalized (`45487-89814`)
                           // samples the accent at 72% with light text. So it
-                          // switches on `data-wc-state` rather than being
+                          // switches on `data-wc-color` rather than being
                           // derived from `--wc-accent` alone, which cannot
                           // tell the two apart (the default accent is the
                           // same value in both states).
                           isActive &&
-                            "bg-[#AD92B1] text-[#0A090A] group-data-[wc-state=loading]:bg-[var(--wc-accent-nav)] group-data-[wc-state=loading]:text-white group-data-[wc-state=personalized]:bg-[var(--wc-accent-nav)] group-data-[wc-state=personalized]:text-white"
+                            "bg-[#AD92B1] text-[#0A090A] group-data-[wc-color=brand]:bg-[var(--wc-accent-nav)] group-data-[wc-color=brand]:text-white"
                         )}
                       >
                         {subItem}

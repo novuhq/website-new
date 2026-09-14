@@ -41,7 +41,7 @@ function ChannelTileIcon({ icon }: { icon: IChannelsGridTile["icon"] }) {
 
 function ChannelTileLabel({ children }: { children: string }) {
   return (
-    <span className="px-2 text-center text-[11px] leading-dense tracking-[-0.02em] text-gray-60 md:text-sm">
+    <span className="px-2 text-center text-[11px] leading-dense tracking-[-0.02em] text-gray-60 xs:text-sm">
       {children}
     </span>
   )
@@ -93,7 +93,7 @@ function MascotTile() {
 
 function ChannelsGridTiles() {
   return (
-    <div className="grid w-full max-w-full grid-cols-3 gap-[5.16px] md:max-w-124 md:gap-2 lg:min-w-0 lg:shrink lg:grow-0 lg:basis-124">
+    <div className="grid w-full max-w-full grid-cols-3 gap-[5.16px] md:max-w-full md:gap-2 lg:min-w-0 lg:shrink lg:grow-0 lg:basis-124">
       {CHANNELS_GRID_TILES.map((tile) => (
         <ChannelTile key={tile.name} {...tile} />
       ))}
@@ -105,7 +105,7 @@ function ChannelsGridTiles() {
 
 function ChannelsGridHeading() {
   return (
-    <h2 className="text-[32px] leading-[1.25] font-normal tracking-[-0.04em] text-white md:text-[48px] md:leading-[1.04] lg:text-[40px] xl:text-[48px]">
+    <h2 className="text-[32px] leading-[1.25] font-normal tracking-[-0.04em] text-white xs:text-[48px] xs:leading-[1.04] lg:text-[40px] xl:text-[48px]">
       <span aria-hidden className="md:hidden">
         {CHANNELS_GRID_HEADING_MOBILE_LINES.map((line, index) => (
           <span key={line}>

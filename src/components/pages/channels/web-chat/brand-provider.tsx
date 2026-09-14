@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react"
 
+import { normalizeHex } from "@/lib/accent"
 import type { BrandProfile } from "@/lib/site-brand"
 import {
   brandCssVars,
@@ -22,6 +23,8 @@ export type BrandStatus = "idle" | "loading" | "personalized" | "fallback"
 export interface WebChatBrand {
   status: BrandStatus
   theme: BrandTheme
+  /** Identity can be personalized even when no usable brand color was found. */
+  hasAccent: boolean
   domain: string | null
   favicon: string | null
   errorMessage: string | null
@@ -34,6 +37,7 @@ const FALLBACK_ERROR_MESSAGE =
 const DEFAULT_STATE: WebChatBrand = {
   status: "idle",
   theme: buildBrandTheme(null),
+  hasAccent: false,
   domain: null,
   favicon: null,
   errorMessage: null,
@@ -46,6 +50,7 @@ function fallbackState(
   return {
     status: "fallback",
     theme: buildBrandTheme(null),
+    hasAccent: false,
     domain,
     favicon,
     errorMessage: FALLBACK_ERROR_MESSAGE,
@@ -117,6 +122,7 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
       setState({
         status: "personalized",
         theme: buildBrandTheme(brand.accent),
+        hasAccent: Boolean(brand.accent && normalizeHex(brand.accent)),
         domain,
         favicon,
         errorMessage: null,
@@ -144,6 +150,7 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
       <div
         className="group"
         data-wc-state={state.status}
+        data-wc-color={state.hasAccent ? "brand" : "default"}
         style={{ ...brandCssVars(state.theme), isolation: "isolate" }}
       >
         {children}

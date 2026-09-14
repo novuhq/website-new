@@ -417,6 +417,35 @@ it("falls back to the downloaded logo when the manifest has no theme color", asy
   assert.equal(calls.length, 3)
 })
 
+it("retains a page favicon's accent when a larger monochrome manifest icon is preferred", async () => {
+  const large = await sharp({
+    create: { width: 512, height: 512, channels: 4, background: "white" },
+  })
+    .png()
+    .toBuffer()
+  const small = await sharp({
+    create: { width: 32, height: 32, channels: 4, background: "#d97757" },
+  })
+    .png()
+    .toBuffer()
+  const { read, calls } = fixtureReader({
+    "https://brand.example/": {
+      body: '<html><head><link rel="manifest" href="/app.json"><link rel="icon" href="/favicon.png" sizes="32x32"><style>:root { --theme-accent-clay-primary: #d97757; --theme-accent-clay-interactive: #c6613f }</style></head><body></body></html>',
+    },
+    "https://brand.example/app.json": {
+      body: '{"icons":[{"src":"/app.png","sizes":"512x512"}]}',
+      type: "application/json",
+    },
+    "https://brand.example/favicon.png": { body: small, type: "image/png" },
+    "https://brand.example/app.png": { body: large, type: "image/png" },
+  })
+  const brand = await read("brand.example")
+  assert.equal(brand.accent, "#d97757")
+  assert.equal(brand.accentSource, "logo")
+  assert.equal(brand.logo, logoUri(large))
+  assert.equal(calls.length, 4)
+})
+
 it("retains confident CSS when the logo uses a different color", async () => {
   const { read } = fixtureReader({
     "https://brand.example/": {
