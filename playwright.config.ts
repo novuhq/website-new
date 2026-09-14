@@ -6,6 +6,8 @@ const isLocalBaseURL = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(
 )
 const shouldStartWebServer =
   isLocalBaseURL && process.env.PLAYWRIGHT_SKIP_WEB_SERVER !== "1"
+const shouldReuseExistingServer =
+  process.env.PLAYWRIGHT_REUSE_EXISTING_SERVER === "1"
 
 export default defineConfig({
   testDir: "./tests/critical-flows",
@@ -56,10 +58,15 @@ export default defineConfig({
         env: {
           ...process.env,
           CRITICAL_FLOW_TESTING: "1",
+          GETTING_STARTED_FLOW_EXPERIMENT_ENABLED:
+            process.env.GETTING_STARTED_FLOW_EXPERIMENT_ENABLED ?? "true",
+          GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED:
+            process.env.GETTING_STARTED_FLOW_EXPERIMENT_RELEASE_APPROVED ??
+            "true",
           NEXT_PUBLIC_DEFAULT_SITE_URL: baseURL,
         },
         url: baseURL,
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: shouldReuseExistingServer,
         timeout: 180_000,
       }
     : undefined,

@@ -12,6 +12,11 @@ export const HOME_HERO = {
   command: "npx novu connect",
   description:
     "Open-source infrastructure to notify your users and let your agents talk with them, on the channels they already use.",
+  gettingStarted: {
+    secondarySignupLabel: "Sign up instead",
+    signupLabel: "Get started free",
+    signupNote: "Free plan available. No credit card required.",
+  },
   title: "Connect your AI agents and products to customers",
 }
 
