@@ -18,7 +18,12 @@ const STEPS: {
   body: string
   image: StaticImageData
   alt: string
-  cta?: { label: string; href: string; clickText: string }
+  cta?: {
+    label: string
+    href: string
+    clickText: string
+    openInNewTab?: boolean
+  }
 }[] = [
   {
     idx: "01",
@@ -40,8 +45,9 @@ const STEPS: {
     alt: "An agent thread where the user asks to change the delivery address and the agent answers with the order already in context, above the channel icons the reply can arrive on.",
     cta: {
       label: "Customize reply",
-      href: ROUTE.docsCustomCode as string,
+      href: ROUTE.workflows as string,
       clickText: "customize_reply",
+      openInNewTab: true,
     },
   },
   {
@@ -52,8 +58,9 @@ const STEPS: {
     alt: "An agent.ts file reading ctx.notification, with the workflow payload typed and available.",
     cta: {
       label: "Set agent context",
-      href: ROUTE.docsCustomCode as string,
+      href: ROUTE.workflows as string,
       clickText: "set_agent_context",
+      openInNewTab: true,
     },
   },
   {
@@ -125,6 +132,12 @@ export function HowItWorks() {
                   >
                     <NextLink
                       href={step.cta.href}
+                      target={step.cta.openInNewTab ? "_blank" : undefined}
+                      rel={
+                        step.cta.openInNewTab
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                       data-click-location="no_reply_is_dead_how_it_works"
                       data-click-text={step.cta.clickText}
                     >
