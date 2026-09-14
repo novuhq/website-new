@@ -1,55 +1,31 @@
 import { expect, test } from "@playwright/test"
 
-import { expectReactHandlerReady, gotoCriticalPage } from "./helpers"
+import { gotoCriticalPage } from "./helpers"
 
 test.describe("notification hero playback", () => {
-  test("can pause and resume the autoplaying hero with the keyboard", async ({
-    page,
-  }) => {
+  test("autoplays the hero without a playback control", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" })
     await gotoCriticalPage(page, "/no-reply-is-dead/")
 
     const video = page.locator("main video").first()
-    const pause = page.getByRole("button", { name: "Pause hero animation" })
-    await expect(pause).toBeVisible()
     await expect
       .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
       .toBe(false)
-
-    await pause.focus()
-    await page.keyboard.press("Enter")
-    await expect
-      .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
-      .toBe(true)
-
-    const play = page.getByRole("button", { name: "Play hero animation" })
-    await expect(play).toBeFocused()
-    const pausedTime = await video.evaluate(
-      (node) => (node as HTMLVideoElement).currentTime
-    )
-    await page.keyboard.press("Space")
-    await expect
-      .poll(() =>
-        video.evaluate((node) => (node as HTMLVideoElement).currentTime)
-      )
-      .toBeGreaterThan(pausedTime)
-    await expect(pause).toBeFocused()
+    await expect(
+      page.getByRole("button", { name: /hero animation/i })
+    ).toHaveCount(0)
   })
 
-  test("keeps the poster static with reduced motion until explicitly played", async ({
-    page,
-  }) => {
+  test("keeps the poster static with reduced motion", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" })
     await gotoCriticalPage(page, "/no-reply-is-dead/")
 
     const video = page.locator("main video").first()
-    // Check the initial media state as well as the hydrated control to catch
-    // autoplay starting before the motion preference has been read.
+    // Check the initial media state to catch autoplay starting before the
+    // motion preference has been read.
     expect(
       await video.evaluate((node) => (node as HTMLVideoElement).autoplay)
     ).toBe(false)
-    const play = page.getByRole("button", { name: "Play hero animation" })
-    await expectReactHandlerReady(play, "onClick")
     expect(
       await video.evaluate((node) => (node as HTMLVideoElement).paused)
     ).toBe(true)
@@ -57,16 +33,9 @@ test.describe("notification hero playback", () => {
       await video.evaluate((node) => (node as HTMLVideoElement).currentTime)
     ).toBe(0)
     await expect(video).toHaveAttribute("poster", /hero-poster/)
-
-    await play.click()
-    await expect
-      .poll(() =>
-        video.evaluate((node) => (node as HTMLVideoElement).currentTime)
-      )
-      .toBeGreaterThan(0)
     await expect(
-      page.getByRole("button", { name: "Pause hero animation" })
-    ).toBeVisible()
+      page.getByRole("button", { name: /hero animation/i })
+    ).toHaveCount(0)
   })
 
   test("stops playback when reduced motion is enabled on the open page", async ({
@@ -88,9 +57,6 @@ test.describe("notification hero playback", () => {
         video.evaluate((node) => (node as HTMLVideoElement).currentTime)
       )
       .toBe(0)
-    await expect(
-      page.getByRole("button", { name: "Play hero animation" })
-    ).toBeVisible()
   })
 })
 
