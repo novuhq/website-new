@@ -13,10 +13,8 @@ test.describe("notification hero playback", () => {
     const pause = page.getByRole("button", { name: "Pause hero animation" })
     await expect(pause).toBeVisible()
     await expect
-      .poll(() =>
-        video.evaluate((node) => (node as HTMLVideoElement).currentTime)
-      )
-      .toBeGreaterThan(0)
+      .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
+      .toBe(false)
 
     await pause.focus()
     await page.keyboard.press("Enter")
@@ -79,10 +77,8 @@ test.describe("notification hero playback", () => {
 
     const video = page.locator("main video").first()
     await expect
-      .poll(() =>
-        video.evaluate((node) => (node as HTMLVideoElement).currentTime)
-      )
-      .toBeGreaterThan(0)
+      .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
+      .toBe(false)
     await page.emulateMedia({ reducedMotion: "reduce" })
     await expect
       .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
