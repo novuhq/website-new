@@ -145,14 +145,14 @@ export function Channels() {
                     data-click-location="no_reply_is_dead_channels"
                     data-click-text={clickText}
                   >
-                    {/* Both marks share the wrapper's height so the crossfade cannot
-                        shift the label, even where the two glyphs differ in width. */}
-                    <span className="relative inline-flex h-5 shrink-0 items-center lg:h-7">
+                    {/* Figma renders both marks in the same square, including
+                        assets whose intrinsic SVG dimensions differ. */}
+                    <span className="relative inline-flex size-5 shrink-0 items-center lg:size-7">
                       <Image
                         src={icon}
                         alt=""
                         className={cn(
-                          "h-full w-auto opacity-75 transition-opacity duration-200",
+                          "size-full opacity-75 transition-opacity duration-200",
                           iconColor
                             ? "group-hover:opacity-0 group-focus-visible:opacity-0"
                             : "group-hover:opacity-100 group-focus-visible:opacity-100"
@@ -162,7 +162,7 @@ export function Channels() {
                         <Image
                           src={iconColor}
                           alt=""
-                          className="absolute inset-y-0 left-1/2 h-full w-auto -translate-x-1/2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                          className="absolute inset-0 size-full opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
                         />
                       ) : null}
                     </span>
