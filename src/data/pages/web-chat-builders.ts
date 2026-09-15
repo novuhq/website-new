@@ -86,6 +86,7 @@ export interface IWebChatBuilderPage {
   seo: IWebChatBuilderSeo
   hero: IWebChatBuilderHero
   sections: IWebChatBuilderSection[]
+  faqTitle: string
   faq: IWebChatBuilderFaqItem[]
   finalCta: IWebChatBuilderFinalCta | null
 }
@@ -197,7 +198,29 @@ const WEBFLOW_PAGE = {
       imageAlt: "Your Webflow site is just the beginning!",
     },
   ],
-  faq: [],
+  faqTitle: "Frequently asked questions",
+  faq: [
+    {
+      question: "How do I add an AI chatbot to a Webflow site?",
+      answer:
+        "Connect your agent to Novu Web Chat, then paste the embed into a Webflow Embed element or site-wide custom code.",
+    },
+    {
+      question: "Can I style it to match my Webflow design?",
+      answer:
+        "Customize the chat widget’s appearance to match the look and feel of your Webflow site.",
+    },
+    {
+      question: "Is this human live chat?",
+      answer:
+        "Your agent receives visitors’ messages and replies directly in the same chat widget.",
+    },
+    {
+      question: "Can the same agent reach users on WhatsApp or email?",
+      answer:
+        "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
+    },
+  ],
   finalCta: null,
 } satisfies IWebChatBuilderPage
 
