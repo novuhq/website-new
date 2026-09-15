@@ -15,11 +15,9 @@ import whatsapp from "@/images/pages/channels/web-chat-builder/webflow/channel-w
 
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { TooltipContent } from "@/components/ui/tooltip"
+
+import WebChatBuilderChannelHint from "./channel-hint"
 
 const CHANNEL_ICONS: Record<
   WebChatBuilderChannel,
@@ -102,37 +100,38 @@ function WebChatBuilderTertiarySection({
             </li>
           ))}
           <li className="aspect-square min-w-0">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  aria-label={section.moreChannelsLabel}
-                  className="flex size-full cursor-pointer items-center justify-center rounded-2xl bg-white/2 focus-visible:ring-purple-2"
+            <WebChatBuilderChannelHint
+              content={
+                <TooltipContent
+                  side="top"
+                  sideOffset={-19}
+                  className="rounded-md border-gray-20 bg-card-surface px-2.75 py-2 font-inter font-normal tracking-tight text-gray-80 before:hidden after:hidden motion-reduce:animate-none motion-reduce:data-[state=closed]:animate-none"
                 >
+                  {section.moreChannelsHint}
                   <Image
-                    src={more}
+                    src={tooltipArrow}
                     alt=""
-                    width={20}
-                    height={20}
-                    className="size-5"
+                    width={30}
+                    height={8}
+                    className="absolute -bottom-4 left-1/2 h-2 w-7.5 -translate-x-1/2"
                   />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                sideOffset={-19}
-                className="rounded-md border-gray-20 bg-card-surface px-2.75 py-2 font-inter font-normal tracking-tight text-gray-80 before:hidden after:hidden motion-reduce:animate-none motion-reduce:data-[state=closed]:animate-none"
+                </TooltipContent>
+              }
+            >
+              <button
+                type="button"
+                aria-label={section.moreChannelsLabel}
+                className="flex size-full cursor-pointer items-center justify-center rounded-2xl bg-white/2 focus-visible:ring-purple-2"
               >
-                {section.moreChannelsHint}
                 <Image
-                  src={tooltipArrow}
+                  src={more}
                   alt=""
-                  width={30}
-                  height={8}
-                  className="absolute -bottom-4 left-1/2 h-2 w-7.5 -translate-x-1/2"
+                  width={20}
+                  height={20}
+                  className="size-5"
                 />
-              </TooltipContent>
-            </Tooltip>
+              </button>
+            </WebChatBuilderChannelHint>
           </li>
         </ul>
         <Image

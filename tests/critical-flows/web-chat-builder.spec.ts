@@ -429,3 +429,59 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await expect(tooltip).toHaveCount(0)
   expectHealthyPage(applicationErrors)
 })
+
+test("keeps the channel hint open when keyboard focus scrolls the mobile grid", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const applicationErrors = observeApplicationErrors(page)
+  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  const section = page.getByRole("region", {
+    name: "One workflow, every channel",
+    exact: true,
+  })
+  const copy = section.getByRole("button", {
+    name: "Copy to clipboard",
+    exact: true,
+  })
+  const more = section.getByRole("button", {
+    name: "More channels",
+    exact: true,
+  })
+  await expectReactHandlerReady(more, "onFocus")
+  await copy.focus()
+  const scrollBefore = await page.evaluate(() => scrollY)
+  await page.keyboard.press("Tab")
+  await expect(more).toBeFocused()
+  await expect(more).toBeInViewport()
+  await expect
+    .poll(() => page.evaluate(() => scrollY))
+    .toBeGreaterThan(scrollBefore)
+  // Let the browser dispatch the native focus-scroll event before checking the hint.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      })
+  )
+  const tooltip = page.getByRole("tooltip", {
+    name: "More channels coming soon",
+  })
+  await expect(tooltip).toBeVisible()
+  await expect(more).toHaveAccessibleDescription("More channels coming soon")
+  await page.keyboard.press("Escape")
+  await expect(tooltip).toHaveCount(0)
+  await expect(more).toBeFocused()
+  await page.keyboard.press("Tab")
+  await expect(more).not.toBeFocused()
+  await expect(tooltip).toHaveCount(0)
+  await page.keyboard.press("Shift+Tab")
+  await expect(tooltip).toBeVisible()
+  await page.keyboard.press("Tab")
+  await expect(tooltip).toHaveCount(0)
+  await page.keyboard.press("Shift+Tab")
+  await expect(tooltip).toBeVisible()
+  await more.click()
+  await expect(tooltip).toHaveCount(0)
+  expectHealthyPage(applicationErrors)
+})
