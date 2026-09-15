@@ -317,6 +317,9 @@ test("finishes with accessible setup actions and one shared header and Connect f
     exact: true,
   })
   const prompt = cta.getByRole("button", { name: "Copy Prompt", exact: true })
+  const glowLayer = cta.locator("[aria-hidden] > span").first()
+  await expect(glowLayer).toHaveCSS("border-color", "rgb(143, 145, 255)")
+  await expect(glowLayer).toHaveCSS("opacity", "0.75")
   await expectReactHandlerReady(copy, "onClick")
   await copy.focus()
   await page.keyboard.press("Enter")

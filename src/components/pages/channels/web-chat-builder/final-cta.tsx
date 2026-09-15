@@ -25,7 +25,7 @@ function WebChatBuilderFinalCta({ cta }: { cta: IWebChatBuilderFinalCta }) {
           <CopyCommand
             command={cta.command}
             variant="highlighted"
-            className="w-full sm:w-111.5"
+            className="w-full sm:w-111.5 [&>span>span]:border-purple [&>span>span]:opacity-75"
             controlClassName="gap-3 pl-3 max-sm:h-auto max-sm:min-h-11 max-sm:py-1"
             commandClassName="font-geist-mono max-sm:overflow-visible max-sm:text-sm max-sm:whitespace-normal"
           />
