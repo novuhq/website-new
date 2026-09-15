@@ -129,7 +129,7 @@ function CliPill({ className }: { className?: string }) {
       commandClassName="pointer-events-auto min-w-0 flex-1 text-base leading-none tracking-[-0.02em] text-white select-text"
       copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
       controlClassName={cn(
-        "h-11 gap-6 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
+        "h-11 gap-0 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
         geistMono.className
       )}
     />
