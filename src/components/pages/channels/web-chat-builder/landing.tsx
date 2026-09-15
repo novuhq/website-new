@@ -1,12 +1,14 @@
 import { Geist_Mono } from "next/font/google"
-import type { IWebChatBuilderPage } from "@/data/pages/web-chat-builders"
-import webflowChannels from "@/images/pages/channels/web-chat-builder/webflow/channels-mascot.png"
-import webflowHero from "@/images/pages/channels/web-chat-builder/webflow/hero.png"
+import {
+  resolveWebChatBuilderMedia,
+  type IWebChatBuilderPage,
+} from "@/data/pages/web-chat-builders"
 
 import FAQ from "@/components/pages/faq"
 
 import WebChatBuilderFinalCta from "./final-cta"
 import WebChatBuilderHero from "./hero"
+import { WEB_CHAT_BUILDER_MEDIA } from "./media"
 import WebChatBuilderPrimarySection from "./primary-section"
 import WebChatBuilderSecondarySection from "./secondary-section"
 import WebChatBuilderTertiarySection from "./tertiary-section"
@@ -19,9 +21,11 @@ const geistMono = Geist_Mono({
 })
 
 function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
+  const media = resolveWebChatBuilderMedia(page.media, WEB_CHAT_BUILDER_MEDIA)
+
   return (
     <div className={`bg-black font-inter ${geistMono.variable}`}>
-      <WebChatBuilderHero hero={page.hero} image={webflowHero} />
+      <WebChatBuilderHero hero={page.hero} image={media.hero} />
       {page.sections.map((section) =>
         section.type === "primary" ? (
           <WebChatBuilderPrimarySection key={section.id} section={section} />
@@ -31,7 +35,7 @@ function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
           <WebChatBuilderTertiarySection
             key={section.id}
             section={section}
-            image={webflowChannels}
+            image={media.channels}
           />
         )
       )}

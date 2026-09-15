@@ -143,11 +143,19 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
   }
 })
 
-test("returns a true 404 for an unpublished builder", async ({ request }) => {
-  const response = await request.get("/channels/web-chat/not-published")
-  expect(response.status()).toBe(404)
-  expect(await response.text()).not.toContain('"@type":"FAQPage"')
-})
+for (const slug of ["not-published", "toString", "constructor", "__proto__"]) {
+  test(`returns a true 404 without structured data for ${slug}`, async ({
+    page,
+  }) => {
+    const response = await page.goto(`/channels/web-chat/${slug}`, {
+      waitUntil: "domcontentloaded",
+    })
+    expect(response?.status()).toBe(404)
+    await expect(
+      page.locator('script[type="application/ld+json"]')
+    ).toHaveCount(0)
+  })
+}
 
 test("renders the Webflow hero and copies its setup instructions", async ({
   page,
@@ -256,6 +264,15 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     name: "Add an AI agent to your Webflow site",
     exact: true,
   })
+  const heroArtwork = hero.locator("img").first()
+  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w-]+\.png/)
+  await expect
+    .poll(() =>
+      heroArtwork.evaluate(
+        (image: HTMLImageElement) => image.complete && image.naturalWidth > 0
+      )
+    )
+    .toBe(true)
   const copyCommand = hero.getByRole("button", {
     name: "Copy to clipboard",
     exact: true,
@@ -386,11 +403,22 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   ]) {
     await expect(section.getByText(channel, { exact: true })).toBeVisible()
   }
-  await expect(
-    section.getByRole("img", {
-      name: "Your Webflow site is just the beginning!",
-    })
-  ).toBeVisible()
+  const channelsArtwork = section.getByRole("img", {
+    name: "Your Webflow site is just the beginning!",
+  })
+  await expect(channelsArtwork).toBeVisible()
+  await expect(channelsArtwork).toHaveAttribute(
+    "src",
+    /channels-mascot\.[\w-]+\.png/
+  )
+  await channelsArtwork.scrollIntoViewIfNeeded()
+  await expect
+    .poll(() =>
+      channelsArtwork.evaluate(
+        (image: HTMLImageElement) => image.complete && image.naturalWidth > 0
+      )
+    )
+    .toBe(true)
 
   const copyCommand = section.getByRole("button", {
     name: "Copy to clipboard",

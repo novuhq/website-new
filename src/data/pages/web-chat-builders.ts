@@ -81,11 +81,26 @@ export interface IWebChatBuilderFinalCta {
   promptLabel: string
 }
 
+export type WebChatBuilderMediaKey = "webflow-hero" | "webflow-channels"
+
+export interface IWebChatBuilderMedia {
+  hero: WebChatBuilderMediaKey
+  channels: WebChatBuilderMediaKey
+}
+
+export function resolveWebChatBuilderMedia<T>(
+  media: IWebChatBuilderMedia,
+  assets: Readonly<Record<WebChatBuilderMediaKey, T>>
+): { hero: T; channels: T } {
+  return { hero: assets[media.hero], channels: assets[media.channels] }
+}
+
 export interface IWebChatBuilderPage {
   slug: string
   builderName: string
   seo: IWebChatBuilderSeo
   hero: IWebChatBuilderHero
+  media: IWebChatBuilderMedia
   sections: IWebChatBuilderSection[]
   faqTitle: string
   faq: IWebChatBuilderFaqItem[]
@@ -95,6 +110,7 @@ export interface IWebChatBuilderPage {
 const WEBFLOW_PAGE = {
   slug: "webflow",
   builderName: "Webflow",
+  media: { hero: "webflow-hero", channels: "webflow-channels" },
   seo: {
     title: "Add an AI agent to your Webflow site | Novu Web Chat",
     description:
@@ -240,6 +256,8 @@ const WEB_CHAT_BUILDER_PAGES = Object.freeze({
 export function getWebChatBuilderBySlug(
   slug: string
 ): IWebChatBuilderPage | undefined {
+  if (!Object.hasOwn(WEB_CHAT_BUILDER_PAGES, slug)) return undefined
+
   return WEB_CHAT_BUILDER_PAGES[slug as keyof typeof WEB_CHAT_BUILDER_PAGES]
 }
 
