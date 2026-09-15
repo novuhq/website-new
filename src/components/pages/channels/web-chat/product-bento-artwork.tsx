@@ -139,23 +139,23 @@ export function ProductBentoArtwork({
 }) {
   return (
     <>
-      <div className="contents md:hidden xl:contents">
-        <BrandArtwork id={id} sizes={sizes} {...ARTWORK[id]} />
-      </div>
+      <BrandArtwork
+        id={id}
+        sizes={sizes}
+        className="md:hidden xl:block"
+        {...ARTWORK[id]}
+      />
       {PRODUCT_TABLET_ARTWORK[id].map(
         ({ id: variantId, background, UI, className }) => (
-          <div
+          <BrandArtwork
             key={variantId}
-            className={cn("absolute inset-0 hidden", className)}
-          >
-            <BrandArtwork
-              id={variantId}
-              sizes={sizes}
-              background={background}
-              UI={UI}
-              cover
-            />
-          </div>
+            id={variantId}
+            sizes={sizes}
+            background={background}
+            UI={UI}
+            className={cn("hidden", className)}
+            cover
+          />
         )
       )}
     </>

@@ -50,6 +50,13 @@ test("colors hero and illustration bubbles independently with readable text", as
 
   await submit()
   await expect(ui).toHaveCount(5)
+  const artworkLayers = bento
+    .locator("[data-brand-artwork]")
+    .filter({ visible: true })
+  await expect(artworkLayers).toHaveCount(5)
+  for (const artwork of await artworkLayers.all()) {
+    await expect(artwork).toHaveCSS("background-color", "rgb(16, 17, 20)")
+  }
   const bubble = ui.first().locator("[data-accent-fill]").first()
   const text = ui.first().locator("[data-accent-text]").first()
   await expect(bubble).toHaveCSS("fill", "rgb(52, 213, 154)")

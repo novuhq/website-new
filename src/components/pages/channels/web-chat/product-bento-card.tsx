@@ -34,7 +34,7 @@ export function ProductBentoCard({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-3xl border border-[#2A2B33] bg-[#101114] after:pointer-events-none after:absolute after:-inset-px after:z-20 after:rounded-[inherit] after:border-x after:border-[#2A2B33] sm:aspect-auto sm:h-124 md:h-120 lg:h-112 xl:aspect-[var(--card-aspect-desktop)] xl:h-auto xl:min-h-0",
+        "relative w-full overflow-hidden rounded-3xl border border-[#2A2B33] bg-[#101114] sm:aspect-auto sm:h-124 md:h-120 lg:h-112 xl:aspect-[var(--card-aspect-desktop)] xl:h-auto xl:min-h-0",
         !mobileArtworkAspectRatio &&
           "aspect-[var(--card-aspect-desktop)] lg:rounded-[17.143px] xl:rounded-3xl",
         mobileArtworkAspectRatio && "lg:h-120"

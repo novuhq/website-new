@@ -24,6 +24,7 @@ export function BrandArtwork({
   mobileBackground,
   MobileUI,
   cover = false,
+  className,
 }: {
   id: string
   sizes: string
@@ -32,6 +33,7 @@ export function BrandArtwork({
   mobileBackground?: StaticImageData
   MobileUI?: ComponentType<SVGProps<SVGSVGElement>>
   cover?: boolean
+  className?: string
 }) {
   const { status, hasAccent } = useWebChatBrand()
   const active =
@@ -44,7 +46,8 @@ export function BrandArtwork({
       data-brand-artwork={id}
       className={cn(
         "pointer-events-none absolute inset-0 bg-inherit transition-opacity duration-500 motion-reduce:transition-none",
-        geistMono.variable
+        geistMono.variable,
+        className
       )}
       style={{ opacity: Number(active) }}
     >
