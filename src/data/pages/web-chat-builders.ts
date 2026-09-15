@@ -31,7 +31,20 @@ export interface IWebChatBuilderPrimarySection {
   }[]
 }
 
-export type IWebChatBuilderSection = IWebChatBuilderPrimarySection
+export interface IWebChatBuilderSecondarySection {
+  type: "secondary"
+  id: string
+  title: string
+  description: string
+  steps: {
+    description: string
+    command?: string
+  }[]
+}
+
+export type IWebChatBuilderSection =
+  | IWebChatBuilderPrimarySection
+  | IWebChatBuilderSecondarySection
 
 export interface IWebChatBuilderFaqItem {
   question: string
@@ -114,6 +127,30 @@ const WEBFLOW_PAGE = {
           description:
             "Every agent gets a public link you can share with your visitors, even without a paid plan.",
           icon: "public-link",
+        },
+      ],
+    },
+    {
+      type: "secondary",
+      id: "web-chat-builder-setup",
+      title: "How to add an AI agent to your Webflow site in four steps",
+      description: "No webhooks, no OAuth, about two minutes.",
+      steps: [
+        {
+          description: "Connect your agent to Novu Web Chat:\nrun ",
+          command: "npx novu connect --channel web-chat",
+        },
+        {
+          description:
+            "Copy your one-line Web Chat embed,\na single script tag.",
+        },
+        {
+          description:
+            "In the Webflow Designer, add an Embed element where you want the widget, or paste it into Project Settings → Custom Code for the whole site.",
+        },
+        {
+          description:
+            "Publish. Your agent is live in the chat,\nreplying to visitors.",
         },
       ],
     },

@@ -32,7 +32,12 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     main.getByRole("region", { name: "Trusted by teams worldwide" })
   ).toBeVisible()
   await expect(
-    main.getByText("npx novu connect --channel web-chat", { exact: true })
+    main
+      .getByRole("region", {
+        name: "Add an AI agent to your Webflow site",
+        exact: true,
+      })
+      .getByText("npx novu connect --channel web-chat", { exact: true })
   ).toBeVisible()
 
   const features = main.getByRole("region", {
@@ -59,6 +64,28 @@ test("renders the Webflow hero and copies its setup instructions", async ({
       { exact: true }
     )
   ).toBeVisible()
+
+  const setup = main.getByRole("region", {
+    name: "How to add an AI agent to your Webflow site in four steps",
+  })
+  await expect(
+    setup.getByRole("heading", {
+      level: 2,
+      name: "How to add an AI agent to your Webflow site in four steps",
+    })
+  ).toBeVisible()
+  const steps = setup.getByRole("listitem")
+  await expect(steps).toHaveCount(4)
+  await expect(steps.nth(0)).toContainText(
+    "npx novu connect --channel web-chat."
+  )
+  await expect(steps.nth(1)).toContainText(
+    "Copy your one-line Web Chat embed, a single script tag."
+  )
+  await expect(steps.nth(2)).toContainText("Project Settings → Custom Code")
+  await expect(steps.nth(3)).toContainText(
+    "Publish. Your agent is live in the chat, replying to visitors."
+  )
 
   const copyPrompt = main.getByRole("button", {
     name: "Copy Prompt",
