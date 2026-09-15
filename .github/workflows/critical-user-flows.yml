@@ -59,6 +59,14 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium webkit
 
+      - name: Verify isolated live Web Chat sessions
+        env:
+          NOVU_WEB_CHAT_APPLICATION_IDENTIFIER: web-chat-playwright-fixture
+          NOVU_WEB_CHAT_SECRET_KEY: web-chat-playwright-fixture-secret-not-production
+          NOVU_WEB_CHAT_HMAC_ENABLED: "true"
+          PLAYWRIGHT_NOVU_FIXTURE: "1"
+        run: pnpm exec playwright test tests/critical-flows/web-chat-live.spec.ts
+
       - name: Monitor critical user outcomes
         run: pnpm test:critical
 

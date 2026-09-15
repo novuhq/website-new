@@ -45,6 +45,52 @@ export interface HeroAgentPanelProps {
 }
 
 /**
+ * Figma applies the brand hue to the flattened artwork, then clips the finished
+ * composite to the artwork alpha. Masking the hue source itself leaves the
+ * original blue visible around translucent blur pixels.
+ */
+function PersonalizedArtwork({
+  active,
+  image,
+}: {
+  active: boolean
+  image: string
+}) {
+  return (
+    <>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none"
+        style={{
+          backgroundImage: `url("${image}")`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          opacity: Number(!active),
+        }}
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+        style={{
+          backgroundColor: "var(--wc-hue)",
+          backgroundImage: `url("${image}")`,
+          backgroundBlendMode: "luminosity",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          maskImage: `url("${image}")`,
+          maskPosition: "center",
+          maskRepeat: "no-repeat",
+          maskSize: "100% 100%",
+          opacity: Number(active),
+        }}
+      />
+    </>
+  )
+}
+
+/**
  * The agent's mark, as Figma builds it (`45440:71881` header): a soft
  * multi-hue blob — violet top-right, magenta through the middle,
  * peach bottom-left — with the Novu glyph centred on top.
@@ -56,7 +102,7 @@ export interface HeroAgentPanelProps {
  * origin is (-8.336, -9) within the 40px avatar, with a 59.219×57.332 footprint.
  * Preserve those bounds so its 36.667px core shares the glyph's center.
  *
- * `HueLayer` preserves the recolour behaviour a personalized frame confirms
+ * `PersonalizedArtwork` preserves the recolour behaviour a personalized frame confirms
  * (`hero-personalization-05-todesktop.com`, `45487:93325`): the blob's own
  * colours are Figma's at rest, and the hue overlay shifts them to the visitor's
  * brand only once `data-wc-state` says so — the same mechanism the hero glow
@@ -94,13 +140,11 @@ function AgentAvatar({
         aria-hidden
         // Scale Figma's measured export bounds with both avatar sizes.
         className="pointer-events-none absolute top-[-22.5%] left-[-20.84%] isolate h-[143.33%] w-[148.047%]"
-        style={{
-          backgroundImage: `url(${AGENT_MARK_IMAGE.src})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-        }}
       >
-        <HueLayer active={personalized} maskImage={AGENT_MARK_IMAGE.src} />
+        <PersonalizedArtwork
+          active={personalized}
+          image={AGENT_MARK_IMAGE.src}
+        />
       </span>
       <span
         aria-hidden
@@ -243,12 +287,11 @@ function EmptyState({
           "pointer-events-none absolute left-1/2 isolate aspect-[350/262] w-[350px] -translate-x-1/2 ease-out motion-reduce:transition-none!",
           compact ? "top-[39.16px] w-[163.16px]" : "top-[84px]"
         )}
-        style={{
-          backgroundImage: `url(${HERO_AGENT_IMAGE.src})`,
-          backgroundSize: "100% 100%",
-        }}
       >
-        <HueLayer active={personalized} maskImage={HERO_AGENT_IMAGE.src} />
+        <PersonalizedArtwork
+          active={personalized}
+          image={HERO_AGENT_IMAGE.src}
+        />
         {/* Figma places the 40px glyph 168px down in the 350×262 glow export. */}
         <span
           className="absolute top-[64.1221%] left-1/2 aspect-square w-[11.4286%] -translate-x-1/2 mix-blend-plus-lighter"
