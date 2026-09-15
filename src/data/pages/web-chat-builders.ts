@@ -70,3 +70,7 @@ export function getWebChatBuilderBySlug(
 export function getAllWebChatBuilderSlugs(): string[] {
   return Object.keys(WEB_CHAT_BUILDER_PAGES)
 }
+
+export function getWebChatBuilderPathname(slug: string): string {
+  return `/channels/web-chat/${slug}`
+}
