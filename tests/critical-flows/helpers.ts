@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 
+import { isExpectedBrowserConsoleError } from "./console-errors"
+
 const CLIPBOARD_TEXT_KEY = "__NOVU_CRITICAL_FLOW_CLIPBOARD_TEXT__"
 const THIRD_PARTY_SCRIPT_URL =
   /^https:\/\/(?:[^/]+\.)?(?:cdn-plain\.com|plain\.com|segment\.com|segment\.io|snitcher\.com|vector\.co)(?:\/|$)/
@@ -48,6 +50,21 @@ export function observeApplicationErrors(page: Page) {
   page.on("pageerror", (error) => {
     if (!isExpectedWebKitNavigationCancellation(page, error.message)) {
       errors.push(error.message)
+    }
+  })
+
+  return errors
+}
+
+export function observeBrowserConsoleErrors(page: Page) {
+  const errors: string[] = []
+
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      !isExpectedBrowserConsoleError(message.text(), message.location().url)
+    ) {
+      errors.push(message.text())
     }
   })
 
