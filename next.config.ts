@@ -56,6 +56,8 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  // Playwright uses this loopback host; allow its HMR/React debug connection.
+  allowedDevOrigins: ["127.0.0.1"],
   trailingSlash: true,
   poweredByHeader: false,
   transpilePackages: ["three"],
@@ -234,6 +236,10 @@ const nextConfig: NextConfig = {
     "typescript",
   ],
   outputFileTracingIncludes: {
+    // Sharp's native libvips binary is not picked up by automatic tracing.
+    "/api/agent-preview": [
+      "./node_modules/.pnpm/@img+sharp-libvips-*/node_modules/@img/sharp-libvips-*/lib/**/*",
+    ],
     "/integrations/channels": ["./src/content/integrations/**/*.mdx"],
     "/integrations/sources": ["./src/content/integrations/**/*.mdx"],
     "/integrations/[slug]": ["./src/content/integrations/**/*.mdx"],

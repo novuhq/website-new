@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="704" height="480" viewBox="0 0 704 480" fill="none" aria-hidden="true">
+  <g id="wc-bento-activity-tablet-1" clip-path="url(#wc-bento-activity-tablet-185)">
+    <g id="wc-bento-activity-tablet-3">
+      <mask id="wc-bento-activity-tablet-4" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-317.0" y="-241.0" width="1298.0" height="738.0">
+        <g filter="url(#wc-bento-activity-tablet-soft-mask-0)">
+          <path id="wc-bento-activity-tablet-5" d="M747.478 30.7905C896.462 571.927 1040.96 211.367 362.453 388.743C118.676 209.03 -176.875 369.261 -205.527 233.264C-234.179 97.267 -42.0504 -58.3518 223.604 -114.32C489.259 -170.289 706.325 -89.1111 747.478 30.7905Z" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-activity-tablet-4)">
+        <g id="wc-bento-activity-tablet-7">
+          <g id="wc-bento-activity-tablet-8">
+            <g id="wc-bento-activity-tablet-11" filter="url(#wc-bento-activity-tablet-126)" data-figma-bg-blur-radius="296">
+              <g id="wc-bento-activity-tablet-16">
+                <g id="wc-bento-activity-tablet-17">
+                  <path d="M48 96.1922C48 89.4716 48 86.1112 49.3079 83.5443C50.4584 81.2864 52.2942 79.4506 54.5521 78.3001C57.1191 76.9922 60.4794 76.9922 67.2 76.9922H425.8C432.521 76.9922 435.881 76.9922 438.448 78.3001C440.706 79.4506 442.542 81.2864 443.692 83.5443C445 86.1112 445 89.4716 445 96.1922V121.792C445 128.513 445 131.873 443.692 134.44C442.542 136.698 440.706 138.534 438.448 139.684C435.881 140.992 432.521 140.992 425.8 140.992H67.2C60.4794 140.992 57.1191 140.992 54.5521 139.684C52.2942 138.534 50.4584 136.698 49.3079 134.44C48 131.873 48 128.513 48 121.792V96.1922Z" fill="var(--wc-accent)" fill-opacity="0.14" data-accent-fill="" />
+                  <path d="M67.2002 77.4922H425.8C429.168 77.4922 431.665 77.4929 433.641 77.6543C435.611 77.8153 437.019 78.134 438.221 78.7461C440.385 79.8486 442.144 81.6077 443.246 83.7715C443.858 84.9727 444.177 86.3815 444.338 88.3516C444.499 90.3275 444.5 92.8239 444.5 96.1924V121.792C444.5 125.16 444.499 127.657 444.338 129.633C444.177 131.603 443.858 133.012 443.246 134.213C442.144 136.377 440.385 138.136 438.221 139.238C437.019 139.85 435.611 140.169 433.641 140.33C431.665 140.492 429.168 140.492 425.8 140.492H67.2002C63.8317 140.492 61.3353 140.492 59.3594 140.33C57.3893 140.169 55.9805 139.85 54.7793 139.238C52.6155 138.136 50.8564 136.377 49.7539 134.213C49.1418 133.012 48.8231 131.603 48.6621 129.633C48.5007 127.657 48.5 125.16 48.5 121.792V96.1924C48.5 92.8239 48.5007 90.3275 48.6621 88.3516C48.8231 86.3815 49.1418 84.9727 49.7539 83.7715C50.8564 81.6077 52.6155 79.8486 54.7793 78.7461C55.9805 78.134 57.3893 77.8153 59.3594 77.6543C61.3353 77.4929 63.8317 77.4922 67.2002 77.4922Z" stroke="var(--wc-accent)" stroke-opacity="0.4" />
+                  <g id="wc-bento-activity-tablet-20">
+                    <g id="wc-bento-activity-tablet-21">
+                      <path id="wc-bento-activity-tablet-22" d="M76 116.554C76.926 116.836 77.938 116.992 79 116.992C79.59 116.992 80.163 116.941 80.716 116.85L85 118.992V114.952C86.241 113.895 87 112.512 87 110.992C87 110.651 86.962 110.317 86.888 109.992" stroke="var(--wc-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="wc-bento-activity-tablet-23" d="M75 97.9922C69.477 97.9922 65 101.574 65 105.992C65 107.789 65.75 109.442 67 110.777V115.992L71.833 113.576C72.829 113.842 73.892 113.992 75 113.992C80.523 113.992 85 110.41 85 105.992C85 101.574 80.523 97.9922 75 97.9922Z" fill="var(--wc-accent)" data-accent-fill="" />
+                    </g>
+                  </g>
+                  <g id="wc-bento-activity-tablet-24">
+                    <text id="wc-bento-activity-tablet-25" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.01em">
+                      <tspan x="102" y="106.31">Q3 usage report</tspan>
+                    </text>
+                    <text id="wc-bento-activity-tablet-27" opacity="0.5" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="13" letter-spacing="-0.02em">
+                      <tspan x="102" y="125.219">Analytics Agent</tspan>
+                    </text>
+                  </g>
+                  <g id="wc-bento-activity-tablet-29">
+                    <g id="wc-bento-activity-tablet-30">
+                      <text id="wc-bento-activity-tablet-31" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.01em">
+                        <tspan x="326.912" y="106.31">Tomas Vidal</tspan>
+                      </text>
+                      <text id="wc-bento-activity-tablet-33" opacity="0.5" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="13" letter-spacing="-0.02em">
+                        <tspan x="360.853" y="125.219">10:42 AM</tspan>
+                      </text>
+                    </g>
+                    <rect id="wc-bento-activity-tablet-35" x="427" y="88.9922" width="6" height="40" rx="3" fill="var(--wc-accent)" fill-opacity="0.2" data-accent-fill="" />
+                  </g>
+                </g>
+                <g id="wc-bento-activity-tablet-36">
+                  <g id="wc-bento-activity-tablet-38" opacity="0.5">
+                    <g id="wc-bento-activity-tablet-39">
+                      <path id="wc-bento-activity-tablet-40" d="M76 192.554C76.926 192.836 77.938 192.992 79 192.992C79.59 192.992 80.163 192.941 80.716 192.85L85 194.992V190.952C86.241 189.895 87 188.512 87 186.992C87 186.651 86.962 186.317 86.888 185.992" stroke="var(--wc-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="wc-bento-activity-tablet-41" d="M75 173.992C69.477 173.992 65 177.574 65 181.992C65 183.789 65.75 185.442 67 186.777V191.992L71.833 189.576C72.829 189.842 73.892 189.992 75 189.992C80.523 189.992 85 186.41 85 181.992C85 177.574 80.523 173.992 75 173.992Z" fill="var(--wc-accent)" data-accent-fill="" />
+                    </g>
+                  </g>
+                </g>
+                <g id="wc-bento-activity-tablet-54">
+                  <g id="wc-bento-activity-tablet-56" opacity="0.4">
+                    <g id="wc-bento-activity-tablet-57">
+                      <path id="wc-bento-activity-tablet-58" d="M76 268.554C76.926 268.836 77.938 268.992 79 268.992C79.59 268.992 80.163 268.941 80.716 268.85L85 270.992V266.952C86.241 265.895 87 264.512 87 262.992C87 262.651 86.962 262.317 86.888 261.992" stroke="var(--wc-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="wc-bento-activity-tablet-59" d="M75 249.992C69.477 249.992 65 253.574 65 257.992C65 259.789 65.75 261.442 67 262.777V267.992L71.833 265.576C72.829 265.842 73.892 265.992 75 265.992C80.523 265.992 85 262.41 85 257.992C85 253.574 80.523 249.992 75 249.992Z" fill="var(--wc-accent)" data-accent-fill="" />
+                    </g>
+                  </g>
+                </g>
+                <g id="wc-bento-activity-tablet-72" filter="url(#wc-bento-activity-tablet-137)">
+                  <g id="wc-bento-activity-tablet-74" opacity="0.4">
+                    <g id="wc-bento-activity-tablet-75">
+                      <path id="wc-bento-activity-tablet-76" d="M76 344.554C76.926 344.836 77.938 344.992 79 344.992C79.59 344.992 80.163 344.941 80.716 344.85L85 346.992V342.952C86.241 341.895 87 340.512 87 338.992C87 338.651 86.962 338.317 86.888 337.992" stroke="var(--wc-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="wc-bento-activity-tablet-77" d="M75 325.992C69.477 325.992 65 329.574 65 333.992C65 335.789 65.75 337.442 67 338.777V343.992L71.833 341.576C72.829 341.842 73.892 341.992 75 341.992C80.523 341.992 85 338.41 85 333.992C85 329.574 80.523 325.992 75 325.992Z" fill="var(--wc-accent)" data-accent-fill="" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="wc-bento-activity-tablet-107">
+      <g id="wc-bento-activity-tablet-108">
+        <g id="wc-bento-activity-tablet-109" opacity="0.3" filter="url(#wc-bento-activity-tablet-152)">
+          <circle cx="594" cy="193" r="38" fill="var(--wc-accent)" fill-opacity="0.94" data-accent-fill="" />
+        </g>
+        <circle id="wc-bento-activity-tablet-111" opacity="0.3" cx="594" cy="193" r="32" fill="var(--wc-accent)" fill-opacity="0.94" data-accent-fill="" />
+        <circle id="wc-bento-activity-tablet-112" opacity="0.4" cx="594" cy="193" r="27" fill="var(--wc-accent)" fill-opacity="0.94" data-accent-fill="" />
+      </g>
+      <g id="wc-bento-activity-tablet-113">
+        <g id="wc-bento-activity-tablet-114" filter="url(#wc-bento-activity-tablet-156)">
+          <path d="M267 193.4C267 185.559 267 181.639 268.526 178.644C269.868 176.01 272.01 173.868 274.644 172.526C277.639 171 281.559 171 289.4 171H533.6C541.441 171 545.361 171 548.356 172.526C550.99 173.868 553.132 176.01 554.474 178.644C556 181.639 556 185.559 556 193.4V225.8C556 226.92 556 227.48 555.782 227.908C555.59 228.284 555.284 228.59 554.908 228.782C554.48 229 553.92 229 552.8 229H289.4C281.559 229 277.639 229 274.644 227.474C272.01 226.132 269.868 223.99 268.526 221.356C267 218.361 267 214.441 267 206.6V193.4Z" fill="var(--wc-accent)" fill-opacity="0.94" data-accent-fill="" />
+          <path d="M289.4 171.5H533.6C537.528 171.5 540.445 171.501 542.755 171.689C545.058 171.878 546.714 172.251 548.129 172.972C550.669 174.266 552.734 176.331 554.028 178.871C554.749 180.286 555.122 181.942 555.311 184.245C555.499 186.555 555.5 189.472 555.5 193.4V225.8C555.5 226.368 555.5 226.765 555.475 227.073C555.45 227.375 555.404 227.549 555.337 227.681C555.193 227.963 554.963 228.193 554.681 228.337C554.549 228.404 554.375 228.45 554.073 228.475C553.765 228.5 553.368 228.5 552.8 228.5H289.4C285.472 228.5 282.555 228.499 280.245 228.311C277.942 228.122 276.286 227.749 274.871 227.028C272.331 225.734 270.266 223.669 268.972 221.129C268.251 219.714 267.878 218.058 267.689 215.755C267.501 213.445 267.5 210.528 267.5 206.6V193.4C267.5 189.472 267.501 186.555 267.689 184.245C267.878 181.942 268.251 180.286 268.972 178.871C270.266 176.331 272.331 174.266 274.871 172.972C276.286 172.251 277.942 171.878 280.245 171.689C281.977 171.548 284.051 171.512 286.637 171.503L289.4 171.5Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" />
+          <text id="wc-bento-activity-tablet-117" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.01em" data-accent-text="">
+            <tspan x="278" y="196.318">Can you prepare the Q3 usage </tspan>
+            <tspan x="278" y="215.318">report for finance?</tspan>
+          </text>
+        </g>
+        <g id="wc-bento-activity-tablet-120">
+          <g clip-path="url(#wc-bento-activity-tablet-189)">
+            <rect id="wc-bento-activity-tablet-122" x="569.789" y="170" width="46.4165" height="58" fill="url(#wc-bento-activity-tablet-171)" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-bento-activity-tablet-126" x="-269" y="-277" width="1312" height="1282" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="4" />
+      <feGaussianBlur stdDeviation="10" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45925_9066" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45925_9066" result="shape" />
+    </filter>
+    <filter id="wc-bento-activity-tablet-137" x="33" y="289.992" width="427" height="94" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+      <feGaussianBlur stdDeviation="7.5" result="effect1_foregroundBlur_45925_9066" />
+    </filter>
+    <filter id="wc-bento-activity-tablet-152" x="552" y="151" width="84" height="84" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+      <feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_45925_9066" />
+    </filter>
+    <filter id="wc-bento-activity-tablet-156" x="259.742" y="167.371" width="303.516" height="72.5163" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45925_9066" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45925_9066" result="effect2_dropShadow_45925_9066" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45925_9066" result="shape" />
+    </filter>
+    <pattern id="wc-bento-activity-tablet-171" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#wc-bento-activity-tablet-191" transform="scale(0.000891266 0.000713267)" />
+    </pattern>
+    <clipPath id="wc-bento-activity-tablet-185">
+      <rect width="704" height="480" fill="white" />
+    </clipPath>
+    <clipPath id="wc-bento-activity-tablet-189">
+      <path d="M572 193C572 180.85 581.85 171 594 171C606.15 171 616 180.85 616 193C616 205.15 606.15 215 594 215C581.85 215 572 205.15 572 193Z" fill="white" />
+    </clipPath>
+    <image id="wc-bento-activity-tablet-191" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait-b6afdf710537.jpg" />
+    <filter id="wc-bento-activity-tablet-soft-mask-0" filterUnits="userSpaceOnUse" x="-317.0" y="-241.0" width="1298.0" height="738.0">
+      <feGaussianBlur stdDeviation="54.0" />
+    </filter>
+  </defs>
+</svg>

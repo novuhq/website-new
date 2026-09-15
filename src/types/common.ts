@@ -15,6 +15,7 @@ export interface IMenuItem {
   description?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
+  previewImage?: string
   remainingCount?: number
 }
 
@@ -32,6 +33,7 @@ export type TMenuIcon =
   | "inbox"
   | "push"
   | "chat"
+  | "web-chat"
   | "sms"
   | "langchain"
   | "ai-sdk"

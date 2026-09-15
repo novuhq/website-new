@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="496" viewBox="0 0 432 496" fill="none" aria-hidden="true">
+  <g id="wc-bento-render-1" clip-path="url(#wc-bento-render-121)">
+    <g id="wc-bento-render-32">
+      <mask id="wc-bento-render-33" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-212.92" y="-300.92" width="660.84" height="935.84">
+        <g filter="url(#wc-bento-render-soft-mask-2)">
+          <ellipse id="wc-bento-render-36" data-figma-bg-blur-radius="36" cx="117.5" cy="167" rx="282.5" ry="420" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-render-33)">
+        <g id="wc-bento-render-38">
+          <g id="wc-bento-render-41" data-figma-bg-blur-radius="108">
+            <g id="wc-bento-render-44">
+              <rect x="119" y="237" width="320" height="34" rx="8" fill="var(--wc-accent)" data-accent-fill="" />
+              <text id="wc-bento-render-46" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="14" font-weight="500" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="215.5" y="258.591">View updater order</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="wc-bento-render-121">
+      <rect width="432" height="496" fill="white" />
+    </clipPath>
+    <filter id="wc-bento-render-soft-mask-2" filterUnits="userSpaceOnUse" x="-212.92" y="-300.92" width="660.84" height="935.84">
+      <feGaussianBlur stdDeviation="23.96" />
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="374" viewBox="0 0 320 374" fill="none" aria-hidden="true">
+  <g id="wc-compare-old-mobile-1" clip-path="url(#wc-compare-old-mobile-35)">
+    <g id="wc-compare-old-mobile-2">
+      <mask id="wc-compare-old-mobile-3" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-116.2579" y="-157.2579" width="590.5158" height="458.5158">
+        <g filter="url(#wc-compare-old-mobile-37)">
+          <g id="wc-compare-old-mobile-5" style="mix-blend-mode:plus-lighter">
+            <mask id="wc-compare-old-mobile-6" fill="white">
+              <path d="M431.153 36.2175C472.647 330.296 343.694 243.464 202.547 263.38C61.3989 283.296 -67.8782 194.167 -79.9885 108.34C-94.8807 2.7974 7.46973 -98.9069 148.617 -118.823C289.765 -138.739 416.261 -69.325 431.153 36.2175Z" />
+            </mask>
+            <path d="M431.153 36.2175C472.647 330.296 343.694 243.464 202.547 263.38C61.3989 283.296 -67.8782 194.167 -79.9885 108.34C-94.8807 2.7974 7.46973 -98.9069 148.617 -118.823C289.765 -138.739 416.261 -69.325 431.153 36.2175Z" fill="#2A2B33" />
+            <path d="M431.153 36.2175C472.647 330.296 343.694 243.464 202.547 263.38C61.3989 283.296 -67.8782 194.167 -79.9885 108.34C-94.8807 2.7974 7.46973 -98.9069 148.617 -118.823C289.765 -138.739 416.261 -69.325 431.153 36.2175Z" stroke="#41434D" stroke-width="1.55718" mask="url(#wc-compare-old-mobile-6)" />
+          </g>
+        </g>
+      </mask>
+      <g mask="url(#wc-compare-old-mobile-3)">
+        <g id="wc-compare-old-mobile-11">
+          <g id="wc-compare-old-mobile-12" data-figma-bg-blur-radius="118.345">
+            <g id="wc-compare-old-mobile-13" filter="url(#wc-compare-old-mobile-20)">
+              <path d="M109 39.2412C109 33.1365 109 30.0841 110.188 27.7524C111.233 25.7014 112.901 24.0339 114.952 22.9888C117.283 21.8008 120.336 21.8008 126.44 21.8008H268.299C274.404 21.8008 277.456 21.8008 279.788 22.9888C281.839 24.0339 283.507 25.7014 284.552 27.7524C285.74 30.0841 285.74 33.1365 285.74 39.2412V64.8811C285.74 65.7532 285.74 66.1892 285.57 66.5223C285.421 66.8153 285.182 67.0535 284.889 67.2028C284.556 67.3726 284.12 67.3726 283.248 67.3726H126.44C120.336 67.3726 117.283 67.3726 114.952 66.1845C112.901 65.1395 111.233 63.4719 110.188 61.4209C109 59.0892 109 56.0369 109 49.9322V39.2412Z" fill="var(--wc-accent)" shape-rendering="crispEdges" data-accent-fill="" />
+              <path d="M126.44 22.1904H268.299C271.358 22.1904 273.629 22.19 275.427 22.3369C277.22 22.4835 278.51 22.7745 279.611 23.3359C281.589 24.3436 283.197 25.9511 284.205 27.9287C284.766 29.0305 285.057 30.3199 285.203 32.1133C285.35 33.9114 285.351 36.1824 285.351 39.2412V64.8809C285.351 65.3233 285.35 65.6319 285.33 65.8721C285.311 66.1077 285.275 66.2432 285.223 66.3457C285.111 66.5653 284.933 66.7445 284.713 66.8564C284.61 66.9087 284.475 66.9436 284.239 66.9629C283.999 66.9825 283.691 66.9834 283.248 66.9834H126.44C123.382 66.9834 121.111 66.9828 119.312 66.8359C117.519 66.6894 116.23 66.3993 115.128 65.8379C113.15 64.8302 111.543 63.2218 110.535 61.2441C109.974 60.1423 109.683 58.8531 109.536 57.0596C109.389 55.2616 109.39 52.9911 109.39 49.9326V39.2412C109.39 36.1824 109.389 33.9114 109.536 32.1133C109.683 30.3199 109.974 29.0305 110.535 27.9287C111.543 25.9513 113.151 24.3436 115.128 23.3359C116.23 22.7746 117.519 22.4835 119.312 22.3369C121.111 22.19 123.382 22.1904 126.44 22.1904Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" stroke-width="0.778589" shape-rendering="crispEdges" />
+              <text id="wc-compare-old-mobile-16" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="12.4574" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="117.564" y="41.6166">Find creators we haven’t </tspan>
+                <tspan x="117.564" y="56.6166">worked with yet.</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-compare-old-mobile-20" x="103.349" y="18.9752" width="188.042" height="56.874" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="2.82556" />
+      <feGaussianBlur stdDeviation="2.82556" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45909_29022" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="2.82556" />
+      <feGaussianBlur stdDeviation="2.82556" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45909_29022" result="effect2_dropShadow_45909_29022" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45909_29022" result="shape" />
+    </filter>
+    <clipPath id="wc-compare-old-mobile-35">
+      <rect width="320" height="373.723" fill="white" />
+    </clipPath>
+    <filter id="wc-compare-old-mobile-37" filterUnits="userSpaceOnUse" x="-116.2579" y="-157.2579" width="590.5158" height="458.5158">
+      <feGaussianBlur stdDeviation="17.129" />
+    </filter>
+  </defs>
+</svg>
