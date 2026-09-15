@@ -42,9 +42,31 @@ export interface IWebChatBuilderSecondarySection {
   }[]
 }
 
+export type WebChatBuilderChannel =
+  | "telegram"
+  | "teams"
+  | "email"
+  | "web-chat"
+  | "whatsapp"
+  | "slack"
+  | "imessage"
+
+export interface IWebChatBuilderTertiarySection {
+  type: "tertiary"
+  id: string
+  title: string
+  description: string
+  command: string
+  channels: { name: string; icon: WebChatBuilderChannel }[]
+  moreChannelsLabel: string
+  moreChannelsHint: string
+  imageAlt: string
+}
+
 export type IWebChatBuilderSection =
   | IWebChatBuilderPrimarySection
   | IWebChatBuilderSecondarySection
+  | IWebChatBuilderTertiarySection
 
 export interface IWebChatBuilderFaqItem {
   question: string
@@ -153,6 +175,26 @@ const WEBFLOW_PAGE = {
             "Publish. Your agent is live in the chat,\nreplying to visitors.",
         },
       ],
+    },
+    {
+      type: "tertiary",
+      id: "web-chat-builder-channels",
+      title: "One workflow, every channel",
+      description:
+        "Your agent’s logic works across Webflow chat and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
+      command: "npx novu connect --channel web-chat",
+      channels: [
+        { name: "Telegram", icon: "telegram" },
+        { name: "MS Teams", icon: "teams" },
+        { name: "Email", icon: "email" },
+        { name: "Web Chat", icon: "web-chat" },
+        { name: "WhatsApp", icon: "whatsapp" },
+        { name: "Slack", icon: "slack" },
+        { name: "iMessage", icon: "imessage" },
+      ],
+      moreChannelsLabel: "More channels",
+      moreChannelsHint: "More channels coming soon",
+      imageAlt: "Your Webflow site is just the beginning!",
     },
   ],
   faq: [],

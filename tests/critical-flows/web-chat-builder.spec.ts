@@ -102,7 +102,11 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     main.getByText("Prompt copied to clipboard", { exact: true })
   ).toHaveText("Prompt copied to clipboard")
 
-  const copyCommand = main.getByRole("button", {
+  const hero = main.getByRole("region", {
+    name: "Add an AI agent to your Webflow site",
+    exact: true,
+  })
+  const copyCommand = hero.getByRole("button", {
     name: "Copy to clipboard",
     exact: true,
   })
@@ -111,7 +115,7 @@ test("renders the Webflow hero and copies its setup instructions", async ({
   await copyCommand.click()
   await expectClipboardText(page, "npx novu connect --channel web-chat")
   await expect(
-    main.getByText("Command copied to clipboard", { exact: true })
+    hero.getByText("Command copied to clipboard", { exact: true })
   ).toHaveText("Command copied to clipboard")
 
   expectHealthyPage(applicationErrors)
@@ -123,4 +127,78 @@ test("renders the Webflow hero and copies its setup instructions", async ({
         "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
     )
   ).toEqual([])
+})
+
+test("shows every channel and makes the upcoming-channel hint accessible", async ({
+  page,
+}) => {
+  const applicationErrors = observeApplicationErrors(page)
+  await installClipboardMock(page)
+  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+
+  const section = page.getByRole("region", {
+    name: "One workflow, every channel",
+  })
+  await expect(section.getByRole("heading", { level: 2 })).toHaveText(
+    "One workflow, every channel"
+  )
+  await expect(
+    section.getByText(
+      "Your agent’s logic works across Webflow chat and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
+      { exact: true }
+    )
+  ).toBeVisible()
+  for (const channel of [
+    "Telegram",
+    "MS Teams",
+    "Email",
+    "Web Chat",
+    "WhatsApp",
+    "Slack",
+    "iMessage",
+  ]) {
+    await expect(section.getByText(channel, { exact: true })).toBeVisible()
+  }
+  await expect(
+    section.getByRole("img", {
+      name: "Your Webflow site is just the beginning!",
+    })
+  ).toBeVisible()
+
+  const copyCommand = section.getByRole("button", {
+    name: "Copy to clipboard",
+    exact: true,
+  })
+  await expectReactHandlerReady(copyCommand, "onClick")
+  await copyCommand.click()
+  await expectClipboardText(page, "npx novu connect --channel web-chat")
+  await expect(
+    section.getByText("Command copied to clipboard", { exact: true })
+  ).toHaveText("Command copied to clipboard")
+
+  const more = section.getByRole("button", {
+    name: "More channels",
+    exact: true,
+  })
+  const tooltip = page.getByRole("tooltip", {
+    name: "More channels coming soon",
+  })
+  const tooltipPanel = page.locator('[data-slot="tooltip-content"]')
+  await expect(tooltip).toHaveCount(0)
+  await more.hover()
+  await expect(tooltip).toBeVisible()
+  await expect(tooltipPanel).toBeVisible()
+  await page.mouse.move(0, 0, { steps: 10 })
+  await expect(tooltip).toHaveCount(0)
+
+  // The copy control precedes the hint in the actual keyboard tab order.
+  await copyCommand.focus()
+  await page.keyboard.press("Tab")
+  await expect(more).toBeFocused()
+  await expect(tooltip).toBeVisible()
+  await expect(tooltipPanel).toBeVisible()
+  await expect(more).toHaveAccessibleDescription("More channels coming soon")
+  await page.keyboard.press("Escape")
+  await expect(tooltip).toHaveCount(0)
+  expectHealthyPage(applicationErrors)
 })
