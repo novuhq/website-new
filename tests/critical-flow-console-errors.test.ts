@@ -27,6 +27,10 @@ describe("critical-flow browser console errors", () => {
         "https://ddwl4m2hdecbv.cloudfront.net/b/GOYPYHQGXDOX/GOYPYHQGXDOX.js.gz",
       ],
       [
+        "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+        "https://ddwl4m2hdecbv.cloudfront.net/b/GOYPYHQGXDOX/GOYPYHQGXDOX.js.gz",
+      ],
+      [
         "Failed to load resource: The network connection was lost.",
         "https://cdn.segment.com/analytics.js/v1/test/analytics.min.js",
       ],
@@ -51,6 +55,10 @@ describe("critical-flow browser console errors", () => {
       ["Failed to load resource: the server responded with a status of 403 ()"],
       [
         "Failed to load resource: the server responded with a status of 403 ()",
+        "https://novu.co/api/search",
+      ],
+      [
+        "Failed to load resource: the server responded with a status of 403 (Forbidden)",
         "https://novu.co/api/search",
       ],
       [

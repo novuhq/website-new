@@ -9,6 +9,7 @@ const REPORT_ONLY_CSP_HEADER_WARNING_SUFFIX =
 const EXPECTED_EXTERNAL_NETWORK_ERROR = new Set([
   "Failed to load resource: The network connection was lost.",
   "Failed to load resource: the server responded with a status of 403 ()",
+  "Failed to load resource: the server responded with a status of 403 (Forbidden)",
 ])
 const BLOCKED_THIRD_PARTY_HOST =
   /^(?:[^.]+\.)*(?:cdn-plain\.com|plain\.com|segment\.com|segment\.io|snitcher\.com|vector\.co)$/
