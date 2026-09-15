@@ -8,6 +8,8 @@ export interface IWebChatBuilderHero {
   title: string
   description: string
   command: string
+  prompt: string
+  promptLabel: string
 }
 
 export interface IWebChatBuilderSection {
@@ -51,6 +53,9 @@ const WEBFLOW_PAGE = {
     description:
       "Bring your AI agent to Webflow with one embed. Chat with visitors and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.",
     command: "npx novu connect --channel web-chat",
+    prompt:
+      "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent.",
+    promptLabel: "Copy Prompt",
   },
   sections: [],
   faq: [],
