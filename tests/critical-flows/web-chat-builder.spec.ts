@@ -320,6 +320,10 @@ test("finishes with accessible setup actions and one shared header and Connect f
   const glowLayer = cta.locator("[aria-hidden] > span").first()
   await expect(glowLayer).toHaveCSS("border-color", "rgb(143, 145, 255)")
   await expect(glowLayer).toHaveCSS("opacity", "0.75")
+  await expect(glowLayer.locator("../..")).toHaveCSS(
+    "box-shadow",
+    /rgba\(143, 145, 255, 0\.18\) 0px 0px 4px 1px.*rgba\(143, 145, 255, 0\.1\) 0px 0px 12px 2px.*rgba\(143, 145, 255, 0\.06\) 0px 0px 24px 4px/
+  )
   await expectReactHandlerReady(copy, "onClick")
   await copy.focus()
   await page.keyboard.press("Enter")
