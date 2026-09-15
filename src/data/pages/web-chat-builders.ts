@@ -73,15 +73,22 @@ export interface IWebChatBuilderFaqItem {
   answer: string
 }
 
-export interface IWebChatBuilderFinalCta {
-  title: string
-  description: string
-  command: string
-  prompt: string
-  promptLabel: string
-}
-
-export type WebChatBuilderMediaKey = "webflow-hero" | "webflow-channels"
+export type WebChatBuilderMediaKey =
+  | "webflow-hero"
+  | "blink-new-hero"
+  | "lovable-hero"
+  | "replit-hero"
+  | "bolt-new-hero"
+  | "sim-studio-hero"
+  | "vellum-hero"
+  | "flowise-hero"
+  | "wordware-hero"
+  | "crew-ai-hero"
+  | "langgraph-hero"
+  | "lindy-hero"
+  | "stack-ai-hero"
+  | "relevance-ai-hero"
+  | "webflow-channels"
 
 export interface IWebChatBuilderMedia {
   hero: WebChatBuilderMediaKey
@@ -92,7 +99,10 @@ export function resolveWebChatBuilderMedia<T>(
   media: IWebChatBuilderMedia,
   assets: Readonly<Record<WebChatBuilderMediaKey, T>>
 ): { hero: T; channels: T } {
-  return { hero: assets[media.hero], channels: assets[media.channels] }
+  return {
+    hero: assets[media.hero],
+    channels: assets[media.channels],
+  }
 }
 
 export interface IWebChatBuilderPage {
@@ -104,13 +114,15 @@ export interface IWebChatBuilderPage {
   sections: IWebChatBuilderSection[]
   faqTitle: string
   faq: IWebChatBuilderFaqItem[]
-  finalCta: IWebChatBuilderFinalCta | null
 }
 
 const WEBFLOW_PAGE = {
   slug: "webflow",
   builderName: "Webflow",
-  media: { hero: "webflow-hero", channels: "webflow-channels" },
+  media: {
+    hero: "webflow-hero",
+    channels: "webflow-channels",
+  },
   seo: {
     title: "Add an AI agent to your Webflow site | Novu Web Chat",
     description:
@@ -238,19 +250,139 @@ const WEBFLOW_PAGE = {
         "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
     },
   ],
-  finalCta: {
-    title: "Give your Webflow site an AI agent",
-    description:
-      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
-    command: "npx novu connect --channel web-chat",
-    prompt:
-      "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent.",
-    promptLabel: "Copy Prompt",
-  },
 } satisfies IWebChatBuilderPage
+
+type WebChatBuilderHeroMediaKey = Exclude<
+  WebChatBuilderMediaKey,
+  "webflow-channels"
+>
+
+function createWebChatBuilderPage({
+  slug,
+  builderName,
+  heroName = builderName,
+  heroMedia,
+  kind,
+}: {
+  slug: string
+  builderName: string
+  heroName?: string
+  heroMedia: WebChatBuilderHeroMediaKey
+  kind: "app" | "agent"
+}): IWebChatBuilderPage {
+  const title =
+    kind === "app"
+      ? `Add an AI agent to your ${heroName} app`
+      : `Add your ${heroName} agent to your website`
+  const description =
+    kind === "app"
+      ? `Bring your AI agent to ${heroName} with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.`
+      : `Bring your ${heroName} agent to your website with one embed. Chat with visitors and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.`
+  const prompt =
+    kind === "app"
+      ? `Add Novu Web Chat to my ${heroName} app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent.`
+      : `Add Novu Web Chat to my ${heroName} agent. Run npx novu connect --channel web-chat, then help me embed the chat on my website and connect it to the agent.`
+
+  return {
+    ...WEBFLOW_PAGE,
+    slug,
+    builderName,
+    media: { ...WEBFLOW_PAGE.media, hero: heroMedia },
+    seo: {
+      title: `${title} | Novu Web Chat`,
+      description,
+    },
+    hero: {
+      ...WEBFLOW_PAGE.hero,
+      eyebrow: `Web Chat for ${heroName}`,
+      title,
+      description,
+      prompt,
+    },
+  }
+}
 
 const WEB_CHAT_BUILDER_PAGES = Object.freeze({
   webflow: WEBFLOW_PAGE,
+  "blink-new": createWebChatBuilderPage({
+    slug: "blink-new",
+    builderName: "Blink.new",
+    heroMedia: "blink-new-hero",
+    kind: "app",
+  }),
+  lovable: createWebChatBuilderPage({
+    slug: "lovable",
+    builderName: "Lovable",
+    heroMedia: "lovable-hero",
+    kind: "app",
+  }),
+  replit: createWebChatBuilderPage({
+    slug: "replit",
+    builderName: "Replit",
+    heroMedia: "replit-hero",
+    kind: "app",
+  }),
+  "bolt-new": createWebChatBuilderPage({
+    slug: "bolt-new",
+    builderName: "Bolt.new",
+    heroMedia: "bolt-new-hero",
+    kind: "app",
+  }),
+  "sim-studio": createWebChatBuilderPage({
+    slug: "sim-studio",
+    builderName: "Sim Studio",
+    heroName: "Sim",
+    heroMedia: "sim-studio-hero",
+    kind: "agent",
+  }),
+  vellum: createWebChatBuilderPage({
+    slug: "vellum",
+    builderName: "Vellum",
+    heroMedia: "vellum-hero",
+    kind: "agent",
+  }),
+  flowise: createWebChatBuilderPage({
+    slug: "flowise",
+    builderName: "Flowise",
+    heroMedia: "flowise-hero",
+    kind: "agent",
+  }),
+  wordware: createWebChatBuilderPage({
+    slug: "wordware",
+    builderName: "Wordware",
+    heroMedia: "wordware-hero",
+    kind: "agent",
+  }),
+  "crew-ai": createWebChatBuilderPage({
+    slug: "crew-ai",
+    builderName: "CrewAI",
+    heroMedia: "crew-ai-hero",
+    kind: "agent",
+  }),
+  langgraph: createWebChatBuilderPage({
+    slug: "langgraph",
+    builderName: "LangGraph",
+    heroMedia: "langgraph-hero",
+    kind: "agent",
+  }),
+  lindy: createWebChatBuilderPage({
+    slug: "lindy",
+    builderName: "Lindy",
+    heroMedia: "lindy-hero",
+    kind: "agent",
+  }),
+  "stack-ai": createWebChatBuilderPage({
+    slug: "stack-ai",
+    builderName: "Stack AI",
+    heroMedia: "stack-ai-hero",
+    kind: "agent",
+  }),
+  "relevance-ai": createWebChatBuilderPage({
+    slug: "relevance-ai",
+    builderName: "Relevance AI",
+    heroMedia: "relevance-ai-hero",
+    kind: "agent",
+  }),
 })
 
 export function getWebChatBuilderBySlug(

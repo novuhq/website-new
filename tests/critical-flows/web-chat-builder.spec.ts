@@ -8,6 +8,7 @@ import {
   gotoCriticalPage,
   installClipboardMock,
   observeApplicationErrors,
+  observeBrowserConsoleErrors,
 } from "./helpers"
 
 const faqQuestions = [
@@ -16,6 +17,22 @@ const faqQuestions = [
   "Is this human live chat?",
   "Can the same agent reach users on WhatsApp or email?",
 ]
+
+const figmaHeroVariants = [
+  ["blink-new", "Add an AI agent to your Blink.new app"],
+  ["lovable", "Add an AI agent to your Lovable app"],
+  ["replit", "Add an AI agent to your Replit app"],
+  ["bolt-new", "Add an AI agent to your Bolt.new app"],
+  ["sim-studio", "Add your Sim agent to your website"],
+  ["vellum", "Add your Vellum agent to your website"],
+  ["flowise", "Add your Flowise agent to your website"],
+  ["wordware", "Add your Wordware agent to your website"],
+  ["crew-ai", "Add your CrewAI agent to your website"],
+  ["langgraph", "Add your LangGraph agent to your website"],
+  ["lindy", "Add your Lindy agent to your website"],
+  ["stack-ai", "Add your Stack AI agent to your website"],
+  ["relevance-ai", "Add your Relevance AI agent to your website"],
+] as const
 
 test("renders the builder FAQ with its first answer open and keyboard controls", async ({
   page,
@@ -161,10 +178,7 @@ test("renders the Webflow hero and copies its setup instructions", async ({
   page,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
-  const consoleErrors: string[] = []
-  page.on("console", (message) => {
-    if (message.type() === "error") consoleErrors.push(message.text())
-  })
+  const consoleErrors = observeBrowserConsoleErrors(page)
   await installClipboardMock(page)
   await gotoCriticalPage(page, "/channels/web-chat/webflow")
 
@@ -286,14 +300,36 @@ test("renders the Webflow hero and copies its setup instructions", async ({
   ).toHaveText("Command copied to clipboard")
 
   expectHealthyPage(applicationErrors)
-  // gotoCriticalPage intentionally blocks third-party scripts in Chromium.
-  expect(
-    consoleErrors.filter(
-      (message) =>
-        message !==
-        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
-    )
-  ).toEqual([])
+  expect(consoleErrors).toEqual([])
+})
+
+test("renders every supplied Figma hero variant", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop-chromium",
+    "One desktop project covers the registry-backed static hero variants"
+  )
+
+  for (const [slug, title] of figmaHeroVariants) {
+    await gotoCriticalPage(page, `/channels/web-chat/${slug}`)
+    const hero = page.getByRole("region", { name: title, exact: true })
+    const artwork = hero.locator("img").first()
+
+    await expect(hero.getByRole("heading", { level: 1 })).toHaveText(title)
+    await expect(artwork).toHaveAttribute("src", /hero\.[\w-]+\.png/)
+    await expect
+      .poll(() =>
+        artwork.evaluate((image: HTMLImageElement) => ({
+          complete: image.complete,
+          naturalWidth: image.naturalWidth,
+        }))
+      )
+      .toEqual({ complete: true, naturalWidth: 608 })
+    const artworkBox = await artwork.boundingBox()
+    expect(artworkBox?.width).toBeCloseTo(608, 0)
+    expect(artworkBox?.height).toBeCloseTo(640, 0)
+  }
 })
 
 test("finishes with accessible setup actions and one shared header and Connect footer", async ({
@@ -302,16 +338,14 @@ test("finishes with accessible setup actions and one shared header and Connect f
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
   await gotoCriticalPage(page, "/channels/web-chat/webflow")
-  const cta = page.getByRole("region", {
-    name: "Give your Webflow site an AI agent",
-    exact: true,
-  })
+  const cta = page.locator("section.cta")
+  await expect(cta).toHaveCount(1)
   await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
-    "Give your Webflow site an AI agent"
+    "One engine underneath"
   )
   await expect(
     cta.getByText(
-      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
+      "Whether you're building a modern app or an AI agent, Novu is the delivery layer that connects you to the world.",
       { exact: true }
     )
   ).toBeVisible()
@@ -326,25 +360,17 @@ test("finishes with accessible setup actions and one shared header and Connect f
       .getByRole("link", { name: "See pricing", exact: true })
   ).toHaveAttribute("href", "/connect/#pricing")
   await expect(cta.getByRole("link")).toHaveCount(0)
-  await expect(
-    cta.getByText("npx novu connect --channel web-chat", { exact: true })
-  ).toBeVisible()
+  await expect(cta.getByText("npx novu connect", { exact: true })).toBeVisible()
   const copy = cta.getByRole("button", {
     name: "Copy to clipboard",
     exact: true,
   })
-  const prompt = cta.getByRole("button", { name: "Copy Prompt", exact: true })
-  const glowLayer = cta.locator("[aria-hidden] > span").first()
-  await expect(glowLayer).toHaveCSS("border-color", "rgb(143, 145, 255)")
-  await expect(glowLayer).toHaveCSS("opacity", "0.75")
-  await expect(glowLayer.locator("../..")).toHaveCSS(
-    "box-shadow",
-    /rgba\(143, 145, 255, 0\.18\) 0px 0px 4px 1px.*rgba\(143, 145, 255, 0\.1\) 0px 0px 12px 2px.*rgba\(143, 145, 255, 0\.06\) 0px 0px 24px 4px/
-  )
+  const prompt = cta.getByRole("button", { name: "Copy prompt", exact: true })
+  await expect(cta.locator("video")).toHaveCount(1)
   await expectReactHandlerReady(copy, "onClick")
   await copy.focus()
   await page.keyboard.press("Enter")
-  await expectClipboardText(page, "npx novu connect --channel web-chat")
+  await expectClipboardText(page, "npx novu connect")
   await expect(
     cta.getByText("Command copied to clipboard", { exact: true })
   ).toBeVisible()
@@ -353,7 +379,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
   await page.keyboard.press("Space")
   await expectClipboardText(
     page,
-    "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent."
+    "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md"
   )
   await expect(
     cta.getByText("Prompt copied to clipboard", { exact: true })
@@ -363,7 +389,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
     "How to add an AI agent to your Webflow site in four steps",
     "One workflow, every channel",
     "Frequently asked questions",
-    "Give your Webflow site an AI agent",
+    "One engine underneath",
   ])
   expect(
     await page.evaluate(
@@ -512,4 +538,41 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
   await more.click()
   await expect(tooltip).toHaveCount(0)
   expectHealthyPage(applicationErrors)
+})
+
+test("matches the Webflow Figma section geometry at 1920px", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop-chromium",
+    "The source Figma frame is a 1920px desktop composition"
+  )
+
+  await page.setViewportSize({ width: 1920, height: 1080 })
+  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+
+  const faq = page.locator("#web-chat-builder-faq")
+  const faqContainer = faq.locator(":scope > div")
+  const faqTitle = faq.getByRole("heading", { level: 2 })
+  const accordion = faq.locator('[data-slot="accordion"]')
+  const hero = page.getByRole("region", {
+    name: "Add an AI agent to your Webflow site",
+    exact: true,
+  })
+  const heroArtwork = hero.locator("img").first()
+
+  const faqBox = await faq.boundingBox()
+  const faqContainerBox = await faqContainer.boundingBox()
+  const faqTitleBox = await faqTitle.boundingBox()
+  const accordionBox = await accordion.boundingBox()
+  const heroArtworkBox = await heroArtwork.boundingBox()
+
+  expect(faqBox?.height).toBeCloseTo(362, 0)
+  expect(faqContainerBox?.width).toBeCloseTo(1024, 0)
+  expect(accordionBox!.y - (faqTitleBox!.y + faqTitleBox!.height)).toBeCloseTo(
+    40,
+    0
+  )
+  expect(heroArtworkBox?.width).toBeCloseTo(608, 0)
+  expect(heroArtworkBox?.height).toBeCloseTo(640, 0)
 })
