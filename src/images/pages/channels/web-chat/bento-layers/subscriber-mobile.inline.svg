@@ -84,7 +84,7 @@
     <clipPath id="wc-bento-subscriber-mobile-146">
       <path d="M53 129.442C53 123.421 57.8815 118.539 63.9032 118.539H415.532C421.554 118.539 426.435 123.421 426.435 129.442V576.323C426.435 582.344 421.554 587.226 415.532 587.226H63.9032C57.8815 587.226 53 582.344 53 576.323V129.442Z" fill="white" />
     </clipPath>
-    <image id="wc-bento-subscriber-mobile-148" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait.jpg" />
+    <image id="wc-bento-subscriber-mobile-148" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait-b6afdf710537.jpg" />
     <filter id="wc-bento-subscriber-mobile-soft-mask-0" filterUnits="userSpaceOnUse" x="-72.1034" y="-66.1034" width="577.2068" height="414.2068">
       <feGaussianBlur stdDeviation="47.5517" />
     </filter>

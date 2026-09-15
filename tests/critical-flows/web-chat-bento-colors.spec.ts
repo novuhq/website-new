@@ -77,7 +77,7 @@ test("colors hero and illustration bubbles independently with readable text", as
   await expect(ui.first()).toHaveCSS("mix-blend-mode", "normal")
   await expect(ui.first().locator("image").first()).toHaveAttribute(
     "xlink:href",
-    "/images/web-chat-bento/portrait.jpg"
+    "/images/web-chat-bento/portrait-b6afdf710537.jpg"
   )
 
   accent = "#0036ff"

@@ -138,7 +138,7 @@
     <clipPath id="wc-bento-activity-mobile-208">
       <path d="M273.602 140.694C273.602 132.907 279.914 126.594 287.702 126.594C295.489 126.594 301.802 132.907 301.802 140.694C301.802 148.481 295.489 154.794 287.702 154.794C279.914 154.794 273.602 148.481 273.602 140.694Z" fill="white" />
     </clipPath>
-    <image id="wc-bento-activity-mobile-210" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait.jpg" />
+    <image id="wc-bento-activity-mobile-210" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait-b6afdf710537.jpg" />
     <filter id="wc-bento-activity-mobile-soft-mask-0" filterUnits="userSpaceOnUse" x="-267.6989" y="-159.6989" width="902.3979" height="555.3979">
       <feGaussianBlur stdDeviation="41.3495" />
     </filter>

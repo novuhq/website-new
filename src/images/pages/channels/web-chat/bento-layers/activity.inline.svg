@@ -126,7 +126,7 @@
     <clipPath id="wc-bento-activity-188">
       <path d="M572 193C572 180.85 581.85 171 594 171C606.15 171 616 180.85 616 193C616 205.15 606.15 215 594 215C581.85 215 572 205.15 572 193Z" fill="white" />
     </clipPath>
-    <image id="wc-bento-activity-190" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait.jpg" />
+    <image id="wc-bento-activity-190" data-name="image.png" width="1122" height="1402" preserveAspectRatio="none" xlink:href="/images/web-chat-bento/portrait-b6afdf710537.jpg" />
     <filter id="wc-bento-activity-soft-mask-0" filterUnits="userSpaceOnUse" x="-321.0" y="-226.0" width="1173.0" height="691.0">
       <feGaussianBlur stdDeviation="54.0" />
     </filter>
