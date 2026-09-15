@@ -76,8 +76,9 @@ export interface IWebChatBuilderFaqItem {
 export interface IWebChatBuilderFinalCta {
   title: string
   description: string
-  label: string
-  href: string
+  command: string
+  prompt: string
+  promptLabel: string
 }
 
 export interface IWebChatBuilderPage {
@@ -221,7 +222,15 @@ const WEBFLOW_PAGE = {
         "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
     },
   ],
-  finalCta: null,
+  finalCta: {
+    title: "Give your Webflow site an AI agent",
+    description:
+      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
+    command: "npx novu connect --channel web-chat",
+    prompt:
+      "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent.",
+    promptLabel: "Copy Prompt",
+  },
 } satisfies IWebChatBuilderPage
 
 const WEB_CHAT_BUILDER_PAGES = Object.freeze({

@@ -227,10 +227,15 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     "Publish. Your agent is live in the chat, replying to visitors."
   )
 
-  const copyPrompt = main.getByRole("button", {
-    name: "Copy Prompt",
-    exact: true,
-  })
+  const copyPrompt = main
+    .getByRole("region", {
+      name: "Add an AI agent to your Webflow site",
+      exact: true,
+    })
+    .getByRole("button", {
+      name: "Copy Prompt",
+      exact: true,
+    })
   await expect(copyPrompt).toBeVisible()
   await expectReactHandlerReady(copyPrompt, "onClick")
   await copyPrompt.click()
@@ -239,7 +244,12 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent."
   )
   await expect(
-    main.getByText("Prompt copied to clipboard", { exact: true })
+    main
+      .getByRole("region", {
+        name: "Add an AI agent to your Webflow site",
+        exact: true,
+      })
+      .getByText("Prompt copied to clipboard", { exact: true })
   ).toHaveText("Prompt copied to clipboard")
 
   const hero = main.getByRole("region", {
@@ -267,6 +277,76 @@ test("renders the Webflow hero and copies its setup instructions", async ({
         "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector"
     )
   ).toEqual([])
+})
+
+test("finishes with accessible setup actions and one shared header and Connect footer", async ({
+  page,
+}) => {
+  const applicationErrors = observeApplicationErrors(page)
+  await installClipboardMock(page)
+  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  const cta = page.getByRole("region", {
+    name: "Give your Webflow site an AI agent",
+    exact: true,
+  })
+  await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
+    "Give your Webflow site an AI agent"
+  )
+  await expect(
+    cta.getByText(
+      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
+      { exact: true }
+    )
+  ).toBeVisible()
+  await expect(page.getByRole("banner")).toHaveCount(1)
+  await expect(page.getByRole("contentinfo")).toHaveCount(1)
+  await expect(
+    page.getByRole("navigation", { name: "Footer navigation", exact: true })
+  ).toHaveCount(1)
+  await expect(
+    page
+      .getByRole("contentinfo")
+      .getByRole("link", { name: "See pricing", exact: true })
+  ).toHaveAttribute("href", "/connect/#pricing")
+  await expect(cta.getByRole("link")).toHaveCount(0)
+  await expect(
+    cta.getByText("npx novu connect --channel web-chat", { exact: true })
+  ).toBeVisible()
+  const copy = cta.getByRole("button", {
+    name: "Copy to clipboard",
+    exact: true,
+  })
+  const prompt = cta.getByRole("button", { name: "Copy Prompt", exact: true })
+  await expectReactHandlerReady(copy, "onClick")
+  await copy.focus()
+  await page.keyboard.press("Enter")
+  await expectClipboardText(page, "npx novu connect --channel web-chat")
+  await expect(
+    cta.getByText("Command copied to clipboard", { exact: true })
+  ).toBeVisible()
+  await page.keyboard.press("Tab")
+  await expect(prompt).toBeFocused()
+  await page.keyboard.press("Space")
+  await expectClipboardText(
+    page,
+    "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent."
+  )
+  await expect(
+    cta.getByText("Prompt copied to clipboard", { exact: true })
+  ).toBeVisible()
+  await expect(page.locator("main h2")).toHaveText([
+    "Your agent, live on your Webflow site",
+    "How to add an AI agent to your Webflow site in four steps",
+    "One workflow, every channel",
+    "Frequently asked questions",
+    "Give your Webflow site an AI agent",
+  ])
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true)
+  expectHealthyPage(applicationErrors)
 })
 
 test("shows every channel and makes the upcoming-channel hint accessible", async ({

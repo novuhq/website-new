@@ -5,6 +5,7 @@ import webflowHero from "@/images/pages/channels/web-chat-builder/webflow/hero.p
 
 import FAQ from "@/components/pages/faq"
 
+import WebChatBuilderFinalCta from "./final-cta"
 import WebChatBuilderHero from "./hero"
 import WebChatBuilderPrimarySection from "./primary-section"
 import WebChatBuilderSecondarySection from "./secondary-section"
@@ -44,6 +45,7 @@ function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
         titleClassName="font-normal tracking-(--tracking-plus-tight) md:text-[44px]"
         containerClassName="max-w-256 gap-y-4.5"
       />
+      {page.finalCta && <WebChatBuilderFinalCta cta={page.finalCta} />}
     </div>
   )
 }
