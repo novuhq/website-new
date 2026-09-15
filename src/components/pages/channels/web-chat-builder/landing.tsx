@@ -3,6 +3,7 @@ import type { IWebChatBuilderPage } from "@/data/pages/web-chat-builders"
 import webflowHero from "@/images/pages/channels/web-chat-builder/webflow/hero.png"
 
 import WebChatBuilderHero from "./hero"
+import WebChatBuilderPrimarySection from "./primary-section"
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
@@ -15,6 +16,9 @@ function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
   return (
     <div className={`bg-black font-inter ${geistMono.variable}`}>
       <WebChatBuilderHero hero={page.hero} image={webflowHero} />
+      {page.sections.map((section) => (
+        <WebChatBuilderPrimarySection key={section.id} section={section} />
+      ))}
     </div>
   )
 }

@@ -35,6 +35,31 @@ test("renders the Webflow hero and copies its setup instructions", async ({
     main.getByText("npx novu connect --channel web-chat", { exact: true })
   ).toBeVisible()
 
+  const features = main.getByRole("region", {
+    name: "Your agent, live on your Webflow site",
+  })
+  await expect(
+    features.getByRole("heading", {
+      level: 2,
+      name: "Your agent, live on your Webflow site",
+    })
+  ).toBeVisible()
+  await expect(features.getByRole("listitem")).toHaveCount(6)
+  await expect(features.getByRole("heading", { level: 3 })).toHaveText([
+    "One-snippet embed",
+    "No backend to host",
+    "Themeable",
+    "Two-way",
+    "Every channel, one workflow",
+    "Shareable public link",
+  ])
+  await expect(
+    features.getByText(
+      "Paste one script tag into Webflow’s Embed element or site-wide custom code.",
+      { exact: true }
+    )
+  ).toBeVisible()
+
   const copyPrompt = main.getByRole("button", {
     name: "Copy Prompt",
     exact: true,

@@ -12,10 +12,26 @@ export interface IWebChatBuilderHero {
   promptLabel: string
 }
 
-export interface IWebChatBuilderSection {
-  type: string
-  [key: string]: unknown
+export type WebChatBuilderFeatureIcon =
+  | "embed"
+  | "backend"
+  | "theme"
+  | "two-way"
+  | "workflow"
+  | "public-link"
+
+export interface IWebChatBuilderPrimarySection {
+  type: "primary"
+  id: string
+  title: string
+  features: {
+    title: string
+    description: string
+    icon: WebChatBuilderFeatureIcon
+  }[]
 }
+
+export type IWebChatBuilderSection = IWebChatBuilderPrimarySection
 
 export interface IWebChatBuilderFaqItem {
   question: string
@@ -57,7 +73,51 @@ const WEBFLOW_PAGE = {
       "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent.",
     promptLabel: "Copy Prompt",
   },
-  sections: [],
+  sections: [
+    {
+      type: "primary",
+      id: "web-chat-builder-features",
+      title: "Your agent, live on your Webflow site",
+      features: [
+        {
+          title: "One-snippet embed",
+          description:
+            "Paste one script tag into Webflow’s Embed element or site-wide custom code.",
+          icon: "embed",
+        },
+        {
+          title: "No backend to host",
+          description:
+            "Novu delivers your messages. No messaging backend to host or maintain.",
+          icon: "backend",
+        },
+        {
+          title: "Themeable",
+          description:
+            "Customize the chat widget’s appearance to match the look and feel of your Webflow site.",
+          icon: "theme",
+        },
+        {
+          title: "Two-way",
+          description:
+            "Your agent receives visitors’ messages and replies directly in the same chat widget.",
+          icon: "two-way",
+        },
+        {
+          title: "Every channel, one workflow",
+          description:
+            "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
+          icon: "workflow",
+        },
+        {
+          title: "Shareable public link",
+          description:
+            "Every agent gets a public link you can share with your visitors, even without a paid plan.",
+          icon: "public-link",
+        },
+      ],
+    },
+  ],
   faq: [],
   finalCta: null,
 } satisfies IWebChatBuilderPage
