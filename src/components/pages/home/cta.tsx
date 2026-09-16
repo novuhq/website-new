@@ -2,6 +2,7 @@ import type { TSectionAction } from "@/types/common"
 import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import ActionGroup from "@/components/ui/action-group"
+import type { ButtonProps } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 import { FinalCtaVideo } from "@/components/pages/final-cta"
 
@@ -14,6 +15,7 @@ interface ICTAProps {
   command?: string
   description: string
   prompt?: string
+  promptButtonVariant?: ButtonProps["variant"]
   title: string
 }
 
@@ -24,6 +26,7 @@ function Cta({
   description,
   command = "npx novu connect",
   prompt = DEFAULT_CONNECT_PROMPT,
+  promptButtonVariant = "outline-transparent",
 }: ICTAProps) {
   return (
     <section
@@ -58,7 +61,7 @@ function Cta({
             />
             <CopyPromptButton
               className="h-11 w-full max-w-xs px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
-              variant="outline-transparent"
+              variant={promptButtonVariant}
               size="none"
               resetInterval={2000}
               value={prompt}

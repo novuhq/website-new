@@ -81,6 +81,13 @@ describe("Web Chat builder pages", () => {
       vellum.faq[0].question,
       "How do I add my Vellum agent to a website?"
     )
+    const vellumChannels = vellum.sections.find(
+      (section) => section.type === "tertiary"
+    )!
+    assert.equal(
+      vellumChannels.imageAlt,
+      "Your Vellum agent is just the beginning!"
+    )
 
     for (const slug of getAllWebChatBuilderSlugs()) {
       const page = getWebChatBuilderBySlug(slug)!

@@ -86,6 +86,25 @@ const figmaHeroVariants = [
   ],
 ] as const
 
+const channelArtworkMessages: Record<
+  (typeof figmaHeroVariants)[number][0],
+  string
+> = {
+  "blink-new": "Your Blink.new app is just the beginning!",
+  lovable: "Your Lovable app is just the beginning!",
+  replit: "Your Replit app is just the beginning!",
+  "bolt-new": "Your Bolt.new app is just the beginning!",
+  "sim-studio": "Your Sim agent is just the beginning!",
+  vellum: "Your Vellum agent is just the beginning!",
+  flowise: "Your Flowise agent is just the beginning!",
+  wordware: "Your Wordware agent is just the beginning!",
+  "crew-ai": "Your CrewAI agent is just the beginning!",
+  langgraph: "Your LangGraph agent is just the beginning!",
+  lindy: "Your Lindy agent is just the beginning!",
+  "stack-ai": "Your Stack AI agent is just the beginning!",
+  "relevance-ai": "Your Relevance AI agent is just the beginning!",
+}
+
 test("renders the builder FAQ with its first answer open and keyboard controls", async ({
   page,
 }) => {
@@ -376,10 +395,21 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
     const hero = page.getByRole("region", { name: title, exact: true })
     const artwork = hero.locator("img").first()
     const cta = page.locator("section.cta")
+    const channels = page.getByRole("region", {
+      name: "One workflow, every channel",
+      exact: true,
+    })
+    const artworkMessage = channelArtworkMessages[slug]
 
     await expect(hero.getByRole("heading", { level: 1 })).toHaveText(title)
     await expect(cta.getByRole("heading", { level: 2 })).toHaveText(ctaTitle)
     await expect(page.getByRole("main")).not.toContainText("Webflow")
+    await expect(
+      channels.getByText(artworkMessage, { exact: true })
+    ).toBeVisible()
+    await expect(
+      channels.getByRole("img", { name: artworkMessage, exact: true })
+    ).toHaveAttribute("src", /channels-mascot\.[\w-]+\.png/)
     await expect(artwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
     await expect
       .poll(() =>
@@ -431,6 +461,8 @@ test("finishes with accessible setup actions and one shared header and Connect f
     exact: true,
   })
   const prompt = cta.getByRole("button", { name: "Copy prompt", exact: true })
+  await expect(prompt).toHaveCSS("background-color", "rgb(255, 255, 255)")
+  await expect(prompt).toHaveCSS("color", "rgb(0, 0, 0)")
   await expect(cta.locator("video")).toHaveCount(1)
   await expectReactHandlerReady(copy, "onClick")
   await copy.focus()
@@ -497,6 +529,11 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   const channelsArtwork = section.getByRole("img", {
     name: "Your Blink.new app is just the beginning!",
   })
+  await expect(
+    section.getByText("Your Blink.new app is just the beginning!", {
+      exact: true,
+    })
+  ).toBeVisible()
   await expect(channelsArtwork).toBeVisible()
   await expect(channelsArtwork).toHaveAttribute(
     "src",

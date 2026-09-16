@@ -52,7 +52,7 @@ function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
         triggerClassName="md:min-h-6.5 md:py-0.75 md:[&>svg]:size-3.5"
         contentClassName="md:pt-4 md:pb-2"
       />
-      <Cta {...page.cta} />
+      <Cta {...page.cta} promptButtonVariant="default" />
     </div>
   )
 }

@@ -134,12 +134,20 @@ function WebChatBuilderTertiarySection({
             </WebChatBuilderChannelHint>
           </li>
         </ul>
-        <Image
-          src={image}
-          alt={section.imageAlt}
-          className="h-auto w-full self-center rounded-2xl"
-          sizes="(min-width: 1280px) 480px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 128px), calc(100vw - 72px)"
-        />
+        <div className="@container relative self-center overflow-hidden rounded-2xl">
+          <Image
+            src={image}
+            alt={section.imageAlt}
+            className="h-auto w-full"
+            sizes="(min-width: 1280px) 480px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 128px), calc(100vw - 72px)"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute top-[23.125cqw] right-[57.292cqw] w-[38.75cqw] rounded-t-[3.024cqw] rounded-br-[0.756cqw] rounded-bl-[3.024cqw] border border-white/20 bg-black [padding:1.667cqw_4.167cqw_1.875cqw_2.5cqw] text-[3.333cqw] leading-[1.2] font-normal tracking-[-0.01em] text-white shadow-[0_1.25cqw_1.458cqw_rgba(0,0,0,0.4)]"
+          >
+            {section.imageAlt}
+          </span>
+        </div>
       </div>
     </section>
   )

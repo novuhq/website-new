@@ -226,7 +226,9 @@ function createWebChatBuilderSharedContent({
         ],
         moreChannelsLabel: "More channels",
         moreChannelsHint: "More channels coming soon",
-        imageAlt: `Your ${destination} is just the beginning!`,
+        imageAlt: isApp
+          ? `Your ${heroName} app is just the beginning!`
+          : `Your ${heroName} agent is just the beginning!`,
       },
     ],
     faqTitle: "Frequently asked questions",
