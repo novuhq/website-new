@@ -114,6 +114,29 @@ export async function expectReactHandlerReady(
     .toBe(true)
 }
 
+export async function expectAccordionItemExpanded(trigger: Locator) {
+  // Mobile WebKit can scroll the page between the press and the release that
+  // make up a single Playwright click: CI traces recorded ~190px of upward
+  // scroll inside one click action, with the document layout unchanged. The
+  // release then lands on whatever moved under the click point, so the browser
+  // never fires `click` on the trigger even though Playwright reports the
+  // action as performed. Tap again while the panel is still closed, the way a
+  // person whose tap missed would.
+  await expect
+    .poll(
+      async () => {
+        if ((await trigger.getAttribute("aria-expanded")) === "true") {
+          return true
+        }
+
+        await trigger.click()
+        return false
+      },
+      { intervals: [500, 500, 1000, 2000, 3000] }
+    )
+    .toBe(true)
+}
+
 export async function installClipboardMock(page: Page) {
   await page.addInitScript(
     ({ clipboardKey }) => {

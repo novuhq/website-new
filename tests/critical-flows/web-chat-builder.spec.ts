@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { getWebChatBuilderBySlug } from "../../src/data/pages/web-chat-builders"
 import {
+  expectAccordionItemExpanded,
   expectClipboardText,
   expectHealthyPage,
   expectReactHandlerReady,
@@ -221,9 +222,7 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
       .locator("#web-chat-builder-faq")
       .getByRole("button", { name: item.question, exact: true })
     await expectReactHandlerReady(trigger, "onClick")
-    if ((await trigger.getAttribute("aria-expanded")) !== "true")
-      await trigger.click()
-    await expect(trigger).toHaveAttribute("aria-expanded", "true")
+    await expectAccordionItemExpanded(trigger)
     await expect(
       page.locator("#web-chat-builder-faq").getByText(item.answer, {
         exact: true,
