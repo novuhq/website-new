@@ -58,6 +58,45 @@ describe("Web Chat builder pages", () => {
     assert.equal(getAllWebChatBuilderSlugs().length, 13)
   })
 
+  it("personalizes shared copy for app and agent builders", () => {
+    const blinkNew = getWebChatBuilderBySlug("blink-new")!
+    const vellum = getWebChatBuilderBySlug("vellum")!
+
+    assert.equal(
+      blinkNew.sections[0].title,
+      "Your agent, live in your Blink.new app"
+    )
+    assert.equal(blinkNew.cta.title, "Give your Blink.new app an AI agent")
+    assert.equal(
+      blinkNew.faq[0].question,
+      "How do I add an AI chatbot to a Blink.new app?"
+    )
+
+    assert.equal(
+      vellum.sections[0].title,
+      "Your Vellum agent, live on your website"
+    )
+    assert.equal(vellum.cta.title, "Bring your Vellum agent to your website")
+    assert.equal(
+      vellum.faq[0].question,
+      "How do I add my Vellum agent to a website?"
+    )
+
+    for (const slug of getAllWebChatBuilderSlugs()) {
+      const page = getWebChatBuilderBySlug(slug)!
+      const renderedCopy = JSON.stringify({
+        seo: page.seo,
+        hero: page.hero,
+        sections: page.sections,
+        faqTitle: page.faqTitle,
+        faq: page.faq,
+        cta: page.cta,
+      })
+
+      assert.doesNotMatch(renderedCopy, /webflow/i, slug)
+    }
+  })
+
   for (const slug of ["toString", "constructor", "__proto__"]) {
     it(`returns undefined for the inherited property name ${slug}`, () => {
       assert.equal(getWebChatBuilderBySlug(slug), undefined)

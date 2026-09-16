@@ -122,126 +122,142 @@ export interface IWebChatBuilderPage {
   cta: IWebChatBuilderCta
 }
 
-const WEB_CHAT_BUILDER_SHARED_CONTENT = {
-  sections: [
-    {
-      type: "primary",
-      id: "web-chat-builder-features",
-      title: "Your agent, live on your Webflow site",
-      features: [
-        {
-          title: "One-snippet embed",
-          description:
-            "Paste one script tag into Webflow’s Embed element or site-wide custom code.",
-          icon: "embed",
-        },
-        {
-          title: "No backend to host",
-          description:
-            "Novu delivers your messages. No messaging backend to host or maintain.",
-          icon: "backend",
-        },
-        {
-          title: "Themeable",
-          description:
-            "Customize the chat widget’s appearance to match the look and feel of your Webflow site.",
-          icon: "theme",
-        },
-        {
-          title: "Two-way",
-          description:
-            "Your agent receives visitors’ messages and replies directly in the same chat widget.",
-          icon: "two-way",
-        },
-        {
-          title: "Every channel, one workflow",
-          description:
-            "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
-          icon: "workflow",
-        },
-        {
-          title: "Shareable public link",
-          description:
-            "Every agent gets a public link you can share with your visitors, even without a paid plan.",
-          icon: "public-link",
-        },
-      ],
-    },
-    {
-      type: "secondary",
-      id: "web-chat-builder-setup",
-      title: "How to add an AI agent to your Webflow site in four steps",
-      description: "No webhooks, no OAuth, about two minutes.",
-      steps: [
-        {
-          description: "Connect your agent to Novu Web Chat:\nrun ",
-          command: "npx novu connect --channel web-chat",
-        },
-        {
-          description:
-            "Copy your one-line Web Chat embed,\na single script tag.",
-        },
-        {
-          description:
-            "In the Webflow Designer, add an Embed element where you want the widget, or paste it into Project Settings → Custom Code for the whole site.",
-        },
-        {
-          description:
-            "Publish. Your agent is live in the chat,\nreplying to visitors.",
-        },
-      ],
-    },
-    {
-      type: "tertiary",
-      id: "web-chat-builder-channels",
-      title: "One workflow, every channel",
-      description:
-        "Your agent’s logic works across Webflow chat and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
+type WebChatBuilderKind = "app" | "agent"
+
+function createWebChatBuilderSharedContent({
+  heroName,
+  kind,
+}: {
+  heroName: string
+  kind: WebChatBuilderKind
+}): Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq" | "cta"> {
+  const isApp = kind === "app"
+  const destination = isApp ? `${heroName} app` : "website"
+  const destinationPhrase = `your ${destination}`
+  const agentLabel = isApp ? "Your agent" : `Your ${heroName} agent`
+  const agentLabelLower = isApp ? "your agent" : `your ${heroName} agent`
+  const livePreposition = isApp ? "in" : "on"
+  const embedPreposition = isApp ? "into" : "on"
+  const setupTitle = isApp
+    ? `How to add an AI agent to your ${heroName} app in four steps`
+    : `How to add your ${heroName} agent to your website in four steps`
+  const ctaTitle = isApp
+    ? `Give your ${heroName} app an AI agent`
+    : `Bring your ${heroName} agent to your website`
+
+  return {
+    sections: [
+      {
+        type: "primary",
+        id: "web-chat-builder-features",
+        title: `${agentLabel}, live ${livePreposition} ${destinationPhrase}`,
+        features: [
+          {
+            title: "One-snippet embed",
+            description: `Paste one script tag ${embedPreposition} ${destinationPhrase}.`,
+            icon: "embed",
+          },
+          {
+            title: "No backend to host",
+            description:
+              "Novu delivers your messages. No messaging backend to host or maintain.",
+            icon: "backend",
+          },
+          {
+            title: "Themeable",
+            description: `Customize the chat widget’s appearance to match the look and feel of ${destinationPhrase}.`,
+            icon: "theme",
+          },
+          {
+            title: "Two-way",
+            description: `${agentLabel} receives visitors’ messages and replies directly in the same chat widget.`,
+            icon: "two-way",
+          },
+          {
+            title: "Every channel, one workflow",
+            description:
+              "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
+            icon: "workflow",
+          },
+          {
+            title: "Shareable public link",
+            description:
+              "Every agent gets a public link you can share with your visitors, even without a paid plan.",
+            icon: "public-link",
+          },
+        ],
+      },
+      {
+        type: "secondary",
+        id: "web-chat-builder-setup",
+        title: setupTitle,
+        description: "No webhooks, no OAuth, about two minutes.",
+        steps: [
+          {
+            description: `Connect ${agentLabelLower} to Novu Web Chat:\nrun `,
+            command: "npx novu connect --channel web-chat",
+          },
+          {
+            description:
+              "Copy your one-line Web Chat embed,\na single script tag.",
+          },
+          {
+            description: `Paste the embed where you want the widget ${livePreposition} ${destinationPhrase}.`,
+          },
+          {
+            description: `Publish. ${agentLabel} is live in the chat,\nreplying to visitors.`,
+          },
+        ],
+      },
+      {
+        type: "tertiary",
+        id: "web-chat-builder-channels",
+        title: "One workflow, every channel",
+        description: `${agentLabel}’s logic works across ${destinationPhrase} and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.`,
+        command: "npx novu connect --channel web-chat",
+        channels: [
+          { name: "Telegram", icon: "telegram" },
+          { name: "MS Teams", icon: "teams" },
+          { name: "Email", icon: "email" },
+          { name: "Web Chat", icon: "web-chat" },
+          { name: "WhatsApp", icon: "whatsapp" },
+          { name: "Slack", icon: "slack" },
+          { name: "iMessage", icon: "imessage" },
+        ],
+        moreChannelsLabel: "More channels",
+        moreChannelsHint: "More channels coming soon",
+        imageAlt: `Your ${destination} is just the beginning!`,
+      },
+    ],
+    faqTitle: "Frequently asked questions",
+    faq: [
+      {
+        question: isApp
+          ? `How do I add an AI chatbot to a ${heroName} app?`
+          : `How do I add my ${heroName} agent to a website?`,
+        answer: `Connect ${agentLabelLower} to Novu Web Chat, then paste the embed ${embedPreposition} ${destinationPhrase}.`,
+      },
+      {
+        question: `Can I style it to match my ${destination}?`,
+        answer: `Customize the chat widget’s appearance to match the look and feel of ${destinationPhrase}.`,
+      },
+      {
+        question: "Is this human live chat?",
+        answer: `${agentLabel} receives visitors’ messages and replies directly in the same chat widget.`,
+      },
+      {
+        question: "Can the same agent reach users on WhatsApp or email?",
+        answer:
+          "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
+      },
+    ],
+    cta: {
+      title: ctaTitle,
+      description: `Bring the agent you built. Novu puts it ${livePreposition} ${destinationPhrase} and reaches your users on every channel from one workflow.`,
       command: "npx novu connect --channel web-chat",
-      channels: [
-        { name: "Telegram", icon: "telegram" },
-        { name: "MS Teams", icon: "teams" },
-        { name: "Email", icon: "email" },
-        { name: "Web Chat", icon: "web-chat" },
-        { name: "WhatsApp", icon: "whatsapp" },
-        { name: "Slack", icon: "slack" },
-        { name: "iMessage", icon: "imessage" },
-      ],
-      moreChannelsLabel: "More channels",
-      moreChannelsHint: "More channels coming soon",
-      imageAlt: "Your Webflow site is just the beginning!",
     },
-  ],
-  faqTitle: "Frequently asked questions",
-  faq: [
-    {
-      question: "How do I add an AI chatbot to a Webflow site?",
-      answer:
-        "Connect your agent to Novu Web Chat, then paste the embed into a Webflow Embed element or site-wide custom code.",
-    },
-    {
-      question: "Can I style it to match my Webflow design?",
-      answer:
-        "Customize the chat widget’s appearance to match the look and feel of your Webflow site.",
-    },
-    {
-      question: "Is this human live chat?",
-      answer:
-        "Your agent receives visitors’ messages and replies directly in the same chat widget.",
-    },
-    {
-      question: "Can the same agent reach users on WhatsApp or email?",
-      answer:
-        "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
-    },
-  ],
-  cta: {
-    title: "Give your Webflow site an AI agent",
-    description:
-      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
-    command: "npx novu connect --channel web-chat",
-  },
-} satisfies Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq" | "cta">
+  }
+}
 
 type WebChatBuilderHeroMediaKey = Exclude<
   WebChatBuilderMediaKey,
@@ -259,7 +275,7 @@ function createWebChatBuilderPage({
   builderName: string
   heroName?: string
   heroMedia: WebChatBuilderHeroMediaKey
-  kind: "app" | "agent"
+  kind: WebChatBuilderKind
 }): IWebChatBuilderPage {
   const title =
     kind === "app"
@@ -275,7 +291,7 @@ function createWebChatBuilderPage({
       : `Add Novu Web Chat to my ${heroName} agent. Run npx novu connect --channel web-chat, then help me embed the chat on my website and connect it to the agent.`
 
   return {
-    ...WEB_CHAT_BUILDER_SHARED_CONTENT,
+    ...createWebChatBuilderSharedContent({ heroName, kind }),
     slug,
     builderName,
     media: { hero: heroMedia, channels: "webflow-channels" },

@@ -12,26 +12,78 @@ import {
 } from "./helpers"
 
 const faqQuestions = [
-  "How do I add an AI chatbot to a Webflow site?",
-  "Can I style it to match my Webflow design?",
+  "How do I add an AI chatbot to a Blink.new app?",
+  "Can I style it to match my Blink.new app?",
   "Is this human live chat?",
   "Can the same agent reach users on WhatsApp or email?",
 ]
 
 const figmaHeroVariants = [
-  ["blink-new", "Add an AI agent to your Blink.new app"],
-  ["lovable", "Add an AI agent to your Lovable app"],
-  ["replit", "Add an AI agent to your Replit app"],
-  ["bolt-new", "Add an AI agent to your Bolt.new app"],
-  ["sim-studio", "Add your Sim agent to your website"],
-  ["vellum", "Add your Vellum agent to your website"],
-  ["flowise", "Add your Flowise agent to your website"],
-  ["wordware", "Add your Wordware agent to your website"],
-  ["crew-ai", "Add your CrewAI agent to your website"],
-  ["langgraph", "Add your LangGraph agent to your website"],
-  ["lindy", "Add your Lindy agent to your website"],
-  ["stack-ai", "Add your Stack AI agent to your website"],
-  ["relevance-ai", "Add your Relevance AI agent to your website"],
+  [
+    "blink-new",
+    "Add an AI agent to your Blink.new app",
+    "Give your Blink.new app an AI agent",
+  ],
+  [
+    "lovable",
+    "Add an AI agent to your Lovable app",
+    "Give your Lovable app an AI agent",
+  ],
+  [
+    "replit",
+    "Add an AI agent to your Replit app",
+    "Give your Replit app an AI agent",
+  ],
+  [
+    "bolt-new",
+    "Add an AI agent to your Bolt.new app",
+    "Give your Bolt.new app an AI agent",
+  ],
+  [
+    "sim-studio",
+    "Add your Sim agent to your website",
+    "Bring your Sim agent to your website",
+  ],
+  [
+    "vellum",
+    "Add your Vellum agent to your website",
+    "Bring your Vellum agent to your website",
+  ],
+  [
+    "flowise",
+    "Add your Flowise agent to your website",
+    "Bring your Flowise agent to your website",
+  ],
+  [
+    "wordware",
+    "Add your Wordware agent to your website",
+    "Bring your Wordware agent to your website",
+  ],
+  [
+    "crew-ai",
+    "Add your CrewAI agent to your website",
+    "Bring your CrewAI agent to your website",
+  ],
+  [
+    "langgraph",
+    "Add your LangGraph agent to your website",
+    "Bring your LangGraph agent to your website",
+  ],
+  [
+    "lindy",
+    "Add your Lindy agent to your website",
+    "Bring your Lindy agent to your website",
+  ],
+  [
+    "stack-ai",
+    "Add your Stack AI agent to your website",
+    "Bring your Stack AI agent to your website",
+  ],
+  [
+    "relevance-ai",
+    "Add your Relevance AI agent to your website",
+    "Bring your Relevance AI agent to your website",
+  ],
 ] as const
 
 test("renders the builder FAQ with its first answer open and keyboard controls", async ({
@@ -51,7 +103,7 @@ test("renders the builder FAQ with its first answer open and keyboard controls",
     await expect(triggers.nth(index)).toHaveAttribute("aria-expanded", "false")
   }
   await expect(faq.getByRole("region")).toHaveText(
-    "Connect your agent to Novu Web Chat, then paste the embed into a Webflow Embed element or site-wide custom code."
+    "Connect your agent to Novu Web Chat, then paste the embed into your Blink.new app."
   )
   await expectReactHandlerReady(triggers.nth(0), "onClick")
   await triggers.nth(0).focus()
@@ -210,12 +262,12 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
   ).toBeVisible()
 
   const features = main.getByRole("region", {
-    name: "Your agent, live on your Webflow site",
+    name: "Your agent, live in your Blink.new app",
   })
   await expect(
     features.getByRole("heading", {
       level: 2,
-      name: "Your agent, live on your Webflow site",
+      name: "Your agent, live in your Blink.new app",
     })
   ).toBeVisible()
   await expect(features.getByRole("listitem")).toHaveCount(6)
@@ -228,19 +280,18 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
     "Shareable public link",
   ])
   await expect(
-    features.getByText(
-      "Paste one script tag into Webflow’s Embed element or site-wide custom code.",
-      { exact: true }
-    )
+    features.getByText("Paste one script tag into your Blink.new app.", {
+      exact: true,
+    })
   ).toBeVisible()
 
   const setup = main.getByRole("region", {
-    name: "How to add an AI agent to your Webflow site in four steps",
+    name: "How to add an AI agent to your Blink.new app in four steps",
   })
   await expect(
     setup.getByRole("heading", {
       level: 2,
-      name: "How to add an AI agent to your Webflow site in four steps",
+      name: "How to add an AI agent to your Blink.new app in four steps",
     })
   ).toBeVisible()
   const steps = setup.getByRole("listitem")
@@ -251,7 +302,9 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
   await expect(steps.nth(1)).toContainText(
     "Copy your one-line Web Chat embed, a single script tag."
   )
-  await expect(steps.nth(2)).toContainText("Project Settings → Custom Code")
+  await expect(steps.nth(2)).toContainText(
+    "Paste the embed where you want the widget in your Blink.new app."
+  )
   await expect(steps.nth(3)).toContainText(
     "Publish. Your agent is live in the chat, replying to visitors."
   )
@@ -310,7 +363,7 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
   expect(consoleErrors).toEqual([])
 })
 
-test("renders every supplied Figma hero variant", async ({
+test("renders every supplied Figma hero and builder-aware CTA variant", async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -318,12 +371,15 @@ test("renders every supplied Figma hero variant", async ({
     "One desktop project covers the registry-backed static hero variants"
   )
 
-  for (const [slug, title] of figmaHeroVariants) {
+  for (const [slug, title, ctaTitle] of figmaHeroVariants) {
     await gotoCriticalPage(page, `/channels/web-chat/${slug}`)
     const hero = page.getByRole("region", { name: title, exact: true })
     const artwork = hero.locator("img").first()
+    const cta = page.locator("section.cta")
 
     await expect(hero.getByRole("heading", { level: 1 })).toHaveText(title)
+    await expect(cta.getByRole("heading", { level: 2 })).toHaveText(ctaTitle)
+    await expect(page.getByRole("main")).not.toContainText("Webflow")
     await expect(artwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
     await expect
       .poll(() =>
@@ -348,11 +404,11 @@ test("finishes with accessible setup actions and one shared header and Connect f
   const cta = page.locator("section.cta")
   await expect(cta).toHaveCount(1)
   await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
-    "Give your Webflow site an AI agent"
+    "Give your Blink.new app an AI agent"
   )
   await expect(
     cta.getByText(
-      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
+      "Bring the agent you built. Novu puts it in your Blink.new app and reaches your users on every channel from one workflow.",
       { exact: true }
     )
   ).toBeVisible()
@@ -394,11 +450,11 @@ test("finishes with accessible setup actions and one shared header and Connect f
     cta.getByText("Prompt copied to clipboard", { exact: true })
   ).toBeVisible()
   await expect(page.locator("main h2")).toHaveText([
-    "Your agent, live on your Webflow site",
-    "How to add an AI agent to your Webflow site in four steps",
+    "Your agent, live in your Blink.new app",
+    "How to add an AI agent to your Blink.new app in four steps",
     "One workflow, every channel",
     "Frequently asked questions",
-    "Give your Webflow site an AI agent",
+    "Give your Blink.new app an AI agent",
   ])
   expect(
     await page.evaluate(
@@ -423,7 +479,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   )
   await expect(
     section.getByText(
-      "Your agent’s logic works across Webflow chat and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
+      "Your agent’s logic works across your Blink.new app and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
       { exact: true }
     )
   ).toBeVisible()
@@ -439,7 +495,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
     await expect(section.getByText(channel, { exact: true })).toBeVisible()
   }
   const channelsArtwork = section.getByRole("img", {
-    name: "Your Webflow site is just the beginning!",
+    name: "Your Blink.new app is just the beginning!",
   })
   await expect(channelsArtwork).toBeVisible()
   await expect(channelsArtwork).toHaveAttribute(
