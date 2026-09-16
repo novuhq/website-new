@@ -161,7 +161,13 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
   }
 })
 
-for (const slug of ["not-published", "toString", "constructor", "__proto__"]) {
+for (const slug of [
+  "webflow",
+  "not-published",
+  "toString",
+  "constructor",
+  "__proto__",
+]) {
   test(`returns a true 404 without structured data for ${slug}`, async ({
     page,
   }) => {

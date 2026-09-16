@@ -74,7 +74,6 @@ export interface IWebChatBuilderFaqItem {
 }
 
 export type WebChatBuilderMediaKey =
-  | "webflow-hero"
   | "blink-new-hero"
   | "lovable-hero"
   | "replit-hero"
@@ -116,28 +115,7 @@ export interface IWebChatBuilderPage {
   faq: IWebChatBuilderFaqItem[]
 }
 
-const WEBFLOW_PAGE = {
-  slug: "webflow",
-  builderName: "Webflow",
-  media: {
-    hero: "webflow-hero",
-    channels: "webflow-channels",
-  },
-  seo: {
-    title: "Add an AI agent to your Webflow site | Novu Web Chat",
-    description:
-      "Bring your AI agent to Webflow with one embed. Chat with visitors and reach them across messaging channels and email through one workflow.",
-  },
-  hero: {
-    eyebrow: "Web Chat for Webflow",
-    title: "Add an AI agent to your Webflow site",
-    description:
-      "Bring your AI agent to Webflow with one embed. Chat with visitors and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.",
-    command: "npx novu connect --channel web-chat",
-    prompt:
-      "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent.",
-    promptLabel: "Copy Prompt",
-  },
+const WEB_CHAT_BUILDER_SHARED_CONTENT = {
   sections: [
     {
       type: "primary",
@@ -250,7 +228,7 @@ const WEBFLOW_PAGE = {
         "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
     },
   ],
-} satisfies IWebChatBuilderPage
+} satisfies Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq">
 
 type WebChatBuilderHeroMediaKey = Exclude<
   WebChatBuilderMediaKey,
@@ -284,26 +262,26 @@ function createWebChatBuilderPage({
       : `Add Novu Web Chat to my ${heroName} agent. Run npx novu connect --channel web-chat, then help me embed the chat on my website and connect it to the agent.`
 
   return {
-    ...WEBFLOW_PAGE,
+    ...WEB_CHAT_BUILDER_SHARED_CONTENT,
     slug,
     builderName,
-    media: { ...WEBFLOW_PAGE.media, hero: heroMedia },
+    media: { hero: heroMedia, channels: "webflow-channels" },
     seo: {
       title: `${title} | Novu Web Chat`,
       description,
     },
     hero: {
-      ...WEBFLOW_PAGE.hero,
       eyebrow: `Web Chat for ${heroName}`,
       title,
       description,
+      command: "npx novu connect --channel web-chat",
       prompt,
+      promptLabel: "Copy Prompt",
     },
   }
 }
 
 const WEB_CHAT_BUILDER_PAGES = Object.freeze({
-  webflow: WEBFLOW_PAGE,
   "blink-new": createWebChatBuilderPage({
     slug: "blink-new",
     builderName: "Blink.new",

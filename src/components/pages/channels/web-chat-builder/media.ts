@@ -13,11 +13,9 @@ import simStudioHero from "@/images/pages/channels/web-chat-builder/sim-studio/h
 import stackAiHero from "@/images/pages/channels/web-chat-builder/stack-ai/hero.png"
 import vellumHero from "@/images/pages/channels/web-chat-builder/vellum/hero.png"
 import webflowChannels from "@/images/pages/channels/web-chat-builder/webflow/channels-mascot.png"
-import webflowHero from "@/images/pages/channels/web-chat-builder/webflow/hero.png"
 import wordwareHero from "@/images/pages/channels/web-chat-builder/wordware/hero.png"
 
 export const WEB_CHAT_BUILDER_MEDIA = {
-  "webflow-hero": webflowHero,
   "blink-new-hero": blinkNewHero,
   "lovable-hero": lovableHero,
   "replit-hero": replitHero,

@@ -13,7 +13,6 @@ import {
 describe("Web Chat builder pages", () => {
   it("publishes every designed builder with its Figma hero title", () => {
     const builders = [
-      ["webflow", "Webflow", "Add an AI agent to your Webflow site"],
       ["blink-new", "Blink.new", "Add an AI agent to your Blink.new app"],
       ["lovable", "Lovable", "Add an AI agent to your Lovable app"],
       ["replit", "Replit", "Add an AI agent to your Replit app"],
@@ -54,6 +53,11 @@ describe("Web Chat builder pages", () => {
     assert.equal(getWebChatBuilderBySlug("wix"), undefined)
   })
 
+  it("does not publish the retired Webflow builder", () => {
+    assert.equal(getWebChatBuilderBySlug("webflow"), undefined)
+    assert.equal(getAllWebChatBuilderSlugs().length, 13)
+  })
+
   for (const slug of ["toString", "constructor", "__proto__"]) {
     it(`returns undefined for the inherited property name ${slug}`, () => {
       assert.equal(getWebChatBuilderBySlug(slug), undefined)
@@ -61,13 +65,13 @@ describe("Web Chat builder pages", () => {
   }
 
   it("resolves each artwork slot from an unpublished page's media references", () => {
-    const webflow = getWebChatBuilderBySlug("webflow")!
-    assert.deepEqual(webflow.media, {
-      hero: "webflow-hero",
+    const blinkNew = getWebChatBuilderBySlug("blink-new")!
+    assert.deepEqual(blinkNew.media, {
+      hero: "blink-new-hero",
       channels: "webflow-channels",
     })
     const fixture = {
-      ...webflow,
+      ...blinkNew,
       slug: "unpublished-media-fixture",
       builderName: "Unpublished fixture",
       media: {
@@ -87,6 +91,6 @@ describe("Web Chat builder pages", () => {
       channels: { id: "webflow-channels" },
     })
     assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 14)
+    assert.equal(getAllWebChatBuilderSlugs().length, 13)
   })
 })
