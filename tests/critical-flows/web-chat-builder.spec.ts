@@ -38,7 +38,7 @@ test("renders the builder FAQ with its first answer open and keyboard controls",
   page,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
   const faq = page.locator("#web-chat-builder-faq")
   await expect(faq.getByRole("heading", { level: 2 })).toHaveText(
     "Frequently asked questions"
@@ -84,12 +84,12 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
   page,
   request,
 }) => {
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
-  const config = getWebChatBuilderBySlug("webflow")!
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  const config = getWebChatBuilderBySlug("blink-new")!
   const canonical = page.locator('link[rel="canonical"]')
   await expect(canonical).toHaveCount(1)
   const url = (await canonical.getAttribute("href"))!
-  expect(new URL(url).pathname).toBe("/channels/web-chat/webflow/")
+  expect(new URL(url).pathname).toBe("/channels/web-chat/blink-new/")
   await expect(page).toHaveTitle(config.seo.title)
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
@@ -130,7 +130,7 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
         name: "Novu",
         item: new URL("/", url).href,
       },
-      { "@type": "ListItem", position: 2, name: "Webflow", item: url },
+      { "@type": "ListItem", position: 2, name: "Blink.new", item: url },
     ],
   })
   expect(faq).toMatchObject({ "@type": "FAQPage", "@id": `${url}#faq` })
@@ -181,21 +181,21 @@ for (const slug of [
   })
 }
 
-test("renders the Webflow hero and copies its setup instructions", async ({
+test("renders the Blink.new hero and copies its setup instructions", async ({
   page,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   const consoleErrors = observeBrowserConsoleErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
 
   const main = page.getByRole("main")
   await expect(main).toHaveCount(1)
   await expect(main.getByRole("heading", { level: 1 })).toHaveText(
-    "Add an AI agent to your Webflow site"
+    "Add an AI agent to your Blink.new app"
   )
   await expect(
-    main.getByText("Web Chat for Webflow", { exact: true })
+    main.getByText("Web Chat for Blink.new", { exact: true })
   ).toBeVisible()
   await expect(
     main.getByRole("region", { name: "Trusted by teams worldwide" })
@@ -203,7 +203,7 @@ test("renders the Webflow hero and copies its setup instructions", async ({
   await expect(
     main
       .getByRole("region", {
-        name: "Add an AI agent to your Webflow site",
+        name: "Add an AI agent to your Blink.new app",
         exact: true,
       })
       .getByText("npx novu connect --channel web-chat", { exact: true })
@@ -258,7 +258,7 @@ test("renders the Webflow hero and copies its setup instructions", async ({
 
   const copyPrompt = main
     .getByRole("region", {
-      name: "Add an AI agent to your Webflow site",
+      name: "Add an AI agent to your Blink.new app",
       exact: true,
     })
     .getByRole("button", {
@@ -270,23 +270,23 @@ test("renders the Webflow hero and copies its setup instructions", async ({
   await copyPrompt.click()
   await expectClipboardText(
     page,
-    "Add Novu Web Chat to my Webflow site. Run npx novu connect --channel web-chat, then help me embed the chat on my site and connect it to my AI agent."
+    "Add Novu Web Chat to my Blink.new app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent."
   )
   await expect(
     main
       .getByRole("region", {
-        name: "Add an AI agent to your Webflow site",
+        name: "Add an AI agent to your Blink.new app",
         exact: true,
       })
       .getByText("Prompt copied to clipboard", { exact: true })
   ).toHaveText("Prompt copied to clipboard")
 
   const hero = main.getByRole("region", {
-    name: "Add an AI agent to your Webflow site",
+    name: "Add an AI agent to your Blink.new app",
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
-  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w-]+\.png/)
+  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w.-]+\.png/)
   await expect
     .poll(() =>
       heroArtwork.evaluate(
@@ -324,7 +324,7 @@ test("renders every supplied Figma hero variant", async ({
     const artwork = hero.locator("img").first()
 
     await expect(hero.getByRole("heading", { level: 1 })).toHaveText(title)
-    await expect(artwork).toHaveAttribute("src", /hero\.[\w-]+\.png/)
+    await expect(artwork).toHaveAttribute("src", /hero\.[\w.-]+\.png/)
     await expect
       .poll(() =>
         artwork.evaluate((image: HTMLImageElement) => ({
@@ -344,7 +344,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
   const cta = page.locator("section.cta")
   await expect(cta).toHaveCount(1)
   await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
@@ -411,7 +411,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
 
   const section = page.getByRole("region", {
     name: "One workflow, every channel",
@@ -496,7 +496,7 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const applicationErrors = observeApplicationErrors(page)
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
   const section = page.getByRole("region", {
     name: "One workflow, every channel",
     exact: true,
@@ -555,7 +555,7 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
   expectHealthyPage(applicationErrors)
 })
 
-test("matches the Webflow Figma section geometry at 1920px", async ({
+test("matches the shared Webflow Figma section geometry at 1920px", async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -564,14 +564,14 @@ test("matches the Webflow Figma section geometry at 1920px", async ({
   )
 
   await page.setViewportSize({ width: 1920, height: 1080 })
-  await gotoCriticalPage(page, "/channels/web-chat/webflow")
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
 
   const faq = page.locator("#web-chat-builder-faq")
   const faqContainer = faq.locator(":scope > div")
   const faqTitle = faq.getByRole("heading", { level: 2 })
   const accordion = faq.locator('[data-slot="accordion"]')
   const hero = page.getByRole("region", {
-    name: "Add an AI agent to your Webflow site",
+    name: "Add an AI agent to your Blink.new app",
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
