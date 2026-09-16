@@ -1,5 +1,4 @@
 import { Geist_Mono } from "next/font/google"
-import { HOME_CTA } from "@/data/pages/home"
 import {
   resolveWebChatBuilderMedia,
   type IWebChatBuilderPage,
@@ -53,7 +52,7 @@ function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
         triggerClassName="md:min-h-6.5 md:py-0.75 md:[&>svg]:size-3.5"
         contentClassName="md:pt-4 md:pb-2"
       />
-      <Cta {...HOME_CTA} />
+      <Cta {...page.cta} />
     </div>
   )
 }

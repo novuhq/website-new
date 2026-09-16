@@ -73,6 +73,12 @@ export interface IWebChatBuilderFaqItem {
   answer: string
 }
 
+export interface IWebChatBuilderCta {
+  title: string
+  description: string
+  command: string
+}
+
 export type WebChatBuilderMediaKey =
   | "blink-new-hero"
   | "lovable-hero"
@@ -113,6 +119,7 @@ export interface IWebChatBuilderPage {
   sections: IWebChatBuilderSection[]
   faqTitle: string
   faq: IWebChatBuilderFaqItem[]
+  cta: IWebChatBuilderCta
 }
 
 const WEB_CHAT_BUILDER_SHARED_CONTENT = {
@@ -228,7 +235,13 @@ const WEB_CHAT_BUILDER_SHARED_CONTENT = {
         "Reach users across Slack, WhatsApp, email, and other channels through one workflow.",
     },
   ],
-} satisfies Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq">
+  cta: {
+    title: "Give your Webflow site an AI agent",
+    description:
+      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
+    command: "npx novu connect --channel web-chat",
+  },
+} satisfies Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq" | "cta">
 
 type WebChatBuilderHeroMediaKey = Exclude<
   WebChatBuilderMediaKey,

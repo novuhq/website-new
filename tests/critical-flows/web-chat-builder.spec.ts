@@ -348,11 +348,11 @@ test("finishes with accessible setup actions and one shared header and Connect f
   const cta = page.locator("section.cta")
   await expect(cta).toHaveCount(1)
   await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
-    "One engine underneath"
+    "Give your Webflow site an AI agent"
   )
   await expect(
     cta.getByText(
-      "Whether you're building a modern app or an AI agent, Novu is the delivery layer that connects you to the world.",
+      "Bring the agent you built. Novu puts it on your Webflow site and reaches your users on every channel from one workflow.",
       { exact: true }
     )
   ).toBeVisible()
@@ -367,7 +367,9 @@ test("finishes with accessible setup actions and one shared header and Connect f
       .getByRole("link", { name: "See pricing", exact: true })
   ).toHaveAttribute("href", "/connect/#pricing")
   await expect(cta.getByRole("link")).toHaveCount(0)
-  await expect(cta.getByText("npx novu connect", { exact: true })).toBeVisible()
+  await expect(
+    cta.getByText("npx novu connect --channel web-chat", { exact: true })
+  ).toBeVisible()
   const copy = cta.getByRole("button", {
     name: "Copy to clipboard",
     exact: true,
@@ -377,7 +379,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
   await expectReactHandlerReady(copy, "onClick")
   await copy.focus()
   await page.keyboard.press("Enter")
-  await expectClipboardText(page, "npx novu connect")
+  await expectClipboardText(page, "npx novu connect --channel web-chat")
   await expect(
     cta.getByText("Command copied to clipboard", { exact: true })
   ).toBeVisible()
@@ -396,7 +398,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
     "How to add an AI agent to your Webflow site in four steps",
     "One workflow, every channel",
     "Frequently asked questions",
-    "One engine underneath",
+    "Give your Webflow site an AI agent",
   ])
   expect(
     await page.evaluate(
