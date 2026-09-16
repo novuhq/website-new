@@ -286,7 +286,7 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
-  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w.-]+\.png/)
+  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
   await expect
     .poll(() =>
       heroArtwork.evaluate(
@@ -324,7 +324,7 @@ test("renders every supplied Figma hero variant", async ({
     const artwork = hero.locator("img").first()
 
     await expect(hero.getByRole("heading", { level: 1 })).toHaveText(title)
-    await expect(artwork).toHaveAttribute("src", /hero\.[\w.-]+\.png/)
+    await expect(artwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
     await expect
       .poll(() =>
         artwork.evaluate((image: HTMLImageElement) => ({
