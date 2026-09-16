@@ -29,7 +29,7 @@ function WebChatBuilderSecondarySection({
             key={step.description}
             className="relative flex min-h-16 gap-4 pb-12 last:pb-0 md:gap-6"
           >
-            <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-card-surface font-geist-mono text-lg leading-tight tracking-tighter text-gray-60">
+            <span className="flex size-12 md:size-14 lg:size-16 shrink-0 items-center justify-center rounded-full bg-card-surface font-geist-mono text-lg leading-tight tracking-tighter text-gray-60">
               {index + 1}
             </span>
             <p className="min-w-0 pt-1.75 text-lg leading-tight tracking-tighter whitespace-pre-line text-white md:text-xl">
@@ -41,7 +41,7 @@ function WebChatBuilderSecondarySection({
               )}
             </p>
             {index < section.steps.length - 1 && (
-              <span className="pointer-events-none absolute top-16 bottom-0 left-0 w-16">
+              <span className="pointer-events-none absolute top-12 md:top-14 lg:top-16 bottom-0 left-0 w-12 md:w-14 lg:w-16">
                 <Image src={stepDivider} alt="" fill sizes="64px" />
               </span>
             )}

@@ -74,7 +74,7 @@ function WebChatBuilderTertiarySection({
         />
       </div>
       <div className="mt-9 grid gap-6 rounded-3xl bg-card-surface/70 p-4 md:p-8 lg:grid-cols-[minmax(0,648fr)_minmax(0,480fr)]">
-        <ul className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-4 md:gap-6">
           {section.channels.map((channel) => (
             <li
               key={channel.icon}
