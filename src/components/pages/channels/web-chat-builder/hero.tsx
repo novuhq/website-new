@@ -31,7 +31,7 @@ function WebChatBuilderHero({
               {hero.title}
             </h1>
           </div>
-          <p className="mt-6 max-w-115.5 text-base leading-normal tracking-tight text-gray-70 md:mt-8 md:text-lg md:leading-normal">
+          <p className="mt-6 max-w-115.5 text-base leading-normal tracking-tight text-gray-70 lg:max-w-[800px] md:mt-8 md:text-lg md:leading-normal">
             {hero.description}
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center lg:mt-12 lg:flex-col lg:items-start xl:flex-row xl:items-center">
