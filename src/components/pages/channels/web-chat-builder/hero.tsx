@@ -19,8 +19,8 @@ function WebChatBuilderHero({
     >
       <div className="mx-auto grid max-w-320 items-center gap-12 px-5 md:px-8 lg:grid-cols-[minmax(0,544fr)_minmax(0,608fr)] lg:gap-16">
         <div className="min-w-0 lg:-translate-y-5">
-          <div className="flex max-w-120 flex-col gap-4.5">
-            <p className="flex items-center gap-3 text-[0.8125rem] leading-none font-medium text-purple-1 uppercase">
+          <div className="flex max-w-120 flex-col gap-4.5 md:mx-auto md:items-center md:text-center lg:mx-0 lg:items-start lg:text-left">
+            <p className="flex items-center gap-3 text-[0.8125rem] leading-none font-medium text-purple-1 uppercase md:justify-center lg:justify-start">
               <span aria-hidden className="size-2.5 shrink-0 bg-purple-3" />
               {hero.eyebrow}
             </p>
@@ -31,10 +31,10 @@ function WebChatBuilderHero({
               {hero.title}
             </h1>
           </div>
-          <p className="mt-6 text-base leading-normal tracking-tight text-gray-70 max-w-[800px] lg:max-w-115.5 md:mt-8 md:text-lg md:leading-normal">
+          <p className="mt-6 text-base leading-normal tracking-tight text-gray-70 md:mx-auto md:mt-8 md:text-center md:text-lg md:leading-normal md:text-balance lg:mx-0 lg:max-w-115.5 lg:text-left">
             {hero.description}
           </p>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center lg:mt-12 lg:flex-col lg:items-start xl:flex-row xl:items-center">
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center md:justify-center lg:mt-12 lg:flex-col lg:items-start lg:justify-start xl:flex-row xl:items-center">
             <CopyPromptButton
               value={hero.prompt}
               label={hero.promptLabel}

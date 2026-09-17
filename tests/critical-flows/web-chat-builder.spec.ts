@@ -681,6 +681,62 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
   expectHealthyPage(applicationErrors)
 })
 
+test("centers the hero copy and actions on tablet widths", async ({ page }) => {
+  await page.setViewportSize({ width: 834, height: 1112 })
+  const applicationErrors = observeApplicationErrors(page)
+  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+
+  const hero = page.getByRole("region", {
+    name: "Add an AI agent to your Blink.new app",
+    exact: true,
+  })
+  const heading = page.locator("#web-chat-builder-title")
+  const eyebrow = hero.getByText("Web Chat for Blink.new", { exact: true })
+  const description = hero.getByText(
+    "Bring your AI agent to Blink.new with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.",
+    { exact: true }
+  )
+  const prompt = hero.getByRole("button", { name: "Copy Prompt", exact: true })
+
+  const viewportCenter = 834 / 2
+  for (const element of [heading, description]) {
+    expect(
+      await element.evaluate((node) => getComputedStyle(node).textAlign),
+      `${await element.textContent()} should be centered`
+    ).toBe("center")
+  }
+  expect(
+    await eyebrow.evaluate((node) => getComputedStyle(node).justifyContent)
+  ).toBe("center")
+  for (const element of [heading, description]) {
+    const box = (await element.boundingBox())!
+    expect(
+      Math.abs(box.x + box.width / 2 - viewportCenter)
+    ).toBeLessThanOrEqual(1)
+  }
+  // The prompt button and the command sit on one row, centered as a group.
+  const actionsCenter = await prompt.evaluate((node) => {
+    const edges = Array.from(node.parentElement!.children).map((child) =>
+      child.getBoundingClientRect()
+    )
+
+    return (
+      (Math.min(...edges.map(({ left }) => left)) +
+        Math.max(...edges.map(({ right }) => right))) /
+      2
+    )
+  })
+  expect(Math.abs(actionsCenter - viewportCenter)).toBeLessThanOrEqual(1)
+
+  // The two-column desktop layout keeps its left alignment.
+  await page.setViewportSize({ width: 1440, height: 900 })
+  const desktopHeading = (await heading.boundingBox())!
+  expect(desktopHeading.x + desktopHeading.width / 2).toBeLessThan(
+    1440 / 2 - 100
+  )
+  expectHealthyPage(applicationErrors)
+})
+
 test("matches the shared Webflow Figma section geometry at 1920px", async ({
   page,
 }, testInfo) => {
