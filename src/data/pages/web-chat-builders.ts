@@ -402,8 +402,14 @@ export function getWebChatBuilderBySlug(
   return WEB_CHAT_BUILDER_PAGES[slug as keyof typeof WEB_CHAT_BUILDER_PAGES]
 }
 
+export type WebChatBuilderSlug = keyof typeof WEB_CHAT_BUILDER_PAGES
+
 export function getAllWebChatBuilderSlugs(): string[] {
   return Object.keys(WEB_CHAT_BUILDER_PAGES)
+}
+
+export function getAllWebChatBuilders(): IWebChatBuilderPage[] {
+  return Object.values(WEB_CHAT_BUILDER_PAGES)
 }
 
 export function getWebChatBuilderPathname(slug: string): string {
