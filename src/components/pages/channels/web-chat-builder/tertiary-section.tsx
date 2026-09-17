@@ -1,4 +1,6 @@
 import Image, { type StaticImageData } from "next/image"
+import NextLink from "next/link"
+import { ROUTE } from "@/constants/routes"
 import type {
   IWebChatBuilderTertiarySection,
   WebChatBuilderChannel,
@@ -41,6 +43,22 @@ const CHANNEL_ICONS: Record<
   },
 }
 
+// Web Chat is deliberately absent: its channel page lands in a separate PR, so
+// that tile stays unlinked until then.
+const CHANNEL_LINKS: Partial<
+  Record<WebChatBuilderChannel, (typeof ROUTE)[string]>
+> = {
+  telegram: ROUTE.channelTelegram,
+  teams: ROUTE.channelMicrosoftTeams,
+  email: ROUTE.channelEmail,
+  whatsapp: ROUTE.channelWhatsApp,
+  slack: ROUTE.channelSlack,
+  imessage: ROUTE.channelIMessage,
+}
+
+const CHANNEL_TILE_CLASSNAME =
+  "flex size-full items-center justify-center rounded-2xl bg-gray-20/60"
+
 function WebChatBuilderTertiarySection({
   section,
   image,
@@ -74,31 +92,49 @@ function WebChatBuilderTertiarySection({
         />
       </div>
       <div className="mt-9 grid gap-6 rounded-3xl bg-card-surface/70 p-4 md:p-8 lg:grid-cols-[minmax(0,648fr)_minmax(0,480fr)]">
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-4 md:gap-6">
-          {section.channels.map((channel) => (
-            <li
-              key={channel.icon}
-              className="relative flex aspect-square min-w-0 items-center justify-center rounded-2xl bg-gray-20/60"
-            >
-              <span
-                className={cn(
-                  "relative flex size-13 -translate-y-1 items-center justify-center",
-                  CHANNEL_ICONS[channel.icon].crop && "overflow-hidden"
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6">
+          {section.channels.map((channel) => {
+            const href = CHANNEL_LINKS[channel.icon]
+            const tile = (
+              <>
+                <span
+                  className={cn(
+                    "relative flex size-13 -translate-y-1 items-center justify-center",
+                    CHANNEL_ICONS[channel.icon].crop && "overflow-hidden"
+                  )}
+                >
+                  <Image
+                    src={CHANNEL_ICONS[channel.icon].src}
+                    alt=""
+                    width={52}
+                    height={52}
+                    className={CHANNEL_ICONS[channel.icon].className}
+                  />
+                </span>
+                <span className="absolute inset-x-2 bottom-3 text-center text-sm leading-dense tracking-tighter text-gray-60">
+                  {channel.name}
+                </span>
+              </>
+            )
+
+            return (
+              <li key={channel.icon} className="relative aspect-square min-w-0">
+                {href ? (
+                  <NextLink
+                    href={href}
+                    className={cn(
+                      CHANNEL_TILE_CLASSNAME,
+                      "transition-colors hover:bg-gray-20 focus-visible:ring-2 focus-visible:ring-purple-2 focus-visible:outline-none"
+                    )}
+                  >
+                    {tile}
+                  </NextLink>
+                ) : (
+                  <span className={CHANNEL_TILE_CLASSNAME}>{tile}</span>
                 )}
-              >
-                <Image
-                  src={CHANNEL_ICONS[channel.icon].src}
-                  alt=""
-                  width={52}
-                  height={52}
-                  className={CHANNEL_ICONS[channel.icon].className}
-                />
-              </span>
-              <span className="absolute inset-x-2 bottom-3 text-center text-sm leading-dense tracking-tighter text-gray-60">
-                {channel.name}
-              </span>
-            </li>
-          ))}
+              </li>
+            )
+          })}
           <li className="aspect-square min-w-0">
             <WebChatBuilderChannelHint
               content={

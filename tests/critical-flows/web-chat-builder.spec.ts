@@ -497,6 +497,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
 
 test("shows every channel and makes the upcoming-channel hint accessible", async ({
   page,
+  request,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
@@ -525,6 +526,23 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   ]) {
     await expect(section.getByText(channel, { exact: true })).toBeVisible()
   }
+  for (const [channel, href] of [
+    ["Telegram", "/channels/telegram/"],
+    ["MS Teams", "/channels/microsoft-teams/"],
+    ["Email", "/channels/email/"],
+    ["WhatsApp", "/channels/whatsapp/"],
+    ["Slack", "/channels/slack/"],
+    ["iMessage", "/channels/imessage/"],
+  ]) {
+    const link = section.getByRole("link", { name: channel, exact: true })
+    await expect(link).toHaveAttribute("href", href)
+    const response = await request.get(href)
+    expect(response.ok(), `${href} should resolve`).toBe(true)
+  }
+  // The Web Chat channel page ships separately, so that tile stays unlinked.
+  await expect(
+    section.getByRole("link", { name: "Web Chat", exact: true })
+  ).toHaveCount(0)
   const channelsArtwork = section.getByRole("img", {
     name: "Your Blink.new app is just the beginning!",
   })
@@ -573,8 +591,22 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await page.mouse.move(0, 0, { steps: 10 })
   await expect(tooltip).toHaveCount(0)
 
-  // The copy control precedes the hint in the actual keyboard tab order.
+  // The copy control precedes the channel links, which precede the hint in the
+  // actual keyboard tab order. Web Chat has no page yet, so it is not in it.
   await copyCommand.focus()
+  for (const channel of [
+    "Telegram",
+    "MS Teams",
+    "Email",
+    "WhatsApp",
+    "Slack",
+    "iMessage",
+  ]) {
+    await page.keyboard.press("Tab")
+    await expect(
+      section.getByRole("link", { name: channel, exact: true })
+    ).toBeFocused()
+  }
   await page.keyboard.press("Tab")
   await expect(more).toBeFocused()
   await expect(tooltip).toBeVisible()
