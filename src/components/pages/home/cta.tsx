@@ -53,7 +53,9 @@ function Cta({
         ) : (
           <div className="mt-8 flex w-full flex-col items-center justify-center gap-5 sm:w-auto sm:flex-row">
             <CopyCommand
-              className="w-full max-w-xs sm:w-70.5"
+              // Grow with the command instead of clipping it; the min width keeps
+              // short commands at the original size.
+              className="w-full max-w-xs sm:w-auto sm:max-w-full sm:min-w-70.5"
               controlClassName="pl-3"
               command={command}
               variant="highlighted"
