@@ -93,7 +93,7 @@ export type WebChatBuilderMediaKey =
   | "lindy-hero"
   | "stack-ai-hero"
   | "relevance-ai-hero"
-  | "webflow-channels"
+  | "shared-channels"
 
 export interface IWebChatBuilderMedia {
   hero: WebChatBuilderMediaKey
@@ -263,7 +263,7 @@ function createWebChatBuilderSharedContent({
 
 type WebChatBuilderHeroMediaKey = Exclude<
   WebChatBuilderMediaKey,
-  "webflow-channels"
+  "shared-channels"
 >
 
 function createWebChatBuilderPage({
@@ -296,7 +296,7 @@ function createWebChatBuilderPage({
     ...createWebChatBuilderSharedContent({ heroName, kind }),
     slug,
     builderName,
-    media: { hero: heroMedia, channels: "webflow-channels" },
+    media: { hero: heroMedia, channels: "shared-channels" },
     seo: {
       title: `${title} | Novu Web Chat`,
       description,

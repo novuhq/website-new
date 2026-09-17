@@ -3,12 +3,12 @@ import type {
   IWebChatBuilderPrimarySection,
   WebChatBuilderFeatureIcon,
 } from "@/data/pages/web-chat-builders"
-import backendIcon from "@/images/pages/channels/web-chat-builder/webflow/backend.svg"
-import embedIcon from "@/images/pages/channels/web-chat-builder/webflow/embed.svg"
-import publicLinkIcon from "@/images/pages/channels/web-chat-builder/webflow/public-link.svg"
-import themeIcon from "@/images/pages/channels/web-chat-builder/webflow/theme.svg"
-import twoWayIcon from "@/images/pages/channels/web-chat-builder/webflow/two-way.svg"
-import workflowIcon from "@/images/pages/channels/web-chat-builder/webflow/workflow.svg"
+import backendIcon from "@/images/pages/channels/web-chat-builder/shared/backend.svg"
+import embedIcon from "@/images/pages/channels/web-chat-builder/shared/embed.svg"
+import publicLinkIcon from "@/images/pages/channels/web-chat-builder/shared/public-link.svg"
+import themeIcon from "@/images/pages/channels/web-chat-builder/shared/theme.svg"
+import twoWayIcon from "@/images/pages/channels/web-chat-builder/shared/two-way.svg"
+import workflowIcon from "@/images/pages/channels/web-chat-builder/shared/workflow.svg"
 
 const FEATURE_ICONS: Record<WebChatBuilderFeatureIcon, StaticImageData> = {
   embed: embedIcon,

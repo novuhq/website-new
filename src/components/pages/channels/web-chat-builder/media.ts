@@ -9,10 +9,10 @@ import lindyHero from "@/images/pages/channels/web-chat-builder/lindy/hero.png"
 import lovableHero from "@/images/pages/channels/web-chat-builder/lovable/hero.png"
 import relevanceAiHero from "@/images/pages/channels/web-chat-builder/relevance-ai/hero.png"
 import replitHero from "@/images/pages/channels/web-chat-builder/replit/hero.png"
+import sharedChannels from "@/images/pages/channels/web-chat-builder/shared/channels-mascot.png"
 import simStudioHero from "@/images/pages/channels/web-chat-builder/sim-studio/hero.png"
 import stackAiHero from "@/images/pages/channels/web-chat-builder/stack-ai/hero.png"
 import vellumHero from "@/images/pages/channels/web-chat-builder/vellum/hero.png"
-import webflowChannels from "@/images/pages/channels/web-chat-builder/webflow/channels-mascot.png"
 import wordwareHero from "@/images/pages/channels/web-chat-builder/wordware/hero.png"
 
 export const WEB_CHAT_BUILDER_MEDIA = {
@@ -29,5 +29,5 @@ export const WEB_CHAT_BUILDER_MEDIA = {
   "lindy-hero": lindyHero,
   "stack-ai-hero": stackAiHero,
   "relevance-ai-hero": relevanceAiHero,
-  "webflow-channels": webflowChannels,
+  "shared-channels": sharedChannels,
 } satisfies Record<WebChatBuilderMediaKey, StaticImageData>

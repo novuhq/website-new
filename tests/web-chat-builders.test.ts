@@ -114,7 +114,7 @@ describe("Web Chat builder pages", () => {
     const blinkNew = getWebChatBuilderBySlug("blink-new")!
     assert.deepEqual(blinkNew.media, {
       hero: "blink-new-hero",
-      channels: "webflow-channels",
+      channels: "shared-channels",
     })
     const fixture = {
       ...blinkNew,
@@ -122,7 +122,7 @@ describe("Web Chat builder pages", () => {
       builderName: "Unpublished fixture",
       media: {
         hero: "blink-new-hero",
-        channels: "webflow-channels",
+        channels: "shared-channels",
       },
     } satisfies IWebChatBuilderPage
     const artwork = Object.fromEntries(
@@ -134,7 +134,7 @@ describe("Web Chat builder pages", () => {
 
     assert.deepEqual(resolveWebChatBuilderMedia(fixture.media, artwork), {
       hero: { id: "blink-new-hero" },
-      channels: { id: "webflow-channels" },
+      channels: { id: "shared-channels" },
     })
     assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)
     assert.equal(getAllWebChatBuilderSlugs().length, 13)
