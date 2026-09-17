@@ -1,0 +1,28 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#131313"/>
+<g id="web-chat-builder-template (Webflow)">
+<path d="M-456 -1322C-456 -1323.1 -455.105 -1324 -454 -1324H1622C1623.1 -1324 1624 -1323.1 1624 -1322V3985C1624 3986.1 1623.1 3987 1622 3987H-456V-1322Z" fill="#22242A"/>
+<path d="M-456 3987H-457V3988H-456V3987ZM-454 -1324V-1323H1622V-1324V-1325H-454V-1324ZM1624 -1322H1623V3985H1624H1625V-1322H1624ZM1622 3987V3986H-456V3987V3988H1622V3987ZM-456 3987H-455V-1322H-456H-457V3987H-456ZM1624 3985H1623C1623 3985.55 1622.55 3986 1622 3986V3987V3988C1623.66 3988 1625 3986.66 1625 3985H1624ZM1622 -1324V-1323C1622.55 -1323 1623 -1322.55 1623 -1322H1624H1625C1625 -1323.66 1623.66 -1325 1622 -1325V-1324ZM-454 -1324V-1325C-455.657 -1325 -457 -1323.66 -457 -1322H-456H-455C-455 -1322.55 -454.552 -1323 -454 -1323V-1324Z" fill="white" fill-opacity="0.1"/>
+<g id="web-chat-builder-template (Webflow)_2">
+<rect width="1920" height="5151" transform="translate(-376 -1244)" fill="black"/>
+<g id="section">
+<g id="fetures">
+<g id="row">
+<g id="feature-card">
+<rect x="-24" y="-24" width="394.667" height="188" rx="12" fill="#101114"/>
+<g id="content">
+<g id="icon">
+<g id="Group">
+<path id="Vector" d="M8.66667 10.6641L2 15.9974L8.66667 21.3307" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_2" d="M23.3359 10.6641L30.0026 15.9974L23.3359 21.3307" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_3" d="M12.6641 28L19.3307 4" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

@@ -1,7 +1,27 @@
+import type { Route } from "next"
 import { INTEGRATION_MENU_ITEMS } from "@/constants/integration-menu"
 import { ROUTE } from "@/constants/routes"
+import {
+  getAllWebChatBuilders,
+  getWebChatBuilderPathname,
+} from "@/data/pages/web-chat-builders"
 
-import { IMenuHeaderItem, IMenuSocialItem } from "@/types/common"
+import {
+  IMenuHeaderItem,
+  IMenuItem,
+  IMenuSocialItem,
+  TMenuIcon,
+} from "@/types/common"
+
+// Built from the builder registry so the menu cannot drift from the pages that
+// actually ship. Icons are keyed by the same slug.
+const WEB_CHAT_BUILDER_ITEMS: IMenuItem[] = getAllWebChatBuilders().map(
+  ({ slug, builderName }) => ({
+    label: builderName,
+    href: getWebChatBuilderPathname(slug) as Route<string>,
+    menuIcon: slug as TMenuIcon,
+  })
+)
 
 export const MENUS = {
   header: [
@@ -252,6 +272,13 @@ export const MENUS = {
                   menuIcon: "claude-aws",
                 },
               ],
+            },
+            {
+              label: "Web Chat",
+              href: ROUTE.channelWebChat,
+              menuIcon: "web-chat",
+              childrenTitle: "Web Chat integrations",
+              children: WEB_CHAT_BUILDER_ITEMS,
             },
           ],
         },

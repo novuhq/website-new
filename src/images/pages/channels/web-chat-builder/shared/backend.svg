@@ -1,0 +1,35 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#131313"/>
+<g id="web-chat-builder-template (Webflow)">
+<path d="M-866.664 -1322C-866.664 -1323.1 -865.769 -1324 -864.664 -1324H1211.34C1212.44 -1324 1213.34 -1323.1 1213.34 -1322V3985C1213.34 3986.1 1212.44 3987 1211.34 3987H-866.664V-1322Z" fill="#22242A"/>
+<path d="M-866.664 3987H-867.664V3988H-866.664V3987ZM-864.664 -1324V-1323H1211.34V-1324V-1325H-864.664V-1324ZM1213.34 -1322H1212.34V3985H1213.34H1214.34V-1322H1213.34ZM1211.34 3987V3986H-866.664V3987V3988H1211.34V3987ZM-866.664 3987H-865.664V-1322H-866.664H-867.664V3987H-866.664ZM1213.34 3985H1212.34C1212.34 3985.55 1211.89 3986 1211.34 3986V3987V3988C1212.99 3988 1214.34 3986.66 1214.34 3985H1213.34ZM1211.34 -1324V-1323C1211.89 -1323 1212.34 -1322.55 1212.34 -1322H1213.34H1214.34C1214.34 -1323.66 1212.99 -1325 1211.34 -1325V-1324ZM-864.664 -1324V-1325C-866.321 -1325 -867.664 -1323.66 -867.664 -1322H-866.664H-865.664C-865.664 -1322.55 -865.216 -1323 -864.664 -1323V-1324Z" fill="white" fill-opacity="0.1"/>
+<g id="web-chat-builder-template (Webflow)_2">
+<rect width="1920" height="5151" transform="translate(-786.664 -1244)" fill="black"/>
+<g id="section">
+<g id="fetures">
+<g id="row">
+<g id="feature-card">
+<rect x="-24" y="-24" width="394.667" height="188" rx="12" fill="#101114"/>
+<g id="content">
+<g id="Frame" clip-path="url(#clip0_24117_69145)">
+<g id="Group">
+<path id="Vector" d="M12.0026 25.3359H6.66927C3.73594 25.3359 1.33594 22.9359 1.33594 20.0026C1.33594 17.4693 3.06927 15.3359 5.33594 14.8026C5.6026 9.6026 10.0026 5.33594 15.3359 5.33594C19.7167 5.33594 23.3778 8.12467 24.7675 12.0026" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_2" d="M30.6667 16.6719V21.3385H26" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_3" d="M17.3359 28.6667V24H22.0026" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_4" d="M29.1413 21.3385H29.6586C29.0533 18.6665 26.6639 16.6719 23.8079 16.6719C22.0311 16.6719 20.4346 17.4444 19.3359 18.6719" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_5" d="M18.8611 24H18.3438C18.9491 26.672 21.3384 28.6667 24.1944 28.6667C25.9712 28.6667 27.5677 27.8941 28.6664 26.6667" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_24117_69145">
+<rect width="32" height="32" fill="white"/>
+</clipPath>
+</defs>
+</svg>
