@@ -357,7 +357,7 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
-  await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.webp/)
+  await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
   await expect(
     hero.getByText("Built with Blink.new", { exact: true })
   ).toBeVisible()
@@ -417,7 +417,7 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
 
     await expect(artwork).toHaveAttribute(
       "src",
-      new RegExp(`${media.hero}\\.[\\w.~+-]+\\.webp`)
+      new RegExp(`${media.hero}\\.[\\w.~+-]+\\.png`)
     )
     await expect(
       hero.getByText(heroCopy.badge.label, { exact: true })
