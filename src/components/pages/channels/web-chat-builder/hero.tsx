@@ -4,6 +4,7 @@ import type { IWebChatBuilderHero } from "@/data/pages/web-chat-builders"
 import { CopyCommand } from "@/components/ui/copy-command"
 import CustomerLogos from "@/components/customer-logos"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
+import WebChatBuilderLogo from "@/components/web-chat-builder-logo"
 
 function WebChatBuilderHero({
   hero,
@@ -51,13 +52,26 @@ function WebChatBuilderHero({
             />
           </div>
         </div>
-        <Image
-          src={image}
-          alt=""
-          className="mx-auto h-auto w-full max-w-152"
-          sizes="(min-width: 1280px) 608px, (min-width: 1024px) calc((100vw - 128px) * 0.528), (min-width: 648px) 608px, calc(100vw - 40px)"
-          loading="eager"
-        />
+        <div className="@container relative mx-auto w-full max-w-152">
+          <Image
+            src={image}
+            alt=""
+            className="h-auto w-full"
+            sizes="(min-width: 1280px) 608px, (min-width: 1024px) calc((100vw - 128px) * 0.528), (min-width: 648px) 608px, calc(100vw - 40px)"
+            loading="eager"
+          />
+          {/* The artwork is shared between builders, so the badge that names
+              this one is drawn over it, sized against the artwork itself. */}
+          <span className="absolute top-[21.875cqw] left-[4.03cqw] flex items-center gap-[1.316cqw] rounded-[7.895cqw] bg-black/50 py-[0.658cqw] pr-[3.947cqw] pl-[1.316cqw] text-[3.289cqw] leading-none font-medium tracking-[-0.02em] text-white backdrop-blur-[20px]">
+            <span className="flex size-[7.895cqw] shrink-0 items-center justify-center">
+              <WebChatBuilderLogo
+                className="size-[4.77cqw]"
+                slug={hero.badge.logo}
+              />
+            </span>
+            {hero.badge.label}
+          </span>
+        </div>
       </div>
       <CustomerLogos className="mt-10 border-transparent" />
     </section>

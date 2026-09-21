@@ -113,7 +113,11 @@ describe("Web Chat builder pages", () => {
   it("resolves each artwork slot from an unpublished page's media references", () => {
     const blinkNew = getWebChatBuilderBySlug("blink-new")!
     assert.deepEqual(blinkNew.media, {
-      hero: "blink-new-hero",
+      hero: "app-hero",
+      channels: "shared-channels",
+    })
+    assert.deepEqual(getWebChatBuilderBySlug("crew-ai")!.media, {
+      hero: "agent-hero",
       channels: "shared-channels",
     })
     const fixture = {
@@ -121,7 +125,7 @@ describe("Web Chat builder pages", () => {
       slug: "unpublished-media-fixture",
       builderName: "Unpublished fixture",
       media: {
-        hero: "blink-new-hero",
+        hero: "app-hero",
         channels: "shared-channels",
       },
     } satisfies IWebChatBuilderPage
@@ -133,7 +137,7 @@ describe("Web Chat builder pages", () => {
     ) as Record<WebChatBuilderMediaKey, { id: string }>
 
     assert.deepEqual(resolveWebChatBuilderMedia(fixture.media, artwork), {
-      hero: { id: "blink-new-hero" },
+      hero: { id: "app-hero" },
       channels: { id: "shared-channels" },
     })
     assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)

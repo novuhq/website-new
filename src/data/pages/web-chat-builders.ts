@@ -3,6 +3,11 @@ export interface IWebChatBuilderSeo {
   description: string
 }
 
+export interface IWebChatBuilderHeroBadge {
+  label: string
+  logo: string
+}
+
 export interface IWebChatBuilderHero {
   eyebrow: string
   title: string
@@ -10,6 +15,7 @@ export interface IWebChatBuilderHero {
   command: string
   prompt: string
   promptLabel: string
+  badge: IWebChatBuilderHeroBadge
 }
 
 export type WebChatBuilderFeatureIcon =
@@ -80,19 +86,8 @@ export interface IWebChatBuilderCta {
 }
 
 export type WebChatBuilderMediaKey =
-  | "blink-new-hero"
-  | "lovable-hero"
-  | "replit-hero"
-  | "bolt-new-hero"
-  | "sim-studio-hero"
-  | "vellum-hero"
-  | "flowise-hero"
-  | "wordware-hero"
-  | "crew-ai-hero"
-  | "langgraph-hero"
-  | "lindy-hero"
-  | "stack-ai-hero"
-  | "relevance-ai-hero"
+  | "app-hero"
+  | "agent-hero"
   | "shared-channels"
 
 export interface IWebChatBuilderMedia {
@@ -261,22 +256,15 @@ function createWebChatBuilderSharedContent({
   }
 }
 
-type WebChatBuilderHeroMediaKey = Exclude<
-  WebChatBuilderMediaKey,
-  "shared-channels"
->
-
 function createWebChatBuilderPage({
   slug,
   builderName,
   heroName = builderName,
-  heroMedia,
   kind,
 }: {
   slug: string
   builderName: string
   heroName?: string
-  heroMedia: WebChatBuilderHeroMediaKey
   kind: WebChatBuilderKind
 }): IWebChatBuilderPage {
   const title =
@@ -296,7 +284,10 @@ function createWebChatBuilderPage({
     ...createWebChatBuilderSharedContent({ heroName, kind }),
     slug,
     builderName,
-    media: { hero: heroMedia, channels: "shared-channels" },
+    media: {
+      hero: kind === "app" ? "app-hero" : "agent-hero",
+      channels: "shared-channels",
+    },
     seo: {
       title: `${title} | Novu Web Chat`,
       description,
@@ -308,6 +299,15 @@ function createWebChatBuilderPage({
       command: "npx novu connect --channel web-chat",
       prompt,
       promptLabel: "Copy Prompt",
+      // The hero artwork is shared, so the builder is named on an overlay
+      // instead of being baked into thirteen near-identical exports.
+      badge: {
+        label:
+          kind === "app"
+            ? `Built with ${heroName}`
+            : `Agent built with ${heroName}`,
+        logo: slug,
+      },
     },
   }
 }
@@ -316,80 +316,67 @@ const WEB_CHAT_BUILDER_PAGES = Object.freeze({
   "blink-new": createWebChatBuilderPage({
     slug: "blink-new",
     builderName: "Blink.new",
-    heroMedia: "blink-new-hero",
     kind: "app",
   }),
   lovable: createWebChatBuilderPage({
     slug: "lovable",
     builderName: "Lovable",
-    heroMedia: "lovable-hero",
     kind: "app",
   }),
   replit: createWebChatBuilderPage({
     slug: "replit",
     builderName: "Replit",
-    heroMedia: "replit-hero",
     kind: "app",
   }),
   "bolt-new": createWebChatBuilderPage({
     slug: "bolt-new",
     builderName: "Bolt.new",
-    heroMedia: "bolt-new-hero",
     kind: "app",
   }),
   "sim-studio": createWebChatBuilderPage({
     slug: "sim-studio",
     builderName: "Sim Studio",
     heroName: "Sim",
-    heroMedia: "sim-studio-hero",
     kind: "agent",
   }),
   vellum: createWebChatBuilderPage({
     slug: "vellum",
     builderName: "Vellum",
-    heroMedia: "vellum-hero",
     kind: "agent",
   }),
   flowise: createWebChatBuilderPage({
     slug: "flowise",
     builderName: "Flowise",
-    heroMedia: "flowise-hero",
     kind: "agent",
   }),
   wordware: createWebChatBuilderPage({
     slug: "wordware",
     builderName: "Wordware",
-    heroMedia: "wordware-hero",
     kind: "agent",
   }),
   "crew-ai": createWebChatBuilderPage({
     slug: "crew-ai",
     builderName: "CrewAI",
-    heroMedia: "crew-ai-hero",
     kind: "agent",
   }),
   langgraph: createWebChatBuilderPage({
     slug: "langgraph",
     builderName: "LangGraph",
-    heroMedia: "langgraph-hero",
     kind: "agent",
   }),
   lindy: createWebChatBuilderPage({
     slug: "lindy",
     builderName: "Lindy",
-    heroMedia: "lindy-hero",
     kind: "agent",
   }),
   "stack-ai": createWebChatBuilderPage({
     slug: "stack-ai",
     builderName: "Stack AI",
-    heroMedia: "stack-ai-hero",
     kind: "agent",
   }),
   "relevance-ai": createWebChatBuilderPage({
     slug: "relevance-ai",
     builderName: "Relevance AI",
-    heroMedia: "relevance-ai-hero",
     kind: "agent",
   }),
 })

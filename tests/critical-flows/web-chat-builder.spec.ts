@@ -357,7 +357,10 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
-  await expect(heroArtwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
+  await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
+  await expect(
+    hero.getByText("Built with Blink.new", { exact: true })
+  ).toBeVisible()
   await expect
     .poll(() =>
       heroArtwork.evaluate(
@@ -409,7 +412,16 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
     await expect(
       channels.getByRole("img", { name: artworkMessage, exact: true })
     ).toHaveAttribute("src", /channels-mascot\.[\w-]+\.png/)
-    await expect(artwork).toHaveAttribute("src", /hero\.[\w.~+-]+\.png/)
+    // One plate per kind now; the builder is named by the badge over it.
+    const { hero: heroCopy, media } = getWebChatBuilderBySlug(slug)!
+
+    await expect(artwork).toHaveAttribute(
+      "src",
+      new RegExp(`${media.hero}\\.[\\w.~+-]+\\.png`)
+    )
+    await expect(
+      hero.getByText(heroCopy.badge.label, { exact: true })
+    ).toBeVisible()
     await expect
       .poll(() =>
         artwork.evaluate((image: HTMLImageElement) => ({
