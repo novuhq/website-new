@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 import { Link } from "@/components/ui/link"
 
 export interface IKeyTakeaway {
-  title: string
+  title?: string
   text?: PortableTextBlock[]
 }
 
@@ -56,9 +56,11 @@ function KeyTakeaways({ items, className }: IKeyTakeawaysProps) {
             –
           </span>
           <div className="flex flex-col">
-            <h4 className="text-lg leading-normal font-medium tracking-tight text-foreground">
-              {title}
-            </h4>
+            {title && (
+              <h4 className="text-lg leading-normal font-medium tracking-tight text-foreground">
+                {title}
+              </h4>
+            )}
             {text && text.length > 0 && (
               <PortableText value={text} components={textComponents} />
             )}
