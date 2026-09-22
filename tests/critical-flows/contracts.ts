@@ -74,6 +74,19 @@ export const connectStackContract = {
     "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://novu.co/agents.md",
 } as const
 
+export const gettingStartedFlowExperimentContract = {
+  ...monitorContract,
+  id: "TC-HOME-004",
+  priority: "P1",
+  mode: "render",
+  route: "/",
+  primaryActionByVariant: {
+    ui: "sign_up_primary",
+    cli: "copy_cli",
+    prompt: "copy_prompt",
+  },
+} as const
+
 export const channelPagesContract = {
   ...monitorContract,
   id: "TC-CHANNEL-001",

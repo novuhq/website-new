@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import Image, { type StaticImageData } from "next/image"
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
@@ -107,6 +108,7 @@ export interface IHeroProps {
   className?: string
   command?: string
   description: string
+  gettingStartedActions?: ReactNode
   prompt?: string
   title: string
 }
@@ -189,6 +191,7 @@ function ChannelIcons() {
 function Hero({
   title,
   description,
+  gettingStartedActions,
   command = "npx novu connect",
   prompt = DEFAULT_CONNECT_PROMPT,
   className,
@@ -212,21 +215,29 @@ function Hero({
             <p className="pointer-events-auto text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] select-text md:text-lg md:leading-normal">
               {description}
             </p>
-            <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
-              <CopyCommand
-                command={command}
-                variant="highlighted"
-                commandClassName="pointer-events-auto select-text"
-                copiedContent={<AnimatedCopyCheck />}
-              />
-              <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case hover:border-[#867A94] hover:bg-white/7 sm:w-39 [&_svg]:size-3.5"
-                variant="outline-transparent"
-                size="none"
-                resetInterval={2000}
-                value={prompt}
-              />
-            </div>
+            {gettingStartedActions ?? (
+              <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
+                <CopyCommand
+                  command={command}
+                  variant="highlighted"
+                  commandClassName="pointer-events-auto select-text"
+                  copiedContent={<AnimatedCopyCheck />}
+                  copyButtonProps={{
+                    "data-click-location": "home_hero",
+                    "data-click-text": "copy_cli",
+                  }}
+                />
+                <CopyPromptButton
+                  className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case hover:border-[#867A94] hover:bg-white/7 sm:w-39 [&_svg]:size-3.5"
+                  variant="outline-transparent"
+                  size="none"
+                  resetInterval={2000}
+                  value={prompt}
+                  data-click-location="home_hero"
+                  data-click-text="copy_prompt"
+                />
+              </div>
+            )}
           </div>
         </div>
 
