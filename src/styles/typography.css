@@ -374,7 +374,7 @@
         @apply gap-y-2 py-0 pl-0;
 
         li {
-          @apply before:top-0 before:left-0 before:leading-snug;
+          @apply pl-6 before:top-0 before:left-0 before:h-auto before:w-auto before:bg-transparent before:leading-snug;
         }
       }
     }
