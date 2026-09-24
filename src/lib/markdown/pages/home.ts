@@ -78,6 +78,12 @@ export async function getHomeBody() {
     ]),
     section("Novu Notify: notification infrastructure for products", [
       HOME_NOVU_NOTIFY_INTRO.description,
+      [
+        formatMarkdownLink("Try now", ROUTE.dashboardV2SignUp),
+        formatMarkdownLink("Read docs", ROUTE.docsQuickStart),
+      ]
+        .map((item) => `- ${item}`)
+        .join("\n"),
       itemSections(HOME_NOVU_NOTIFY_ITEMS),
     ]),
     featuredCustomersSection,
