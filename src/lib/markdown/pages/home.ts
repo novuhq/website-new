@@ -67,9 +67,7 @@ export async function getHomeBody() {
   return [
     HOME_HERO.description,
     HOME_HERO.actions
-      .map((action) =>
-        formatMarkdownLink(action.label, String(action.href))
-      )
+      .map((action) => formatMarkdownLink(action.label, String(action.href)))
       .join(" · "),
     section("Channels your agent and product can reach", [
       HOME_CHANNELS.map(channelLine).join("\n"),
