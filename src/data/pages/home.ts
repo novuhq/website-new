@@ -1,6 +1,6 @@
 import { ROUTE } from "@/constants/routes"
 
-import type { IFaqSection } from "@/types/common"
+import type { ICtaSection, IFaqSection } from "@/types/common"
 import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 
 // Single source of truth for homepage copy. The homepage
@@ -457,4 +457,21 @@ export const HOME_CTA = {
   title: "One engine underneath",
   description:
     "Whether you're building a modern app or an AI agent, Novu is the delivery layer that connects you to the world.",
-}
+  actions: [
+    {
+      kind: "primary-button",
+      label: "Start for free",
+      href: ROUTE.dashboardV2SignUp,
+      clickLocation: "home_cta",
+      clickText: "start_for_free",
+      openInNewTab: true,
+    },
+    {
+      kind: "secondary-button",
+      label: "Schedule a call",
+      href: ROUTE.contactUs,
+      clickLocation: "home_cta",
+      clickText: "schedule_a_call",
+    },
+  ],
+} satisfies ICtaSection
