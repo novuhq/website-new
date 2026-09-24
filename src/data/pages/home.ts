@@ -9,10 +9,27 @@ import { buildChannelConnectPrompt } from "@/lib/connect-prompt"
 // the three surfaces cannot drift.
 
 export const HOME_HERO = {
-  command: "npx novu connect",
   description:
     "Open-source infrastructure to notify your users and let your agents talk with them, on the channels they already use.",
   title: "Connect your AI agents and products to customers",
+  actions: [
+    {
+      kind: "primary-button" as const,
+      label: "Get Started",
+      href: ROUTE.dashboardV2SignUp,
+      clickLocation: "home_hero",
+      clickText: "get_started",
+      openInNewTab: true,
+    },
+    {
+      kind: "secondary-button" as const,
+      label: "Visit Docs",
+      href: ROUTE.docs,
+      clickLocation: "home_hero",
+      clickText: "visit_docs",
+      openInNewTab: true,
+    },
+  ],
 }
 
 // Live feature tabs (available integration + primary action) vs coming-soon
@@ -52,6 +69,25 @@ export const HOME_CHANNEL_PAGE_PATHNAMES: Record<string, string> = {
 }
 
 export const HOME_CHANNELS = [
+  {
+    key: "inbox",
+    badges: ["notify"] as const,
+    label: "Inbox",
+    title: "Send notifications to your in-app Inbox",
+    description:
+      "Give users one place inside your product to see and manage the updates that matter to them.",
+    features: [
+      "Prebuilt and composable Inbox components",
+      "Real-time notifications and unread counts",
+      "Built-in notification preferences",
+      "Tabs, filters, and flexible layouts",
+      "Custom styling, localization, and snoozing",
+    ],
+    action: {
+      label: "Explore Inbox",
+      href: String(ROUTE.inbox),
+    },
+  },
   {
     key: "slack",
     badges: ["notify", "connect"] as const,
@@ -147,25 +183,6 @@ export const HOME_CHANNELS = [
       "Reply-based action and MCP approvals",
       "Plain-text MCP connection links",
     ],
-  },
-  {
-    key: "inbox",
-    badges: ["notify"] as const,
-    label: "Inbox",
-    title: "Send notifications to your in-app Inbox",
-    description:
-      "Give users one place inside your product to see and manage the updates that matter to them.",
-    features: [
-      "Prebuilt and composable Inbox components",
-      "Real-time notifications and unread counts",
-      "Built-in notification preferences",
-      "Tabs, filters, and flexible layouts",
-      "Custom styling, localization, and snoozing",
-    ],
-    action: {
-      label: "Explore Inbox",
-      href: String(ROUTE.inbox),
-    },
   },
   {
     key: "push",
