@@ -8,18 +8,16 @@ import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
-import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
+import type { TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
-import { CopyCommand } from "@/components/ui/copy-command"
+import ActionGroup from "@/components/ui/action-group"
 import CustomerLogos from "@/components/customer-logos"
 
-import AnimatedCopyCheck from "./animated-copy-check"
 import {
   HOME_CHANNEL_SELECT_EVENT,
   HOME_FEATURES_SECTION_ID,
   type IHomeChannelSelectDetail,
 } from "./channel-navigation"
-import CopyPromptButton from "./copy-prompt-button"
 import HeroGlobe from "./hero-globe"
 
 const CHANNEL_HOVER_STYLES = {
@@ -104,10 +102,9 @@ const CHANNELS: Array<{
 ]
 
 export interface IHeroProps {
+  actions: TSectionAction[]
   className?: string
-  command?: string
   description: string
-  prompt?: string
   title: string
 }
 
@@ -186,13 +183,7 @@ function ChannelIcons() {
   )
 }
 
-function Hero({
-  title,
-  description,
-  command = "npx novu connect",
-  prompt = DEFAULT_CONNECT_PROMPT,
-  className,
-}: IHeroProps) {
+function Hero({ title, description, actions, className }: IHeroProps) {
   return (
     <section
       className={cn(
@@ -212,21 +203,10 @@ function Hero({
             <p className="pointer-events-auto text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] select-text md:text-lg md:leading-normal">
               {description}
             </p>
-            <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
-              <CopyCommand
-                command={command}
-                variant="highlighted"
-                commandClassName="pointer-events-auto select-text"
-                copiedContent={<AnimatedCopyCheck />}
-              />
-              <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case hover:border-[#867A94] hover:bg-white/7 sm:w-39 [&_svg]:size-3.5"
-                variant="outline-transparent"
-                size="none"
-                resetInterval={2000}
-                value={prompt}
-              />
-            </div>
+            <ActionGroup
+              className="mt-6 gap-x-5 max-sm:w-full max-sm:flex-col md:gap-x-5 lg:mt-7 [&_[data-slot=button]]:h-11 [&_[data-slot=button]]:min-w-0 [&_[data-slot=button]]:rounded-md [&_[data-slot=button]]:px-5 [&_[data-slot=button]]:text-base [&_[data-slot=button]]:tracking-[-0.025em] [&_[data-slot=button]]:normal-case max-sm:[&_[data-slot=button]]:w-full"
+              actions={actions}
+            />
           </div>
         </div>
 

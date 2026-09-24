@@ -66,20 +66,21 @@ export async function getHomeBody() {
 
   return [
     HOME_HERO.description,
-    `Connect command: \`${HOME_HERO.command}\``,
+    HOME_HERO.actions
+      .map((action) => formatMarkdownLink(action.label, String(action.href)))
+      .join(" · "),
     section("Channels your agent and product can reach", [
       HOME_CHANNELS.map(channelLine).join("\n"),
-    ]),
-    section("Novu Connect: The Agent Communication Infrastructure", [
-      HOME_NOVU_CONNECT_INTRO.description.trim(),
-      HOME_CONNECT_STACK.title,
-      HOME_CONNECT_STACK.description,
-      itemSections(HOME_NOVU_CONNECT_ITEMS),
     ]),
     section("Novu Notify: notification infrastructure for products", [
       HOME_NOVU_NOTIFY_INTRO.description,
       itemSections(HOME_NOVU_NOTIFY_ITEMS),
     ]),
+    section("Novu Connect: The Agent Communication Infrastructure", [
+      HOME_NOVU_CONNECT_INTRO.description.trim(),
+      itemSections(HOME_NOVU_CONNECT_ITEMS),
+    ]),
+    section(HOME_CONNECT_STACK.title, [HOME_CONNECT_STACK.description]),
     featuredCustomersSection,
     section(HOME_COMPLIANCE.title, [
       HOME_COMPLIANCE.description,
