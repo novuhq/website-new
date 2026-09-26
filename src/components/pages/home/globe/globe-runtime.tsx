@@ -61,6 +61,12 @@ interface IGlobeRuntimeProps {
   onReady: () => void
   onUnavailable: () => void
   playbackEnabled: boolean
+  /**
+   * Card events shown around the globe. Defaults to the homepage set. A caller
+   * may pass an alternate set that reuses the same route ids (so the globe
+   * geometry and story/ambient split are unchanged) with different card copy.
+   */
+  cardEvents?: IGlobeCardEvent[]
 }
 
 interface IActivePointer {
@@ -318,6 +324,7 @@ export default function GlobeRuntime({
   onReady,
   onUnavailable,
   playbackEnabled,
+  cardEvents = GLOBE_CARD_EVENTS,
 }: IGlobeRuntimeProps) {
   const shouldReduceMotion = useReducedMotion()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -337,7 +344,7 @@ export default function GlobeRuntime({
   const previousScheduleRotationRef = useRef<number | null>(
     interactionRef.current.rotation
   )
-  const bootstrapEvents = GLOBE_CARD_EVENTS.filter(
+  const bootstrapEvents = cardEvents.filter(
     (event) => (event.initialRouteLeadMs ?? 0) > 0
   )
   const routePlaybackRef = useRef<Record<string, number>>(
@@ -572,9 +579,7 @@ export default function GlobeRuntime({
             activeCardPlaybacksRef.current.map(({ event }) => event.id)
           )
           const events = pickGlobeCardEvents({
-            events: GLOBE_CARD_EVENTS.filter(
-              (event) => !activeEventIds.has(event.id)
-            ),
+            events: cardEvents.filter((event) => !activeEventIds.has(event.id)),
             lastCompletedAt: lastCardCompletedAtRef.current,
             limit: 1,
             nowMs: routeTime,
