@@ -417,13 +417,18 @@ export const HOME_FAQ = {
       {
         question: "What is Novu?",
         answer:
-          "Novu is open-source communication infrastructure for products and AI agents. Use Novu Notify to orchestrate product notifications across Inbox, email, SMS, push, and chat. Use Novu Connect to bring AI agents into the channels where users already communicate.",
+          "Novu is open-source communication infrastructure for products and AI agents. Novu Notify sends product notifications across Inbox, email, SMS, push, and chat. Novu Connect lets AI agents talk with users on the channels they already use, such as Slack, Microsoft Teams, WhatsApp, Telegram, and email.",
       },
       {
         question:
           "What is the difference between Novu Notify and Novu Connect?",
         answer:
           "Novu Notify handles workflow-driven notifications from your product to your users. Novu Connect handles two-way conversations between AI agents and people. Both use Novu's channel, identity, and delivery infrastructure.",
+      },
+      {
+        question: "What is ACI, Agent Communication Infrastructure?",
+        answer:
+          "ACI, Agent Communication Infrastructure, is the layer that connects AI agents to the channels people already use. It handles message delivery, threading, conversation state, user identity, and human approvals, while your agent keeps its own model, tools, and logic. Novu Connect is Novu's ACI.",
       },
       {
         question: "Can I connect an AI agent I have already built?",
