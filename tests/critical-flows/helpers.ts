@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 
+import { isExpectedBrowserConsoleError } from "./console-errors"
+
 const CLIPBOARD_TEXT_KEY = "__NOVU_CRITICAL_FLOW_CLIPBOARD_TEXT__"
 const THIRD_PARTY_SCRIPT_URL =
   /^https:\/\/(?:[^/]+\.)?(?:cdn-plain\.com|plain\.com|segment\.com|segment\.io|snitcher\.com|vector\.co)(?:\/|$)/
@@ -54,6 +56,21 @@ export function observeApplicationErrors(page: Page) {
   return errors
 }
 
+export function observeBrowserConsoleErrors(page: Page) {
+  const errors: string[] = []
+
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      !isExpectedBrowserConsoleError(message.text(), message.location().url)
+    ) {
+      errors.push(message.text())
+    }
+  })
+
+  return errors
+}
+
 export async function gotoCriticalPage(page: Page, pagePath: string) {
   await blockThirdPartyScripts(page)
   const response = await page.goto(pagePath, { waitUntil: "domcontentloaded" })
@@ -93,6 +110,29 @@ export async function expectReactHandlerReady(
           }),
         handlerName
       )
+    )
+    .toBe(true)
+}
+
+export async function expectAccordionItemExpanded(trigger: Locator) {
+  // Mobile WebKit can scroll the page between the press and the release that
+  // make up a single Playwright click: CI traces recorded ~190px of upward
+  // scroll inside one click action, with the document layout unchanged. The
+  // release then lands on whatever moved under the click point, so the browser
+  // never fires `click` on the trigger even though Playwright reports the
+  // action as performed. Tap again while the panel is still closed, the way a
+  // person whose tap missed would.
+  await expect
+    .poll(
+      async () => {
+        if ((await trigger.getAttribute("aria-expanded")) === "true") {
+          return true
+        }
+
+        await trigger.click()
+        return false
+      },
+      { intervals: [500, 500, 1000, 2000, 3000] }
     )
     .toBe(true)
 }

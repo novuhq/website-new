@@ -90,9 +90,11 @@ function CopyCommand({
       <div className={cn(copyCommandVariants({ variant }), controlClassName)}>
         <span
           className={cn(
-            "truncate text-sm leading-snug tracking-tight text-muted-foreground",
+            // Scroll rather than truncate: a command that outgrows its box stays
+            // readable in full instead of ending in an ellipsis.
+            "scrollbar-hidden min-w-0 overflow-x-auto text-sm leading-snug tracking-tight whitespace-nowrap text-muted-foreground",
             variant === "highlighted" &&
-              "min-w-0 flex-1 text-base leading-[1.2] font-normal tracking-normal text-white",
+              "flex-1 text-base leading-[1.2] font-normal tracking-normal text-white",
             commandClassName
           )}
         >

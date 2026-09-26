@@ -1,5 +1,9 @@
 import { expect, test, type Page } from "@playwright/test"
 
+import {
+  getAllWebChatBuilders,
+  getWebChatBuilderPathname,
+} from "../../src/data/pages/web-chat-builders"
 import { navigationContract } from "./contracts"
 import {
   expectHealthyPage,
@@ -85,6 +89,52 @@ test.describe("critical responsive navigation", () => {
         name: navigationContract.destinationHeading,
       })
     ).toBeVisible()
+    expectHealthyPage(applicationErrors)
+  })
+
+  test(`[${navigationContract.id}] Channels menu reaches every web chat builder page`, async ({
+    isMobile,
+    page,
+    request,
+  }) => {
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+
+    if (isMobile) {
+      const menuButton = page.getByRole("button", { name: "Open menu" })
+      await expectReactHandlerReady(menuButton, "onClick")
+      await menuButton.click()
+      await page.getByRole("button", { name: "Channels", exact: true }).click()
+    } else {
+      const channels = page
+        .locator("header")
+        .getByRole("button", { name: "Channels", exact: true })
+      await expectReactHandlerReady(channels, "onClick")
+      await channels.hover()
+      await page
+        .getByRole("link", { name: "Web Chat", exact: true })
+        .first()
+        .hover()
+    }
+
+    // The Web Chat channel page itself ships separately, so only its builder
+    // pages are expected to resolve today.
+    await expect(
+      page.getByRole("link", { name: "Web Chat", exact: true }).first()
+    ).toHaveAttribute("href", "/channels/web-chat/")
+
+    for (const { slug, builderName } of getAllWebChatBuilders()) {
+      const pathname = getWebChatBuilderPathname(slug)
+      const link = page.getByRole("link", { name: builderName, exact: true })
+
+      // The site is served with trailing slashes, so Next renders them here.
+      await expect(link).toHaveAttribute("href", `${pathname}/`)
+      await expect(link.first()).toBeVisible()
+
+      const response = await request.get(pathname)
+      expect(response.ok(), `${pathname} should resolve`).toBe(true)
+    }
+
     expectHealthyPage(applicationErrors)
   })
 
