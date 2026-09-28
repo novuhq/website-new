@@ -82,7 +82,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {
             kind: "primary-button",
             label: "Get started",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: "blog_post_cta",
             clickText: "get_started",
           },

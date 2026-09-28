@@ -8,19 +8,27 @@ import {
   observeApplicationErrors,
 } from "./helpers"
 
-async function expectDashboardNavigation(page: Page, linkName: string) {
-  await page.route(
-    `${navigationContract.authLinks.desktop[0].href}/**`,
-    (route) =>
-      route.fulfill({
-        body: "<title>Dashboard handoff</title>",
-        contentType: "text/html",
-        status: 200,
-      })
+async function expectDashboardNavigation(
+  page: Page,
+  linkName: string,
+  href: string
+) {
+  await page.route("https://dashboard.novu.co/**", (route) =>
+    route.fulfill({
+      body: "<title>Dashboard handoff</title>",
+      contentType: "text/html",
+      status: 200,
+    })
   )
 
   await page.getByRole("link", { name: linkName, exact: true }).click()
-  await expect(page).toHaveURL(/^https:\/\/dashboard\.novu\.co\/?$/)
+  await expect(page).toHaveURL((url) => {
+    const expected = new URL(href)
+    const actualPath = url.pathname.replace(/\/$/, "")
+    const expectedPath = expected.pathname.replace(/\/$/, "")
+
+    return url.origin === expected.origin && actualPath === expectedPath
+  })
 }
 
 async function skipUnlessAuthStateFixture(page: Page) {
@@ -108,7 +116,11 @@ test.describe("critical responsive navigation", () => {
       })
     ).toHaveCount(0)
 
-    await expectDashboardNavigation(page, signedOutLink.name)
+    await expectDashboardNavigation(
+      page,
+      signedOutLink.name,
+      signedOutLink.href
+    )
     expectHealthyPage(applicationErrors)
   })
 
@@ -178,7 +190,11 @@ test.describe("critical responsive navigation", () => {
       })
     ).toHaveCount(0)
 
-    await expectDashboardNavigation(page, signedInLink.name)
+    await expectDashboardNavigation(
+      page,
+      signedInLink.name,
+      signedInLink.href
+    )
     expectHealthyPage(applicationErrors)
   })
 })

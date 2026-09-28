@@ -149,7 +149,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
             {
               kind: "primary-button",
               label: "Start building",
-              href: ROUTE.dashboard,
+              href: ROUTE.dashboardV2SignUp,
               clickLocation: "integrations_detail_cta",
               clickText: "start_building",
             },
