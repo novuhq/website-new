@@ -18,6 +18,19 @@ interface StaticPagePageProps {
   params: Promise<{ slug: string }>
 }
 
+const EXPLICIT_WEBSITE_SLUGS = new Set([
+  "community",
+  "contact-us",
+  "contributors",
+  "digest",
+  "directory",
+  "framework",
+  "inbox",
+  "oss-friends",
+  "security",
+  "usecases",
+])
+
 export default async function StaticPagePage({ params }: StaticPagePageProps) {
   const { isEnabled: isDraftMode } = await draftMode()
   const { slug } = await params
@@ -128,9 +141,13 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
 export async function generateStaticParams() {
   const staticPages = await getAllStaticPages(false)
 
-  return staticPages.map((staticPage) => ({
-    slug: staticPage.slug.current,
-  }))
+  return staticPages
+    .filter(
+      (staticPage) => !EXPLICIT_WEBSITE_SLUGS.has(staticPage.slug.current)
+    )
+    .map((staticPage) => ({
+      slug: staticPage.slug.current,
+    }))
 }
 
 export async function generateMetadata({

@@ -96,11 +96,21 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   contactUs: "/contact-us",
   contributors: "/contributors",
   digest: "/digest",
+  directory: "/directory",
+  directoryHealthcare: "/directory/healthcare",
+  directoryLinearInbox: "/directory/linear-inbox",
   framework: "/framework",
   inbox: "/inbox",
+  ossFriends: "/oss-friends",
   pricing: "/pricing",
   security: "/security",
   useCases: "/usecases",
+  useCasesAddNotifications: "/usecases/add-notifications",
+  useCasesContentManagement: "/usecases/content-management",
+  useCasesImproveCommunicationExperience:
+    "/usecases/improve-communication-experience",
+  useCasesMultiChannelNotifications: "/usecases/multi-channel-notifications",
+  useCasesUnifiedPlatform: "/usecases/unified-platform",
 
   // Legal
   dataProcessingAgreement: "/dpa",
