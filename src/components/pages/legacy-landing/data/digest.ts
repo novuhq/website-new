@@ -121,7 +121,7 @@ export const digestCta = {
     "Create a free account, send your first notification, all before your coffee gets cold... no credit card required.",
   primary: {
     label: "Get started",
-    href: "https://go.novu.co/dashboard",
+    href: "https://dashboard.novu.co/auth/sign-up",
   },
   secondary: {
     label: "Contact us",
