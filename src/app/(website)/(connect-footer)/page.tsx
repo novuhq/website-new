@@ -65,7 +65,7 @@ const contentData = {
         Integrate a world-class conversation experience <TimeOfDay />
       </>
     ),
-    defaultKey: "slack",
+    defaultKey: "inbox",
     items: HOME_CHANNELS,
   },
   "connect-stack": HOME_CONNECT_STACK,
@@ -427,13 +427,13 @@ export default async function HomePage() {
     <div>
       <Hero {...contentData["hero"]} />
       <Features {...contentData["features"]} items={featureItems} />
-      <ConnectStack {...contentData["connect-stack"]} />
       <CommunicationLifecycle {...contentData["communication-lifecycle"]} />
-      <NovuConnect {...contentData["novu-connect"]} />
       <NovuNotify
         {...contentData["novu-notify"]}
         codeTabs={highlightedNotifyCodeTabs}
       />
+      <NovuConnect {...contentData["novu-connect"]} />
+      <ConnectStack {...contentData["connect-stack"]} />
       <FeaturedCustomers {...HOME_FEATURED_CUSTOMERS} />
       <Compliance {...contentData["compliance"]} />
       <FAQ

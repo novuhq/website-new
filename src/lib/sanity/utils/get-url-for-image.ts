@@ -1,3 +1,4 @@
+import { getImageDimensions } from "@sanity/asset-utils"
 import imageUrlBuilder from "@sanity/image-url"
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types"
 
@@ -8,6 +9,41 @@ const imageBuilder = imageUrlBuilder({
 
 export const getUrlForImage = (source: SanityImageSource) =>
   imageBuilder?.image(source).auto("format").fit("max")
+
+/**
+ * A 1px-wide column holding the averaged left or right edge of an image.
+ *
+ * Stretching it across an area continues the artwork's own vertical ramp, so a
+ * banner pinned to a fixed width can bleed to any viewport without hand-picked
+ * fill colors. Returns null for sources without an asset ref (e.g. bundled
+ * static imports), leaving the caller to fall back.
+ */
+export const getImageEdgeUrl = (
+  image: SanityImageSource | undefined,
+  side: "left" | "right",
+  sampleWidth = 8
+) => {
+  const assetRef =
+    typeof image === "object" && image && "asset" in image
+      ? (image.asset as { _ref?: string } | undefined)?._ref
+      : undefined
+
+  if (!assetRef) {
+    return null
+  }
+
+  const { width, height } = getImageDimensions(assetRef)
+  const strip = Math.min(sampleWidth, width)
+
+  return imageBuilder
+    .image(image as SanityImageSource)
+    .rect(side === "left" ? 0 : width - strip, 0, strip, height)
+    .width(1)
+    .height(height)
+    .fit("scale")
+    .auto("format")
+    .url()
+}
 
 export const getProcessedImageUrl = (
   image: SanityImageSource,

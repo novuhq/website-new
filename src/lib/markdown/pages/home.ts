@@ -6,6 +6,7 @@ import {
   HOME_COMPLIANCE,
   HOME_COMPLIANCE_CERTIFICATIONS,
   HOME_CONNECT_STACK,
+  HOME_CTA,
   HOME_FAQ,
   HOME_FEATURED_CUSTOMERS,
   HOME_HERO,
@@ -17,7 +18,7 @@ import {
 } from "@/data/pages/home"
 
 import { escapeMarkdownText, formatMarkdownLink } from "../markdown-format"
-import { bulletList, faqMarkdown } from "../page-utils"
+import { actionsMarkdown, bulletList, faqMarkdown } from "../page-utils"
 import { absoluteUrl, toCanonicalPathname } from "../url"
 
 function section(title: string, content: Array<string | undefined | null>) {
@@ -66,20 +67,27 @@ export async function getHomeBody() {
 
   return [
     HOME_HERO.description,
-    `Connect command: \`${HOME_HERO.command}\``,
+    HOME_HERO.actions
+      .map((action) => formatMarkdownLink(action.label, String(action.href)))
+      .join(" · "),
     section("Channels your agent and product can reach", [
       HOME_CHANNELS.map(channelLine).join("\n"),
     ]),
-    section("Novu Connect: The Agent Communication Infrastructure", [
-      HOME_NOVU_CONNECT_INTRO.description.trim(),
-      HOME_CONNECT_STACK.title,
-      HOME_CONNECT_STACK.description,
-      itemSections(HOME_NOVU_CONNECT_ITEMS),
-    ]),
     section("Novu Notify: notification infrastructure for products", [
       HOME_NOVU_NOTIFY_INTRO.description,
+      [
+        formatMarkdownLink("Try now", ROUTE.dashboardV2SignUp),
+        formatMarkdownLink("Read docs", ROUTE.docsQuickStart),
+      ]
+        .map((item) => `- ${item}`)
+        .join("\n"),
       itemSections(HOME_NOVU_NOTIFY_ITEMS),
     ]),
+    section("Novu Connect: The Agent Communication Infrastructure", [
+      HOME_NOVU_CONNECT_INTRO.description.trim(),
+      itemSections(HOME_NOVU_CONNECT_ITEMS),
+    ]),
+    section(HOME_CONNECT_STACK.title, [HOME_CONNECT_STACK.description]),
     featuredCustomersSection,
     section(HOME_COMPLIANCE.title, [
       HOME_COMPLIANCE.description,
@@ -95,9 +103,14 @@ export async function getHomeBody() {
     section("Prompt for your coding agent", [
       `Connect my AI agent to my customers' channels with Novu. Start with \`npx novu connect\`, or read ${absoluteUrl("/agents.md")} for the full agent quickstart.`,
     ]),
+    section(HOME_CTA.title, [
+      HOME_CTA.description,
+      actionsMarkdown(HOME_CTA.actions),
+    ]),
     section("Get started", [
       [
-        formatMarkdownLink("Start building", ROUTE.dashboardV2SignUp),
+        formatMarkdownLink("Start for free", ROUTE.dashboardV2SignUp),
+        formatMarkdownLink("Schedule a call", ROUTE.contactUs),
         formatMarkdownLink("Read the docs", ROUTE.docsOverview),
         formatMarkdownLink("Agent quickstart", absoluteUrl("/agents.md")),
       ]
