@@ -29,7 +29,7 @@ export const PRODUCT_BENTO_CARDS: ProductBentoCardCopy[] = [
   {
     id: "activity",
     title: "Keeps every conversation",
-    body: "Review every Web Chat conversation, its messages, activity, and user context in Novu.",
+    body: "Review each Web Chat conversation, its messages, status, and user in the Novu dashboard.",
   },
   {
     id: "order",

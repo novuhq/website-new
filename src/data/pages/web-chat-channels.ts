@@ -36,7 +36,7 @@ export const CHANNELS_GRID_HEADING_DESKTOP_LINES = [
 // but the mobile frame sets it in `rgba(255,255,255,0.8)` rather than the
 // desktop `#A3A6B2`.
 export const CHANNELS_GRID_DESCRIPTION =
-  "Novu Connect, our Agent Communication Infrastructure (ACI), keeps the same agent and conversation across your product and every channel, without code changes. Choose a channel to learn how to connect it."
+  "Connect the same agent across Web Chat and other channels. Novu links identified users to their subscriber profile and maintains conversation history within each thread."
 
 // Actions (`45487-81707` button, `45487-81715` CLI pill)
 export const CHANNELS_GRID_BOOK_A_DEMO_LABEL = "Book a demo"

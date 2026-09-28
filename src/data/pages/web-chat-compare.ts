@@ -12,10 +12,17 @@ export const COMPARE_DESCRIPTION =
 
 export const COMPARE_OLD_WIDGET_TITLE = "The old chat widget"
 
-export const COMPARE_OLD_WIDGET_BODY =
-  "Scripted replies lead to ticket forms and walls of text, losing context as soon as the user leaves."
+export const COMPARE_OLD_WIDGET_BODY = [
+  "Scripted replies that end in a ticket form",
+  "Walls of text instead of UI",
+  "Loses the thread when the user leaves the page",
+].join(" · ")
 
 export const COMPARE_WEB_CHAT_TITLE = "Web Chat"
 
-export const COMPARE_WEB_CHAT_BODY =
-  "Your logic and model stay yours while the agent acts inside the product, renders real UI, and continues conversations across channels."
+export const COMPARE_WEB_CHAT_BODY = [
+  "Your agent, your model, your logic",
+  "Acts inside the product, with approval for sensitive tools",
+  "Renders your components in the thread",
+  "Resumes the conversation and knows the user on every channel you connect",
+].join(" · ")

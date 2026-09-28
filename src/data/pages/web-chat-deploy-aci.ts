@@ -45,8 +45,8 @@ export const DEPLOY_ACI_ITEMS: IDeployAciItem[] = [
     body: "Every user identified and secured with HMAC. No auth or user store to build.",
   },
   {
-    title: "One durable thread",
-    body: "Context and history follow each user across every channel, on their own subscriber.",
+    title: "Conversation history",
+    body: "Novu stores each Web Chat conversation so your app can resume it when a user returns.",
   },
   {
     title: "Delivery that lands",

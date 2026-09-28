@@ -68,7 +68,7 @@ export const OWNERSHIP_CARDS: OwnershipCardCopy[] = [
   {
     id: "bring-any-agent",
     title: "Bring any agent",
-    body: "Connect the agent you already use — LangChain, Vercel AI SDK, custom code, or any other runtime.",
+    body: "Connect the agent you already use: Vercel AI SDK, LangChain, Mastra, or custom code.",
   },
   {
     id: "change-runtime",
@@ -78,6 +78,6 @@ export const OWNERSHIP_CARDS: OwnershipCardCopy[] = [
   {
     id: "keep-logic",
     title: "Keep your logic yours",
-    body: "Your prompts, tools, model calls, and keys stay in your infrastructure. Novu carries conversations — not your agent’s logic.",
+    body: "Your prompts, tools, model calls, and keys stay in your infrastructure. Novu carries conversations, not your agent’s logic.",
   },
 ]
