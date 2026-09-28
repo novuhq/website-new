@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="468" height="480" viewBox="0 0 468 480" fill="none" aria-hidden="true">
+  <g id="wc-compare-old-laptop-1" clip-path="url(#wc-compare-old-laptop-33)">
+    <g id="wc-compare-old-laptop-2">
+      <mask id="wc-compare-old-laptop-3" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-142.0" y="-201.0" width="758.0" height="587.0">
+        <g filter="url(#wc-compare-old-laptop-35)">
+          <g id="wc-compare-old-laptop-5" style="mix-blend-mode:plus-lighter">
+            <path d="M198.318 -152.118C288.865 -164.894 374.693 -149.014 440.258 -113.036C505.823 -77.0571 551.098 -20.9993 560.635 46.5874C573.956 140.996 573.586 204.767 562.745 247.73C551.914 290.654 530.641 312.782 502.107 323.981C473.514 335.203 437.582 335.472 397.378 334.515C357.208 333.559 312.816 331.382 267.444 337.784C176.923 350.557 90.2041 328.363 24.1782 289.215C-41.865 250.057 -87.1241 193.99 -94.8722 139.08C-104.409 71.4932 -76.4123 5.09683 -23.3621 -47.6185C29.6882 -100.334 107.771 -139.342 198.318 -152.118Z" fill="#2A2B33" />
+            <path d="M198.318 -152.118C288.865 -164.894 374.693 -149.014 440.258 -113.036C505.823 -77.0571 551.098 -20.9993 560.635 46.5874C573.956 140.996 573.586 204.767 562.745 247.73C551.914 290.654 530.641 312.782 502.107 323.981C473.514 335.203 437.582 335.472 397.378 334.515C357.208 333.559 312.816 331.382 267.444 337.784C176.923 350.557 90.2041 328.363 24.1782 289.215C-41.865 250.057 -87.1241 193.99 -94.8722 139.08C-104.409 71.4932 -76.4123 5.09683 -23.3621 -47.6185C29.6882 -100.334 107.771 -139.342 198.318 -152.118Z" stroke="#41434D" />
+          </g>
+        </g>
+      </mask>
+      <g mask="url(#wc-compare-old-laptop-3)">
+        <g id="wc-compare-old-laptop-9">
+          <g id="wc-compare-old-laptop-10" data-figma-bg-blur-radius="152">
+            <g id="wc-compare-old-laptop-11" filter="url(#wc-compare-old-laptop-18)">
+              <path d="M169 50.4C169 42.5593 169 38.6389 170.526 35.6441C171.868 33.0099 174.01 30.8681 176.644 29.5259C179.639 28 183.559 28 191.4 28H373.6C381.441 28 385.361 28 388.356 29.5259C390.99 30.8681 393.132 33.0099 394.474 35.6441C396 38.6389 396 42.5593 396 50.4V82.8C396 83.9201 396 84.4802 395.782 84.908C395.59 85.2843 395.284 85.5903 394.908 85.782C394.48 86 393.92 86 392.8 86H191.4C183.559 86 179.639 86 176.644 84.4741C174.01 83.1319 171.868 80.9901 170.526 78.3559C169 75.3611 169 71.4407 169 63.6V50.4Z" fill="var(--wc-accent)" data-accent-fill="" />
+              <path d="M191.4 28.5H373.6C377.528 28.5 380.445 28.5008 382.755 28.6895C385.058 28.8777 386.714 29.2507 388.129 29.9717C390.669 31.266 392.734 33.331 394.028 35.8711C394.749 37.2861 395.122 38.9417 395.311 41.2451C395.499 43.5546 395.5 46.4718 395.5 50.4004V82.7998C395.5 83.3681 395.5 83.7648 395.475 84.0732C395.45 84.3753 395.404 84.5491 395.337 84.6807C395.193 84.9629 394.963 85.1931 394.681 85.3369C394.549 85.4039 394.375 85.4499 394.073 85.4746C393.765 85.4998 393.368 85.5 392.8 85.5H191.4C187.472 85.5 184.555 85.4992 182.245 85.3105C179.942 85.1223 178.286 84.7493 176.871 84.0283C174.331 82.734 172.266 80.669 170.972 78.1289C170.251 76.7139 169.878 75.0583 169.689 72.7549C169.501 70.4454 169.5 67.5282 169.5 63.5996V50.4004C169.5 46.4718 169.501 43.5546 169.689 41.2451C169.878 38.9417 170.251 37.2861 170.972 35.8711C172.266 33.331 174.331 31.266 176.871 29.9717C178.286 29.2507 179.942 28.8777 182.245 28.6895C184.555 28.5008 187.472 28.5 191.4 28.5Z" stroke="white" stroke-opacity="0.2" style="mix-blend-mode:overlay" />
+              <text id="wc-compare-old-laptop-14" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="180" y="53.3182">Find creators we haven’t </tspan>
+                <tspan x="180" y="72.3182">worked with yet.</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-compare-old-laptop-18" x="161.742" y="24.3709" width="241.516" height="72.5163" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow_45920_9270" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="3.62908" />
+      <feGaussianBlur stdDeviation="3.62908" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+      <feBlend mode="overlay" in2="effect1_dropShadow_45920_9270" result="effect2_dropShadow_45920_9270" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45920_9270" result="shape" />
+    </filter>
+    <clipPath id="wc-compare-old-laptop-33">
+      <rect width="468" height="480" fill="white" />
+    </clipPath>
+    <filter id="wc-compare-old-laptop-35" filterUnits="userSpaceOnUse" x="-142.0" y="-201.0" width="758.0" height="587.0">
+      <feGaussianBlur stdDeviation="22.0" />
+    </filter>
+  </defs>
+</svg>

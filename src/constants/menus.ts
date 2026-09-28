@@ -253,6 +253,12 @@ export const MENUS = {
                 },
               ],
             },
+            {
+              label: "Web Chat",
+              href: ROUTE.channelWebChat,
+              menuIcon: "web-chat",
+              previewImage: "/images/header/menu/banner-web-chat.webp",
+            },
           ],
         },
       ],

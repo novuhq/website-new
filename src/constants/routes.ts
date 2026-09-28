@@ -77,6 +77,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   channelIMessageCustomCode: "/channels/imessage/custom-code",
   channelIMessageClaude: "/channels/imessage/claude",
   channelIMessageClaudeAws: "/channels/imessage/claude-aws",
+  channelWebChat: "/channels/web-chat",
 
   // PREVIOUS WEBSITE
 
