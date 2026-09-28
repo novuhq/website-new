@@ -1,0 +1,32 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#131313"/>
+<g id="web-chat-builder-template (Webflow)">
+<path d="M-1277.34 -1322C-1277.34 -1323.1 -1276.44 -1324 -1275.34 -1324H800.664C801.769 -1324 802.664 -1323.1 802.664 -1322V3985C802.664 3986.1 801.769 3987 800.664 3987H-1277.34V-1322Z" fill="#22242A"/>
+<path d="M-1277.34 3987H-1278.34V3988H-1277.34V3987ZM-1275.34 -1324V-1323H800.664V-1324V-1325H-1275.34V-1324ZM802.664 -1322H801.664V3985H802.664H803.664V-1322H802.664ZM800.664 3987V3986H-1277.34V3987V3988H800.664V3987ZM-1277.34 3987H-1276.34V-1322H-1277.34H-1278.34V3987H-1277.34ZM802.664 3985H801.664C801.664 3985.55 801.216 3986 800.664 3986V3987V3988C802.321 3988 803.664 3986.66 803.664 3985H802.664ZM800.664 -1324V-1323C801.216 -1323 801.664 -1322.55 801.664 -1322H802.664H803.664C803.664 -1323.66 802.321 -1325 800.664 -1325V-1324ZM-1275.34 -1324V-1325C-1276.99 -1325 -1278.34 -1323.66 -1278.34 -1322H-1277.34H-1276.34C-1276.34 -1322.55 -1275.89 -1323 -1275.34 -1323V-1324Z" fill="white" fill-opacity="0.1"/>
+<g id="web-chat-builder-template (Webflow)_2">
+<rect width="1920" height="5151" transform="translate(-1197.34 -1244)" fill="black"/>
+<g id="section">
+<g id="fetures">
+<g id="row">
+<g id="feature-card">
+<rect x="-24" y="-24" width="394.667" height="188" rx="12" fill="#101114"/>
+<g id="content">
+<g id="Frame">
+<g id="Group">
+<path id="Vector" d="M22.6641 17.3359V21.3359" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_2" d="M15.8359 7.44531L18.6643 10.2737" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_3" d="M4 9.33594H8" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_4" d="M9.33594 28.0026H26.0026C27.1071 28.0026 28.0026 27.1071 28.0026 26.0026V19.3359C28.0026 18.2314 27.1071 17.3359 26.0026 17.3359H20.8767" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_5" d="M9.33333 28C12.2789 28 14.6667 25.6121 14.6667 22.6667V6C14.6667 4.89543 13.7712 4 12.6667 4H6C4.89543 4 4 4.89543 4 6V22.6667C4 25.6121 6.38781 28 9.33333 28Z" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_6" d="M14.6641 8.45763L18.1453 4.97641C18.9263 4.19536 20.1926 4.19536 20.9737 4.97641L23.3307 7.33343L25.6878 9.69046C26.4689 10.4715 26.4689 11.7378 25.6878 12.5189L14.6641 23.5425" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_7" fill-rule="evenodd" clip-rule="evenodd" d="M7.66406 22.3307C7.66406 21.4102 8.41025 20.6641 9.33073 20.6641C10.2512 20.6641 10.9974 21.4102 10.9974 22.3307C10.9974 23.2513 10.2512 23.9974 9.33073 23.9974C8.41025 23.9974 7.66406 23.2513 7.66406 22.3307Z" fill="white"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

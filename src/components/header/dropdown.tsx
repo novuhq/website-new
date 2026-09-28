@@ -148,6 +148,8 @@ function MenuLinks({ items, variant }: IMenuLinksProps) {
   )
 }
 
+const NESTED_MENU_COLUMN_LIMIT = 8
+
 function NestedMenu({
   items,
   variant,
@@ -195,10 +197,18 @@ function NestedMenu({
         <div className="min-w-64 shrink-0 border-l border-gray-20 p-3.5">
           {variant === "channels" && (
             <p className="mx-2.5 mt-2.5 mb-3.5 text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
-              {activeItem.label} Agent Frameworks
+              {activeItem.childrenTitle ??
+                `${activeItem.label} Agent Frameworks`}
             </p>
           )}
-          <ul aria-label={`${activeItem.label} links`}>
+          <ul
+            className={cn(
+              // A long list would run past the viewport in one column.
+              (activeItem.children?.length ?? 0) > NESTED_MENU_COLUMN_LIMIT &&
+                "columns-2 gap-6 [&>li]:break-inside-avoid"
+            )}
+            aria-label={`${activeItem.label} links`}
+          >
             {activeItem.children?.map(
               ({ label, href, menuIcon, integrationIcon }) => (
                 <li key={label}>

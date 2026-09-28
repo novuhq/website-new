@@ -51,6 +51,9 @@ interface IFAQProps extends IFaqSection {
   className?: string
   titleClassName?: string
   containerClassName?: string
+  itemClassName?: string
+  triggerClassName?: string
+  contentClassName?: string
   defaultOpenFirst?: boolean
   onScheduleClick?: (source: string) => void
 }
@@ -63,6 +66,9 @@ const FAQ = ({
   className,
   titleClassName,
   containerClassName = "gap-y-6 max-w-208 md:gap-y-[22px] lg:max-w-224",
+  itemClassName,
+  triggerClassName,
+  contentClassName,
   defaultOpenFirst = false,
   onScheduleClick,
 }: IFAQProps) => {
@@ -107,14 +113,24 @@ const FAQ = ({
 
             return (
               <AccordionItem
-                className="border-gray-3"
+                className={cn("border-gray-3", itemClassName)}
                 key={question}
                 value={question}
               >
-                <AccordionTrigger className={faqTriggerVariants({ variant })}>
+                <AccordionTrigger
+                  className={cn(
+                    faqTriggerVariants({ variant }),
+                    triggerClassName
+                  )}
+                >
                   {question}
                 </AccordionTrigger>
-                <AccordionContent className={faqContentVariants({ variant })}>
+                <AccordionContent
+                  className={cn(
+                    faqContentVariants({ variant }),
+                    contentClassName
+                  )}
+                >
                   {resolvedAnswer}
                 </AccordionContent>
               </AccordionItem>

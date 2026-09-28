@@ -2,6 +2,7 @@ import type { TSectionAction } from "@/types/common"
 import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import ActionGroup from "@/components/ui/action-group"
+import type { ButtonProps } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 import { FinalCtaVideo } from "@/components/pages/final-cta"
 
@@ -14,6 +15,7 @@ interface ICTAProps {
   command?: string
   description: string
   prompt?: string
+  promptButtonVariant?: ButtonProps["variant"]
   title: string
 }
 
@@ -24,6 +26,7 @@ function Cta({
   description,
   command = "npx novu connect",
   prompt = DEFAULT_CONNECT_PROMPT,
+  promptButtonVariant = "outline-transparent",
 }: ICTAProps) {
   return (
     <section
@@ -50,7 +53,9 @@ function Cta({
         ) : (
           <div className="mt-8 flex w-full flex-col items-center justify-center gap-5 sm:w-auto sm:flex-row">
             <CopyCommand
-              className="w-full max-w-xs sm:w-70.5"
+              // Grow with the command instead of clipping it; the min width keeps
+              // short commands at the original size.
+              className="w-full max-w-xs sm:w-auto sm:max-w-full sm:min-w-70.5"
               controlClassName="pl-3"
               command={command}
               variant="highlighted"
@@ -58,7 +63,7 @@ function Cta({
             />
             <CopyPromptButton
               className="h-11 w-full max-w-xs px-5 text-base leading-none font-medium tracking-[-0.4px] normal-case sm:w-39 [&_svg]:!size-3.5"
-              variant="outline-transparent"
+              variant={promptButtonVariant}
               size="none"
               resetInterval={2000}
               value={prompt}

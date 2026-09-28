@@ -12,6 +12,7 @@ export interface IMenuItem {
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
+  childrenTitle?: string
   description?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
@@ -32,8 +33,22 @@ export type TMenuIcon =
   | "inbox"
   | "push"
   | "chat"
+  | "web-chat"
   | "sms"
   | "langchain"
+  | "blink-new"
+  | "lovable"
+  | "replit"
+  | "bolt-new"
+  | "sim-studio"
+  | "vellum"
+  | "flowise"
+  | "wordware"
+  | "crew-ai"
+  | "langgraph"
+  | "lindy"
+  | "stack-ai"
+  | "relevance-ai"
   | "ai-sdk"
   | "chat-sdk"
   | "claude-aws"

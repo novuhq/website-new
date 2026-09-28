@@ -72,6 +72,9 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   channelEmailClaude: "/channels/email/claude",
   channelEmailClaudeAws: "/channels/email/claude-aws",
   channelIMessage: "/channels/imessage",
+  // The Web Chat channel page itself ships separately; the builder pages under
+  // it are already live.
+  channelWebChat: "/channels/web-chat",
   channelIMessageLangchain: "/channels/imessage/langchain",
   channelIMessageAiSdk: "/channels/imessage/ai-sdk",
   channelIMessageChatSdk: "/channels/imessage/chat-sdk",
