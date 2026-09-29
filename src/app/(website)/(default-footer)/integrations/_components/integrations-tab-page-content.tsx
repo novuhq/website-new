@@ -21,22 +21,22 @@ const BANNER_CONTENT: Record<
   }
 > = {
   channels: {
+    title: "Add Custom Webhook",
+    description:
+      "Send notifications through a custom webhook when your\nprovider is not available as a built-in integration.",
+    cta: {
+      label: "View docs",
+      href: "https://docs.novu.co/platform/integrations/tool/webhook",
+      openInNewTab: true,
+    },
+  },
+  sources: {
     title: "Use the HTTP Step",
     description:
       "Send HTTP requests from your workflow to trigger third-\nparty actions and connect external services.",
     cta: {
       label: "View docs",
       href: "https://docs.novu.co/platform/workflow/add-and-configure-steps/configure-action-steps/http-step",
-      openInNewTab: true,
-    },
-  },
-  sources: {
-    title: "Add Custom Webhook",
-    description:
-      "Send notifications through a custom webhook when your\nprovider is not available as a built-in integration.",
-    cta: {
-      label: "View docs",
-      href: "https://docs.novu.co/platform/developer/webhooks",
       openInNewTab: true,
     },
   },
