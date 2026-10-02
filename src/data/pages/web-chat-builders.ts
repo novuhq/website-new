@@ -134,8 +134,8 @@ function createWebChatBuilderSharedContent({
   const livePreposition = isApp ? "in" : "on"
   const embedPreposition = isApp ? "into" : "on"
   const setupTitle = isApp
-    ? `How to add an AI agent to your ${heroName} app in four steps`
-    : `How to add your ${heroName} agent to your website in four steps`
+    ? `How to add an AI agent to your ${heroName} app in five steps`
+    : `How to add your ${heroName} agent to your website in five steps`
   const ctaTitle = isApp
     ? `Give your ${heroName} app an AI agent`
     : `Bring your ${heroName} agent to your website`
@@ -186,11 +186,14 @@ function createWebChatBuilderSharedContent({
         type: "secondary",
         id: "web-chat-builder-setup",
         title: setupTitle,
-        description: "No webhooks, no OAuth, about two minutes.",
+        description: "No webhooks, no OAuth, a few minutes.",
         steps: [
           {
             description: `Connect ${agentLabelLower} to Novu Web Chat:\nrun `,
             command: "npx novu connect --channel web-chat",
+          },
+          {
+            description: `Give ${agentLabelLower} its instructions\nin the Novu dashboard, so it has something to say.`,
           },
           {
             description:
@@ -232,7 +235,7 @@ function createWebChatBuilderSharedContent({
         question: isApp
           ? `How do I add an AI chatbot to a ${heroName} app?`
           : `How do I add my ${heroName} agent to a website?`,
-        answer: `Connect ${agentLabelLower} to Novu Web Chat, then paste the embed ${embedPreposition} ${destinationPhrase}.`,
+        answer: `Connect ${agentLabelLower} to Novu Web Chat, give it instructions in the Novu dashboard, then paste the embed ${embedPreposition} ${destinationPhrase}.`,
       },
       {
         question: `Can I style it to match my ${destination}?`,
@@ -331,6 +334,11 @@ const WEB_CHAT_BUILDER_PAGES = Object.freeze({
   "bolt-new": createWebChatBuilderPage({
     slug: "bolt-new",
     builderName: "Bolt.new",
+    kind: "app",
+  }),
+  v0: createWebChatBuilderPage({
+    slug: "v0",
+    builderName: "v0",
     kind: "app",
   }),
   "sim-studio": createWebChatBuilderPage({

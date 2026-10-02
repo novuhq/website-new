@@ -11,6 +11,9 @@ import relevanceAiLogo from "@/svgs/web-chat-builders/relevance-ai.inline.svg"
 import replitLogo from "@/svgs/web-chat-builders/replit.inline.svg"
 import simStudioLogo from "@/svgs/web-chat-builders/sim-studio.inline.svg"
 import stackAiLogo from "@/svgs/web-chat-builders/stack-ai.inline.svg"
+// TODO(design): placeholder monogram, not the official v0 (Vercel) logomark.
+// Swap for the real brand asset before this page ships.
+import v0Logo from "@/svgs/web-chat-builders/v0.inline.svg"
 import vellumLogo from "@/svgs/web-chat-builders/vellum.inline.svg"
 import wordwareLogo from "@/svgs/web-chat-builders/wordware.inline.svg"
 
@@ -26,6 +29,7 @@ export const WEB_CHAT_BUILDER_LOGOS: Record<
   lovable: lovableLogo,
   replit: replitLogo,
   "bolt-new": boltNewLogo,
+  v0: v0Logo,
   "sim-studio": simStudioLogo,
   vellum: vellumLogo,
   flowise: flowiseLogo,
