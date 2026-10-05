@@ -5,3 +5,20 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - '@clerk/react@6.12.11'
   - '@clerk/shared@4.26.0'
+  # Next.js 16.3.3 is a critical security release (GHSA-p293-qw3h-jr36,
+  # GHSA-2xp9-vwfh-vxw4 — unauthenticated RCE, the latter via the Image
+  # Optimization API with AVIF, which this site enables). Published
+  # 2026-08-25, so it is inside the 72h minimum-release-age window.
+  # These entries can be dropped once the window has elapsed.
+  - 'next@16.3.3'
+  - '@next/env@16.3.3'
+  - '@next/mdx@16.3.3'
+  - '@next/eslint-plugin-next@16.3.3'
+  - '@next/swc-darwin-arm64@16.3.3'
+  - '@next/swc-darwin-x64@16.3.3'
+  - '@next/swc-linux-arm64-gnu@16.3.3'
+  - '@next/swc-linux-arm64-musl@16.3.3'
+  - '@next/swc-linux-x64-gnu@16.3.3'
+  - '@next/swc-linux-x64-musl@16.3.3'
+  - '@next/swc-win32-arm64-msvc@16.3.3'
+  - '@next/swc-win32-x64-msvc@16.3.3'

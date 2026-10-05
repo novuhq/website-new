@@ -1,14 +1,6 @@
 "use client"
 
 import Image, { type StaticImageData } from "next/image"
-import gangverkLogo from "@/images/pages/home/gangverk.svg"
-import checkpointLogo from "@/images/pages/pricing/logos/checkpoint.svg"
-import cloudSoftwareLogo from "@/images/pages/pricing/logos/cloud-software-group.svg"
-import eburyLogo from "@/images/pages/pricing/logos/ebury.svg"
-import elProffenLogo from "@/images/pages/pricing/logos/el-proffen.svg"
-import medvolLogo from "@/images/pages/pricing/logos/medvol.svg"
-import mongodbLogo from "@/images/pages/pricing/logos/mongodb.svg"
-import trustflightLogo from "@/images/pages/pricing/logos/trustflight.svg"
 import emailIcon from "@/svgs/pages/connect/channels/email.svg"
 import imessageIcon from "@/svgs/pages/connect/channels/imessage.svg"
 import slackIcon from "@/svgs/pages/connect/channels/slack.svg"
@@ -16,18 +8,16 @@ import teamsIcon from "@/svgs/pages/connect/channels/teams.png"
 import telegramIcon from "@/svgs/pages/connect/channels/telegram.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
-import { DEFAULT_CONNECT_PROMPT } from "@/lib/connect-prompt"
+import type { TSectionAction } from "@/types/common"
 import { cn } from "@/lib/utils"
-import { CopyCommand } from "@/components/ui/copy-command"
-import Logos from "@/components/ui/logos"
+import ActionGroup from "@/components/ui/action-group"
+import CustomerLogos from "@/components/customer-logos"
 
-import AnimatedCopyCheck from "./animated-copy-check"
 import {
   HOME_CHANNEL_SELECT_EVENT,
   HOME_FEATURES_SECTION_ID,
   type IHomeChannelSelectDetail,
 } from "./channel-navigation"
-import CopyPromptButton from "./copy-prompt-button"
 import HeroGlobe from "./hero-globe"
 
 const CHANNEL_HOVER_STYLES = {
@@ -111,29 +101,10 @@ const CHANNELS: Array<{
   },
 ]
 
-const CUSTOMER_LOGOS = [
-  { name: "El Proffen", image: elProffenLogo },
-  { name: "TrustFlight", image: trustflightLogo },
-  { name: "MedVol", image: medvolLogo },
-  { name: "Check Point", image: checkpointLogo },
-  { name: "MongoDB", image: mongodbLogo },
-  { name: "Cloud Software Group", image: cloudSoftwareLogo },
-  { name: "Gangverk", image: gangverkLogo },
-  { name: "Ebury", image: eburyLogo },
-].map(({ name, image }) => ({
-  src: image,
-  alt: name,
-  width: image.width,
-  height: image.height,
-  wrapperClassName: "flex h-6 w-36 items-center justify-center md:h-8",
-  imageClassName: "h-auto max-h-6 w-auto max-w-full object-contain md:max-h-8",
-}))
-
 export interface IHeroProps {
+  actions: TSectionAction[]
   className?: string
-  command?: string
   description: string
-  prompt?: string
   title: string
 }
 
@@ -212,13 +183,7 @@ function ChannelIcons() {
   )
 }
 
-function Hero({
-  title,
-  description,
-  command = "npx novu connect",
-  prompt = DEFAULT_CONNECT_PROMPT,
-  className,
-}: IHeroProps) {
+function Hero({ title, description, actions, className }: IHeroProps) {
   return (
     <section
       className={cn(
@@ -238,41 +203,14 @@ function Hero({
             <p className="pointer-events-auto text-base leading-normal tracking-tight text-pretty text-[#a3a6b2] select-text md:text-lg md:leading-normal">
               {description}
             </p>
-            <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-7">
-              <CopyCommand
-                command={command}
-                variant="highlighted"
-                commandClassName="pointer-events-auto select-text"
-                copiedContent={<AnimatedCopyCheck />}
-              />
-              <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none font-medium tracking-tight normal-case hover:border-[#867A94] hover:bg-white/7 sm:w-39 [&_svg]:size-3.5"
-                variant="outline-transparent"
-                size="none"
-                resetInterval={2000}
-                value={prompt}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="mt-[70vw] border-y border-gray-3 bg-black md:mt-[65vw] lg:mt-147"
-          role="region"
-          aria-label="Trusted by teams worldwide"
-        >
-          <div className="scrollbar-hidden mx-auto w-full max-w-384 overflow-hidden px-5 motion-reduce:overflow-x-auto md:px-8">
-            <Logos
-              logos={CUSTOMER_LOGOS}
-              className="mx-0 p-0 lg:mx-0 lg:p-0"
-              animationClassName="animate-logos will-change-transform motion-reduce:animate-none"
-              trackClassName="h-18 md:h-21 lg:w-max"
-              listClassName="gap-7 pr-7 lg:w-max lg:justify-start lg:gap-7 lg:pr-7"
-              duplicateListClassName="gap-7 pr-7 motion-reduce:hidden lg:flex lg:gap-7 lg:pr-7"
-              useMask
+            <ActionGroup
+              className="mt-6 gap-x-5 max-sm:w-full max-sm:flex-col md:gap-x-5 lg:mt-7 [&_[data-slot=button]]:h-11 [&_[data-slot=button]]:min-w-0 [&_[data-slot=button]]:rounded-md [&_[data-slot=button]]:px-5 [&_[data-slot=button]]:text-base [&_[data-slot=button]]:tracking-[-0.025em] [&_[data-slot=button]]:normal-case max-sm:[&_[data-slot=button]]:w-full"
+              actions={actions}
             />
           </div>
         </div>
+
+        <CustomerLogos className="mt-[70vw] md:mt-[65vw] lg:mt-147" />
       </div>
     </section>
   )
