@@ -21,7 +21,7 @@ function WebChatBuilderHero({
       <div className="mx-auto grid max-w-320 items-center gap-12 px-5 md:px-8 lg:grid-cols-[minmax(0,544fr)_minmax(0,608fr)] lg:gap-16">
         <div className="min-w-0 lg:-translate-y-5">
           <div className="flex max-w-120 flex-col gap-4.5 md:mx-auto md:items-center md:text-center lg:mx-0 lg:items-start lg:text-left">
-            <p className="flex items-center gap-3 text-[0.8125rem] leading-none font-medium text-purple-1 uppercase md:justify-center lg:justify-start">
+            <p className="flex items-center gap-3 text-[0.8125rem] leading-none font-medium text-purple-1 md:justify-center lg:justify-start">
               <span aria-hidden className="size-2.5 shrink-0 bg-purple-3" />
               {hero.eyebrow}
             </p>
