@@ -10,7 +10,6 @@ import BentoCardBackground, {
   type BentoCardBackgroundImage,
 } from "./bento-card-background"
 import InboxComponent from "./code-with-inbox/inbox/inbox-component"
-import CopyPromptButton from "./copy-prompt-button"
 import MagicBento from "./magic-bento"
 import NotifyCodeTabs, { type INotifyCodeTab } from "./notify-code-tabs"
 
@@ -33,12 +32,8 @@ export interface INovuNotifyProps {
   description: string
   items: INovuNotifyItem[]
   label?: string
-  prompt?: string
   title: string
 }
-
-const DEFAULT_PROMPT =
-  "Add Novu Notify to my application. Configure an in-app notification inbox, multi-channel delivery, and user-controlled notification preferences."
 
 function NovuNotify({
   className,
@@ -47,7 +42,6 @@ function NovuNotify({
   title,
   description,
   items,
-  prompt = DEFAULT_PROMPT,
 }: INovuNotifyProps) {
   if (!items || items.length === 0) {
     return null
@@ -85,11 +79,21 @@ function NovuNotify({
             </p>
 
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:justify-self-end lg:pt-2">
-              <CopyPromptButton
-                className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-39 [&_svg]:!size-3.5"
+              <Button
+                className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-auto"
                 size="sm"
-                value={prompt}
-              />
+                asChild
+              >
+                <NextLink
+                  href={ROUTE.dashboardV2SignUp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-click-location="home_novu_notify"
+                  data-click-text="try_now"
+                >
+                  Try now
+                </NextLink>
+              </Button>
               <Button
                 className="h-11 w-full px-5 text-base leading-none tracking-tight normal-case sm:w-29.5"
                 variant="outline-transparent"

@@ -33,9 +33,9 @@ const keyTakeawaysBlock = defineType({
             defineField({
               name: "title",
               type: "string",
-              title: "Title",
-              validation: (rule) =>
-                rule.required().error("Please add a takeaway title"),
+              title: "Title (optional)",
+              description:
+                "Leave empty for takeaways that are a single sentence with no bold lead-in.",
             }),
             defineField({
               name: "text",

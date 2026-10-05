@@ -8,7 +8,10 @@ import shine from "@/svgs/pages/customers/cta/shine.svg"
 
 import { IContentCtaBlock } from "@/types/content"
 import { normalizeDashboardUrl } from "@/lib/normalize-dashboard-url"
-import { getProcessedImageUrl } from "@/lib/sanity/utils/get-url-for-image"
+import {
+  getImageEdgeUrl,
+  getProcessedImageUrl,
+} from "@/lib/sanity/utils/get-url-for-image"
 import { Button } from "@/components/ui/button"
 
 type TCtaVariant = "default" | "v2"
@@ -45,12 +48,32 @@ function Cta({
           quality: 95,
         })
       : null
+    // The mobile art is pinned to its designed width, so the leftover space is
+    // filled with the artwork's own edge columns stretched sideways. The
+    // gradients below only cover the bundled fallback, which cannot be cropped.
+    const mobileEdgeLeft = getImageEdgeUrl(mobileCover, "left")
+    const mobileEdgeRight = getImageEdgeUrl(mobileCover, "right")
 
     return (
       <div className="not-prose relative my-8 h-124 overflow-hidden rounded-[20px] border border-[#191a1f] sm:aspect-[704/336] sm:h-auto">
         <div className="absolute inset-0 sm:hidden" aria-hidden>
-          <div className="absolute inset-y-0 right-1/2 left-0 bg-[linear-gradient(to_bottom,#111216_0%,#121317_10%,#13131d_20%,#131426_30%,#161a37_40%,#1c2149_50%,#21275b_60%,#272e66_70%,#2a306a_80%,#2a3067_90%,#272b59_100%)]" />
-          <div className="absolute inset-y-0 right-0 left-1/2 bg-[linear-gradient(to_bottom,#111216_0%,#111119_10%,#12111f_20%,#191632_30%,#29204e_40%,#412f6c_50%,#5e4089_60%,#744e9e_70%,#7f57aa_80%,#7a51a0_90%,#5d4183_100%)]" />
+          {mobileEdgeLeft && mobileEdgeRight ? (
+            <>
+              <div
+                className="absolute inset-y-0 right-1/2 left-0 bg-size-[100%_100%] bg-no-repeat"
+                style={{ backgroundImage: `url(${mobileEdgeLeft})` }}
+              />
+              <div
+                className="absolute inset-y-0 right-0 left-1/2 bg-size-[100%_100%] bg-no-repeat"
+                style={{ backgroundImage: `url(${mobileEdgeRight})` }}
+              />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-y-0 right-1/2 left-0 bg-[linear-gradient(to_bottom,#111216_0%,#121317_10%,#13131d_20%,#131426_30%,#161a37_40%,#1c2149_50%,#21275b_60%,#272e66_70%,#2a306a_80%,#2a3067_90%,#272b59_100%)]" />
+              <div className="absolute inset-y-0 right-0 left-1/2 bg-[linear-gradient(to_bottom,#111216_0%,#111119_10%,#12111f_20%,#191632_30%,#29204e_40%,#412f6c_50%,#5e4089_60%,#744e9e_70%,#7f57aa_80%,#7a51a0_90%,#5d4183_100%)]" />
+            </>
+          )}
           <Image
             className="pointer-events-none absolute inset-y-0 left-1/2 h-full w-80 max-w-none -translate-x-1/2 [mask-image:var(--cta-edge-fade)] [-webkit-mask-image:var(--cta-edge-fade)]"
             style={

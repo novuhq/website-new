@@ -73,6 +73,7 @@
     "html-react-parser": "^5.2.2",
     "ipaddr.js": "^2.5.0",
     "js-cookie": "^3.0.5",
+    "lottie-web": "^5.13.0",
     "lucide-react": "^0.511.0",
     "media-chrome": "^4.7.1",
     "mixpanel-browser": "^2.71.1",

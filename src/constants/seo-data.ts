@@ -41,6 +41,19 @@ export const SEO_DATA = {
     description: `Join the team creating open-source notification infrastructure for developers, product teams, and the millions of users they reach.`,
     pathname: ROUTE.careers as string,
   },
+  contactUs: {
+    title: "Contact Us",
+    description:
+      "Get in touch with our sales and support teams for demos, onboarding support, or product questions.",
+    imagePath: "/images/social-preview.jpg",
+    pathname: ROUTE.contactUs as string,
+  },
+  ossFriends: {
+    title: "Our Open-source Friends - Novu",
+    description: "Our open-source friends and partners",
+    imagePath: "/images/social-preview.jpg",
+    pathname: ROUTE.ossFriends as string,
+  },
   pricing: {
     title: `Pricing | ${config.projectName}`,
     description: `Flexible pricing for companies and developers`,
