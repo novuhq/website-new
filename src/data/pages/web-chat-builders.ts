@@ -85,10 +85,7 @@ export interface IWebChatBuilderCta {
   command: string
 }
 
-export type WebChatBuilderMediaKey =
-  | "app-hero"
-  | "agent-hero"
-  | "shared-channels"
+export type WebChatBuilderMediaKey = "app-hero" | "shared-channels"
 
 export interface IWebChatBuilderMedia {
   hero: WebChatBuilderMediaKey
@@ -117,39 +114,24 @@ export interface IWebChatBuilderPage {
   cta: IWebChatBuilderCta
 }
 
-type WebChatBuilderKind = "app" | "agent"
-
 function createWebChatBuilderSharedContent({
-  heroName,
-  kind,
+  builderName,
 }: {
-  heroName: string
-  kind: WebChatBuilderKind
+  builderName: string
 }): Pick<IWebChatBuilderPage, "sections" | "faqTitle" | "faq" | "cta"> {
-  const isApp = kind === "app"
-  const destination = isApp ? `${heroName} app` : "website"
+  const destination = `${builderName} app`
   const destinationPhrase = `your ${destination}`
-  const agentLabel = isApp ? "Your agent" : `Your ${heroName} agent`
-  const agentLabelLower = isApp ? "your agent" : `your ${heroName} agent`
-  const livePreposition = isApp ? "in" : "on"
-  const embedPreposition = isApp ? "into" : "on"
-  const setupTitle = isApp
-    ? `How to add an AI agent to your ${heroName} app in five steps`
-    : `How to add your ${heroName} agent to your website in five steps`
-  const ctaTitle = isApp
-    ? `Give your ${heroName} app an AI agent`
-    : `Bring your ${heroName} agent to your website`
 
   return {
     sections: [
       {
         type: "primary",
         id: "web-chat-builder-features",
-        title: `${agentLabel}, live ${livePreposition} ${destinationPhrase}`,
+        title: `Your agent, live in ${destinationPhrase}`,
         features: [
           {
             title: "One-snippet embed",
-            description: `Paste one script tag ${embedPreposition} ${destinationPhrase}.`,
+            description: `Paste one script tag into ${destinationPhrase}.`,
             icon: "embed",
           },
           {
@@ -165,7 +147,8 @@ function createWebChatBuilderSharedContent({
           },
           {
             title: "Two-way",
-            description: `${agentLabel} receives visitors’ messages and replies directly in the same chat widget.`,
+            description:
+              "Your agent receives visitors’ messages and replies directly in the same chat widget.",
             icon: "two-way",
           },
           {
@@ -185,25 +168,27 @@ function createWebChatBuilderSharedContent({
       {
         type: "secondary",
         id: "web-chat-builder-setup",
-        title: setupTitle,
+        title: `How to add an AI agent to ${destinationPhrase} in five steps`,
         description: "No webhooks, no OAuth, a few minutes.",
         steps: [
           {
-            description: `Connect ${agentLabelLower} to Novu Web Chat:\nrun `,
+            description: "Connect your agent to Novu Web Chat:\nrun ",
             command: "npx novu connect --channel web-chat",
           },
           {
-            description: `Give ${agentLabelLower} its instructions\nin the Novu dashboard, so it has something to say.`,
+            description:
+              "Give your agent its instructions\nin the Novu dashboard, so it has something to say.",
           },
           {
             description:
               "Copy your one-line Web Chat embed,\na single script tag.",
           },
           {
-            description: `Paste the embed where you want the widget ${livePreposition} ${destinationPhrase}.`,
+            description: `Paste the embed where you want the widget in ${destinationPhrase}.`,
           },
           {
-            description: `Publish. ${agentLabel} is live in the chat,\nreplying to visitors.`,
+            description:
+              "Publish. Your agent is live in the chat,\nreplying to visitors.",
           },
         ],
       },
@@ -211,7 +196,7 @@ function createWebChatBuilderSharedContent({
         type: "tertiary",
         id: "web-chat-builder-channels",
         title: "One workflow, every channel",
-        description: `${agentLabel}’s logic works across ${destinationPhrase} and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.`,
+        description: `Your agent’s logic works across ${destinationPhrase} and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.`,
         command: "npx novu connect --channel web-chat",
         channels: [
           { name: "Telegram", icon: "telegram" },
@@ -224,18 +209,14 @@ function createWebChatBuilderSharedContent({
         ],
         moreChannelsLabel: "More channels",
         moreChannelsHint: "More channels coming soon",
-        imageAlt: isApp
-          ? `Your ${heroName} app is just the beginning!`
-          : `Your ${heroName} agent is just the beginning!`,
+        imageAlt: `Your ${destination} is just the beginning!`,
       },
     ],
     faqTitle: "Frequently asked questions",
     faq: [
       {
-        question: isApp
-          ? `How do I add an AI chatbot to a ${heroName} app?`
-          : `How do I add my ${heroName} agent to a website?`,
-        answer: `Connect ${agentLabelLower} to Novu Web Chat, give it instructions in the Novu dashboard, then paste the embed ${embedPreposition} ${destinationPhrase}.`,
+        question: `How do I add an AI chatbot to a ${destination}?`,
+        answer: `Connect your agent to Novu Web Chat, give it instructions in the Novu dashboard, then paste the embed into ${destinationPhrase}.`,
       },
       {
         question: `Can I style it to match my ${destination}?`,
@@ -243,7 +224,8 @@ function createWebChatBuilderSharedContent({
       },
       {
         question: "Is this human live chat?",
-        answer: `${agentLabel} receives visitors’ messages and replies directly in the same chat widget.`,
+        answer:
+          "Your agent receives visitors’ messages and replies directly in the same chat widget.",
       },
       {
         question: "Can the same agent reach users on WhatsApp or email?",
@@ -252,8 +234,8 @@ function createWebChatBuilderSharedContent({
       },
     ],
     cta: {
-      title: ctaTitle,
-      description: `Bring the agent you built. Novu puts it ${livePreposition} ${destinationPhrase} and reaches your users on every channel from one workflow.`,
+      title: `Give ${destinationPhrase} an AI agent`,
+      description: `Bring the agent you built. Novu puts it in ${destinationPhrase} and reaches your users on every channel from one workflow.`,
       command: "npx novu connect --channel web-chat",
     },
   }
@@ -262,33 +244,20 @@ function createWebChatBuilderSharedContent({
 function createWebChatBuilderPage({
   slug,
   builderName,
-  heroName = builderName,
-  kind,
 }: {
   slug: string
   builderName: string
-  heroName?: string
-  kind: WebChatBuilderKind
 }): IWebChatBuilderPage {
-  const title =
-    kind === "app"
-      ? `Add an AI agent to your ${heroName} app`
-      : `Add your ${heroName} agent to your website`
-  const description =
-    kind === "app"
-      ? `Bring your AI agent to ${heroName} with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.`
-      : `Bring your ${heroName} agent to your website with one embed. Chat with visitors and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.`
-  const prompt =
-    kind === "app"
-      ? `Add Novu Web Chat to my ${heroName} app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent.`
-      : `Add Novu Web Chat to my ${heroName} agent. Run npx novu connect --channel web-chat, then help me embed the chat on my website and connect it to the agent.`
+  const title = `Add an AI agent to your ${builderName} app`
+  const description = `Bring your AI agent to ${builderName} with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.`
+  const prompt = `Add Novu Web Chat to my ${builderName} app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent.`
 
   return {
-    ...createWebChatBuilderSharedContent({ heroName, kind }),
+    ...createWebChatBuilderSharedContent({ builderName }),
     slug,
     builderName,
     media: {
-      hero: kind === "app" ? "app-hero" : "agent-hero",
+      hero: "app-hero",
       channels: "shared-channels",
     },
     seo: {
@@ -296,7 +265,7 @@ function createWebChatBuilderPage({
       description,
     },
     hero: {
-      eyebrow: `Web Chat for ${heroName}`,
+      eyebrow: `Web Chat for ${builderName}`,
       title,
       description,
       command: "npx novu connect --channel web-chat",
@@ -305,10 +274,7 @@ function createWebChatBuilderPage({
       // The hero artwork is shared, so the builder is named on an overlay
       // instead of being baked into one near-identical export per builder.
       badge: {
-        label:
-          kind === "app"
-            ? `Built with ${heroName}`
-            : `Agent built with ${heroName}`,
+        label: `Built with ${builderName}`,
         logo: slug,
       },
     },
@@ -319,12 +285,10 @@ const WEB_CHAT_BUILDER_PAGES = Object.freeze({
   lovable: createWebChatBuilderPage({
     slug: "lovable",
     builderName: "Lovable",
-    kind: "app",
   }),
   v0: createWebChatBuilderPage({
     slug: "v0",
     builderName: "v0",
-    kind: "app",
   }),
 })
 

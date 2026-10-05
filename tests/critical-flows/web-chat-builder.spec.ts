@@ -346,7 +346,7 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
     await expect(
       channels.getByRole("img", { name: artworkMessage, exact: true })
     ).toHaveAttribute("src", /channels-mascot\.[\w-]+\.png/)
-    // One plate per kind now; the builder is named by the badge over it.
+    // One shared plate; the builder is named by the badge over it.
     const { hero: heroCopy, media } = getWebChatBuilderBySlug(slug)!
 
     await expect(artwork).toHaveAttribute(
