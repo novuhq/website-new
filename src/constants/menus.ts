@@ -279,6 +279,8 @@ export const MENUS = {
               menuIcon: "web-chat",
               childrenTitle: "Web Chat integrations",
               children: WEB_CHAT_BUILDER_ITEMS,
+              // Shown instead of the list only if no builder page is published.
+              previewImage: "/images/header/menu/banner-web-chat.webp",
             },
           ],
         },

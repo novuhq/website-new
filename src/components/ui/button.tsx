@@ -19,6 +19,7 @@ const buttonVariants = cva(
         "outline-faded":
           "border border-accent bg-[#15151b] text-gray-9 hover:bg-accent hover:text-foreground",
         link: "text-gray-9 hover:text-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
         none: "",
       },
       size: {
@@ -28,6 +29,7 @@ const buttonVariants = cva(
         md: "h-7 rounded-full px-3 text-sm xl:text-[15px]",
         lg: "h-12 rounded-md text-sm leading-none px-6 uppercase",
         icon: "size-9",
+        "icon-sm": "size-8 rounded-md",
         none: "",
       },
     },

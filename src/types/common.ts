@@ -16,6 +16,7 @@ export interface IMenuItem {
   description?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
+  previewImage?: string
   remainingCount?: number
 }
 
