@@ -1,7 +1,15 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react"
 import { Geist_Mono } from "next/font/google"
+import NextLink from "next/link"
 import {
   HERO_BADGE_LABEL,
   HERO_CLI_COMMAND,
@@ -9,6 +17,9 @@ import {
   HERO_DESCRIPTION_TEXT,
   HERO_HEADING,
   HERO_IMPLEMENT_PROMPT,
+  HERO_META_INTEGRATIONS,
+  HERO_META_INTEGRATIONS_LABEL,
+  HERO_META_LINE,
   HERO_TOOLTIP_LINK_LABEL,
   HERO_TOOLTIP_TEXT,
 } from "@/data/pages/web-chat"
@@ -135,6 +146,36 @@ function CliPill({ className }: { className?: string }) {
   )
 }
 
+/**
+ * Figma `45738-68397`: the meta line, ending with links to the builder pages
+ * that ship today. It blends plus-lighter over the hero glow.
+ */
+function MetaLine({ className }: { className?: string }) {
+  return (
+    <p
+      className={cn(
+        "text-sm leading-[1.375] tracking-tight text-white/40 mix-blend-plus-lighter md:max-w-[369px] md:text-[15px]",
+        className
+      )}
+    >
+      {HERO_META_LINE} {HERO_META_INTEGRATIONS_LABEL}{" "}
+      {HERO_META_INTEGRATIONS.map(({ label, href }, index) => (
+        <Fragment key={href}>
+          {index > 0 &&
+            (index === HERO_META_INTEGRATIONS.length - 1 ? " and " : ", ")}
+          <NextLink
+            href={href}
+            className="underline transition-colors hover:text-white"
+          >
+            {label}
+          </NextLink>
+        </Fragment>
+      ))}
+      .
+    </p>
+  )
+}
+
 function HeroBadge() {
   return (
     <span className="inline-flex items-center gap-3">
@@ -181,26 +222,30 @@ function HeroTitleColumn() {
 }
 
 /**
- * Desktop-only: `Copy Prompt` before the CLI pill. Not width-constrained
- * beyond fitting content — a fixed 401px previously forced the CLI pill's
- * full command to truncate; Figma's `buttons` row (`45487-83394`) just hugs
- * its two children.
+ * Desktop-only: meta line above the CTA row, `Copy Prompt` before the CLI
+ * pill. Not width-constrained beyond fitting content — a fixed 401px
+ * previously forced the CLI pill's full command to truncate; Figma's
+ * `buttons` row (`45487-83394`) just hugs its two children.
  */
 function HeroCtaColumnDesktop() {
   return (
-    <div className="hidden items-center gap-4 xl:flex xl:shrink-0 xl:pb-2">
-      <CopyPromptWithTooltip />
-      <CliPill />
+    <div className="hidden xl:flex xl:shrink-0 xl:flex-col xl:items-start xl:gap-5 xl:pb-2">
+      <MetaLine />
+      <div className="flex w-full items-center gap-4">
+        <CopyPromptWithTooltip />
+        <CliPill />
+      </div>
     </div>
   )
 }
 
-/** Phones lead with the CLI; tablets put Copy Prompt first. */
+/** Phones lead with the CLI; tablets put Copy Prompt first, with meta below. */
 function HeroCtaColumnMobile() {
   return (
     <div className="grid gap-4 sm:grid-cols-[minmax(0,24.5625rem)_8.5rem] md:w-[545px] md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-y-4.5 lg:gap-y-5 xl:hidden">
       <CliPill className="md:col-start-2 md:row-start-1" />
       <CopyPromptWithTooltip className="md:col-start-1 md:row-start-1" />
+      <MetaLine className="mt-0.5 sm:col-span-2 md:mt-0" />
     </div>
   )
 }

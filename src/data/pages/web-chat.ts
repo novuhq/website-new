@@ -1,4 +1,5 @@
 import type { StaticImageData } from "next/image"
+import { ROUTE } from "@/constants/routes"
 import agentMark from "@/images/pages/channels/web-chat/agent-mark.webp"
 import heroAgent from "@/images/pages/channels/web-chat/hero-agent.png"
 import heroChatLight from "@/images/pages/channels/web-chat/hero-chat-light.svg"
@@ -31,9 +32,9 @@ export const NOISE_GRAIN_SVG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
 /**
- * The hero shell copy (Task 8): badge, heading, description, and CTAs.
- * Character-for-character against the Task 8 brief and the `typography`
- * Figma node (`45487-111212` desktop, `45487-113230` mobile).
+ * The hero shell copy (Task 8): badge, heading, description, meta line and
+ * CTAs. Character-for-character against the Task 8 brief and the
+ * `typography` Figma node (`45738-68388` desktop, `45487-113230` mobile).
  */
 export const HERO_BADGE_LABEL = "Web Chat"
 
@@ -41,6 +42,17 @@ export const HERO_HEADING = "Your agent, live inside your product"
 
 export const HERO_DESCRIPTION_TEXT =
   "Web Chat uses product context, takes action, and continues conversations across channels. Live in two minutes."
+
+export const HERO_META_LINE =
+  "~40K GitHub stars · open source · no OAuth to install. Choose the CLI or Copy Prompt (recommended)."
+
+export const HERO_META_INTEGRATIONS_LABEL = "Integrations are available with:"
+
+// The builder pages that ship today; each one gets its own landing page.
+export const HERO_META_INTEGRATIONS = [
+  { label: "Lovable", href: `${ROUTE.channelWebChat}/lovable` },
+  { label: "v0", href: `${ROUTE.channelWebChat}/v0` },
+] as const
 
 export const HERO_CLI_COMMAND = "npx novu connect --channel web-chat"
 
