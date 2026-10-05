@@ -13,104 +13,34 @@ import {
 } from "./helpers"
 
 const faqQuestions = [
-  "How do I add an AI chatbot to a Blink.new app?",
-  "Can I style it to match my Blink.new app?",
+  "How do I add an AI chatbot to a Lovable app?",
+  "Can I style it to match my Lovable app?",
   "Is this human live chat?",
   "Can the same agent reach users on WhatsApp or email?",
 ]
 
 const figmaHeroVariants = [
   [
-    "blink-new",
-    "Add an AI agent to your Blink.new app",
-    "Give your Blink.new app an AI agent",
-  ],
-  [
     "lovable",
     "Add an AI agent to your Lovable app",
     "Give your Lovable app an AI agent",
   ],
-  [
-    "replit",
-    "Add an AI agent to your Replit app",
-    "Give your Replit app an AI agent",
-  ],
-  [
-    "bolt-new",
-    "Add an AI agent to your Bolt.new app",
-    "Give your Bolt.new app an AI agent",
-  ],
-  [
-    "sim-studio",
-    "Add your Sim agent to your website",
-    "Bring your Sim agent to your website",
-  ],
-  [
-    "vellum",
-    "Add your Vellum agent to your website",
-    "Bring your Vellum agent to your website",
-  ],
-  [
-    "flowise",
-    "Add your Flowise agent to your website",
-    "Bring your Flowise agent to your website",
-  ],
-  [
-    "wordware",
-    "Add your Wordware agent to your website",
-    "Bring your Wordware agent to your website",
-  ],
-  [
-    "crew-ai",
-    "Add your CrewAI agent to your website",
-    "Bring your CrewAI agent to your website",
-  ],
-  [
-    "langgraph",
-    "Add your LangGraph agent to your website",
-    "Bring your LangGraph agent to your website",
-  ],
-  [
-    "lindy",
-    "Add your Lindy agent to your website",
-    "Bring your Lindy agent to your website",
-  ],
-  [
-    "stack-ai",
-    "Add your Stack AI agent to your website",
-    "Bring your Stack AI agent to your website",
-  ],
-  [
-    "relevance-ai",
-    "Add your Relevance AI agent to your website",
-    "Bring your Relevance AI agent to your website",
-  ],
+  ["v0", "Add an AI agent to your v0 app", "Give your v0 app an AI agent"],
 ] as const
 
 const channelArtworkMessages: Record<
   (typeof figmaHeroVariants)[number][0],
   string
 > = {
-  "blink-new": "Your Blink.new app is just the beginning!",
   lovable: "Your Lovable app is just the beginning!",
-  replit: "Your Replit app is just the beginning!",
-  "bolt-new": "Your Bolt.new app is just the beginning!",
-  "sim-studio": "Your Sim agent is just the beginning!",
-  vellum: "Your Vellum agent is just the beginning!",
-  flowise: "Your Flowise agent is just the beginning!",
-  wordware: "Your Wordware agent is just the beginning!",
-  "crew-ai": "Your CrewAI agent is just the beginning!",
-  langgraph: "Your LangGraph agent is just the beginning!",
-  lindy: "Your Lindy agent is just the beginning!",
-  "stack-ai": "Your Stack AI agent is just the beginning!",
-  "relevance-ai": "Your Relevance AI agent is just the beginning!",
+  v0: "Your v0 app is just the beginning!",
 }
 
 test("renders the builder FAQ with its first answer open and keyboard controls", async ({
   page,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
   const faq = page.locator("#web-chat-builder-faq")
   await expect(faq.getByRole("heading", { level: 2 })).toHaveText(
     "Frequently asked questions"
@@ -123,7 +53,7 @@ test("renders the builder FAQ with its first answer open and keyboard controls",
     await expect(triggers.nth(index)).toHaveAttribute("aria-expanded", "false")
   }
   await expect(faq.getByRole("region")).toHaveText(
-    "Connect your agent to Novu Web Chat, then paste the embed into your Blink.new app."
+    "Connect your agent to Novu Web Chat, give it instructions in the Novu dashboard, then paste the embed into your Lovable app."
   )
   await expectReactHandlerReady(triggers.nth(0), "onClick")
   await triggers.nth(0).focus()
@@ -156,12 +86,12 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
   page,
   request,
 }) => {
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
-  const config = getWebChatBuilderBySlug("blink-new")!
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
+  const config = getWebChatBuilderBySlug("lovable")!
   const canonical = page.locator('link[rel="canonical"]')
   await expect(canonical).toHaveCount(1)
   const url = (await canonical.getAttribute("href"))!
-  expect(new URL(url).pathname).toBe("/channels/web-chat/blink-new/")
+  expect(new URL(url).pathname).toBe("/channels/web-chat/lovable/")
   await expect(page).toHaveTitle(config.seo.title)
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
@@ -202,7 +132,7 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
         name: "Novu",
         item: new URL("/", url).href,
       },
-      { "@type": "ListItem", position: 2, name: "Blink.new", item: url },
+      { "@type": "ListItem", position: 2, name: "Lovable", item: url },
     ],
   })
   expect(faq).toMatchObject({ "@type": "FAQPage", "@id": `${url}#faq` })
@@ -233,6 +163,7 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
 
 for (const slug of [
   "webflow",
+  "blink-new",
   "not-published",
   "toString",
   "constructor",
@@ -251,21 +182,21 @@ for (const slug of [
   })
 }
 
-test("renders the Blink.new hero and copies its setup instructions", async ({
+test("renders the Lovable hero and copies its setup instructions", async ({
   page,
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   const consoleErrors = observeBrowserConsoleErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
 
   const main = page.getByRole("main")
   await expect(main).toHaveCount(1)
   await expect(main.getByRole("heading", { level: 1 })).toHaveText(
-    "Add an AI agent to your Blink.new app"
+    "Add an AI agent to your Lovable app"
   )
   await expect(
-    main.getByText("Web Chat for Blink.new", { exact: true })
+    main.getByText("Web Chat for Lovable", { exact: true })
   ).toBeVisible()
   await expect(
     main.getByRole("region", { name: "Trusted by teams worldwide" })
@@ -273,19 +204,19 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
   await expect(
     main
       .getByRole("region", {
-        name: "Add an AI agent to your Blink.new app",
+        name: "Add an AI agent to your Lovable app",
         exact: true,
       })
       .getByText("npx novu connect --channel web-chat", { exact: true })
   ).toBeVisible()
 
   const features = main.getByRole("region", {
-    name: "Your agent, live in your Blink.new app",
+    name: "Your agent, live in your Lovable app",
   })
   await expect(
     features.getByRole("heading", {
       level: 2,
-      name: "Your agent, live in your Blink.new app",
+      name: "Your agent, live in your Lovable app",
     })
   ).toBeVisible()
   await expect(features.getByRole("listitem")).toHaveCount(6)
@@ -298,38 +229,41 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
     "Shareable public link",
   ])
   await expect(
-    features.getByText("Paste one script tag into your Blink.new app.", {
+    features.getByText("Paste one script tag into your Lovable app.", {
       exact: true,
     })
   ).toBeVisible()
 
   const setup = main.getByRole("region", {
-    name: "How to add an AI agent to your Blink.new app in four steps",
+    name: "How to add an AI agent to your Lovable app in five steps",
   })
   await expect(
     setup.getByRole("heading", {
       level: 2,
-      name: "How to add an AI agent to your Blink.new app in four steps",
+      name: "How to add an AI agent to your Lovable app in five steps",
     })
   ).toBeVisible()
   const steps = setup.getByRole("listitem")
-  await expect(steps).toHaveCount(4)
+  await expect(steps).toHaveCount(5)
   await expect(steps.nth(0)).toContainText(
     "npx novu connect --channel web-chat."
   )
   await expect(steps.nth(1)).toContainText(
-    "Copy your one-line Web Chat embed, a single script tag."
+    "Give your agent its instructions in the Novu dashboard, so it has something to say."
   )
   await expect(steps.nth(2)).toContainText(
-    "Paste the embed where you want the widget in your Blink.new app."
+    "Copy your one-line Web Chat embed, a single script tag."
   )
   await expect(steps.nth(3)).toContainText(
+    "Paste the embed where you want the widget in your Lovable app."
+  )
+  await expect(steps.nth(4)).toContainText(
     "Publish. Your agent is live in the chat, replying to visitors."
   )
 
   const copyPrompt = main
     .getByRole("region", {
-      name: "Add an AI agent to your Blink.new app",
+      name: "Add an AI agent to your Lovable app",
       exact: true,
     })
     .getByRole("button", {
@@ -341,25 +275,25 @@ test("renders the Blink.new hero and copies its setup instructions", async ({
   await copyPrompt.click()
   await expectClipboardText(
     page,
-    "Add Novu Web Chat to my Blink.new app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent."
+    "Add Novu Web Chat to my Lovable app. Run npx novu connect --channel web-chat, then help me embed the chat in my app and connect it to my AI agent."
   )
   await expect(
     main
       .getByRole("region", {
-        name: "Add an AI agent to your Blink.new app",
+        name: "Add an AI agent to your Lovable app",
         exact: true,
       })
       .getByText("Prompt copied to clipboard", { exact: true })
   ).toHaveText("Prompt copied to clipboard")
 
   const hero = main.getByRole("region", {
-    name: "Add an AI agent to your Blink.new app",
+    name: "Add an AI agent to your Lovable app",
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
   await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
   await expect(
-    hero.getByText("Built with Blink.new", { exact: true })
+    hero.getByText("Built with Lovable", { exact: true })
   ).toBeVisible()
   await expect
     .poll(() =>
@@ -441,15 +375,15 @@ test("finishes with accessible setup actions and one shared header and Connect f
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
   const cta = page.locator("section.cta")
   await expect(cta).toHaveCount(1)
   await expect(cta.getByRole("heading", { level: 2 })).toHaveText(
-    "Give your Blink.new app an AI agent"
+    "Give your Lovable app an AI agent"
   )
   await expect(
     cta.getByText(
-      "Bring the agent you built. Novu puts it in your Blink.new app and reaches your users on every channel from one workflow.",
+      "Bring the agent you built. Novu puts it in your Lovable app and reaches your users on every channel from one workflow.",
       { exact: true }
     )
   ).toBeVisible()
@@ -493,11 +427,11 @@ test("finishes with accessible setup actions and one shared header and Connect f
     cta.getByText("Prompt copied to clipboard", { exact: true })
   ).toBeVisible()
   await expect(page.locator("main h2")).toHaveText([
-    "Your agent, live in your Blink.new app",
-    "How to add an AI agent to your Blink.new app in four steps",
+    "Your agent, live in your Lovable app",
+    "How to add an AI agent to your Lovable app in five steps",
     "One workflow, every channel",
     "Frequently asked questions",
-    "Give your Blink.new app an AI agent",
+    "Give your Lovable app an AI agent",
   ])
   expect(
     await page.evaluate(
@@ -513,7 +447,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
 }) => {
   const applicationErrors = observeApplicationErrors(page)
   await installClipboardMock(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
 
   const section = page.getByRole("region", {
     name: "One workflow, every channel",
@@ -523,7 +457,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   )
   await expect(
     section.getByText(
-      "Your agent’s logic works across your Blink.new app and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
+      "Your agent’s logic works across your Lovable app and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.",
       { exact: true }
     )
   ).toBeVisible()
@@ -556,10 +490,10 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
     section.getByRole("link", { name: "Web Chat", exact: true })
   ).toHaveCount(0)
   const channelsArtwork = section.getByRole("img", {
-    name: "Your Blink.new app is just the beginning!",
+    name: "Your Lovable app is just the beginning!",
   })
   await expect(
-    section.getByText("Your Blink.new app is just the beginning!", {
+    section.getByText("Your Lovable app is just the beginning!", {
       exact: true,
     })
   ).toBeVisible()
@@ -634,7 +568,7 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const applicationErrors = observeApplicationErrors(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
   const section = page.getByRole("region", {
     name: "One workflow, every channel",
     exact: true,
@@ -696,16 +630,16 @@ test("keeps the channel hint open when keyboard focus scrolls the mobile grid", 
 test("centers the hero copy and actions on tablet widths", async ({ page }) => {
   await page.setViewportSize({ width: 834, height: 1112 })
   const applicationErrors = observeApplicationErrors(page)
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
 
   const hero = page.getByRole("region", {
-    name: "Add an AI agent to your Blink.new app",
+    name: "Add an AI agent to your Lovable app",
     exact: true,
   })
   const heading = page.locator("#web-chat-builder-title")
-  const eyebrow = hero.getByText("Web Chat for Blink.new", { exact: true })
+  const eyebrow = hero.getByText("Web Chat for Lovable", { exact: true })
   const description = hero.getByText(
-    "Bring your AI agent to Blink.new with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.",
+    "Bring your AI agent to Lovable with one embed. Chat with users and reach them across messaging channels and email through one workflow. Your agent’s channel, not a generic widget.",
     { exact: true }
   )
   const prompt = hero.getByRole("button", { name: "Copy Prompt", exact: true })
@@ -758,14 +692,14 @@ test("matches the shared Webflow Figma section geometry at 1920px", async ({
   )
 
   await page.setViewportSize({ width: 1920, height: 1080 })
-  await gotoCriticalPage(page, "/channels/web-chat/blink-new")
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
 
   const faq = page.locator("#web-chat-builder-faq")
   const faqContainer = faq.locator(":scope > div")
   const faqTitle = faq.getByRole("heading", { level: 2 })
   const accordion = faq.locator('[data-slot="accordion"]')
   const hero = page.getByRole("region", {
-    name: "Add an AI agent to your Blink.new app",
+    name: "Add an AI agent to your Lovable app",
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
@@ -776,7 +710,9 @@ test("matches the shared Webflow Figma section geometry at 1920px", async ({
   const accordionBox = await accordion.boundingBox()
   const heroArtworkBox = await heroArtwork.boundingBox()
 
-  expect(faqBox?.height).toBeCloseTo(362, 0)
+  // Figma measured 362px with a one-line first answer; the dashboard step
+  // added to that answer wraps it onto a second 24px line.
+  expect(faqBox?.height).toBeCloseTo(385.5, 0)
   expect(faqContainerBox?.width).toBeCloseTo(1024, 0)
   expect(accordionBox!.y - (faqTitleBox!.y + faqTitleBox!.height)).toBeCloseTo(
     40,

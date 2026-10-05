@@ -303,7 +303,7 @@ function createWebChatBuilderPage({
       prompt,
       promptLabel: "Copy Prompt",
       // The hero artwork is shared, so the builder is named on an overlay
-      // instead of being baked into thirteen near-identical exports.
+      // instead of being baked into one near-identical export per builder.
       badge: {
         label:
           kind === "app"
@@ -316,76 +316,15 @@ function createWebChatBuilderPage({
 }
 
 const WEB_CHAT_BUILDER_PAGES = Object.freeze({
-  "blink-new": createWebChatBuilderPage({
-    slug: "blink-new",
-    builderName: "Blink.new",
-    kind: "app",
-  }),
   lovable: createWebChatBuilderPage({
     slug: "lovable",
     builderName: "Lovable",
-    kind: "app",
-  }),
-  replit: createWebChatBuilderPage({
-    slug: "replit",
-    builderName: "Replit",
-    kind: "app",
-  }),
-  "bolt-new": createWebChatBuilderPage({
-    slug: "bolt-new",
-    builderName: "Bolt.new",
     kind: "app",
   }),
   v0: createWebChatBuilderPage({
     slug: "v0",
     builderName: "v0",
     kind: "app",
-  }),
-  "sim-studio": createWebChatBuilderPage({
-    slug: "sim-studio",
-    builderName: "Sim Studio",
-    heroName: "Sim",
-    kind: "agent",
-  }),
-  vellum: createWebChatBuilderPage({
-    slug: "vellum",
-    builderName: "Vellum",
-    kind: "agent",
-  }),
-  flowise: createWebChatBuilderPage({
-    slug: "flowise",
-    builderName: "Flowise",
-    kind: "agent",
-  }),
-  wordware: createWebChatBuilderPage({
-    slug: "wordware",
-    builderName: "Wordware",
-    kind: "agent",
-  }),
-  "crew-ai": createWebChatBuilderPage({
-    slug: "crew-ai",
-    builderName: "CrewAI",
-    kind: "agent",
-  }),
-  langgraph: createWebChatBuilderPage({
-    slug: "langgraph",
-    builderName: "LangGraph",
-    kind: "agent",
-  }),
-  lindy: createWebChatBuilderPage({
-    slug: "lindy",
-    builderName: "Lindy",
-    kind: "agent",
-  }),
-  "stack-ai": createWebChatBuilderPage({
-    slug: "stack-ai",
-    builderName: "Stack AI",
-    kind: "agent",
-  }),
-  "relevance-ai": createWebChatBuilderPage({
-    slug: "relevance-ai",
-    builderName: "Relevance AI",
-    kind: "agent",
   }),
 })
 

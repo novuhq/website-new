@@ -11,26 +11,10 @@ import {
 } from "@/data/pages/web-chat-builders"
 
 describe("Web Chat builder pages", () => {
-  it("publishes every designed builder with its Figma hero title", () => {
+  it("publishes every launched builder with its Figma hero title", () => {
     const builders = [
-      ["blink-new", "Blink.new", "Add an AI agent to your Blink.new app"],
       ["lovable", "Lovable", "Add an AI agent to your Lovable app"],
-      ["replit", "Replit", "Add an AI agent to your Replit app"],
-      ["bolt-new", "Bolt.new", "Add an AI agent to your Bolt.new app"],
       ["v0", "v0", "Add an AI agent to your v0 app"],
-      ["sim-studio", "Sim Studio", "Add your Sim agent to your website"],
-      ["vellum", "Vellum", "Add your Vellum agent to your website"],
-      ["flowise", "Flowise", "Add your Flowise agent to your website"],
-      ["wordware", "Wordware", "Add your Wordware agent to your website"],
-      ["crew-ai", "CrewAI", "Add your CrewAI agent to your website"],
-      ["langgraph", "LangGraph", "Add your LangGraph agent to your website"],
-      ["lindy", "Lindy", "Add your Lindy agent to your website"],
-      ["stack-ai", "Stack AI", "Add your Stack AI agent to your website"],
-      [
-        "relevance-ai",
-        "Relevance AI",
-        "Add your Relevance AI agent to your website",
-      ],
     ] as const
 
     assert.deepEqual(
@@ -54,40 +38,45 @@ describe("Web Chat builder pages", () => {
     assert.equal(getWebChatBuilderBySlug("wix"), undefined)
   })
 
-  it("does not publish the retired Webflow builder", () => {
-    assert.equal(getWebChatBuilderBySlug("webflow"), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 14)
+  it("does not publish the retired builders", () => {
+    for (const slug of [
+      "webflow",
+      "blink-new",
+      "replit",
+      "bolt-new",
+      "sim-studio",
+      "vellum",
+      "flowise",
+      "wordware",
+      "crew-ai",
+      "langgraph",
+      "lindy",
+      "stack-ai",
+      "relevance-ai",
+    ]) {
+      assert.equal(getWebChatBuilderBySlug(slug), undefined, slug)
+    }
+    assert.equal(getAllWebChatBuilderSlugs().length, 2)
   })
 
-  it("personalizes shared copy for app and agent builders", () => {
-    const blinkNew = getWebChatBuilderBySlug("blink-new")!
-    const vellum = getWebChatBuilderBySlug("vellum")!
+  it("personalizes shared copy for each builder", () => {
+    const lovable = getWebChatBuilderBySlug("lovable")!
 
     assert.equal(
-      blinkNew.sections[0].title,
-      "Your agent, live in your Blink.new app"
+      lovable.sections[0].title,
+      "Your agent, live in your Lovable app"
     )
-    assert.equal(blinkNew.cta.title, "Give your Blink.new app an AI agent")
+    assert.equal(lovable.cta.title, "Give your Lovable app an AI agent")
     assert.equal(
-      blinkNew.faq[0].question,
-      "How do I add an AI chatbot to a Blink.new app?"
+      lovable.faq[0].question,
+      "How do I add an AI chatbot to a Lovable app?"
     )
-
-    assert.equal(
-      vellum.sections[0].title,
-      "Your Vellum agent, live on your website"
-    )
-    assert.equal(vellum.cta.title, "Bring your Vellum agent to your website")
-    assert.equal(
-      vellum.faq[0].question,
-      "How do I add my Vellum agent to a website?"
-    )
-    const vellumChannels = vellum.sections.find(
+    const lovableChannels = lovable.sections.find(
       (section) => section.type === "tertiary"
     )!
     assert.equal(
-      vellumChannels.imageAlt,
-      "Your Vellum agent is just the beginning!"
+      lovableChannels.imageAlt,
+      "Your Lovable app is just the beginning!"
     )
 
     for (const slug of getAllWebChatBuilderSlugs()) {
@@ -112,17 +101,13 @@ describe("Web Chat builder pages", () => {
   }
 
   it("resolves each artwork slot from an unpublished page's media references", () => {
-    const blinkNew = getWebChatBuilderBySlug("blink-new")!
-    assert.deepEqual(blinkNew.media, {
+    const lovable = getWebChatBuilderBySlug("lovable")!
+    assert.deepEqual(lovable.media, {
       hero: "app-hero",
       channels: "shared-channels",
     })
-    assert.deepEqual(getWebChatBuilderBySlug("crew-ai")!.media, {
-      hero: "agent-hero",
-      channels: "shared-channels",
-    })
     const fixture = {
-      ...blinkNew,
+      ...lovable,
       slug: "unpublished-media-fixture",
       builderName: "Unpublished fixture",
       media: {
@@ -142,6 +127,6 @@ describe("Web Chat builder pages", () => {
       channels: { id: "shared-channels" },
     })
     assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 14)
+    assert.equal(getAllWebChatBuilderSlugs().length, 2)
   })
 })
