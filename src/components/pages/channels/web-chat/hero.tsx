@@ -165,7 +165,7 @@ function MetaLine({ className }: { className?: string }) {
             (index === HERO_META_INTEGRATIONS.length - 1 ? " and " : ", ")}
           <NextLink
             href={href}
-            className="underline transition-colors hover:text-white"
+            className="text-white underline transition-colors hover:text-white/70"
           >
             {label}
           </NextLink>
