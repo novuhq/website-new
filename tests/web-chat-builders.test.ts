@@ -17,6 +17,7 @@ describe("Web Chat builder pages", () => {
       ["lovable", "Lovable", "Add an AI agent to your Lovable app"],
       ["replit", "Replit", "Add an AI agent to your Replit app"],
       ["bolt-new", "Bolt.new", "Add an AI agent to your Bolt.new app"],
+      ["v0", "v0", "Add an AI agent to your v0 app"],
       ["sim-studio", "Sim Studio", "Add your Sim agent to your website"],
       ["vellum", "Vellum", "Add your Vellum agent to your website"],
       ["flowise", "Flowise", "Add your Flowise agent to your website"],
@@ -55,7 +56,7 @@ describe("Web Chat builder pages", () => {
 
   it("does not publish the retired Webflow builder", () => {
     assert.equal(getWebChatBuilderBySlug("webflow"), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 13)
+    assert.equal(getAllWebChatBuilderSlugs().length, 14)
   })
 
   it("personalizes shared copy for app and agent builders", () => {
@@ -141,6 +142,6 @@ describe("Web Chat builder pages", () => {
       channels: { id: "shared-channels" },
     })
     assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 13)
+    assert.equal(getAllWebChatBuilderSlugs().length, 14)
   })
 })
