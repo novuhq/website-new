@@ -1,7 +1,10 @@
 import type { Metadata } from "next"
 import { ROUTE } from "@/constants/routes"
+import { WEB_CHAT_SEO } from "@/data/pages/web-chat"
 
 import { getMetadata } from "@/lib/get-metadata"
+import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { brandCssVars, buildBrandTheme } from "@/lib/web-chat-theme"
 import { WebChatBrandProvider } from "@/components/pages/channels/web-chat/brand-provider"
 import { ChannelsGrid } from "@/components/pages/channels/web-chat/channels-grid"
@@ -16,12 +19,9 @@ import { SurfaceTabs } from "@/components/pages/channels/web-chat/surface-tabs"
 import Cta from "@/components/pages/home/cta"
 
 export const metadata: Metadata = getMetadata({
-  title: "Web Chat: Your Agent, Live Inside Your Product | Novu",
-  description:
-    "Web Chat uses product context, takes action, and continues conversations across channels. Live in two minutes.",
-  pathname: "/channels/web-chat",
-  imagePath: "/og-images/og-image-web-chat.jpg",
-  imageAlt: "Novu Web Chat: your agent, live inside your product",
+  ...WEB_CHAT_SEO,
+  pathname: String(ROUTE.channelWebChat),
+  markdownPathname: true,
 })
 
 /** Follow the homepage's mobile/tablet/laptop rhythm; retain Figma's wide-screen gaps. */
@@ -46,6 +46,44 @@ const GAP = {
 const DEFAULT_BRAND_VARS = brandCssVars(buildBrandTheme(null))
 
 export default function WebChatPage() {
+  const siteUrl = absoluteUrl("/")
+  const pageUrl = absoluteUrl(toCanonicalPathname(String(ROUTE.channelWebChat)))
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        name: WEB_CHAT_SEO.title,
+        description: WEB_CHAT_SEO.description,
+        url: pageUrl,
+        image: absoluteUrl(WEB_CHAT_SEO.imagePath),
+        isPartOf: { "@id": `${siteUrl}#website` },
+        publisher: { "@id": `${siteUrl}#organization` },
+        breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Novu", item: siteUrl },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Novu Connect",
+            item: absoluteUrl(toCanonicalPathname(String(ROUTE.connect))),
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Web Chat",
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  }
+
   return (
     <div className="overflow-clip font-inter" style={DEFAULT_BRAND_VARS}>
       {/*
@@ -103,6 +141,10 @@ export default function WebChatPage() {
             clickText: "book_a_demo",
           },
         ]}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(jsonLd) }}
       />
     </div>
   )

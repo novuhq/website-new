@@ -42,6 +42,13 @@ export const HERO_HEADING = "Your agent, live inside your product"
 export const HERO_DESCRIPTION_TEXT =
   "Web Chat uses product context, takes action, and continues conversations across channels. Live in two minutes."
 
+export const WEB_CHAT_SEO = {
+  title: "Web Chat: Your Agent, Live Inside Your Product | Novu",
+  description: HERO_DESCRIPTION_TEXT,
+  imagePath: "/og-images/og-image-web-chat.jpg",
+  imageAlt: "Novu Web Chat: your agent, live inside your product",
+} as const
+
 export const HERO_META_INTEGRATIONS_PREFIX = "Add Web Chat with our"
 
 export const HERO_META_INTEGRATIONS_SUFFIX = "integrations."
