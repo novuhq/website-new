@@ -61,7 +61,9 @@ function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
 function Ownership() {
   return (
     <section>
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 md:gap-[72px] md:px-8 lg:max-w-336 xl:relative xl:left-8">
+      {/* Figma shifts this block 32px right; only once that still leaves a
+          32px gutter (1408px), so narrower desktops keep both gutters. */}
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 min-[1408px]:relative min-[1408px]:left-8 md:gap-[72px] md:px-8 lg:max-w-336">
         <OwnershipTagline />
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">
