@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 
+import { sameOriginRequest } from "@/lib/request-origin"
 import {
   createWebChatSession,
   WEB_CHAT_SESSION_MAX_AGE,
@@ -12,22 +13,9 @@ const responseHeaders = {
   Vary: "Cookie",
 }
 
-function browserOrigin(request: NextRequest): URL | null {
-  const value = request.headers.get("origin")
-  if (!value) return null
-
-  try {
-    const origin = new URL(value)
-    return origin.origin === value ? origin : null
-  } catch {
-    return null
-  }
-}
-
 export async function POST(request: NextRequest) {
-  const origin = browserOrigin(request)
-  const authority = request.headers.get("host") ?? request.nextUrl.host
-  if (!origin || origin.host !== authority) {
+  const origin = sameOriginRequest(request)
+  if (!origin) {
     return NextResponse.json(
       { error: "Invalid request origin" },
       { status: 403, headers: responseHeaders }

@@ -124,12 +124,8 @@ export function DataTable({
           </div>
         </div>
 
-        {/* Hugs its own row content rather than stretching to fill the
-            card — with only 6-7 rows of real data (vs. Figma's fuller
-            mock), forcing it to fill the available height just left an
-            empty bordered box below the last row. Any leftover height
-            shows as plain card background instead, and the fade below now
-            covers the last row or two it actually has. */}
+        {/* Fills the card's remaining height and clips; the fade below
+            covers the last row or two. */}
         <div className="relative min-h-0 flex-1 overflow-hidden rounded-lg border border-white/10">
           <div className={cn("grid", gridCols)}>
             {/* Head row */}

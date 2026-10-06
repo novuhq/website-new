@@ -11,6 +11,8 @@ import { WebChatCard } from "@/components/pages/channels/web-chat/compare-card-w
  * Purple mobile artwork comes from the default design, not its orange
  * personalized storyboard. Both cards still recolor through HueLayer inside
  * WebChatBrandProvider. Equal columns begin at lg; tablets stack the two landscape cards.
+ * From xl the cards keep Figma's 411px and 909px once the row reaches
+ * 1344px, and shrink in proportion below that instead of overflowing.
  */
 export function CompareBento() {
   return (
@@ -25,7 +27,9 @@ export function CompareBento() {
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-5 md:mt-10 lg:mt-12 lg:flex-row lg:items-center lg:gap-6 xl:-mx-8 xl:mt-14">
+        {/* The cards overhang the content column by 32px on each side, as in
+            Figma, only from 1408px (1344 + two 32px gutters) where it fits. */}
+        <div className="mt-10 flex flex-col gap-5 min-[1408px]:-mx-8 md:mt-10 lg:mt-12 lg:flex-row lg:items-center lg:gap-6 xl:mt-14">
           <OldWidgetCard />
           <WebChatCard />
         </div>
@@ -33,5 +37,3 @@ export function CompareBento() {
     </section>
   )
 }
-
-export default CompareBento

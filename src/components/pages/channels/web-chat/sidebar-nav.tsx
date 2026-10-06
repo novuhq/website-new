@@ -37,10 +37,13 @@ export function Sidebar({
   companyLabel,
   faviconUrl,
   compact,
+  personalized = false,
 }: {
   companyLabel: string
   faviconUrl: string | null
   compact?: boolean
+  /** The staged brand has an accent; matches the table it sits beside. */
+  personalized?: boolean
 }) {
   return (
     <aside
@@ -147,12 +150,14 @@ export function Sidebar({
                           // placeholder, not a tint of the accent, since no
                           // brand exists yet. Personalized (`45487-89814`)
                           // samples the accent at 72% with light text. So it
-                          // switches on `data-wc-color` rather than being
-                          // derived from `--wc-accent` alone, which cannot
-                          // tell the two apart (the default accent is the
-                          // same value in both states).
+                          // switches on the staged `personalized` flag rather
+                          // than `--wc-accent` alone, which cannot tell the
+                          // two apart (the default accent is the same value
+                          // in both states).
                           isActive &&
-                            "bg-[#AD92B1] text-[#0A090A] group-data-[wc-color=brand]:bg-[var(--wc-accent-nav)] group-data-[wc-color=brand]:text-white"
+                            (personalized
+                              ? "bg-[var(--wc-accent-nav)] text-white"
+                              : "bg-[#AD92B1] text-[#0A090A]")
                         )}
                       >
                         {subItem}

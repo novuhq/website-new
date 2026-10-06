@@ -9,33 +9,13 @@ import changeRuntimeIcon from "@/svgs/pages/channels/web-chat/ownership-change-r
 import keepLogicIcon from "@/svgs/pages/channels/web-chat/ownership-keep-logic.svg"
 
 /**
- * §9 "We never run your brain." (Task 16). Figma `section` node
- * `45487-81961`, desktop only. Not personalized — no `HueLayer`, no
- * `var(--wc-accent*)`.
+ * "We never run your brain." Figma `section` node `45487-81961`, desktop
+ * only. Not personalized — no `HueLayer`, no `var(--wc-accent*)`.
  *
- * Mounted by the integration pass in `page.tsx`.
- *
- * Deliberately NOT using the shared word-reveal component here (the one
- * generalized with a `words` prop, since deleted along with the old section
- * that called it). Verified against a rendered, un-hydrated snapshot: that
- * component SSRs every word's `initial={{opacity: 0.22}}` inline (confirmed
- * in the served HTML —
- * `style="opacity:0.22"` on every span, accent and non-accent alike) and,
- * since `useInView` never fires without hydration, that initial value is
- * the permanent, only state real visitors see. For the *white* run that
- * composites to ~rgb(56,56,56) on black — dim but readable, the behaviour
- * the component was designed around. For this section's *grey* run the
- * base colour is already muted (`#707280`/`text-gray-50`, itself a
- * body-text grey, not nearly as bright as the old copy's purple accent);
- * compounding another ×0.22 on top composites to ~rgb(25,25,28) on black,
- * which in the actual screenshot is indistinguishable from the background —
- * i.e. invisible, not "faint." That is exactly the reveal-component failure
- * mode this task warned about, just short of literal 0. So the whole line is
- * rendered statically, at full opacity, matching Figma exactly at all
- * times instead of only after a hydration that this app confirms doesn't
- * happen. `OWNERSHIP_TAGLINE_WORDS` still carries the per-word split the
- * brief asked for (useful documentation of exactly where the accent begins)
- * even though this render collapses it into two runs.
+ * The tagline renders statically at full opacity, one span per word, so the
+ * grey accent run (`text-gray-50`) starts exactly where Figma's does. A
+ * scroll-triggered word reveal would dim that already-muted grey run to
+ * near-invisible before it animates in.
  */
 function OwnershipTagline() {
   return (
@@ -59,7 +39,7 @@ const CARD_ICONS: Record<OwnershipCardCopy["id"], typeof bringAnyAgentIcon> = {
 
 function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
   return (
-    <div className="flex flex-col gap-2.5 rounded-lg bg-[#101114] px-5 py-5 md:px-6 lg:min-w-0 lg:flex-1">
+    <div className="flex flex-col gap-2.5 rounded-lg bg-card-surface px-5 py-5 md:px-6 lg:min-w-0 lg:flex-1">
       <div className="flex items-center gap-2.5">
         <Image
           alt=""
@@ -81,7 +61,9 @@ function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
 function Ownership() {
   return (
     <section>
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 md:gap-[72px] md:px-8 lg:max-w-336 xl:relative xl:left-8">
+      {/* Figma shifts this block 32px right; only once that still leaves a
+          32px gutter (1408px), so narrower desktops keep both gutters. */}
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 min-[1408px]:relative min-[1408px]:left-8 md:gap-[72px] md:px-8 lg:max-w-336">
         <OwnershipTagline />
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6">

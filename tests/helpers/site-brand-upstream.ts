@@ -30,15 +30,36 @@ export async function upstream(
 
   const lookups: string[] = []
   const connections: { url: string; address: string; family: number }[] = []
-  t.mock.method(dns, "lookup", async (hostname: string) => {
-    lookups.push(hostname)
-    assert.ok(
-      Object.hasOwn(records, hostname),
-      `Unexpected DNS query: ${hostname}`
-    )
-    const fixture = records[hostname]
-    return typeof fixture === "function" ? fixture() : fixture
-  })
+  // Production asks one resolver for A and AAAA records; answer both from the
+  // same fixture so each hostname is looked up (and recorded) once.
+  const queries = new WeakMap<object, Map<string, Promise<Address[]>>>()
+  const query = (resolver: object, hostname: string) => {
+    let byHost = queries.get(resolver)
+    if (!byHost) queries.set(resolver, (byHost = new Map()))
+    let result = byHost.get(hostname)
+    if (!result) {
+      lookups.push(hostname)
+      assert.ok(
+        Object.hasOwn(records, hostname),
+        `Unexpected DNS query: ${hostname}`
+      )
+      const fixture = records[hostname]
+      result = Promise.resolve(
+        typeof fixture === "function" ? fixture() : fixture
+      )
+      byHost.set(hostname, result)
+    }
+    return result
+  }
+  const family = (version: number) =>
+    async function (this: object, hostname: string) {
+      return (await query(this, hostname))
+        .filter((record) => record.family === version)
+        .map((record) => record.address)
+    }
+  t.mock.method(dns.Resolver.prototype, "resolve4", family(4))
+  t.mock.method(dns.Resolver.prototype, "resolve6", family(6))
+  t.mock.method(dns.Resolver.prototype, "cancel", () => {})
 
   const realRequest = http.request
   const fixtureRequest = (

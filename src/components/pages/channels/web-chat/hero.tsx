@@ -4,11 +4,11 @@ import {
   Fragment,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
   type ReactNode,
 } from "react"
-import { Geist_Mono } from "next/font/google"
 import NextLink from "next/link"
 import {
   HERO_BADGE_LABEL,
@@ -44,6 +44,7 @@ import {
   useWebChatBrand,
   type WebChatBrand,
 } from "@/components/pages/channels/web-chat/brand-provider"
+import { webChatMono } from "@/components/pages/channels/web-chat/fonts"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
 import {
   HeroBackdrop,
@@ -53,13 +54,6 @@ import { HeroProductUI } from "@/components/pages/channels/web-chat/hero-product
 import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-personalizer"
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-  variable: "--font-web-chat-mono",
-})
 
 const COPY_PROMPT_BUTTON_CLASSES =
   "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case xl:w-34"
@@ -71,6 +65,10 @@ const COPY_PROMPT_BUTTON_CLASSES =
  * a guessed URL.
  */
 function CopyPromptWithTooltip({ className }: { className?: string }) {
+  // The tooltip describes the wrapper span, which is not focusable, so give
+  // the button itself the same description for screen readers.
+  const descriptionId = useId()
+
   return (
     <Tooltip>
       {/* CopyPromptButton isn't a forwardRef component, so the trigger wraps
@@ -80,6 +78,7 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
       <TooltipTrigger asChild>
         <span className={cn("inline-flex w-full xl:w-auto", className)}>
           <CopyPromptButton
+            aria-describedby={descriptionId}
             className={COPY_PROMPT_BUTTON_CLASSES}
             label={HERO_COPY_PROMPT_LABEL}
             size="none"
@@ -87,6 +86,9 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
             value={HERO_IMPLEMENT_PROMPT}
             variant="default"
           />
+          <span id={descriptionId} className="sr-only">
+            {HERO_TOOLTIP_TEXT}
+          </span>
         </span>
       </TooltipTrigger>
       <TooltipContent
@@ -100,15 +102,15 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
             viewBox="0 0 30 8"
           />
         }
-        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left"
+        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-gray-20 bg-[#0B0C0E] p-2.5 text-left"
         side="top"
         sideOffset={12}
       >
         <span className="flex flex-col gap-3">
-          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#C2C4CC]">
+          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-gray-80">
             {HERO_TOOLTIP_TEXT}
           </span>
-          <span className="flex items-center gap-1 text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5]">
+          <span className="flex items-center gap-1 text-[13px] leading-[1.38em] tracking-[-0.0246em] text-gray-90">
             <span className="underline decoration-1 underline-offset-2">
               {HERO_TOOLTIP_LINK_LABEL}
             </span>
@@ -140,7 +142,7 @@ function CliPill({ className }: { className?: string }) {
       copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
       controlClassName={cn(
         "h-11 gap-0 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
-        geistMono.className
+        webChatMono.className
       )}
     />
   )
@@ -154,7 +156,7 @@ function MetaLine({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "text-sm leading-[1.375] tracking-tight text-white/40 mix-blend-plus-lighter md:max-w-[369px] md:text-[15px]",
+        "text-sm leading-[1.375] tracking-tight text-gray-60 mix-blend-plus-lighter md:max-w-[369px] md:text-[15px]",
         className
       )}
     >
@@ -306,7 +308,7 @@ function HeroLiveUi({
     // dashboard at 768px. Scale the outside stroke with the scene as well.
     <div className="relative -mx-5 overflow-x-clip md:mx-auto md:h-119 md:max-w-[955px] md:overflow-visible xl:h-170 xl:max-w-none">
       <div className="relative md:w-[calc(100%/0.7)] md:origin-top-left md:scale-70 xl:w-full xl:scale-100">
-        <div className="relative md:flex md:h-170 md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-transparent md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]">
+        <div className="relative md:flex md:h-170 md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-transparent md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)]">
           <div className="relative left-[calc(100%-656px)] w-[636px] rounded-xl sm:left-0 sm:mx-auto md:contents">
             <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black md:contents">
               <HeroProductUI
@@ -342,9 +344,8 @@ function FallbackAlertSlot({ children }: { children: ReactNode }) {
 /**
  * The Web Chat hero: brand-personalized copy, the live product/agent
  * storyboard, and the URL personalizer. Must render inside
- * `WebChatBrandProvider` — it reads `useWebChatBrand()` and relies on that
- * provider's `data-wc-state` wrapper for the ambient glow/hue effects in
- * `HeroBackdrop` below.
+ * `WebChatBrandProvider`: it reads `useWebChatBrand()` and passes the staged
+ * brand down to `HeroBackdrop` and the live UI as props.
  */
 export function WebChatHero() {
   const brand = useWebChatBrand()
@@ -379,7 +380,7 @@ export function WebChatHero() {
   // `UrlPersonalizer` calls `personalize()` itself and owns the reset button;
   // it exposes no reset callback. Its `reset()` is the only path back to
   // `status === "idle"`, so watching for that stops the storyboard without
-  // needing to change Task 5's component.
+  // changing the personalizer's API.
   useEffect(() => {
     if (status === "idle") setIsRunning(false)
   }, [status])
@@ -398,7 +399,7 @@ export function WebChatHero() {
         // Preserve the backdrop's 80px bleed without letting its opaque canvas
         // cover the next section. The upper allowance keeps tooltips visible.
         "relative pt-10 font-inter max-lg:[clip-path:inset(-100vh_0_-80px)] md:pt-12 lg:pt-14 xl:min-h-314 xl:pt-23",
-        geistMono.variable
+        webChatMono.variable
       )}
       data-testid="web-chat-hero"
       data-storyboard-phase={phase}
@@ -412,14 +413,9 @@ export function WebChatHero() {
         x320-1600 (1280). This container serves the card — 1428 = 1364 + 2*32
         (`px-8`), so at 1920 it reproduces x278 and 1364 exactly — and
         `HeroCopy` re-centres itself to 1280 inside it, which lands at x320
-        because (1364 - 1280) / 2 = 42.
-
-        An earlier pass ran the copy on the card's column too and recorded the
-        resulting 42px offset as "an accepted trade-off over pushing the CTA
-        column out of place." That was a false dilemma: centring the copy
-        block moves both of its edges at once, so the title column reaches
-        x320 and the CTA column's right edge reaches Figma's x1600 (it had
-        overshot to x1642). Verified by pixel diff against the frame.
+        because (1364 - 1280) / 2 = 42. Centring the copy block moves both of
+        its edges at once, so the title column reaches x320 and the CTA
+        column's right edge reaches Figma's x1600.
       */}
       {/* The smaller-screen backdrop lives inside this stacking context.
           Desktop strokes still blend with the section-level backdrop. */}
@@ -439,7 +435,7 @@ export function WebChatHero() {
         <div className="mt-7 flex flex-col items-center gap-4 md:mt-8.25 xl:mt-5">
           <UrlPersonalizer onSubmit={handleSubmit} />
           {/*
-            Mounted unconditionally (final-review Fix 5) so the alert's
+            Mounted unconditionally so the alert's
             `role="status"` node exists before, not just during, a fallback
             — only `message` toggles between `null` and the real string.
             See `brand-alert.tsx` for why that ordering matters.
@@ -452,5 +448,3 @@ export function WebChatHero() {
     </section>
   )
 }
-
-export default WebChatHero

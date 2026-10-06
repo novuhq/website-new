@@ -1,20 +1,50 @@
+"use client"
+
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import oldLaptopBase from "@/images/pages/channels/web-chat/compare-layers/compare-old-laptop-base.jpg"
 import oldLaptopDefault from "@/images/pages/channels/web-chat/compare-layers/compare-old-laptop-full.jpg"
-import oldLaptopUI from "@/images/pages/channels/web-chat/compare-layers/compare-old-laptop.inline.svg"
 import oldTabletBase from "@/images/pages/channels/web-chat/compare-layers/compare-old-tablet-base.jpg"
 import oldTabletDefault from "@/images/pages/channels/web-chat/compare-layers/compare-old-tablet-full.jpg"
-import oldTabletUI from "@/images/pages/channels/web-chat/compare-layers/compare-old-tablet.inline.svg"
 import webLaptopBase from "@/images/pages/channels/web-chat/compare-layers/compare-web-laptop-base.jpg"
 import webLaptopDefault from "@/images/pages/channels/web-chat/compare-layers/compare-web-laptop-full.jpg"
-import webLaptopUI from "@/images/pages/channels/web-chat/compare-layers/compare-web-laptop.inline.svg"
 import webTabletBase from "@/images/pages/channels/web-chat/compare-layers/compare-web-tablet-base.jpg"
 import webTabletDefault from "@/images/pages/channels/web-chat/compare-layers/compare-web-tablet-full.jpg"
-import webTabletUI from "@/images/pages/channels/web-chat/compare-layers/compare-web-tablet.inline.svg"
 
 import { cn } from "@/lib/utils"
 
 import { BrandArtwork } from "./brand-artwork"
+
+// The editable UI layers render only once a visitor personalizes, so load
+// them on demand instead of shipping ~190 KB of SVG in the page bundle.
+const oldLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const oldTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const webLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-web-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const webTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-web-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
 
 const ARTWORK = {
   old: [

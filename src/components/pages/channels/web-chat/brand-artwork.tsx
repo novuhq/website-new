@@ -1,19 +1,12 @@
 "use client"
 
 import type { ComponentType, SVGProps } from "react"
-import { Geist_Mono } from "next/font/google"
 import Image, { type StaticImageData } from "next/image"
 
 import { cn } from "@/lib/utils"
 import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
+import { webChatMono } from "@/components/pages/channels/web-chat/fonts"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-  variable: "--font-web-chat-mono",
-})
 
 /** Decorative Figma imagery tints separately from SVG controls and portraits. */
 export function BrandArtwork({
@@ -38,7 +31,10 @@ export function BrandArtwork({
   const { status, hasAccent } = useWebChatBrand()
   const active =
     hasAccent && (status === "personalized" || status === "loading")
-  const loadLayers = status === "personalized" || status === "loading"
+  // Fetch the layers as soon as a preview starts loading, but drop them once
+  // it settles without an accent: they would only sit there invisible.
+  const loadLayers =
+    status === "loading" || (status === "personalized" && hasAccent)
 
   return (
     <div
@@ -46,7 +42,7 @@ export function BrandArtwork({
       data-brand-artwork={id}
       className={cn(
         "pointer-events-none absolute inset-0 bg-inherit transition-opacity duration-500 motion-reduce:transition-none",
-        geistMono.variable,
+        webChatMono.variable,
         className
       )}
       style={{ opacity: Number(active) }}

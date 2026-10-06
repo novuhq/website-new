@@ -19,7 +19,6 @@ const buttonVariants = cva(
         "outline-faded":
           "border border-accent bg-[#15151b] text-gray-9 hover:bg-accent hover:text-foreground",
         link: "text-gray-9 hover:text-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
         none: "",
       },
       size: {

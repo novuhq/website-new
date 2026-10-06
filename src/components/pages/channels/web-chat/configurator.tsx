@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { Geist_Mono } from "next/font/google"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import {
   DEFAULT_CHANNELS,
@@ -44,29 +43,22 @@ import {
 import { cn } from "@/lib/utils"
 import { SelectField } from "@/components/ui/select-field"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { webChatMono } from "@/components/pages/channels/web-chat/fonts"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 /**
- * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
+ * "Build your connection. Ship it from any builder." Figma
  * section `45440-69446` (open-selector UI `45497-148452`, CLI-tab UI
  * `45501-148837`). Not personalized: no `HueLayer`, no `--wc-accent*`.
  *
  * `SelectField` and the option lists come from `@/components/ui/select-field`
- * and `@/data/pages/connect-stack-options` — see that data module's file
- * header for background on why those files were originally created here as
- * a net-new extraction. `connect-stack.tsx` now imports from both modules
- * too, so this configurator and the homepage share one implementation.
+ * and `@/data/pages/connect-stack-options`, shared with the homepage's
+ * `connect-stack.tsx`.
  *
  * The supplied design only includes this section at desktop width. The
  * two-column layout starts at `xl`; narrower screens stack the form below
  * the copy and retain its corner radii and control spacing.
  */
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-})
 
 const CHANNEL_ICONS: Record<string, IStackOption["icon"]> = {
   email: configuratorEmailIcon,
@@ -171,7 +163,7 @@ function ConfiguratorResult({
         <code
           className={cn(
             "block truncate text-sm leading-normal text-white",
-            geistMono.className
+            webChatMono.className
           )}
         >
           {value}
@@ -185,10 +177,18 @@ export function WebChatConfigurator() {
   const [channelValue, setChannelValue] = useState(WEB_CHAT_CHANNEL.value)
   const [frameworkValue, setFrameworkValue] = useState("ai-sdk")
   const [activeTab, setActiveTab] = useState<ConfiguratorTab>("prompt")
+  const iconsWarmed = useRef(false)
 
-  for (const { icon } of [...CHANNEL_OPTIONS, ...FRAMEWORK_OPTIONS]) {
-    if (icon) {
-      preload(typeof icon === "string" ? icon : icon.src, { as: "image" })
+  // Warm the dropdown icons once the visitor reaches for the form, so they
+  // don't pop in when a select opens. Preloading during render put all of
+  // them in the page head, competing with the hero on every load.
+  function warmIcons() {
+    if (iconsWarmed.current) return
+    iconsWarmed.current = true
+    for (const { icon } of [...CHANNEL_OPTIONS, ...FRAMEWORK_OPTIONS]) {
+      if (icon) {
+        preload(typeof icon === "string" ? icon : icon.src, { as: "image" })
+      }
     }
   }
 
@@ -241,7 +241,11 @@ export function WebChatConfigurator() {
             />
 
             <div className="relative flex items-center justify-center py-14 sm:h-170 sm:px-13 sm:py-0">
-              <div className="relative w-full max-w-107.5 rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)]">
+              <div
+                className="relative w-full max-w-107.5 rounded-[32px] border border-transparent p-2.5 shadow-[0_12px_23px_-10px_rgba(0,0,0,0.3)]"
+                onPointerEnter={warmIcons}
+                onFocus={warmIcons}
+              >
                 {/* Figma's glass frame, including its blurred color and stroke,
                     is baked into this decorative asset. Nine-slice scaling
                     preserves the 32px corners on narrow screens without live
@@ -337,7 +341,7 @@ export function WebChatConfigurator() {
 
                   {isPromptTab ? (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-gray-90 px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="Generated prompt copied to clipboard"
                       key="copy-prompt"
                       label={CONFIGURATOR_COPY_PROMPT_LABEL}
@@ -349,7 +353,7 @@ export function WebChatConfigurator() {
                     />
                   ) : (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-gray-90 px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="npx command copied to clipboard"
                       key="copy-cli"
                       label={CONFIGURATOR_COPY_CLI_LABEL}

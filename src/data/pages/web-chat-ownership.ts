@@ -1,23 +1,18 @@
 /**
- * Content for §9 "We never run your brain." (Task 16). Figma `section` node
- * `45487-81961` (desktop only — see the task report for why no mobile frame
- * exists for this section in the mobile page, `45487-98982`). Not
- * personalized: no brand-accent tokens here, only the shared design system.
+ * Content for "We never run your brain." Figma `section` node `45487-81961`
+ * (desktop only; the mobile page `45487-98982` has no frame for this
+ * section). Not personalized: no brand-accent tokens, only the shared design
+ * system.
  */
 
-/**
- * Was imported from a shared word-reveal component, since deleted along with
- * the old section that used it (superseded by this section's static tagline
- * render — see `ownership.tsx`). Inlined here as its only remaining consumer.
- */
 export interface TaglineWord {
   text: string
   accent: boolean
 }
 
 /**
- * The boundary line (`45487:81962`), split into words for a reveal: the first
- * sentence reveals in white, the rest in grey (`#707280`, `text-gray-50`).
+ * The boundary line (`45487:81962`), split into words: the first sentence
+ * is white, the rest grey (`#707280`, `text-gray-50`).
  * Figma's raw text run has no space after the em dash inside the accented
  * portion ("agent to the web and carries..."); the run itself has none
  * missing — the apparent run-together in the extracted string

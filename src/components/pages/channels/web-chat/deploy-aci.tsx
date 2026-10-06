@@ -12,7 +12,7 @@ import illustrationMobile from "@/images/pages/channels/web-chat/deploy-aci-illu
 import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framework-logo-cycle"
 
 /**
- * §6 "Deploy the ACI, not just chat" (Task 13). Figma desktop `45487-81046`,
+ * "Deploy the ACI, not just chat". Figma desktop `45487-81046`,
  * mobile `45497-147576`, framework logo set `45497-146963`. Not
  * personalized — no `HueLayer`, no `--wc-accent*` custom properties.
  *
@@ -38,7 +38,8 @@ export function DeployAci() {
 
         {/* Both exports already include their rounded outer border. */}
         <div className="relative mx-auto mt-8 aspect-[320/658] w-full max-w-104 overflow-hidden rounded-[16px] bg-black md:mt-14 lg:aspect-[1280/480] lg:max-w-none lg:rounded-[24px]">
-          <picture>
+          {/* Positioned so the filled image measures against it. */}
+          <picture className="absolute inset-0 block size-full">
             <source
               media="(width < 64rem)"
               srcSet={illustrationMobile.src}
@@ -95,5 +96,3 @@ export function DeployAci() {
     </section>
   )
 }
-
-export default DeployAci

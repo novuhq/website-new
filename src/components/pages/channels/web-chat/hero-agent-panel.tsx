@@ -1,7 +1,6 @@
 "use client"
 
-import type { CSSProperties } from "react"
-import dynamic from "next/dynamic"
+import { useCallback, useRef, useState, type CSSProperties } from "react"
 import {
   AGENT_MARK_IMAGE,
   HERO_AGENT_EMPTY_STATE,
@@ -31,11 +30,9 @@ import {
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 import type { LiveAgentRenderer } from "./live-agent-chat"
+import { LiveComposer, type ComposerState } from "./live-composer"
 
-const LiveAgentChat = dynamic(() => import("./live-agent-chat"), {
-  ssr: false,
-  loading: () => <HeroAgentPanels step={null} />,
-})
+type LiveAgentChatComponent = typeof import("./live-agent-chat").default
 
 export interface HeroAgentPanelProps {
   /** `null` is interactive live chat. 0-5 are scripted preview steps. */
@@ -104,10 +101,9 @@ function PersonalizedArtwork({
  *
  * `PersonalizedArtwork` preserves the recolour behaviour a personalized frame confirms
  * (`hero-personalization-05-todesktop.com`, `45487:93325`): the blob's own
- * colours are Figma's at rest, and the hue overlay shifts them to the visitor's
- * brand only once `data-wc-state` says so — the same mechanism the hero glow
- * uses, and still zero React re-renders. `isolate` scopes both that blend and
- * the glyph's to this mark.
+ * colours are Figma's at rest, and the hue overlay fades in to shift them to the
+ * visitor's brand only while `active` is set, the same way the hero glow does.
+ * `isolate` scopes both that blend and the glyph's to this mark.
  *
  * The glyph is `white` at 50% in `plus-lighter` (per the exported SVG), which
  * is what gives it its pale lavender cast over the blob rather than flat white.
@@ -368,7 +364,6 @@ function ConversationBody({
             text={message.text}
             compact={compact}
             personalized={personalized}
-            animate={false}
             className={
               message.step === 5
                 ? compact
@@ -409,9 +404,9 @@ function AgentPanel({
     <div
       data-slot="web-chat-panel"
       className={cn(
-        "relative isolate flex flex-col overflow-hidden rounded-[14px] bg-black p-px shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] backdrop-blur-[48px] after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-[inherit] after:mix-blend-soft-light after:inset-ring-1 after:inset-ring-white/90",
+        "relative isolate flex flex-col overflow-hidden rounded-[14px] bg-black p-px shadow-[0_12px_32px_rgba(0,0,0,0.64),0_4px_4px_rgba(0,0,0,0.25)] after:pointer-events-none after:absolute after:inset-0 after:z-20 after:rounded-[inherit] after:mix-blend-soft-light after:inset-ring-1 after:inset-ring-white/90",
         compact
-          ? "h-[301.62px] w-[190.2px] rounded-[6.526px] p-[0.466px] backdrop-blur-[22.38px] after:inset-ring-[0.466px]"
+          ? "h-[301.62px] w-[190.2px] rounded-[6.526px] p-[0.466px] after:inset-ring-[0.466px]"
           : // Desktop: fills whatever height the shared card (`HeroLiveUi`
             // in hero.tsx) gives its margined wrapper, matching Figma's
             // `❖chat` panel filling ~647 of the 680-tall card rather than a
@@ -509,7 +504,21 @@ function HeroAgentPanels({
   renderLive,
   phase,
   personalized,
-}: HeroAgentPanelProps & { renderLive?: LiveAgentRenderer }) {
+  onIntent,
+}: HeroAgentPanelProps & {
+  renderLive?: LiveAgentRenderer
+  /** First sign the visitor may chat: hover, press or focus in a panel. */
+  onIntent?: () => void
+}) {
+  const intent = onIntent && {
+    onPointerEnter: onIntent,
+    onPointerDown: onIntent,
+    onFocus: onIntent,
+  }
+  // The storyboard's scripted conversation is a looping illustration; only
+  // the idle and live chat panels are meant to be read or used.
+  const scripted = step !== null || undefined
+
   return (
     <div
       className="contents"
@@ -524,7 +533,11 @@ function HeroAgentPanels({
           panel 408 wide at x16); the left inset is already the `gap-4`
           between this and `HeroProductUI` in `HeroLiveUi`. Auto height lets
           it stretch to match the card's real height as a flex sibling. */}
-      <div className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static">
+      <div
+        className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static"
+        aria-hidden={scripted}
+        {...intent}
+      >
         <AgentPanel
           step={step}
           phase={phase}
@@ -535,7 +548,11 @@ function HeroAgentPanels({
       {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
           slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
           flex item can shrink below its content size and get squeezed. */}
-      <div className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden">
+      <div
+        className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden"
+        aria-hidden={scripted}
+        {...intent}
+      >
         <AgentPanel
           step={step}
           phase={phase}
@@ -545,6 +562,77 @@ function HeroAgentPanels({
         />
       </div>
     </div>
+  )
+}
+
+/**
+ * The idle panel renders the live chat's composer without its code or a chat
+ * session. Both load on the first sign of intent, so visitors who never touch
+ * the chat don't download it or open a connection. The idle panel stays on
+ * screen until the session settles, then hands over once; the draft, focus
+ * and a pending send are shared, so nothing typed in between is lost.
+ */
+function InteractiveAgentPanels() {
+  const [LiveAgentChat, setLiveAgentChat] =
+    useState<LiveAgentChatComponent | null>(null)
+  const [settled, setSettled] = useState(false)
+  const [draft, setDraft] = useState("")
+  const [focused, setFocused] = useState(false)
+  const [pendingSend, setPendingSend] = useState(false)
+  const composer: ComposerState = {
+    draft,
+    setDraft,
+    focused,
+    setFocused,
+    pendingSend,
+    setPendingSend,
+  }
+  const loading = useRef(false)
+
+  const activate = useCallback(() => {
+    if (loading.current) return
+    loading.current = true
+    import("./live-agent-chat")
+      .then(({ default: Component }) => setLiveAgentChat(() => Component))
+      .catch(() => {
+        loading.current = false
+      })
+  }, [])
+
+  const renderIdle: LiveAgentRenderer = (compact, emptyState) => (
+    <>
+      {emptyState}
+      <LiveComposer
+        compact={compact}
+        value={draft}
+        onChange={setDraft}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onSubmit={() => {
+          if (draft.trim()) setPendingSend(true)
+          activate()
+        }}
+      />
+    </>
+  )
+
+  return (
+    <>
+      {!settled && (
+        <HeroAgentPanels
+          step={null}
+          renderLive={renderIdle}
+          onIntent={activate}
+        />
+      )}
+      {LiveAgentChat && (
+        <LiveAgentChat composer={composer} onSettled={() => setSettled(true)}>
+          {(renderLive) =>
+            settled && <HeroAgentPanels step={null} renderLive={renderLive} />
+          }
+        </LiveAgentChat>
+      )}
+    </>
   )
 }
 
@@ -558,9 +646,5 @@ export function HeroAgentPanel({
       <HeroAgentPanels step={step} phase={phase} personalized={personalized} />
     )
 
-  return (
-    <LiveAgentChat>
-      {(renderLive) => <HeroAgentPanels step={null} renderLive={renderLive} />}
-    </LiveAgentChat>
-  )
+  return <InteractiveAgentPanels />
 }

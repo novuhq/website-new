@@ -13,20 +13,26 @@ const SUBMIT_LABEL = "See it in your product"
 const CAPTION =
   "Live and interactive. Paste your site to see the agent in your product."
 const RESET_LABEL = "Reset personalization"
+const STATUS_MESSAGES: Partial<Record<string, string>> = {
+  loading: "Personalizing the preview…",
+  personalized: "Preview personalized.",
+}
 
 const FIELD_CLASSES =
   "relative flex h-11 items-center gap-3 rounded-3xl border border-white/10 bg-white/10 pl-2.25 pr-4 transition-colors duration-200 hover:border-white/60 hover:bg-white/[0.14] focus-within:border-white/60 focus-within:bg-white/[0.14]"
 
 // The rounded field border indicates focus; retain an outline for forced colors.
 const INPUT_CLASSES =
-  "min-w-0 flex-1 bg-transparent text-base leading-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden md:text-lg"
+  "min-w-0 flex-1 bg-transparent text-base leading-none text-white placeholder:text-gray-60 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden md:text-lg"
 
 const RESET_ICON_CLASSES =
   "size-6 opacity-40 transition-opacity duration-200 group-hover/reset:opacity-100 group-focus-visible/reset:opacity-100"
 
 // Figma 45487:94047: white by default; the hover state uses the gray-10 token.
+// While a preview loads the button is aria-disabled, not disabled, so it
+// keeps keyboard focus.
 const SUBMIT_BUTTON_CLASSES =
-  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-gray-10 focus-visible:bg-gray-10 md:w-[205px]"
+  "h-11 shrink-0 rounded-full bg-white px-5 py-3.5 text-base leading-none font-medium tracking-tight normal-case hover:bg-gray-10 focus-visible:bg-gray-10 aria-disabled:opacity-50 md:w-[205px]"
 
 function ResetIcon() {
   return (
@@ -47,8 +53,8 @@ function ResetIcon() {
 
 /**
  * The control that starts the hero interaction: a visitor types their own
- * domain, submits, and `onSubmit` fires immediately so Task 8's animation can
- * start right away. `personalize` (Task 4's provider) is kicked off in
+ * domain, submits, and `onSubmit` fires immediately so the hero animation
+ * can start right away. The provider's `personalize` is kicked off in
  * parallel and is never awaited here — a slow or failing extraction must
  * never delay the animation trigger.
  */
@@ -67,7 +73,7 @@ export function UrlPersonalizer({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const trimmed = value.trim()
-    if (!trimmed) return
+    if (!trimmed || isLoading) return
 
     onSubmit(trimmed)
     void personalize(trimmed)
@@ -111,7 +117,7 @@ export function UrlPersonalizer({
             </div>
             <Button
               type="submit"
-              disabled={isLoading}
+              aria-disabled={isLoading || undefined}
               size="none"
               variant="default"
               className={SUBMIT_BUTTON_CLASSES}
@@ -156,7 +162,7 @@ export function UrlPersonalizer({
           <div className="flex items-center gap-3 pr-3">
             <Button
               type="submit"
-              disabled={isLoading}
+              aria-disabled={isLoading || undefined}
               size="none"
               variant="default"
               className={cn(SUBMIT_BUTTON_CLASSES, "flex-1")}
@@ -175,8 +181,12 @@ export function UrlPersonalizer({
         </div>
       </form>
 
-      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-white/40 md:text-[15px]">
+      <p className="px-6 text-center text-sm leading-[1.38em] tracking-tight text-gray-60 md:text-[15px]">
         {CAPTION}
+      </p>
+      {/* Always mounted so screen readers announce each change in it. */}
+      <p role="status" className="sr-only">
+        {STATUS_MESSAGES[status] ?? ""}
       </p>
     </div>
   )

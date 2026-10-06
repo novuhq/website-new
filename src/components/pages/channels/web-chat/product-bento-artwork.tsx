@@ -1,43 +1,141 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import type { ProductBentoCardCopy } from "@/data/pages/web-chat-product-bento"
 import actionsLaptopBase from "@/images/pages/channels/web-chat/bento-layers/actions-laptop-base.jpg"
-import actionsLaptopUI from "@/images/pages/channels/web-chat/bento-layers/actions-laptop.inline.svg"
 import actionsTabletBase from "@/images/pages/channels/web-chat/bento-layers/actions-tablet-base.jpg"
-import actionsTabletUI from "@/images/pages/channels/web-chat/bento-layers/actions-tablet.inline.svg"
-import ActionsUI from "@/images/pages/channels/web-chat/bento-layers/actions.inline.svg"
 import actionsBackground from "@/images/pages/channels/web-chat/bento-layers/actions.jpg"
 import activityLaptopBase from "@/images/pages/channels/web-chat/bento-layers/activity-laptop-base.jpg"
-import activityLaptopUI from "@/images/pages/channels/web-chat/bento-layers/activity-laptop.inline.svg"
-import ActivityMobileUI from "@/images/pages/channels/web-chat/bento-layers/activity-mobile.inline.svg"
 import activityMobileBackground from "@/images/pages/channels/web-chat/bento-layers/activity-mobile.jpg"
 import activityTabletBase from "@/images/pages/channels/web-chat/bento-layers/activity-tablet-base.jpg"
-import activityTabletUI from "@/images/pages/channels/web-chat/bento-layers/activity-tablet.inline.svg"
-import ActivityUI from "@/images/pages/channels/web-chat/bento-layers/activity.inline.svg"
 import activityBackground from "@/images/pages/channels/web-chat/bento-layers/activity.jpg"
 import orderLaptopBase from "@/images/pages/channels/web-chat/bento-layers/order-laptop-base.jpg"
-import orderLaptopUI from "@/images/pages/channels/web-chat/bento-layers/order-laptop.inline.svg"
 import orderTabletBase from "@/images/pages/channels/web-chat/bento-layers/order-tablet-base.jpg"
-import orderTabletUI from "@/images/pages/channels/web-chat/bento-layers/order-tablet.inline.svg"
-import OrderUI from "@/images/pages/channels/web-chat/bento-layers/order.inline.svg"
 import orderBackground from "@/images/pages/channels/web-chat/bento-layers/order.jpg"
 import renderLaptopBase from "@/images/pages/channels/web-chat/bento-layers/render-laptop-base.jpg"
-import renderLaptopUI from "@/images/pages/channels/web-chat/bento-layers/render-laptop.inline.svg"
 import renderTabletBase from "@/images/pages/channels/web-chat/bento-layers/render-tablet-base.jpg"
-import renderTabletUI from "@/images/pages/channels/web-chat/bento-layers/render-tablet.inline.svg"
-import RenderUI from "@/images/pages/channels/web-chat/bento-layers/render.inline.svg"
 import renderBackground from "@/images/pages/channels/web-chat/bento-layers/render.jpg"
 import subscriberLaptopBase from "@/images/pages/channels/web-chat/bento-layers/subscriber-laptop-base.jpg"
-import subscriberLaptopUI from "@/images/pages/channels/web-chat/bento-layers/subscriber-laptop.inline.svg"
-import SubscriberMobileUI from "@/images/pages/channels/web-chat/bento-layers/subscriber-mobile.inline.svg"
 import subscriberMobileBackground from "@/images/pages/channels/web-chat/bento-layers/subscriber-mobile.jpg"
 import subscriberTabletBase from "@/images/pages/channels/web-chat/bento-layers/subscriber-tablet-base.jpg"
-import subscriberTabletUI from "@/images/pages/channels/web-chat/bento-layers/subscriber-tablet.inline.svg"
-import SubscriberUI from "@/images/pages/channels/web-chat/bento-layers/subscriber.inline.svg"
 import subscriberBackground from "@/images/pages/channels/web-chat/bento-layers/subscriber.jpg"
 
 import { cn } from "@/lib/utils"
 import { BrandArtwork } from "@/components/pages/channels/web-chat/brand-artwork"
+
+// The editable UI layers render only once a visitor personalizes, so load
+// them on demand instead of shipping ~190 KB of SVG in the page bundle.
+const actionsLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/actions-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const actionsTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/actions-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const ActionsUI = dynamic(
+  () =>
+    import("@/images/pages/channels/web-chat/bento-layers/actions.inline.svg"),
+  { ssr: false }
+)
+const activityLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/activity-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const ActivityMobileUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/activity-mobile.inline.svg"
+    ),
+  { ssr: false }
+)
+const activityTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/activity-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const ActivityUI = dynamic(
+  () =>
+    import("@/images/pages/channels/web-chat/bento-layers/activity.inline.svg"),
+  { ssr: false }
+)
+const orderLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/order-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const orderTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/order-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const OrderUI = dynamic(
+  () =>
+    import("@/images/pages/channels/web-chat/bento-layers/order.inline.svg"),
+  { ssr: false }
+)
+const renderLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/render-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const renderTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/render-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const RenderUI = dynamic(
+  () =>
+    import("@/images/pages/channels/web-chat/bento-layers/render.inline.svg"),
+  { ssr: false }
+)
+const subscriberLaptopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/subscriber-laptop.inline.svg"
+    ),
+  { ssr: false }
+)
+const SubscriberMobileUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/subscriber-mobile.inline.svg"
+    ),
+  { ssr: false }
+)
+const subscriberTabletUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/subscriber-tablet.inline.svg"
+    ),
+  { ssr: false }
+)
+const SubscriberUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/bento-layers/subscriber.inline.svg"
+    ),
+  { ssr: false }
+)
 
 const ARTWORK = {
   subscriber: {

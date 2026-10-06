@@ -7,21 +7,18 @@ import { cn } from "@/lib/utils"
  * via a `mix-blend-mode: hue` overlay reading `--wc-accent` through `--wc-hue`.
  *
  * Defaults to the provider's `data-wc-color`. Choreographed previews can
- * control visibility explicitly and mask transparent artwork to its alpha.
+ * control visibility explicitly.
  *
  * Fade the tint over 500ms. Isolated hosts must supply an opaque backdrop
- * wherever the artwork does not cover them, or mask this layer to its alpha.
+ * wherever the artwork does not cover them.
  */
 export function HueLayer({
   className,
   active,
-  maskImage,
 }: {
   className?: string
   /** Explicit visibility for previews whose theme is revealed in stages. */
   active?: boolean
-  /** Preserve the silhouette when the source artwork has transparent edges. */
-  maskImage?: string
 }) {
   return (
     <div
@@ -34,9 +31,6 @@ export function HueLayer({
         background: "var(--wc-hue)",
         mixBlendMode: "hue",
         opacity: active === undefined ? undefined : Number(active),
-        maskImage: maskImage ? `url("${maskImage}")` : undefined,
-        maskSize: maskImage ? "100% 100%" : undefined,
-        maskRepeat: maskImage ? "no-repeat" : undefined,
       }}
     />
   )

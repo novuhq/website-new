@@ -3,12 +3,11 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { NovuProvider, useAgentChat } from "@novu/react"
 import type { DynamicToolUIPart } from "ai"
-import { ChevronUp, ExternalLink } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import type { WebChatSession } from "@/lib/web-chat-session"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Conversation,
   ConversationContent,
@@ -25,7 +24,10 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning"
 import { Tool, ToolHeader } from "@/components/ai-elements/tool"
-import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
+import {
+  LiveComposer,
+  type ComposerState,
+} from "@/components/pages/channels/web-chat/live-composer"
 
 const AGENT_ID = "webchat"
 const VISITOR_SUBSCRIBER_ID =
@@ -35,84 +37,30 @@ export type LiveAgentRenderer = (
   compact: boolean,
   emptyState: ReactNode
 ) => ReactNode
-type LiveAgentChatProps = { children: (render: LiveAgentRenderer) => ReactNode }
-
-function LiveComposer({
-  compact,
-  disabled,
-  value,
-  onChange,
-  onSubmit,
-  disabledReason,
-}: {
-  compact: boolean
-  disabled: boolean
-  value: string
-  onChange?: (value: string) => void
-  onSubmit?: () => void
-  disabledReason?: string
-}) {
-  return (
-    <form
-      className={cn("group/composer shrink-0 p-[11px]", compact && "p-[5.6px]")}
-      title={disabledReason}
-      onSubmit={(event) => {
-        event.preventDefault()
-        onSubmit?.()
-      }}
-    >
-      <div
-        className={cn(
-          "flex min-h-[42px] items-center gap-1 rounded-xl border border-white/30 bg-black/88 pr-[3px] pl-3.5 focus-within:border-white/70",
-          compact && "min-h-[19.6px] rounded-[5.6px] pr-[1.4px] pl-[6.5px]"
-        )}
-      >
-        <Textarea
-          aria-label="Message the agent"
-          placeholder="Message the agent ..."
-          rows={1}
-          value={value}
-          disabled={disabled}
-          onChange={(event) => onChange?.(event.target.value)}
-          onKeyDown={(event) => {
-            if (
-              event.key === "Enter" &&
-              !event.shiftKey &&
-              !event.nativeEvent.isComposing
-            ) {
-              event.preventDefault()
-              event.currentTarget.form?.requestSubmit()
-            }
-          }}
-          className={cn(
-            "max-h-28 min-h-0 resize-none rounded-none border-0 bg-transparent p-0 text-[15px] leading-[1.2] font-medium tracking-[-0.01em] text-white shadow-none placeholder:text-white/40 focus-visible:ring-0 disabled:opacity-100 md:text-[15px] dark:bg-transparent",
-            compact &&
-              "text-[7px] group-focus-within/composer:py-2 group-focus-within/composer:text-base md:text-[7px]"
-          )}
-        />
-        <Button
-          type="button"
-          aria-label="Send message"
-          variant="none"
-          size="icon-sm"
-          disabled={disabled || !value.trim()}
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={onSubmit}
-          className={cn(
-            "size-[34px] shrink-0 rounded-[8px] bg-purple-2 text-black group-data-[wc-color=brand]:bg-(--wc-accent) group-data-[wc-color=brand]:text-(--wc-accent-foreground) disabled:opacity-100",
-            compact &&
-              "size-[15.85px] rounded-[3.7px] group-focus-within/composer:size-8 [&_svg]:size-2 group-focus-within/composer:[&_svg]:size-4"
-          )}
-        >
-          <ChevronUp className="size-4" aria-hidden />
-        </Button>
-      </div>
-    </form>
-  )
+type LiveAgentChatProps = {
+  children: (render: LiveAgentRenderer) => ReactNode
+  /** Shared with the idle panel's message box. */
+  composer: ComposerState
+  /** The session request finished, connected or not. */
+  onSettled?: () => void
 }
 
-function ConnectedAgentChat({ children }: LiveAgentChatProps) {
-  const { hasAccent } = useWebChatBrand()
+// The live chat only mounts before any brand is submitted (the storyboard
+// takes over after that), so it always uses the default theme.
+function ConnectedAgentChat({
+  children,
+  composer: {
+    draft,
+    setDraft,
+    focused,
+    setFocused,
+    pendingSend,
+    setPendingSend,
+  },
+}: {
+  children: LiveAgentChatProps["children"]
+  composer: ComposerState
+}) {
   const {
     messages,
     pendingActions,
@@ -122,7 +70,6 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
     isLoading,
     error,
   } = useAgentChat({ agentId: AGENT_ID })
-  const [draft, setDraft] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [requestError, setRequestError] = useState<string | null>(null)
   const requestInFlight = useRef(false)
@@ -162,6 +109,14 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
     )
   }
 
+  // A message sent while the chat was still loading or connecting goes out
+  // as soon as it is ready. `runRequest` ignores a duplicate call.
+  useEffect(() => {
+    if (!pendingSend || busy) return
+    setPendingSend(false)
+    submit()
+  })
+
   return children((compact, emptyState) => (
     <>
       {messages.length === 0 && !busy ? (
@@ -178,14 +133,6 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
                 className="max-w-full"
               >
                 <MessageContent
-                  style={
-                    message.role === "user" && hasAccent
-                      ? {
-                          backgroundColor: "var(--wc-accent)",
-                          color: "var(--wc-accent-contrast)",
-                        }
-                      : undefined
-                  }
                   className={cn(
                     "min-w-0 text-sm wrap-anywhere group-[.is-user]:bg-white/10 group-[.is-user]:text-white",
                     compact && "text-xs"
@@ -301,7 +248,10 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
               )
             )}
             {isRunning && (
-              <p role="status" className="animate-pulse text-xs text-white/60">
+              <p
+                role="status"
+                className="text-xs text-white/60 motion-safe:animate-pulse"
+              >
                 Thinking…
               </p>
             )}
@@ -316,22 +266,32 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
       )}
       <LiveComposer
         compact={compact}
-        disabled={busy}
         value={draft}
         onChange={setDraft}
         onSubmit={submit}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        canSend={!busy}
+        autoFocus={focused}
       />
     </>
   ))
 }
 
-export default function LiveAgentChat({ children }: LiveAgentChatProps) {
+export default function LiveAgentChat({
+  children,
+  composer,
+  onSettled,
+}: LiveAgentChatProps) {
   const [session, setSession] = useState<WebChatSession | null>(null)
   const [initializing, setInitializing] = useState(true)
+  const { draft, setDraft, focused, setFocused, setPendingSend } = composer
+  const settled = useRef(onSettled)
+  settled.current = onSettled
 
   useEffect(() => {
     const controller = new AbortController()
-    void fetch("/api/web-chat/session", {
+    void fetch("/api/web-chat/session/", {
       method: "POST",
       credentials: "same-origin",
       cache: "no-store",
@@ -365,7 +325,9 @@ export default function LiveAgentChat({ children }: LiveAgentChatProps) {
         // Keep the website-personalization preview available if chat is offline.
       })
       .finally(() => {
-        if (!controller.signal.aborted) setInitializing(false)
+        if (controller.signal.aborted) return
+        setInitializing(false)
+        settled.current?.()
       })
 
     return () => controller.abort()
@@ -383,9 +345,17 @@ export default function LiveAgentChat({ children }: LiveAgentChatProps) {
         </p>
         <LiveComposer
           compact={compact}
-          disabled
-          value=""
-          disabledReason={reason}
+          value={draft}
+          onChange={setDraft}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onSubmit={() => {
+            if (initializing && draft.trim()) setPendingSend(true)
+          }}
+          readOnly={!initializing}
+          canSend={false}
+          status={reason}
+          autoFocus={focused}
         />
       </>
     ))
@@ -393,7 +363,7 @@ export default function LiveAgentChat({ children }: LiveAgentChatProps) {
 
   return (
     <NovuProvider {...session}>
-      <ConnectedAgentChat>{children}</ConnectedAgentChat>
+      <ConnectedAgentChat composer={composer}>{children}</ConnectedAgentChat>
     </NovuProvider>
   )
 }

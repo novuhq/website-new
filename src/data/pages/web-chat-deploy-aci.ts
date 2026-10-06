@@ -10,7 +10,7 @@ import customCodeLogo from "@/svgs/pages/channels/web-chat/frameworks/custom-cod
 import langchainLogo from "@/svgs/pages/channels/web-chat/frameworks/langchain-mark.svg"
 
 /**
- * §6 "Deploy the ACI, not just chat" (Task 13). Figma desktop `45487-81046`,
+ * "Deploy the ACI, not just chat". Figma desktop `45487-81046`,
  * mobile `45497-147576` (found inside the full mobile page `45487-98982`,
  * at y 5474 — the section isn't broken out as its own top-level frame on
  * mobile). Framework logo set `45497-146963`. Not personalized: no
@@ -22,7 +22,7 @@ import langchainLogo from "@/svgs/pages/channels/web-chat/frameworks/langchain-m
 export const DEPLOY_ACI_HEADING = "Deploy the ACI, not just chat"
 
 // Description (`45487-81491` desktop `#A3A6B2`, `45497-147507` mobile
-// `rgba(255,255,255,0.8)` — same divergence pattern noted for §5).
+// `rgba(255,255,255,0.8)`; the breakpoints use different greys in Figma).
 export const DEPLOY_ACI_DESCRIPTION =
   "Add your agent. ACI handles identity, threads, delivery, compliance, and scale. Production-ready in under two minutes."
 

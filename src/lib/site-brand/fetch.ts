@@ -27,6 +27,8 @@ export class ResourceFetchError extends Error {
 const USER_AGENT =
   "Mozilla/5.0 (compatible; NovuAgentChatPreview/1.0; +https://novu.co)"
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308])
+// Web ports only, so the preview cannot be used to probe other services.
+const ALLOWED_PORTS = new Set(["", "80", "443", "8080", "8443"])
 
 function isPublicAddress(address: string): boolean {
   if (!isIP(address)) return false
@@ -51,6 +53,9 @@ export function normalizeUrl(input: string): URL {
   if (url.username || url.password) {
     throw new ResourceFetchError("URL credentials are not allowed")
   }
+  if (!ALLOWED_PORTS.has(url.port)) {
+    throw new ResourceFetchError("That port is not supported")
+  }
   const hostname = url.hostname
     .replace(/^\[|\]$/g, "")
     .replace(/\.$/, "")
@@ -68,22 +73,63 @@ export function normalizeUrl(input: string): URL {
   return url
 }
 
-/** DNS lookup itself is not cancellable; discard its result after cancellation. */
+// "No such name" answers. Anything else (timeouts, refused or failing servers)
+// may succeed on retry, so it is surfaced instead of reading as "no records".
+const MISSING_RECORD_CODES = new Set(["ENOTFOUND", "ENODATA"])
+
+/**
+ * Resolve with c-ares rather than `dns.lookup`: getaddrinfo runs on libuv's
+ * four-thread pool and cannot be cancelled, so a page pointing at hostnames
+ * whose DNS never answers would stall every fs, crypto and sharp call on the
+ * instance. c-ares queries stay off that pool, time out on their own, and are
+ * cancelled with the extraction.
+ */
+async function resolveAddresses(
+  hostname: string,
+  signal: AbortSignal
+): Promise<LookupAddress[]> {
+  const resolver = new dns.Resolver({ timeout: 3000, tries: 1 })
+  return new Promise<LookupAddress[]>((resolve, reject) => {
+    const abort = () => {
+      resolver.cancel()
+      reject(signal.reason)
+    }
+    signal.addEventListener("abort", abort, { once: true })
+    Promise.allSettled([
+      resolver.resolve4(hostname),
+      resolver.resolve6(hostname),
+    ])
+      .then(([v4, v6]) => {
+        const addresses = [
+          ...(v4.status === "fulfilled" ? v4.value : []).map((address) => ({
+            address,
+            family: 4,
+          })),
+          ...(v6.status === "fulfilled" ? v6.value : []).map((address) => ({
+            address,
+            family: 6,
+          })),
+        ]
+        const failure = [v4, v6].find(
+          (result): result is PromiseRejectedResult =>
+            result.status === "rejected" &&
+            !MISSING_RECORD_CODES.has(result.reason?.code)
+        )
+        if (!addresses.length && failure) reject(failure.reason)
+        else resolve(addresses)
+      })
+      .finally(() => {
+        signal.removeEventListener("abort", abort)
+      })
+  })
+}
+
 async function publicAddress(url: URL, signal: AbortSignal) {
   const hostname = url.hostname.replace(/^\[|\]$/g, "")
   const family = isIP(hostname)
   if (family) return { address: hostname, family }
 
-  const addresses = await new Promise<LookupAddress[]>((resolve, reject) => {
-    const abort = () => reject(signal.reason)
-    signal.addEventListener("abort", abort, { once: true })
-    dns
-      .lookup(hostname, { all: true, verbatim: true })
-      .then(resolve, reject)
-      .finally(() => {
-        signal.removeEventListener("abort", abort)
-      })
-  })
+  const addresses = await resolveAddresses(hostname, signal)
   signal.throwIfAborted()
   if (
     !addresses.length ||

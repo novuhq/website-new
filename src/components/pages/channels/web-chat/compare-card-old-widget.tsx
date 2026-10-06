@@ -1,13 +1,12 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import {
   COMPARE_OLD_WIDGET_BODY,
   COMPARE_OLD_WIDGET_TITLE,
 } from "@/data/pages/web-chat-compare"
-import MobileUI from "@/images/pages/channels/web-chat/compare-layers/compare-old-mobile.inline.svg"
 import mobileBackground from "@/images/pages/channels/web-chat/compare-layers/compare-old-mobile.jpg"
-import DesktopUI from "@/images/pages/channels/web-chat/compare-layers/compare-old.inline.svg"
 import desktopBackground from "@/images/pages/channels/web-chat/compare-layers/compare-old.jpg"
 import illustrationMobile from "@/images/pages/channels/web-chat/compare-old-widget-illustration-mobile.jpg"
 import illustrationDesktop from "@/images/pages/channels/web-chat/compare-old-widget-illustration.jpg"
@@ -16,10 +15,27 @@ import { BrandArtwork } from "@/components/pages/channels/web-chat/brand-artwork
 
 import { CompareTabletArtwork } from "./compare-tablet-artwork"
 
+// The editable UI layers render only once a visitor personalizes, so load
+// them on demand instead of shipping ~190 KB of SVG in the page bundle.
+const MobileUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old-mobile.inline.svg"
+    ),
+  { ssr: false }
+)
+const DesktopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old.inline.svg"
+    ),
+  { ssr: false }
+)
+
 /** Keep the original artwork for idle/fallback; personalized bubbles sit above the hue-tinted base. */
 export function OldWidgetCard() {
   return (
-    <div className="relative mx-auto flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-[#2A2B33] bg-[#101114] md:h-[480px] md:rounded-[24px] md:border lg:flex-1 xl:w-[411px] xl:flex-none">
+    <div className="relative mx-auto flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-gray-20 bg-card-surface md:h-[480px] md:rounded-[24px] md:border lg:flex-1 xl:w-[411px] xl:flex-initial">
       <CompareTabletArtwork kind="old" />
       <div className="hidden xl:absolute xl:inset-0 xl:isolate xl:block">
         <Image

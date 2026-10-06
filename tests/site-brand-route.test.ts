@@ -10,7 +10,10 @@ import { publicAddress, upstream } from "./helpers/site-brand-upstream"
 function request(url: string) {
   return new NextRequest("https://novu.co/api/agent-preview", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      origin: "https://novu.co",
+    },
     body: JSON.stringify({ url }),
   })
 }

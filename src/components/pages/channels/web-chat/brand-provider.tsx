@@ -33,6 +33,9 @@ export interface WebChatBrand {
 /** An absent accent uses the default theme; only extraction failures show this. */
 const FALLBACK_ERROR_MESSAGE =
   "We couldn’t load your brand styles. Showing the default preview."
+/** The API rejects the address itself (a typo, or not a public site). */
+const INVALID_URL_MESSAGE =
+  "That doesn’t look like a public website address. Showing the default preview."
 
 const DEFAULT_STATE: WebChatBrand = {
   status: "idle",
@@ -45,7 +48,8 @@ const DEFAULT_STATE: WebChatBrand = {
 
 function fallbackState(
   domain: string | null,
-  favicon: string | null
+  favicon: string | null,
+  errorMessage = FALLBACK_ERROR_MESSAGE
 ): WebChatBrand {
   return {
     status: "fallback",
@@ -53,14 +57,14 @@ function fallbackState(
     hasAccent: false,
     domain,
     favicon,
-    errorMessage: FALLBACK_ERROR_MESSAGE,
+    errorMessage,
   }
 }
 
 /**
  * The subset of `/api/agent-preview`'s `BrandProfile` this provider actually
- * reads. `Pick`-ed from the real type (final-review "also fix" item) rather
- * than duck-typed independently, so a future rename of any of these three
+ * reads. `Pick`-ed from the real type rather than duck-typed
+ * independently, so a future rename of any of these three
  * fields on `BrandProfile` is a compile error here instead of silent drift.
  */
 type AgentPreviewBrand = Pick<BrandProfile, "accent" | "domain" | "logo">
@@ -86,7 +90,7 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, status: "loading" }))
 
     try {
-      const response = await fetch("/api/agent-preview", {
+      const response = await fetch("/api/agent-preview/", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ url }),
@@ -95,7 +99,11 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
       if (requestId !== latestRequestId.current) return
 
       if (!response.ok) {
-        setState(fallbackState(null, null))
+        setState(
+          response.status === 400
+            ? fallbackState(null, null, INVALID_URL_MESSAGE)
+            : fallbackState(null, null)
+        )
         return
       }
 

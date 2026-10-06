@@ -11,7 +11,7 @@ import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob
 import configuratorFrame from "@/images/pages/channels/web-chat/configurator-frame.png"
 
 /**
- * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
+ * "Build your connection. Ship it from any builder." Figma
  * section `45440-69446`, card `45440-69601`.
  * Not personalized: no `--wc-accent*` tokens.
  */
@@ -61,9 +61,8 @@ export const CONFIGURATOR_FRAMEWORK_SELECT_LABEL = "AI framework"
  * Builder logo row (Figma `logos-new` `45516-189708`), read row-by-row from
  * the frame: lovable, base-44, bolt, v0, replit, cursor, windsurf, claude, in
  * that exact order. `name` is alt-text only (the logos are wordmark images,
- * not rendered labels) — "bolt.new" and "Claude Code" match the external
- * product names, as the old "Works anywhere" section's builder list already
- * used (`BUILDERS` in the page's previous copy).
+ * not rendered labels), so "bolt.new" and "Claude Code" use the products'
+ * own names.
  */
 export interface IConfiguratorBuilderLogo {
   height: number

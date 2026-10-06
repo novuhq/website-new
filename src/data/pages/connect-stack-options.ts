@@ -13,12 +13,9 @@ import telegramIcon from "@/svgs/pages/home/stack/telegram.svg"
 import whatsappIcon from "@/svgs/pages/home/stack/whatsapp.svg"
 
 /**
- * Shared configurator core (originally Task 3 of the web-chat Figma redesign
- * plan). `IStackOption`, `DEFAULT_CHANNELS` and `DEFAULT_FRAMEWORKS` were
- * moved here verbatim out of `connect-stack.tsx` (same values, same icon
- * imports, same order); `WEB_CHAT_CHANNEL` was added for the Web Chat page's
- * own configurator. `connect-stack.tsx` and `channel-connect-stack.tsx` both
- * import from this module now.
+ * Shared configurator options for the homepage `connect-stack.tsx`, the
+ * channel pages' `channel-connect-stack.tsx` and the Web Chat page's
+ * configurator. `WEB_CHAT_CHANNEL` is specific to the Web Chat page.
  */
 
 export interface IStackOption {
@@ -102,7 +99,7 @@ export const DEFAULT_FRAMEWORKS: IStackOption[] = [
 
 /**
  * Not part of the homepage's channel list. Added for the Web Chat page's own
- * configurator (§8), which defaults to it. `cliSlug` must stay `"web-chat"` so
+ * configurator, which defaults to it. `cliSlug` must stay `"web-chat"` so
  * the generated command reads `npx novu connect --channel web-chat`, matching
  * the hero's CLI pill (`HERO_CLI_COMMAND` in `web-chat.ts`).
  */
