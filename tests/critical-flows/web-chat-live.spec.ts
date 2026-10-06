@@ -98,6 +98,10 @@ function composer(page: Page) {
 function transcript(page: Page) {
   return page.getByRole("log", { name: "Agent conversation" })
 }
+// The live chat loads on intent; focusing the message box is enough.
+async function startLiveChat(page: Page) {
+  await composer(page).focus()
+}
 
 test("sends to the original agent, streams a reply, and preserves a failed draft for retry", async ({
   page,
@@ -106,6 +110,9 @@ test("sends to the original agent, streams a reply, and preserves a failed draft
   const novu = await mockNovu(page)
   await gotoCriticalPage(page, webChatContract.route)
   await expect(composer(page)).toBeEnabled()
+  // Nothing loads or connects until the visitor shows intent.
+  expect(novu.sessions).toHaveLength(0)
+  await startLiveChat(page)
   await expect.poll(novu.connected).toBe(true)
   expect(novu.sessions[0]).toMatchObject({
     subscriber: {
@@ -134,7 +141,12 @@ test("sends to the original agent, streams a reply, and preserves a failed draft
     delta: "Novu connects",
   })
   await expect(transcript(page)).toContainText("Novu connects")
-  await expect(composer(page)).toBeDisabled()
+  // While the agent replies the box stays editable (and focused); only
+  // sending waits.
+  await expect(composer(page)).toBeFocused()
+  await composer(page).fill("Follow-up")
+  await expect(send).toBeDisabled()
+  await composer(page).fill("")
   novu.emit({
     type: "message-delta",
     messageId: "assistant-1",
@@ -194,6 +206,7 @@ test("handles approvals and starts a fresh live conversation after preview reset
     })
   )
   await gotoCriticalPage(page, webChatContract.route)
+  await startLiveChat(page)
   await expect.poll(novu.connected).toBe(true)
   await composer(page).fill("Show available actions")
   await composer(page).press("Shift+Enter")
@@ -233,6 +246,7 @@ test("handles approvals and starts a fresh live conversation after preview reset
   await page.getByRole("button", { name: "Reset personalization" }).click()
   await expect(composer(page)).toBeEnabled()
   await expect(transcript(page)).toHaveCount(0)
+  // Sent before the fresh chat finishes connecting: it goes out once ready.
   await composer(page).fill("New conversation")
   await composer(page).press("Enter")
   await expect.poll(() => novu.requests.length).toBe(3)
@@ -252,9 +266,11 @@ test("isolates signed subscribers between visitors and reuses each visitor cooki
     const otherPage = await otherContext.newPage()
     const second = await mockNovu(otherPage)
     await gotoCriticalPage(page, webChatContract.route)
-    await expect(composer(page)).toBeEnabled()
+    await startLiveChat(page)
+    await expect.poll(() => first.sessions.length).toBeGreaterThan(0)
     await gotoCriticalPage(otherPage, webChatContract.route)
-    await expect(composer(otherPage)).toBeEnabled()
+    await startLiveChat(otherPage)
+    await expect.poll(() => second.sessions.length).toBeGreaterThan(0)
 
     const a = first.sessions[0] as {
       subscriber: { subscriberId: string }
@@ -269,9 +285,12 @@ test("isolates signed subscribers between visitors and reuses each visitor cooki
     expect(b.subscriberHash).toMatch(/^[0-9a-f]{64}$/)
     expect(a.subscriberHash).not.toBe(b.subscriberHash)
 
+    const sessionsBeforeReload = first.sessions.length
     await page.reload()
-    await expect(composer(page)).toBeEnabled()
-    await expect.poll(() => first.sessions.length).toBeGreaterThan(1)
+    await startLiveChat(page)
+    await expect
+      .poll(() => first.sessions.length)
+      .toBeGreaterThan(sessionsBeforeReload)
     expect(first.sessions.at(-1)).toMatchObject({
       subscriber: a.subscriber,
       subscriberHash: a.subscriberHash,
@@ -299,13 +318,14 @@ for (const sessionFailure of ["unavailable", "unsigned"] as const) {
       )
     )
     await gotoCriticalPage(page, webChatContract.route)
+    await startLiveChat(page)
     await expect(
       page
         .getByTestId("web-chat-hero")
         .getByRole("status")
         .filter({ hasText: "Live chat is unavailable" })
     ).toHaveCount(1)
-    await expect(composer(page)).toBeDisabled()
+    await expect(composer(page)).not.toBeEditable()
     expect(novu.sessions).toHaveLength(0)
     expect(novu.requests).toHaveLength(0)
   })

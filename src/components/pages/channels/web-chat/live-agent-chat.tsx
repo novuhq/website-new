@@ -24,7 +24,10 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning"
 import { Tool, ToolHeader } from "@/components/ai-elements/tool"
-import { LiveComposer } from "@/components/pages/channels/web-chat/live-composer"
+import {
+  LiveComposer,
+  type ComposerState,
+} from "@/components/pages/channels/web-chat/live-composer"
 
 const AGENT_ID = "webchat"
 const VISITOR_SUBSCRIBER_ID =
@@ -36,26 +39,24 @@ export type LiveAgentRenderer = (
 ) => ReactNode
 type LiveAgentChatProps = {
   children: (render: LiveAgentRenderer) => ReactNode
-  /** Text typed into the idle panel before the live chat loaded. */
-  initialDraft?: string
-  /** Return focus to the message box; the visitor was typing in it. */
-  focusOnMount?: boolean
-}
-
-// The draft and focus outlive each hand-over (idle panel, connecting, live),
-// so typing carries on while the chat loads and connects.
-type ComposerState = {
-  draft: string
-  setDraft: (value: string) => void
-  focused: boolean
-  setFocused: (focused: boolean) => void
+  /** Shared with the idle panel's message box. */
+  composer: ComposerState
+  /** The session request finished, connected or not. */
+  onSettled?: () => void
 }
 
 // The live chat only mounts before any brand is submitted (the storyboard
 // takes over after that), so it always uses the default theme.
 function ConnectedAgentChat({
   children,
-  composer: { draft, setDraft, focused, setFocused },
+  composer: {
+    draft,
+    setDraft,
+    focused,
+    setFocused,
+    pendingSend,
+    setPendingSend,
+  },
 }: {
   children: LiveAgentChatProps["children"]
   composer: ComposerState
@@ -107,6 +108,14 @@ function ConnectedAgentChat({
       () => setDraft("")
     )
   }
+
+  // A message sent while the chat was still loading or connecting goes out
+  // as soon as it is ready. `runRequest` ignores a duplicate call.
+  useEffect(() => {
+    if (!pendingSend || busy) return
+    setPendingSend(false)
+    submit()
+  })
 
   return children((compact, emptyState) => (
     <>
@@ -268,14 +277,14 @@ function ConnectedAgentChat({
 
 export default function LiveAgentChat({
   children,
-  initialDraft = "",
-  focusOnMount,
+  composer,
+  onSettled,
 }: LiveAgentChatProps) {
   const [session, setSession] = useState<WebChatSession | null>(null)
   const [initializing, setInitializing] = useState(true)
-  const [draft, setDraft] = useState(initialDraft)
-  const [focused, setFocused] = useState(Boolean(focusOnMount))
-  const composer = { draft, setDraft, focused, setFocused }
+  const { draft, setDraft, focused, setFocused, setPendingSend } = composer
+  const settled = useRef(onSettled)
+  settled.current = onSettled
 
   useEffect(() => {
     const controller = new AbortController()
@@ -313,7 +322,9 @@ export default function LiveAgentChat({
         // Keep the website-personalization preview available if chat is offline.
       })
       .finally(() => {
-        if (!controller.signal.aborted) setInitializing(false)
+        if (controller.signal.aborted) return
+        setInitializing(false)
+        settled.current?.()
       })
 
     return () => controller.abort()
@@ -335,6 +346,9 @@ export default function LiveAgentChat({
           onChange={setDraft}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
+          onSubmit={() => {
+            if (initializing && draft.trim()) setPendingSend(true)
+          }}
           readOnly={!initializing}
           canSend={false}
           status={reason}

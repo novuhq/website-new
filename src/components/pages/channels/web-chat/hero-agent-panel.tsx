@@ -30,7 +30,7 @@ import {
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 import type { LiveAgentRenderer } from "./live-agent-chat"
-import { LiveComposer } from "./live-composer"
+import { LiveComposer, type ComposerState } from "./live-composer"
 
 type LiveAgentChatComponent = typeof import("./live-agent-chat").default
 
@@ -560,14 +560,25 @@ function HeroAgentPanels({
 /**
  * The idle panel renders the live chat's composer without its code or a chat
  * session. Both load on the first sign of intent, so visitors who never touch
- * the chat don't download it or open a connection. Text typed meanwhile, and
- * focus, carry over to the live chat.
+ * the chat don't download it or open a connection. The idle panel stays on
+ * screen until the session settles, then hands over once; the draft, focus
+ * and a pending send are shared, so nothing typed in between is lost.
  */
 function InteractiveAgentPanels() {
   const [LiveAgentChat, setLiveAgentChat] =
     useState<LiveAgentChatComponent | null>(null)
+  const [settled, setSettled] = useState(false)
   const [draft, setDraft] = useState("")
-  const [focusOnMount, setFocusOnMount] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [pendingSend, setPendingSend] = useState(false)
+  const composer: ComposerState = {
+    draft,
+    setDraft,
+    focused,
+    setFocused,
+    pendingSend,
+    setPendingSend,
+  }
   const loading = useRef(false)
 
   const activate = useCallback(() => {
@@ -580,15 +591,6 @@ function InteractiveAgentPanels() {
       })
   }, [])
 
-  if (LiveAgentChat)
-    return (
-      <LiveAgentChat initialDraft={draft} focusOnMount={focusOnMount}>
-        {(renderLive) => (
-          <HeroAgentPanels step={null} renderLive={renderLive} />
-        )}
-      </LiveAgentChat>
-    )
-
   const renderIdle: LiveAgentRenderer = (compact, emptyState) => (
     <>
       {emptyState}
@@ -596,15 +598,33 @@ function InteractiveAgentPanels() {
         compact={compact}
         value={draft}
         onChange={setDraft}
-        onFocus={() => setFocusOnMount(true)}
-        onBlur={() => setFocusOnMount(false)}
-        onSubmit={activate}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onSubmit={() => {
+          if (draft.trim()) setPendingSend(true)
+          activate()
+        }}
       />
     </>
   )
 
   return (
-    <HeroAgentPanels step={null} renderLive={renderIdle} onIntent={activate} />
+    <>
+      {!settled && (
+        <HeroAgentPanels
+          step={null}
+          renderLive={renderIdle}
+          onIntent={activate}
+        />
+      )}
+      {LiveAgentChat && (
+        <LiveAgentChat composer={composer} onSettled={() => setSettled(true)}>
+          {(renderLive) =>
+            settled && <HeroAgentPanels step={null} renderLive={renderLive} />
+          }
+        </LiveAgentChat>
+      )}
+    </>
   )
 }
 
