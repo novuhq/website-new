@@ -1,5 +1,6 @@
 import { ReactNode } from "react"
 import { type Route } from "next"
+import type { WebChatBuilderSlug } from "@/data/pages/web-chat-builder-list"
 import { PortableTextBlock } from "@portabletext/react"
 import { type BundledLanguage } from "shiki/langs"
 
@@ -12,10 +13,10 @@ export interface IMenuItem {
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
+  childrenTitle?: string
   description?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
-  previewImage?: string
   remainingCount?: number
 }
 
@@ -36,6 +37,7 @@ export type TMenuIcon =
   | "web-chat"
   | "sms"
   | "langchain"
+  | WebChatBuilderSlug
   | "ai-sdk"
   | "chat-sdk"
   | "claude-aws"

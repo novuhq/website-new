@@ -1,0 +1,31 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#131313"/>
+<g id="web-chat-builder-template (Webflow)">
+<path d="M-1277.34 -1526C-1277.34 -1527.1 -1276.44 -1528 -1275.34 -1528H800.664C801.769 -1528 802.664 -1527.1 802.664 -1526V3781C802.664 3782.1 801.769 3783 800.664 3783H-1277.34V-1526Z" fill="#22242A"/>
+<path d="M-1277.34 3783H-1278.34V3784H-1277.34V3783ZM-1275.34 -1528V-1527H800.664V-1528V-1529H-1275.34V-1528ZM802.664 -1526H801.664V3781H802.664H803.664V-1526H802.664ZM800.664 3783V3782H-1277.34V3783V3784H800.664V3783ZM-1277.34 3783H-1276.34V-1526H-1277.34H-1278.34V3783H-1277.34ZM802.664 3781H801.664C801.664 3781.55 801.216 3782 800.664 3782V3783V3784C802.321 3784 803.664 3782.66 803.664 3781H802.664ZM800.664 -1528V-1527C801.216 -1527 801.664 -1526.55 801.664 -1526H802.664H803.664C803.664 -1527.66 802.321 -1529 800.664 -1529V-1528ZM-1275.34 -1528V-1529C-1276.99 -1529 -1278.34 -1527.66 -1278.34 -1526H-1277.34H-1276.34C-1276.34 -1526.55 -1275.89 -1527 -1275.34 -1527V-1528Z" fill="white" fill-opacity="0.1"/>
+<g id="web-chat-builder-template (Webflow)_2">
+<rect width="1920" height="5151" transform="translate(-1197.34 -1448)" fill="black"/>
+<g id="section">
+<g id="fetures">
+<g id="row">
+<g id="feature-card">
+<rect x="-24" y="-24" width="394.667" height="188" rx="12" fill="#101114"/>
+<g id="content">
+<g id="Frame">
+<g id="Group">
+<path id="Vector" d="M19.3333 3.33333C19.3333 3.33333 15.3333 2 12.6667 4.66667L4.66667 12.6667C2 15.3333 3.33333 19.3333 3.33333 19.3333" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_2" d="M26 10C26 10 27.3333 14 24.6667 16.6667L16.6667 24.6667C14 27.3333 10 26 10 26" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_3" d="M10.6641 18.6641L2.66406 26.6641" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_4" d="M26.6641 2.66406L18.6641 10.6641" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_5" d="M26.6641 22.6641V30.6641" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_6" d="M22.6641 26.6641H30.6641" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

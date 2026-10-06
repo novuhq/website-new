@@ -11,6 +11,7 @@ import { getIntegrations } from "./pages/integrations"
 import { getPricing } from "./pages/pricing"
 import { getStaticMarketingPage, getStaticSanityPage } from "./pages/static"
 import { getWebChat } from "./pages/web-chat"
+import { getWebChatBuilder } from "./pages/web-chat-builders"
 import { isUnsupportedMarkdownPathname } from "./registry"
 import type { MarkdownPage, MarkdownPageBuilder, MarkdownResult } from "./types"
 import { normalizePathname } from "./url"
@@ -24,6 +25,7 @@ const PAGE_BUILDERS: MarkdownPageBuilder[] = [
   getCustomers,
   getComparison,
   getWebChat,
+  getWebChatBuilder,
   getChannelFrameworks,
   getChannels,
   getStaticSanityPage,

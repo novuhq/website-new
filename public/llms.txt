@@ -43,6 +43,11 @@ Novu provides a unified platform for building, operating, and debugging notifica
 - [AI agent on Email](https://novu.co/channels/email/): Reach users in their inbox with rich, actionable agent notifications and secure action links. Connect with `npx novu connect --channel email`.
 - [AI agent in Web Chat](https://novu.co/channels/web-chat/): Put an existing AI agent inside your product. It uses product context, takes actions with approval, renders your components in the thread, and continues the conversation on every connected channel. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat.md
 
+### Add an AI agent to an app builder (Novu Web Chat)
+How to embed an existing AI agent in an app made with an AI app builder, with one script tag, and reach the same users on other channels. Each page has a Markdown version at the same path with `.md`.
+- [AI agent in a Lovable app](https://novu.co/channels/web-chat/lovable/): Add an AI agent to a Lovable app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat/lovable.md
+- [AI agent in a v0 app](https://novu.co/channels/web-chat/v0/): Add an AI agent to a v0 app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat/v0.md
+
 ### Connect a framework's agent to a channel (Novu Connect)
 How to connect an agent built with a specific framework to a specific channel. The custom-code bridge keeps your agent running in your app. Each page has a Markdown version at the same path with `.md`.
 - [LangChain agent on Slack](https://novu.co/channels/slack/langchain/): Connect a LangChain agent to Slack. Connect with `npx novu connect --runtime langchain --channel slack`. Markdown: https://novu.co/channels/slack/langchain.md

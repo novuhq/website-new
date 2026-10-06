@@ -43,6 +43,7 @@ import solutionsEnterpriseIcon from "@/svgs/header/menu/solutions-enterprise.inl
 
 import type { TMenuIcon } from "@/types/common"
 import { cn } from "@/lib/utils"
+import { WEB_CHAT_BUILDER_LOGOS } from "@/components/web-chat-builder-logo"
 
 interface IMenuIconProps {
   icon?: TMenuIcon
@@ -85,6 +86,7 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
 }
 
 const COLOR_INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
+  ...WEB_CHAT_BUILDER_LOGOS,
   slack: channelsSlackIcon,
   whatsapp: channelsWhatsappIcon,
   telegram: channelsTelegramIcon,
