@@ -4,6 +4,7 @@ import {
   Fragment,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
   type ReactNode,
@@ -71,6 +72,10 @@ const COPY_PROMPT_BUTTON_CLASSES =
  * a guessed URL.
  */
 function CopyPromptWithTooltip({ className }: { className?: string }) {
+  // The tooltip describes the wrapper span, which is not focusable, so give
+  // the button itself the same description for screen readers.
+  const descriptionId = useId()
+
   return (
     <Tooltip>
       {/* CopyPromptButton isn't a forwardRef component, so the trigger wraps
@@ -80,6 +85,7 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
       <TooltipTrigger asChild>
         <span className={cn("inline-flex w-full xl:w-auto", className)}>
           <CopyPromptButton
+            aria-describedby={descriptionId}
             className={COPY_PROMPT_BUTTON_CLASSES}
             label={HERO_COPY_PROMPT_LABEL}
             size="none"
@@ -87,6 +93,9 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
             value={HERO_IMPLEMENT_PROMPT}
             variant="default"
           />
+          <span id={descriptionId} className="sr-only">
+            {HERO_TOOLTIP_TEXT}
+          </span>
         </span>
       </TooltipTrigger>
       <TooltipContent
@@ -100,15 +109,15 @@ function CopyPromptWithTooltip({ className }: { className?: string }) {
             viewBox="0 0 30 8"
           />
         }
-        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-[#2A2B33] bg-[#0B0C0E] p-2.5 text-left"
+        className="w-[332px] max-w-[calc(100vw-2.5rem)] rounded-md border-gray-20 bg-[#0B0C0E] p-2.5 text-left"
         side="top"
         sideOffset={12}
       >
         <span className="flex flex-col gap-3">
-          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#C2C4CC]">
+          <span className="text-[13px] leading-[1.38em] tracking-[-0.0246em] text-gray-80">
             {HERO_TOOLTIP_TEXT}
           </span>
-          <span className="flex items-center gap-1 text-[13px] leading-[1.38em] tracking-[-0.0246em] text-[#E0E1E5]">
+          <span className="flex items-center gap-1 text-[13px] leading-[1.38em] tracking-[-0.0246em] text-gray-90">
             <span className="underline decoration-1 underline-offset-2">
               {HERO_TOOLTIP_LINK_LABEL}
             </span>
@@ -154,7 +163,7 @@ function MetaLine({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "text-sm leading-[1.375] tracking-tight text-white/40 mix-blend-plus-lighter md:max-w-[369px] md:text-[15px]",
+        "text-sm leading-[1.375] tracking-tight text-gray-60 mix-blend-plus-lighter md:max-w-[369px] md:text-[15px]",
         className
       )}
     >

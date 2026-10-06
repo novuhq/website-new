@@ -248,7 +248,10 @@ function ConnectedAgentChat({
               )
             )}
             {isRunning && (
-              <p role="status" className="animate-pulse text-xs text-white/60">
+              <p
+                role="status"
+                className="text-xs text-white/60 motion-safe:animate-pulse"
+              >
                 Thinking…
               </p>
             )}

@@ -515,6 +515,9 @@ function HeroAgentPanels({
     onPointerDown: onIntent,
     onFocus: onIntent,
   }
+  // The storyboard's scripted conversation is a looping illustration; only
+  // the idle and live chat panels are meant to be read or used.
+  const scripted = step !== null || undefined
 
   return (
     <div
@@ -532,6 +535,7 @@ function HeroAgentPanels({
           it stretch to match the card's real height as a flex sibling. */}
       <div
         className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static"
+        aria-hidden={scripted}
         {...intent}
       >
         <AgentPanel
@@ -544,7 +548,11 @@ function HeroAgentPanels({
       {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
           slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
           flex item can shrink below its content size and get squeezed. */}
-      <div className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden" {...intent}>
+      <div
+        className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden"
+        aria-hidden={scripted}
+        {...intent}
+      >
         <AgentPanel
           step={step}
           phase={phase}

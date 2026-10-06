@@ -47,7 +47,12 @@ export function HeroProductUI({
     : STORYBOARD_TIMING.recolorMs
 
   return (
-    <div className="relative md:w-235 md:shrink-0 xl:min-w-0 xl:flex-1">
+    // A decorative product mock: its sidebar, controls and table are text
+    // only, so keep them out of the accessibility tree.
+    <div
+      aria-hidden
+      className="relative md:w-235 md:shrink-0 xl:min-w-0 xl:flex-1"
+    >
       {/* Desktop: chrome + sidebar + table. Fills whatever width the shared
           card (`HeroLiveUi` in hero.tsx) leaves it next to the agent panel
           — no border/bg/shadow of its own, since that chrome now lives on
@@ -62,7 +67,11 @@ export function HeroProductUI({
           )}
           style={{ transitionDuration: `${duration}ms` }}
         >
-          <Sidebar companyLabel={companyLabel} faviconUrl={faviconUrl} />
+          <Sidebar
+            companyLabel={companyLabel}
+            faviconUrl={faviconUrl}
+            personalized={brand.hasAccent}
+          />
           <DataTable table={table} personalized={brand.hasAccent} />
         </div>
         <div
@@ -93,6 +102,7 @@ export function HeroProductUI({
           <Sidebar
             companyLabel={companyLabel}
             faviconUrl={faviconUrl}
+            personalized={brand.hasAccent}
             compact
           />
           <DataTable table={table} personalized={brand.hasAccent} compact />
