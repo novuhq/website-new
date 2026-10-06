@@ -1,7 +1,6 @@
 "use client"
 
-import type { CSSProperties } from "react"
-import dynamic from "next/dynamic"
+import { useCallback, useRef, useState, type CSSProperties } from "react"
 import {
   AGENT_MARK_IMAGE,
   HERO_AGENT_EMPTY_STATE,
@@ -31,11 +30,9 @@ import {
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
 
 import type { LiveAgentRenderer } from "./live-agent-chat"
+import { LiveComposer } from "./live-composer"
 
-const LiveAgentChat = dynamic(() => import("./live-agent-chat"), {
-  ssr: false,
-  loading: () => <HeroAgentPanels step={null} />,
-})
+type LiveAgentChatComponent = typeof import("./live-agent-chat").default
 
 export interface HeroAgentPanelProps {
   /** `null` is interactive live chat. 0-5 are scripted preview steps. */
@@ -507,7 +504,18 @@ function HeroAgentPanels({
   renderLive,
   phase,
   personalized,
-}: HeroAgentPanelProps & { renderLive?: LiveAgentRenderer }) {
+  onIntent,
+}: HeroAgentPanelProps & {
+  renderLive?: LiveAgentRenderer
+  /** First sign the visitor may chat: hover, press or focus in a panel. */
+  onIntent?: () => void
+}) {
+  const intent = onIntent && {
+    onPointerEnter: onIntent,
+    onPointerDown: onIntent,
+    onFocus: onIntent,
+  }
+
   return (
     <div
       className="contents"
@@ -522,7 +530,10 @@ function HeroAgentPanels({
           panel 408 wide at x16); the left inset is already the `gap-4`
           between this and `HeroProductUI` in `HeroLiveUi`. Auto height lets
           it stretch to match the card's real height as a flex sibling. */}
-      <div className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static">
+      <div
+        className="hidden md:absolute md:inset-y-0 md:right-0 md:mt-[15px] md:mr-[15px] md:mb-4 md:block xl:static"
+        {...intent}
+      >
         <AgentPanel
           step={step}
           phase={phase}
@@ -533,7 +544,7 @@ function HeroAgentPanels({
       {/* `shrink-0`: this sits beside `HeroProductUI`'s mobile dashboard
           slice in a `w-max` row (`HeroLiveUi`, hero.tsx) — without it a
           flex item can shrink below its content size and get squeezed. */}
-      <div className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden">
+      <div className="mt-[7.46px] mr-[7.46px] shrink-0 md:hidden" {...intent}>
         <AgentPanel
           step={step}
           phase={phase}
@@ -543,6 +554,57 @@ function HeroAgentPanels({
         />
       </div>
     </div>
+  )
+}
+
+/**
+ * The idle panel renders the live chat's composer without its code or a chat
+ * session. Both load on the first sign of intent, so visitors who never touch
+ * the chat don't download it or open a connection. Text typed meanwhile, and
+ * focus, carry over to the live chat.
+ */
+function InteractiveAgentPanels() {
+  const [LiveAgentChat, setLiveAgentChat] =
+    useState<LiveAgentChatComponent | null>(null)
+  const [draft, setDraft] = useState("")
+  const [focusOnMount, setFocusOnMount] = useState(false)
+  const loading = useRef(false)
+
+  const activate = useCallback(() => {
+    if (loading.current) return
+    loading.current = true
+    import("./live-agent-chat")
+      .then(({ default: Component }) => setLiveAgentChat(() => Component))
+      .catch(() => {
+        loading.current = false
+      })
+  }, [])
+
+  if (LiveAgentChat)
+    return (
+      <LiveAgentChat initialDraft={draft} focusOnMount={focusOnMount}>
+        {(renderLive) => (
+          <HeroAgentPanels step={null} renderLive={renderLive} />
+        )}
+      </LiveAgentChat>
+    )
+
+  const renderIdle: LiveAgentRenderer = (compact, emptyState) => (
+    <>
+      {emptyState}
+      <LiveComposer
+        compact={compact}
+        value={draft}
+        onChange={setDraft}
+        onFocus={() => setFocusOnMount(true)}
+        onBlur={() => setFocusOnMount(false)}
+        onSubmit={activate}
+      />
+    </>
+  )
+
+  return (
+    <HeroAgentPanels step={null} renderLive={renderIdle} onIntent={activate} />
   )
 }
 
@@ -556,9 +618,5 @@ export function HeroAgentPanel({
       <HeroAgentPanels step={step} phase={phase} personalized={personalized} />
     )
 
-  return (
-    <LiveAgentChat>
-      {(renderLive) => <HeroAgentPanels step={null} renderLive={renderLive} />}
-    </LiveAgentChat>
-  )
+  return <InteractiveAgentPanels />
 }
