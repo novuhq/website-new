@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test"
 
-import { getWebChatBuilderBySlug } from "../../src/data/pages/web-chat-builders"
+import {
+  getWebChatBuilderBySlug,
+  getWebChatBuilderStepText,
+  type IWebChatBuilderSecondarySection,
+} from "../../src/data/pages/web-chat-builders"
 import {
   expectAccordionItemExpanded,
   expectClipboardText,
@@ -82,7 +86,7 @@ test("renders the builder FAQ with its first answer open and keyboard controls",
   expectHealthyPage(applicationErrors)
 })
 
-test("publishes one canonical and page, breadcrumb, and FAQ structured data from the registry", async ({
+test("publishes one canonical and page, breadcrumb, FAQ, and how-to structured data from the registry", async ({
   page,
   request,
 }) => {
@@ -105,8 +109,8 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
   await expect(script).toHaveCount(1)
   const data = JSON.parse((await script.textContent())!)
   expect(data["@context"]).toBe("https://schema.org")
-  expect(data["@graph"]).toHaveLength(3)
-  const [webPage, breadcrumb, faq] = data["@graph"]
+  expect(data["@graph"]).toHaveLength(4)
+  const [webPage, breadcrumb, faq, howTo] = data["@graph"]
   for (const item of breadcrumb.itemListElement) {
     const response = await request.get(new URL(item.item).pathname)
     expect(response.ok(), `Breadcrumb URL ${item.item} should resolve`).toBe(
@@ -120,7 +124,7 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
     name: config.seo.title,
     description: config.seo.description,
     breadcrumb: { "@id": `${url}#breadcrumb` },
-    mainEntity: { "@id": `${url}#faq` },
+    mainEntity: [{ "@id": `${url}#faq` }, { "@id": `${url}#howto` }],
   })
   expect(breadcrumb).toMatchObject({
     "@type": "BreadcrumbList",
@@ -135,10 +139,16 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
       {
         "@type": "ListItem",
         position: 2,
+        name: "Novu Connect",
+        item: new URL("/connect/", url).href,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
         name: "Web Chat",
         item: new URL("/channels/web-chat/", url).href,
       },
-      { "@type": "ListItem", position: 3, name: "Lovable", item: url },
+      { "@type": "ListItem", position: 4, name: "Lovable", item: url },
     ],
   })
   expect(faq).toMatchObject({ "@type": "FAQPage", "@id": `${url}#faq` })
@@ -151,6 +161,24 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
       name: question,
       acceptedAnswer: { "@type": "Answer", text: answer },
     }))
+  )
+  const setup = config.sections.find(
+    (section): section is IWebChatBuilderSecondarySection =>
+      section.type === "secondary"
+  )!
+  expect(howTo).toEqual({
+    "@type": "HowTo",
+    "@id": `${url}#howto`,
+    name: setup.title,
+    description: setup.description,
+    step: setup.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      text: getWebChatBuilderStepText(step),
+    })),
+  })
+  expect(howTo.step[0].text).toBe(
+    "Connect your agent to Novu Web Chat: run npx novu connect --channel web-chat"
   )
   for (const item of config.faq) {
     expect(item.answer).not.toMatch(/<[^>]+>/)
@@ -165,6 +193,34 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
       })
     ).toBeVisible()
   }
+})
+
+test("serves a Markdown version of each builder page and links it from the head", async ({
+  page,
+  request,
+}) => {
+  for (const [slug] of figmaHeroVariants) {
+    const config = getWebChatBuilderBySlug(slug)!
+    const response = await request.get(`/channels/web-chat/${slug}.md`)
+    expect(response.ok()).toBe(true)
+    expect(response.headers()["content-type"]).toContain("text/markdown")
+    const markdown = await response.text()
+    expect(markdown.startsWith(`# ${config.seo.title}\n`)).toBe(true)
+    expect(markdown).toContain(
+      "1. Connect your agent to Novu Web Chat: run npx novu connect --channel web-chat"
+    )
+    for (const { question } of config.faq) {
+      expect(markdown).toContain(`### ${question}`)
+    }
+  }
+  expect((await request.get("/channels/web-chat/webflow.md")).status()).toBe(
+    404
+  )
+
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
+  await expect(
+    page.locator('link[rel="alternate"][type="text/markdown"]')
+  ).toHaveAttribute("href", /\/channels\/web-chat\/lovable\.md$/)
 })
 
 for (const slug of [

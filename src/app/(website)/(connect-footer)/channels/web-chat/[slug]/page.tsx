@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
+import { WEB_CHAT_SEO } from "@/data/pages/web-chat"
 import {
   getAllWebChatBuilderSlugs,
   getWebChatBuilderBySlug,
   getWebChatBuilderPathname,
+  getWebChatBuilderStepText,
+  type IWebChatBuilderSecondarySection,
 } from "@/data/pages/web-chat-builders"
 
 import { getMetadata } from "@/lib/get-metadata"
@@ -13,10 +16,6 @@ import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import WebChatBuilderLanding from "@/components/pages/channels/web-chat-builder/landing"
 
 type Props = { params: Promise<{ slug: string }> }
-
-// The builder pages share the Web Chat page's artwork, so they share its image.
-const SOCIAL_IMAGE_PATH = "/og-images/og-image-web-chat.jpg"
-const SOCIAL_IMAGE_ALT = "Novu Web Chat: your agent, live inside your product"
 
 export const dynamicParams = false
 
@@ -33,8 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: page.seo.title,
     description: page.seo.description,
     pathname: getWebChatBuilderPathname(page.slug),
-    imagePath: SOCIAL_IMAGE_PATH,
-    imageAlt: SOCIAL_IMAGE_ALT,
+    // The builder pages share the Web Chat page's artwork, so they share its image.
+    imagePath: WEB_CHAT_SEO.imagePath,
+    imageAlt: WEB_CHAT_SEO.imageAlt,
+    markdownPathname: true,
   })
 }
 
@@ -50,6 +51,10 @@ export default async function WebChatBuilderPage({ params }: Props) {
   const pageUrl = absoluteUrl(
     toCanonicalPathname(getWebChatBuilderPathname(page.slug))
   )
+  const setup = page.sections.find(
+    (section): section is IWebChatBuilderSecondarySection =>
+      section.type === "secondary"
+  )
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -59,11 +64,14 @@ export default async function WebChatBuilderPage({ params }: Props) {
         name: page.seo.title,
         description: page.seo.description,
         url: pageUrl,
-        image: absoluteUrl(SOCIAL_IMAGE_PATH),
+        image: absoluteUrl(WEB_CHAT_SEO.imagePath),
         isPartOf: { "@id": `${siteUrl}#website` },
         publisher: { "@id": `${siteUrl}#organization` },
         breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
-        mainEntity: { "@id": `${pageUrl}#faq` },
+        mainEntity: [
+          { "@id": `${pageUrl}#faq` },
+          ...(setup ? [{ "@id": `${pageUrl}#howto` }] : []),
+        ],
       },
       {
         "@type": "BreadcrumbList",
@@ -78,12 +86,18 @@ export default async function WebChatBuilderPage({ params }: Props) {
           {
             "@type": "ListItem",
             position: 2,
+            name: "Novu Connect",
+            item: absoluteUrl(toCanonicalPathname(String(ROUTE.connect))),
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
             name: "Web Chat",
             item: webChatUrl,
           },
           {
             "@type": "ListItem",
-            position: 3,
+            position: 4,
             name: page.builderName,
             item: pageUrl,
           },
@@ -98,6 +112,21 @@ export default async function WebChatBuilderPage({ params }: Props) {
           acceptedAnswer: { "@type": "Answer", text: answer },
         })),
       },
+      ...(setup
+        ? [
+            {
+              "@type": "HowTo",
+              "@id": `${pageUrl}#howto`,
+              name: setup.title,
+              description: setup.description,
+              step: setup.steps.map((step, index) => ({
+                "@type": "HowToStep",
+                position: index + 1,
+                text: getWebChatBuilderStepText(step),
+              })),
+            },
+          ]
+        : []),
     ],
   }
 

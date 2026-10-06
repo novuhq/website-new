@@ -279,6 +279,15 @@ const WEB_CHAT_BUILDER_PAGES: Readonly<
   ) as Record<WebChatBuilderSlug, IWebChatBuilderPage>
 )
 
+/** A setup step as one plain sentence; the line breaks are layout only. */
+export function getWebChatBuilderStepText(
+  step: IWebChatBuilderSecondarySection["steps"][number]
+) {
+  return [step.description.replace(/\s*\n\s*/g, " ").trim(), step.command]
+    .filter(Boolean)
+    .join(" ")
+}
+
 export function getWebChatBuilderBySlug(
   slug: string
 ): IWebChatBuilderPage | undefined {
