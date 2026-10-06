@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test"
 import { webChatContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectWebChatHeroReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -38,11 +39,7 @@ function heroMessage(page: Page, text: string) {
 // The dynamically loaded composer proves the hero has hydrated before typing.
 async function openWebChat(page: Page) {
   await gotoCriticalPage(page, webChatContract.route)
-  await expect(
-    page
-      .getByTestId("web-chat-hero")
-      .getByRole("textbox", { name: "Message the agent" })
-  ).toBeVisible()
+  await expectWebChatHeroReady(page)
 }
 
 test.describe("web chat personalizer", () => {

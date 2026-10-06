@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { webChatContract } from "./contracts"
-import { gotoCriticalPage } from "./helpers"
+import { expectWebChatHeroReady, gotoCriticalPage } from "./helpers"
 
 test("colors hero and illustration bubbles independently with readable text", async ({
   page,
@@ -16,11 +16,7 @@ test("colors hero and illustration bubbles independently with readable text", as
         })
   )
   await gotoCriticalPage(page, webChatContract.route)
-  await expect(
-    page
-      .getByTestId("web-chat-hero")
-      .getByRole("textbox", { name: "Message the agent" })
-  ).toBeVisible()
+  await expectWebChatHeroReady(page)
   const bento = page
     .getByRole("heading", {
       name: "Not a chat box on your site. An agent inside your app",

@@ -168,3 +168,25 @@ export async function expectClipboardText(page: Page, expectedText: string) {
     )
     .toBe(expectedText)
 }
+
+/**
+ * Wait until the Web Chat hero is interactive. Its message box and URL field
+ * are server-rendered, so being visible doesn't mean React has attached its
+ * handlers; a submit before that posts the form natively and reloads the page.
+ */
+export async function expectWebChatHeroReady(page: Page) {
+  const hero = page.getByTestId("web-chat-hero")
+  await expect(
+    hero
+      .getByRole("textbox", { name: "Message the agent" })
+      .filter({ visible: true })
+      .first()
+  ).toBeVisible()
+  await expectReactHandlerReady(
+    hero
+      .getByRole("textbox", { name: "Your website URL" })
+      .filter({ visible: true })
+      .first(),
+    "onChange"
+  )
+}

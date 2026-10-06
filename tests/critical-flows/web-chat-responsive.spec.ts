@@ -1,20 +1,14 @@
 import { expect, test } from "@playwright/test"
 
 import { webChatContract } from "./contracts"
-import { gotoCriticalPage } from "./helpers"
+import { expectWebChatHeroReady, gotoCriticalPage } from "./helpers"
 
 test("keeps channel links and bento captions within their responsive layouts", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" })
   await gotoCriticalPage(page, webChatContract.route)
-  // The lazy live-chat module replaces the initial panel tree on hydration.
-  // Its textbox only exists once that replacement has finished.
-  await expect(
-    page
-      .getByTestId("web-chat-hero")
-      .getByRole("textbox", { name: "Message the agent" })
-  ).toBeVisible()
+  await expectWebChatHeroReady(page)
 
   for (const width of [320, 390, 639, 640, 768, 1023, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 })
