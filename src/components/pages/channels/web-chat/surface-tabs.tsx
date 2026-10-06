@@ -4,8 +4,8 @@ import { useState } from "react"
 import {
   SURFACE_TABS_BUTTON_HREF,
   SURFACE_TABS_BUTTON_LABEL,
-  SURFACE_TABS_DESCRIPTION,
-  SURFACE_TABS_HEADING,
+  SURFACE_TABS_DESCRIPTION_LINES,
+  SURFACE_TABS_HEADING_LINES,
   SURFACE_TABS_IMAGE_ALT,
   SURFACE_TABS_TAB_LABELS,
 } from "@/data/pages/web-chat-surface-tabs"
@@ -23,9 +23,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { SurfaceTabsIllustration } from "./surface-tabs-illustration"
 
-const [headingStart, headingEnd] = SURFACE_TABS_HEADING.split(" screen.")
-const [descriptionStart, descriptionEnd] =
-  SURFACE_TABS_DESCRIPTION.split(" with ")
+const [headingStart, headingEnd] = SURFACE_TABS_HEADING_LINES
+const [descriptionStart, descriptionEnd] = SURFACE_TABS_DESCRIPTION_LINES
 
 const TAB_TRIGGER_CLASS = cn(
   "h-full min-w-0 flex-1 rounded-none px-6 py-0 text-base leading-none font-normal tracking-[-0.02em] text-gray-60",
@@ -51,7 +50,7 @@ export function SurfaceTabs() {
             <h2 className="text-[32px] leading-[1.04] tracking-[-0.04em] text-balance text-white md:text-4xl lg:text-[40px] xl:text-[48px]">
               {headingStart}
               <br className="hidden md:block xl:hidden" />
-              {` screen.${headingEnd}`}
+              {` ${headingEnd}`}
             </h2>
             <a
               href={SURFACE_TABS_BUTTON_HREF}
@@ -67,7 +66,7 @@ export function SurfaceTabs() {
             <p className="text-base leading-[1.5] tracking-[-0.025em] text-gray-70 lg:text-lg">
               {descriptionStart}
               <br className="hidden md:block xl:hidden" />
-              {` with ${descriptionEnd}`}
+              {` ${descriptionEnd}`}
             </p>
             <TabsList className="h-11 w-full gap-0 overflow-hidden rounded-md border border-gray-30 bg-black/50 p-0">
               <TabsTrigger value="side-panel" className={TAB_TRIGGER_CLASS}>

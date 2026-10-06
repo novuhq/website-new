@@ -341,7 +341,7 @@ export function WebChatConfigurator() {
 
                   {isPromptTab ? (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-gray-90 px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="Generated prompt copied to clipboard"
                       key="copy-prompt"
                       label={CONFIGURATOR_COPY_PROMPT_LABEL}
@@ -353,7 +353,7 @@ export function WebChatConfigurator() {
                     />
                   ) : (
                     <CopyPromptButton
-                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[#E0E1E5] px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-gray-90 px-5 py-3.5 text-base leading-none font-medium tracking-[-0.025em] text-black before:hidden hover:bg-white"
                       copiedMessage="npx command copied to clipboard"
                       key="copy-cli"
                       label={CONFIGURATOR_COPY_CLI_LABEL}

@@ -39,7 +39,7 @@ const CARD_ICONS: Record<OwnershipCardCopy["id"], typeof bringAnyAgentIcon> = {
 
 function OwnershipCard({ id, title, body }: OwnershipCardCopy) {
   return (
-    <div className="flex flex-col gap-2.5 rounded-lg bg-[#101114] px-5 py-5 md:px-6 lg:min-w-0 lg:flex-1">
+    <div className="flex flex-col gap-2.5 rounded-lg bg-card-surface px-5 py-5 md:px-6 lg:min-w-0 lg:flex-1">
       <div className="flex items-center gap-2.5">
         <Image
           alt=""

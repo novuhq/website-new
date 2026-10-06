@@ -35,7 +35,7 @@ const DesktopUI = dynamic(
 /** Keep the original artwork for idle/fallback; personalized bubbles sit above the hue-tinted base. */
 export function OldWidgetCard() {
   return (
-    <div className="relative mx-auto flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-[#2A2B33] bg-[#101114] md:h-[480px] md:rounded-[24px] md:border lg:flex-1 xl:w-[411px] xl:flex-initial">
+    <div className="relative mx-auto flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-gray-20 bg-card-surface md:h-[480px] md:rounded-[24px] md:border lg:flex-1 xl:w-[411px] xl:flex-initial">
       <CompareTabletArtwork kind="old" />
       <div className="hidden xl:absolute xl:inset-0 xl:isolate xl:block">
         <Image

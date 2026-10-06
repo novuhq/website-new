@@ -7,8 +7,11 @@
  * duplicated in the caption data.
  */
 
-export const PRODUCT_BENTO_HEADING =
-  "Not a chat box on your site. An agent inside your app"
+// Two sentences; desktop breaks the line between them.
+export const PRODUCT_BENTO_HEADING_LINES = [
+  "Not a chat box on your site.",
+  "An agent inside your app",
+] as const
 
 export const PRODUCT_BENTO_DESCRIPTION =
   "Embedded in your product, Web Chat understands context, takes action, and responds with your own UI."

@@ -1,20 +1,19 @@
 "use client"
 
 import type { ReactNode } from "react"
-import Image from "next/image"
-import type { IStackOption } from "@/data/pages/connect-stack-options"
+import Image, { type StaticImageData } from "next/image"
 import * as SelectPrimitive from "@radix-ui/react-select"
 
 import { cn } from "@/lib/utils"
 
-/**
- * Shared configurator core (see `connect-stack-options.ts` for background on
- * why this file exists as a net-new extraction). Moved verbatim out of
- * `connect-stack.tsx` — same markup, same Tailwind classes, same behaviour.
- * `connect-stack.tsx` and `web-chat/configurator.tsx` both import this now.
- */
+/** A labelled select with optional option icons, shared by the configurators. */
+export interface ISelectFieldOption {
+  icon?: StaticImageData | string
+  label: string
+  value: string
+}
 
-function OptionLabel({ option }: { option: IStackOption }) {
+function OptionLabel({ option }: { option: ISelectFieldOption }) {
   return (
     <span className="flex min-w-0 items-center gap-1.5">
       {option.icon && (
@@ -40,7 +39,7 @@ interface ISelectFieldProps {
   indicator?: ReactNode
   label: string
   onValueChange: (value: string) => void
-  options: IStackOption[]
+  options: ISelectFieldOption[]
   renderOptionIndicator?: (selected: boolean) => ReactNode
   triggerClassName?: string
   value: string
@@ -106,7 +105,7 @@ export function SelectField({
             <SelectPrimitive.Viewport className="flex flex-col gap-0.5 p-1.5">
               {options.map((option) => (
                 <SelectPrimitive.Item
-                  className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-[#191a1f] data-[state=checked]:bg-[#191a1f]"
+                  className="relative flex cursor-pointer items-center justify-between gap-3 rounded-[0.25rem] px-[7px] py-1.5 text-sm text-foreground outline-none select-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[highlighted]:bg-gray-12 data-[state=checked]:bg-gray-12"
                   key={option.value}
                   value={option.value}
                 >

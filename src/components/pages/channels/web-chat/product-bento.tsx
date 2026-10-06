@@ -1,7 +1,7 @@
 import {
   PRODUCT_BENTO_CARDS,
   PRODUCT_BENTO_DESCRIPTION,
-  PRODUCT_BENTO_HEADING,
+  PRODUCT_BENTO_HEADING_LINES,
 } from "@/data/pages/web-chat-product-bento"
 import productBentoActions from "@/images/pages/channels/web-chat/product-bento-actions.jpg"
 import productBentoActivityMobile from "@/images/pages/channels/web-chat/product-bento-activity-mobile.jpg"
@@ -20,7 +20,7 @@ const ROW_TWO_SIZES =
 
 const [subscriberCopy, activityCopy, orderCopy, actionsCopy, renderCopy] =
   PRODUCT_BENTO_CARDS
-const [headingIntro, headingConclusion] = PRODUCT_BENTO_HEADING.split(". ")
+const [headingIntro, headingConclusion] = PRODUCT_BENTO_HEADING_LINES
 
 /**
  * Original default artwork plus independently personalized background and UI
@@ -33,8 +33,8 @@ export function ProductBento() {
       <div className="mx-auto w-full max-w-3xl px-5 md:px-8 lg:max-w-336">
         <div className="flex flex-col gap-6 md:min-h-37.5 lg:min-h-21 lg:flex-row lg:items-start lg:justify-between lg:gap-13 xl:min-h-0 xl:gap-9">
           <h2 className="max-w-[480px] text-[32px] leading-[1.25] tracking-[-0.04em] text-white md:max-w-112 md:text-4xl md:leading-[1.04] lg:w-[492px] lg:max-w-[492px] lg:shrink-0 lg:text-[40px] xl:w-160 xl:max-w-160 xl:shrink-0 xl:text-[48px]">
-            {headingIntro}.<br className="hidden lg:block" />{" "}
-            {headingConclusion}
+            {headingIntro}
+            <br className="hidden lg:block" /> {headingConclusion}
           </h2>
           <p className="max-w-[480px] text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:max-w-112 md:text-gray-70 lg:max-w-104 lg:pt-9 xl:max-w-151 xl:pt-11.25 xl:text-lg">
             {PRODUCT_BENTO_DESCRIPTION}

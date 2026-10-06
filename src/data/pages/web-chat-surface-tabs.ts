@@ -4,10 +4,17 @@
  * Figma mobile frames: `45497-139684` (side panel), `45497-139685` (full screen).
  */
 
-export const SURFACE_TABS_HEADING = "Side panel or full screen. Your choice"
+// Each split into the two lines the tablet layout breaks them into; they read
+// as one sentence everywhere else.
+export const SURFACE_TABS_HEADING_LINES = [
+  "Side panel or full",
+  "screen. Your choice",
+] as const
 
-export const SURFACE_TABS_DESCRIPTION =
-  "Switch layouts and customize the experience with flexible components from AI Elements."
+export const SURFACE_TABS_DESCRIPTION_LINES = [
+  "Switch layouts and customize the experience",
+  "with flexible components from AI Elements.",
+] as const
 
 export const SURFACE_TABS_BUTTON_LABEL = "Explore AI elements"
 export const SURFACE_TABS_BUTTON_HREF = "https://elements.ai-sdk.dev/"

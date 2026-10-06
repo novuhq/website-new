@@ -21,7 +21,7 @@ function DesignSystemHeading() {
       <h2 className="text-[32px] leading-[1.25] font-normal tracking-[-0.04em] text-white md:text-[48px] md:leading-[1.04]">
         {DESIGN_SYSTEM_HEADING}
       </h2>
-      <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-[#A3A6B2]">
+      <p className="text-base leading-[1.5] tracking-[-0.025em] text-white/80 md:text-gray-70">
         {DESIGN_SYSTEM_DESCRIPTION}
       </p>
     </div>
