@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Streamdown renders the live chat's markdown with its own utility classes
+   (list bullets, blockquote borders, tables); Tailwind skips node_modules. */
+@source "../../node_modules/streamdown/dist/*.js";
 @plugin "@tailwindcss/typography";
 @plugin "../../tailwind.plugins.mjs";
 
