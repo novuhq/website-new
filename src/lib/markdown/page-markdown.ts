@@ -10,6 +10,7 @@ import { getCustomers } from "./pages/customers"
 import { getIntegrations } from "./pages/integrations"
 import { getPricing } from "./pages/pricing"
 import { getStaticMarketingPage, getStaticSanityPage } from "./pages/static"
+import { getWebChat } from "./pages/web-chat"
 import { isUnsupportedMarkdownPathname } from "./registry"
 import type { MarkdownPage, MarkdownPageBuilder, MarkdownResult } from "./types"
 import { normalizePathname } from "./url"
@@ -22,6 +23,7 @@ const PAGE_BUILDERS: MarkdownPageBuilder[] = [
   getChangelog,
   getCustomers,
   getComparison,
+  getWebChat,
   getChannelFrameworks,
   getChannels,
   getStaticSanityPage,
