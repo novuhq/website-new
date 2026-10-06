@@ -58,6 +58,17 @@ it("accepts a normal server-rendered page larger than the old HTML prefix limit"
   assert.equal((await read("brand.example")).accent, "#0036ff")
 })
 
+it("cuts pathologically nested markup instead of stalling on it", async () => {
+  const { read } = fixtureReader({
+    "https://brand.example/": {
+      body: `<title>Brand</title><meta name="theme-color" content="#0036ff">${"<b>".repeat(600_000)}`,
+    },
+  })
+  const started = performance.now()
+  assert.equal((await read("brand.example")).accent, "#0036ff")
+  assert.ok(performance.now() - started < 1000)
+})
+
 it("does not let a neutral theme-color hide a usable TileColor", async () => {
   const { read } = fixtureReader({
     "https://brand.example/": {

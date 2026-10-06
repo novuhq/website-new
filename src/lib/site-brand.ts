@@ -7,6 +7,7 @@ import { collectCssCandidates } from "@/lib/site-brand/css"
 import {
   createResourceLoader,
   normalizeUrl,
+  ResourceFetchError,
   type ResourceLoader,
 } from "@/lib/site-brand/fetch"
 import { iconColorScheme, preferDarkLogo } from "@/lib/site-brand/icons"
@@ -75,6 +76,70 @@ function rankedIcons(icons: IconCandidate[]): IconCandidate[] {
 
 type HtmlNode = DOMNode | Element["children"][number]
 
+// htmlparser2 keeps open elements in an array it shifts on every opening tag,
+// so parse time grows with tags x nesting depth: a crafted page of unclosed
+// tags can block the event loop for minutes. Real pages nest a few dozen
+// levels, so cut the document where it nests deeper than this.
+const MAX_HTML_DEPTH = 256
+const VOID_ELEMENTS = new Set([
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "source",
+  "track",
+  "wbr",
+])
+// Parsed as text up to their closing tag, so markup inside them never nests.
+const RAW_TEXT_ELEMENTS = new Set(["script", "style", "textarea", "title"])
+// Opening one of these closes an open sibling of the same kind.
+const SELF_CLOSING_SIBLINGS: Record<string, readonly string[]> = {
+  li: ["li"],
+  p: ["p"],
+  option: ["option"],
+  dt: ["dt", "dd"],
+  dd: ["dt", "dd"],
+  tr: ["tr"],
+  td: ["td", "th"],
+  th: ["td", "th"],
+}
+
+/** One linear pass mirroring the parser's open-element stack. */
+export function limitHtmlNesting(html: string): string {
+  const token = /<!--[\s\S]*?(?:-->|$)|<(\/?)([a-zA-Z][^\s/>]*)[^>]*>/g
+  const open: string[] = []
+  let match: RegExpExecArray | null
+  while ((match = token.exec(html))) {
+    const [text, closing, rawName] = match
+    if (!rawName) continue
+    const name = rawName.toLowerCase()
+    if (closing) {
+      // Unmatched closing tags are ignored by the parser, so ignore them too.
+      const index = open.lastIndexOf(name)
+      if (index !== -1) open.length = index
+      continue
+    }
+    if (RAW_TEXT_ELEMENTS.has(name)) {
+      const end = new RegExp(`</${name}`, "gi")
+      end.lastIndex = token.lastIndex
+      token.lastIndex = end.exec(html)?.index ?? html.length
+      continue
+    }
+    if (VOID_ELEMENTS.has(name) || text.endsWith("/>")) continue
+    const siblings = SELF_CLOSING_SIBLINGS[name]
+    if (siblings?.includes(open[open.length - 1])) open.pop()
+    open.push(name)
+    if (open.length > MAX_HTML_DEPTH) return html.slice(0, match.index)
+  }
+  return html
+}
+
 function elementsIn(nodes: DOMNode[]): Element[] {
   const elements: Element[] = []
   const pending: HtmlNode[] = [...nodes].reverse()
@@ -100,12 +165,12 @@ function isTransientFailure(error: unknown): boolean {
     error && typeof error === "object" && "statusCode" in error
       ? error.statusCode
       : undefined
-  return (
-    typeof status !== "number" ||
-    status >= 500 ||
-    status === 408 ||
-    status === 429
-  )
+  if (typeof status === "number") {
+    return status >= 500 || status === 408 || status === 429
+  }
+  // Size limits, unsupported encodings, redirect loops and non-public DNS
+  // fail the same way on every retry; only aborts and network errors may not.
+  return !(error instanceof ResourceFetchError) || error.name === "AbortError"
 }
 
 function toRgb(hex: string): [number, number, number] {
@@ -188,7 +253,7 @@ export function createBrandProfileReader({
         ) {
           throw new Error("That URL is not an HTML page")
         }
-        const nodes = htmlToDOM(page.body.toString("utf8"))
+        const nodes = htmlToDOM(limitHtmlNesting(page.body.toString("utf8")))
         const elements = elementsIn(nodes)
         const metas = elements.filter((element) => element.name === "meta")
         const links = elements.filter((element) => element.name === "link")

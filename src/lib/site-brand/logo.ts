@@ -16,6 +16,10 @@ type Swatch = { color: string; hue: number; count: number }
 
 /** Rebuild a small color-only CSS subset; raw stylesheet text never reaches Sharp. */
 function svgStyles(svg: string): { markup: string; css: string } {
+  // The lazy match below rescans to the end for every unclosed <style>, so
+  // bound the number of attempts before running it.
+  if ((svg.match(/<style\b/gi)?.length ?? 0) > 16)
+    throw new Error("SVG stylesheet limit exceeded")
   const rules: string[] = []
   let sheets = 0
   const markup = svg.replace(

@@ -19,6 +19,9 @@ export function preferDarkLogo(logo: string | null): string | null {
   if (!logo?.startsWith("data:image/svg+xml;base64,")) return logo
   try {
     const svg = Buffer.from(logo.split(",")[1], "base64").toString("utf8")
+    // The lazy match below rescans to the end for every unclosed <style>, so
+    // bound the number of attempts before running it.
+    if ((svg.match(/<style\b/gi)?.length ?? 0) > 16) return logo
     let changed = false
     const dark = svg.replace(
       /(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi,
