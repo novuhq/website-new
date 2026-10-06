@@ -1,6 +1,6 @@
 import desktopDots from "@/images/pages/channels/web-chat/hero-dots-desktop.png"
 import mobileDots from "@/images/pages/channels/web-chat/hero-dots-mobile.png"
-import heroNoise from "@/images/pages/channels/web-chat/hero-noise.png"
+import heroNoise from "@/images/pages/channels/web-chat/hero-noise.webp"
 
 import { cn } from "@/lib/utils"
 import { HueLayer } from "@/components/pages/channels/web-chat/hue-layer"
