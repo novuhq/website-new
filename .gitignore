@@ -28,6 +28,9 @@ public/robots.txt
 # agent skills source cache
 /.cache/
 
+# local design previews
+/.superpowers/
+
 # misc
 .DS_Store
 *.pem

@@ -1,0 +1,99 @@
+"use client"
+
+import dynamic from "next/dynamic"
+import Image from "next/image"
+import {
+  COMPARE_OLD_WIDGET_BODY,
+  COMPARE_OLD_WIDGET_TITLE,
+} from "@/data/pages/web-chat-compare"
+import mobileBackground from "@/images/pages/channels/web-chat/compare-layers/compare-old-mobile.jpg"
+import desktopBackground from "@/images/pages/channels/web-chat/compare-layers/compare-old.jpg"
+import illustrationMobile from "@/images/pages/channels/web-chat/compare-old-widget-illustration-mobile.jpg"
+import illustrationDesktop from "@/images/pages/channels/web-chat/compare-old-widget-illustration.jpg"
+
+import { BrandArtwork } from "@/components/pages/channels/web-chat/brand-artwork"
+
+import { CompareTabletArtwork } from "./compare-tablet-artwork"
+
+// The editable UI layers render only once a visitor personalizes, so load
+// them on demand instead of shipping ~190 KB of SVG in the page bundle.
+const MobileUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old-mobile.inline.svg"
+    ),
+  { ssr: false }
+)
+const DesktopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-old.inline.svg"
+    ),
+  { ssr: false }
+)
+
+/** Keep the original artwork for idle/fallback; personalized bubbles sit above the hue-tinted base. */
+export function OldWidgetCard() {
+  return (
+    <div className="relative mx-auto flex w-full flex-col overflow-hidden rounded-[18.69px] border-[0.78px] border-gray-20 bg-card-surface md:h-[480px] md:rounded-[24px] md:border lg:flex-1 xl:w-[411px] xl:flex-initial">
+      <CompareTabletArtwork kind="old" />
+      <div className="hidden xl:absolute xl:inset-0 xl:isolate xl:block">
+        <Image
+          alt=""
+          aria-hidden
+          className="object-cover"
+          fill
+          unoptimized
+          sizes="(min-width: 1344px) 391px, 29vw"
+          src={illustrationDesktop}
+        />
+        <BrandArtwork
+          id="compare-old"
+          background={desktopBackground}
+          UI={DesktopUI}
+          cover
+          sizes="63vw"
+        />
+      </div>
+      <div className="hidden md:absolute md:inset-x-4 md:bottom-4 md:flex md:max-w-109 md:flex-col md:gap-2.5 xl:inset-x-7 xl:bottom-7 xl:max-w-none">
+        <h3 className="text-[20px] leading-[1.25] tracking-[-0.02em] text-white">
+          {COMPARE_OLD_WIDGET_TITLE}
+        </h3>
+        <p className="text-[16px] leading-[1.5] tracking-[-0.02em] text-white/70">
+          {COMPARE_OLD_WIDGET_BODY}
+        </p>
+      </div>
+
+      {/* Mobile artwork retains Figma's 320×374 frame; captions keep 16px insets. */}
+      <div
+        className="relative isolate w-full overflow-hidden md:hidden"
+        style={{ aspectRatio: "320/374" }}
+      >
+        <Image
+          alt=""
+          aria-hidden
+          className="object-cover"
+          fill
+          unoptimized
+          sizes="92vw"
+          src={illustrationMobile}
+        />
+        <BrandArtwork
+          id="compare-old-mobile"
+          background={mobileBackground}
+          UI={MobileUI}
+          cover
+          sizes="92vw"
+        />
+        <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
+          <h3 className="text-[16px] leading-[1.25] tracking-[-0.02em] text-white">
+            {COMPARE_OLD_WIDGET_TITLE}
+          </h3>
+          <p className="text-[14px] leading-[1.5] tracking-[-0.02em] text-white/70">
+            {COMPARE_OLD_WIDGET_BODY}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -47,7 +47,7 @@ const securityHeaders = [
   {
     key: "Content-Security-Policy-Report-Only",
     value:
-      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.segment.com https://snap.licdn.com https://plausible.io https://chat.cdn-plain.com https://app.cal.com; style-src 'self' 'unsafe-inline' https://use.typekit.net; font-src 'self' https://use.typekit.net https://p.typekit.net; img-src 'self' data: blob: https://cdn.sanity.io https://img.youtube.com https://manage.novu.co https://avatars.githubusercontent.com https://www.googletagmanager.com; frame-src https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://app.cal.com; connect-src 'self' https://api.github.com https://contributors.novu.co https://app.cal.com https://uptime.betterstack.com https://api.hsforms.com https://*.sanity.io https://cdn.sanity.io https://api.segment.io https://cdn.segment.com https://api.mixpanel.com https://snap.licdn.com https://plausible.io https://www.googletagmanager.com https://chat.cdn-plain.com; media-src 'self' https://cdn.sanity.io; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.hsforms.com; frame-ancestors 'none'",
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.segment.com https://snap.licdn.com https://plausible.io https://chat.cdn-plain.com https://app.cal.com; style-src 'self' 'unsafe-inline' https://use.typekit.net; font-src 'self' https://use.typekit.net https://p.typekit.net; img-src 'self' data: blob: https://cdn.sanity.io https://img.youtube.com https://manage.novu.co https://avatars.githubusercontent.com https://www.googletagmanager.com; frame-src https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://app.cal.com; connect-src 'self' https://api.github.com https://contributors.novu.co https://app.cal.com https://uptime.betterstack.com https://api.hsforms.com https://*.sanity.io https://cdn.sanity.io https://api.segment.io https://cdn.segment.com https://api.mixpanel.com https://snap.licdn.com https://plausible.io https://www.googletagmanager.com https://chat.cdn-plain.com https://api.novu.co wss://socket.novu.co; media-src 'self' https://cdn.sanity.io; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.hsforms.com; frame-ancestors 'none'",
   },
   {
     key: "Feature-Policy",
@@ -56,6 +56,8 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  // Playwright uses this loopback host; allow its HMR/React debug connection.
+  allowedDevOrigins: ["127.0.0.1"],
   trailingSlash: true,
   poweredByHeader: false,
   transpilePackages: ["three"],
@@ -234,6 +236,10 @@ const nextConfig: NextConfig = {
     "typescript",
   ],
   outputFileTracingIncludes: {
+    // Sharp's native libvips binary is not picked up by automatic tracing.
+    "/api/agent-preview": [
+      "./node_modules/.pnpm/@img+sharp-libvips-*/node_modules/@img/sharp-libvips-*/lib/**/*",
+    ],
     "/integrations/channels": ["./src/content/integrations/**/*.mdx"],
     "/integrations/sources": ["./src/content/integrations/**/*.mdx"],
     "/integrations/[slug]": ["./src/content/integrations/**/*.mdx"],

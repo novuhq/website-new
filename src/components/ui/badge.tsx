@@ -13,6 +13,8 @@ const badgeVariants = cva("inline-flex w-fit items-center", {
         "rounded-full border border-muted-foreground font-semibold text-foreground",
       "outline-muted":
         "rounded-full border border-white/10 bg-[#16161C] text-gray-9",
+      secondary:
+        "rounded-full border border-gray-20 bg-gray-3 px-2 py-0.5 text-gray-80",
     },
     size: {
       xs: "text-xs leading-none",

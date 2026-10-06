@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="496" viewBox="0 0 432 496" fill="none" aria-hidden="true">
+  <g id="wc-bento-actions-1" clip-path="url(#wc-bento-actions-101)">
+    <g id="wc-bento-actions-2">
+      <mask id="wc-bento-actions-3" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-283.0" y="-211.0" width="815.0" height="591.0">
+        <g filter="url(#wc-bento-actions-soft-mask-0)">
+          <ellipse id="wc-bento-actions-4" cx="124.601" cy="84.3941" rx="276.5" ry="161.089" transform="rotate(6.84118 124.601 84.3941)" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-actions-3)">
+        <g id="wc-bento-actions-6">
+          <g id="wc-bento-actions-9" data-figma-bg-blur-radius="296">
+            <g id="wc-bento-actions-12">
+              <g id="wc-bento-actions-19">
+                <g id="wc-bento-actions-20">
+                  <g id="wc-bento-actions-21">
+                    <rect x="44.4922" y="91.5" width="39" height="39" rx="19.5" fill="var(--wc-accent)" fill-opacity="0.16" data-accent-fill="" />
+                    <rect x="44.4922" y="91.5" width="39" height="39" rx="19.5" stroke="black" />
+                    <text id="wc-bento-actions-24" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="18.1375" letter-spacing="-0.02em">
+                      <tspan x="59.2766" y="118.095">1</tspan>
+                    </text>
+                  </g>
+                  <g id="wc-bento-actions-26">
+                    <path d="M115.192 85.5H369.792C373.16 85.5 375.657 85.5007 377.633 85.6621C379.603 85.8231 381.012 86.1418 382.213 86.7539C384.377 87.8564 386.136 89.6155 387.238 91.7793C387.85 92.9805 388.169 94.3893 388.33 96.3594C388.492 98.3353 388.492 100.832 388.492 104.2V117.8C388.492 121.168 388.492 123.665 388.33 125.641C388.169 127.611 387.85 129.019 387.238 130.221C386.136 132.385 384.377 134.144 382.213 135.246C381.012 135.858 379.603 136.177 377.633 136.338C375.657 136.499 373.16 136.5 369.792 136.5H115.192C111.824 136.5 109.327 136.499 107.352 136.338C105.381 136.177 103.973 135.858 102.771 135.246C100.608 134.144 98.8486 132.385 97.7461 130.221C97.134 129.019 96.8153 127.611 96.6543 125.641C96.4929 123.665 96.4922 121.168 96.4922 117.8V104.2L96.4951 101.832C96.5028 99.6161 96.5332 97.8414 96.6543 96.3594C96.8153 94.3893 97.134 92.9805 97.7461 91.7793C98.8486 89.6155 100.608 87.8564 102.771 86.7539C103.973 86.1418 105.381 85.8231 107.352 85.6621C109.327 85.5007 111.824 85.5 115.192 85.5Z" stroke="var(--wc-accent)" stroke-opacity="0.3" />
+                  </g>
+                </g>
+                <g id="wc-bento-actions-35">
+                  <g id="wc-bento-actions-36">
+                    <rect x="44.4922" y="151.5" width="39" height="39" rx="19.5" fill="var(--wc-accent)" fill-opacity="0.16" data-accent-fill="" />
+                    <rect x="44.4922" y="151.5" width="39" height="39" rx="19.5" stroke="black" />
+                    <text id="wc-bento-actions-39" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="18.1375" letter-spacing="-0.02em">
+                      <tspan x="58.0014" y="178.095">2</tspan>
+                    </text>
+                  </g>
+                  <g id="wc-bento-actions-41">
+                    <path d="M115.192 145.5H369.792C373.16 145.5 375.657 145.501 377.633 145.662C379.603 145.823 381.012 146.142 382.213 146.754C384.377 147.856 386.136 149.615 387.238 151.779C387.85 152.981 388.169 154.389 388.33 156.359C388.492 158.335 388.492 160.832 388.492 164.2V177.8C388.492 181.168 388.492 183.665 388.33 185.641C388.169 187.611 387.85 189.019 387.238 190.221C386.136 192.385 384.377 194.144 382.213 195.246C381.012 195.858 379.603 196.177 377.633 196.338C375.657 196.499 373.16 196.5 369.792 196.5H115.192C111.824 196.5 109.327 196.499 107.352 196.338C105.381 196.177 103.973 195.858 102.771 195.246C100.608 194.144 98.8486 192.385 97.7461 190.221C97.134 189.019 96.8153 187.611 96.6543 185.641C96.4929 183.665 96.4922 181.168 96.4922 177.8V164.2L96.4951 161.832C96.5028 159.616 96.5332 157.841 96.6543 156.359C96.8153 154.389 97.134 152.981 97.7461 151.779C98.8486 149.615 100.608 147.856 102.771 146.754C103.973 146.142 105.381 145.823 107.352 145.662C109.327 145.501 111.824 145.5 115.192 145.5Z" stroke="var(--wc-accent)" stroke-opacity="0.3" />
+                  </g>
+                </g>
+              </g>
+              <path id="wc-bento-actions-51" opacity="0.2" d="M63.9922 131L63.9922 151" stroke="var(--wc-accent)" />
+              <path id="wc-bento-actions-52" opacity="0.2" d="M63.9922 212L63.9922 191" stroke="var(--wc-accent)" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="wc-bento-actions-53">
+      <g id="wc-bento-actions-54">
+        <rect x="43.5" y="211.5" width="41" height="40" rx="20" fill="var(--wc-accent)" fill-opacity="0.8" data-accent-fill="" />
+        <rect x="43.5" y="211.5" width="41" height="40" rx="20" stroke="black" />
+        <text id="wc-bento-actions-57" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="18.1375" font-weight="500" letter-spacing="-0.02em" data-accent-text="">
+          <tspan x="58.1549" y="238.095">3</tspan>
+        </text>
+      </g>
+    </g>
+    <g id="wc-bento-actions-59" filter="url(#wc-bento-actions-89)">
+      <path d="M96 228.2C96 221.479 96 218.119 97.3079 215.552C98.4584 213.294 100.294 211.458 102.552 210.308C105.119 209 108.479 209 115.2 209H369.8C376.521 209 379.881 209 382.448 210.308C384.706 211.458 386.542 213.294 387.692 215.552C389 218.119 389 221.479 389 228.2V291.8C389 298.521 389 301.881 387.692 304.448C386.542 306.706 384.706 308.542 382.448 309.692C379.881 311 376.521 311 369.8 311H115.2C108.479 311 105.119 311 102.552 309.692C100.294 308.542 98.4584 306.706 97.3079 304.448C96 301.881 96 298.521 96 291.8V228.2Z" fill="var(--wc-accent)" fill-opacity="0.14" shape-rendering="crispEdges" data-accent-fill="" />
+      <path d="M115.2 209.5H369.8C373.168 209.5 375.665 209.501 377.641 209.662C379.611 209.823 381.019 210.142 382.221 210.754C384.385 211.856 386.144 213.615 387.246 215.779C387.858 216.981 388.177 218.389 388.338 220.359C388.499 222.335 388.5 224.832 388.5 228.2V291.8C388.5 295.168 388.499 297.665 388.338 299.641C388.177 301.611 387.858 303.019 387.246 304.221C386.144 306.385 384.385 308.144 382.221 309.246C381.019 309.858 379.611 310.177 377.641 310.338C375.665 310.499 373.168 310.5 369.8 310.5H115.2C111.832 310.5 109.335 310.499 107.359 310.338C105.389 310.177 103.981 309.858 102.779 309.246C100.615 308.144 98.8564 306.385 97.7539 304.221C97.1418 303.019 96.8231 301.611 96.6621 299.641C96.5007 297.665 96.5 295.168 96.5 291.8V228.2C96.5 224.832 96.5007 222.335 96.6621 220.359C96.8231 218.389 97.1418 216.981 97.7539 215.779C98.8564 213.615 100.615 211.856 102.779 210.754C103.981 210.142 105.389 209.823 107.359 209.662C109.335 209.501 111.832 209.5 115.2 209.5Z" stroke="var(--wc-accent)" stroke-opacity="0.4" shape-rendering="crispEdges" />
+      <g id="wc-bento-actions-62">
+        <text id="wc-bento-actions-63" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="16" letter-spacing="-0.02em">
+          <tspan x="109" y="233.818">Confirm change</tspan>
+        </text>
+        <g id="wc-bento-actions-65">
+          <text id="wc-bento-actions-66" opacity="0.4" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="13" letter-spacing="-0.02em">
+            <tspan x="109" y="252.727">Review and confirm update</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="wc-bento-actions-68">
+        <g id="wc-bento-actions-69">
+          <rect x="109" y="268" width="129.5" height="30" rx="6" fill="white" />
+          <text id="wc-bento-actions-71" fill="black" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="14" font-weight="500" letter-spacing="-0.01em">
+            <tspan x="145.75" y="287.591">Approve</tspan>
+          </text>
+        </g>
+        <g id="wc-bento-actions-73">
+          <rect x="246" y="267.5" width="130.5" height="31" rx="6.5" stroke="white" stroke-opacity="0.2" />
+          <text id="wc-bento-actions-75" fill="white" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="14" font-weight="500" letter-spacing="-0.01em">
+            <tspan x="288.25" y="287.591">Cancel</tspan>
+          </text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <filter id="wc-bento-actions-89" x="76" y="207" width="333" height="142" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+      <feOffset dy="18" />
+      <feGaussianBlur stdDeviation="10" />
+      <feComposite in2="hardAlpha" operator="out" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0" />
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45889_28883" />
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_45889_28883" result="shape" />
+    </filter>
+    <clipPath id="wc-bento-actions-101">
+      <rect width="432" height="496" fill="white" />
+    </clipPath>
+    <filter id="wc-bento-actions-soft-mask-0" filterUnits="userSpaceOnUse" x="-283.0" y="-211.0" width="815.0" height="591.0">
+      <feGaussianBlur stdDeviation="66.0" />
+    </filter>
+  </defs>
+</svg>

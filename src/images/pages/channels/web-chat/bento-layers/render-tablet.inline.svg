@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="342" height="480" viewBox="0 0 342 480" fill="none" aria-hidden="true">
+  <g id="wc-bento-render-tablet-1" clip-path="url(#wc-bento-render-tablet-119)">
+    <g id="wc-bento-render-tablet-33">
+      <mask id="wc-bento-render-tablet-34" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-187.5346" y="-233.5346" width="532.0692" height="754.0692">
+        <g filter="url(#wc-bento-render-tablet-soft-mask-2)">
+          <ellipse id="wc-bento-render-tablet-37" data-figma-bg-blur-radius="28.9492" cx="78.8271" cy="143.596" rx="227.171" ry="337.741" fill="#D9D9D9" />
+        </g>
+      </mask>
+      <g mask="url(#wc-bento-render-tablet-34)">
+        <g id="wc-bento-render-tablet-39">
+          <g id="wc-bento-render-tablet-42" data-figma-bg-blur-radius="97.5927">
+            <g id="wc-bento-render-tablet-45">
+              <rect x="108.289" y="224.852" width="289.163" height="30.7236" rx="7.22909" fill="var(--wc-accent)" data-accent-fill="" />
+              <text id="wc-bento-render-tablet-47" fill="var(--wc-accent-contrast)" style="white-space: pre" xml:space="preserve" font-family="var(--font-inter), Inter, sans-serif" font-size="12.6509" font-weight="500" letter-spacing="-0.01em" data-accent-text="">
+                <tspan x="195.367" y="244.362">View updater order</tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="wc-bento-render-tablet-119">
+      <rect width="342" height="480" fill="white" />
+    </clipPath>
+    <filter id="wc-bento-render-tablet-soft-mask-2" filterUnits="userSpaceOnUse" x="-187.5346" y="-233.5346" width="532.0692" height="754.0692">
+      <feGaussianBlur stdDeviation="19.2673" />
+    </filter>
+  </defs>
+</svg>

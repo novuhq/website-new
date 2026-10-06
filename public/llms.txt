@@ -41,6 +41,7 @@ Novu provides a unified platform for building, operating, and debugging notifica
 - [AI agent on Telegram](https://novu.co/channels/telegram/): Reach users on Telegram with fast conversational replies and inline keyboards. Connect with `npx novu connect --channel telegram`.
 - [AI agent on Microsoft Teams](https://novu.co/channels/microsoft-teams/): Bring an AI agent into Microsoft Teams with channel awareness, Adaptive Cards, and human handoff. Connect from the Novu dashboard.
 - [AI agent on Email](https://novu.co/channels/email/): Reach users in their inbox with rich, actionable agent notifications and secure action links. Connect with `npx novu connect --channel email`.
+- [AI agent in Web Chat](https://novu.co/channels/web-chat/): Put an existing AI agent inside your product. It uses product context, takes actions with approval, renders your components in the thread, and continues the conversation on every connected channel. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat.md
 
 ### Connect a framework's agent to a channel (Novu Connect)
 How to connect an agent built with a specific framework to a specific channel. The custom-code bridge keeps your agent running in your app. Each page has a Markdown version at the same path with `.md`.
