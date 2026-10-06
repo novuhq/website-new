@@ -148,8 +148,6 @@ function MenuLinks({ items, variant }: IMenuLinksProps) {
   )
 }
 
-const NESTED_MENU_COLUMN_LIMIT = 8
-
 function NestedMenu({
   items,
   variant,
@@ -193,73 +191,44 @@ function NestedMenu({
         })}
       </ul>
 
-      {/* A preview image only stands in for an item with nothing to list. */}
-      {activeItem?.previewImage && !activeItem.children?.length ? (
-        <div className="shrink-0 border-l border-gray-20 p-3.5">
-          <Link
-            className="block h-63 w-60.75 overflow-hidden rounded-lg"
-            href={activeItem.href}
-            variant="clean"
-            aria-label={`Open ${activeItem.label}`}
-          >
-            <Image
-              className="size-full object-cover"
-              src={activeItem.previewImage}
-              alt=""
-              width={486}
-              height={504}
-              loading="eager"
-              unoptimized
-            />
-          </Link>
-        </div>
-      ) : (
-        activeItem && (
-          <div className="min-w-64 shrink-0 border-l border-gray-20 p-3.5">
-            {variant === "channels" && (
-              <p className="mx-2.5 mt-2.5 mb-3.5 text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
-                {activeItem.childrenTitle ??
-                  `${activeItem.label} Agent Frameworks`}
-              </p>
-            )}
-            <ul
-              className={cn(
-                // A long list would run past the viewport in one column.
-                (activeItem.children?.length ?? 0) > NESTED_MENU_COLUMN_LIMIT &&
-                  "columns-2 gap-6 [&>li]:break-inside-avoid"
-              )}
-              aria-label={`${activeItem.label} links`}
-            >
-              {activeItem.children?.map(
-                ({ label, href, menuIcon, integrationIcon }) => (
-                  <li key={label}>
-                    <Link
-                      className="group flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 transition-colors hover:bg-[#121417] hover:text-white"
-                      href={href}
-                      variant="clean"
-                    >
-                      <MenuIcon icon={menuIcon} />
-                      <IntegrationMenuIcon icon={integrationIcon} />
-                      {label}
-                    </Link>
-                  </li>
-                )
-              )}
-              {Boolean(activeItem.remainingCount) && (
-                <li>
+      {activeItem && (
+        <div className="min-w-64 shrink-0 border-l border-gray-20 p-3.5">
+          {variant === "channels" && (
+            <p className="mx-2.5 mt-2.5 mb-3.5 text-xs leading-none font-medium tracking-normal text-gray-50 uppercase">
+              {activeItem.childrenTitle ??
+                `${activeItem.label} Agent Frameworks`}
+            </p>
+          )}
+          <ul aria-label={`${activeItem.label} links`}>
+            {activeItem.children?.map(
+              ({ label, href, menuIcon, integrationIcon }) => (
+                <li key={label}>
                   <Link
-                    className="flex min-h-9 w-full items-center gap-1 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white"
-                    href={activeItem.href}
+                    className="group flex min-h-9 w-full items-center gap-2.5 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-90 transition-colors hover:bg-[#121417] hover:text-white"
+                    href={href}
                     variant="clean"
                   >
-                    +{activeItem.remainingCount} more
-                    <ChevronRight className="size-4" aria-hidden="true" />
+                    <MenuIcon icon={menuIcon} />
+                    <IntegrationMenuIcon icon={integrationIcon} />
+                    {label}
                   </Link>
                 </li>
-              )}
-            </ul>
-          </div>
-        )
+              )
+            )}
+            {Boolean(activeItem.remainingCount) && (
+              <li>
+                <Link
+                  className="flex min-h-9 w-full items-center gap-1 rounded-[10px] p-2.5 text-[15px] leading-none font-normal tracking-tighter whitespace-nowrap text-gray-70 transition-colors hover:bg-[#121417] hover:text-white"
+                  href={activeItem.href}
+                  variant="clean"
+                >
+                  +{activeItem.remainingCount} more
+                  <ChevronRight className="size-4" aria-hidden="true" />
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       )}
     </div>
   )

@@ -351,14 +351,11 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
     ).toBeVisible()
     await expect(
       channels.getByRole("img", { name: artworkMessage, exact: true })
-    ).toHaveAttribute("src", /channels-mascot\.[\w-]+\.png/)
+    ).toHaveAttribute("src", /channels-mascot\.[\w.~+-]+\.png/)
     // One shared plate; the builder is named by the badge over it.
-    const { hero: heroCopy, media } = getWebChatBuilderBySlug(slug)!
+    const { hero: heroCopy } = getWebChatBuilderBySlug(slug)!
 
-    await expect(artwork).toHaveAttribute(
-      "src",
-      new RegExp(`${media.hero}\\.[\\w.~+-]+\\.png`)
-    )
+    await expect(artwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
     await expect(
       hero.getByText(heroCopy.badge.label, { exact: true })
     ).toBeVisible()
@@ -503,7 +500,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await expect(channelsArtwork).toBeVisible()
   await expect(channelsArtwork).toHaveAttribute(
     "src",
-    /channels-mascot\.[\w-]+\.png/
+    /channels-mascot\.[\w.~+-]+\.png/
   )
   await channelsArtwork.scrollIntoViewIfNeeded()
   await expect
@@ -716,7 +713,7 @@ test("centers the hero copy and actions on tablet widths", async ({ page }) => {
   expectHealthyPage(applicationErrors)
 })
 
-test("matches the shared Webflow Figma section geometry at 1920px", async ({
+test("matches the shared Figma section geometry at 1920px", async ({
   page,
 }, testInfo) => {
   test.skip(

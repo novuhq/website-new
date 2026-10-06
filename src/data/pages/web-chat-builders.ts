@@ -1,9 +1,18 @@
-export interface IWebChatBuilderSeo {
+import {
+  getWebChatBuilderPathname,
+  WEB_CHAT_BUILDER_LIST,
+  type WebChatBuilderSlug,
+} from "@/data/pages/web-chat-builder-list"
+
+// The one command every builder page tells visitors to run.
+const CONNECT_COMMAND = "npx novu connect --channel web-chat"
+
+interface IWebChatBuilderSeo {
   title: string
   description: string
 }
 
-export interface IWebChatBuilderHeroBadge {
+interface IWebChatBuilderHeroBadge {
   label: string
   logo: string
 }
@@ -69,37 +78,20 @@ export interface IWebChatBuilderTertiarySection {
   imageAlt: string
 }
 
-export type IWebChatBuilderSection =
+type IWebChatBuilderSection =
   | IWebChatBuilderPrimarySection
   | IWebChatBuilderSecondarySection
   | IWebChatBuilderTertiarySection
 
-export interface IWebChatBuilderFaqItem {
+interface IWebChatBuilderFaqItem {
   question: string
   answer: string
 }
 
-export interface IWebChatBuilderCta {
+interface IWebChatBuilderCta {
   title: string
   description: string
   command: string
-}
-
-export type WebChatBuilderMediaKey = "app-hero" | "shared-channels"
-
-export interface IWebChatBuilderMedia {
-  hero: WebChatBuilderMediaKey
-  channels: WebChatBuilderMediaKey
-}
-
-export function resolveWebChatBuilderMedia<T>(
-  media: IWebChatBuilderMedia,
-  assets: Readonly<Record<WebChatBuilderMediaKey, T>>
-): { hero: T; channels: T } {
-  return {
-    hero: assets[media.hero],
-    channels: assets[media.channels],
-  }
 }
 
 export interface IWebChatBuilderPage {
@@ -107,7 +99,6 @@ export interface IWebChatBuilderPage {
   builderName: string
   seo: IWebChatBuilderSeo
   hero: IWebChatBuilderHero
-  media: IWebChatBuilderMedia
   sections: IWebChatBuilderSection[]
   faqTitle: string
   faq: IWebChatBuilderFaqItem[]
@@ -173,7 +164,7 @@ function createWebChatBuilderSharedContent({
         steps: [
           {
             description: "Connect your agent to Novu Web Chat:\nrun ",
-            command: "npx novu connect --channel web-chat",
+            command: CONNECT_COMMAND,
           },
           {
             description:
@@ -197,7 +188,7 @@ function createWebChatBuilderSharedContent({
         id: "web-chat-builder-channels",
         title: "One workflow, every channel",
         description: `Your agent’s logic works across ${destinationPhrase} and every channel. Novu handles delivery through one workflow. Run the command to connect Web Chat.`,
-        command: "npx novu connect --channel web-chat",
+        command: CONNECT_COMMAND,
         channels: [
           { name: "Telegram", icon: "telegram" },
           { name: "MS Teams", icon: "teams" },
@@ -236,7 +227,7 @@ function createWebChatBuilderSharedContent({
     cta: {
       title: `Give ${destinationPhrase} an AI agent`,
       description: `Bring the agent you built. Novu puts it in ${destinationPhrase} and reaches your users on every channel from one workflow.`,
-      command: "npx novu connect --channel web-chat",
+      command: CONNECT_COMMAND,
     },
   }
 }
@@ -256,10 +247,6 @@ function createWebChatBuilderPage({
     ...createWebChatBuilderSharedContent({ builderName }),
     slug,
     builderName,
-    media: {
-      hero: "app-hero",
-      channels: "shared-channels",
-    },
     seo: {
       title: `${title} | Novu Web Chat`,
       description,
@@ -268,7 +255,7 @@ function createWebChatBuilderPage({
       eyebrow: `Web Chat for ${builderName}`,
       title,
       description,
-      command: "npx novu connect --channel web-chat",
+      command: CONNECT_COMMAND,
       prompt,
       promptLabel: "Copy Prompt",
       // The hero artwork is shared, so the builder is named on an overlay
@@ -281,26 +268,24 @@ function createWebChatBuilderPage({
   }
 }
 
-const WEB_CHAT_BUILDER_PAGES = Object.freeze({
-  lovable: createWebChatBuilderPage({
-    slug: "lovable",
-    builderName: "Lovable",
-  }),
-  v0: createWebChatBuilderPage({
-    slug: "v0",
-    builderName: "v0",
-  }),
-})
+const WEB_CHAT_BUILDER_PAGES: Readonly<
+  Record<WebChatBuilderSlug, IWebChatBuilderPage>
+> = Object.freeze(
+  Object.fromEntries(
+    WEB_CHAT_BUILDER_LIST.map(({ slug, builderName }) => [
+      slug,
+      createWebChatBuilderPage({ slug, builderName }),
+    ])
+  ) as Record<WebChatBuilderSlug, IWebChatBuilderPage>
+)
 
 export function getWebChatBuilderBySlug(
   slug: string
 ): IWebChatBuilderPage | undefined {
   if (!Object.hasOwn(WEB_CHAT_BUILDER_PAGES, slug)) return undefined
 
-  return WEB_CHAT_BUILDER_PAGES[slug as keyof typeof WEB_CHAT_BUILDER_PAGES]
+  return WEB_CHAT_BUILDER_PAGES[slug as WebChatBuilderSlug]
 }
-
-export type WebChatBuilderSlug = keyof typeof WEB_CHAT_BUILDER_PAGES
 
 export function getAllWebChatBuilderSlugs(): string[] {
   return Object.keys(WEB_CHAT_BUILDER_PAGES)
@@ -310,6 +295,4 @@ export function getAllWebChatBuilders(): IWebChatBuilderPage[] {
   return Object.values(WEB_CHAT_BUILDER_PAGES)
 }
 
-export function getWebChatBuilderPathname(slug: string): string {
-  return `/channels/web-chat/${slug}`
-}
+export { getWebChatBuilderPathname, type WebChatBuilderSlug }

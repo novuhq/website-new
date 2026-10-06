@@ -1,18 +1,14 @@
-import Image, { type StaticImageData } from "next/image"
+import Image from "next/image"
 import type { IWebChatBuilderHero } from "@/data/pages/web-chat-builders"
+// One hero plate for every builder; the badge drawn over it names the builder.
+import heroArtwork from "@/images/pages/channels/web-chat-builder/shared/app-hero.png"
 
 import { CopyCommand } from "@/components/ui/copy-command"
 import CustomerLogos from "@/components/customer-logos"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 import WebChatBuilderLogo from "@/components/web-chat-builder-logo"
 
-function WebChatBuilderHero({
-  hero,
-  image,
-}: {
-  hero: IWebChatBuilderHero
-  image: StaticImageData
-}) {
+function WebChatBuilderHero({ hero }: { hero: IWebChatBuilderHero }) {
   return (
     <section
       aria-labelledby="web-chat-builder-title"
@@ -54,7 +50,7 @@ function WebChatBuilderHero({
         </div>
         <div className="@container relative mx-auto w-full max-w-152">
           <Image
-            src={image}
+            src={heroArtwork}
             alt=""
             className="h-auto w-full"
             sizes="(min-width: 1280px) 608px, (min-width: 1024px) calc((100vw - 128px) * 0.528), (min-width: 648px) 608px, calc(100vw - 40px)"

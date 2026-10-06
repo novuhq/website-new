@@ -5,15 +5,16 @@ import type {
   IWebChatBuilderTertiarySection,
   WebChatBuilderChannel,
 } from "@/data/pages/web-chat-builders"
-import email from "@/images/pages/channels/web-chat-builder/shared/channel-email.svg"
 import imessage from "@/images/pages/channels/web-chat-builder/shared/channel-imessage.svg"
 import more from "@/images/pages/channels/web-chat-builder/shared/channel-more.svg"
 import slack from "@/images/pages/channels/web-chat-builder/shared/channel-slack.svg"
-import teams from "@/images/pages/channels/web-chat-builder/shared/channel-teams.svg"
 import telegram from "@/images/pages/channels/web-chat-builder/shared/channel-telegram.svg"
 import tooltipArrow from "@/images/pages/channels/web-chat-builder/shared/channel-tooltip-arrow.svg"
 import webChat from "@/images/pages/channels/web-chat-builder/shared/channel-web-chat.svg"
 import whatsapp from "@/images/pages/channels/web-chat-builder/shared/channel-whatsapp.svg"
+import channelsMascot from "@/images/pages/channels/web-chat-builder/shared/channels-mascot.png"
+import email from "@/svgs/pages/channels/web-chat/channel-email.svg"
+import teams from "@/svgs/pages/channels/web-chat/channel-teams.svg"
 
 import { cn } from "@/lib/utils"
 import { CopyCommand } from "@/components/ui/copy-command"
@@ -55,10 +56,8 @@ const CHANNEL_LINKS: Record<WebChatBuilderChannel, (typeof ROUTE)[string]> = {
 
 function WebChatBuilderTertiarySection({
   section,
-  image,
 }: {
   section: IWebChatBuilderTertiarySection
-  image: StaticImageData
 }) {
   return (
     <section
@@ -158,7 +157,7 @@ function WebChatBuilderTertiarySection({
         </ul>
         <div className="@container relative self-center overflow-hidden rounded-2xl">
           <Image
-            src={image}
+            src={channelsMascot}
             alt={section.imageAlt}
             className="h-auto w-full"
             sizes="(min-width: 1280px) 480px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 128px), calc(100vw - 72px)"

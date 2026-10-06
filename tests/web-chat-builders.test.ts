@@ -5,9 +5,6 @@ import {
   getAllWebChatBuilderSlugs,
   getWebChatBuilderBySlug,
   getWebChatBuilderPathname,
-  resolveWebChatBuilderMedia,
-  type IWebChatBuilderPage,
-  type WebChatBuilderMediaKey,
 } from "@/data/pages/web-chat-builders"
 
 describe("Web Chat builder pages", () => {
@@ -99,34 +96,4 @@ describe("Web Chat builder pages", () => {
       assert.equal(getWebChatBuilderBySlug(slug), undefined)
     })
   }
-
-  it("resolves each artwork slot from an unpublished page's media references", () => {
-    const lovable = getWebChatBuilderBySlug("lovable")!
-    assert.deepEqual(lovable.media, {
-      hero: "app-hero",
-      channels: "shared-channels",
-    })
-    const fixture = {
-      ...lovable,
-      slug: "unpublished-media-fixture",
-      builderName: "Unpublished fixture",
-      media: {
-        hero: "app-hero",
-        channels: "shared-channels",
-      },
-    } satisfies IWebChatBuilderPage
-    const artwork = Object.fromEntries(
-      getAllWebChatBuilderSlugs()
-        .map((slug) => getWebChatBuilderBySlug(slug)!)
-        .flatMap(({ media }) => [media.hero, media.channels])
-        .map((key) => [key, { id: key }])
-    ) as Record<WebChatBuilderMediaKey, { id: string }>
-
-    assert.deepEqual(resolveWebChatBuilderMedia(fixture.media, artwork), {
-      hero: { id: "app-hero" },
-      channels: { id: "shared-channels" },
-    })
-    assert.equal(getWebChatBuilderBySlug(fixture.slug), undefined)
-    assert.equal(getAllWebChatBuilderSlugs().length, 2)
-  })
 })

@@ -1,14 +1,10 @@
 import { Geist_Mono } from "next/font/google"
-import {
-  resolveWebChatBuilderMedia,
-  type IWebChatBuilderPage,
-} from "@/data/pages/web-chat-builders"
+import type { IWebChatBuilderPage } from "@/data/pages/web-chat-builders"
 
 import FAQ from "@/components/pages/faq"
 import Cta from "@/components/pages/home/cta"
 
 import WebChatBuilderHero from "./hero"
-import { WEB_CHAT_BUILDER_MEDIA } from "./media"
 import WebChatBuilderPrimarySection from "./primary-section"
 import WebChatBuilderSecondarySection from "./secondary-section"
 import WebChatBuilderTertiarySection from "./tertiary-section"
@@ -21,22 +17,16 @@ const geistMono = Geist_Mono({
 })
 
 function WebChatBuilderLanding({ page }: { page: IWebChatBuilderPage }) {
-  const media = resolveWebChatBuilderMedia(page.media, WEB_CHAT_BUILDER_MEDIA)
-
   return (
     <div className={`bg-black font-inter ${geistMono.variable}`}>
-      <WebChatBuilderHero hero={page.hero} image={media.hero} />
+      <WebChatBuilderHero hero={page.hero} />
       {page.sections.map((section) =>
         section.type === "primary" ? (
           <WebChatBuilderPrimarySection key={section.id} section={section} />
         ) : section.type === "secondary" ? (
           <WebChatBuilderSecondarySection key={section.id} section={section} />
         ) : (
-          <WebChatBuilderTertiarySection
-            key={section.id}
-            section={section}
-            image={media.channels}
-          />
+          <WebChatBuilderTertiarySection key={section.id} section={section} />
         )
       )}
       <FAQ

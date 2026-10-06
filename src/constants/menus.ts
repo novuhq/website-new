@@ -2,24 +2,23 @@ import type { Route } from "next"
 import { INTEGRATION_MENU_ITEMS } from "@/constants/integration-menu"
 import { ROUTE } from "@/constants/routes"
 import {
-  getAllWebChatBuilders,
   getWebChatBuilderPathname,
-} from "@/data/pages/web-chat-builders"
+  WEB_CHAT_BUILDER_LIST,
+} from "@/data/pages/web-chat-builder-list"
 
 import {
   IMenuHeaderItem,
   IMenuItem,
   IMenuSocialItem,
-  TMenuIcon,
 } from "@/types/common"
 
-// Built from the builder registry so the menu cannot drift from the pages that
-// actually ship. Icons are keyed by the same slug.
-const WEB_CHAT_BUILDER_ITEMS: IMenuItem[] = getAllWebChatBuilders().map(
+// Built from the published builder list so the menu cannot drift from the
+// pages that actually ship. Icons are keyed by the same slug.
+const WEB_CHAT_BUILDER_ITEMS: IMenuItem[] = WEB_CHAT_BUILDER_LIST.map(
   ({ slug, builderName }) => ({
     label: builderName,
     href: getWebChatBuilderPathname(slug) as Route<string>,
-    menuIcon: slug as TMenuIcon,
+    menuIcon: slug,
   })
 )
 
@@ -279,8 +278,6 @@ export const MENUS = {
               menuIcon: "web-chat",
               childrenTitle: "Web Chat integrations",
               children: WEB_CHAT_BUILDER_ITEMS,
-              // Shown instead of the list only if no builder page is published.
-              previewImage: "/images/header/menu/banner-web-chat.webp",
             },
           ],
         },

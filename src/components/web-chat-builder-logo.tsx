@@ -1,9 +1,9 @@
 import type { ComponentType, SVGProps } from "react"
-import type { WebChatBuilderSlug } from "@/data/pages/web-chat-builders"
+import type { WebChatBuilderSlug } from "@/data/pages/web-chat-builder-list"
 import lovableLogo from "@/svgs/web-chat-builders/lovable.inline.svg"
 import v0Logo from "@/svgs/web-chat-builders/v0.inline.svg"
 
-export type TWebChatBuilderLogo = ComponentType<SVGProps<SVGSVGElement>>
+type TWebChatBuilderLogo = ComponentType<SVGProps<SVGSVGElement>>
 
 // Keyed by builder slug, so a new builder page cannot ship without its logo.
 // Used by the header menu and by the badge on the shared hero artwork.
