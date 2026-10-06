@@ -43,21 +43,15 @@ const CHANNEL_ICONS: Record<
   },
 }
 
-// Web Chat is deliberately absent: its channel page lands in a separate PR, so
-// that tile stays unlinked until then.
-const CHANNEL_LINKS: Partial<
-  Record<WebChatBuilderChannel, (typeof ROUTE)[string]>
-> = {
+const CHANNEL_LINKS: Record<WebChatBuilderChannel, (typeof ROUTE)[string]> = {
   telegram: ROUTE.channelTelegram,
   teams: ROUTE.channelMicrosoftTeams,
   email: ROUTE.channelEmail,
+  "web-chat": ROUTE.channelWebChat,
   whatsapp: ROUTE.channelWhatsApp,
   slack: ROUTE.channelSlack,
   imessage: ROUTE.channelIMessage,
 }
-
-const CHANNEL_TILE_CLASSNAME =
-  "flex size-full items-center justify-center rounded-2xl bg-gray-20/60"
 
 function WebChatBuilderTertiarySection({
   section,
@@ -94,7 +88,6 @@ function WebChatBuilderTertiarySection({
       <div className="mt-9 grid gap-6 rounded-3xl bg-card-surface/70 p-4 md:p-8 lg:grid-cols-[minmax(0,648fr)_minmax(0,480fr)]">
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6">
           {section.channels.map((channel) => {
-            const href = CHANNEL_LINKS[channel.icon]
             const tile = (
               <>
                 <span
@@ -119,19 +112,12 @@ function WebChatBuilderTertiarySection({
 
             return (
               <li key={channel.icon} className="relative aspect-square min-w-0">
-                {href ? (
-                  <NextLink
-                    href={href}
-                    className={cn(
-                      CHANNEL_TILE_CLASSNAME,
-                      "transition-colors hover:bg-gray-20 focus-visible:ring-2 focus-visible:ring-purple-2 focus-visible:outline-none"
-                    )}
-                  >
-                    {tile}
-                  </NextLink>
-                ) : (
-                  <span className={CHANNEL_TILE_CLASSNAME}>{tile}</span>
-                )}
+                <NextLink
+                  href={CHANNEL_LINKS[channel.icon]}
+                  className="flex size-full items-center justify-center rounded-2xl bg-gray-20/60 transition-colors hover:bg-gray-20 focus-visible:ring-2 focus-visible:ring-purple-2 focus-visible:outline-none"
+                >
+                  {tile}
+                </NextLink>
               </li>
             )
           })}

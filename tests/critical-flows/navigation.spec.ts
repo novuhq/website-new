@@ -117,11 +117,11 @@ test.describe("critical responsive navigation", () => {
         .hover()
     }
 
-    // The Web Chat channel page itself ships separately, so only its builder
-    // pages are expected to resolve today.
     await expect(
       page.getByRole("link", { name: "Web Chat", exact: true }).first()
     ).toHaveAttribute("href", "/channels/web-chat/")
+    const webChat = await request.get("/channels/web-chat/")
+    expect(webChat.ok(), "/channels/web-chat/ should resolve").toBe(true)
 
     for (const { slug, builderName } of getAllWebChatBuilders()) {
       const pathname = getWebChatBuilderPathname(slug)

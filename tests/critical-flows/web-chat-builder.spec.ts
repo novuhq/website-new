@@ -132,7 +132,13 @@ test("publishes one canonical and page, breadcrumb, and FAQ structured data from
         name: "Novu",
         item: new URL("/", url).href,
       },
-      { "@type": "ListItem", position: 2, name: "Lovable", item: url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Web Chat",
+        item: new URL("/channels/web-chat/", url).href,
+      },
+      { "@type": "ListItem", position: 3, name: "Lovable", item: url },
     ],
   })
   expect(faq).toMatchObject({ "@type": "FAQPage", "@id": `${url}#faq` })
@@ -476,6 +482,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
     ["Telegram", "/channels/telegram/"],
     ["MS Teams", "/channels/microsoft-teams/"],
     ["Email", "/channels/email/"],
+    ["Web Chat", "/channels/web-chat/"],
     ["WhatsApp", "/channels/whatsapp/"],
     ["Slack", "/channels/slack/"],
     ["iMessage", "/channels/imessage/"],
@@ -485,10 +492,6 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
     const response = await request.get(href)
     expect(response.ok(), `${href} should resolve`).toBe(true)
   }
-  // The Web Chat channel page ships separately, so that tile stays unlinked.
-  await expect(
-    section.getByRole("link", { name: "Web Chat", exact: true })
-  ).toHaveCount(0)
   const channelsArtwork = section.getByRole("img", {
     name: "Your Lovable app is just the beginning!",
   })
@@ -538,12 +541,13 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await expect(tooltip).toHaveCount(0)
 
   // The copy control precedes the channel links, which precede the hint in the
-  // actual keyboard tab order. Web Chat has no page yet, so it is not in it.
+  // actual keyboard tab order.
   await copyCommand.focus()
   for (const channel of [
     "Telegram",
     "MS Teams",
     "Email",
+    "Web Chat",
     "WhatsApp",
     "Slack",
     "iMessage",
@@ -559,6 +563,35 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await expect(tooltipPanel).toBeVisible()
   await expect(more).toHaveAccessibleDescription("More channels coming soon")
   await page.keyboard.press("Escape")
+  await expect(tooltip).toHaveCount(0)
+  expectHealthyPage(applicationErrors)
+})
+
+test("opens and closes the More channels hint with a tap on touch screens", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    !testInfo.project.use.hasTouch,
+    "Touch has no hover, so a tap is how the hint opens"
+  )
+  const applicationErrors = observeApplicationErrors(page)
+  await gotoCriticalPage(page, "/channels/web-chat/lovable")
+  const section = page.getByRole("region", {
+    name: "One workflow, every channel",
+    exact: true,
+  })
+  const more = section.getByRole("button", {
+    name: "More channels",
+    exact: true,
+  })
+  const tooltip = page.getByRole("tooltip", {
+    name: "More channels coming soon",
+  })
+  await expectReactHandlerReady(more, "onClick")
+  await more.scrollIntoViewIfNeeded()
+  await more.tap()
+  await expect(tooltip).toBeVisible()
+  await more.tap()
   await expect(tooltip).toHaveCount(0)
   expectHealthyPage(applicationErrors)
 })

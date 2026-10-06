@@ -90,9 +90,10 @@ function CopyCommand({
       <div className={cn(copyCommandVariants({ variant }), controlClassName)}>
         <span
           className={cn(
-            // Scroll rather than truncate: a command that outgrows its box stays
-            // readable in full instead of ending in an ellipsis.
-            "scrollbar-hidden min-w-0 overflow-x-auto text-sm leading-snug tracking-tight whitespace-nowrap text-muted-foreground",
+            // Phones end a long command in an ellipsis, a visible cue that the
+            // copy button holds the rest. From sm the box has room to grow, so
+            // the command shows in full and scrolls only if it still outgrows it.
+            "scrollbar-hidden min-w-0 truncate text-sm leading-snug tracking-tight text-muted-foreground sm:overflow-x-auto sm:text-clip",
             variant === "highlighted" &&
               "flex-1 text-base leading-[1.2] font-normal tracking-normal text-white",
             commandClassName

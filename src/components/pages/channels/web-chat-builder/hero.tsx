@@ -61,8 +61,12 @@ function WebChatBuilderHero({
             loading="eager"
           />
           {/* The artwork is shared between builders, so the badge that names
-              this one is drawn over it, sized against the artwork itself. */}
-          <span className="absolute top-[21.875cqw] left-[4.03cqw] flex items-center gap-[1.316cqw] rounded-[7.895cqw] bg-black/50 py-[0.658cqw] pr-[3.947cqw] pl-[1.316cqw] text-[3.289cqw] leading-none font-medium tracking-[-0.02em] text-white backdrop-blur-[20px]">
+              this one is drawn over it, sized against the artwork itself. It
+              captions decorative art, so screen readers skip it too. */}
+          <span
+            aria-hidden
+            className="absolute top-[21.875cqw] left-[4.03cqw] flex items-center gap-[1.316cqw] rounded-[7.895cqw] bg-black/50 py-[0.658cqw] pr-[3.947cqw] pl-[1.316cqw] text-[3.289cqw] leading-none font-medium tracking-[-0.02em] text-white backdrop-blur-[20px]"
+          >
             <span className="flex size-[7.895cqw] shrink-0 items-center justify-center">
               <WebChatBuilderLogo
                 className="size-[4.77cqw]"
