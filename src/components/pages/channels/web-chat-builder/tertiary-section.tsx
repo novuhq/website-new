@@ -12,7 +12,7 @@ import telegram from "@/images/pages/channels/web-chat-builder/shared/channel-te
 import tooltipArrow from "@/images/pages/channels/web-chat-builder/shared/channel-tooltip-arrow.svg"
 import webChat from "@/images/pages/channels/web-chat-builder/shared/channel-web-chat.svg"
 import whatsapp from "@/images/pages/channels/web-chat-builder/shared/channel-whatsapp.svg"
-import channelsMascot from "@/images/pages/channels/web-chat-builder/shared/channels-mascot.png"
+import channelsMascot from "@/images/pages/channels/web-chat-builder/shared/channels-mascot.webp"
 import email from "@/svgs/pages/channels/web-chat/channel-email.svg"
 import teams from "@/svgs/pages/channels/web-chat/channel-teams.svg"
 

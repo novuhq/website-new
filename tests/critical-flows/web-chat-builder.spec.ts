@@ -297,7 +297,7 @@ test("renders the Lovable hero and copies its setup instructions", async ({
     exact: true,
   })
   const heroArtwork = hero.locator("img").first()
-  await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
+  await expect(heroArtwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.webp/)
   await expect(
     hero.getByText("Built with Lovable", { exact: true })
   ).toBeVisible()
@@ -351,11 +351,11 @@ test("renders every supplied Figma hero and builder-aware CTA variant", async ({
     ).toBeVisible()
     await expect(
       channels.getByRole("img", { name: artworkMessage, exact: true })
-    ).toHaveAttribute("src", /channels-mascot\.[\w.~+-]+\.png/)
+    ).toHaveAttribute("src", /channels-mascot\.[\w.~+-]+\.webp/)
     // One shared plate; the builder is named by the badge over it.
     const { hero: heroCopy } = getWebChatBuilderBySlug(slug)!
 
-    await expect(artwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.png/)
+    await expect(artwork).toHaveAttribute("src", /app-hero\.[\w.~+-]+\.webp/)
     await expect(
       hero.getByText(heroCopy.badge.label, { exact: true })
     ).toBeVisible()
@@ -500,7 +500,7 @@ test("shows every channel and makes the upcoming-channel hint accessible", async
   await expect(channelsArtwork).toBeVisible()
   await expect(channelsArtwork).toHaveAttribute(
     "src",
-    /channels-mascot\.[\w.~+-]+\.png/
+    /channels-mascot\.[\w.~+-]+\.webp/
   )
   await channelsArtwork.scrollIntoViewIfNeeded()
   await expect

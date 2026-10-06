@@ -1,7 +1,7 @@
 import Image from "next/image"
 import type { IWebChatBuilderHero } from "@/data/pages/web-chat-builders"
 // One hero plate for every builder; the badge drawn over it names the builder.
-import heroArtwork from "@/images/pages/channels/web-chat-builder/shared/app-hero.png"
+import heroArtwork from "@/images/pages/channels/web-chat-builder/shared/app-hero.webp"
 
 import { CopyCommand } from "@/components/ui/copy-command"
 import CustomerLogos from "@/components/customer-logos"
