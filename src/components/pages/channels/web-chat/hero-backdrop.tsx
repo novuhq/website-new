@@ -1,5 +1,5 @@
-import desktopDots from "@/images/pages/channels/web-chat/hero-dots-desktop.png"
-import mobileDots from "@/images/pages/channels/web-chat/hero-dots-mobile.png"
+import desktopDots from "@/images/pages/channels/web-chat/hero-dots-desktop.webp"
+import mobileDots from "@/images/pages/channels/web-chat/hero-dots-mobile.webp"
 import heroNoise from "@/images/pages/channels/web-chat/hero-noise.webp"
 
 import { cn } from "@/lib/utils"

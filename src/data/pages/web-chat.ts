@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image"
 import { ROUTE } from "@/constants/routes"
 import agentMark from "@/images/pages/channels/web-chat/agent-mark.webp"
-import heroAgent from "@/images/pages/channels/web-chat/hero-agent.png"
+import heroAgent from "@/images/pages/channels/web-chat/hero-agent.webp"
 import heroChatLight from "@/images/pages/channels/web-chat/hero-chat-light.svg"
 import heroChatSurface from "@/images/pages/channels/web-chat/hero-chat-surface.svg"
 import heroGlobe from "@/images/pages/channels/web-chat/hero-globe.svg"
