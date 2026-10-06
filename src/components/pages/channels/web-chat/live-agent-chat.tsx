@@ -291,7 +291,7 @@ export default function LiveAgentChat({
 
   useEffect(() => {
     const controller = new AbortController()
-    void fetch("/api/web-chat/session", {
+    void fetch("/api/web-chat/session/", {
       method: "POST",
       credentials: "same-origin",
       cache: "no-store",

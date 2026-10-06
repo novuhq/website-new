@@ -38,7 +38,8 @@ export function DeployAci() {
 
         {/* Both exports already include their rounded outer border. */}
         <div className="relative mx-auto mt-8 aspect-[320/658] w-full max-w-104 overflow-hidden rounded-[16px] bg-black md:mt-14 lg:aspect-[1280/480] lg:max-w-none lg:rounded-[24px]">
-          <picture>
+          {/* Positioned so the filled image measures against it. */}
+          <picture className="absolute inset-0 block size-full">
             <source
               media="(width < 64rem)"
               srcSet={illustrationMobile.src}

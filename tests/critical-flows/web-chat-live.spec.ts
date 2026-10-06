@@ -200,7 +200,7 @@ test("handles approvals and starts a fresh live conversation after preview reset
   page,
 }) => {
   const novu = await mockNovu(page)
-  await page.route("**/api/agent-preview", (route) =>
+  await page.route("**/api/agent-preview{,/}", (route) =>
     route.fulfill({
       json: { brand: { domain: "recent.dev", accent: "#e65006", logo: null } },
     })

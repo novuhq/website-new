@@ -1,13 +1,12 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import {
   COMPARE_WEB_CHAT_BODY,
   COMPARE_WEB_CHAT_TITLE,
 } from "@/data/pages/web-chat-compare"
-import MobileUI from "@/images/pages/channels/web-chat/compare-layers/compare-web-mobile.inline.svg"
 import mobileBackground from "@/images/pages/channels/web-chat/compare-layers/compare-web-mobile.jpg"
-import DesktopUI from "@/images/pages/channels/web-chat/compare-layers/compare-web.inline.svg"
 import desktopBackground from "@/images/pages/channels/web-chat/compare-layers/compare-web.jpg"
 import illustrationMobile from "@/images/pages/channels/web-chat/compare-web-chat-illustration-mobile.jpg"
 import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-chat-illustration.jpg"
@@ -15,6 +14,23 @@ import illustrationDesktop from "@/images/pages/channels/web-chat/compare-web-ch
 import { BrandArtwork } from "@/components/pages/channels/web-chat/brand-artwork"
 
 import { CompareTabletArtwork } from "./compare-tablet-artwork"
+
+// The editable UI layers render only once a visitor personalizes, so load
+// them on demand instead of shipping ~190 KB of SVG in the page bundle.
+const MobileUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-web-mobile.inline.svg"
+    ),
+  { ssr: false }
+)
+const DesktopUI = dynamic(
+  () =>
+    import(
+      "@/images/pages/channels/web-chat/compare-layers/compare-web.inline.svg"
+    ),
+  { ssr: false }
+)
 
 /** Keep the original artwork for idle/fallback; personalized bubbles sit above the hue-tinted base. */
 export function WebChatCard() {

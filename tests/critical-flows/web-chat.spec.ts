@@ -7,7 +7,7 @@ import {
   observeApplicationErrors,
 } from "./helpers"
 
-const PREVIEW_ROUTE = "**/api/agent-preview"
+const PREVIEW_ROUTE = "**/api/agent-preview{,/}"
 
 /**
  * `HeroProductUI` and `HeroAgentPanel` each mount a desktop tree and a

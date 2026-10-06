@@ -90,7 +90,7 @@ export function WebChatBrandProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, status: "loading" }))
 
     try {
-      const response = await fetch("/api/agent-preview", {
+      const response = await fetch("/api/agent-preview/", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ url }),

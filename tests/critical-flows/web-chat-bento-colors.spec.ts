@@ -8,7 +8,7 @@ test("colors hero and illustration bubbles independently with readable text", as
 }) => {
   let accent: string | null = "#34d59a"
   let fail = false
-  await page.route("**/api/agent-preview", (route) =>
+  await page.route("**/api/agent-preview{,/}", (route) =>
     fail
       ? route.fulfill({ status: 503, json: { error: "Unavailable" } })
       : route.fulfill({

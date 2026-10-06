@@ -8,7 +8,7 @@ import {
   observeApplicationErrors,
 } from "./helpers"
 
-const PREVIEW_ROUTE = "**/api/agent-preview"
+const PREVIEW_ROUTE = "**/api/agent-preview{,/}"
 const DEFAULT_ACCENT = "#c25cd6"
 const BRAND = {
   domain: webChatContract.domain,

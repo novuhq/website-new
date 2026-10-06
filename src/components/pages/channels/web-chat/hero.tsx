@@ -9,7 +9,6 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { Geist_Mono } from "next/font/google"
 import NextLink from "next/link"
 import {
   HERO_BADGE_LABEL,
@@ -45,6 +44,7 @@ import {
   useWebChatBrand,
   type WebChatBrand,
 } from "@/components/pages/channels/web-chat/brand-provider"
+import { webChatMono } from "@/components/pages/channels/web-chat/fonts"
 import { HeroAgentPanel } from "@/components/pages/channels/web-chat/hero-agent-panel"
 import {
   HeroBackdrop,
@@ -54,13 +54,6 @@ import { HeroProductUI } from "@/components/pages/channels/web-chat/hero-product
 import { UrlPersonalizer } from "@/components/pages/channels/web-chat/url-personalizer"
 import { useStoryboard } from "@/components/pages/channels/web-chat/use-storyboard"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-  variable: "--font-web-chat-mono",
-})
 
 const COPY_PROMPT_BUTTON_CLASSES =
   "h-11 w-full shrink-0 rounded-md px-5 text-base leading-none font-medium tracking-[-0.025em] normal-case xl:w-34"
@@ -149,7 +142,7 @@ function CliPill({ className }: { className?: string }) {
       copyButtonClassName="size-4 lg:size-4 [&_svg]:size-4"
       controlClassName={cn(
         "h-11 gap-0 border-0 bg-black px-3.5 text-white ring-1 ring-gray-30 ring-inset",
-        geistMono.className
+        webChatMono.className
       )}
     />
   )
@@ -315,7 +308,7 @@ function HeroLiveUi({
     // dashboard at 768px. Scale the outside stroke with the scene as well.
     <div className="relative -mx-5 overflow-x-clip md:mx-auto md:h-119 md:max-w-[955px] md:overflow-visible xl:h-170 xl:max-w-none">
       <div className="relative md:w-[calc(100%/0.7)] md:origin-top-left md:scale-70 xl:w-full xl:scale-100">
-        <div className="relative md:flex md:h-170 md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-transparent md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)] md:backdrop-blur-[48px]">
+        <div className="relative md:flex md:h-170 md:items-stretch md:overflow-hidden md:rounded-3xl md:border md:border-transparent md:bg-black md:bg-[linear-gradient(180deg,rgba(0,0,0,0.98)_58%,rgba(0,0,0,0)_100%)] md:shadow-[0_-2px_24px_0_rgba(0,0,0,0.45)]">
           <div className="relative left-[calc(100%-656px)] w-[636px] rounded-xl sm:left-0 sm:mx-auto md:contents">
             <div className="relative isolate flex items-start overflow-hidden rounded-[inherit] bg-black md:contents">
               <HeroProductUI
@@ -406,7 +399,7 @@ export function WebChatHero() {
         // Preserve the backdrop's 80px bleed without letting its opaque canvas
         // cover the next section. The upper allowance keeps tooltips visible.
         "relative pt-10 font-inter max-lg:[clip-path:inset(-100vh_0_-80px)] md:pt-12 lg:pt-14 xl:min-h-314 xl:pt-23",
-        geistMono.variable
+        webChatMono.variable
       )}
       data-testid="web-chat-hero"
       data-storyboard-phase={phase}
