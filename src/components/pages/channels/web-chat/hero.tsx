@@ -18,8 +18,8 @@ import {
   HERO_HEADING,
   HERO_IMPLEMENT_PROMPT,
   HERO_META_INTEGRATIONS,
-  HERO_META_INTEGRATIONS_LABEL,
-  HERO_META_LINE,
+  HERO_META_INTEGRATIONS_PREFIX,
+  HERO_META_INTEGRATIONS_SUFFIX,
   HERO_TOOLTIP_LINK_LABEL,
   HERO_TOOLTIP_TEXT,
 } from "@/data/pages/web-chat"
@@ -149,7 +149,7 @@ function CliPill({ className }: { className?: string }) {
 }
 
 /**
- * Figma `45738-68397`: the meta line, ending with links to the builder pages
+ * Figma `45738-68397`: the meta line, linking straight to the builder pages
  * that ship today. It blends plus-lighter over the hero glow.
  */
 function MetaLine({ className }: { className?: string }) {
@@ -160,7 +160,7 @@ function MetaLine({ className }: { className?: string }) {
         className
       )}
     >
-      {HERO_META_LINE} {HERO_META_INTEGRATIONS_LABEL}{" "}
+      {HERO_META_INTEGRATIONS_PREFIX}{" "}
       {HERO_META_INTEGRATIONS.map(({ label, href }, index) => (
         <Fragment key={href}>
           {index > 0 &&
@@ -172,8 +172,8 @@ function MetaLine({ className }: { className?: string }) {
             {label}
           </NextLink>
         </Fragment>
-      ))}
-      .
+      ))}{" "}
+      {HERO_META_INTEGRATIONS_SUFFIX}
     </p>
   )
 }
