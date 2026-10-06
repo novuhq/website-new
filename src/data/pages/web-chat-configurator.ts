@@ -17,9 +17,11 @@ import configuratorFrame from "@/images/pages/channels/web-chat/configurator-fra
  */
 
 /**
- * Lossless 2x export of Figma's `bg` group (`45440-69448`). Its render
+ * Lossless 1x export of Figma's `bg` group (`45440-69448`). Its render
  * bounds start at (-397.3984, -416.2309) relative to the 640 × 680 form and
  * measure 1357.3984 × 1559.0155. The form has `clipsContent: false`.
+ * The glow has no fine detail, so 1x scales up on dense screens without
+ * visible loss, at a fifth of the 2x file size.
  * The group's 80% opacity is baked into the export; do not apply it again.
  * The black backdrop preserves Figma's overlay blend modes during export;
  * screen blending removes that canvas around the light in the browser.
