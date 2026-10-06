@@ -104,10 +104,9 @@ function PersonalizedArtwork({
  *
  * `PersonalizedArtwork` preserves the recolour behaviour a personalized frame confirms
  * (`hero-personalization-05-todesktop.com`, `45487:93325`): the blob's own
- * colours are Figma's at rest, and the hue overlay shifts them to the visitor's
- * brand only once `data-wc-state` says so — the same mechanism the hero glow
- * uses, and still zero React re-renders. `isolate` scopes both that blend and
- * the glyph's to this mark.
+ * colours are Figma's at rest, and the hue overlay fades in to shift them to the
+ * visitor's brand only while `active` is set, the same way the hero glow does.
+ * `isolate` scopes both that blend and the glyph's to this mark.
  *
  * The glyph is `white` at 50% in `plus-lighter` (per the exported SVG), which
  * is what gives it its pale lavender cast over the blob rather than flat white.
@@ -368,7 +367,6 @@ function ConversationBody({
             text={message.text}
             compact={compact}
             personalized={personalized}
-            animate={false}
             className={
               message.step === 5
                 ? compact

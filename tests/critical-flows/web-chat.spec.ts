@@ -17,9 +17,9 @@ const PREVIEW_ROUTE = "**/api/agent-preview"
  * other is present but `display:none`. Scoping to `data-testid="web-chat-hero"`
  * alone still resolves both trees' matching nodes (strict-mode counts
  * hidden elements too), so every hero locator here also filters to the
- * visible one. This is what the final review's "Data sources" (4 elements)
- * and "firstMessage" (2 elements) collisions were: not page-wide duplicates,
- * but the hero's own desktop+compact trees both mounted at once.
+ * visible one. Duplicate matches such as "Data sources" (4 elements) are not
+ * page-wide duplicates, but the hero's desktop and compact trees both
+ * mounted at once.
  */
 function heroTableTitle(page: Page) {
   return page
@@ -375,7 +375,7 @@ test.describe("web chat personalizer", () => {
 
     await openWebChat(page)
 
-    // §8's configurator has its own "Copy prompt" button whose accessible
+    // The configurator has its own "Copy prompt" button whose accessible
     // name differs from the hero's "Copy Prompt" only by case — Playwright's
     // default role-name match is case-insensitive, so an unscoped query
     // matches both. Scoping to the section root (and using `exact: true`

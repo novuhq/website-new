@@ -8,9 +8,9 @@ import heroGlobe from "@/images/pages/channels/web-chat/hero-globe.svg"
 import heroReset from "@/images/pages/channels/web-chat/hero-reset.svg"
 
 /**
- * Content for the Web Chat hero product UI (Task 6): the mock browser chrome,
- * app sidebar and data table that fill the hero. Verbatim per the task brief —
- * later tests assert these exact strings and row values.
+ * Content for the Web Chat hero product UI: the mock browser chrome, app
+ * sidebar and data table that fill the hero. Tests assert these exact
+ * strings and row values.
  */
 
 /**
@@ -27,14 +27,13 @@ export const HERO_GLOBE_IMAGE: StaticImageData = heroGlobe
 /** Reset glyph exported from the URL hover state, Figma 45487:94076. */
 export const HERO_RESET_IMAGE: StaticImageData = heroReset
 
-/** Fine panel grain; the CSS backdrop uses the shared wc-noise-overlay utility. */
+/** Fine grain over the hero agent panel; the backdrop uses `hero-noise.webp`. */
 export const NOISE_GRAIN_SVG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"
 
 /**
- * The hero shell copy (Task 8): badge, heading, description, meta line and
- * CTAs. Character-for-character against the Task 8 brief and the
- * `typography` Figma node (`45738-68388` desktop, `45487-113230` mobile).
+ * The hero shell copy: badge, heading, description, meta line and CTAs.
+ * Character-for-character against the `typography` Figma node (`45738-68388` desktop, `45487-113230` mobile).
  */
 export const HERO_BADGE_LABEL = "Web Chat"
 
@@ -69,9 +68,7 @@ export const HERO_TOOLTIP_TEXT =
 export const HERO_TOOLTIP_LINK_LABEL = "How agent onboarding works"
 
 /**
- * The prompt behind every "Copy Prompt" / "Copy the prompt" control on this
- * page (hero included). Single source of truth so the large string literal
- * isn't duplicated across `hero.tsx` and `page.tsx`.
+ * The prompt behind the hero's "Copy Prompt" button.
  */
 export const HERO_IMPLEMENT_PROMPT = `Add Novu Web Chat to my app so end users can chat with my agent in-product.
 

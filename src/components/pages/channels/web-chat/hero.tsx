@@ -342,9 +342,8 @@ function FallbackAlertSlot({ children }: { children: ReactNode }) {
 /**
  * The Web Chat hero: brand-personalized copy, the live product/agent
  * storyboard, and the URL personalizer. Must render inside
- * `WebChatBrandProvider` — it reads `useWebChatBrand()` and relies on that
- * provider's `data-wc-state` wrapper for the ambient glow/hue effects in
- * `HeroBackdrop` below.
+ * `WebChatBrandProvider`: it reads `useWebChatBrand()` and passes the staged
+ * brand down to `HeroBackdrop` and the live UI as props.
  */
 export function WebChatHero() {
   const brand = useWebChatBrand()
@@ -379,7 +378,7 @@ export function WebChatHero() {
   // `UrlPersonalizer` calls `personalize()` itself and owns the reset button;
   // it exposes no reset callback. Its `reset()` is the only path back to
   // `status === "idle"`, so watching for that stops the storyboard without
-  // needing to change Task 5's component.
+  // changing the personalizer's API.
   useEffect(() => {
     if (status === "idle") setIsRunning(false)
   }, [status])
@@ -412,14 +411,9 @@ export function WebChatHero() {
         x320-1600 (1280). This container serves the card — 1428 = 1364 + 2*32
         (`px-8`), so at 1920 it reproduces x278 and 1364 exactly — and
         `HeroCopy` re-centres itself to 1280 inside it, which lands at x320
-        because (1364 - 1280) / 2 = 42.
-
-        An earlier pass ran the copy on the card's column too and recorded the
-        resulting 42px offset as "an accepted trade-off over pushing the CTA
-        column out of place." That was a false dilemma: centring the copy
-        block moves both of its edges at once, so the title column reaches
-        x320 and the CTA column's right edge reaches Figma's x1600 (it had
-        overshot to x1642). Verified by pixel diff against the frame.
+        because (1364 - 1280) / 2 = 42. Centring the copy block moves both of
+        its edges at once, so the title column reaches x320 and the CTA
+        column's right edge reaches Figma's x1600.
       */}
       {/* The smaller-screen backdrop lives inside this stacking context.
           Desktop strokes still blend with the section-level backdrop. */}
@@ -439,7 +433,7 @@ export function WebChatHero() {
         <div className="mt-7 flex flex-col items-center gap-4 md:mt-8.25 xl:mt-5">
           <UrlPersonalizer onSubmit={handleSubmit} />
           {/*
-            Mounted unconditionally (final-review Fix 5) so the alert's
+            Mounted unconditionally so the alert's
             `role="status"` node exists before, not just during, a fallback
             — only `message` toggles between `null` and the real string.
             See `brand-alert.tsx` for why that ordering matters.
@@ -452,5 +446,3 @@ export function WebChatHero() {
     </section>
   )
 }
-
-export default WebChatHero

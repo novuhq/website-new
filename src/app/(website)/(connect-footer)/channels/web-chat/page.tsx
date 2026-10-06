@@ -51,7 +51,7 @@ export default function WebChatPage() {
       {/*
         Share the submitted brand with the two bento sections. Their existing
         hue layers recolor the current artwork; later sections keep the default
-        theme. This restores the original scope for the 2026-09-10 tinting trial.
+        theme.
       */}
       <WebChatBrandProvider>
         <WebChatHero />

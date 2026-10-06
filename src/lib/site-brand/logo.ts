@@ -165,7 +165,6 @@ function imageInput(uri: string): ImageInput | null {
   if (!/^<svg[\s>]/i.test(svg) || /<!|<\?|[&\\]/.test(svg)) return null
   const { markup, css } = svgStyles(svg)
   if (
-    !/^<svg[\s>]/i.test(svg) ||
     /<!|<\?|[&\\]|<(?:[^<>\s/]+:)?(?:script|foreignObject|image|use|style)\b|\bhref\s*=|\bxml:base\s*=|\bstyle\s*=|\bon\w+\s*=/i.test(
       markup
     ) ||

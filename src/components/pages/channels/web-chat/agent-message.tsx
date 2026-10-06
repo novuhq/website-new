@@ -10,22 +10,15 @@ export interface AgentMessageProps {
   text: string
   compact?: boolean
   className?: string
-  animate?: boolean
   personalized?: boolean
 }
 
 /**
  * One chat bubble. User turns are black by default, use the brand accent
- * after successful personalization, and align
- * right; agent replies are plain text under a small "Agent" label and align
- * left — both per the brief's Behaviour section. Every message plays a
- * one-shot blurred-to-sharp entrance via `animate-wc-message-enter`
- * (globals.css), whose keyframe values are lifted from `ENTER_FROM` ->
- * `VISIBLE` in `focus-blur-text-cycle.tsx`, and whose duration reads
- * `--wc-message-reveal-ms` (set by the panel from
- * `STORYBOARD_TIMING.messageRevealMs`). Because it's a CSS `animation`
- * rather than a `transition`, it plays automatically the moment a message
- * mounts — no JS timer or state needed.
+ * after successful personalization, and align right; agent replies are plain
+ * text under a small "Agent" label and align left. The panel wraps each
+ * message in the one-shot `animate-wc-message-enter` entrance (globals.css),
+ * whose duration reads `--wc-message-reveal-ms`.
  *
  * Figma (desktop): user bubble `45487:90415` (padding `8px 20px 9px 12px`,
  * radius `14.5px 14.5px 3.6px 14.5px`, border `rgba(255,255,255,0.2)`,
@@ -39,18 +32,11 @@ export function AgentMessage({
   text,
   compact,
   className,
-  animate = true,
   personalized = false,
 }: AgentMessageProps) {
   if (role === "user") {
     return (
-      <div
-        className={cn(
-          "flex justify-end",
-          animate && "animate-wc-message-enter",
-          className
-        )}
-      >
+      <div className={cn("flex justify-end", className)}>
         <p
           className={cn(
             "max-w-full rounded-tl-[14.5px] rounded-tr-[14.5px] rounded-br-[3.6px] rounded-bl-[14.5px] border border-white/20 bg-black pt-2 pr-5 pb-[9px] pl-3 text-[15px] leading-[1.2] tracking-[-0.01em] text-white shadow-[0_6px_14px_rgba(0,0,0,0.1)]",
@@ -76,7 +62,6 @@ export function AgentMessage({
     <div
       className={cn(
         "flex w-[281px] max-w-full flex-col gap-2",
-        animate && "animate-wc-message-enter",
         compact && "w-[131px] gap-[3.73px]",
         className
       )}
@@ -130,7 +115,7 @@ function AgentReplyMark({ compact }: { compact?: boolean }) {
  * "Agent is thinking" appears only inside the `sr-only` span below, giving
  * the indicator an accessible name without rendering any copy on screen.
  *
- * Deliberately NOT `role="status" aria-live="polite"` (final-review Fix 5):
+ * Deliberately NOT `role="status" aria-live="polite"`:
  * the hero's storyboard is a decorative, looping marketing animation, and
  * this indicator mounts and unmounts on every lap for as long as the hero
  * is on screen — as a live region it would announce "Agent is thinking" to

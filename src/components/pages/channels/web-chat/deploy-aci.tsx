@@ -12,7 +12,7 @@ import illustrationMobile from "@/images/pages/channels/web-chat/deploy-aci-illu
 import { FrameworkLogoCycle } from "@/components/pages/channels/web-chat/framework-logo-cycle"
 
 /**
- * §6 "Deploy the ACI, not just chat" (Task 13). Figma desktop `45487-81046`,
+ * "Deploy the ACI, not just chat". Figma desktop `45487-81046`,
  * mobile `45497-147576`, framework logo set `45497-146963`. Not
  * personalized — no `HueLayer`, no `--wc-accent*` custom properties.
  *
@@ -95,5 +95,3 @@ export function DeployAci() {
     </section>
   )
 }
-
-export default DeployAci

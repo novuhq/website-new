@@ -59,8 +59,8 @@ function fallbackState(
 
 /**
  * The subset of `/api/agent-preview`'s `BrandProfile` this provider actually
- * reads. `Pick`-ed from the real type (final-review "also fix" item) rather
- * than duck-typed independently, so a future rename of any of these three
+ * reads. `Pick`-ed from the real type rather than duck-typed
+ * independently, so a future rename of any of these three
  * fields on `BrandProfile` is a compile error here instead of silent drift.
  */
 type AgentPreviewBrand = Pick<BrandProfile, "accent" | "domain" | "logo">

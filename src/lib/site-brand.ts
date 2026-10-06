@@ -12,8 +12,6 @@ import {
 import { iconColorScheme, preferDarkLogo } from "@/lib/site-brand/icons"
 import { collectLogoCandidates } from "@/lib/site-brand/logo"
 
-export { normalizeUrl } from "@/lib/site-brand/fetch"
-
 export type BrandProfile = {
   url: string
   domain: string

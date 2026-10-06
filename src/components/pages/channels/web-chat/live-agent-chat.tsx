@@ -25,7 +25,6 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning"
 import { Tool, ToolHeader } from "@/components/ai-elements/tool"
-import { useWebChatBrand } from "@/components/pages/channels/web-chat/brand-provider"
 
 const AGENT_ID = "webchat"
 const VISITOR_SUBSCRIBER_ID =
@@ -99,7 +98,7 @@ function LiveComposer({
           onMouseDown={(event) => event.preventDefault()}
           onClick={onSubmit}
           className={cn(
-            "size-[34px] shrink-0 rounded-[8px] bg-purple-2 text-black group-data-[wc-color=brand]:bg-(--wc-accent) group-data-[wc-color=brand]:text-(--wc-accent-foreground) disabled:opacity-100",
+            "size-[34px] shrink-0 rounded-[8px] bg-purple-2 text-black disabled:opacity-100",
             compact &&
               "size-[15.85px] rounded-[3.7px] group-focus-within/composer:size-8 [&_svg]:size-2 group-focus-within/composer:[&_svg]:size-4"
           )}
@@ -111,8 +110,9 @@ function LiveComposer({
   )
 }
 
+// The live chat only mounts before any brand is submitted (the storyboard
+// takes over after that), so it always uses the default theme.
 function ConnectedAgentChat({ children }: LiveAgentChatProps) {
-  const { hasAccent } = useWebChatBrand()
   const {
     messages,
     pendingActions,
@@ -178,14 +178,6 @@ function ConnectedAgentChat({ children }: LiveAgentChatProps) {
                 className="max-w-full"
               >
                 <MessageContent
-                  style={
-                    message.role === "user" && hasAccent
-                      ? {
-                          backgroundColor: "var(--wc-accent)",
-                          color: "var(--wc-accent-contrast)",
-                        }
-                      : undefined
-                  }
                   className={cn(
                     "min-w-0 text-sm wrap-anywhere group-[.is-user]:bg-white/10 group-[.is-user]:text-white",
                     compact && "text-xs"

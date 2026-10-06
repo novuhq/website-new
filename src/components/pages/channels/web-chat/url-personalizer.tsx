@@ -47,8 +47,8 @@ function ResetIcon() {
 
 /**
  * The control that starts the hero interaction: a visitor types their own
- * domain, submits, and `onSubmit` fires immediately so Task 8's animation can
- * start right away. `personalize` (Task 4's provider) is kicked off in
+ * domain, submits, and `onSubmit` fires immediately so the hero animation
+ * can start right away. The provider's `personalize` is kicked off in
  * parallel and is never awaited here — a slow or failing extraction must
  * never delay the animation trigger.
  */

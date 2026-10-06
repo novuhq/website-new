@@ -47,15 +47,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CopyPromptButton from "@/components/pages/home/copy-prompt-button"
 
 /**
- * §8 "Build your connection. Ship it from any builder." (Task 15). Figma
+ * "Build your connection. Ship it from any builder." Figma
  * section `45440-69446` (open-selector UI `45497-148452`, CLI-tab UI
  * `45501-148837`). Not personalized: no `HueLayer`, no `--wc-accent*`.
  *
  * `SelectField` and the option lists come from `@/components/ui/select-field`
- * and `@/data/pages/connect-stack-options` — see that data module's file
- * header for background on why those files were originally created here as
- * a net-new extraction. `connect-stack.tsx` now imports from both modules
- * too, so this configurator and the homepage share one implementation.
+ * and `@/data/pages/connect-stack-options`, shared with the homepage's
+ * `connect-stack.tsx`.
  *
  * The supplied design only includes this section at desktop width. The
  * two-column layout starts at `xl`; narrower screens stack the form below

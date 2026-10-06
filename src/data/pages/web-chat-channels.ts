@@ -10,7 +10,7 @@ import webChatIcon from "@/svgs/pages/connect/channels/web-chat.svg"
 import whatsappIcon from "@/svgs/pages/connect/channels/whatsapp.svg"
 
 /**
- * §5 "channels grid" (Figma `45487-81559`, mobile `45497-144406`). Section
+ * Channels grid (Figma `45487-81559`, mobile `45497-144406`). Section
  * is not personalized: no brand-accent tokens here, only the shared design
  * system.
  */
@@ -45,7 +45,6 @@ export const CHANNELS_GRID_CLI_COMMAND = "npx novu connect"
 export interface IChannelsGridTile {
   href?: Route<string>
   icon: StaticImageData
-  isActive?: boolean
   name: string
 }
 
@@ -84,5 +83,4 @@ export const CHANNELS_GRID_TILES: ILinkedChannelsGridTile[] = [
 export const CHANNELS_GRID_WEB_CHAT_TILE: IChannelsGridTile = {
   name: "Web Chat",
   icon: webChatIcon,
-  isActive: true,
 }

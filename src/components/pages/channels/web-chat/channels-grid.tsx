@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button"
 import { CopyCommand } from "@/components/ui/copy-command"
 
 /**
- * §5 "channels grid" (Figma `45487-81559` desktop, `45497-144406` mobile).
+ * Channels grid (Figma `45487-81559` desktop, `45497-144406` mobile).
  * Not personalized — no `HueLayer`, no `--wc-accent*` custom properties.
  */
 

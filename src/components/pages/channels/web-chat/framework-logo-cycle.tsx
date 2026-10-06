@@ -3,25 +3,18 @@ import Image from "next/image"
 import { DEPLOY_ACI_FRAMEWORK_LOGOS } from "@/data/pages/web-chat-deploy-aci"
 import corners from "@/svgs/pages/channels/web-chat/frameworks/corners.svg"
 
-import { cn } from "@/lib/utils"
-
-export const FRAMEWORK_LOGO_CYCLE_TIMING = {
-  holdMs: 3000,
-  moveMs: 700,
-} as const
-
-export type FrameworkLogoCycleDirection = "up" | "down"
-
 const LOGOS = DEPLOY_ACI_FRAMEWORK_LOGOS
-const { holdMs, moveMs } = FRAMEWORK_LOGO_CYCLE_TIMING
-const STEP_MS = holdMs + moveMs
+const HOLD_MS = 3000
+const MOVE_MS = 700
+const STEP_MS = HOLD_MS + MOVE_MS
 const CYCLE_MS = STEP_MS * LOGOS.length
 const STEP_PCT = 100 / LOGOS.length
-const HOLD_PCT = (holdMs / CYCLE_MS) * 100
+const HOLD_PCT = (HOLD_MS / CYCLE_MS) * 100
 
 // Figma coordinates are image-relative. Translate percentages are relative to
 // the logo itself: 106px desktop, 70⅔px mobile. This preserves all three slots
 // as the illustration scales, including its deliberately asymmetric spacing.
+// Logos travel left to right on mobile and top to bottom on desktop.
 const STYLE_TAG = `
 .wc-flc-track {
   --wc-logo-entry-x: ${(-118 / (212 / 3)) * 100}%;
@@ -48,12 +41,8 @@ const STYLE_TAG = `
 @media (width >= 64rem) {
   .wc-flc-track {
     --wc-logo-entry-x: 0%;
-    --wc-logo-entry-y: ${(176 / 106) * 100}%;
-    --wc-logo-exit-x: 0%;
-    --wc-logo-exit-y: ${(-175 / 106) * 100}%;
-  }
-  .wc-flc-track[data-direction="down"] {
     --wc-logo-entry-y: ${(-175 / 106) * 100}%;
+    --wc-logo-exit-x: 0%;
     --wc-logo-exit-y: ${(176 / 106) * 100}%;
   }
   .wc-flc-logo {
@@ -100,22 +89,12 @@ const STYLE_TAG = `
  * Corner frames travel with the outer logos and fade away in the center.
  * No stationary logo or black tile sits underneath the moving artwork.
  */
-export function FrameworkLogoCycle({
-  className,
-  direction = "down",
-}: {
-  className?: string
-  direction?: FrameworkLogoCycleDirection
-}) {
+export function FrameworkLogoCycle() {
   return (
     <div
       aria-hidden="true"
       data-wc-logo-track=""
-      data-direction={direction}
-      className={cn(
-        "wc-flc-track pointer-events-none absolute inset-0 overflow-hidden",
-        className
-      )}
+      className="wc-flc-track pointer-events-none absolute inset-0 overflow-hidden"
     >
       <style dangerouslySetInnerHTML={{ __html: STYLE_TAG }} />
       {LOGOS.map((logo, index) => (
@@ -141,5 +120,3 @@ export function FrameworkLogoCycle({
     </div>
   )
 }
-
-export default FrameworkLogoCycle

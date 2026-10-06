@@ -33,5 +33,3 @@ export function CompareBento() {
     </section>
   )
 }
-
-export default CompareBento
