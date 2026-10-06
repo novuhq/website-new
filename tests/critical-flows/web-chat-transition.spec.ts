@@ -4,6 +4,7 @@ import { STORYBOARD_TIMING } from "../../src/data/pages/web-chat-storyboard"
 import { webChatContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectWebChatHeroReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -53,9 +54,7 @@ async function openWebChat(page: Page, mockClock = true) {
     await page.clock.install({ time: new Date("2026-09-09T09:00:00Z") })
   }
   await gotoCriticalPage(page, webChatContract.route)
-  await expect(
-    hero(page).getByRole("textbox", { name: "Message the agent" })
-  ).toBeVisible()
+  await expectWebChatHeroReady(page)
   if (mockClock) {
     await page.clock.pauseAt(new Date("2026-09-09T10:00:00Z"))
   }

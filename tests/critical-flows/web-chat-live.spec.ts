@@ -3,6 +3,7 @@ import { expect, test, type Page, type WebSocketRoute } from "@playwright/test"
 import { webChatContract } from "./contracts"
 import {
   expectHealthyPage,
+  expectReactHandlerReady,
   gotoCriticalPage,
   observeApplicationErrors,
 } from "./helpers"
@@ -98,9 +99,12 @@ function composer(page: Page) {
 function transcript(page: Page) {
   return page.getByRole("log", { name: "Agent conversation" })
 }
-// The live chat loads on intent; focusing the message box is enough.
+// The live chat loads on intent; focusing the message box is enough once
+// React is listening for that focus (the box itself is server-rendered).
 async function startLiveChat(page: Page) {
-  await composer(page).focus()
+  const box = composer(page).filter({ visible: true })
+  await expectReactHandlerReady(box.first(), "onFocus")
+  await box.focus()
 }
 
 test("sends to the original agent, streams a reply, and preserves a failed draft for retry", async ({
