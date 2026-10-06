@@ -8,7 +8,7 @@ import builderReplit from "@/images/pages/channels/web-chat/builder-replit.svg"
 import builderV0 from "@/images/pages/channels/web-chat/builder-v0.svg"
 import builderWindsurf from "@/images/pages/channels/web-chat/builder-windsurf.svg"
 import configuratorBlob from "@/images/pages/channels/web-chat/configurator-blob.webp"
-import configuratorFrame from "@/images/pages/channels/web-chat/configurator-frame.png"
+import configuratorFrame from "@/images/pages/channels/web-chat/configurator-frame.webp"
 
 /**
  * "Build your connection. Ship it from any builder." Figma
