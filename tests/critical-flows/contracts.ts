@@ -4,6 +4,7 @@ const monitorContract = {
 
 export const destinations = {
   dashboard: "https://dashboard.novu.co",
+  signUp: "https://dashboard.novu.co/auth/sign-up",
   agentsSignUp: "https://dashboard.novu.co/auth/sign-up?product_type=agents",
   connectApp: "https://connect.novu.co",
   connect: "/connect",
@@ -20,13 +21,13 @@ export const navigationContract = {
   destination: destinations.pricing,
   destinationHeading: "Flexible pricing for companies and developers",
   authLinks: {
-    desktop: [{ name: "Sign up now", href: destinations.dashboard }],
+    desktop: [{ name: "Sign up now", href: destinations.signUp }],
     desktopSignedIn: [
       { name: "Visit Dashboard", href: destinations.dashboard },
     ],
     mobile: [
       { name: "Login", href: destinations.dashboard },
-      { name: "Get Started", href: destinations.dashboard },
+      { name: "Get Started", href: destinations.signUp },
     ],
   },
   authStateCookie: "novu-critical-flow-auth-state",

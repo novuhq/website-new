@@ -28,7 +28,7 @@ test.describe("critical acquisition journeys", () => {
       })
       await expect(
         plan.getByRole("link", { name: "Get started", exact: true })
-      ).toHaveAttribute("href", destinations.dashboard)
+      ).toHaveAttribute("href", destinations.signUp)
     }
 
     const enterprisePlan = page.locator("li").filter({

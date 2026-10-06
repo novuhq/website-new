@@ -59,7 +59,7 @@ export const INDEX_ECHO_CTA = {
     "Create complex workflows, access local data, and reuse existing content templates with Novu Echo.",
   primaryAction: {
     label: "Try Novu",
-    href: "https://dashboard.novu.co/?utm_campaign=ws_usecases",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_usecases",
   },
   secondaryAction: {
     label: "Contact us",
@@ -144,7 +144,7 @@ export const INDEX_REQUIREMENTS_CTA = {
     "Whatever your use case, Novu is ready. Start for free, no credit card required.",
   primaryAction: {
     label: "Try Novu",
-    href: "https://dashboard.novu.co/?utm_campaign=ws_usecases",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_usecases",
   },
   secondaryAction: {
     label: "Contact us",

@@ -71,7 +71,7 @@ const ACI_FINAL_CTA: FinalCtaProps = {
     {
       kind: "primary-button",
       label: "Start building",
-      href: ROUTE.dashboardV2,
+      href: ROUTE.dashboardV2SignUp,
       clickLocation: "aci_final_cta",
       clickText: "start_building",
       openInNewTab: true,
