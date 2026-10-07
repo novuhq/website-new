@@ -92,7 +92,14 @@ function MobileItem({ title, variant, content, onNavigate }: IMobileProps) {
                                 onClick={onNavigate}
                               >
                                 <MenuIcon className="mt-px" icon={menuIcon} />
-                                <span>{label}</span>
+                                <span>
+                                  <span className="block">{label}</span>
+                                  {description && (
+                                    <span className="mt-1.5 block text-sm leading-4 text-gray-70">
+                                      {description}
+                                    </span>
+                                  )}
+                                </span>
                               </Link>
                               <ul className="mt-5 flex flex-col gap-y-5">
                                 {children.map((child) => (
