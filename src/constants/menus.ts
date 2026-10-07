@@ -1,26 +1,7 @@
-import type { Route } from "next"
 import { INTEGRATION_MENU_ITEMS } from "@/constants/integration-menu"
 import { ROUTE } from "@/constants/routes"
-import {
-  getWebChatBuilderPathname,
-  WEB_CHAT_BUILDER_LIST,
-} from "@/data/pages/web-chat-builder-list"
 
-import {
-  IMenuHeaderItem,
-  IMenuItem,
-  IMenuSocialItem,
-} from "@/types/common"
-
-// Built from the published builder list so the menu cannot drift from the
-// pages that actually ship. Icons are keyed by the same slug.
-const WEB_CHAT_BUILDER_ITEMS: IMenuItem[] = WEB_CHAT_BUILDER_LIST.map(
-  ({ slug, builderName }) => ({
-    label: builderName,
-    href: getWebChatBuilderPathname(slug) as Route<string>,
-    menuIcon: slug,
-  })
-)
+import { IMenuHeaderItem, IMenuSocialItem } from "@/types/common"
 
 export const MENUS = {
   header: [
@@ -34,250 +15,33 @@ export const MENUS = {
               label: "Novu Notify",
               description: "Notification center for your app",
               href: ROUTE.inbox,
+              children: [
+                { label: "Inbox", href: ROUTE.inbox },
+                { label: "Workflows", href: ROUTE.docsWorkflow },
+                { label: "Digest", href: ROUTE.digest },
+                { label: "User preferences", href: ROUTE.docsUserPreferences },
+                {
+                  label: "Content management",
+                  href: ROUTE.docsContentManagement,
+                },
+                { label: "Framework", href: ROUTE.framework },
+              ],
             },
             {
               label: "Novu Connect",
               description: "Connect AI agents with customers",
               href: ROUTE.connect,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Channels",
-      variant: "channels",
-      content: [
-        {
-          items: [
-            {
-              label: "Slack",
-              href: ROUTE.channelSlack,
-              menuIcon: "slack",
               children: [
                 {
-                  label: "LangChain",
-                  href: ROUTE.channelSlackLangchain,
-                  menuIcon: "langchain",
+                  label: "Agent Communication Infrastructure",
+                  href: ROUTE.aci,
                 },
+                { label: "Agent templates", href: ROUTE.connectTemplates },
                 {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelSlackAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelSlackChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelSlackCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelSlackClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelSlackClaudeAws,
-                  menuIcon: "claude-aws",
+                  label: "Agent-assigned workflows",
+                  href: ROUTE.noReplyIsDead,
                 },
               ],
-            },
-            {
-              label: "WhatsApp",
-              href: ROUTE.channelWhatsApp,
-              menuIcon: "whatsapp",
-              children: [
-                {
-                  label: "LangChain",
-                  href: ROUTE.channelWhatsAppLangchain,
-                  menuIcon: "langchain",
-                },
-                {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelWhatsAppAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelWhatsAppChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelWhatsAppCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelWhatsAppClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelWhatsAppClaudeAws,
-                  menuIcon: "claude-aws",
-                },
-              ],
-            },
-            {
-              label: "Telegram",
-              href: ROUTE.channelTelegram,
-              menuIcon: "telegram",
-              children: [
-                {
-                  label: "LangChain",
-                  href: ROUTE.channelTelegramLangchain,
-                  menuIcon: "langchain",
-                },
-                {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelTelegramAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelTelegramChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelTelegramCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelTelegramClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelTelegramClaudeAws,
-                  menuIcon: "claude-aws",
-                },
-              ],
-            },
-            {
-              label: "MS Teams",
-              href: ROUTE.channelMicrosoftTeams,
-              menuIcon: "teams",
-              children: [
-                {
-                  label: "LangChain",
-                  href: ROUTE.channelMicrosoftTeamsLangchain,
-                  menuIcon: "langchain",
-                },
-                {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelMicrosoftTeamsAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelMicrosoftTeamsChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelMicrosoftTeamsCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelMicrosoftTeamsClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelMicrosoftTeamsClaudeAws,
-                  menuIcon: "claude-aws",
-                },
-              ],
-            },
-            {
-              label: "Email",
-              href: ROUTE.channelEmail,
-              menuIcon: "email",
-              children: [
-                {
-                  label: "LangChain",
-                  href: ROUTE.channelEmailLangchain,
-                  menuIcon: "langchain",
-                },
-                {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelEmailAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelEmailChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelEmailCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelEmailClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelEmailClaudeAws,
-                  menuIcon: "claude-aws",
-                },
-              ],
-            },
-            {
-              label: "iMessage",
-              href: ROUTE.channelIMessage,
-              menuIcon: "imessage",
-              children: [
-                {
-                  label: "LangChain",
-                  href: ROUTE.channelIMessageLangchain,
-                  menuIcon: "langchain",
-                },
-                {
-                  label: "Vercel AI SDK",
-                  href: ROUTE.channelIMessageAiSdk,
-                  menuIcon: "ai-sdk",
-                },
-                {
-                  label: "Chat SDK",
-                  href: ROUTE.channelIMessageChatSdk,
-                  menuIcon: "chat-sdk",
-                },
-                {
-                  label: "Custom code",
-                  href: ROUTE.channelIMessageCustomCode,
-                  menuIcon: "custom-code",
-                },
-                {
-                  label: "Claude Managed Agent",
-                  href: ROUTE.channelIMessageClaude,
-                  menuIcon: "claude",
-                },
-                {
-                  label: "AWS Claude Managed Agent",
-                  href: ROUTE.channelIMessageClaudeAws,
-                  menuIcon: "claude-aws",
-                },
-              ],
-            },
-            {
-              label: "Web Chat",
-              href: ROUTE.channelWebChat,
-              menuIcon: "web-chat",
-              childrenTitle: "Web Chat integrations",
-              children: WEB_CHAT_BUILDER_ITEMS,
             },
           ],
         },
@@ -293,7 +57,7 @@ export const MENUS = {
       ],
     },
     {
-      title: "AI",
+      title: "Build with AI",
       variant: "ai",
       content: [
         {
@@ -303,12 +67,6 @@ export const MENUS = {
               label: "Novu Copilot",
               href: ROUTE.copilot,
               menuIcon: "copilot",
-            },
-            { label: "Novu ACI", href: ROUTE.aci, menuIcon: "aci" },
-            {
-              label: "Agent-assigned workflows",
-              href: ROUTE.noReplyIsDead,
-              menuIcon: "notifications",
             },
             {
               label: "Skills",
