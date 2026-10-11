@@ -62,7 +62,7 @@ const contentData = {
   features: {
     title: (
       <>
-        Integrate a world-class conversation experience <TimeOfDay />
+        Integrate a world-class notification experience <TimeOfDay />
       </>
     ),
     defaultKey: "inbox",
