@@ -73,7 +73,7 @@ export const HOME_CHANNELS = [
     key: "inbox",
     badges: ["notify"] as const,
     label: "Inbox",
-    title: "Send notifications to your in-app Inbox",
+    title: "Add an Inbox component to your app",
     description:
       "Give users one place inside your product to see and manage the updates that matter to them.",
     features: [
