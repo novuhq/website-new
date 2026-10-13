@@ -14,6 +14,7 @@ export interface IMenuItem {
   isNew?: boolean
   children?: IMenuItem[]
   description?: string
+  illustration?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
   remainingCount?: number

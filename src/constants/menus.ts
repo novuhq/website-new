@@ -15,6 +15,7 @@ export const MENUS = {
               label: "Novu Notify",
               description: "Notification center for your app",
               href: ROUTE.inbox,
+              illustration: "/images/header/menu/product-notify.jpg",
               children: [
                 { label: "Inbox", href: ROUTE.inbox },
                 { label: "Workflows", href: ROUTE.docsWorkflow },
@@ -31,6 +32,7 @@ export const MENUS = {
               label: "Novu Connect",
               description: "Connect AI agents with customers",
               href: ROUTE.connect,
+              illustration: "/images/header/menu/product-connect.jpg",
               children: [
                 {
                   label: "Agent Communication Infrastructure",

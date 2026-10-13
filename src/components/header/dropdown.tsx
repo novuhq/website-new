@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
 import { ChevronRight } from "lucide-react"
 import { motion } from "motion/react"
@@ -44,10 +45,11 @@ const SUBMENU_LINK_CLASS =
 function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
   const items = content[0]?.items ?? []
   const [activeIndex, setActiveIndex] = useState(0)
+  const activeItem = items[activeIndex] ?? items[0]
 
   return (
     <div className="flex font-inter">
-      <div className="flex w-74 shrink-0 flex-col rounded-l-[1.375rem] bg-[#0B0C0E] p-3">
+      <div className="flex w-81 shrink-0 flex-col rounded-l-[21px] border-r border-gray-20 bg-[#0B0C0E] p-3.5">
         <ul className="flex flex-col gap-y-0.5">
           {items.map(({ label, description, href }, index) => (
             <li key={label}>
@@ -65,7 +67,7 @@ function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
                   {label}
                 </span>
                 {description && (
-                  <span className="block text-sm leading-snug font-normal tracking-tighter text-[#A3A6B2]">
+                  <span className="block text-sm leading-snug font-normal tracking-tight text-gray-70">
                     {description}
                   </span>
                 )}
@@ -84,31 +86,65 @@ function ProductMenu({ content }: { content: IMenuHeaderContent[] }) {
         </Link>
       </div>
 
-      {/* Every list shares one grid cell so the panel keeps the largest size
-          while hovering between products; hidden lists are `invisible`. */}
-      <div className="grid min-w-64 shrink-0 border-l border-gray-20 p-3.5">
-        {items.map(({ label, children }, index) => (
-          <ul
-            className={cn(
-              "col-start-1 row-start-1",
-              index !== activeIndex && "invisible"
-            )}
-            aria-label={`${label} links`}
-            key={label}
+      {/* Below xl the 986px panel would run past the viewport, so the
+          illustration only shows from xl up. */}
+      <div className="relative h-74.5 w-65 shrink-0 overflow-hidden rounded-r-[21px] xl:w-165">
+        {/* Every list shares one grid cell so switching products doesn't
+            shift the layout; hidden lists are `invisible`. */}
+        <div className="grid pt-6 pl-6">
+          {items.map(({ label, children }, index) => (
+            <ul
+              className={cn(
+                "col-start-1 row-start-1 flex w-53 flex-col gap-y-4",
+                index !== activeIndex && "invisible"
+              )}
+              aria-label={`${label} links`}
+              key={label}
+            >
+              {children?.map((child) => (
+                <li key={child.label}>
+                  <Link
+                    className="block text-base leading-snug font-normal tracking-tighter text-white transition-colors hover:text-gray-80"
+                    href={child.href}
+                    variant="clean"
+                  >
+                    {child.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+
+        {/* The illustration is 1px taller than the panel; the top row sits
+            under the dropdown border, as in the design. */}
+        {activeItem && (
+          <Link
+            className="absolute right-0 bottom-0 hidden h-74.75 w-100.25 xl:block"
+            href={activeItem.href}
+            variant="clean"
+            aria-label={`Open ${activeItem.label}`}
           >
-            {children?.map((child) => (
-              <li key={child.label}>
-                <Link
-                  className={SUBMENU_LINK_CLASS}
-                  href={child.href}
-                  variant="clean"
-                >
-                  {child.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ))}
+            {items.map(
+              ({ label, illustration }, index) =>
+                illustration && (
+                  <Image
+                    className={cn(
+                      "absolute inset-0 size-full transition-opacity duration-200 ease-out motion-reduce:transition-none",
+                      index === activeIndex ? "opacity-100" : "opacity-0"
+                    )}
+                    src={illustration}
+                    width={401}
+                    height={299}
+                    alt=""
+                    loading="eager"
+                    unoptimized
+                    key={label}
+                  />
+                )
+            )}
+          </Link>
+        )}
       </div>
     </div>
   )
