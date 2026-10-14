@@ -1,97 +1,90 @@
-import { Bell, Bot, User, type LucideIcon } from "lucide-react"
+import Image from "next/image"
+import { AGENT_REPLIES } from "@/data/pages/usecase-multi-channel"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Link } from "@/components/ui/link"
 
-import { AGENT_REPLIES } from "./data"
-import { BODY_TEXT, CONTAINER, SectionHeading, TextLink } from "./sections"
+import {
+  ActionButton,
+  CONTAINER,
+  DESCRIPTION,
+  HEADING,
+  TitleLines,
+} from "./shared"
 
-const EXAMPLE_ICONS: Record<
-  (typeof AGENT_REPLIES.example)[number]["icon"],
-  LucideIcon
-> = {
-  notification: Bell,
-  user: User,
-  agent: Bot,
-}
+/**
+ * "Your agent stays yours" and "Let users reply" `45942-11455`. The statement
+ * is 1120px, 80px inside the content box. In the card, the dialog plate is a
+ * flattened export (desktop 1280x540, phone 560x690) and the heading stays
+ * live text: over the plate at x715 y80 on desktop, above it on phones.
+ */
+export function MultiChannelAgentReplies() {
+  const { illustration } = AGENT_REPLIES
 
-function AgentReplies() {
   return (
-    <section className="mt-20 bg-gray-2 py-14 md:mt-28 md:py-20 lg:mt-36 lg:py-28 xl:mt-44">
-      <div
-        className={cn(
-          CONTAINER,
-          "grid items-start gap-10 lg:grid-cols-2 lg:gap-16"
-        )}
-      >
-        <div>
-          <SectionHeading>{AGENT_REPLIES.title}</SectionHeading>
-          {AGENT_REPLIES.paragraphs.map((paragraph) => (
-            <p className={cn(BODY_TEXT, "mt-5")} key={paragraph}>
-              {paragraph}
-            </p>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-gray-4 bg-background p-5 xl:rounded-[20px] xl:p-8">
-          <p className="text-xs font-medium tracking-normal text-gray-8 uppercase">
-            {AGENT_REPLIES.exampleLabel}
-          </p>
-          <ul className="mt-5 flex flex-col gap-5">
-            {AGENT_REPLIES.example.map(({ icon, title, description }) => {
-              const Icon = EXAMPLE_ICONS[icon]
-
-              return (
-                <li className="flex gap-4" key={title}>
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-2">
-                    <Icon
-                      className={cn(
-                        "size-5",
-                        icon === "agent" ? "text-primary" : "text-white"
-                      )}
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <p className="leading-normal font-book text-gray-9">
-                    <strong className="block font-medium text-white">
-                      {title}
-                    </strong>
-                    {description}
-                  </p>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </div>
-
-      <div className={cn(CONTAINER, "mt-10 md:mt-14")}>
-        <p className={cn(BODY_TEXT, "max-w-3xl")}>
-          {AGENT_REPLIES.supportingLine}
+    <section aria-labelledby="multi-channel-agent-title">
+      <div className={CONTAINER}>
+        <p className="text-[28px] leading-[1.25] font-normal tracking-plus-tight text-gray-50 md:text-4xl xl:px-20 xl:text-[44px]">
+          <span className="text-white">{AGENT_REPLIES.statementLead}</span>{" "}
+          {AGENT_REPLIES.statement}
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
-          <Button
-            className="!h-12 !px-6 !text-sm uppercase"
-            variant="default"
-            size="none"
-            asChild
-          >
-            <Link
-              href={AGENT_REPLIES.cta.url}
-              variant="clean"
-              size="none"
-              data-click-location="usecase_agent_replies"
-              data-click-text="explore_novu_connect"
-            >
-              {AGENT_REPLIES.cta.text}
-            </Link>
-          </Button>
-          <TextLink {...AGENT_REPLIES.link} />
+
+        <div className="mt-12 overflow-hidden rounded-[20px] bg-[#0B0C0E] md:mt-20 xl:mt-28">
+          <div className="relative">
+            <div className="px-5 pt-6 pb-8 md:px-8 lg:absolute lg:top-[14.8%] lg:left-[55.86%] lg:z-10 lg:w-[30.86%] lg:p-0">
+              <h2
+                id="multi-channel-agent-title"
+                className={cn(HEADING, "md:text-4xl xl:text-[44px]")}
+              >
+                <TitleLines lines={AGENT_REPLIES.titleLines} />
+              </h2>
+              <p
+                className={cn(
+                  DESCRIPTION,
+                  "mt-4 lg:mt-6 lg:text-base xl:mt-8 xl:text-lg"
+                )}
+              >
+                {AGENT_REPLIES.description}
+              </p>
+            </div>
+
+            <div className="relative aspect-[560/690] w-full lg:aspect-[1280/540]">
+              <picture className="absolute inset-0 block size-full">
+                <source
+                  media="(width < 64rem)"
+                  srcSet={illustration.mobile.src}
+                  width={illustration.mobile.width}
+                  height={illustration.mobile.height}
+                />
+                <Image
+                  alt={illustration.alt}
+                  className="object-cover"
+                  fill
+                  unoptimized
+                  src={illustration.desktop}
+                />
+              </picture>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6 p-5 md:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:p-12">
+            <p className="text-lg leading-[1.25] font-medium tracking-tighter text-white md:text-2xl lg:max-w-183">
+              <TitleLines lines={AGENT_REPLIES.ctaTextLines} breakFrom="xl" />
+            </p>
+            <div className="flex shrink-0 flex-col gap-4 sm:flex-row">
+              <ActionButton
+                action={AGENT_REPLIES.primaryAction}
+                section="agent_replies"
+                variant="primary"
+              />
+              <ActionButton
+                action={AGENT_REPLIES.secondaryAction}
+                section="agent_replies"
+                variant="secondary"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
-export default AgentReplies

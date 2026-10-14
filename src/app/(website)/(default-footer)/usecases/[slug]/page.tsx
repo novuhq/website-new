@@ -1,5 +1,11 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+import {
+  FAQ_SECTION,
+  MULTI_CHANNEL_METADATA,
+  MULTI_CHANNEL_SLUG,
+  toPlainText,
+} from "@/data/pages/usecase-multi-channel"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
@@ -7,12 +13,6 @@ import {
   isUseCaseSlug,
   USE_CASE_PAGES,
 } from "@/components/pages/usecases/child-data"
-import {
-  FAQ_SECTION,
-  MULTI_CHANNEL_METADATA,
-  MULTI_CHANNEL_SLUG,
-  toPlainText,
-} from "@/components/pages/usecases/multi-channel/data"
 import MultiChannelPage from "@/components/pages/usecases/multi-channel/page"
 import { USE_CASE_SLUGS } from "@/components/pages/usecases/types"
 import UseCasePage from "@/components/pages/usecases/use-case-page"

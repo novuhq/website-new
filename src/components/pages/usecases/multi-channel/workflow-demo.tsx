@@ -1,86 +1,51 @@
-import { Bell, Clock, Mail, type LucideIcon } from "lucide-react"
+import Image from "next/image"
+import { WORKFLOW_DEMO } from "@/data/pages/usecase-multi-channel"
 
 import { cn } from "@/lib/utils"
-import CodeBlock from "@/components/content/code-block"
 
-import { WORKFLOW_DEMO } from "./data"
-import {
-  BODY_TEXT,
-  CONTAINER,
-  SECTION_SPACING,
-  SectionHeading,
-  TextLink,
-} from "./sections"
+import { CONTAINER, DESCRIPTION, HEADING, TitleLines } from "./shared"
 
-const STEP_ICONS: Record<
-  (typeof WORKFLOW_DEMO.steps)[number]["icon"],
-  LucideIcon
-> = {
-  "in-app": Bell,
-  delay: Clock,
-  email: Mail,
-}
+/**
+ * "Nudge users who missed the message" `45929-10712`. Desktop panel is the
+ * 1280x388 `subsection`; the phone panel stacks the steps over the code card.
+ * Both exports include the panel's rounded corners.
+ */
+export function MultiChannelWorkflowDemo() {
+  const { illustration } = WORKFLOW_DEMO
 
-function WorkflowDemo() {
   return (
-    <section className={SECTION_SPACING}>
+    <section aria-labelledby="multi-channel-workflow-demo-title">
       <div className={CONTAINER}>
-        <SectionHeading className="max-w-3xl">
-          {WORKFLOW_DEMO.title}
-        </SectionHeading>
-        <p className={cn(BODY_TEXT, "mt-4 max-w-3xl")}>
-          {WORKFLOW_DEMO.description}
-        </p>
-
-        <div className="mt-8 grid items-start gap-8 md:mt-12 lg:grid-cols-[2fr_3fr] lg:gap-10">
-          <ol>
-            {WORKFLOW_DEMO.steps.map(({ icon, title, description }, index) => {
-              const Icon = STEP_ICONS[icon]
-              const isLast = index === WORKFLOW_DEMO.steps.length - 1
-
-              return (
-                <li className="flex gap-4" key={title}>
-                  <div className="flex flex-col items-center">
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-gray-4 bg-gray-2">
-                      <Icon
-                        className="size-5 text-primary"
-                        aria-hidden="true"
-                      />
-                    </span>
-                    {!isLast && (
-                      <span
-                        className="w-px flex-1 bg-gray-4"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-                  <p
-                    className={cn(
-                      "pt-2 leading-normal font-book text-gray-9 md:text-lg",
-                      !isLast && "pb-8"
-                    )}
-                  >
-                    <strong className="font-medium text-white">{title}</strong>{" "}
-                    {description}
-                  </p>
-                </li>
-              )
-            })}
-          </ol>
-
-          <CodeBlock
-            className="min-w-0"
-            code={WORKFLOW_DEMO.code}
-            fileName={WORKFLOW_DEMO.codeLabel}
-            language="typescript"
-          />
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-12 xl:px-16">
+          <h2
+            id="multi-channel-workflow-demo-title"
+            className={cn(HEADING, "lg:max-w-159")}
+          >
+            <TitleLines lines={WORKFLOW_DEMO.titleLines} />
+          </h2>
+          <p className={cn(DESCRIPTION, "lg:max-w-112 lg:pt-6")}>
+            <TitleLines lines={WORKFLOW_DEMO.descriptionLines} breakFrom="xl" />
+          </p>
         </div>
-        <div className="mt-6">
-          <TextLink {...WORKFLOW_DEMO.link} />
+
+        <div className="relative mx-auto mt-8 aspect-[520/740] w-full max-w-104 overflow-hidden rounded-[20px] md:mt-12 lg:aspect-[1280/388] lg:max-w-none">
+          <picture className="absolute inset-0 block size-full">
+            <source
+              media="(width < 64rem)"
+              srcSet={illustration.mobile.src}
+              width={illustration.mobile.width}
+              height={illustration.mobile.height}
+            />
+            <Image
+              alt={illustration.alt}
+              className="object-cover"
+              fill
+              unoptimized
+              src={illustration.desktop}
+            />
+          </picture>
         </div>
       </div>
     </section>
   )
 }
-
-export default WorkflowDemo
