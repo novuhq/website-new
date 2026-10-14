@@ -48,7 +48,11 @@ const categoryItem = (
 // Each category shows a curated list and links the remainder to the category.
 export const INTEGRATION_MENU_ITEMS: IMenuItem[] = [
   categoryItem("In-app", ROUTE.integrationsChannelsInApp, 2, [
-    integrationItem("Inbox", "novu-inbox"),
+    {
+      label: "Inbox",
+      href: ROUTE.inbox,
+      integrationIcon: "integration-novu-inbox",
+    },
     channelPageItem("Web Chat", ROUTE.channelWebChat, "web-chat"),
   ]),
   categoryItem("Email", ROUTE.integrationsChannelsEmail, 19, [
