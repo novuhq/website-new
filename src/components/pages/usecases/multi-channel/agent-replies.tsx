@@ -35,15 +35,12 @@ function AgentReplies() {
         </div>
 
         <div className="rounded-2xl border border-gray-4 bg-background p-5 xl:rounded-[20px] xl:p-8">
-          <p className="text-xs font-medium tracking-normal text-gray-8 uppercase">
-            {AGENT_REPLIES.exampleLabel}
-          </p>
-          <ul className="mt-5 flex flex-col gap-5">
-            {AGENT_REPLIES.example.map(({ icon, title, description }) => {
+          <ul className="flex flex-col gap-5" aria-label="Example conversation">
+            {AGENT_REPLIES.example.map(({ icon, label, text }) => {
               const Icon = EXAMPLE_ICONS[icon]
 
               return (
-                <li className="flex gap-4" key={title}>
+                <li className="flex gap-4" key={label}>
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-2">
                     <Icon
                       className={cn(
@@ -55,9 +52,9 @@ function AgentReplies() {
                   </span>
                   <p className="leading-normal font-book text-gray-9">
                     <strong className="block font-medium text-white">
-                      {title}
+                      {label}
                     </strong>
-                    {description}
+                    {text}
                   </p>
                 </li>
               )

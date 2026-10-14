@@ -1,5 +1,6 @@
-// Copy for /usecases/multi-channel-notifications/. A [text](url) mark in the
-// copy renders as a link; the FAQ schema gets the same text without the mark.
+// Copy for /usecases/multi-channel-notifications/. Inline marks in the copy:
+// `backticks` render as <code> and [text](url) renders as a link. The FAQ
+// schema gets the same text with both marks reduced to plain text.
 
 const DASHBOARD_LINK = "https://dashboard.novu.co/?utm_campaign=usecase-CTA"
 const CONTACT_LINK =
@@ -8,92 +9,59 @@ const CONTACT_LINK =
 const PRIMARY_CTA = { text: "Start building for free", url: DASHBOARD_LINK }
 const SECONDARY_CTA = { text: "Talk to us", url: CONTACT_LINK }
 
+export interface TextLinkCopy {
+  text: string
+  url: string
+}
+
+export interface SectionImage {
+  src: string
+  alt: string
+  width: number
+  height: number
+  /** "side" for tall product renders, "below" for wide dashboard screenshots. */
+  placement: "side" | "below"
+}
+
+export interface TextSectionCopy {
+  title: string
+  paragraphs: readonly string[]
+  links: readonly TextLinkCopy[]
+  image?: SectionImage
+}
+
 export const MULTI_CHANNEL_SLUG = "multi-channel-notifications"
 
+// Unchanged from the original page, which ranks first for its keyword.
 export const MULTI_CHANNEL_METADATA = {
-  title: "Multi-channel notification delivery | Novu",
-  socialTitle: "Multi-channel notifications from one workflow",
+  title: "Multi-Channel Notifications",
   description:
-    "Send in-app, email, SMS, push, and chat notifications from one workflow. Keep your providers, let your team edit messages without a deploy, and see what happened to every send.",
+    "Boost user engagement and streamline notifications with Novu's multi-channel notifications. Effortlessly integrate email, SMS, push, chat, and in-app notifications into your app with centralized content management and extensive provider integrations. Enhance visibility, optimize strategies, and ensure seamless user experiences. Simplify development, reduce costs, and eliminate friction between teams.",
 }
 
 export const HERO = {
   title: "Multi-channel notification delivery from one workflow",
   description:
-    "Reach users in-app, by email, SMS, push, and chat from a single trigger. We handle the providers, the timing, and each user's preferences, so your team stops rebuilding notification plumbing for every channel.",
+    "Send in-app, email, SMS, push, and chat notifications from a single trigger. Keep your providers, control when each message goes out, and manage notification changes without another app release. When users reply, your AI agent can answer with Novu Connect.",
   links: [PRIMARY_CTA, SECONDARY_CTA],
   supportingLine:
-    "Open source. Use Novu Cloud or host it yourself. Build workflows in the dashboard or in code.",
-}
-
-export const WHY = {
-  title: "Stop building a new integration for every channel",
-  description:
-    "Each channel you add usually brings its own provider SDK, its own template format, and one more place to look when a message goes missing. With Novu, you set that up once.",
-  cards: [
-    {
-      title: "Integrate once",
-      description:
-        "Your backend sends one event. Novu delivers it to every channel in the workflow, through the providers you've connected.",
-    },
-    {
-      title: "Change messages without a deploy",
-      description:
-        "Product and content teams edit copy, channels, and timing in the dashboard. Test changes in a development environment, then publish to production.",
-    },
-    {
-      title: "Reach users where they act",
-      description:
-        "Show a message in the app first, follow up by email or push only if it's missed, and respect what each user has opted into.",
-    },
-  ],
-}
-
-export const CHANNELS = {
-  title: "Use the channels and providers you already have",
-  description:
-    "Connect the provider accounts you already pay for, run more than one per channel, and switch providers without changing your code. Add the Novu Inbox to show notifications inside your app.",
-  columns: ["Channel", "Example integrations"],
-  rows: [
-    {
-      channel: "In-app",
-      integrations: "Novu Inbox, ready to drop in or fully restyled to your UI",
-    },
-    {
-      channel: "Email",
-      integrations: "SendGrid, Amazon SES, Resend, Postmark",
-    },
-    { channel: "SMS", integrations: "Twilio, Infobip, Sinch, Plivo" },
-    {
-      channel: "Push",
-      integrations: "Firebase Cloud Messaging, APNS, Expo, OneSignal",
-    },
-    {
-      channel: "Chat",
-      integrations:
-        "Slack, Microsoft Teams, WhatsApp Business, Telegram, Discord",
-    },
-  ],
-  link: {
-    text: "Browse notification integrations",
-    url: "/integrations/channels/",
-  },
+    "Built on an open-source core, available as Novu Cloud or self-hosted.",
 }
 
 export const WORKFLOW_DEMO = {
-  title: "Follow up when a message still needs attention",
+  title: "Follow up when a notification is still unread",
   description:
-    "Send a task reminder in the app. Wait six hours. Send an email only if the reminder is still unread. One workflow, triggered by one call from your backend.",
+    "Send a reminder to the in-app Inbox. Wait six hours. Send an email only if the reminder is still unread. Your backend triggers the workflow once. Novu evaluates the configured conditions at each step.",
   steps: [
-    { icon: "in-app", title: "In-app:", description: "Send the reminder." },
-    { icon: "delay", title: "Delay:", description: "Wait six hours." },
+    { icon: "in-app", step: "In-app", description: "Send the task reminder" },
+    { icon: "delay", step: "Delay", description: "Wait six hours" },
     {
       icon: "email",
-      title: "Email:",
-      description: "Send only if the in-app reminder is unread.",
+      step: "Email",
+      description: "Follow up if the in-app reminder is unread",
     },
   ],
-  codeLabel: "Trigger from your backend",
+  codeTitle: "Trigger from your backend",
   code: `import { Novu } from '@novu/api';
 
 const secretKey = process.env.NOVU_SECRET_KEY;
@@ -104,7 +72,7 @@ const novu = new Novu({ secretKey });
 await novu.trigger({
   workflowId: 'task-reminder',
   to: [{ subscriberId: 'subscriber-123' }],
-  payload: { taskTitle: 'Review Q4 budget' },
+  payload: { taskTitle: 'Review the project budget' },
 });`,
   link: {
     text: "Build your first workflow",
@@ -112,144 +80,223 @@ await novu.trigger({
   },
 } as const
 
-export const DELIVERY_CONTROLS = {
-  title: "Control delivery without scattering logic across your app",
+export const CHANNELS = {
+  title: "Keep your providers as you add channels",
   description:
-    "Rules, timing, and content live in one workflow, so changing how a message reaches users doesn't mean touching code in five places.",
-  cards: [
+    "Connect the provider accounts you already use and manage delivery through Novu. Your application calls the workflow instead of maintaining a separate sending integration for each channel.",
+  columns: ["Channel", "Example integrations"],
+  rows: [
+    { channel: "In-app", integrations: "Novu Inbox" },
     {
-      title: "Choose when each step runs",
-      description:
-        "Run or skip a step based on who the user is, what happened, or whether they acted on an earlier message. Add delays when a follow-up should wait.",
+      channel: "Email",
+      integrations: "SendGrid, Amazon SES, Resend, Postmark",
+    },
+    { channel: "SMS", integrations: "Twilio, Plivo" },
+    {
+      channel: "Push",
+      integrations: "Firebase Cloud Messaging, APNs, Expo, OneSignal",
     },
     {
-      title: "Give users control",
-      description:
-        "Users choose which channels they want, for everything or for specific notifications. Mark must-send messages, like password resets, as critical so those choices don't block them.",
+      channel: "Chat",
+      integrations: "Slack, Microsoft Teams, WhatsApp Business, Discord",
     },
     {
-      title: "Personalize every message",
-      description:
-        "Write content for each channel with live previews and each user's own data. Send it in their language with built-in translations.",
+      channel: "Tool",
+      integrations: "PagerDuty, Grafana, custom webhook destinations",
+    },
+  ],
+  routing: {
+    title: "Route email and SMS for each customer",
+    description:
+      "Connect multiple provider accounts and choose an integration by customer, locale or workflow. Send a customer's messages through their own configured account, with a primary integration for messages that match no rule.",
+  },
+  links: [
+    {
+      text: "Browse notification integrations",
+      url: "/integrations/channels/",
     },
     {
-      title: "Cut the noise",
-      description:
-        "Group a burst of events into one summary and limit how often the same notification reaches a user.",
+      text: "See how provider routing works",
+      url: "https://docs.novu.co/platform/integrations/integration-conditions",
     },
   ],
 }
 
-export const ROUTING = {
-  title: "Keep your providers. Centralize routing.",
+export const INBOX = {
+  title: "Give your product a notification Inbox that fits",
+  paragraphs: [
+    "Add a notification center with a bell, unread counts and notification preferences. Users can read and archive updates in your app, alongside the work those updates relate to.",
+    "Use the prebuilt Inbox, customize its components, or build your own interface with headless hooks. You control the experience without building the feed infrastructure yourself.",
+  ],
+  links: [
+    { text: "Explore Novu Inbox", url: "https://docs.novu.co/platform/inbox" },
+  ],
+  image: {
+    src: "/images/pages/inbox/dark-novu-inbox.png",
+    alt: "Novu Inbox showing unread notifications with action buttons, grouped into tabs",
+    width: 1238,
+    height: 1295,
+    placement: "side",
+  },
+} satisfies TextSectionCopy
+
+export const DELIVERY_CONTROLS = {
+  title: "Decide when to notify, and when to hold back",
   description:
-    "Connect several provider accounts and decide which one handles each message. Your app keeps sending the same event while Novu picks the right provider.",
+    "Configure delivery rules in the workflow so each event reaches the intended users through the appropriate channels.",
   cards: [
     {
-      title: "A provider per customer",
+      title: "Follow up based on notification state",
       description:
-        "Send a customer's email or SMS through their own provider account, so messages come from their domain and their sender.",
+        "Run or skip steps using event data, subscriber attributes and supported results from earlier steps. Add a delay before a follow-up.",
     },
     {
-      title: "Rules instead of code",
+      title: "Respect user preferences",
       description:
-        "For email and SMS, pick a provider by customer, language, or workflow. Anything that matches no rule goes through your default provider.",
+        "Let users choose channels globally or for specific workflows. Manage preferences through the Inbox or your own settings interface.",
     },
     {
-      title: "Native formats when you need them",
+      title: "Send fewer, more useful updates",
       description:
-        "Write content for each channel, and use a platform's own format where it's supported, such as Slack Block Kit or WhatsApp templates.",
+        "Combine related events into a digest. Use throttling to limit how often a workflow sends to a subscriber.",
+    },
+    {
+      title: "Make content relevant to each user",
+      description:
+        "Personalize channel templates with your event data. Manage translated content for the locales your product supports.",
     },
   ],
-  link: {
-    text: "See how provider routing works",
-    url: "https://docs.novu.co/platform/integrations/integration-conditions",
-  },
 }
+
+export const TEAM_COLLABORATION = {
+  title: "Change notification content without another app release",
+  paragraphs: [
+    "Give product and content teams a place to edit messages and preview the result. For dashboard-built workflows, they can also change channels, conditions and timing.",
+    "Test changes in Development before publishing to Production. Developers keep the application trigger, while the team manages the notification experience in Novu.",
+  ],
+  links: [
+    {
+      text: "Explore workflows",
+      url: "https://docs.novu.co/platform/workflow",
+    },
+  ],
+  image: {
+    src: "/images/pages/usecases/multi-channel-notifications/workflow-editor.png",
+    alt: "Novu workflow editor with trigger, email, delay and in-app steps, and workflow settings for preferences and translations",
+    width: 2400,
+    height: 1558,
+    placement: "below",
+  },
+} satisfies TextSectionCopy
+
+export const OBSERVABILITY = {
+  title: "See why a notification was sent, skipped or failed",
+  paragraphs: [
+    "Inspect each workflow run in the Activity Feed. Review step execution and failure details to see where delivery stopped or why a message was skipped.",
+    "Subscribe to failure webhooks to send those events to your own system and decide how to respond.",
+  ],
+  links: [
+    {
+      text: "Monitor and debug a workflow",
+      url: "https://docs.novu.co/platform/workflow/monitor-and-debug-workflow",
+    },
+  ],
+  image: {
+    src: "/images/pages/usecases/multi-channel-notifications/activity-feed.png",
+    alt: "Novu Activity Feed listing workflow trigger requests with status codes, and the step-by-step execution of one workflow run",
+    width: 2400,
+    height: 1626,
+    placement: "below",
+  },
+} satisfies TextSectionCopy
 
 export const AGENT_REPLIES = {
-  title: "Let users reply, and have an agent answer",
+  title: "Let users ask a question about the notification they received",
   paragraphs: [
-    "A failed-payment email usually leads to a question. With Novu Connect, users can reply to supported email and chat notifications, and your AI agent picks up the conversation already knowing which notification they're replying to.",
-    "Your agent keeps its own model and tools. We carry the messages and keep track of the conversation. Sensitive actions can wait for the user's approval.",
+    "A payment alert often leads to a question. With Novu Connect, assign your agent to a workflow so replies to supported email and chat notifications continue as a conversation with the original message and trigger payload in context.",
+    "Your agent uses the model and tools you choose. Novu handles the communication, and configured tool calls can require user approval.",
   ],
-  exampleLabel: "Example interaction:",
   example: [
     {
       icon: "notification",
-      title: "Notification:",
-      description: "“Your invoice payment failed.”",
+      label: "Notification",
+      text: "“Payment failed for invoice #1042.”",
     },
     {
       icon: "user",
-      title: "User reply:",
-      description: "“Which invoice was this?”",
+      label: "User reply",
+      text: "“Which project is this for?”",
     },
     {
       icon: "agent",
-      title: "Agent response:",
-      description:
-        "The agent looks up the invoice from the original notification and answers in the same thread.",
+      label: "Agent",
+      text: "Uses the invoice context and its connected tools to answer in the same thread",
     },
   ],
   supportingLine:
-    "Bring your agent to Slack, Microsoft Teams, WhatsApp, Telegram, and email. Use Web Chat for conversations inside your app.",
+    "Use Novu Web Chat when you also want agent conversations inside your app.",
   cta: { text: "Explore Novu Connect", url: "/connect/" },
   link: {
-    text: "Connect workflow notifications to an agent",
+    text: "Connect a workflow to an agent",
     url: "https://docs.novu.co/agents/workflow-agents",
   },
 } as const
 
-export const OBSERVABILITY = {
-  title: "Know what happened to every notification",
+export const DEPLOYMENT = {
+  title: "Choose how you run your notification infrastructure",
   paragraphs: [
-    "The Activity Feed shows each workflow run step by step: what was sent, what was skipped, and what the provider said when a send failed. Failed messages can be reported to your own system as they happen, so your team can follow up before a customer notices.",
-    "When a notification turns into a conversation with an agent, you can review that conversation too.",
+    "Use Novu Cloud to let us manage the infrastructure, or deploy the open-source core on your own servers. Inspect the source and extend it for your requirements.",
+    "Community self-hosting and Novu Cloud have different feature sets. Compare the options before choosing your deployment.",
   ],
-  link: {
-    text: "Monitor and debug a workflow",
-    url: "https://docs.novu.co/platform/workflow/monitor-and-debug-workflow",
-  },
-}
+  links: [
+    {
+      text: "Compare Cloud and self-hosted Novu",
+      url: "https://docs.novu.co/community/self-hosted-and-novu-cloud",
+    },
+  ],
+} satisfies TextSectionCopy
 
 export const FAQ_SECTION = {
   title: "Frequently asked questions",
+  description:
+    "Find answers to common questions about channels, delivery behavior and integration.",
   items: [
     {
       question: "What is multi-channel notification delivery?",
       answer:
-        "Multi-channel notification delivery means reaching users through more than one channel, such as in-app, email, SMS, push, and chat, from a single integration. A workflow decides which channels to use for each event, in what order, and under which conditions.",
+        "Multi-channel notification delivery means sending notifications through more than one channel, such as in-app, email, SMS, push or chat. In Novu, a workflow defines which channels to use, when each step runs and what message to send.",
     },
     {
       question: "Can I keep my existing notification providers?",
       answer:
-        "Yes. Connect the provider accounts you already use, such as SendGrid, Twilio, or Firebase Cloud Messaging, and use them in your workflows. You can connect more than one provider per channel, and switching providers is a configuration change, not a code change. For email and SMS, you can also choose a provider per customer or language.",
+        "Yes. Connect supported provider accounts to Novu and use them in your workflows. You can configure multiple integrations and route email or SMS by customer, locale or workflow. Changing providers may require updating credentials, sender settings and provider-specific content.",
     },
     {
-      question: "Can my product team change notifications without developers?",
+      question:
+        "Can my team change notifications without deploying application code?",
       answer:
-        "Yes. Content, channels, and timing are edited in the Novu dashboard. Changes are tested in a development environment and then published to production, so developers don't need to ship code for a copy change.",
+        "Yes. Product and content teams can edit messages and manage dashboard-built workflows in Novu. Test changes in Development before publishing to Production. For code-defined workflows, dashboard editing depends on the controls exposed by your implementation.",
     },
     {
       question: "Can users choose how they receive notifications?",
       answer:
-        "Yes. Users can turn channels on or off for all notifications or for specific workflows, from the in-app Inbox or from your own settings page. Messages marked as critical, such as password resets, ignore those settings.",
+        "Yes. Users can enable or disable channels globally or for specific workflows. Offer preferences through Novu Inbox or build your own settings interface using the APIs.",
     },
     {
-      question: "What happens when a provider rejects a message?",
+      question:
+        "Does Novu automatically retry or switch providers when a send fails?",
       answer:
-        "Novu records the failure in the Activity Feed with the provider's response and can report it to your system as it happens. Most sends are attempted once, because rejections like an invalid phone number would fail again, and Novu doesn't switch providers automatically. See the [delivery retry policy](https://docs.novu.co/platform/developer/delivery-retries) for the full behavior.",
+        "Novu records ordinary provider-send failures in the Activity Feed and emits failure events. It does not automatically retry those sends or switch to another provider. Retry behavior differs for other delivery layers. See the [delivery retry policy](https://docs.novu.co/platform/developer/delivery-retries).",
     },
     {
-      question: "Can users reply to notifications?",
+      question: "Can users reply to a notification and talk to an agent?",
       answer:
-        "Yes, with Novu Connect. Assign an AI agent to a workflow, and replies to its supported email and chat notifications continue as a conversation with that agent, with the original notification as context. SMS is outbound only.",
+        "Yes, with Novu Connect. Assign an agent to a workflow and configure its supported channels. Replies to supported email and chat notifications can continue with that agent, carrying the original notification context. Channel behavior varies. See [workflow-assigned agents](https://docs.novu.co/agents/workflow-agents).",
     },
     {
-      question: "Is Novu open source?",
+      question: "Can I self-host Novu?",
       answer:
-        "Yes. Novu is open source. You can use Novu Cloud or host Novu on your own infrastructure. Some features are available only on Novu Cloud.",
+        "Yes. You can deploy Novu's open-source core on your own infrastructure or use Novu Cloud. Community self-hosting does not include every Cloud feature. See the [deployment comparison](https://docs.novu.co/community/self-hosted-and-novu-cloud).",
     },
   ],
 }
@@ -257,7 +304,7 @@ export const FAQ_SECTION = {
 export const CLOSING = {
   title: "Build your first multi-channel workflow",
   description:
-    "Connect a provider, add your steps, and send a test notification. Add channels as your users need them.",
+    "Connect a provider, add your channel steps, and send a test notification. Start with the channels your product needs today.",
   links: [PRIMARY_CTA, SECONDARY_CTA],
   supportingLink: {
     text: "Read the workflow docs",
@@ -265,6 +312,6 @@ export const CLOSING = {
   },
 }
 
-/** Reduces [text](url) marks to their text, for structured data. */
+/** Reduces the inline marks to plain text, for structured data. */
 export const toPlainText = (text: string) =>
-  text.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+  text.replaceAll("`", "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")

@@ -57,6 +57,7 @@ interface IFAQProps extends IFaqSection {
   defaultOpenFirst?: boolean
   /** Keep closed answers in the HTML (hidden) so crawlers can read them. */
   keepAnswersInHtml?: boolean
+  description?: string
   onScheduleClick?: (source: string) => void
 }
 
@@ -73,6 +74,7 @@ const FAQ = ({
   contentClassName,
   defaultOpenFirst = false,
   keepAnswersInHtml = false,
+  description,
   onScheduleClick,
 }: IFAQProps) => {
   if (!title || !accordion) {
@@ -101,6 +103,11 @@ const FAQ = ({
         >
           {title}
         </h2>
+        {description && (
+          <p className="text-base leading-normal font-book text-gray-8 md:text-lg">
+            {description}
+          </p>
+        )}
         <Accordion
           type="single"
           collapsible

@@ -14,8 +14,6 @@ import {
 type Metadata = {
   /** Page title */
   title?: string
-  /** OpenGraph and Twitter title, when it differs from the page title */
-  socialTitle?: string
   /** Page description for SEO */
   description?: string
   /** URL pathname (without domain) */
@@ -48,7 +46,6 @@ type Metadata = {
  */
 export function getMetadata({
   title = config.defaultTitle,
-  socialTitle = title,
   description = config.defaultDescription,
   pathname,
   imagePath = config.defaultSocialImage,
@@ -132,7 +129,7 @@ export function getMetadata({
       ],
     },
     openGraph: {
-      title: socialTitle,
+      title,
       description,
       url: canonicalUrl,
       siteName: config.projectName,
@@ -148,7 +145,7 @@ export function getMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: socialTitle,
+      title,
       description,
       images: imageAlt ? { url: imageUrl, alt: imageAlt } : imageUrl,
     },
