@@ -30,6 +30,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   integrationsSourcesFeatureFlags:
     "/integrations/sources#integration-category-feature-flags",
   connect: "/connect",
+  connectTemplates: "/connect#templates",
   copilot: "/copilot",
   mcp: "/mcp",
   aci: "/aci",

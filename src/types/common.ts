@@ -13,8 +13,8 @@ export interface IMenuItem {
   href: Route<string> | URL
   isNew?: boolean
   children?: IMenuItem[]
-  childrenTitle?: string
   description?: string
+  illustration?: string
   integrationIcon?: TIntegrationMenuIcon
   menuIcon?: TMenuIcon
   remainingCount?: number
@@ -69,7 +69,6 @@ export type TMenuIcon =
 export type THeaderMenuVariant =
   | "product"
   | "solutions"
-  | "channels"
   | "ai"
   | "resources"
   | "integrations"

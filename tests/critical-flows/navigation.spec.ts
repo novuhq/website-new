@@ -92,7 +92,7 @@ test.describe("critical responsive navigation", () => {
     expectHealthyPage(applicationErrors)
   })
 
-  test(`[${navigationContract.id}] Channels menu reaches every web chat builder page`, async ({
+  test(`[${navigationContract.id}] Integrations menu reaches web chat and every builder page`, async ({
     isMobile,
     page,
     request,
@@ -100,29 +100,38 @@ test.describe("critical responsive navigation", () => {
     const applicationErrors = observeApplicationErrors(page)
     await gotoCriticalPage(page, navigationContract.route)
 
+    // Desktop only renders the hovered category's links; mobile lists them all.
+    const revealCategory = async (category: string) => {
+      if (isMobile) return
+      await page
+        .locator("header")
+        .getByRole("link", { name: category, exact: true })
+        .hover()
+    }
+
     if (isMobile) {
       const menuButton = page.getByRole("button", { name: "Open menu" })
       await expectReactHandlerReady(menuButton, "onClick")
       await menuButton.click()
-      await page.getByRole("button", { name: "Channels", exact: true }).click()
-    } else {
-      const channels = page
-        .locator("header")
-        .getByRole("button", { name: "Channels", exact: true })
-      await expectReactHandlerReady(channels, "onClick")
-      await channels.hover()
       await page
-        .getByRole("link", { name: "Web Chat", exact: true })
-        .first()
-        .hover()
+        .getByRole("button", { name: "Integrations", exact: true })
+        .click()
+    } else {
+      const integrations = page
+        .locator("header")
+        .getByRole("button", { name: "Integrations", exact: true })
+      await expectReactHandlerReady(integrations, "onClick")
+      await integrations.hover()
     }
 
+    await revealCategory("In-app")
     await expect(
       page.getByRole("link", { name: "Web Chat", exact: true }).first()
     ).toHaveAttribute("href", "/channels/web-chat/")
     const webChat = await request.get("/channels/web-chat/")
     expect(webChat.ok(), "/channels/web-chat/ should resolve").toBe(true)
 
+    await revealCategory("AI builders")
     for (const { slug, builderName } of getAllWebChatBuilders()) {
       const pathname = getWebChatBuilderPathname(slug)
       const link = page.getByRole("link", { name: builderName, exact: true })
