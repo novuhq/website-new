@@ -1,5 +1,7 @@
 import Image from "next/image"
 import { ROUTE } from "@/constants/routes"
+import { ChevronRight } from "lucide-react"
+import { type PortableTextBlock } from "next-sanity"
 
 import { IChangelogPostData } from "@/types/changelog"
 import { cn } from "@/lib/utils"
@@ -10,6 +12,28 @@ import Content from "@/components/pages/content"
 import Authors from "../authors"
 import Date from "../date"
 import Categories from "./categories"
+
+const PREVIEW_PARAGRAPHS = 2
+
+// A divider placed by the author marks where the preview ends. Without one,
+// the preview is the post's opening paragraphs.
+function getContentPreview(content: PortableTextBlock[]) {
+  const dividerIndex = content.findIndex(
+    (block) => block._type === "dividerBlock"
+  )
+  if (dividerIndex !== -1) return content.slice(0, dividerIndex)
+
+  const preview: PortableTextBlock[] = []
+  for (const block of content) {
+    const isParagraph =
+      block._type === "block" &&
+      (block.style ?? "normal") === "normal" &&
+      !block.listItem
+    if (!isParagraph || preview.length === PREVIEW_PARAGRAPHS) break
+    preview.push(block)
+  }
+  return preview
+}
 
 function PostsItem({
   title,
@@ -22,6 +46,9 @@ function PostsItem({
   coverAlt,
   content,
 }: IChangelogPostData) {
+  const postHref = `${ROUTE.changelog}/${slug.current}`
+  const preview = getContentPreview(content)
+
   return (
     <article className="relative grid grid-cols-1 gap-3.25 md:gap-5 lg:grid-cols-[112px_1fr] lg:gap-15">
       <p
@@ -36,7 +63,7 @@ function PostsItem({
         <h2>
           <Link
             className="text-[28px] leading-[1.125] font-semibold tracking-[0.014em] !text-foreground transition-colors duration-300 select-text hover:!text-foreground/40 md:text-[30px]"
-            href={`${ROUTE.changelog}/${slug.current}`}
+            href={postHref}
           >
             {title}
           </Link>
@@ -78,11 +105,22 @@ function PostsItem({
             />
           </div>
         )}
-        <Content
-          className="prose-with-hidden-part prose mt-5 [&>*:first-child]:mt-0!"
-          content={content}
-          readMoreSlug={`${ROUTE.changelog}/${slug.current}`}
-        />
+        {preview.length > 0 && (
+          <Content
+            className="prose mt-5 [&>*:first-child]:mt-0!"
+            content={preview}
+          />
+        )}
+        {preview.length < content.length && (
+          <Link
+            className="mt-5 text-base"
+            href={postHref}
+            animation="arrow-right"
+          >
+            Read more
+            <ChevronRight className="translate-y-0.5" size={16} />
+          </Link>
+        )}
       </div>
     </article>
   )
