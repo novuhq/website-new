@@ -1,37 +1,46 @@
-import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
-import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
-import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
-import inboxIllustration from "@/images/pages/comparison/courier/difference/inbox.png"
-import notificationsIllustration from "@/images/pages/comparison/courier/difference/notifications.png"
-import regionsIllustration from "@/images/pages/comparison/courier/difference/regions.png"
-import workflowIllustration from "@/images/pages/comparison/courier/difference/workflow.png"
-import heroIllustration from "@/images/pages/comparison/knock/hero/illustration.jpg"
-import cloudIcon from "@/svgs/pages/comparison/courier/difference/cloud.svg"
-import digestIcon from "@/svgs/pages/comparison/courier/difference/digest.svg"
-import inboxIcon from "@/svgs/pages/comparison/courier/difference/inbox.svg"
-import notificationsIcon from "@/svgs/pages/comparison/courier/difference/notifications.svg"
-import regionsIcon from "@/svgs/pages/comparison/courier/difference/regions.svg"
-import workflowIcon from "@/svgs/pages/comparison/courier/difference/workflow.svg"
-import architectureIcon from "@/svgs/pages/comparison/courier/frustrations/architecture.svg"
-import lockIcon from "@/svgs/pages/comparison/courier/frustrations/lock.svg"
-import starsIcon from "@/svgs/pages/comparison/courier/frustrations/stars.svg"
+import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg";
+import codeIllustration from "@/images/pages/comparison/courier/difference/code.png";
+import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png";
+import inboxIllustration from "@/images/pages/comparison/courier/difference/inbox.png";
+import notificationsIllustration from "@/images/pages/comparison/courier/difference/notifications.png";
+import regionsIllustration from "@/images/pages/comparison/courier/difference/regions.png";
+import workflowIllustration from "@/images/pages/comparison/courier/difference/workflow.png";
+import heroIllustration from "@/images/pages/comparison/knock/hero/illustration.jpg";
+import cloudIcon from "@/svgs/pages/comparison/courier/difference/cloud.svg";
+import digestIcon from "@/svgs/pages/comparison/courier/difference/digest.svg";
+import inboxIcon from "@/svgs/pages/comparison/courier/difference/inbox.svg";
+import notificationsIcon from "@/svgs/pages/comparison/courier/difference/notifications.svg";
+import regionsIcon from "@/svgs/pages/comparison/courier/difference/regions.svg";
+import workflowIcon from "@/svgs/pages/comparison/courier/difference/workflow.svg";
+import architectureIcon from "@/svgs/pages/comparison/courier/frustrations/architecture.svg";
+import lockIcon from "@/svgs/pages/comparison/courier/frustrations/lock.svg";
+import starsIcon from "@/svgs/pages/comparison/courier/frustrations/stars.svg";
 
-import type { IComparisonPageData } from "@/types/comparison"
+
+
+import type { IComparisonPageData } from "@/types/comparison";
+
+
+
+
 
 export const knockComparisonData: IComparisonPageData = {
   slug: "knock",
   competitor: "Knock",
-  title: "Novu vs Knock",
+  title: "Novu vs. Knock",
   description:
-    "Compare Novu and Knock notification infrastructure platforms. See how Novu's open-source approach, deployment flexibility, and pricing compare to Knock.",
+    "Compare Novu and Knock for multi-channel notifications, provider routing, preferences, delivery retries, deployment, and agent communication.",
+  // The page ranks on this title, so it stays fixed while the heading changes.
+  metaTitle:
+    "Novu vs Knock: The best Knock alternative for end-to-end notifications",
   hero: {
     heading: {
       prefix: "Novu",
       highlight:
-        "vs Knock: The best Knock alternative for end-to-end notifications",
+        "vs. Knock: Best Knock alternative for customer engagement infrastructure",
     },
     subheading:
-      "All your notification infrastructure needs, workflows, routing, preferences, and <Inbox /> in one platform, open source and built for builders and teams.",
+      "Build multi-channel workflows with routing, preferences, and <Inbox /> in Novu Notify. Add Novu Connect when users need to reply to your agent. Choose managed cloud or evaluate self-hosted deployment.",
     primaryCta: {
       label: "Start for Free",
       href: "https://dashboard.novu.co",
@@ -46,7 +55,8 @@ export const knockComparisonData: IComparisonPageData = {
     },
     note: (
       <>
-        Free up to 10k events / month. <span>No credit card required</span>
+        Free up to 10k workflow runs / month.{" "}
+        <span>No credit card required</span>
       </>
     ),
     illustration: {
@@ -62,7 +72,7 @@ export const knockComparisonData: IComparisonPageData = {
   intro: {
     title: "Open Notification Infrastructure",
     description:
-      "An open, opinionated platform that orchestrates the full notification lifecycle and unifies it into a programmable <Inbox /> experience you can ship fast and fully customize, giving builders complete control. We handle notification infrastructure so you can focus on building your product.",
+      "Novu and Knock both support multi-channel workflows, user preferences, and in-app notifications. With Novu, you can build workflows in the dashboard or define them in code with Novu Framework. Our open-source core and deployment options give you control over how you build and run your notification system. Novu Connect adds conversation infrastructure for your agent.",
     switchLabel: (
       <>
         Why teams switch to <span>Novu:</span>
@@ -70,8 +80,8 @@ export const knockComparisonData: IComparisonPageData = {
     ),
     benefits: [
       "Open-source with self-host options",
-      "Code-first workflow ownership",
-      "Tenant-aware from day one",
+      "Dashboard workflows or code definitions",
+      "Notifications and agent conversations",
     ],
     cta: {
       label: "Get Started",
@@ -81,38 +91,38 @@ export const knockComparisonData: IComparisonPageData = {
     },
   },
   frustrations: {
-    title: "The frustrations that bring teams to Novu",
+    title: "When Novu fits your requirements",
     subtitle:
-      "If you're evaluating alternatives, you've probably lived at least one of these.",
+      "Choose Novu when deployment ownership, application logic, or agent conversations shape your notification system.",
     items: [
       {
-        title: "No fallback path",
+        title: "Choose where your infrastructure runs",
         description:
-          "A hosted-only model can become a problem when security, compliance, or procurement requirements change and you need more control over where your infrastructure runs.",
+          "Use Novu Cloud for managed infrastructure or evaluate self-hosted deployment. Features, licensing, and support differ by edition, so choose against your production requirements.",
         icon: architectureIcon,
       },
       {
-        title: "Awkward pricing jump",
+        title: "Start with a smaller paid plan",
         description:
-          "Moving from a free plan to a $250/month paid tier is a harder step for teams that are growing but not ready for enterprise-style pricing yet.",
+          "Novu Pro starts at $30 per month with 30,000 workflow runs. Knock Starter costs $250 per month with 50,000 messages. Compare included usage and features alongside the starting price.",
         icon: lockIcon,
       },
       {
-        title: "Global features gated to enterprise",
+        title: "Localize notification content",
         description:
-          "Translation support and per-customer branding and preferences are locked behind the enterprise plan, unavailable to growing teams that need them earlier.",
+          "Manage translated notification content in Novu. Knock lists translation support on Enterprise. Compare translation management and current plan availability for the locales your product needs.",
         icon: starsIcon,
       },
       {
-        title: "No deployment control",
+        title: "Continue from a user's reply",
         description:
-          "A fully managed platform means you can’t choose where your notification infrastructure runs. Novu offers cloud, self-hosted, and hybrid options.",
+          "Assign an agent to a workflow so supported replies can continue as a conversation with notification context. Novu Connect handles communication while your agent controls its model and tools.",
         icon: lockIcon,
       },
       {
-        title: "Hosted dashboard, not code-first",
+        title: "Run custom workflow logic from your codebase",
         description:
-          "Teams that prefer engineering-owned workflows want workflows defined in code — not just API access layered on top of a dashboard-centric model.",
+          "Define TypeScript workflows with Novu Framework and retrieve content through a bridge endpoint in your application. Knock also supports source-controlled workflow definitions through its CLI. Compare the execution model your team needs.",
         icon: starsIcon,
       },
     ],
@@ -126,10 +136,10 @@ export const knockComparisonData: IComparisonPageData = {
   difference: {
     title: "The Novu difference",
     subtitle:
-      "Ship tenant-aware experiences cleanly. Contexts, topics, and Inbox scoping help map notification behavior to real B2B product structure.",
+      "Build delivery rules around your product. Control workflow steps, provider selection, and the in-app experience, with deployment options for your infrastructure requirements.",
     cards: [
       {
-        title: "Everything you need in one <Inbox/>",
+        title: "Notifications and preferences in one <Inbox />",
         description:
           "An in-app notification inbox wrapped in a single <Inbox />. Use the drop-in component or go headless and build your own UI.",
         image: inboxIllustration,
@@ -138,21 +148,21 @@ export const knockComparisonData: IComparisonPageData = {
       {
         title: "Every step in one place",
         description:
-          "Build your workflow visually in the Novu dashboard or define it in code with Novu Framework. Content, routing, delays.",
+          "Build workflows in the dashboard or define them with Novu Framework. Configure channel content, conditions, delays, and digests in the same workflow.",
         image: workflowIllustration,
         icon: workflowIcon,
       },
       {
         title: "Self-host or use our cloud",
         description:
-          "Run Novu on your own infrastructure with Docker Compose. Move between cloud and self-host anytime with the same codebase.",
+          "Use Novu Cloud or deploy Novu on your infrastructure. Compare Community Self-Hosted and commercial editions for the features, licensing, and support your team needs.",
         image: codeIllustration,
         icon: cloudIcon,
       },
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
+          "Novu Cloud includes US and EU data residency on Free. Enterprise offers additional regional and self-hosted deployment options.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
@@ -164,7 +174,7 @@ export const knockComparisonData: IComparisonPageData = {
         icon: digestIcon,
       },
       {
-        title: "What users see in minutes",
+        title: "Notifications users can act on",
         description:
           "Real-time delivery, unread counts, snooze controls, and preferences. Styled out of the box and customizable with the appearance prop.",
         image: notificationsIllustration,
@@ -181,7 +191,7 @@ export const knockComparisonData: IComparisonPageData = {
   codeSection: {
     title: "Add notifications with just a few lines of code",
     subtitle:
-      "Trigger workflows, add an in-app inbox, and manage user notification preferences — all using simple components and minimal setup.",
+      "Trigger configured workflows from your backend, add an in-app Inbox, and let users manage their notification preferences.",
     image: {
       src: codeSectionIllustration,
       width: 870,
@@ -192,7 +202,7 @@ export const knockComparisonData: IComparisonPageData = {
       {
         title: "Trigger notifications from your backend",
         description:
-          "Send notifications across email, SMS, push, and in-app channels with a single API call.",
+          "Trigger one configured workflow to send through its email, SMS, push, chat, and in-app steps.",
       },
       {
         title: "Add an in-app notification inbox",
@@ -202,102 +212,117 @@ export const knockComparisonData: IComparisonPageData = {
       {
         title: "Let users control their notifications",
         description:
-          "Give subscribers full control over their notification preferences with a built-in preferences component.",
+          "Let subscribers manage global and per-workflow channel preferences in Inbox. Critical workflows bypass subscriber preferences.",
       },
     ],
   },
   comparisonTable: {
-    title: "Novu vs Knock comparison",
+    title: "Novu vs. Knock comparison",
     subtitle:
-      "Compare ownership, deployment flexibility, pricing, and feature access.",
+      "Compare channel coverage, routing, failure behavior, and agent communication alongside deployment and pricing.",
     columnHeaders: ["Feature", "Novu", "Knock", "What this means for you"],
     rows: [
       [
-        "Open-source availability",
-        "Open-source platform",
-        "Proprietary managed platform",
-        <>
-          More control over your <span>stack</span> and a clearer fallback path
-          if your infrastructure, compliance, or vendor requirements change
-        </>,
+        "Notification channels",
+        "Inbox, email, SMS, push, chat, and Tool integrations for on-call services and webhooks. Chat integrations include Slack, Teams, WhatsApp Business, Telegram, and Discord.",
+        "Email, SMS, push, in-app feeds and guides, chat, and webhooks. Chat integrations include Slack, Teams, WhatsApp, and Discord.",
+        "Confirm the specific provider and message format your product needs. Both cover the core notification channels.",
       ],
       [
-        "Deployment model",
-        "Cloud and On Prem Self-Hosted",
-        "Hosted platform",
-        <>
-          Choose the deployment model that fits your requirements instead of
-          adapting to a <span>hosted-only setup</span>
-        </>,
+        "Provider routing",
+        "Email and SMS integration conditions select providers using subscriber, context, and workflow data. Chat and push have channel-specific routing behavior.",
+        "Channel groups combine providers of the same type. Ordered rules can route to the first matching channel or every matching channel.",
+        "Test provider-selection rules separately from the conditions that decide which workflow steps run.",
       ],
       [
-        "Pricing metric",
-        <>
-          <span>Workflow runs</span>
-        </>,
-        "Messages sent",
-        <>
-          You get a pricing model that is easier to predict when one
-          notification flow sends across <span>multiple channels</span>
-        </>,
+        "Timing and conditional delivery",
+        "Workflow conditions, delay steps, and digests control when a notification step runs.",
+        "Workflow conditions, delays, and batching control when a notification step runs.",
+        "Both support timed and conditional workflows. Model your actual follow-up rules before choosing.",
       ],
       [
-        "Code-first workflow ownership",
-        "Framework lets you create workflows entirely in code and keep them alongside app code",
-        "Dashboard workflows plus CLI and Management API support",
+        "Provider retries and recovery",
+        "Standard provider sends receive one attempt, with provider-specific exceptions. No automatic provider failover.",
+        "Retryable provider and network failures are retried up to eight times over 30 minutes. Undelivered messages can also be retried manually in the dashboard.",
         <>
-          With Novu, you can keep notification logic closer to your{" "}
-          <span>application code</span> and source control when your team wants
-          engineering-owned workflows
-        </>,
-      ],
-      [
-        "Tenant-specific branding and preferences",
-        "Tenant-aware scoping and filtering through context-aware Inbox patterns",
-        "Per-customer branding and preferences are Enterprise-only",
-        <>
-          You can support tenant-specific notification experiences earlier,
-          without waiting for an <span>enterprise upgrade</span>
-        </>,
-      ],
-      [
-        "Workflow translations",
-        "Available on Team and Enterprise",
-        "Translation support is Enterprise-only",
-        <>
-          You can localize notification experiences for <span>end users</span>{" "}
-          much earlier
-        </>,
-      ],
-      [
-        "In-app evaluation path",
-        "Inbox keyless mode for instant testing",
-        "Pre-built feed and inbox components",
-        <>
-          You can validate the <span>in-app experience</span> faster
+          Compare provider retries separately from workflow follow-ups. Review
+          the{" "}
+          <a href="https://docs.novu.co/platform/developer/delivery-retries">
+            Novu retry policy
+          </a>{" "}
+          and{" "}
+          <a href="https://docs.knock.app/send-notifications/delivering-notifications">
+            Knock delivery policy
+          </a>
+          .
         </>,
       ],
       [
         "Preferences experience",
-        "Inbox includes notifications and preferences in the default UI",
-        "Preferences are exposed through APIs and components",
-        <>
-          With Novu, you can ship a user-facing <span>preferences</span>{" "}
-          experience faster
-        </>,
+        "Global and per-workflow channel preferences, with notifications and preferences in the default Inbox UI.",
+        "Channel, category, and workflow preferences, with APIs and preference-center options.",
+        "Compare your notification categories, preference precedence, and user-facing controls. Availability of tenant-admin controls is a separate question.",
       ],
       [
-        "Public roadmap",
-        "Community-driven with full visibility",
-        "No public roadmap",
-        <>Know what&apos;s coming and request features in the open</>,
+        "Delivery observability",
+        "Activity Feed shows workflow runs, step outcomes, trigger data, and provider errors.",
+        "Workflow debugging, message logs, provider requests and responses, and delivery-status tracking where supported.",
+        "Check that your team can explain a skipped step, a failed provider request, and a later delivery outcome.",
+      ],
+      [
+        "Agent communication",
+        "Novu Connect handles user-agent conversations and reply delivery. Supported workflow replies can carry the originating notification context.",
+        "Agent Toolkit exposes workflows as tools and supports human input and approvals. AI agent functions can enrich workflow data.",
+        "Evaluate ongoing conversations, notification-triggered replies, and approval flows against your actual agent use case.",
+      ],
+      [
+        "Open-source availability",
+        "Open-source core, with commercially licensed enterprise modules.",
+        "Managed platform.",
+        "Novu's core can be inspected and extended. Review the license for the modules you intend to use.",
+      ],
+      [
+        "Deployment model",
+        "Novu Cloud, Community Self-Hosted, and commercial self-hosted options.",
+        "Hosted platform, with dedicated infrastructure listed on Enterprise.",
+        "Novu offers self-hosted deployment. Features and support differ by edition.",
+      ],
+      [
+        "Pricing metric",
+        "Novu Notify Cloud plans are based on workflow runs.",
+        "Developer and Starter plans count messages successfully sent. Enterprise can offer monthly notified-user pricing.",
+        "Estimate usage from complete workflows. In-app plus email counts as two messages on Knock. Provider charges remain separate.",
+      ],
+      [
+        "Workflow authoring and source control",
+        "Dashboard workflows or TypeScript definitions with Novu Framework and a bridge endpoint for custom execution.",
+        "Dashboard workflows, CLI-managed local definitions and templates, and Management API support.",
+        "Both support developer-managed workflows. Compare custom execution, content retrieval, and your deployment process.",
+      ],
+      [
+        "Tenant-aware notification experiences",
+        "Contexts scope Inbox feeds and subscriber preferences per tenant. Context data can personalize branding, and topics organize recipient groups.",
+        "Built-in multi-tenancy. Per-customer branding and tenant-admin preferences are listed on Enterprise.",
+        "Compare delivery and feed scoping separately from tenant-admin default or locked preferences. These are different capabilities.",
+      ],
+      [
+        "Workflow translations",
+        "Translated notification content with locale-based rendering. Check current plan availability.",
+        "Translation support is listed on Enterprise.",
+        "Compare locale management, fallback behavior, and plan availability for your localization requirements.",
+      ],
+      [
+        "In-app evaluation path",
+        "Inbox keyless mode for temporary evaluation, plus configured production setup.",
+        "Prebuilt feed components and APIs for a custom in-app experience.",
+        "Novu's keyless mode uses temporary data. Connect your environment and subscriber before using Inbox in production.",
       ],
     ],
   },
   banner: {
     title: "Migrate from Knock to Novu",
     description:
-      "Bring your workflows, templates, and notification logic to Novu with a more flexible, open infrastructure. Reduce vendor lock-in and gain full control with self-hosting and developer-first workflows.",
+      "Plan how to move your workflows, templates, subscribers, and preferences to Novu. Start with one representative workflow and verify its content, delivery rules, and in-app behavior.",
     cta: {
       label: "Migration Guide",
       href: "https://docs.novu.co/guides/migrate-from-knock-to-novu",
@@ -315,9 +340,10 @@ export const knockComparisonData: IComparisonPageData = {
           question: "Is Novu really free to use?",
           answer: (
             <p>
-              Novu has a free plan that includes 10,000 workflow runs per month,
-              support for email, in-app, SMS, chat, and push, plus US and EU
-              data residency.
+              Novu Notify Cloud has a Free plan with 10,000 workflow runs per
+              month, email, in-app, SMS, chat, and push channels, plus US and EU
+              data residency. Provider services can have their own charges. Novu
+              Connect has separate usage and availability to evaluate.
             </p>
           ),
         },
@@ -326,11 +352,14 @@ export const knockComparisonData: IComparisonPageData = {
             "How does Novu pricing compare when one workflow sends on multiple channels?",
           answer: (
             <p>
-              Novu&apos;s cloud pricing is based on workflow runs, while Knock
-              bills on messages sent. Knock defines a billable message as one
-              message delivered to one user on one channel, so if one workflow
-              sends both an in-app message and an email, that counts as two
-              messages on Knock.
+              Novu Notify Cloud plans count workflow runs. Knock&apos;s
+              Developer and Starter plans count messages successfully sent to
+              one user on one channel. A workflow that sends an in-app
+              notification and an email counts as two messages on Knock. Knock
+              does not count failed or bounced messages toward billable message
+              usage, and Enterprise can offer monthly notified-user pricing.
+              Compare your expected workflow and message volumes alongside
+              current plan prices.
             </p>
           ),
         },
@@ -338,9 +367,11 @@ export const knockComparisonData: IComparisonPageData = {
           question: "Do I need to self-host Novu to get value from it?",
           answer: (
             <p>
-              No. You can use Novu as a cloud product on the Free, Pro, or Team
-              plans, and move to self-hosted only if you later
-              need more control.
+              No. Novu Cloud provides managed infrastructure. Self-hosted
+              deployment is available when your requirements call for it.
+              Community Self-Hosted and commercial editions differ in features,
+              licensing, and support, so evaluate the edition before planning a
+              deployment or migration.
             </p>
           ),
         },
@@ -348,14 +379,15 @@ export const knockComparisonData: IComparisonPageData = {
           question: "How long does it take to migrate from Knock to Novu?",
           answer: (
             <p>
-              It depends on how many workflows, providers, and in-app
-              experiences you need to move. Most teams can migrate in phases
-              instead of replacing everything at once, starting with core
-              workflows or in-app notifications first, then moving templates,
-              providers, and preferences over time. Both platforms support
-              API-driven workflows and integrations, which makes a phased
-              migration practical. And our team is available to help, just send
-              a message.
+              Migration time depends on your workflows, providers, preference
+              model, and in-app integration. Start by mapping those
+              requirements, then test one workflow before expanding the
+              migration. Include subscriber identity, preference data, delivery
+              behavior, and production cutover in the plan. Use our{" "}
+              <a href="https://docs.novu.co/guides/migrate-from-knock-to-novu">
+                Knock migration guide
+              </a>{" "}
+              to prepare the move.
             </p>
           ),
         },
@@ -364,10 +396,12 @@ export const knockComparisonData: IComparisonPageData = {
             "Does Novu support tenant-specific notification experiences for B2B SaaS?",
           answer: (
             <p>
-              Yes. Novu supports multi-tenancy out of the box. You can separate
-              tenants by subscriber identity, scope Inbox feeds by tenant, and
-              use contexts and topics to organize tenant-aware notification
-              logic and targeting.
+              Yes. Use contexts to associate notifications with a tenant and
+              scope Inbox feeds and subscriber preferences to that context.
+              Topics can group subscribers for notification targeting. Feed and
+              delivery scoping should be evaluated separately from tenant-admin
+              preference defaults and locks. Knock also supports multi-tenancy,
+              so compare the specific tenant controls your product needs.
             </p>
           ),
         },
@@ -376,21 +410,71 @@ export const knockComparisonData: IComparisonPageData = {
             "Do I have to use Framework, or can I stay in the dashboard?",
           answer: (
             <p>
-              You can stay in the dashboard. Novu&apos;s workflows can be
-              created in the dashboard, via API, or in code with Framework, so
-              Framework is optional. It is there for teams that want workflows
-              closer to source control and application code.
+              You can build workflows in the dashboard. Novu Framework is an
+              optional TypeScript workflow model for teams that need custom
+              execution and content retrieval through a bridge endpoint. Knock
+              also supports local workflow definitions and templates through its
+              CLI, so source control alone is not the differentiator.
             </p>
           ),
         },
         {
           question:
-            "Knock has an in-app component. What is actually different about Novu's Inbox?",
+            "Knock has an in-app component. What is different about Novu's Inbox?",
           answer: (
             <p>
-              Novu&apos;s Inbox is a prebuilt in-app notification center,
-              supports keyless mode for instant testing, comes with a preference
-              feature and every part is fully customizable.
+              Novu&apos;s Inbox combines a notification feed and preferences in
+              the default UI, with customization and headless options. Keyless
+              mode lets you evaluate it using temporary data that expires after
+              24 hours and is not tied to real subscribers. Production setup
+              requires your environment and subscriber configuration. Knock also
+              provides prebuilt feed components, so compare the controls and
+              integration your product needs.
+            </p>
+          ),
+        },
+        {
+          question:
+            "Can both Novu and Knock deliver notifications across multiple channels?",
+          answer: (
+            <p>
+              Yes. Both support email, SMS, push, in-app notifications, and
+              chat. Compare the actual providers and content formats you need,
+              then test conditions, user preferences, and follow-up messages in
+              a complete workflow.
+            </p>
+          ),
+        },
+        {
+          question: "How do Novu and Knock handle provider delivery failures?",
+          answer: (
+            <p>
+              Knock retries retryable provider and network failures up to eight
+              times over 30 minutes. Novu&apos;s standard provider sends receive
+              one attempt, with provider-specific exceptions, and no automatic
+              provider failover. Novu records failures in Activity Feed. On
+              plans with outbound webhooks, your application can subscribe to
+              messages.failed and implement a recovery policy. A configured
+              workflow follow-up is different from retrying a rejected provider
+              request.
+            </p>
+          ),
+        },
+        {
+          question:
+            "Can a user reply to a notification and continue with an AI agent?",
+          answer: (
+            <p>
+              With Novu Connect, you can assign an agent to a workflow.
+              Supported replies can open or continue a conversation with the
+              originating notification context. For example, a user can reply in
+              the Slack thread for an export-failed alert, and your agent can
+              use the context to look up that export through an authorized tool.
+              Your agent controls its model and business logic. Novu handles the
+              communication. Reply behavior depends on the channel. Web Chat
+              does not inherit workflow notification origin. Knock also supports
+              agent-triggered workflows and human input and approvals through
+              Agent Toolkit.
             </p>
           ),
         },
@@ -401,8 +485,8 @@ export const knockComparisonData: IComparisonPageData = {
   ctaSection: {
     title: "Switch to Novu",
     description:
-      "Adding notification infrastructure into your application shouldn't be complicated.",
-    hint: "Free for 10K workflow runs/month",
+      "Build one workflow from your product, connect your providers, and inspect the results. Talk to our team about deployment requirements or migration planning.",
+    hint: "Novu Notify Free includes 10,000 workflow runs per month",
     actions: [
       {
         kind: "primary-button",

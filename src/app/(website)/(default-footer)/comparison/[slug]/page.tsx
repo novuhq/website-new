@@ -38,6 +38,7 @@ export async function generateMetadata({
   }
 
   const ogTitle =
+    data.metaTitle ??
     `${data.hero.heading.prefix} ${data.hero.heading.highlight}`.replace(
       /\u00a0/g,
       " "
