@@ -8,7 +8,6 @@ import {
   type PortableTextBlock,
   type PortableTextBlockComponent,
 } from "@portabletext/react"
-import { ChevronRight } from "lucide-react"
 import { Tweet } from "react-tweet"
 
 import { IBlockquote } from "@/types/common"
@@ -79,25 +78,13 @@ function hasNewDesignBlocks(
 function getComponents(
   uniqueHeadingMap: Record<string, number>,
   allowMediaBreakout: boolean,
-  readMoreSlug: string,
   design: TContentDesign
 ): Partial<PortableTextReactComponents> {
   return {
     types: {
-      dividerBlock: () => {
-        return (
-          <>
-            <Link
-              className="hidden-start !no-underline"
-              href={readMoreSlug}
-              animation="arrow-right"
-            >
-              Read more
-              <ChevronRight className="translate-y-0.5" size={16} />
-            </Link>
-          </>
-        )
-      },
+      // Marks where a list preview ends (see changelog/post-item.tsx); it has
+      // no output of its own.
+      dividerBlock: () => null,
       image: ({
         value: { asset, alt, caption, variant = "default" },
       }: PortableTextComponentProps<IContentPicture>) => {
@@ -443,7 +430,6 @@ interface IContentProps {
   className?: string
   content: PortableTextBlock[] | PortableTextBlock
   allowMediaBreakout?: boolean
-  readMoreSlug?: string
   design?: TContentDesign
 }
 
@@ -451,7 +437,6 @@ function Content({
   className,
   content,
   allowMediaBreakout = false,
-  readMoreSlug = "",
   design = "default",
 }: IContentProps) {
   const uniqueHeadingMap = {}
@@ -463,7 +448,6 @@ function Content({
   const components = getComponents(
     uniqueHeadingMap,
     allowMediaBreakout,
-    readMoreSlug,
     resolvedDesign
   )
 
