@@ -8,25 +8,43 @@ import { Button } from "@/components/ui/button"
 function Hero({ hero }: { hero: IComparisonHero }) {
   return (
     <section className="relative pt-16 pb-10 md:pt-24 md:pb-16 lg:pt-36 xl:pt-45">
-      <div className="relative mx-auto flex max-w-400 flex-col items-center gap-20 px-5 md:items-start md:px-8 lg:flex-row lg:gap-16 2xl:gap-32">
-        <div className="relative z-10 flex flex-col 2xl:mt-2.5 2xl:ml-24">
-          <h1 className="text-[1.75rem] leading-dense font-medium tracking-tighter md:max-w-[580px] md:text-[2.25rem] lg:max-w-none lg:text-[2.5rem] xl:text-[3.25rem]">
+      <div className="relative mx-auto flex max-w-400 flex-col items-center gap-20 px-5 md:items-start md:px-8 lg:flex-row lg:gap-16">
+        <div className="relative z-10 flex flex-col 2xl:mt-2.5 2xl:ml-32 2xl:w-152">
+          <h1 className="text-[1.75rem] leading-dense font-medium tracking-tighter md:max-w-[580px] md:text-[2.25rem] lg:max-w-none lg:text-[2.5rem] xl:text-5xl 2xl:max-w-144">
             <span className="bg-[linear-gradient(238deg,#FFBA33_32%,#FF006A_71%,#FF4CE1_103%)] bg-clip-text font-bold text-transparent">
               {hero.heading.prefix}
             </span>{" "}
             {hero.heading.highlight}
           </h1>
-          <p className="mt-4 text-base font-book tracking-tighter text-gray-8 md:max-w-[580px] lg:max-w-none">
+          <p className="mt-4 text-base font-book tracking-tighter text-gray-8 md:max-w-[580px] lg:max-w-none 2xl:max-w-136">
             {hero.subheading}
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-4 md:gap-7 lg:mt-8 xl:mt-8">
-            <Button size="lg" variant="default" className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full" asChild>
-              <NextLink href={hero.primaryCta.href} data-click-location={hero.primaryCta.clickLocation} data-click-text={hero.primaryCta.clickText}>
+            <Button
+              size="lg"
+              variant="default"
+              className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full"
+              asChild
+            >
+              <NextLink
+                href={hero.primaryCta.href}
+                data-click-location={hero.primaryCta.clickLocation}
+                data-click-text={hero.primaryCta.clickText}
+              >
                 {hero.primaryCta.label}
               </NextLink>
             </Button>
-            <Button size="lg" variant="outline" className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full" asChild>
-              <NextLink href={hero.secondaryCta.href} data-click-location={hero.secondaryCta.clickLocation} data-click-text={hero.secondaryCta.clickText}>
+            <Button
+              size="lg"
+              variant="outline"
+              className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full"
+              asChild
+            >
+              <NextLink
+                href={hero.secondaryCta.href}
+                data-click-location={hero.secondaryCta.clickLocation}
+                data-click-text={hero.secondaryCta.clickText}
+              >
                 {hero.secondaryCta.label}
               </NextLink>
             </Button>

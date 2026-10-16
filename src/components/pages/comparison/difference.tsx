@@ -21,7 +21,7 @@ function Difference({ difference }: { difference: IComparisonDifference }) {
           {difference.cards.map((card) => (
             <li
               key={card.title}
-              className="relative flex flex-col overflow-hidden rounded-[0.75rem]"
+              className="relative flex flex-col overflow-hidden rounded-[0.75rem] bg-[#08070e] pb-4"
             >
               <Image
                 src={card.image}
@@ -55,8 +55,17 @@ function Difference({ difference }: { difference: IComparisonDifference }) {
         </ul>
 
         <div className="mt-14 flex justify-center">
-          <Button size="lg" variant="outline" className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full" asChild>
-            <NextLink href={difference.cta.href} data-click-location={difference.cta.clickLocation} data-click-text={difference.cta.clickText}>
+          <Button
+            size="lg"
+            variant="outline"
+            className="max-sm:h-10 max-sm:px-5 max-sm:text-xs max-2xs:w-full"
+            asChild
+          >
+            <NextLink
+              href={difference.cta.href}
+              data-click-location={difference.cta.clickLocation}
+              data-click-text={difference.cta.clickText}
+            >
               {difference.cta.label}
             </NextLink>
           </Button>
