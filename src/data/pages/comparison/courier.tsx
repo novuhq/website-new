@@ -21,17 +21,20 @@ import type { IComparisonPageData } from "@/types/comparison"
 export const courierComparisonData: IComparisonPageData = {
   slug: "courier",
   competitor: "Courier",
-  title: "Novu vs Courier",
+  title: "Novu vs. Courier",
   description:
-    "Compare Novu and Courier notification infrastructure platforms. See how Novu's open-source approach, developer experience, and pricing compare to Courier.",
+    "Compare Novu and Courier for multi-channel notifications, provider routing, failover, preferences, deployment, and agent communication.",
+  // The page ranks on this title, so it stays fixed while the heading changes.
+  metaTitle:
+    "Novu vs Courier: The best Courier alternative for end-to-end notifications",
   hero: {
     heading: {
       prefix: "Novu",
       highlight:
-        "vs Courier: The best Courier alternative for end-to-end notifications",
+        "vs. Courier: Best Courier alternative for customer messaging platform for humans & agents",
     },
     subheading:
-      "All your notification infrastructure needs, workflows, routing, preferences, and <Inbox /> in one platform, open source and built for builders and teams.",
+      "Build multi-channel workflows with routing, preferences, and <Inbox /> in Novu Notify. Choose dashboard authoring or TypeScript, and add Novu Connect when users need to reply to your agent.",
     primaryCta: {
       label: "Start for Free",
       href: "https://dashboard.novu.co",
@@ -46,7 +49,8 @@ export const courierComparisonData: IComparisonPageData = {
     },
     note: (
       <>
-        Free up to 10k events / month. <span>No credit card required</span>
+        Free up to 10,000 workflow runs per month.{" "}
+        <span>No credit card required</span>
       </>
     ),
     illustration: {
@@ -62,16 +66,16 @@ export const courierComparisonData: IComparisonPageData = {
   intro: {
     title: "Open Notification Infrastructure",
     description:
-      "Courier works well when teams are getting started with notifications. But as your product grow, its split architecture becomes harder to manage.",
+      "Novu is open-source notification infrastructure. Build a workflow once and deliver it to in-app, email, SMS, push, and chat, with digests, delays, and user preferences built in. Design it in the dashboard or define it in code, run it on Novu Cloud or your own servers, and let users reply to your AI agent through Novu Connect.",
     switchLabel: (
       <>
         Why teams switch to <span>Novu:</span>
       </>
     ),
     benefits: [
-      "One unified workflow model",
-      "Open source and self-hostable",
-      "Built to scale with your product",
+      "Create workflows via dashboard or code",
+      "Open-source core and deployment options",
+      "Notifications and agent conversations",
     ],
     cta: {
       label: "Get Started",
@@ -81,7 +85,7 @@ export const courierComparisonData: IComparisonPageData = {
     },
   },
   frustrations: {
-    title: "The frustrations that bring teams to Novu",
+    title: "The frustrations that bring teams to Novu",
     subtitle:
       "If you're on Courier and evaluating alternatives, you've probably run into at least one of these.",
     items: [
@@ -103,6 +107,12 @@ export const courierComparisonData: IComparisonPageData = {
           "Courier is cloud-only at every tier. If you need regional data residency or want to run your own infrastructure, there's currently no path to self-hosting.",
         icon: starsIcon,
       },
+      {
+        title: "No Agent to Answer Replies",
+        description:
+          "Users reply to notifications with questions. With Novu, assign an agent to a workflow and supported replies continue as a conversation with your AI agent, with the original notification as context.",
+        icon: starsIcon,
+      },
     ],
     cta: {
       label: "Switch to Novu",
@@ -114,10 +124,10 @@ export const courierComparisonData: IComparisonPageData = {
   difference: {
     title: "The Novu difference",
     subtitle:
-      "Built for developer teams who need notification infrastructure that scales without drama.",
+      "Build delivery rules around your product. Control workflow steps, provider selection, and the in-app experience, with deployment options for your infrastructure requirements.",
     cards: [
       {
-        title: "Everything you need in one <Inbox/>",
+        title: "Notifications and preferences in one <Inbox />",
         description:
           "An in-app notification inbox wrapped in a single <Inbox />. Use the drop-in component or go headless and build your own UI.",
         image: inboxIllustration,
@@ -126,33 +136,33 @@ export const courierComparisonData: IComparisonPageData = {
       {
         title: "Every step in one place",
         description:
-          "Build your workflow visually in the Novu dashboard or define it in code with Novu Framework. Content, routing, delays.",
+          "Build workflows in the dashboard or define them with Novu Framework. Configure channel content, conditions, delays, and digests in the same workflow.",
         image: workflowIllustration,
         icon: workflowIcon,
       },
       {
         title: "Self-host or use our cloud",
         description:
-          "Run Novu on your own infrastructure with Docker Compose. Move between cloud and self-host anytime with the same codebase.",
+          "Use Novu Cloud or deploy Novu on your infrastructure. Features, licensing, and support differ by edition. Evaluate those requirements before choosing a deployment or planning a migration.",
         image: codeIllustration,
         icon: cloudIcon,
       },
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
+          "Novu Cloud includes US and EU data residency on Free. Enterprise offers additional regional and self-hosted deployment options.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
       {
-        title: "Everything you need",
+        title: "Delivery logic for your product",
         description:
-          "In-app inbox, real-time delivery, and user preferences. Digest logic, multi-tenant support, and localization. All included with Novu.",
+          "Combine channel steps with conditions, delays, and digests. Use contexts for tenant-aware notifications and translated content for the locales your product supports. Check the plan and edition for the features you need.",
         image: digestIllustration,
         icon: digestIcon,
       },
       {
-        title: "What users see in minutes",
+        title: "Notifications users can act on",
         description:
           "Real-time delivery, unread counts, snooze controls, and preferences. Styled out of the box and customizable with the appearance prop.",
         image: notificationsIllustration,
@@ -167,9 +177,9 @@ export const courierComparisonData: IComparisonPageData = {
     },
   },
   codeSection: {
-    title: "Add notifications with just a few lines of code",
+    title: "Add notifications with just a few lines of code",
     subtitle:
-      "Trigger workflows, add an in-app inbox, and manage user notification preferences — all using simple components and minimal setup.",
+      "Trigger configured workflows from your backend, add an in-app Inbox, and let users manage their notification preferences.",
     image: {
       src: codeSectionIllustration,
       width: 870,
@@ -180,17 +190,17 @@ export const courierComparisonData: IComparisonPageData = {
       {
         title: "Trigger notifications from your backend",
         description:
-          "Send notifications across email, SMS, push, and in-app channels with a single API call.",
+          "Trigger one configured workflow to send through its email, SMS, push, chat, and in-app steps.",
       },
       {
         title: "Add an in-app notification inbox",
         description:
-          "Drop in a pre-built <Inbox /> component or go headless and build your own notification center UI.",
+          "Drop in the prebuilt <Inbox /> component or go headless and build your own notification center UI.",
       },
       {
         title: "Let users control their notifications",
         description:
-          "Give subscribers full control over their notification preferences with a built-in preferences component.",
+          "Let subscribers manage global and per-workflow channel preferences in Inbox. Critical workflows bypass subscriber preferences.",
       },
     ],
   },
@@ -212,7 +222,7 @@ export const courierComparisonData: IComparisonPageData = {
       [
         "Cloud or Self-hosted",
         <>
-          Switch between <span>Novu</span> Cloud and self-hosted anytime.
+          <span>Novu</span> Cloud or self-host on your own infrastructure.
         </>,
         "Cloud only",
         <>
@@ -224,52 +234,62 @@ export const courierComparisonData: IComparisonPageData = {
         <>
           <span>Novu</span> unifies notifications, routing, and orchestration.
         </>,
-
-        "Separate layer for content and a different layer for orchestration.",
+        "Send API for messages, with Journeys as a separate layer for orchestration.",
         <>
-          <span>One workflow per use case</span> makes debugging easier.
+          <span>One workflow per use case</span> keeps content, routing, and
+          timing together.
         </>,
       ],
       [
         "Code-first workflows",
         "Define workflows and add notifications in code.",
-        "GUI only",
+        "Visual designer, with APIs to manage templates and journeys.",
         <>
           For engineering teams treating notification logic as{" "}
           <span>product logic.</span>
         </>,
       ],
       [
+        "Agent conversations",
+        "Novu Connect lets users reply to notifications and talk to your AI agent.",
+        "Agents can send notifications through MCP.",
+        <>
+          Turn notifications into <span>two-way conversations</span> with your
+          agent.
+        </>,
+      ],
+      [
         "Data residency",
         "Free: US + EU. Enterprise adds SG, UK, AU, JP, KR, VPC, On-Prem.",
-        "EU datacenter available at Enterprise tier only.",
+        "US or EU. EU datacenter on Business and Enterprise plans.",
         <>
-          Courier: US/EU only. Novu: <span>global + On-Prem.</span>
+          Novu gives you <span>EU residency on the Free plan</span>, plus global
+          and On-Prem options as you grow.
         </>,
       ],
       [
         "Multi-tenant support",
         "Available on both free and paid plans.",
-        "Enterprise tier only.",
+        "Tenant objects for brands, overrides, and defaults.",
         <>
-          Novu enables <span>tenant context earlier.</span>
+          Novu gives you <span>tenant context on every plan.</span>
         </>,
       ],
       [
         "User preferences",
         "Included in standard plans, configurable from Inbox.",
-        "Enterprise tier only.",
+        "Preference center with topic opt-ins.",
         <>
           Users control notifications <span>from day one</span> with Novu.
         </>,
       ],
       [
         "Pricing at scale",
-        "Usage-based, event-counted",
+        "Usage-based, counted per workflow run.",
         "$0.005 per send (~$500/mo at 100k sends)",
         <>
-          <span>Predictable costs</span> that don&apos;t spike as your
-          notification volume grows
+          Start with <span>10,000 free workflow runs</span> a month, then pay
+          for what you run.
         </>,
       ],
     ],
@@ -277,7 +297,7 @@ export const courierComparisonData: IComparisonPageData = {
   banner: {
     title: "Migrate from Courier to Novu",
     description:
-      "Bring your workflows, templates, and notification logic to Novu with a more flexible, open infrastructure. Reduce vendor lock-in and gain full control with self-hosting and developer-first workflows.",
+      "Plan how to move your workflows, templates, subscribers, and preferences to Novu. Start with one representative workflow and verify its content, routing, failure behavior, and in-app experience.",
     cta: {
       label: "Migration Guide",
       href: "https://docs.novu.co/guides/migrate-from-courier-to-novu",
@@ -292,90 +312,91 @@ export const courierComparisonData: IComparisonPageData = {
     accordion: {
       items: [
         {
-          answer: (
-            <p>
-              A workflow run is one execution of a workflow. Triggering a
-              workflow to a single subscriber counts as 1 run; triggering to a{" "}
-              <a
-                href="https://docs.novu.co/concepts/topics"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                topic
-              </a>{" "}
-              with 100 subscribers counts as 100 runs after fan-out.
-            </p>
-          ),
           question: "Is Novu really free to use?",
-        },
-        {
           answer: (
             <p>
-              A workflow run is one execution of a workflow. Triggering a
-              workflow to a single subscriber counts as 1 run; triggering to a{" "}
-              <a
-                href="https://docs.novu.co/concepts/topics"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                topic
-              </a>{" "}
-              with 100 subscribers counts as 100 runs after fan-out.
+              Novu Notify Cloud has a Free plan with 10,000 workflow runs per
+              month, email, in-app, SMS, chat, and push channels, plus US and EU
+              data residency. Provider services can have their own charges.
+              Evaluate Novu Connect usage and availability separately.
             </p>
           ),
+        },
+        {
           question: "How long does it take to migrate from Courier to Novu?",
-        },
-        {
           answer: (
             <p>
-              A workflow run is one execution of a workflow. Triggering a
-              workflow to a single subscriber counts as 1 run; triggering to a{" "}
+              Migration time depends on your templates, journeys, providers,
+              preference model, and in-app integration. Map those requirements,
+              then test one workflow before expanding the migration. Include
+              subscriber identity and production cutover in the plan. Review
+              provider recovery carefully because Courier and Novu have
+              different retry and failover behavior. Use our{" "}
               <a
-                href="https://docs.novu.co/concepts/topics"
+                href="https://docs.novu.co/guides/migrate-from-courier-to-novu"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                topic
+                Courier migration guide
               </a>{" "}
-              with 100 subscribers counts as 100 runs after fan-out.
+              to prepare the move.
             </p>
           ),
-          question: "Can I self-hos Novu if I need full data control?",
         },
         {
+          question: "Can I self-host Novu if I need deployment control?",
           answer: (
             <p>
-              A workflow run is one execution of a workflow. Triggering a
-              workflow to a single subscriber counts as 1 run; triggering to a{" "}
-              <a
-                href="https://docs.novu.co/concepts/topics"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                topic
-              </a>{" "}
-              with 100 subscribers counts as 100 runs after fan-out.
+              Yes. Novu offers Community Self-Hosted and commercial self-hosted
+              options. Features, licensing, and support differ by edition.
+              Evaluate the edition against your production requirements and
+              account for operating the infrastructure. Novu Cloud remains
+              available if you prefer managed infrastructure.
             </p>
           ),
+        },
+        {
           question:
             "Does Novu support multi-tenant architectures for B2B SaaS products?",
-        },
-        {
           answer: (
             <p>
-              A workflow run is one execution of a workflow. Triggering a
-              workflow to a single subscriber counts as 1 run; triggering to a{" "}
-              <a
-                href="https://docs.novu.co/concepts/topics"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                topic
-              </a>{" "}
-              with 100 subscribers counts as 100 runs after fan-out.
+              Yes. Use contexts to associate notifications with a tenant and
+              scope Inbox feeds and subscriber preferences to that context.
+              Context data can also personalize notification content and
+              branding. Courier supports tenant objects with their own brands,
+              defaults, and content. Compare the specific tenant controls your
+              product needs and confirm current plan availability.
             </p>
           ),
-          question: "What is Novu Framework and do I have to use it?",
+        },
+        {
+          question: "What is Novu Framework, and do I have to use it?",
+          answer: (
+            <p>
+              Novu Framework is an optional TypeScript workflow model that lets
+              you run custom workflow code and retrieve content through a bridge
+              endpoint in your application. You can also build workflows in the
+              Novu dashboard. Choose the authoring model that fits your team and
+              the application logic your notifications need.
+            </p>
+          ),
+        },
+        {
+          question:
+            "Can a user reply to a notification and continue with an AI agent?",
+          answer: (
+            <p>
+              With Novu Connect, you can assign an agent to a workflow.
+              Supported replies can open or continue a conversation with the
+              originating notification context. For example, a user can reply in
+              the Slack thread for an export-failed alert, and your agent can
+              use the context to look up that export through an authorized tool.
+              Novu handles communication. Your agent controls its model and
+              business logic. Reply behavior depends on the channel. Web Chat
+              does not inherit workflow notification origin. Courier also
+              provides agent-driven notification sending through MCP.
+            </p>
+          ),
         },
       ],
     },
@@ -384,8 +405,8 @@ export const courierComparisonData: IComparisonPageData = {
   ctaSection: {
     title: "Switch to Novu",
     description:
-      "Adding notification infrastructure into your application shouldn’t be complicated.",
-    hint: "Free for 10K workflow runs/month",
+      "Build one workflow from your product, connect your providers, and inspect the results. Talk to our team about deployment requirements or migration planning.",
+    hint: "Novu Notify Free includes 10,000 workflow runs per month",
     actions: [
       {
         kind: "primary-button",

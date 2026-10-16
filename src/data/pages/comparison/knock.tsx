@@ -227,6 +227,24 @@ export const knockComparisonData: IComparisonPageData = {
         "Open-source platform",
         "Proprietary managed platform",
         <>
+          Compare provider retries separately from workflow follow-ups. Review
+          the{" "}
+          <a
+            href="https://docs.novu.co/platform/developer/delivery-retries"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Novu retry policy
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://docs.knock.app/send-notifications/delivering-notifications"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Knock delivery policy
+          </a>
+          .
           More control over your <span>stack</span> and a clearer fallback path
           if your infrastructure, compliance, or vendor requirements change
         </>,
@@ -367,6 +385,19 @@ export const knockComparisonData: IComparisonPageData = {
           question: "How long does it take to migrate from Knock to Novu?",
           answer: (
             <p>
+              Migration time depends on your workflows, providers, preference
+              model, and in-app integration. Start by mapping those
+              requirements, then test one workflow before expanding the
+              migration. Include subscriber identity, preference data, delivery
+              behavior, and production cutover in the plan. Use our{" "}
+              <a
+                href="https://docs.novu.co/guides/migrate-from-knock-to-novu"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Knock migration guide
+              </a>{" "}
+              to prepare the move.
               It depends on how many workflows, providers, and in-app
               experiences you need to move. Most teams can migrate in phases
               instead of replacing everything at once, starting with core
