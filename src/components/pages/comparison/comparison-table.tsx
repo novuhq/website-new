@@ -34,7 +34,7 @@ function ComparisonTableSection({
                     <div
                       key={index}
                       className={cn(
-                        "px-4 py-2 lg:px-6 lg:py-2.5 border-b",
+                        "border-b px-4 py-2 lg:px-6 lg:py-2.5",
                         index % 2 === 1 && "bg-white/6",
                         "border-white/6",
                         index > 0 && "border-l"
@@ -50,10 +50,7 @@ function ComparisonTableSection({
                 {/* Rows */}
                 {comparisonTable.rows.map((row, index) => {
                   return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-4"
-                    >
+                    <div key={index} className="grid grid-cols-4">
                       {row.map((cell, celIndex) => (
                         <div
                           key={celIndex}
@@ -67,7 +64,7 @@ function ComparisonTableSection({
                         >
                           <span
                             className={cn(
-                              "text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-9 [&_span]:font-medium [&_span]:text-white",
+                              "text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-9 [&_a]:text-primary [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-primary-muted [&_span]:font-medium [&_span]:text-white",
                               celIndex === 0 && "font-medium text-white"
                             )}
                           >

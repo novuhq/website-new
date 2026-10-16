@@ -26,7 +26,7 @@ function FrustrationItem({
         unoptimized
       />
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl leading-tight font-medium tracking-tighter whitespace-nowrap text-white">
+        <h3 className="text-xl leading-tight font-medium tracking-tighter text-balance text-white">
           {item.title}
         </h3>
         <p className="text-[0.9375rem] leading-snug font-book tracking-tighter text-gray-8">

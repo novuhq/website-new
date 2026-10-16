@@ -115,6 +115,8 @@ export interface IComparisonPageData {
   competitor: string
   title: string
   description: string
+  /** Page and social title; defaults to the hero heading. */
+  metaTitle?: string
   hero: IComparisonHero
   intro: IComparisonIntro
   frustrations: IComparisonFrustrations
