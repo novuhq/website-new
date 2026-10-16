@@ -8,6 +8,12 @@ export const USE_CASE_SLUGS = [
 
 export type UseCaseSlug = (typeof USE_CASE_SLUGS)[number]
 
+/** Slugs rendered by the shared template; multi-channel has its own page. */
+export type TemplateUseCaseSlug = Exclude<
+  UseCaseSlug,
+  "multi-channel-notifications"
+>
+
 export type FeatureAnimation =
   | "content-management"
   | "digest"
@@ -47,7 +53,7 @@ export interface UseCaseBenefit {
 }
 
 export interface UseCasePageData {
-  readonly slug: UseCaseSlug
+  readonly slug: TemplateUseCaseSlug
   readonly metadata: {
     readonly title: string
     readonly description: string
@@ -56,6 +62,7 @@ export interface UseCasePageData {
     readonly title: string
     readonly description: string
     readonly links: readonly UseCaseLink[]
+    readonly supportingLine?: string
   }
   readonly features: readonly UseCaseFeature[]
   readonly painRestatement: {

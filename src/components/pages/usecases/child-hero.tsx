@@ -38,6 +38,11 @@ function UseCaseHero({ data }: UseCaseHeroProps) {
             </Button>
           ))}
         </div>
+        {data.supportingLine && (
+          <p className="mx-auto mt-6 max-w-xl text-center text-sm leading-snug font-book text-gray-8 md:text-base">
+            {data.supportingLine}
+          </p>
+        )}
       </div>
     </section>
   )

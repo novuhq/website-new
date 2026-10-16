@@ -2,6 +2,7 @@ import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/components/ui/link"
 
 import type { IndexPictureSectionData } from "./types"
 
@@ -55,15 +56,17 @@ function IndexPictureSection({ data }: IndexPictureSectionProps) {
               size="none"
               asChild
             >
-              <a
+              <Link
                 href={data.action.href}
+                variant="clean"
+                size="none"
                 data-click-location={`usecases_${data.id}`}
                 data-click-text={data.action.label
                   .toLowerCase()
                   .replaceAll(" ", "_")}
               >
                 {data.action.label}
-              </a>
+              </Link>
             </Button>
           </div>
           <div className="pointer-events-none relative z-0 h-[200px] w-full sm:h-[300px] md:h-full">

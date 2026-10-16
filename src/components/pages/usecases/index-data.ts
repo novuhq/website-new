@@ -47,7 +47,7 @@ export const INDEX_GOALS = {
         "Timely, personalized, and relevant notifications across preferred channels leads to higher user engagement and satisfaction.",
       action: {
         label: "Learn more",
-        href: "https://novu.co/blog/digest-notifications-best-practices-example/?utm_campaign=ws-usecases",
+        href: "/usecases/improve-communication-experience/",
       },
     },
   ] satisfies readonly IndexGoal[],
@@ -75,8 +75,8 @@ export const INDEX_PICTURE_SECTIONS = [
       "Expand your reach by adding more channels ensuring users receive critical information on time, and through their preferred channel.",
     imageSide: "right",
     action: {
-      label: "Check out Channels",
-      href: "https://docs.novu.co/workflow/channel-steps#available-channels",
+      label: "Learn more",
+      href: "/usecases/multi-channel-notifications/",
     },
     image: {
       src: "/images/pages/usecases/index/multi-channel/illustration.jpg",
@@ -92,8 +92,8 @@ export const INDEX_PICTURE_SECTIONS = [
       "Notifications are the best way to keep your users and customers informed through relevant, timely updates, and adding them to your app or website is easier than you think.",
     imageSide: "left",
     action: {
-      label: "In-App Overview",
-      href: "https://docs.novu.co/inbox/overview",
+      label: "Learn more",
+      href: "/usecases/add-notifications/",
     },
     image: {
       src: "/images/pages/usecases/index/application/illustration.png",
@@ -110,7 +110,7 @@ export const INDEX_PICTURE_SECTIONS = [
     imageSide: "right",
     action: {
       label: "Learn more",
-      href: "https://docs.novu.co/concepts/notifications?utm_campaign=ws_usecases",
+      href: "/usecases/unified-platform/",
     },
     image: {
       src: "/images/pages/usecases/index/management/illustration.jpg",
@@ -127,7 +127,7 @@ export const INDEX_PICTURE_SECTIONS = [
     imageSide: "left",
     action: {
       label: "Learn more",
-      href: "https://docs.novu.co/platform/workflow/add-notification-content/channels-template-editors?utm_campaign=ws_usecases",
+      href: "/usecases/content-management/",
     },
     image: {
       src: "/images/pages/usecases/index/content/illustration.png",
