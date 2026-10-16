@@ -1,28 +1,22 @@
-import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg";
-import codeIllustration from "@/images/pages/comparison/courier/difference/code.png";
-import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png";
-import inboxIllustration from "@/images/pages/comparison/courier/difference/inbox.png";
-import notificationsIllustration from "@/images/pages/comparison/courier/difference/notifications.png";
-import regionsIllustration from "@/images/pages/comparison/courier/difference/regions.png";
-import workflowIllustration from "@/images/pages/comparison/courier/difference/workflow.png";
-import heroIllustration from "@/images/pages/comparison/knock/hero/illustration.jpg";
-import cloudIcon from "@/svgs/pages/comparison/courier/difference/cloud.svg";
-import digestIcon from "@/svgs/pages/comparison/courier/difference/digest.svg";
-import inboxIcon from "@/svgs/pages/comparison/courier/difference/inbox.svg";
-import notificationsIcon from "@/svgs/pages/comparison/courier/difference/notifications.svg";
-import regionsIcon from "@/svgs/pages/comparison/courier/difference/regions.svg";
-import workflowIcon from "@/svgs/pages/comparison/courier/difference/workflow.svg";
-import architectureIcon from "@/svgs/pages/comparison/courier/frustrations/architecture.svg";
-import lockIcon from "@/svgs/pages/comparison/courier/frustrations/lock.svg";
-import starsIcon from "@/svgs/pages/comparison/courier/frustrations/stars.svg";
+import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
+import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
+import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
+import inboxIllustration from "@/images/pages/comparison/courier/difference/inbox.png"
+import notificationsIllustration from "@/images/pages/comparison/courier/difference/notifications.png"
+import regionsIllustration from "@/images/pages/comparison/courier/difference/regions.png"
+import workflowIllustration from "@/images/pages/comparison/courier/difference/workflow.png"
+import heroIllustration from "@/images/pages/comparison/knock/hero/illustration.jpg"
+import cloudIcon from "@/svgs/pages/comparison/courier/difference/cloud.svg"
+import digestIcon from "@/svgs/pages/comparison/courier/difference/digest.svg"
+import inboxIcon from "@/svgs/pages/comparison/courier/difference/inbox.svg"
+import notificationsIcon from "@/svgs/pages/comparison/courier/difference/notifications.svg"
+import regionsIcon from "@/svgs/pages/comparison/courier/difference/regions.svg"
+import workflowIcon from "@/svgs/pages/comparison/courier/difference/workflow.svg"
+import architectureIcon from "@/svgs/pages/comparison/courier/frustrations/architecture.svg"
+import lockIcon from "@/svgs/pages/comparison/courier/frustrations/lock.svg"
+import starsIcon from "@/svgs/pages/comparison/courier/frustrations/stars.svg"
 
-
-
-import type { IComparisonPageData } from "@/types/comparison";
-
-
-
-
+import type { IComparisonPageData } from "@/types/comparison"
 
 export const knockComparisonData: IComparisonPageData = {
   slug: "knock",
@@ -247,11 +241,19 @@ export const knockComparisonData: IComparisonPageData = {
         <>
           Compare provider retries separately from workflow follow-ups. Review
           the{" "}
-          <a href="https://docs.novu.co/platform/developer/delivery-retries">
+          <a
+            href="https://docs.novu.co/platform/developer/delivery-retries"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Novu retry policy
           </a>{" "}
           and{" "}
-          <a href="https://docs.knock.app/send-notifications/delivering-notifications">
+          <a
+            href="https://docs.knock.app/send-notifications/delivering-notifications"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Knock delivery policy
           </a>
           .
@@ -384,7 +386,11 @@ export const knockComparisonData: IComparisonPageData = {
               requirements, then test one workflow before expanding the
               migration. Include subscriber identity, preference data, delivery
               behavior, and production cutover in the plan. Use our{" "}
-              <a href="https://docs.novu.co/guides/migrate-from-knock-to-novu">
+              <a
+                href="https://docs.novu.co/guides/migrate-from-knock-to-novu"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Knock migration guide
               </a>{" "}
               to prepare the move.

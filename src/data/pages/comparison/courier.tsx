@@ -332,7 +332,11 @@ export const courierComparisonData: IComparisonPageData = {
               subscriber identity and production cutover in the plan. Review
               provider recovery carefully because Courier and Novu have
               different retry and failover behavior. Use our{" "}
-              <a href="https://docs.novu.co/guides/migrate-from-courier-to-novu">
+              <a
+                href="https://docs.novu.co/guides/migrate-from-courier-to-novu"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Courier migration guide
               </a>{" "}
               to prepare the move.

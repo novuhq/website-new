@@ -23,3 +23,12 @@ export function getComparisonBySlug(
 export function getAllComparisonSlugs(): string[] {
   return Object.keys(comparisonPages)
 }
+
+/** Page title shared by the HTML metadata and the markdown alternate. */
+export function getComparisonTitle(data: IComparisonPageData): string {
+  const title =
+    data.metaTitle ??
+    `${data.hero.heading.prefix} ${data.hero.heading.highlight}`
+
+  return title.replace(/\u00a0/g, " ")
+}

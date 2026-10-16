@@ -1,5 +1,8 @@
 import { type ReactNode } from "react"
-import { getComparisonBySlug } from "@/data/pages/comparison"
+import {
+  getComparisonBySlug,
+  getComparisonTitle,
+} from "@/data/pages/comparison"
 import { comparisonReviews } from "@/data/pages/comparison/reviews"
 
 import {
@@ -48,11 +51,7 @@ export async function getComparison(
   const data = getComparisonBySlug(match[1])
   if (!data) return null
 
-  const title =
-    `${data.hero.heading.prefix} ${data.hero.heading.highlight}`.replace(
-      /\u00a0/g,
-      " "
-    )
+  const title = getComparisonTitle(data)
   const body = [
     data.hero.subheading,
     [
