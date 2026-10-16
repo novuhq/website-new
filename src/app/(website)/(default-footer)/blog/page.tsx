@@ -133,7 +133,7 @@ export default async function BlogPage() {
           {
             kind: "primary-button",
             label: "Get started",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: "blog_index_cta",
             clickText: "get_started",
           },

@@ -180,7 +180,7 @@ export const securityCta = {
       "Try Novu for free today, and send your first notification while your coffee is still too hot to drink.",
     action: {
       label: "Try Novu",
-      href: "https://dashboard.novu.co/?utm_campaign=ws_security",
+      href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_security",
     },
   },
   secondary: {
