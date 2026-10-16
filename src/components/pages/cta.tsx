@@ -93,14 +93,15 @@ function CTA({
         {hint && (
           <div className="mt-8 flex items-center gap-x-2.5">
             <Image
+              className="size-6 shrink-0 md:size-7"
               src={CheckboxIcon}
               alt=""
-              width={20}
-              height={20}
+              width={28}
+              height={28}
               aria-hidden
               unoptimized
             />
-            <p className="leading-dense font-medium tracking-tighter text-white">
+            <p className="text-lg leading-dense font-medium tracking-tighter text-white md:text-xl">
               {hint}
             </p>
           </div>
