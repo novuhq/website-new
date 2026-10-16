@@ -15,8 +15,21 @@ import Categories from "./categories"
 
 const PREVIEW_PARAGRAPHS = 2
 
-// A divider placed by the author marks where the preview ends. Without one,
-// the preview is the post's opening paragraphs.
+function isParagraph(block: PortableTextBlock) {
+  return (
+    block._type === "block" &&
+    (block.style ?? "normal") === "normal" &&
+    !block.listItem
+  )
+}
+
+function getText(block: PortableTextBlock) {
+  return block.children
+    .map((child) => (typeof child.text === "string" ? child.text : ""))
+    .join("")
+    .trim()
+}
+
 function getContentPreview(content: PortableTextBlock[]) {
   const dividerIndex = content.findIndex(
     (block) => block._type === "dividerBlock"
@@ -25,12 +38,19 @@ function getContentPreview(content: PortableTextBlock[]) {
 
   const preview: PortableTextBlock[] = []
   for (const block of content) {
-    const isParagraph =
-      block._type === "block" &&
-      (block.style ?? "normal") === "normal" &&
-      !block.listItem
-    if (!isParagraph || preview.length === PREVIEW_PARAGRAPHS) break
+    if (!isParagraph(block)) {
+      if (preview.length > 0) break
+      continue
+    }
+    if (!getText(block)) continue
     preview.push(block)
+    if (preview.length === PREVIEW_PARAGRAPHS) break
+  }
+  if (
+    preview.length > 1 &&
+    getText(preview[preview.length - 1]).endsWith(":")
+  ) {
+    preview.pop()
   }
   return preview
 }
@@ -118,6 +138,7 @@ function PostsItem({
             animation="arrow-right"
           >
             Read more
+            <span className="sr-only">: {title}</span>
             <ChevronRight className="translate-y-0.5" size={16} />
           </Link>
         )}

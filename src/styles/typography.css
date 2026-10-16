@@ -425,10 +425,6 @@
       }
     }
   }
-
-  &:not(.prose-with-hidden-part) .hidden-start {
-    @apply !hidden;
-  }
 }
 
 .prose-lg {
