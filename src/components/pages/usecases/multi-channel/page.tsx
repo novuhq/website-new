@@ -17,13 +17,13 @@ import { MultiChannelWorkflowDemo } from "./workflow-demo"
 // wide-screen gaps (`45929-5232`).
 const GAP = {
   why: "mt-24 md:mt-28 lg:mt-32 xl:mt-49.5",
-  channels: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",
-  workflowDemo: "mt-24 md:mt-28 lg:mt-32 xl:mt-70.5",
-  deliveryControls: "mt-24 md:mt-28 lg:mt-32 xl:mt-73",
-  routing: "mt-24 md:mt-28 lg:mt-32 xl:mt-57",
+  channels: "mt-24 md:mt-28 lg:mt-32 xl:mt-61",
+  workflowDemo: "mt-24 md:mt-28 lg:mt-32 xl:mt-59",
+  deliveryControls: "mt-24 md:mt-28 lg:mt-32 xl:mt-59",
+  routing: "mt-24 md:mt-28 lg:mt-32 xl:mt-59",
   agentReplies: "mt-24 md:mt-28 lg:mt-32 xl:mt-59",
   observability: "mt-24 md:mt-28 lg:mt-40 xl:mt-63",
-  faq: "mt-24 md:mt-28 lg:mt-40 xl:mt-59",
+  faq: "mt-24 md:mt-28 lg:mt-40 xl:mt-63",
   cta: "mt-24 md:mt-28 lg:mt-32 xl:mt-61",
 }
 

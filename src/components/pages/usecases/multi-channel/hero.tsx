@@ -6,8 +6,9 @@ import CustomerLogos from "@/components/customer-logos"
 import { ActionButton, TitleLines } from "./shared"
 
 /**
- * Hero `45929-6811`. The desktop plate is the 1920px frame from y 300 to the
- * logo strip (y 793). It overlaps the copy by 120px, which is empty glow.
+ * Hero `45963-622`. The desktop plate is the 1920px frame from y 300 to the
+ * logo strip (y 793). It overlaps the buttons by 110px, which is empty glow.
+ * The 108px logo strip centres the 86px logo track.
  *
  * Below 1440px the plate keeps 1920/1440 of the viewport width, so the
  * channel grid and the app card stay on screen while the edges crop. Phones
@@ -24,7 +25,7 @@ export function MultiChannelHero() {
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-5 text-center md:px-8 lg:max-w-240">
         <h1
           id="multi-channel-hero-title"
-          className="text-4xl leading-[1.14] font-normal tracking-plus-tight text-white md:text-5xl xl:text-[3.5rem]"
+          className="text-4xl leading-[1.14] font-normal tracking-plus-tight text-white md:text-5xl xl:text-[3.25rem]"
         >
           <TitleLines lines={HERO.titleLines} />
         </h1>
@@ -45,7 +46,7 @@ export function MultiChannelHero() {
         </div>
       </div>
 
-      <div className="relative left-1/2 mt-6 aspect-[780/1300] w-full max-w-120 -translate-x-1/2 md:-mt-[min(120px,8.333vw)] md:aspect-[1920/493] md:w-[min(1920px,133.333vw)] md:max-w-none">
+      <div className="relative left-1/2 mt-6 aspect-[780/1300] w-full max-w-120 -translate-x-1/2 md:-mt-[min(110px,7.639vw)] md:aspect-[1920/493] md:w-[min(1920px,133.333vw)] md:max-w-none">
         <picture className="absolute inset-0 block size-full">
           <source
             media="(width < 48rem)"
@@ -64,7 +65,7 @@ export function MultiChannelHero() {
         </picture>
       </div>
 
-      <CustomerLogos className="border-transparent" />
+      <CustomerLogos className="border-transparent md:py-2.75" />
     </section>
   )
 }

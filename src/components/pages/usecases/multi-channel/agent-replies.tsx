@@ -66,7 +66,7 @@ export function MultiChannelAgentReplies() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 p-5 md:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:p-12">
+          <div className="flex flex-col gap-6 p-5 md:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:px-12 lg:pt-10 lg:pb-14">
             <p className="text-lg leading-[1.25] font-medium tracking-tighter text-white md:text-2xl lg:max-w-183">
               <TitleLines lines={AGENT_REPLIES.ctaTextLines} breakFrom="xl" />
             </p>

@@ -28,7 +28,7 @@ export function MultiChannelWorkflowDemo() {
           </p>
         </div>
 
-        <div className="relative mx-auto mt-8 aspect-[520/740] w-full max-w-104 overflow-hidden rounded-[20px] md:mt-12 lg:aspect-[1280/388] lg:max-w-none">
+        <div className="relative mx-auto mt-8 aspect-[520/740] w-full max-w-104 overflow-hidden rounded-[20px] md:mt-10 lg:aspect-[1280/388] lg:max-w-none">
           <picture className="absolute inset-0 block size-full">
             <source
               media="(width < 64rem)"

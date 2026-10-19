@@ -25,7 +25,7 @@ export function MultiChannelDeliveryControls() {
           </p>
         </div>
 
-        <div className="mt-8 md:mt-12 xl:px-8">
+        <div className="mt-8 md:mt-10 xl:px-8">
           <ul
             className="grid overflow-hidden rounded-xl md:grid-cols-2 lg:grid-cols-4"
             role="list"

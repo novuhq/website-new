@@ -18,7 +18,7 @@ export function MultiChannelObservability() {
       {/* At lg the box is 1344px including its 32px padding; the plate's
           offsets are measured against that padding box. */}
       <div className={cn(CONTAINER, "relative lg:aspect-[1344/480]")}>
-        <div className="relative z-10 flex flex-col gap-5 lg:max-w-134 lg:pt-[6.33%] xl:pl-16">
+        <div className="relative z-10 flex flex-col gap-5 lg:max-w-134 lg:pt-[4.92%] xl:pl-16">
           <h2 id="multi-channel-observability-title" className={HEADING}>
             <TitleLines lines={OBSERVABILITY.titleLines} />
           </h2>

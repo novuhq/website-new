@@ -12,7 +12,7 @@ export function MultiChannelRouting() {
       action={ROUTING.action}
       items={ROUTING.items}
       align="start"
-      headingOffsetClassName="lg:pt-4"
+      headingOffsetClassName="lg:pt-5"
     />
   )
 }

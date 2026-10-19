@@ -86,7 +86,7 @@ export function ProviderSection({
                     src={item.icon}
                   />
                 </span>
-                <p className="text-lg leading-[1.25] font-medium tracking-tighter text-gray-60 md:text-2xl">
+                <p className="text-lg leading-[1.25] font-medium tracking-tighter text-gray-60 md:text-[22px]">
                   <span className="text-white">{item.title}</span>{" "}
                   <TitleLines lines={item.descriptionLines} breakFrom="xl" />
                 </p>

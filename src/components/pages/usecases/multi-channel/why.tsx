@@ -26,13 +26,13 @@ export function MultiChannelWhy() {
         </div>
 
         <ul
-          className="mt-8 grid gap-4 md:mt-12 lg:grid-cols-3 xl:px-8"
+          className="mt-8 grid gap-4 md:mt-9 lg:grid-cols-3 xl:px-8"
           role="list"
         >
           {WHY.cards.map((card) => (
             <li
               key={card.title}
-              className="flex flex-col gap-8 rounded-xl bg-card-surface p-6 lg:gap-22"
+              className="flex flex-col gap-8 rounded-xl bg-card-surface p-6 lg:gap-20"
             >
               <Image alt="" aria-hidden className="size-8" src={card.icon} />
               <div className="flex flex-col gap-2">
