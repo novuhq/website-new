@@ -125,7 +125,7 @@ export const digestCta = {
   },
   secondary: {
     label: "Contact us",
-    href: "https://novu.co/contact-us",
+    href: "/contact-us/",
   },
 } satisfies DualCtaData
 

@@ -47,7 +47,7 @@ export const INDEX_GOALS = {
         "Timely, personalized, and relevant notifications across preferred channels leads to higher user engagement and satisfaction.",
       action: {
         label: "Learn more",
-        href: "https://novu.co/blog/digest-notifications-best-practices-example/?utm_campaign=ws-usecases",
+        href: "/blog/digest-notifications-best-practices-example/?utm_campaign=ws-usecases",
       },
     },
   ] satisfies readonly IndexGoal[],
@@ -63,7 +63,7 @@ export const INDEX_ECHO_CTA = {
   },
   secondaryAction: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_usecases",
+    href: "/contact-us/?utm_campaign=ws_usecases",
   },
 } satisfies IndexCtaData
 
@@ -148,6 +148,6 @@ export const INDEX_REQUIREMENTS_CTA = {
   },
   secondaryAction: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_usecases",
+    href: "/contact-us/?utm_campaign=ws_usecases",
   },
 } satisfies IndexCtaData

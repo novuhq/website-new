@@ -240,7 +240,7 @@ export const inboxCta = {
   },
   secondary: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=contact-inbox",
+    href: "/contact-us/?utm_campaign=contact-inbox",
   },
 } satisfies DualCtaData
 

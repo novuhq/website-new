@@ -22,7 +22,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-addNotification",
+          url: "/contact-us/?utm_campaign=website-usecase-addNotification",
         },
       ],
     },
@@ -186,7 +186,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-contentManagement",
+          url: "/contact-us/?utm_campaign=website-usecase-contentManagement",
         },
       ],
     },
@@ -349,7 +349,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-improveComms",
+          url: "/contact-us/?utm_campaign=website-usecase-improveComms",
         },
       ],
     },
@@ -502,7 +502,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-multiChannel",
+          url: "/contact-us/?utm_campaign=website-usecase-multiChannel",
         },
       ],
     },
@@ -655,7 +655,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-unifiedPlatform",
+          url: "/contact-us/?utm_campaign=website-usecase-unifiedPlatform",
         },
       ],
     },

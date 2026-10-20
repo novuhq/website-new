@@ -173,7 +173,7 @@ export const frameworkCtaNow = {
   },
   secondary: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_framework",
+    href: "/contact-us/?utm_campaign=ws_framework",
   },
 } satisfies DualCtaData
 
@@ -277,7 +277,7 @@ export const frameworkCtaFree = {
   },
   secondary: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_framework",
+    href: "/contact-us/?utm_campaign=ws_framework",
   },
 } satisfies DualCtaData
 

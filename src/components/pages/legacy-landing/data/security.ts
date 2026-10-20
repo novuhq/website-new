@@ -189,7 +189,7 @@ export const securityCta = {
       "Ready to chat instead? Book a meeting with us, and we'll get your questions answered.",
     action: {
       label: "Meet with Novu",
-      href: "https://novu.co/contact-us/?utm_campaign=ws_security",
+      href: "/contact-us/?utm_campaign=ws_security",
     },
   },
 } satisfies SecurityCtaData

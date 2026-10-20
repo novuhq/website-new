@@ -37,7 +37,7 @@ const DEFAULT_RIGHT_CARD = {
   title: "Discovery Session",
   description: "Schedule a session with our experts",
   buttonText: "Discovery Session",
-  buttonHref: "https://novu.co/contact-us/?utm_campaign=website-cta-bottom",
+  buttonHref: "/contact-us/?utm_campaign=website-cta-bottom",
   clickLocation: "get_started",
   clickText: "book_a_call",
 } satisfies GetStartedCard

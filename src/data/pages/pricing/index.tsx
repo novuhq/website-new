@@ -399,7 +399,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://novu.co/contact-us/?utm_campaign=ws_pricing",
+          href: "/contact-us/?utm_campaign=ws_pricing",
           isExternal: false,
           text: "Contact us",
         },
