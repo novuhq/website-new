@@ -4,6 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
+import { absoluteUrl } from "@/lib/site-url"
 
 import IntegrationsTabPageContent from "../_components/integrations-tab-page-content"
 
@@ -42,15 +43,15 @@ export default async function IntegrationsChannelsPage() {
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
     },
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }

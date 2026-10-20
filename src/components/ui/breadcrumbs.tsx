@@ -49,7 +49,7 @@ export default function Breadcrumbs({ firstLabel }: { firstLabel?: string }) {
   }
 
   const siteUrl =
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://www.novu.co"
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

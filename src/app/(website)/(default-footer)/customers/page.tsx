@@ -25,7 +25,8 @@ export default async function CustomersPage() {
 
   const isFeaturedExist = page.customersGrid.some((item) => item.isFeatured)
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+  const siteUrl =
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://www.novu.co"
 
   const reviews = page.tweets
     .filter((tweet) => tweet.name && tweet.text)

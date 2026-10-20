@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://novu.co"
+const DEFAULT_SITE_URL = "https://www.novu.co"
 const SUPPORTED_SITE_PROTOCOLS = new Set(["http:", "https:"])
 
 function parseSiteUrl(value: string, source: string, allowBareHost = false) {

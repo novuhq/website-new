@@ -39,10 +39,10 @@ describe("site URL helpers", () => {
   it("uses the production URL when no override is configured", () => {
     delete process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
 
-    assert.equal(getSiteUrl(), "https://novu.co")
+    assert.equal(getSiteUrl(), "https://www.novu.co")
     assert.equal(
       absoluteUrl("/channels/slack/"),
-      "https://novu.co/channels/slack/"
+      "https://www.novu.co/channels/slack/"
     )
   })
 

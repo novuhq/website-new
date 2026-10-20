@@ -12,6 +12,7 @@ import {
   getTotalPages,
 } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
+import { absoluteUrl } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
@@ -55,15 +56,15 @@ export default async function BlogPage() {
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
     },
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }

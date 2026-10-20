@@ -7,6 +7,7 @@ import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
+import { absoluteUrl } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { Button } from "@/components/ui/button"
@@ -174,10 +175,10 @@ export default async function ChangelogPostPage({
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }

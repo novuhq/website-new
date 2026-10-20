@@ -7,6 +7,7 @@ import { ROUTE } from "@/constants/routes"
 import { getAllPosts, getLatestPosts, getPostBySlug } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
+import { absoluteUrl } from "@/lib/site-url"
 import { getExcerpt } from "@/lib/utils"
 import Post from "@/components/pages/blog/post/post"
 import CTA from "@/components/pages/cta"
@@ -58,10 +59,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }
