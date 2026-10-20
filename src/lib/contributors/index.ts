@@ -111,8 +111,14 @@ async function fetchJson(
   return { ok: true, status: response.status, data: await response.json() }
 }
 
+interface ContributorsList {
+  contributors: Contributor[]
+  /** Lowercase handle -> handle as stored by the API, for mixed-case handles. */
+  sourceGithubs: Record<string, string>
+}
+
 const loadContributorsCached = unstable_cache(
-  async (): Promise<Contributor[]> => {
+  async (): Promise<ContributorsList> => {
     const { ok, data } = await fetchJson(
       `${CONTRIBUTORS_API_URL}/contributors`,
       { cache: "no-store" }
@@ -121,21 +127,31 @@ const loadContributorsCached = unstable_cache(
 
     const payload = asRecord(data)
     const list = payload && Array.isArray(payload.list) ? payload.list : []
-    const contributors = list
-      .map(normalizeContributor)
-      .filter((item): item is Contributor => !!item)
-      .map((contributor) => ({
+    const contributors: Contributor[] = []
+    const sourceGithubs: Record<string, string> = {}
+
+    for (const item of list) {
+      const contributor = normalizeContributor(item)
+      if (!contributor) continue
+
+      contributors.push({
         ...contributor,
         pulls: contributor.pulls.slice(0, 1),
-      }))
+      })
+
+      const sourceGithub = asString(asRecord(item)?.github)?.trim()
+      if (sourceGithub && sourceGithub !== contributor.github) {
+        sourceGithubs[contributor.github] = sourceGithub
+      }
+    }
 
     if (!contributors.length) {
       throw new Error("Contributors API returned an empty list")
     }
 
-    return contributors
+    return { contributors, sourceGithubs }
   },
-  ["contributors-list-v2", CONTRIBUTORS_API_URL],
+  ["contributors-list-v3", CONTRIBUTORS_API_URL],
   { revalidate: 3600, tags: ["contributors"] }
 )
 
@@ -148,7 +164,7 @@ export const getContributorsResult = cache(
   async (): Promise<ContributorsResult> => {
     try {
       return {
-        contributors: await loadContributorsCached(),
+        contributors: (await loadContributorsCached()).contributors,
         unavailable: false,
       }
     } catch {
@@ -193,8 +209,18 @@ export const getContributor = cache(
     }
 
     try {
+      const contributor = await loadContributorCached(safeGithub)
+      if (contributor) return { contributor, unavailable: false }
+
+      // The API matches handles case-sensitively, but profile URLs use the
+      // lowercase handle, so retry mixed-case handles with their stored casing.
+      const { sourceGithubs } = await loadContributorsCached()
+      const sourceGithub = sourceGithubs[safeGithub]
+
       return {
-        contributor: await loadContributorCached(safeGithub),
+        contributor: sourceGithub
+          ? await loadContributorCached(sourceGithub)
+          : null,
         unavailable: false,
       }
     } catch {
