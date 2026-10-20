@@ -117,10 +117,16 @@ test.describe("critical responsive navigation", () => {
         .getByRole("button", { name: "Integrations", exact: true })
         .click()
     } else {
+      // The desktop trigger links to the integrations page and opens its
+      // dropdown on hover.
       const integrations = page
         .locator("header")
-        .getByRole("button", { name: "Integrations", exact: true })
-      await expectReactHandlerReady(integrations, "onClick")
+        .getByRole("link", { name: "Integrations", exact: true })
+      await expect(integrations).toHaveAttribute(
+        "href",
+        "/integrations/channels/"
+      )
+      await expectReactHandlerReady(integrations, "onFocus")
       await integrations.hover()
     }
 
