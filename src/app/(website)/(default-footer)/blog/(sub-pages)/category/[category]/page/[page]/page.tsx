@@ -95,7 +95,7 @@ export async function generateMetadata({
 
   return getMetadata({
     title: `${SEO_DATA.blog.title}: ${categoryData.title} - page ${page} | ${config.projectName}`,
-    description: `${categoryData.title} ${SEO_DATA.blog.description} ${page > 1 ? `Page ${page}` : ""}`,
+    description: `Novu blog posts in ${categoryData.title}. ${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`,
     pathname: `${ROUTE.blogCategory}/${category}/page/${page}`,
   })
 }

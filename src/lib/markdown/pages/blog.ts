@@ -62,7 +62,7 @@ export async function getBlogListing(
     page: pageFromSeo(
       {
         title: `${SEO_DATA.blog.title}: ${categoryData.title} | ${config.projectName}`,
-        description: `${categoryData.title} ${SEO_DATA.blog.description}`,
+        description: `Novu blog posts in ${categoryData.title}. ${SEO_DATA.blog.description}.`,
         pathname: `${ROUTE.blogCategory}/${category}`,
       },
       [`## All posts in ${categoryData.title}`, postListMarkdown(posts)].join(
