@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type KeyboardEvent } from "react"
 import { usePathname } from "next/navigation"
 import { ROUTE } from "@/constants/routes"
 import { ChevronDown } from "lucide-react"
@@ -21,6 +21,9 @@ interface IOpenMenuState {
   title: string | null
   animateIn: boolean
 }
+
+const ITEM_CLASS_NAME =
+  "relative z-10 text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
 
 function Nav({ className, items }: IHeaderNavProps) {
   const pathname = usePathname()
@@ -48,6 +51,12 @@ function Nav({ className, items }: IHeaderNavProps) {
     []
   )
 
+  const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape") {
+      setOpenMenu({ title: null, animateIn: false })
+    }
+  }
+
   return (
     <nav
       className={cn("relative flex font-inter xl:mt-1", className)}
@@ -57,10 +66,9 @@ function Nav({ className, items }: IHeaderNavProps) {
       <ul className="flex items-center">
         {items.map(({ title, content, href, variant }, index) => {
           const isActive = index === activeIndex
-          const hasDropdown = Boolean(
-            !href && variant && content && content.length > 0
-          )
+          const hasDropdown = Boolean(variant && content && content.length > 0)
           const menuId = `header-menu-${index}`
+          const isOpen = openMenu.title === title
 
           return (
             <li
@@ -81,9 +89,9 @@ function Nav({ className, items }: IHeaderNavProps) {
                   : undefined
               }
             >
-              {href ? (
+              {href && !hasDropdown ? (
                 <Link
-                  className="relative z-10 text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
+                  className={ITEM_CLASS_NAME}
                   href={href}
                   size="md"
                   variant="muted"
@@ -93,39 +101,57 @@ function Nav({ className, items }: IHeaderNavProps) {
                 </Link>
               ) : (
                 <>
-                  <Button
-                    className="relative z-10 cursor-pointer text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
-                    size="md"
-                    variant="link"
-                    data-active={isActive}
-                    onClick={() =>
-                      setOpenMenu((current) => {
-                        const nextTitle = current.title === title ? null : title
+                  {href ? (
+                    // A trigger with a landing page navigates on click; its
+                    // dropdown opens on hover or keyboard focus instead.
+                    <Link
+                      className={cn(ITEM_CLASS_NAME, "gap-x-1")}
+                      href={href}
+                      size="md"
+                      variant="muted"
+                      data-active={isActive}
+                      onFocus={handleMenuOpen(title)}
+                      onClick={handleMenuOpen(null)}
+                      onKeyDown={handleTriggerKeyDown}
+                      aria-haspopup="true"
+                      aria-expanded={isOpen}
+                      aria-controls={menuId}
+                    >
+                      {title}
+                      <ChevronDown className="mt-1 ml-px size-3!" />
+                    </Link>
+                  ) : (
+                    <Button
+                      className={cn(ITEM_CLASS_NAME, "cursor-pointer")}
+                      size="md"
+                      variant="link"
+                      data-active={isActive}
+                      onClick={() =>
+                        setOpenMenu((current) => {
+                          const nextTitle =
+                            current.title === title ? null : title
 
-                        return {
-                          title: nextTitle,
-                          animateIn:
-                            nextTitle !== null && current.title === null,
-                        }
-                      })
-                    }
-                    onKeyDown={(event) => {
-                      if (event.key === "Escape") {
-                        setOpenMenu({ title: null, animateIn: false })
+                          return {
+                            title: nextTitle,
+                            animateIn:
+                              nextTitle !== null && current.title === null,
+                          }
+                        })
                       }
-                    }}
-                    aria-haspopup="true"
-                    aria-expanded={openMenu.title === title}
-                    aria-controls={menuId}
-                  >
-                    {title}
-                    <ChevronDown className="mt-1 ml-px size-3!" />
-                  </Button>
+                      onKeyDown={handleTriggerKeyDown}
+                      aria-haspopup="true"
+                      aria-expanded={isOpen}
+                      aria-controls={menuId}
+                    >
+                      {title}
+                      <ChevronDown className="mt-1 ml-px size-3!" />
+                    </Button>
+                  )}
                   {content && content.length > 0 && variant && (
                     <Dropdown
                       id={menuId}
-                      isOpen={openMenu.title === title}
-                      animateIn={openMenu.title === title && openMenu.animateIn}
+                      isOpen={isOpen}
+                      animateIn={isOpen && openMenu.animateIn}
                       title={title}
                       variant={variant}
                       content={content}

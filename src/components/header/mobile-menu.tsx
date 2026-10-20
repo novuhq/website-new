@@ -192,24 +192,25 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
                     className="border-b border-b-foreground/10 font-inter last:border-b-0"
                     key={index}
                   >
-                    {href ? (
-                      <Link
-                        className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
-                        href={href}
-                        variant="foreground"
-                        onClick={closeMenu}
-                      >
-                        {title}
-                      </Link>
+                    {/* Items with a dropdown stay accordions on mobile, even
+                        when they also have a landing page. */}
+                    {content && content.length > 0 ? (
+                      <MobileItem
+                        title={title}
+                        variant={variant}
+                        content={content}
+                        onNavigate={closeMenu}
+                      />
                     ) : (
-                      content &&
-                      content.length > 0 && (
-                        <MobileItem
-                          title={title}
-                          variant={variant}
-                          content={content}
-                          onNavigate={closeMenu}
-                        />
+                      href && (
+                        <Link
+                          className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
+                          href={href}
+                          variant="foreground"
+                          onClick={closeMenu}
+                        >
+                          {title}
+                        </Link>
                       )
                     )}
                   </li>

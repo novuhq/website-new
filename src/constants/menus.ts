@@ -51,6 +51,7 @@ export const MENUS = {
     },
     {
       title: "Integrations",
+      href: ROUTE.integrationsChannels,
       variant: "integrations",
       content: [
         {
