@@ -20,6 +20,14 @@ interface IHeaderNavProps {
 interface IOpenMenuState {
   title: string | null
   animateIn: boolean
+  /** The pointer opened the menu by hovering its item. */
+  openedByHover: boolean
+}
+
+const CLOSED_MENU: IOpenMenuState = {
+  title: null,
+  animateIn: false,
+  openedByHover: false,
 }
 
 const ITEM_CLASS_NAME =
@@ -27,10 +35,7 @@ const ITEM_CLASS_NAME =
 
 function Nav({ className, items }: IHeaderNavProps) {
   const pathname = usePathname()
-  const [openMenu, setOpenMenu] = useState<IOpenMenuState>({
-    title: null,
-    animateIn: false,
-  })
+  const [openMenu, setOpenMenu] = useState<IOpenMenuState>(CLOSED_MENU)
 
   const activeIndex = useMemo(
     () =>
@@ -47,13 +52,31 @@ function Nav({ className, items }: IHeaderNavProps) {
       setOpenMenu((current) => ({
         title,
         animateIn: title !== null && current.title === null,
+        openedByHover: title !== null,
       })),
+    []
+  )
+
+  const handleMenuToggle = useCallback(
+    (title: string) => () =>
+      setOpenMenu((current) => {
+        // Hover opens the menu before the click lands, so a click on a
+        // hover-opened menu keeps it open instead of closing it.
+        const nextTitle =
+          current.title === title && !current.openedByHover ? null : title
+
+        return {
+          title: nextTitle,
+          animateIn: nextTitle !== null && current.title === null,
+          openedByHover: false,
+        }
+      }),
     []
   )
 
   const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === "Escape") {
-      setOpenMenu({ title: null, animateIn: false })
+      setOpenMenu(CLOSED_MENU)
     }
   }
 
@@ -69,6 +92,13 @@ function Nav({ className, items }: IHeaderNavProps) {
           const hasDropdown = Boolean(variant && content && content.length > 0)
           const menuId = `header-menu-${index}`
           const isOpen = openMenu.title === title
+          const triggerProps = {
+            onClick: handleMenuToggle(title),
+            onKeyDown: handleTriggerKeyDown,
+            "aria-haspopup": "true" as const,
+            "aria-expanded": isOpen,
+            "aria-controls": menuId,
+          }
 
           return (
             <li
@@ -83,7 +113,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                           event.relatedTarget as Node | null
                         )
                       ) {
-                        setOpenMenu({ title: null, animateIn: false })
+                        setOpenMenu(CLOSED_MENU)
                       }
                     }
                   : undefined
@@ -102,46 +132,43 @@ function Nav({ className, items }: IHeaderNavProps) {
               ) : (
                 <>
                   {href ? (
-                    // A trigger with a landing page navigates on click; its
-                    // dropdown opens on hover or keyboard focus instead.
-                    <Link
-                      className={cn(ITEM_CLASS_NAME, "gap-x-1")}
-                      href={href}
-                      size="md"
-                      variant="muted"
-                      data-active={isActive}
-                      onFocus={handleMenuOpen(title)}
-                      onClick={handleMenuOpen(null)}
-                      onKeyDown={handleTriggerKeyDown}
-                      aria-haspopup="true"
-                      aria-expanded={isOpen}
-                      aria-controls={menuId}
-                    >
-                      {title}
-                      <ChevronDown className="mt-1 ml-px size-3!" />
-                    </Link>
+                    // A trigger with a landing page is a link plus a separate
+                    // dropdown button, so keyboard and touch users can reach
+                    // both.
+                    <div className="group/trigger flex items-center">
+                      <Link
+                        className={cn(
+                          ITEM_CLASS_NAME,
+                          "group-hover/trigger:text-foreground lg:pr-0! xl:pr-0!"
+                        )}
+                        href={href}
+                        size="md"
+                        variant="muted"
+                        data-active={isActive}
+                        onClick={handleMenuOpen(null)}
+                      >
+                        {title}
+                      </Link>
+                      <Button
+                        className={cn(
+                          ITEM_CLASS_NAME,
+                          "cursor-pointer group-hover/trigger:text-foreground lg:pl-1! xl:pl-1!"
+                        )}
+                        size="md"
+                        variant="link"
+                        aria-label={`${title} menu`}
+                        {...triggerProps}
+                      >
+                        <ChevronDown className="mt-1 ml-px size-3!" />
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       className={cn(ITEM_CLASS_NAME, "cursor-pointer")}
                       size="md"
                       variant="link"
                       data-active={isActive}
-                      onClick={() =>
-                        setOpenMenu((current) => {
-                          const nextTitle =
-                            current.title === title ? null : title
-
-                          return {
-                            title: nextTitle,
-                            animateIn:
-                              nextTitle !== null && current.title === null,
-                          }
-                        })
-                      }
-                      onKeyDown={handleTriggerKeyDown}
-                      aria-haspopup="true"
-                      aria-expanded={isOpen}
-                      aria-controls={menuId}
+                      {...triggerProps}
                     >
                       {title}
                       <ChevronDown className="mt-1 ml-px size-3!" />

@@ -194,7 +194,7 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
                   >
                     {/* Items with a dropdown stay accordions on mobile, even
                         when they also have a landing page. */}
-                    {content && content.length > 0 ? (
+                    {variant && content && content.length > 0 ? (
                       <MobileItem
                         title={title}
                         variant={variant}

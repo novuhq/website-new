@@ -117,17 +117,20 @@ test.describe("critical responsive navigation", () => {
         .getByRole("button", { name: "Integrations", exact: true })
         .click()
     } else {
-      // The desktop trigger links to the integrations page and opens its
-      // dropdown on hover.
-      const integrations = page
-        .locator("header")
-        .getByRole("link", { name: "Integrations", exact: true })
-      await expect(integrations).toHaveAttribute(
-        "href",
-        "/integrations/channels/"
-      )
-      await expectReactHandlerReady(integrations, "onFocus")
-      await integrations.hover()
+      // On desktop, Integrations links to its landing page, and a separate
+      // button opens the dropdown. Hover opens the menu first, and the click
+      // must keep it open.
+      const header = page.locator("header")
+      await expect(
+        header.getByRole("link", { name: "Integrations", exact: true })
+      ).toHaveAttribute("href", "/integrations/channels/")
+      const menuButton = header.getByRole("button", {
+        name: "Integrations menu",
+        exact: true,
+      })
+      await expectReactHandlerReady(menuButton, "onClick")
+      await menuButton.click()
+      await expect(menuButton).toHaveAttribute("aria-expanded", "true")
     }
 
     await revealCategory("In-app")
