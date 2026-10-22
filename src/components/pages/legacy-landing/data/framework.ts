@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import type {
   BentoCardData,
   CodeSectionData,
@@ -173,7 +175,7 @@ export const frameworkCtaNow = {
   },
   secondary: {
     label: "Contact us",
-    href: "/contact-us/?utm_campaign=ws_framework",
+    href: `${ROUTE.contactUs}/?utm_campaign=ws_framework`,
   },
 } satisfies DualCtaData
 
@@ -277,7 +279,7 @@ export const frameworkCtaFree = {
   },
   secondary: {
     label: "Contact us",
-    href: "/contact-us/?utm_campaign=ws_framework",
+    href: `${ROUTE.contactUs}/?utm_campaign=ws_framework`,
   },
 } satisfies DualCtaData
 

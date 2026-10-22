@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import type {
   CodeSectionData,
   DualCtaData,
@@ -240,7 +242,7 @@ export const inboxCta = {
   },
   secondary: {
     label: "Contact us",
-    href: "/contact-us/?utm_campaign=contact-inbox",
+    href: `${ROUTE.contactUs}/?utm_campaign=contact-inbox`,
   },
 } satisfies DualCtaData
 

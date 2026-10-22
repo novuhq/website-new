@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import Image from "next/image"
+import { ROUTE } from "@/constants/routes"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -37,7 +38,7 @@ const DEFAULT_RIGHT_CARD = {
   title: "Discovery Session",
   description: "Schedule a session with our experts",
   buttonText: "Discovery Session",
-  buttonHref: "/contact-us/?utm_campaign=website-cta-bottom",
+  buttonHref: `${ROUTE.contactUs}/?utm_campaign=website-cta-bottom`,
   clickLocation: "get_started",
   clickText: "book_a_call",
 } satisfies GetStartedCard
