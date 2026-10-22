@@ -5,6 +5,11 @@ import { unstable_cache } from "next/cache"
 import achievementsData from "@/content/contributors/wordpress-achievements.json"
 
 import { normalizeContributorGithub } from "./image-urls"
+import {
+  getSourceGithubs,
+  resolveSourceGithub,
+  type ContributorHandle,
+} from "./source-githubs"
 import type {
   Contributor,
   ContributorAchievement,
@@ -128,7 +133,7 @@ const loadContributorsCached = unstable_cache(
     const payload = asRecord(data)
     const list = payload && Array.isArray(payload.list) ? payload.list : []
     const contributors: Contributor[] = []
-    const sourceGithubs: Record<string, string> = {}
+    const handles: ContributorHandle[] = []
 
     for (const item of list) {
       const contributor = normalizeContributor(item)
@@ -138,18 +143,19 @@ const loadContributorsCached = unstable_cache(
         ...contributor,
         pulls: contributor.pulls.slice(0, 1),
       })
-
-      const sourceGithub = asString(asRecord(item)?.github)?.trim()
-      if (sourceGithub && sourceGithub !== contributor.github) {
-        sourceGithubs[contributor.github] = sourceGithub
-      }
+      handles.push({
+        github: contributor.github,
+        sourceGithub:
+          asString(asRecord(item)?.github)?.trim() || contributor.github,
+        totalPulls: contributor.totalPulls,
+      })
     }
 
     if (!contributors.length) {
       throw new Error("Contributors API returned an empty list")
     }
 
-    return { contributors, sourceGithubs }
+    return { contributors, sourceGithubs: getSourceGithubs(handles) }
   },
   ["contributors-list-v3", CONTRIBUTORS_API_URL],
   { revalidate: 3600, tags: ["contributors"] }
@@ -199,6 +205,18 @@ const loadContributorCached = unstable_cache(
   { revalidate: 3600, tags: ["contributors"] }
 )
 
+// The API matches handles case-sensitively, but profile URLs use the
+// lowercase handle, so request the casing the contributors list stores.
+// Without the list, fall back to the lowercase handle, as before the lookup.
+async function getSourceGithub(safeGithub: string) {
+  try {
+    const { sourceGithubs } = await loadContributorsCached()
+    return resolveSourceGithub(sourceGithubs, safeGithub)
+  } catch {
+    return safeGithub
+  }
+}
+
 export const getContributor = cache(
   async (
     github: string
@@ -209,18 +227,10 @@ export const getContributor = cache(
     }
 
     try {
-      const contributor = await loadContributorCached(safeGithub)
-      if (contributor) return { contributor, unavailable: false }
-
-      // The API matches handles case-sensitively, but profile URLs use the
-      // lowercase handle, so retry mixed-case handles with their stored casing.
-      const { sourceGithubs } = await loadContributorsCached()
-      const sourceGithub = sourceGithubs[safeGithub]
-
       return {
-        contributor: sourceGithub
-          ? await loadContributorCached(sourceGithub)
-          : null,
+        contributor: await loadContributorCached(
+          await getSourceGithub(safeGithub)
+        ),
         unavailable: false,
       }
     } catch {
