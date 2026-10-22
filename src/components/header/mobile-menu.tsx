@@ -18,6 +18,7 @@ import {
 import { Link } from "@/components/ui/link"
 
 import Burger from "./burger"
+import { hasDropdown } from "./has-dropdown"
 import MobileItem from "./mobile-item"
 
 interface MobileMenuProps {
@@ -187,29 +188,30 @@ function MobileMenu({ items, actions = DEFAULT_ACTIONS }: MobileMenuProps) {
               aria-label="Mobile navigation"
             >
               <ul>
-                {items.map(({ title, content, href, variant }, index) => (
+                {items.map((item, index) => (
                   <li
                     className="border-b border-b-foreground/10 font-inter last:border-b-0"
                     key={index}
                   >
-                    {href ? (
-                      <Link
-                        className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
-                        href={href}
-                        variant="foreground"
-                        onClick={closeMenu}
-                      >
-                        {title}
-                      </Link>
+                    {/* Items with a dropdown stay accordions on mobile, even
+                        when they also have a landing page. */}
+                    {hasDropdown(item) ? (
+                      <MobileItem
+                        title={item.title}
+                        variant={item.variant}
+                        content={item.content}
+                        onNavigate={closeMenu}
+                      />
                     ) : (
-                      content &&
-                      content.length > 0 && (
-                        <MobileItem
-                          title={title}
-                          variant={variant}
-                          content={content}
-                          onNavigate={closeMenu}
-                        />
+                      item.href && (
+                        <Link
+                          className="relative z-10 w-full py-3.25 font-medium hover:!text-primary sm:!text-lg"
+                          href={item.href}
+                          variant="foreground"
+                          onClick={closeMenu}
+                        >
+                          {item.title}
+                        </Link>
                       )
                     )}
                   </li>

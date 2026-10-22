@@ -3,6 +3,7 @@ import { CAREER_DEPARTMENTS, EMPTY_CV_ERROR_MESSAGE } from "@/constants/careers"
 import { z } from "zod"
 
 import { getCareerJobReferenceBySlug } from "@/lib/notion/careers"
+import { absoluteUrl } from "@/lib/site-url"
 
 const MAX_CV_FILE_SIZE = 10 * 1024 * 1024
 const MAX_MULTIPART_BODY_SIZE = MAX_CV_FILE_SIZE + 1024 * 1024
@@ -195,9 +196,7 @@ function getRichText(value: string) {
 }
 
 function getCareerJobUrl(slug: string) {
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
-
-  return new URL(`/careers/${slug}/`, siteUrl).toString()
+  return absoluteUrl(`/careers/${slug}/`)
 }
 
 function getCareerJobProperties(jobReference: CareerJobReference | null) {

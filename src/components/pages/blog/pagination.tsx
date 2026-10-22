@@ -21,22 +21,22 @@ function Pagination({
   path = "",
 }: IPaginationProps) {
   const router = useRouter()
+  const basePath = !path ? ROUTE.blog : `${ROUTE.blogCategory}/${path}`
 
+  // Raw <a> hrefs skip Next's trailingSlash handling, so add the slash here
+  // to link to the final URL instead of a redirect.
   const hrefBuilder = (page: number, pageQty: number) => {
-    const basePath = !path ? ROUTE.blog : `${ROUTE.blogCategory}/${path}`
     const pageNumber = page > 1 && page <= pageQty ? `/page/${page}` : ""
 
-    return basePath + pageNumber
+    return `${basePath}${pageNumber}/`
   }
 
   const handlePageClick = ({ selected }: { selected: number }) => {
     const page = selected + 1
 
-    const basePath = !path ? ROUTE.blog : `${ROUTE.blogCategory}/${path}`
+    const navigateTo = page === 1 ? `${basePath}/` : `${basePath}/page/${page}/`
 
-    const navigateTo = page === 1 ? basePath : `${basePath}/page/${page}`
-
-    router.push(navigateTo.toString())
+    router.push(navigateTo)
   }
 
   return (

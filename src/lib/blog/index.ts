@@ -1,4 +1,5 @@
 import config from "@/configs/website-config"
+import { SEO_DATA } from "@/constants/seo-data"
 
 import {
   ICategory,
@@ -41,6 +42,11 @@ const REVALIDATE_BLOG_TAG = "blog"
 type SanityReadOptions = {
   cache?: RequestCache
   useCdn?: boolean
+}
+
+/** Meta description for a blog category listing, optionally paginated. */
+export function getBlogCategoryDescription(categoryTitle: string, page = 1) {
+  return `Novu blog posts in ${categoryTitle}. ${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`
 }
 
 /**

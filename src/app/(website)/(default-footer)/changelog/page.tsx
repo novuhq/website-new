@@ -5,6 +5,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
+import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
 import ChangelogHero from "@/components/pages/changelog/hero"
 import PostsList from "@/components/pages/changelog/posts-list"
 import CTA from "@/components/pages/cta"
@@ -26,7 +27,7 @@ export default async function ChangelogPage({
   const posts = allPosts.slice(0, end)
   const hasMore = end < allPosts.length
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const siteUrl = getSiteUrl()
   const changelogJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -36,15 +37,15 @@ export default async function ChangelogPage({
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
     },
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }

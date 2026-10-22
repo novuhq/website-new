@@ -1,4 +1,5 @@
 import React from "react"
+import { ROUTE } from "@/constants/routes"
 import logoBitmex from "@/images/pages/pricing/logos/bitmex.svg"
 import logoBpp from "@/images/pages/pricing/logos/bpp.svg"
 import logoCheckpoint from "@/images/pages/pricing/logos/checkpoint.svg"
@@ -399,7 +400,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://novu.co/contact-us/?utm_campaign=ws_pricing",
+          href: `${ROUTE.contactUs}/?utm_campaign=ws_pricing`,
           isExternal: false,
           text: "Contact us",
         },

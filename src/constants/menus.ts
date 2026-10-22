@@ -51,6 +51,7 @@ export const MENUS = {
     },
     {
       title: "Integrations",
+      href: ROUTE.integrationsChannels,
       variant: "integrations",
       content: [
         {
@@ -159,7 +160,11 @@ export const MENUS = {
             href: ROUTE.docsContentManagement,
             isNew: false,
           },
-          { label: "Integrations", href: ROUTE.integrations, isNew: false },
+          {
+            label: "Integrations",
+            href: ROUTE.integrationsChannels,
+            isNew: false,
+          },
           {
             label: "Notifications Directory",
             href: ROUTE.docsNotifications,

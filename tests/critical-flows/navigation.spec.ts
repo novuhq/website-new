@@ -117,11 +117,20 @@ test.describe("critical responsive navigation", () => {
         .getByRole("button", { name: "Integrations", exact: true })
         .click()
     } else {
-      const integrations = page
-        .locator("header")
-        .getByRole("button", { name: "Integrations", exact: true })
-      await expectReactHandlerReady(integrations, "onClick")
-      await integrations.hover()
+      // On desktop, Integrations links to its landing page, and a separate
+      // button opens the dropdown. Hover opens the menu first, and the click
+      // must keep it open.
+      const header = page.locator("header")
+      await expect(
+        header.getByRole("link", { name: "Integrations", exact: true })
+      ).toHaveAttribute("href", "/integrations/channels/")
+      const menuButton = header.getByRole("button", {
+        name: "Integrations menu",
+        exact: true,
+      })
+      await expectReactHandlerReady(menuButton, "onClick")
+      await menuButton.click()
+      await expect(menuButton).toHaveAttribute("aria-expanded", "true")
     }
 
     await revealCategory("In-app")
@@ -143,6 +152,64 @@ test.describe("critical responsive navigation", () => {
       const response = await request.get(pathname)
       expect(response.ok(), `${pathname} should resolve`).toBe(true)
     }
+
+    expectHealthyPage(applicationErrors)
+  })
+
+  test(`[${navigationContract.id}] header dropdowns keep keyboard and hover behavior`, async ({
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop header dropdowns")
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+
+    const header = page.locator("header")
+    const integrationsLink = header.getByRole("link", {
+      name: "Integrations",
+      exact: true,
+    })
+    const integrationsButton = header.getByRole("button", {
+      name: "Integrations menu",
+      exact: true,
+    })
+    const inAppCategory = header.getByRole("link", {
+      name: "In-app",
+      exact: true,
+    })
+    await expectReactHandlerReady(integrationsButton, "onClick")
+
+    // Focus alone opens nothing, so a closed dropdown stays out of the tab
+    // order.
+    await integrationsLink.focus()
+    await integrationsButton.focus()
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+    await expect(inAppCategory).toHaveCount(0)
+
+    await page.keyboard.press("Enter")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "true")
+    await expect(inAppCategory).toBeVisible()
+    await page.keyboard.press("Escape")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+    await page.keyboard.press("Enter")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "true")
+    await page.keyboard.press("Escape")
+
+    // Refocusing the link, as when returning to the tab, keeps it closed.
+    await integrationsButton.blur()
+    await integrationsLink.focus()
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+
+    // A click right after hover opens a menu keeps it open; the next click
+    // closes it.
+    const product = header.getByRole("button", { name: "Product", exact: true })
+    await product.hover()
+    await expect(product).toHaveAttribute("aria-expanded", "true")
+    await product.click()
+    await expect(product).toHaveAttribute("aria-expanded", "true")
+    await product.click()
+    await expect(product).toHaveAttribute("aria-expanded", "false")
 
     expectHealthyPage(applicationErrors)
   })

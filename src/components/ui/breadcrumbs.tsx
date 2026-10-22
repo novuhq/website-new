@@ -3,6 +3,7 @@
 import React from "react"
 import { usePathname } from "next/navigation"
 
+import { toCanonicalPathname } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import DynamicIcon from "@/components/dynamic-icon"
 
@@ -12,7 +13,16 @@ interface IBreadcrumbItem {
   isLast: boolean
 }
 
-export default function Breadcrumbs({ firstLabel }: { firstLabel?: string }) {
+interface IBreadcrumbsProps {
+  firstLabel?: string
+  /** Site origin for the JSON-LD item URLs, resolved on the server. */
+  siteUrl: string
+}
+
+export default function Breadcrumbs({
+  firstLabel,
+  siteUrl,
+}: IBreadcrumbsProps) {
   const pathname = usePathname()
 
   const generateBreadcrumbs = (): IBreadcrumbItem[] => {
@@ -48,8 +58,6 @@ export default function Breadcrumbs({ firstLabel }: { firstLabel?: string }) {
     return null
   }
 
-  const siteUrl =
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -57,7 +65,7 @@ export default function Breadcrumbs({ firstLabel }: { firstLabel?: string }) {
       "@type": "ListItem",
       position: index + 1,
       name: index === 0 && firstLabel ? firstLabel : item.label,
-      item: `${siteUrl}${item.href}`,
+      item: `${siteUrl}${toCanonicalPathname(item.href)}`,
     })),
   }
 

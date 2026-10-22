@@ -86,7 +86,7 @@ export const suprsendComparisonData: IComparisonPageData = {
   frustrations: {
     title: "The frustrations that bring teams to Novu",
     subtitle:
-      "If you're evaluating alternatives, you've probably dealing with at least one of these.",
+      "If you're evaluating alternatives, you've probably been dealing with at least one of these.",
     items: [
       {
         title: "Code-first ownership",
@@ -149,7 +149,7 @@ export const suprsendComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self-hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
