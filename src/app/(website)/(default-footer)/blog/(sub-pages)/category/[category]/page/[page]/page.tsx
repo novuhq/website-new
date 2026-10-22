@@ -6,6 +6,7 @@ import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import {
+  getBlogCategoryDescription,
   getCategories,
   getCategoryBySlug,
   getPaginatedPostsByCategory,
@@ -95,7 +96,7 @@ export async function generateMetadata({
 
   return getMetadata({
     title: `${SEO_DATA.blog.title}: ${categoryData.title} - page ${page} | ${config.projectName}`,
-    description: `Novu blog posts in ${categoryData.title}. ${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`,
+    description: getBlogCategoryDescription(categoryData.title, page),
     pathname: `${ROUTE.blogCategory}/${category}/page/${page}`,
   })
 }
