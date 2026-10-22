@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
 
 import Dropdown from "./dropdown"
+import { hasDropdown } from "./has-dropdown"
 
 interface IHeaderNavProps {
   className?: string
@@ -20,15 +21,19 @@ interface IHeaderNavProps {
 interface IOpenMenuState {
   title: string | null
   animateIn: boolean
-  /** The pointer opened the menu by hovering its item. */
-  openedByHover: boolean
+  /** When hovering the item opened the menu, or null. */
+  hoverOpenedAt: number | null
 }
 
 const CLOSED_MENU: IOpenMenuState = {
   title: null,
   animateIn: false,
-  openedByHover: false,
+  hoverOpenedAt: null,
 }
+
+// Hover opens a menu just before the click on its trigger lands, so a click
+// within this window keeps the menu open instead of closing it.
+const HOVER_CLICK_WINDOW_MS = 500
 
 const ITEM_CLASS_NAME =
   "relative z-10 text-[0.9375rem] font-normal! tracking-normal whitespace-nowrap lg:px-2! xl:px-3.75!"
@@ -48,29 +53,36 @@ function Nav({ className, items }: IHeaderNavProps) {
   )
 
   const handleMenuOpen = useCallback(
-    (title: string | null) => () =>
+    (title: string | null) => () => {
+      const now = Date.now()
+
       setOpenMenu((current) => ({
         title,
         animateIn: title !== null && current.title === null,
-        openedByHover: title !== null,
-      })),
+        hoverOpenedAt: title !== null ? now : null,
+      }))
+    },
     []
   )
 
   const handleMenuToggle = useCallback(
-    (title: string) => () =>
+    (title: string) => () => {
+      const now = Date.now()
+
       setOpenMenu((current) => {
-        // Hover opens the menu before the click lands, so a click on a
-        // hover-opened menu keeps it open instead of closing it.
+        const justOpenedByHover =
+          current.hoverOpenedAt !== null &&
+          now - current.hoverOpenedAt < HOVER_CLICK_WINDOW_MS
         const nextTitle =
-          current.title === title && !current.openedByHover ? null : title
+          current.title === title && !justOpenedByHover ? null : title
 
         return {
           title: nextTitle,
           animateIn: nextTitle !== null && current.title === null,
-          openedByHover: false,
+          hoverOpenedAt: null,
         }
-      }),
+      })
+    },
     []
   )
 
@@ -87,9 +99,10 @@ function Nav({ className, items }: IHeaderNavProps) {
       onMouseLeave={handleMenuOpen(null)}
     >
       <ul className="flex items-center">
-        {items.map(({ title, content, href, variant }, index) => {
+        {items.map((item, index) => {
+          const { title, href } = item
           const isActive = index === activeIndex
-          const hasDropdown = Boolean(variant && content && content.length > 0)
+          const itemHasDropdown = hasDropdown(item)
           const menuId = `header-menu-${index}`
           const isOpen = openMenu.title === title
           const triggerProps = {
@@ -104,9 +117,9 @@ function Nav({ className, items }: IHeaderNavProps) {
             <li
               className="relative"
               key={index}
-              onMouseEnter={handleMenuOpen(hasDropdown ? title : null)}
+              onMouseEnter={handleMenuOpen(itemHasDropdown ? title : null)}
               onBlur={
-                hasDropdown
+                itemHasDropdown
                   ? (event) => {
                       if (
                         !event.currentTarget.contains(
@@ -119,7 +132,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                   : undefined
               }
             >
-              {href && !hasDropdown ? (
+              {href && !itemHasDropdown ? (
                 <Link
                   className={ITEM_CLASS_NAME}
                   href={href}
@@ -174,14 +187,14 @@ function Nav({ className, items }: IHeaderNavProps) {
                       <ChevronDown className="mt-1 ml-px size-3!" />
                     </Button>
                   )}
-                  {content && content.length > 0 && variant && (
+                  {hasDropdown(item) && (
                     <Dropdown
                       id={menuId}
                       isOpen={isOpen}
                       animateIn={isOpen && openMenu.animateIn}
                       title={title}
-                      variant={variant}
-                      content={content}
+                      variant={item.variant}
+                      content={item.content}
                     />
                   )}
                 </>
