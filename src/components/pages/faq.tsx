@@ -55,6 +55,8 @@ interface IFAQProps extends IFaqSection {
   triggerClassName?: string
   contentClassName?: string
   defaultOpenFirst?: boolean
+  /** Keep closed answers in the HTML (hidden) so crawlers can read them. */
+  keepAnswersInHtml?: boolean
   onScheduleClick?: (source: string) => void
 }
 
@@ -70,6 +72,7 @@ const FAQ = ({
   triggerClassName,
   contentClassName,
   defaultOpenFirst = false,
+  keepAnswersInHtml = false,
   onScheduleClick,
 }: IFAQProps) => {
   if (!title || !accordion) {
@@ -126,6 +129,7 @@ const FAQ = ({
                   {question}
                 </AccordionTrigger>
                 <AccordionContent
+                  forceMount={keepAnswersInHtml || undefined}
                   className={cn(
                     faqContentVariants({ variant }),
                     contentClassName
