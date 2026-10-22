@@ -1,39 +1,25 @@
 import { Metadata } from "next"
-import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
-import { absoluteUrl } from "@/lib/site-url"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 
 import IntegrationsTabPageContent from "../_components/integrations-tab-page-content"
-
-const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
 
 export const revalidate = false
 export const dynamic = "force-static"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = SEO_DATA.integrationsChannels
-  const base = getMetadata({ ...seo, markdownPathname: true })
-  const canonicalUrl = `${SITE_URL}${ROUTE.integrations}/channels/`
-
-  return {
-    ...base,
-    alternates: {
-      ...base.alternates,
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      ...base.openGraph,
-      url: canonicalUrl,
-    },
-  }
+  return getMetadata({
+    ...SEO_DATA.integrationsChannels,
+    markdownPathname: true,
+  })
 }
 
 export default async function IntegrationsChannelsPage() {
   const seo = SEO_DATA.integrationsChannels
-  const pageUrl = `${SITE_URL}${ROUTE.integrations}/channels/`
+  const pageUrl = absoluteUrl(toCanonicalPathname(seo.pathname))
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

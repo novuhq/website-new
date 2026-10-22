@@ -9,7 +9,7 @@ import { getAllCustomers, getLatestCustomers } from "@/lib/customers"
 import { getCustomerBySlug } from "@/lib/customers/customer"
 import { getMetadata } from "@/lib/get-metadata"
 import { safeJsonLdStringify } from "@/lib/json-ld"
-import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
+import { absoluteUrl, getSiteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import ColoredList, { ColorType } from "@/components/ui/colored-list"
@@ -123,7 +123,7 @@ export default async function CustomerStoryPage({
     <div>
       <section className="px-5 pt-9.5 md:px-8 md:pt-11.5 lg:px-0 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-232 xl:translate-x-30">
-          <Breadcrumbs firstLabel="Customers" />
+          <Breadcrumbs firstLabel="Customers" siteUrl={getSiteUrl()} />
           <h1 className="mt-4 text-[32px] leading-[1.125] font-medium tracking-tighter text-foreground md:text-[44px] xl:max-w-176 xl:text-5xl">
             {title}
           </h1>

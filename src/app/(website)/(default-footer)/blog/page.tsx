@@ -12,7 +12,7 @@ import {
   getTotalPages,
 } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
-import { absoluteUrl } from "@/lib/site-url"
+import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
@@ -46,7 +46,7 @@ export default async function BlogPage() {
     )
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const siteUrl = getSiteUrl()
   const blogJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

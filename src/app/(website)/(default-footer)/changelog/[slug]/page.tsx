@@ -7,7 +7,7 @@ import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { getChangelogPostBySlug, getChangelogPosts } from "@/lib/changelog"
 import { getMetadata } from "@/lib/get-metadata"
-import { absoluteUrl } from "@/lib/site-url"
+import { absoluteUrl, getSiteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { Button } from "@/components/ui/button"
@@ -127,8 +127,8 @@ export default async function ChangelogPostPage({
     content,
   } = post
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const postUrl = `${siteUrl}${pathname}`
+  const siteUrl = getSiteUrl()
+  const postUrl = absoluteUrl(toCanonicalPathname(pathname))
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
 
@@ -163,7 +163,7 @@ export default async function ChangelogPostPage({
     url: postUrl,
     image:
       cover ||
-      `${siteUrl}/api/og?template=changelog&title=${encodeURIComponent(title)}`,
+      `${siteUrl}/api/og/?template=changelog&title=${encodeURIComponent(title)}`,
     author:
       authors && authors.length > 0
         ? authors.map((author) => ({
@@ -187,7 +187,7 @@ export default async function ChangelogPostPage({
     <div className="px-5 pb-26 md:px-8 lg:pb-28 xl:pb-30">
       <section className="pt-9.5 md:pt-11.5 lg:pt-13.5 xl:pt-15.5">
         <article className="mx-auto max-w-248 xl:translate-x-36">
-          <Breadcrumbs firstLabel="Back to all updates" />
+          <Breadcrumbs firstLabel="Back to all updates" siteUrl={siteUrl} />
           <h1 className="mt-3 text-4xl leading-[1.125] font-medium tracking-tighter text-foreground md:mt-3.5 md:text-5xl xl:max-w-176">
             {title}
           </h1>

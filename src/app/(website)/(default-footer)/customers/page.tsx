@@ -5,6 +5,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { getCustomersPage } from "@/lib/customers"
 import { getMetadata } from "@/lib/get-metadata"
+import { getSiteUrl } from "@/lib/site-url"
 import CTA from "@/components/pages/cta"
 import CustomersGrid from "@/components/pages/customers/customers-grid"
 import Hero from "@/components/pages/customers/hero"
@@ -25,8 +26,7 @@ export default async function CustomersPage() {
 
   const isFeaturedExist = page.customersGrid.some((item) => item.isFeatured)
 
-  const siteUrl =
-    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://www.novu.co"
+  const siteUrl = getSiteUrl()
 
   const reviews = page.tweets
     .filter((tweet) => tweet.name && tweet.text)
