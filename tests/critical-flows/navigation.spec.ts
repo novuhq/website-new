@@ -156,6 +156,64 @@ test.describe("critical responsive navigation", () => {
     expectHealthyPage(applicationErrors)
   })
 
+  test(`[${navigationContract.id}] header dropdowns keep keyboard and hover behavior`, async ({
+    isMobile,
+    page,
+  }) => {
+    test.skip(isMobile, "Desktop header dropdowns")
+
+    const applicationErrors = observeApplicationErrors(page)
+    await gotoCriticalPage(page, navigationContract.route)
+
+    const header = page.locator("header")
+    const integrationsLink = header.getByRole("link", {
+      name: "Integrations",
+      exact: true,
+    })
+    const integrationsButton = header.getByRole("button", {
+      name: "Integrations menu",
+      exact: true,
+    })
+    const inAppCategory = header.getByRole("link", {
+      name: "In-app",
+      exact: true,
+    })
+    await expectReactHandlerReady(integrationsButton, "onClick")
+
+    // Focus alone opens nothing, so a closed dropdown stays out of the tab
+    // order.
+    await integrationsLink.focus()
+    await integrationsButton.focus()
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+    await expect(inAppCategory).toHaveCount(0)
+
+    await page.keyboard.press("Enter")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "true")
+    await expect(inAppCategory).toBeVisible()
+    await page.keyboard.press("Escape")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+    await page.keyboard.press("Enter")
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "true")
+    await page.keyboard.press("Escape")
+
+    // Refocusing the link, as when returning to the tab, keeps it closed.
+    await integrationsButton.blur()
+    await integrationsLink.focus()
+    await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
+
+    // A click right after hover opens a menu keeps it open; the next click
+    // closes it.
+    const product = header.getByRole("button", { name: "Product", exact: true })
+    await product.hover()
+    await expect(product).toHaveAttribute("aria-expanded", "true")
+    await product.click()
+    await expect(product).toHaveAttribute("aria-expanded", "true")
+    await product.click()
+    await expect(product).toHaveAttribute("aria-expanded", "false")
+
+    expectHealthyPage(applicationErrors)
+  })
+
   test(`[${navigationContract.id}] signed-out header action opens dashboard signup`, async ({
     isMobile,
     page,
