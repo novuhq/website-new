@@ -33,7 +33,7 @@ function HowItWorksIntro() {
             asChild
           >
             <NextLink
-              href={ROUTE.dashboardV2}
+              href={ROUTE.dashboardV2SignUp}
               target="_blank"
               rel="noopener noreferrer"
               data-click-location="aci_how_it_works"

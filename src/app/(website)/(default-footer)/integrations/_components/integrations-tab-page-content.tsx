@@ -92,7 +92,7 @@ async function IntegrationsTabPageContent({
           {
             kind: "primary-button",
             label: "Start building",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: `integrations_${tab}_cta`,
             clickText: "start_building",
             openInNewTab: true,

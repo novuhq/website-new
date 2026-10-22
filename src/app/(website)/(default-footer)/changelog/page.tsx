@@ -84,7 +84,7 @@ export default async function ChangelogPage({
           {
             kind: "primary-button",
             label: "Get started",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: "changelog_cta",
             clickText: "get_started",
           },

@@ -15,7 +15,7 @@ export const frameworkHero = {
     "Optionally extend your Novu workflows with a locally-run Novu Framework engine. Define workflows in code, tie into local data, apply advanced logic, and solve for any notifications requirement imaginable.",
   action: {
     label: "Try Novu",
-    href: "https://dashboard.novu.co/?utm_campaign=ws_framework",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_framework",
   },
   code: `import { workflow, CronExpression } from '@novu/framework';
 import { z } from 'zod';
@@ -169,7 +169,7 @@ export const frameworkCtaNow = {
     "Create complex workflows, access local data, and reuse existing content templates with Novu Framework.",
   primary: {
     label: "Try Novu",
-    href: "https://dashboard.novu.co/?utm_campaign=ws_framework",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_framework",
   },
   secondary: {
     label: "Contact us",
@@ -273,7 +273,7 @@ export const frameworkCtaFree = {
     "No credit card required.\nYou're just five minutes from your first Novu notification.",
   primary: {
     label: "Try Now",
-    href: "https://dashboard.novu.co/?utm_campaign=ws_framework",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=ws_framework",
   },
   secondary: {
     label: "Contact us",

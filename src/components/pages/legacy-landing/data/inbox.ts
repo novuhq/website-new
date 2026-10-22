@@ -100,7 +100,7 @@ export const inboxExample = {
     "Deliver a rich in-app notification experience that completely mirrors your existing UX, not an afterthought or a bolt-on.",
   action: {
     label: "Get started",
-    href: "https://go.novu.co/dashboard",
+    href: "https://dashboard.novu.co/auth/sign-up",
     newTab: true,
   },
 } as const
@@ -209,7 +209,7 @@ export const inboxReadySetGo = {
   title: "For the best Inbox, Ready. Set. Go.",
   action: {
     label: "Create account",
-    href: "https://go.novu.co/dashboard",
+    href: "https://dashboard.novu.co/auth/sign-up",
   },
   items: [
     {
@@ -236,7 +236,7 @@ export const inboxCta = {
     "Whatever your use case, Novu is ready. Start for free, no credit card required.",
   primary: {
     label: "Get started",
-    href: "https://dashboard.novu.co/?utm_campaign=gs-website-inbox",
+    href: "https://dashboard.novu.co/auth/sign-up?utm_campaign=gs-website-inbox",
   },
   secondary: {
     label: "Contact us",
