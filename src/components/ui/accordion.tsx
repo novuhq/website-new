@@ -55,7 +55,11 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className={cn(
+        "overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+        // Force-mounted content stays in the DOM, so closed panels must be hidden by CSS.
+        props.forceMount && "data-[state=closed]:hidden"
+      )}
       {...props}
     >
       <div className={cn("pt-0 pb-4", className)}>{children}</div>

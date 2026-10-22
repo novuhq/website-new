@@ -1,6 +1,6 @@
 import { ROUTE } from "@/constants/routes"
 
-import { type UseCasePageData, type UseCaseSlug } from "./types"
+import { type TemplateUseCaseSlug, type UseCasePageData } from "./types"
 
 const DASHBOARD_LINK = "https://dashboard.novu.co/?utm_campaign=usecase-CTA"
 
@@ -486,158 +486,6 @@ export const USE_CASE_PAGES = {
       ],
     },
   },
-  "multi-channel-notifications": {
-    slug: "multi-channel-notifications",
-    metadata: {
-      title: "Multi-Channel Notifications",
-      description:
-        "Boost user engagement and streamline notifications with Novu's multi-channel notifications. Effortlessly integrate email, SMS, push, chat, and in-app notifications into your app with centralized content management and extensive provider integrations. Enhance visibility, optimize strategies, and ensure seamless user experiences. Simplify development, reduce costs, and eliminate friction between teams.",
-    },
-    hero: {
-      title: "Expand your reach with multi-channel notifications",
-      description:
-        "Add new notification channels to your app faster than you can brew a pot of coffee.",
-      links: [
-        {
-          text: "Create free account",
-          url: DASHBOARD_LINK,
-        },
-        {
-          text: "Book Meeting",
-          url: `${ROUTE.contactUs}/?utm_campaign=website-usecase-multiChannel`,
-        },
-      ],
-    },
-    features: [
-      {
-        animation: "digest",
-        title: "Endless provider integrations",
-        description:
-          "Batteries included. Use our dozens of pre-built provider integrations, or easily extend Novu through your own custom one.",
-      },
-      {
-        animation: "content-management",
-        title: "Content centralization",
-        description:
-          "Enable frictionless collaboration between developers and product teams with centralized content management.",
-      },
-      {
-        animation: "timezone",
-        title: "Unified API",
-        description:
-          "Integrate Novu with your application once, and access any delivery provider instantly.",
-      },
-      {
-        animation: "priority-management",
-        title: "Multi-channel",
-        description:
-          "Send notifications via email, SMS, push, chat, in-app, and more. Reach users through the most effective channels.",
-      },
-      {
-        animation: "monitoring",
-        title: "Observability",
-        description:
-          "Gain clear visibility into how and why a notification was (or was not) sent so you can optimize strategies and efficiently debug.",
-      },
-      {
-        animation: "preferences",
-        title: "User preferences",
-        description:
-          "Your end users directly set and configure their preferred communication methods, times, languages, and more.",
-      },
-    ],
-    painRestatement: {
-      title: "Adding new notification channels is costly and complex",
-      description:
-        "More channels and content sources means more complexity, risk, and team friction.",
-      cards: [
-        {
-          title: "High costs",
-          description:
-            "DIY notifications infrastructure requires significant engineering effort, distracting teams from adding value to their products.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/pain-restatement/costs.svg",
-            alt: "Create template",
-            width: 80,
-            height: 80,
-          },
-        },
-        {
-          title: "Integration complexity",
-          description:
-            "Every new channel comes with a new custom integration, content source requirement, and ongoing maintenance burden.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/pain-restatement/integration.svg",
-            alt: "Connect providers",
-            width: 80,
-            height: 80,
-          },
-        },
-        {
-          title: "Inconsistent user experiences",
-          description:
-            "When product teams cannot easily manage and iterate on content, user experiences suffer... and so does your brand.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/pain-restatement/inconsistent.svg",
-            alt: "Add trigger",
-            width: 80,
-            height: 80,
-          },
-        },
-      ],
-    },
-    benefits: {
-      title: "All of the flexibility of DIY, none of the hassle",
-      description:
-        "Increase end user engagement with multi-channel notifications and centralized content.",
-      sections: [
-        {
-          title: "Extensible integrations",
-          description:
-            "Integrates with all popular providers and channels, and you can easily extend support to your own custom code.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/benefits/extensible-integration.jpg",
-            alt: "",
-            width: 842,
-            height: 560,
-          },
-        },
-        {
-          title: "Engage end-users regardless of channel",
-          description:
-            "Easily implement multi-channel notifications and flexible provider management, boosting platform user engagement.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/benefits/engage-end-users.jpg",
-            alt: "",
-            width: 842,
-            height: 532,
-          },
-        },
-        {
-          title: "Reduce friction between development and product teams",
-          description:
-            "Eliminate productivity barriers when developers provide notifications infrastructure to product teams. Development teams focus on core app value while product iterates.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/benefits/reduce-distractions.jpg",
-            alt: "",
-            width: 842,
-            height: 495,
-          },
-        },
-        {
-          title: "Ship faster",
-          description:
-            "Engineering teams easily deliver notification capabilities into the applications.",
-          image: {
-            src: "/images/pages/usecases/multi-channel-notifications/benefits/ship-faster.jpg",
-            alt: "",
-            width: 842,
-            height: 532,
-          },
-        },
-      ],
-    },
-  },
   "unified-platform": {
     slug: "unified-platform",
     metadata: {
@@ -791,8 +639,8 @@ export const USE_CASE_PAGES = {
       ],
     },
   },
-} satisfies Record<UseCaseSlug, UseCasePageData>
+} satisfies Record<TemplateUseCaseSlug, UseCasePageData>
 
-export function isUseCaseSlug(value: string): value is UseCaseSlug {
+export function isUseCaseSlug(value: string): value is TemplateUseCaseSlug {
   return value in USE_CASE_PAGES
 }
