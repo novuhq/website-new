@@ -147,6 +147,7 @@ const loadContributorsCached = unstable_cache(
         github: contributor.github,
         sourceGithub:
           asString(asRecord(item)?.github)?.trim() || contributor.github,
+        teammate: contributor.teammate,
         totalPulls: contributor.totalPulls,
       })
     }

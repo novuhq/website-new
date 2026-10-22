@@ -3,20 +3,32 @@ export interface ContributorHandle {
   github: string
   /** Handle as the contributors API stores it. */
   sourceGithub: string
+  teammate: boolean
   totalPulls: number
+}
+
+// Teammate profiles 404, so a community entry beats a teammate one before
+// pull requests are compared.
+function isPreferredHandle(
+  handle: ContributorHandle,
+  current: ContributorHandle
+) {
+  if (handle.teammate !== current.teammate) return !handle.teammate
+  return handle.totalPulls > current.totalPulls
 }
 
 /**
  * Maps lowercase handles to the casing the contributors API stores, where
  * they differ. The API can list one person under several casings, so the
- * entry with the most pull requests wins, and the first one on a tie.
+ * community entry with the most pull requests wins, and the first one on a
+ * tie.
  */
 export function getSourceGithubs(handles: ContributorHandle[]) {
   const selected = new Map<string, ContributorHandle>()
 
   for (const handle of handles) {
     const current = selected.get(handle.github)
-    if (!current || handle.totalPulls > current.totalPulls) {
+    if (!current || isPreferredHandle(handle, current)) {
       selected.set(handle.github, handle)
     }
   }
