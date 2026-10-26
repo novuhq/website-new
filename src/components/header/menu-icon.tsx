@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react"
 import aiAciIcon from "@/svgs/header/menu/ai-aci.inline.svg"
+import aiAgentInboxIcon from "@/svgs/header/menu/ai-agent-inbox.inline.svg"
 import aiClaudeIcon from "@/svgs/header/menu/ai-claude.inline.svg"
 import aiCodexIcon from "@/svgs/header/menu/ai-codex.inline.svg"
 import aiConsoleIcon from "@/svgs/header/menu/ai-console.inline.svg"
@@ -60,6 +61,7 @@ const INLINE_ICONS: Partial<Record<TMenuIcon, TInlineIcon>> = {
   mcp: aiMcpIcon,
   copilot: aiCopilotIcon,
   aci: aiAciIcon,
+  "agent-inbox": aiAgentInboxIcon,
   prompt: aiConsoleIcon,
   skills: aiSkillsIcon,
   claude: aiClaudeIcon,
