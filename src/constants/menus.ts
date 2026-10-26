@@ -75,6 +75,11 @@ export const MENUS = {
               href: ROUTE.githubSkills,
               menuIcon: "skills",
             },
+            {
+              label: "Agent Inbox",
+              href: ROUTE.agentInbox,
+              menuIcon: "agent-inbox",
+            },
           ],
         },
       ],
@@ -174,6 +179,11 @@ export const MENUS = {
             href: ROUTE.mcp,
           },
           { label: "Novu ACI", href: ROUTE.aci, isNew: true },
+          {
+            label: "Agent Inbox",
+            href: ROUTE.agentInbox,
+            isNew: true,
+          },
         ],
       },
       {

@@ -44,6 +44,7 @@ export type TMenuIcon =
   | "mcp"
   | "copilot"
   | "aci"
+  | "agent-inbox"
   | "prompt"
   | "skills"
   | "claude"
