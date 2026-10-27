@@ -201,13 +201,25 @@ test.describe("critical responsive navigation", () => {
     await integrationsLink.focus()
     await expect(integrationsButton).toHaveAttribute("aria-expanded", "false")
 
-    // A click right after hover opens a menu keeps it open; the next click
-    // closes it.
+    // A click within 500 ms of the hover that opened a menu keeps it open; the
+    // next click, or a click after that window, closes it. Date.now() is
+    // frozen so runner speed can't decide the window, and the link is blurred
+    // first so its blur handler doesn't close the menu on the click instead.
+    await integrationsLink.blur()
     const product = header.getByRole("button", { name: "Product", exact: true })
+    const hoverTime = Date.now()
+    await page.clock.setFixedTime(hoverTime)
     await product.hover()
     await expect(product).toHaveAttribute("aria-expanded", "true")
     await product.click()
     await expect(product).toHaveAttribute("aria-expanded", "true")
+    await product.click()
+    await expect(product).toHaveAttribute("aria-expanded", "false")
+
+    await page.mouse.move(0, 0)
+    await product.hover()
+    await expect(product).toHaveAttribute("aria-expanded", "true")
+    await page.clock.setFixedTime(hoverTime + 1_000)
     await product.click()
     await expect(product).toHaveAttribute("aria-expanded", "false")
 
