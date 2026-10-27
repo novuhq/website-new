@@ -24,6 +24,16 @@ function withoutTrailingSlash(pathname: string) {
   return pathname.replace(/\/+$/, "")
 }
 
+export function getConfiguredSiteUrl() {
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL?.trim()
+
+  if (configuredSiteUrl) {
+    return parseSiteUrl(configuredSiteUrl, "NEXT_PUBLIC_DEFAULT_SITE_URL")
+  }
+
+  return DEFAULT_SITE_URL
+}
+
 export function getSiteUrl() {
   if (process.env.VERCEL_ENV === "preview") {
     const previewUrl =
@@ -38,13 +48,7 @@ export function getSiteUrl() {
     }
   }
 
-  const configuredSiteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL?.trim()
-
-  if (configuredSiteUrl) {
-    return parseSiteUrl(configuredSiteUrl, "NEXT_PUBLIC_DEFAULT_SITE_URL")
-  }
-
-  return DEFAULT_SITE_URL
+  return getConfiguredSiteUrl()
 }
 
 export function toCanonicalPathname(pathname: string) {

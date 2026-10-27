@@ -25,7 +25,7 @@ Read the root `AGENTS.md` first. Normative keywords in this file inherit their m
 - Public routes MUST keep metadata intentional and complete.
 - If a change affects discoverability, canonical URLs, sitemap behavior, or social metadata, agents SHOULD verify the rendered output directly.
 - JSON-LD and other route-level structured data SHOULD stay close to the route that owns the public page.
-- Absolute site URLs (canonicals, `og:url`, JSON-LD, breadcrumbs) MUST be built with `getSiteUrl()`, `absoluteUrl()`, and `toCanonicalPathname()` from `@/lib/site-url`, not by reading `NEXT_PUBLIC_DEFAULT_SITE_URL` directly. Client components that need the origin SHOULD receive it as a prop resolved on the server, since preview hosts are only known there.
+- Absolute site URLs (canonicals, `og:url`, JSON-LD, breadcrumbs) MUST be built with `getSiteUrl()`, `absoluteUrl()`, and `toCanonicalPathname()` from `@/lib/site-url`, not by reading `NEXT_PUBLIC_DEFAULT_SITE_URL` directly. Client components that need the origin SHOULD receive it as a prop resolved on the server, since preview hosts are only known there. Links stored outside the site, such as the careers "Job URL" written to Notion, SHOULD use `getConfiguredSiteUrl()` so previews never record a preview host.
 
 ## Routing And Data Rules
 
