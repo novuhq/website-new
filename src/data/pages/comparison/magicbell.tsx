@@ -146,7 +146,7 @@ export const magicbellComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self-hosted option on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and a self-hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
