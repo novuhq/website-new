@@ -467,7 +467,7 @@ export const pricingPageData: IPricingPageData = {
         clickText: "get_started",
       },
       {
-        href: "/contact-us",
+        href: ROUTE.contactUs,
         label: "Contact us",
         kind: "secondary-button",
       },

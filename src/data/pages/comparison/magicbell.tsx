@@ -1,3 +1,4 @@
+import { ROUTE } from "@/constants/routes"
 import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
 import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
 import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
@@ -379,7 +380,7 @@ export const magicbellComparisonData: IComparisonPageData = {
       {
         kind: "secondary-button",
         label: "Talk To Sales",
-        href: "/contact-us",
+        href: ROUTE.contactUs,
         clickLocation: "comparison_magicbell_cta",
         clickText: "talk_to_sales",
       },
