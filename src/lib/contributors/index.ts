@@ -6,8 +6,8 @@ import achievementsData from "@/content/contributors/wordpress-achievements.json
 
 import { normalizeContributorGithub } from "./image-urls"
 import {
+  createSourceGithubResolver,
   getSourceGithubs,
-  resolveSourceGithub,
   type ContributorHandle,
 } from "./source-githubs"
 import type {
@@ -208,15 +208,10 @@ const loadContributorCached = unstable_cache(
 
 // The API matches handles case-sensitively, but profile URLs use the
 // lowercase handle, so request the casing the contributors list stores.
-// Without the list, fall back to the lowercase handle, as before the lookup.
-async function getSourceGithub(safeGithub: string) {
-  try {
-    const { sourceGithubs } = await loadContributorsCached()
-    return resolveSourceGithub(sourceGithubs, safeGithub)
-  } catch {
-    return safeGithub
-  }
-}
+const getSourceGithub = createSourceGithubResolver(
+  async () => (await loadContributorsCached()).sourceGithubs,
+  { retryAfterMs: 30_000 }
+)
 
 export const getContributor = cache(
   async (

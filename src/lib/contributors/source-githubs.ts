@@ -48,3 +48,29 @@ export function resolveSourceGithub(
 ) {
   return Object.hasOwn(sourceGithubs, github) ? sourceGithubs[github] : github
 }
+
+/**
+ * Resolves profile handles through the contributors list. Without the list,
+ * it falls back to the lowercase handle, and after a failed load it skips
+ * the list for `retryAfterMs`: failures aren't cached, so otherwise every
+ * profile would wait on the list request again.
+ */
+export function createSourceGithubResolver(
+  loadSourceGithubs: () => Promise<Record<string, string>>,
+  { retryAfterMs, now = Date.now }: { retryAfterMs: number; now?: () => number }
+) {
+  let failedAt: number | null = null
+
+  return async (github: string) => {
+    if (failedAt !== null && now() - failedAt < retryAfterMs) return github
+
+    try {
+      const sourceGithubs = await loadSourceGithubs()
+      failedAt = null
+      return resolveSourceGithub(sourceGithubs, github)
+    } catch {
+      failedAt = now()
+      return github
+    }
+  }
+}
