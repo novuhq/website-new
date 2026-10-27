@@ -44,9 +44,14 @@ type SanityReadOptions = {
   useCdn?: boolean
 }
 
+/** Meta description for a paginated blog listing. */
+export function getBlogListingDescription(page = 1) {
+  return `${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`
+}
+
 /** Meta description for a blog category listing, optionally paginated. */
 export function getBlogCategoryDescription(categoryTitle: string, page = 1) {
-  return `Novu blog posts in ${categoryTitle}. ${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`
+  return `Novu blog posts in ${categoryTitle}. ${getBlogListingDescription(page)}`
 }
 
 /**
