@@ -142,6 +142,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   github: "https://github.com/novuhq/novu?utm_campaign=website",
   githubIssues: "https://github.com/novuhq/novu/issues",
   githubSkills: "https://github.com/novuhq/skills",
+  agentInbox: "https://agentinbox.md?utm_source=novu-website",
   pixelPoint: "https://pixelpoint.io/",
   spotify: "https://open.spotify.com/show/2OyQJkn07lnJPNdxFWft96",
   twitter: "https://twitter.com/novuhq?utm_campaign=website",
