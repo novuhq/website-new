@@ -109,10 +109,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
                 items={tableOfContents}
               />
               <BackToTop withSeparator />
-              <SocialShare
-                className="mt-7"
-                pathname={`/${staticPageSlug.current}`}
-              />
+              <SocialShare className="mt-7" url={staticPageUrl} />
             </Aside>
           </article>
         </div>

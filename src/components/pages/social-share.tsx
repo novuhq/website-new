@@ -13,12 +13,11 @@ import { Icons } from "@/components/icons"
 
 interface ISocialShareProps {
   className?: string
-  pathname: string
+  url: string
 }
 
-function SocialShare({ className, pathname }: ISocialShareProps) {
+function SocialShare({ className, url }: ISocialShareProps) {
   const { handleCopy } = useCopyToClipboard(3000)
-  const url = `${process.env.NEXT_PUBLIC_DEFAULT_SITE_URL}${pathname}`
 
   const socialShareData: {
     icon: keyof typeof Icons
@@ -64,9 +63,7 @@ function SocialShare({ className, pathname }: ISocialShareProps) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span
-                      className="flex min-h-8 w-full items-center justify-center"
-                    >
+                    <span className="flex min-h-8 w-full items-center justify-center">
                       <Icon className="!size-4" size={16} />
                     </span>
                   </TooltipTrigger>

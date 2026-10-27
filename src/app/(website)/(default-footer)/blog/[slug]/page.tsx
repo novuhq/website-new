@@ -72,6 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <Post
         className="relative z-10"
         post={post}
+        url={postUrl}
         relatedPosts={relatedPosts}
         backLink={{ label: "Blog", href: ROUTE.blog }}
       />

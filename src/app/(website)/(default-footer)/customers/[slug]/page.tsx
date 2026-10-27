@@ -151,7 +151,7 @@ export default async function CustomerStoryPage({
               />
 
               <ScrollToTop buttonClassName="hidden lg:flex" />
-              <SocialShare className="md:-mt-px" pathname={customerPathname} />
+              <SocialShare className="md:-mt-px" url={pageUrl} />
             </div>
 
             <div className={cn("col-start-1", !cover && "lg:row-start-1")}>
@@ -183,7 +183,7 @@ export default async function CustomerStoryPage({
               )}
               <SocialShare
                 className="mt-14 flex border-t border-gray-3 pt-7 lg:hidden"
-                pathname={customerPathname}
+                url={pageUrl}
               />
               <div className="explore col-start-1 mt-24 flex flex-col gap-y-8">
                 <Related customers={relatedCustomers} />

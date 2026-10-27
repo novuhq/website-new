@@ -29,10 +29,12 @@ const CONNECTIONS = [
   },
 ] as const
 
-const SHARE_URL =
-  "https://x.com/intent/post?text=Agent%20Communication%20Infrastructure%20%E2%80%94%20the%20missing%20agent-user%20layer&url=https%3A%2F%2Fnovu.co%2Faci"
+const SHARE_TEXT =
+  "Agent Communication Infrastructure — the missing agent-user layer"
 
-function AciDefinition() {
+function AciDefinition({ url }: { url: string }) {
+  const shareUrl = `https://x.com/intent/post?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(url)}`
+
   return (
     <section className="relative mx-auto overflow-x-hidden bg-black px-5 py-32 text-white md:px-8 md:pt-50.25 md:pb-58">
       <div className="mx-auto w-full max-w-240">
@@ -92,7 +94,7 @@ function AciDefinition() {
             </div>
             <NextLink
               className="absolute top-6 right-6 z-10 hidden h-10 w-38 items-center justify-center rounded-md border border-[#9C62A1] bg-[#6B3F6E] text-[0.8125rem] font-medium uppercase shadow-[0_3.333px_20px_0_rgba(0,0,0,0.30)] transition-colors hover:bg-[#814985] sm:flex"
-              href={SHARE_URL}
+              href={shareUrl}
               target="_blank"
               rel="noopener noreferrer"
               data-click-location="aci_definition"

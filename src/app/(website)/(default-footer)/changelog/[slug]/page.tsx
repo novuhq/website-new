@@ -234,7 +234,7 @@ export default async function ChangelogPostPage({
                   </dd>
                 </div>
               </dl>
-              <SocialShare className="md:-mt-px" pathname={pathname} />
+              <SocialShare className="md:-mt-px" url={postUrl} />
             </div>
             <Content
               className={cn(

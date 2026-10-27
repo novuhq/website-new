@@ -7,7 +7,7 @@ import {
   type Contributor,
   type ContributorAchievement,
 } from "@/lib/contributors"
-import { absoluteUrl } from "@/lib/site-url"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import GetStarted from "@/components/pages/get-started"
 
@@ -164,7 +164,7 @@ function Achievements({
     ({ minimum }) => minimum <= contributor.totalPulls
   )
   const profileUrl = absoluteUrl(
-    `/contributors/${contributor.github.toLowerCase()}`
+    toCanonicalPathname(`/contributors/${contributor.github.toLowerCase()}`)
   )
 
   return (
