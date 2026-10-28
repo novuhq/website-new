@@ -223,10 +223,13 @@ export const getContributor = cache(
     }
 
     try {
+      const sourceGithub = await getSourceGithub(safeGithub)
+      if (sourceGithub === null) {
+        return { contributor: null, unavailable: true }
+      }
+
       return {
-        contributor: await loadContributorCached(
-          await getSourceGithub(safeGithub)
-        ),
+        contributor: await loadContributorCached(sourceGithub),
         unavailable: false,
       }
     } catch {

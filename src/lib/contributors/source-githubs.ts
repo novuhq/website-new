@@ -50,10 +50,11 @@ export function resolveSourceGithub(
 }
 
 /**
- * Resolves profile handles through the contributors list. Without the list,
- * it falls back to the lowercase handle, and after a failed load it skips
- * the list for `retryAfterMs`: failures aren't cached, so otherwise every
- * profile would wait on the list request again.
+ * Resolves profile handles through the contributors list. Without the list it
+ * returns null, since a handle stored with capitals would otherwise 404 like
+ * a missing profile. After a failed load it skips the list for
+ * `retryAfterMs`: failures aren't cached, so otherwise every profile would
+ * wait on the list request again.
  */
 export function createSourceGithubResolver(
   loadSourceGithubs: () => Promise<Record<string, string>>,
@@ -61,8 +62,8 @@ export function createSourceGithubResolver(
 ) {
   let failedAt: number | null = null
 
-  return async (github: string) => {
-    if (failedAt !== null && now() - failedAt < retryAfterMs) return github
+  return async (github: string): Promise<string | null> => {
+    if (failedAt !== null && now() - failedAt < retryAfterMs) return null
 
     try {
       const sourceGithubs = await loadSourceGithubs()
@@ -70,7 +71,7 @@ export function createSourceGithubResolver(
       return resolveSourceGithub(sourceGithubs, github)
     } catch {
       failedAt = now()
-      return github
+      return null
     }
   }
 }

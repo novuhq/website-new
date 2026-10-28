@@ -91,7 +91,7 @@ describe("contributor source GitHub resolver", () => {
     assert.equal(await resolve("devxprite"), "devxprite")
   })
 
-  it("falls back to the lowercase handle and pauses the list after a failure", async () => {
+  it("returns null without the list and pauses the list after a failure", async () => {
     let time = 0
     let loads = 0
     let listAvailable = false
@@ -105,12 +105,12 @@ describe("contributor source GitHub resolver", () => {
       { retryAfterMs: 30_000, now: () => time }
     )
 
-    assert.equal(await resolve("mayorjay"), "mayorjay")
+    assert.equal(await resolve("mayorjay"), null)
     assert.equal(loads, 1)
 
     listAvailable = true
     time = 29_999
-    assert.equal(await resolve("mayorjay"), "mayorjay")
+    assert.equal(await resolve("mayorjay"), null)
     assert.equal(loads, 1)
 
     time = 30_000
