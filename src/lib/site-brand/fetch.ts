@@ -25,7 +25,7 @@ export class ResourceFetchError extends Error {
 }
 
 const USER_AGENT =
-  "Mozilla/5.0 (compatible; NovuAgentChatPreview/1.0; +https://novu.co)"
+  "Mozilla/5.0 (compatible; NovuAgentChatPreview/1.0; +https://www.novu.co)"
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308])
 // Web ports only, so the preview cannot be used to probe other services.
 const ALLOWED_PORTS = new Set(["", "80", "443", "8080", "8443"])

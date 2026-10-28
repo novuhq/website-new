@@ -89,7 +89,7 @@ describe("connect-stack-options derived outputs", () => {
     )
     assert.equal(
       buildPrompt(channel, framework),
-      "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://novu.co/agents.md"
+      "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://www.novu.co/agents.md"
     )
   })
 
@@ -102,7 +102,7 @@ describe("connect-stack-options derived outputs", () => {
     )
     assert.equal(
       buildPrompt(WEB_CHAT_CHANNEL, framework),
-      "Connect this project's Vercel AI SDK agent to Web Chat with Novu using instructions from https://novu.co/agents.md"
+      "Connect this project's Vercel AI SDK agent to Web Chat with Novu using instructions from https://www.novu.co/agents.md"
     )
   })
 
@@ -117,7 +117,7 @@ describe("connect-stack-options derived outputs", () => {
     )
     assert.equal(
       buildPrompt(channel, framework),
-      "Connect a Claude Managed Agent to Slack with Novu using instructions from https://novu.co/agents.md"
+      "Connect a Claude Managed Agent to Slack with Novu using instructions from https://www.novu.co/agents.md"
     )
   })
 

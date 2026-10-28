@@ -1,9 +1,9 @@
 /**
  * Single source of truth for copy-paste coding-agent prompts that point at
- * https://novu.co/agents.md. Keep prompts short; agents.md owns setup detail.
+ * https://www.novu.co/agents.md. Keep prompts short; agents.md owns setup detail.
  */
 
-export const AGENTS_MD_URL = "https://novu.co/agents.md"
+export const AGENTS_MD_URL = "https://www.novu.co/agents.md"
 
 type BuildConnectPromptOptions = {
   /**

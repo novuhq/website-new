@@ -21,7 +21,7 @@ Novu now supports **keyless** flows: you can do meaningful work for the user wit
 **Use no authentication (keyless) when the user is testing, prototyping, or just getting started:**
 
 - **Embedding the `<Inbox />` component to see a working notification UI.** Render the Inbox with no `applicationIdentifier` and no `subscriberId` — keyless mode boots an isolated, temporary environment so the user can evaluate look, feel, and behavior instantly. The data is temporary (expires in ~24h) and is **not** tied to real subscribers, so it is for local testing and demos only, never production.
-- **Spinning up a managed Novu agent connected to a channel.** Use the keyless CLI flow (`npx novu@latest connect …`, no `--secret-key`) to create a temporary, hosted agent and connect Slack or email without a Novu account. The full step-by-step runbook for this lives in `https://novu.co/agents.md` — follow that file for the agent-onboarding flow rather than improvising. Keyless agents are temporary until the user **claims** them by signing up through the in-channel link, which migrates the agent, channel, and conversation into their own workspace.
+- **Spinning up a managed Novu agent connected to a channel.** Use the keyless CLI flow (`npx novu@latest connect …`, no `--secret-key`) to create a temporary, hosted agent and connect Slack or email without a Novu account. The full step-by-step runbook for this lives in `https://www.novu.co/agents.md` — follow that file for the agent-onboarding flow rather than improvising. Keyless agents are temporary until the user **claims** them by signing up through the in-channel link, which migrates the agent, channel, and conversation into their own workspace.
 
 **Use a secret key when the user needs account-owned or production resources:**
 
@@ -66,7 +66,7 @@ The `applicationIdentifier` is public and client-side only (see below). For EU C
 
 ### Keyless agent (`npx novu@latest connect`)
 
-To create a hosted agent without an account, follow the dedicated runbook at `https://novu.co/agents.md`. In short: it runs one non-interactive `npx novu@latest connect "<description>" --ci --channel <slack|email|skip>` command (no `--secret-key`), hands the user a channel-specific action, and explains the demo limit and sign-up-to-claim path. Do not pass `--secret-key` for keyless; only add it when the user wants to use their existing account.
+To create a hosted agent without an account, follow the dedicated runbook at `https://www.novu.co/agents.md`. In short: it runs one non-interactive `npx novu@latest connect "<description>" --ci --channel <slack|email|skip>` command (no `--secret-key`), hands the user a channel-specific action, and explains the demo limit and sign-up-to-claim path. Do not pass `--secret-key` for keyless; only add it when the user wants to use their existing account.
 
 ## Current state for keyed access
 
@@ -78,7 +78,7 @@ Novu keys are **environment-specific** (Development vs Production). Always use t
 
 Before you do anything credential-shaped, check whether the user has already wired Novu into your environment.
 
-1. **Novu MCP server** — if you are an MCP client (Claude, Cursor, Codex, ChatGPT, etc.), Novu ships a remote MCP server that exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments as tools. The user connects with OAuth through their client — you call the tools without handling credentials directly. Setup: `https://docs.novu.co/platform/build-with-ai/mcp`. Product page: `https://novu.co/mcp/`.
+1. **Novu MCP server** — if you are an MCP client (Claude, Cursor, Codex, ChatGPT, etc.), Novu ships a remote MCP server that exposes subscribers, preferences, workflows, triggers, notifications, integrations, and environments as tools. The user connects with OAuth through their client — you call the tools without handling credentials directly. Setup: `https://docs.novu.co/platform/build-with-ai/mcp`. Product page: `https://www.novu.co/mcp/`.
 2. **Novu documentation** — server-side API usage, workflow design, channel providers, and Framework patterns live at `https://docs.novu.co`. Read the relevant guide before calling the API directly (especially authentication, triggers, and subscriber management).
 3. **Novu CLI** — for Framework workflows, Local Studio, and syncing workflows to Novu Cloud, prefer `npx novu@latest` over hand-rolled `curl`. It accepts `--secret-key`, `--api-url`, and region-aware `--dashboard-url`. Package: `https://www.npmjs.com/package/novu`. Docs: `https://docs.novu.co/framework/studio` and `https://docs.novu.co/framework/deployment/cli`.
 
@@ -158,8 +158,8 @@ The user regenerates secret keys under **Developer → API Keys** in the dashboa
 
 ## Related files
 
-- Agent onboarding (keyless agent flow): `https://novu.co/agents.md`
-- Product and doc index for agents: `https://novu.co/llms.txt`
+- Agent onboarding (keyless agent flow): `https://www.novu.co/agents.md`
+- Product and doc index for agents: `https://www.novu.co/llms.txt`
 - Inbox setup (keyless and connected): `https://docs.novu.co/platform/inbox/setup-inbox`
 - MCP setup and tool list: `https://docs.novu.co/platform/build-with-ai/mcp`
 - API keys reference: `https://docs.novu.co/platform/developer/api-keys`

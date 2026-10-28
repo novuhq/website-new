@@ -148,7 +148,7 @@ function ConnectFooter() {
             Follow the instructions in{" "}
             <Link
               className="text-gray-13 underline hover:text-white/70 focus-visible:text-white/70"
-              href="https://novu.co/agents.md"
+              href="https://www.novu.co/agents.md"
               size="none"
               variant="clean"
             >

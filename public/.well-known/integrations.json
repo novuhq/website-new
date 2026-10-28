@@ -24,12 +24,12 @@
       "spec": "https://api.novu.co/openapi.json",
       "specAlternates": [
         "https://api.novu.co/openapi.yaml",
-        "https://novu.co/openapi.json"
+        "https://www.novu.co/openapi.json"
       ],
       "docs": "https://docs.novu.co/api-reference",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "required",
@@ -48,7 +48,7 @@
             ],
             "basis": {
               "via": "declared",
-              "source": "https://novu.co/.well-known/integrations.json"
+              "source": "https://www.novu.co/.well-known/integrations.json"
             }
           }
         ]
@@ -65,7 +65,7 @@
       "docs": "https://docs.novu.co/api-reference",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "required",
@@ -84,7 +84,7 @@
             ],
             "basis": {
               "via": "declared",
-              "source": "https://novu.co/.well-known/integrations.json"
+              "source": "https://www.novu.co/.well-known/integrations.json"
             }
           }
         ]
@@ -100,7 +100,7 @@
       "docs": "https://docs.novu.co/platform/build-with-ai/mcp",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "required",
@@ -118,7 +118,7 @@
             ],
             "basis": {
               "via": "declared",
-              "source": "https://novu.co/.well-known/integrations.json"
+              "source": "https://www.novu.co/.well-known/integrations.json"
             }
           }
         ]
@@ -134,7 +134,7 @@
       "docs": "https://docs.novu.co/platform/build-with-ai/mcp",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "required",
@@ -152,7 +152,7 @@
             ],
             "basis": {
               "via": "declared",
-              "source": "https://novu.co/.well-known/integrations.json"
+              "source": "https://www.novu.co/.well-known/integrations.json"
             }
           }
         ]
@@ -167,7 +167,7 @@
       "docs": "https://docs.novu.co/framework/deployment/cli",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "optional",
@@ -185,7 +185,7 @@
             ],
             "basis": {
               "via": "declared",
-              "source": "https://novu.co/.well-known/integrations.json"
+              "source": "https://www.novu.co/.well-known/integrations.json"
             }
           }
         ]
@@ -196,11 +196,11 @@
       "slug": "novu-agent-skills",
       "name": "Novu agent skills",
       "type": "agent-skills",
-      "url": "https://novu.co/.well-known/agent-skills/index.json",
-      "docs": "https://novu.co/llms.txt",
+      "url": "https://www.novu.co/.well-known/agent-skills/index.json",
+      "docs": "https://www.novu.co/llms.txt",
       "basis": {
         "via": "declared",
-        "source": "https://novu.co/.well-known/integrations.json"
+        "source": "https://www.novu.co/.well-known/integrations.json"
       },
       "auth": {
         "status": "none"

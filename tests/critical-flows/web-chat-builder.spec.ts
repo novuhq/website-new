@@ -480,7 +480,7 @@ test("finishes with accessible setup actions and one shared header and Connect f
   await page.keyboard.press("Space")
   await expectClipboardText(
     page,
-    "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md"
+    "Connect my agent to customers with Novu using instructions from https://www.novu.co/agents.md"
   )
   await expect(
     cta.getByText("Prompt copied to clipboard", { exact: true })
