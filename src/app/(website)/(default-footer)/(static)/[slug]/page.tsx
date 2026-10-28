@@ -5,7 +5,7 @@ import config from "@/configs/website-config"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
-import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
+import { absoluteUrl, getSiteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { getAllStaticPages, getStaticPageBySlug } from "@/lib/static"
 import { getExcerpt } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
@@ -53,7 +53,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
   // Google Structured Data for Blog Post @see {@link https://developers.google.com/search/docs/appearance/structured-data/article#json-ld}
   // Next.js JSON-LD @see {@link https://nextjs.org/docs/app/guides/json-ld}
   const siteUrl = getSiteUrl()
-  const staticPageUrl = `${siteUrl}/${staticPageSlug.current}/`
+  const staticPageUrl = absoluteUrl(toCanonicalPathname(staticPageSlug.current))
 
   const jsonLdDescription =
     seo?.description?.length > 0

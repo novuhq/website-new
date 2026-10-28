@@ -5,7 +5,7 @@ import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { getCareerJobBySlug, getOpenCareerJobs } from "@/lib/notion/careers"
-import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { getExcerpt } from "@/lib/utils"
 import CareerJobPage from "@/components/pages/careers/job-page"
 
@@ -55,7 +55,6 @@ export default async function CareerJobRoute({ params }: CareerJobRouteProps) {
     notFound()
   }
 
-  const siteUrl = getSiteUrl()
   const pathname = `${ROUTE.careers}/${job.slug}`
   const jsonLd = {
     "@context": "https://schema.org",
@@ -77,7 +76,7 @@ export default async function CareerJobRoute({ params }: CareerJobRouteProps) {
       "@type": "Country",
       name: job.location,
     },
-    url: `${siteUrl}${pathname}/`,
+    url: absoluteUrl(toCanonicalPathname(pathname)),
   }
 
   return (

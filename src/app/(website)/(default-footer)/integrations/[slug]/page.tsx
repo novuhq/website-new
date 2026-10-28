@@ -15,7 +15,7 @@ import {
 } from "@/lib/integrations/seo-defaults"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { compileIntegrationMdx } from "@/lib/markdown/compile-mdx"
-import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import CTA from "@/components/pages/cta"
 import IntegrationDetail from "@/components/pages/integrations/integration-detail"
 
@@ -76,8 +76,9 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     integration.product === "connect" &&
     integration.availability === "live"
 
-  const siteUrl = getSiteUrl()
-  const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}/`
+  const pageUrl = absoluteUrl(
+    toCanonicalPathname(`${ROUTE.integrations}/${integration.slug}`)
+  )
 
   const resolvedDescription =
     integration.seo?.description ??
