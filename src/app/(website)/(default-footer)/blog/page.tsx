@@ -6,6 +6,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Rss } from "lucide-react"
 
 import {
+  getBlogListingDescription,
   getCategories,
   getFeaturedPost,
   getPaginatedPosts,
@@ -51,7 +52,7 @@ export default async function BlogPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: `${SEO_DATA.blog.title} | ${config.projectName}`,
-    description: SEO_DATA.blog.description,
+    description: getBlogListingDescription(),
     url: `${siteUrl}/blog/`,
     isPartOf: {
       "@type": "WebSite",
@@ -151,7 +152,7 @@ export default async function BlogPage() {
 
 export const metadata: Metadata = getMetadata({
   title: `${SEO_DATA.blog.title} | ${config.projectName}`,
-  description: SEO_DATA.blog.description,
+  description: getBlogListingDescription(),
   pathname: SEO_DATA.blog.pathname,
   markdownPathname: true,
 })

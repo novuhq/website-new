@@ -96,7 +96,7 @@ export const SEO_DATA = {
   },
   blog: {
     title: `Blog`,
-    description: "Stay up to date with the latest updates from Novu",
+    description: "Stay up to date with the latest updates from Novu.",
     pathname: ROUTE.blog as string,
   },
   aci: {

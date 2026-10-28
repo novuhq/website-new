@@ -46,7 +46,7 @@ type SanityReadOptions = {
 
 /** Meta description for a paginated blog listing. */
 export function getBlogListingDescription(page = 1) {
-  return `${SEO_DATA.blog.description}.${page > 1 ? ` Page ${page}.` : ""}`
+  return `${SEO_DATA.blog.description}${page > 1 ? ` Page ${page}.` : ""}`
 }
 
 /** Meta description for a blog category listing, optionally paginated. */
