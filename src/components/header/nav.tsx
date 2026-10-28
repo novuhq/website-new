@@ -40,10 +40,11 @@ function Nav({ className, items }: IHeaderNavProps) {
 
   const activeIndex = useMemo(
     () =>
-      items.findIndex(({ href }) =>
-        href === ROUTE.index
+      items.findIndex(({ href, activeHref = href }) =>
+        activeHref === ROUTE.index
           ? pathname === ROUTE.index
-          : href && (pathname === href || pathname.startsWith(`${href}/`))
+          : activeHref &&
+            (pathname === activeHref || pathname.startsWith(`${activeHref}/`))
       ),
     [pathname, items]
   )
