@@ -209,8 +209,8 @@ test.describe("critical responsive navigation", () => {
 
     // A click pins a menu opened by hover, however long after the hover, and
     // the next click closes it. Focus stays on the Integrations link, whose
-    // blur must not close the Product menu. Date.now() is frozen so the gap
-    // between hover and click is exact.
+    // blur must not close the Product menu. The clock jumps 1 s between hover
+    // and click, so a version that timed the click against the hover fails.
     const product = header.getByRole("button", { name: "Product", exact: true })
     const hoverTime = Date.now()
     await page.clock.setFixedTime(hoverTime)
@@ -241,6 +241,29 @@ test.describe("critical responsive navigation", () => {
 
     expectHealthyPage(applicationErrors)
   })
+
+  for (const { path, name, current } of [
+    { path: "/pricing/", name: "Pricing", current: "page" },
+    // Integrations links to its channels page and marks every page under
+    // /integrations/ as its section.
+    { path: "/integrations/sources/", name: "Integrations", current: "true" },
+  ]) {
+    test(`[${navigationContract.id}] header marks ${name} as current on ${path}`, async ({
+      isMobile,
+      page,
+    }) => {
+      test.skip(isMobile, "Desktop header links")
+
+      const applicationErrors = observeApplicationErrors(page)
+      await gotoCriticalPage(page, path)
+
+      const currentItem = page.locator("header [aria-current]")
+      await expect(currentItem).toHaveCount(1)
+      await expect(currentItem).toHaveAccessibleName(name)
+      await expect(currentItem).toHaveAttribute("aria-current", current)
+      expectHealthyPage(applicationErrors)
+    })
+  }
 
   test(`[${navigationContract.id}] signed-out header action opens dashboard signup`, async ({
     isMobile,

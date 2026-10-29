@@ -95,7 +95,7 @@ export interface IMenuHeaderContent {
 export interface IMenuHeaderItem {
   title: string
   href?: Route<string> | URL
-  /** Highlights the item on every page under this path. Defaults to href. */
+  /** Marks the item as current on every page under this path. Defaults to href. */
   activeHref?: Route<string> | URL
   content?: IMenuHeaderContent[]
   variant?: THeaderMenuVariant

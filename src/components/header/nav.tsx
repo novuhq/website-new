@@ -6,6 +6,7 @@ import { ROUTE } from "@/constants/routes"
 import { ChevronDown } from "lucide-react"
 
 import { IMenuHeaderItem } from "@/types/common"
+import { normalizePathname } from "@/lib/site-url"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
@@ -90,6 +91,13 @@ function Nav({ className, items }: IHeaderNavProps) {
         {items.map((item, index) => {
           const { title, href } = item
           const isActive = index === activeIndex
+          // The item's own page is the current page; other pages under its
+          // activeHref are the current section.
+          const ariaCurrent = isActive
+            ? normalizePathname(pathname) === normalizePathname(String(href))
+              ? "page"
+              : "true"
+            : undefined
 
           if (!hasDropdown(item)) {
             return (
@@ -105,6 +113,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                     size="md"
                     variant="muted"
                     data-active={isActive}
+                    aria-current={ariaCurrent}
                   >
                     {title}
                   </Link>
@@ -157,6 +166,7 @@ function Nav({ className, items }: IHeaderNavProps) {
                     size="md"
                     variant="muted"
                     data-active={isActive}
+                    aria-current={ariaCurrent}
                     onClick={handleMenuOpen(null)}
                     onKeyDown={handleTriggerKeyDown}
                   >
