@@ -51,10 +51,10 @@ export function resolveSourceGithub(
 
 /**
  * Resolves profile handles through the contributors list. Without the list it
- * returns null, since a handle stored with capitals would otherwise 404 like
- * a missing profile. After a failed load it skips the list for
- * `retryAfterMs`: failures aren't cached, so otherwise every profile would
- * wait on the list request again.
+ * returns null, so callers know the lowercase handle is unverified: a handle
+ * stored with capitals 404s like a missing profile. After a failed load it
+ * skips the list for `retryAfterMs`: failures aren't cached, so otherwise
+ * every profile would wait on the list request again.
  */
 export function createSourceGithubResolver(
   loadSourceGithubs: () => Promise<Record<string, string>>,

@@ -224,14 +224,17 @@ export const getContributor = cache(
 
     try {
       const sourceGithub = await getSourceGithub(safeGithub)
-      if (sourceGithub === null) {
+      const contributor = await loadContributorCached(
+        sourceGithub ?? safeGithub
+      )
+
+      // Without the list, a handle stored with capitals 404s like a missing
+      // profile, so a miss counts as unavailable rather than not found.
+      if (!contributor && sourceGithub === null) {
         return { contributor: null, unavailable: true }
       }
 
-      return {
-        contributor: await loadContributorCached(sourceGithub),
-        unavailable: false,
-      }
+      return { contributor, unavailable: false }
     } catch {
       return { contributor: null, unavailable: true }
     }
