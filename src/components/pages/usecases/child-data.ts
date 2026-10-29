@@ -2,7 +2,8 @@ import { ROUTE } from "@/constants/routes"
 
 import { type TemplateUseCaseSlug, type UseCasePageData } from "./types"
 
-const DASHBOARD_LINK = "https://dashboard.novu.co/?utm_campaign=usecase-CTA"
+const DASHBOARD_LINK =
+  "https://dashboard.novu.co/auth/sign-up?utm_campaign=usecase-CTA"
 
 export const USE_CASE_PAGES = {
   "add-notifications": {

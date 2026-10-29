@@ -38,7 +38,7 @@ export const courierComparisonData: IComparisonPageData = {
       "Build multi-channel workflows with routing, preferences, and <Inbox /> in Novu Notify. Choose dashboard authoring or TypeScript, and add Novu Connect when users need to reply to your agent.",
     primaryCta: {
       label: "Start for Free",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_courier_hero",
       clickText: "start_for_free",
     },
@@ -80,7 +80,7 @@ export const courierComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Get Started",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_courier_intro",
       clickText: "get_started",
     },
@@ -117,7 +117,7 @@ export const courierComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Switch to Novu",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_courier_frustrations",
       clickText: "switch_to_novu",
     },
@@ -172,7 +172,7 @@ export const courierComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Explore Novu",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_courier_difference",
       clickText: "explore_novu",
     },
@@ -412,7 +412,7 @@ export const courierComparisonData: IComparisonPageData = {
       {
         kind: "primary-button",
         label: "Start Free",
-        href: "https://dashboard.novu.co/",
+        href: "https://dashboard.novu.co/auth/sign-up",
         clickLocation: "comparison_courier_cta",
         clickText: "start_free",
       },

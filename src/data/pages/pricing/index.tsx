@@ -287,7 +287,7 @@ export const pricingPageData: IPricingPageData = {
         extraInfo: "No credit card required",
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co",
+          href: "https://dashboard.novu.co/auth/sign-up",
           isExternal: true,
           text: "Get started",
           clickLocation: "pricing_hero_free",
@@ -321,7 +321,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: true,
         link: {
-          href: "https://dashboard.novu.co",
+          href: "https://dashboard.novu.co/auth/sign-up",
           isExternal: true,
           text: "Get started",
           clickLocation: "pricing_hero_pro",
@@ -358,7 +358,7 @@ export const pricingPageData: IPricingPageData = {
         ),
         isFeatured: false,
         link: {
-          href: "https://dashboard.novu.co",
+          href: "https://dashboard.novu.co/auth/sign-up",
           isExternal: true,
           text: "Get started",
           clickLocation: "pricing_hero_team",
@@ -460,7 +460,7 @@ export const pricingPageData: IPricingPageData = {
   pageCta: {
     actions: [
       {
-        href: "https://dashboard.novu.co",
+        href: "https://dashboard.novu.co/auth/sign-up",
         label: "Get started",
         kind: "primary-button",
         clickLocation: "pricing_page_cta",
@@ -480,7 +480,7 @@ export const pricingPageData: IPricingPageData = {
     headings: [
       {
         buttonText: "Get started",
-        buttonUrl: "https://dashboard.novu.co",
+        buttonUrl: "https://dashboard.novu.co/auth/sign-up",
         clickLocation: "pricing_table_free",
         clickText: "get_started",
         id: "free",
@@ -489,7 +489,7 @@ export const pricingPageData: IPricingPageData = {
       },
       {
         buttonText: "Get started",
-        buttonUrl: "https://dashboard.novu.co",
+        buttonUrl: "https://dashboard.novu.co/auth/sign-up",
         clickLocation: "pricing_table_pro",
         clickText: "get_started",
         id: "pro",
@@ -498,7 +498,7 @@ export const pricingPageData: IPricingPageData = {
       },
       {
         buttonText: "Get started",
-        buttonUrl: "https://dashboard.novu.co",
+        buttonUrl: "https://dashboard.novu.co/auth/sign-up",
         clickLocation: "pricing_table_team",
         clickText: "get_started",
         id: "team",
