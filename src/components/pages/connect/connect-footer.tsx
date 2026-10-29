@@ -5,6 +5,7 @@ import { MENUS } from "@/constants/menus"
 import { ROUTE } from "@/constants/routes"
 
 import type { IMenuFooterItem, IMenuSocialItem } from "@/types/common"
+import { AGENTS_MD_URL } from "@/lib/connect-prompt"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
@@ -148,7 +149,7 @@ function ConnectFooter() {
             Follow the instructions in{" "}
             <Link
               className="text-gray-13 underline hover:text-white/70 focus-visible:text-white/70"
-              href="https://www.novu.co/agents.md"
+              href={AGENTS_MD_URL}
               size="none"
               variant="clean"
             >
