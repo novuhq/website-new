@@ -4,6 +4,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import type { IFaqSection } from "@/types/common"
 import { getMetadata } from "@/lib/get-metadata"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import AciCta from "@/components/pages/aci/aci-cta"
 import AciDefinition from "@/components/pages/aci/aci-definition"
 import CommunicationFlow from "@/components/pages/aci/communication-flow"
@@ -88,19 +89,21 @@ const ACI_FINAL_CTA: FinalCtaProps = {
 }
 
 export default function AciPage() {
+  const pageUrl = absoluteUrl(toCanonicalPathname(String(ROUTE.aci)))
+
   return (
     <BookADemoSchedulingProvider utmCampaign="aci">
       <Hero />
       <NotificationsAnimation />
       <StopReinventing />
-      <AciDefinition />
+      <AciDefinition url={pageUrl} />
       <HowItWorksIntro />
       <CommunicationFlow />
       <AciCta />
       <OwnershipTable />
       <FoundersTestimonials />
       <OpenSourceCta />
-      <Manifesto />
+      <Manifesto url={pageUrl} />
       <FAQ
         {...ACI_FAQ}
         className="pt-26 md:pt-48 lg:pt-73"

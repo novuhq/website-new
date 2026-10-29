@@ -9,7 +9,7 @@ const ROWS = [
   ["Cross-channel message normalization", "Your prompts"],
   ["Exact thread delivery", "Your tools"],
   ["Conversation persistence & state", "Your business logic"],
-  ["Participants identity resolution", "Your keys"],
+  ["Participants' identity resolution", "Your keys"],
   ["Agent communication experience", "Your runtime & your code"],
 ] as const
 

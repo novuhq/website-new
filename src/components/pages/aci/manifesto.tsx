@@ -30,20 +30,14 @@ const STICKY_VIEWPORT_HEIGHT =
   SCROLL_END_VIEWPORT_OFFSET - SCROLL_START_VIEWPORT_OFFSET
 const STAGE_VIEWPORT_OFFSET = 0.5 - SCROLL_START_VIEWPORT_OFFSET
 const SECTION_HEIGHT_VH = 112
-const SHARE_URL =
-  "https://x.com/intent/post?url=https%3A%2F%2Fnovu.co%2Faci&text=Agent%20Communication%20Infrastructure%20by%20Novu"
+const SHARE_TEXT = "Agent Communication Infrastructure by Novu"
 
 type OffsetMap = [number, number, number, number]
 
 const SECOND_LINE_PROGRESS = 0.333
 const THIRD_LINE_PROGRESS = 0.666
 const FOURTH_LINE_PROGRESS = 1
-const ITEM_OFFSET_INPUT = [
-  0,
-  SECOND_LINE_PROGRESS,
-  THIRD_LINE_PROGRESS,
-  1,
-]
+const ITEM_OFFSET_INPUT = [0, SECOND_LINE_PROGRESS, THIRD_LINE_PROGRESS, 1]
 const INITIAL_OFFSET_MAP: OffsetMap = [0, 0, 0, 0]
 
 const ACCENT_TEXT_STYLE = {
@@ -241,7 +235,8 @@ function ManifestoLine({
   )
 }
 
-function Manifesto() {
+function Manifesto({ url }: { url: string }) {
+  const shareUrl = `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(SHARE_TEXT)}`
   const sectionRef = useRef<HTMLElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
@@ -438,7 +433,7 @@ function Manifesto() {
 
                 <a
                   className="pointer-events-auto relative z-10 mt-16 inline-flex h-12 origin-top items-center justify-center rounded-md border border-[#534B5D] bg-[linear-gradient(218.095deg,rgba(176,166,191,0.06)_8.6198%,rgba(176,166,191,0.03)_113.79%)] px-6 text-center text-sm leading-none font-medium whitespace-nowrap text-white uppercase transition-colors hover:border-[#766C85] focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
-                  href={SHARE_URL}
+                  href={shareUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ transform: `scale(${1 / scale})` }}

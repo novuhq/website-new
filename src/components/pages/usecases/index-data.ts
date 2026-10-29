@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import type { IndexCtaData, IndexGoal, IndexPictureSectionData } from "./types"
 
 export const INDEX_HERO = {
@@ -63,7 +65,7 @@ export const INDEX_ECHO_CTA = {
   },
   secondaryAction: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_usecases",
+    href: `${ROUTE.contactUs}/?utm_campaign=ws_usecases`,
   },
 } satisfies IndexCtaData
 
@@ -148,6 +150,6 @@ export const INDEX_REQUIREMENTS_CTA = {
   },
   secondaryAction: {
     label: "Contact us",
-    href: "https://novu.co/contact-us/?utm_campaign=ws_usecases",
+    href: `${ROUTE.contactUs}/?utm_campaign=ws_usecases`,
   },
 } satisfies IndexCtaData

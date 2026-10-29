@@ -1,7 +1,7 @@
 {
   "linkset": [
     {
-      "anchor": "https://novu.co/.well-known/api-catalog",
+      "anchor": "https://www.novu.co/.well-known/api-catalog",
       "item": [
         { "href": "https://api.novu.co/v1" },
         { "href": "https://eu.api.novu.co/v1" },
@@ -47,7 +47,7 @@
           "type": "text/html"
         },
         {
-          "href": "https://novu.co/mcp/",
+          "href": "https://www.novu.co/mcp/",
           "type": "text/html"
         }
       ]
@@ -60,7 +60,7 @@
           "type": "text/html"
         },
         {
-          "href": "https://novu.co/mcp/",
+          "href": "https://www.novu.co/mcp/",
           "type": "text/html"
         }
       ]

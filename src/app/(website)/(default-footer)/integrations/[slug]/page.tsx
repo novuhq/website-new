@@ -15,6 +15,7 @@ import {
 } from "@/lib/integrations/seo-defaults"
 import { safeJsonLdStringify } from "@/lib/json-ld"
 import { compileIntegrationMdx } from "@/lib/markdown/compile-mdx"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import CTA from "@/components/pages/cta"
 import IntegrationDetail from "@/components/pages/integrations/integration-detail"
 
@@ -75,8 +76,9 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     integration.product === "connect" &&
     integration.availability === "live"
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const pageUrl = `${siteUrl}${ROUTE.integrations}/${integration.slug}`
+  const pageUrl = absoluteUrl(
+    toCanonicalPathname(`${ROUTE.integrations}/${integration.slug}`)
+  )
 
   const resolvedDescription =
     integration.seo?.description ??
@@ -91,7 +93,7 @@ export default async function IntegrationDetailPage({ params }: PageProps) {
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
     },
   }
 

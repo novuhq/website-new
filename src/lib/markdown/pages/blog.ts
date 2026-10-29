@@ -4,6 +4,8 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import {
   getAllPosts,
+  getBlogCategoryDescription,
+  getBlogListingDescription,
   getCategoryBySlug,
   getPostBySlug,
   getPostsByCategory,
@@ -36,7 +38,7 @@ export async function getBlogListing(
       page: pageFromSeo(
         {
           title: `${SEO_DATA.blog.title} | ${config.projectName}`,
-          description: SEO_DATA.blog.description,
+          description: getBlogListingDescription(),
           pathname: "/blog",
         },
         [`## All posts`, postListMarkdown(posts)].join("\n\n")
@@ -62,7 +64,7 @@ export async function getBlogListing(
     page: pageFromSeo(
       {
         title: `${SEO_DATA.blog.title}: ${categoryData.title} | ${config.projectName}`,
-        description: `${categoryData.title} ${SEO_DATA.blog.description}`,
+        description: getBlogCategoryDescription(categoryData.title),
         pathname: `${ROUTE.blogCategory}/${category}`,
       },
       [`## All posts in ${categoryData.title}`, postListMarkdown(posts)].join(

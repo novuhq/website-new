@@ -7,25 +7,25 @@ Novu provides a unified platform for building, operating, and debugging notifica
 ## Products
 
 ### Agents
-- [Agent Quickstart](https://novu.co/agents.md): Connect any existing agent or create a new customer agent to any communication channel in less than 2 minutes. Visit the link and follow instructions if you are an agent.
-- [Novu Connect](https://novu.co/connect/): Bring Claude Managed Agents and custom AI agents (built with the AI SDK, LangChain, and more) into the channels where your users already are. Supports MCP tools and a managed runtime for long-running agents powered by Claude.
+- [Agent Quickstart](https://www.novu.co/agents.md): Connect any existing agent or create a new customer agent to any communication channel in less than 2 minutes. Visit the link and follow instructions if you are an agent.
+- [Novu Connect](https://www.novu.co/connect/): Bring Claude Managed Agents and custom AI agents (built with the AI SDK, LangChain, and more) into the channels where your users already are. Supports MCP tools and a managed runtime for long-running agents powered by Claude.
 
 ### Inbox
-- [Inbox Overview](https://novu.co/inbox/): Embeddable, real-time in-app notification center
+- [Inbox Overview](https://www.novu.co/inbox/): Embeddable, real-time in-app notification center
 - React, Next.js, Vue, Angular, iframe, and web component options
 - User preferences, HMAC encryption, and customizable UI
 
 ### MCP Server
-- [MCP Overview](https://novu.co/mcp/): Give AI agents native access to Novu notification tools via OAuth
+- [MCP Overview](https://www.novu.co/mcp/): Give AI agents native access to Novu notification tools via OAuth
 - 23+ tools for subscribers, workflows, triggers, notifications, and integrations
 - Works with Claude, Cursor, ChatGPT, Copilot, and any MCP-compatible client
 
 ### Copilot
-- [Copilot Overview](https://novu.co/copilot/): Generate production-ready notification workflows from plain English
+- [Copilot Overview](https://www.novu.co/copilot/): Generate production-ready notification workflows from plain English
 - Built for product managers to describe journeys and ship workflows the same day
 
 ### Digest
-- [Digest Overview](https://novu.co/digest/): Batch and consolidate notifications to reduce overload
+- [Digest Overview](https://www.novu.co/digest/): Batch and consolidate notifications to reduce overload
 - Time-based, count-based, and cron digest strategies
 
 ## Notification Channels
@@ -36,53 +36,53 @@ Novu provides a unified platform for building, operating, and debugging notifica
 - **Chat**: Slack, Discord, Microsoft Teams, and Mattermost
 
 ### Connect your AI agent to a channel (Novu Connect)
-- [AI agent on Slack](https://novu.co/channels/slack/): Give an existing AI agent two-way threaded conversations in Slack. Connect with `npx novu connect --channel slack`.
-- [AI agent on WhatsApp](https://novu.co/channels/whatsapp/): Put an AI agent on WhatsApp with secure two-way conversations and approved templates. Novu is an official Meta Business Partner, working in about 5 minutes.
-- [AI agent on Telegram](https://novu.co/channels/telegram/): Reach users on Telegram with fast conversational replies and inline keyboards. Connect with `npx novu connect --channel telegram`.
-- [AI agent on Microsoft Teams](https://novu.co/channels/microsoft-teams/): Bring an AI agent into Microsoft Teams with channel awareness, Adaptive Cards, and human handoff. Connect from the Novu dashboard.
-- [AI agent on Email](https://novu.co/channels/email/): Reach users in their inbox with rich, actionable agent notifications and secure action links. Connect with `npx novu connect --channel email`.
-- [AI agent in Web Chat](https://novu.co/channels/web-chat/): Put an existing AI agent inside your product. It uses product context, takes actions with approval, renders your components in the thread, and continues the conversation on every connected channel. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat.md
+- [AI agent on Slack](https://www.novu.co/channels/slack/): Give an existing AI agent two-way threaded conversations in Slack. Connect with `npx novu connect --channel slack`.
+- [AI agent on WhatsApp](https://www.novu.co/channels/whatsapp/): Put an AI agent on WhatsApp with secure two-way conversations and approved templates. Novu is an official Meta Business Partner, working in about 5 minutes.
+- [AI agent on Telegram](https://www.novu.co/channels/telegram/): Reach users on Telegram with fast conversational replies and inline keyboards. Connect with `npx novu connect --channel telegram`.
+- [AI agent on Microsoft Teams](https://www.novu.co/channels/microsoft-teams/): Bring an AI agent into Microsoft Teams with channel awareness, Adaptive Cards, and human handoff. Connect from the Novu dashboard.
+- [AI agent on Email](https://www.novu.co/channels/email/): Reach users in their inbox with rich, actionable agent notifications and secure action links. Connect with `npx novu connect --channel email`.
+- [AI agent in Web Chat](https://www.novu.co/channels/web-chat/): Put an existing AI agent inside your product. It uses product context, takes actions with approval, renders your components in the thread, and continues the conversation on every connected channel. Connect with `npx novu connect --channel web-chat`. Markdown: https://www.novu.co/channels/web-chat.md
 
 ### Add an AI agent to an app builder (Novu Web Chat)
 How to embed an existing AI agent in an app made with an AI app builder, with one script tag, and reach the same users on other channels. Each page has a Markdown version at the same path with `.md`.
-- [AI agent in a Lovable app](https://novu.co/channels/web-chat/lovable/): Add an AI agent to a Lovable app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat/lovable.md
-- [AI agent in a v0 app](https://novu.co/channels/web-chat/v0/): Add an AI agent to a v0 app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://novu.co/channels/web-chat/v0.md
+- [AI agent in a Lovable app](https://www.novu.co/channels/web-chat/lovable/): Add an AI agent to a Lovable app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://www.novu.co/channels/web-chat/lovable.md
+- [AI agent in a v0 app](https://www.novu.co/channels/web-chat/v0/): Add an AI agent to a v0 app with one Web Chat embed. Connect with `npx novu connect --channel web-chat`. Markdown: https://www.novu.co/channels/web-chat/v0.md
 
 ### Connect a framework's agent to a channel (Novu Connect)
 How to connect an agent built with a specific framework to a specific channel. The custom-code bridge keeps your agent running in your app. Each page has a Markdown version at the same path with `.md`.
-- [LangChain agent on Slack](https://novu.co/channels/slack/langchain/): Connect a LangChain agent to Slack. Connect with `npx novu connect --runtime langchain --channel slack`. Markdown: https://novu.co/channels/slack/langchain.md
-- [LangChain agent on Microsoft Teams](https://novu.co/channels/microsoft-teams/langchain/): Connect a LangChain agent to Microsoft Teams. Connect with `npx novu connect --runtime langchain --channel teams`. Markdown: https://novu.co/channels/microsoft-teams/langchain.md
-- [LangChain agent on WhatsApp](https://novu.co/channels/whatsapp/langchain/): Connect a LangChain agent to WhatsApp. Connect with `npx novu connect --runtime langchain --channel whatsapp`. Markdown: https://novu.co/channels/whatsapp/langchain.md
-- [LangChain agent on Telegram](https://novu.co/channels/telegram/langchain/): Connect a LangChain agent to Telegram. Connect with `npx novu connect --runtime langchain --channel telegram`. Markdown: https://novu.co/channels/telegram/langchain.md
-- [LangChain agent on Email](https://novu.co/channels/email/langchain/): Connect a LangChain agent to Email. Connect with `npx novu connect --runtime langchain --channel email`. Markdown: https://novu.co/channels/email/langchain.md
+- [LangChain agent on Slack](https://www.novu.co/channels/slack/langchain/): Connect a LangChain agent to Slack. Connect with `npx novu connect --runtime langchain --channel slack`. Markdown: https://www.novu.co/channels/slack/langchain.md
+- [LangChain agent on Microsoft Teams](https://www.novu.co/channels/microsoft-teams/langchain/): Connect a LangChain agent to Microsoft Teams. Connect with `npx novu connect --runtime langchain --channel teams`. Markdown: https://www.novu.co/channels/microsoft-teams/langchain.md
+- [LangChain agent on WhatsApp](https://www.novu.co/channels/whatsapp/langchain/): Connect a LangChain agent to WhatsApp. Connect with `npx novu connect --runtime langchain --channel whatsapp`. Markdown: https://www.novu.co/channels/whatsapp/langchain.md
+- [LangChain agent on Telegram](https://www.novu.co/channels/telegram/langchain/): Connect a LangChain agent to Telegram. Connect with `npx novu connect --runtime langchain --channel telegram`. Markdown: https://www.novu.co/channels/telegram/langchain.md
+- [LangChain agent on Email](https://www.novu.co/channels/email/langchain/): Connect a LangChain agent to Email. Connect with `npx novu connect --runtime langchain --channel email`. Markdown: https://www.novu.co/channels/email/langchain.md
 
 ## Key Pages
 
-- [Homepage](https://novu.co/): Connect your AI agents and products to customers. Start with `npx novu connect`. Markdown version: https://novu.co/index.md
-- [Pricing](https://novu.co/pricing/): Plans from Free (10K workflow runs/month) to Enterprise
-- [Connect](https://novu.co/connect/): Connect agents to Slack, Teams, email, and more
-- [MCP Server](https://novu.co/mcp/): Add notifications to any AI agent
-- [Copilot](https://novu.co/copilot/): Build workflows from natural language
-- [Integrations](https://novu.co/integrations/channels/): Providers and workflow tools
-- [Customers](https://novu.co/customers/): Teams shipping with Novu
-- [Security](https://novu.co/security/): SOC 2, encryption, and compliance
-- [Book a Demo](https://novu.co/book-a-demo/): Talk with the Novu team
+- [Homepage](https://www.novu.co/): Connect your AI agents and products to customers. Start with `npx novu connect`. Markdown version: https://www.novu.co/index.md
+- [Pricing](https://www.novu.co/pricing/): Plans from Free (10K workflow runs/month) to Enterprise
+- [Connect](https://www.novu.co/connect/): Connect agents to Slack, Teams, email, and more
+- [MCP Server](https://www.novu.co/mcp/): Add notifications to any AI agent
+- [Copilot](https://www.novu.co/copilot/): Build workflows from natural language
+- [Integrations](https://www.novu.co/integrations/channels/): Providers and workflow tools
+- [Customers](https://www.novu.co/customers/): Teams shipping with Novu
+- [Security](https://www.novu.co/security/): SOC 2, encryption, and compliance
+- [Book a Demo](https://www.novu.co/book-a-demo/): Talk with the Novu team
 
 ## Use Cases
 
-- [Add Notifications](https://novu.co/usecases/add-notifications/): Quickly add notification capabilities to your app
-- [Multi-Channel Notifications](https://novu.co/usecases/multi-channel-notifications/): Unified delivery across all channels
-- [Unified Platform](https://novu.co/usecases/unified-platform/): Single platform for all notification needs
-- [Content Management](https://novu.co/usecases/content-management/): Manage notification templates and content
-- [Communication Experience](https://novu.co/usecases/improve-communication-experience/): Enhance user engagement
+- [Add Notifications](https://www.novu.co/usecases/add-notifications/): Quickly add notification capabilities to your app
+- [Multi-Channel Notifications](https://www.novu.co/usecases/multi-channel-notifications/): Unified delivery across all channels
+- [Unified Platform](https://www.novu.co/usecases/unified-platform/): Single platform for all notification needs
+- [Content Management](https://www.novu.co/usecases/content-management/): Manage notification templates and content
+- [Communication Experience](https://www.novu.co/usecases/improve-communication-experience/): Enhance user engagement
 
 ### AI agent use cases by channel
 
-- AI agent for incident response, SDK setup, and API questions on Slack: [novu.co/channels/slack](https://novu.co/channels/slack/)
-- AI agent for order status, restock alerts, and returns on WhatsApp: [novu.co/channels/whatsapp](https://novu.co/channels/whatsapp/)
-- AI agent for developer support, API reference, and usage on Telegram: [novu.co/channels/telegram](https://novu.co/channels/telegram/)
-- AI agent for IT helpdesk, provisioning, and onboarding on Microsoft Teams: [novu.co/channels/microsoft-teams](https://novu.co/channels/microsoft-teams/)
-- AI agent for billing, invoices, and order status over Email: [novu.co/channels/email](https://novu.co/channels/email/)
+- AI agent for incident response, SDK setup, and API questions on Slack: [www.novu.co/channels/slack](https://www.novu.co/channels/slack/)
+- AI agent for order status, restock alerts, and returns on WhatsApp: [www.novu.co/channels/whatsapp](https://www.novu.co/channels/whatsapp/)
+- AI agent for developer support, API reference, and usage on Telegram: [www.novu.co/channels/telegram](https://www.novu.co/channels/telegram/)
+- AI agent for IT helpdesk, provisioning, and onboarding on Microsoft Teams: [www.novu.co/channels/microsoft-teams](https://www.novu.co/channels/microsoft-teams/)
+- AI agent for billing, invoices, and order status over Email: [www.novu.co/channels/email](https://www.novu.co/channels/email/)
 
 ## Documentation
 
@@ -97,9 +97,9 @@ How to connect an agent built with a specific framework to a specific channel. T
 
 - [Dashboard](https://dashboard.novu.co/): Novu Cloud dashboard for managing notifications
 - [GitHub Repository](https://github.com/novuhq/novu): Open-source codebase (~40K stars)
-- [Agent Onboarding Guide](https://novu.co/agents.md): Instructions for AI agents to create and connect a managed agent
+- [Agent Onboarding Guide](https://www.novu.co/agents.md): Instructions for AI agents to create and connect a managed agent
 - [NPM Packages](https://www.npmjs.com/org/novu): @novu/node, @novu/react, @novu/nextjs
-- [Blog](https://novu.co/blog/): Technical articles and product updates
+- [Blog](https://www.novu.co/blog/): Technical articles and product updates
 - [Discord Community](https://discord.gg/novu): Community support and discussions
 
 ## Integrations
@@ -131,7 +131,7 @@ Novu is an open-source company backed by leading investors. The platform process
 
 ## Contact
 
-- Website: https://novu.co
+- Website: https://www.novu.co
 - Documentation: https://docs.novu.co
 - GitHub: https://github.com/novuhq/novu
 - Discord: https://discord.gg/novu

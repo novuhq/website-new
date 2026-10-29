@@ -3,8 +3,7 @@ import { ROUTE } from "@/constants/routes"
 import Rss from "rss"
 
 import { getAllPosts } from "@/lib/blog"
-
-const SITE_URL = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL!
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 
 export async function GET() {
   try {
@@ -14,8 +13,8 @@ export async function GET() {
       language: "en",
       title: `Blog — ${config.projectName}`,
       description: "Latest blog posts",
-      feed_url: `${SITE_URL}${ROUTE.blogRss}`,
-      site_url: SITE_URL,
+      feed_url: absoluteUrl(String(ROUTE.blogRss)),
+      site_url: absoluteUrl("/"),
       custom_namespaces: {
         media: "http://search.yahoo.com/mrss/",
       },
@@ -23,7 +22,9 @@ export async function GET() {
 
     blogPosts.forEach(
       ({ title, slug, publishedAt, category, authors, caption }) => {
-        const url = `${SITE_URL}${ROUTE.blog}/${slug.current}`
+        const url = absoluteUrl(
+          toCanonicalPathname(`${ROUTE.blog}/${slug.current}`)
+        )
         feed.item({
           guid: slug.current,
           title,

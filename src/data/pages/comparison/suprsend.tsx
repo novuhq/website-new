@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { ROUTE } from "@/constants/routes"
 import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
 import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
 import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
@@ -86,7 +87,7 @@ export const suprsendComparisonData: IComparisonPageData = {
   frustrations: {
     title: "The frustrations that bring teams to Novu",
     subtitle:
-      "If you're evaluating alternatives, you've probably dealing with at least one of these.",
+      "If you're evaluating alternatives, you've probably been dealing with at least one of these.",
     items: [
       {
         title: "Code-first ownership",
@@ -149,7 +150,7 @@ export const suprsendComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and a self-hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
@@ -418,7 +419,7 @@ export const suprsendComparisonData: IComparisonPageData = {
       {
         kind: "secondary-button",
         label: "Talk To Sales",
-        href: "/contact-us",
+        href: ROUTE.contactUs,
         clickLocation: "comparison_suprsend_cta",
         clickText: "talk_to_sales",
       },

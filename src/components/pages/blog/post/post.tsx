@@ -1,5 +1,3 @@
-import { ROUTE } from "@/constants/routes"
-
 import { IPost, IPostWithTableOfContents } from "@/types/blog"
 import { cn } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
@@ -14,6 +12,7 @@ import RelatedPosts from "./related-posts"
 interface IPostProps {
   className?: string
   post: IPostWithTableOfContents
+  url: string
   relatedPosts: IPost[]
   backLink: {
     label: string
@@ -21,7 +20,7 @@ interface IPostProps {
   }
 }
 
-function Post({ className, post, backLink, relatedPosts }: IPostProps) {
+function Post({ className, post, url, backLink, relatedPosts }: IPostProps) {
   return (
     <section className={cn("post", className)}>
       <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
@@ -50,10 +49,7 @@ function Post({ className, post, backLink, relatedPosts }: IPostProps) {
               items={post.tableOfContents}
             />
             <BackToTop withSeparator />
-            <SocialShare
-              className="mt-7"
-              pathname={`${ROUTE.blog}/${post.slug.current}`}
-            />
+            <SocialShare className="mt-7" url={url} />
           </Aside>
         </article>
       </div>

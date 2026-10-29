@@ -7,6 +7,7 @@ import { SEO_DATA } from "@/constants/seo-data"
 
 import { ICategory } from "@/types/blog"
 import {
+  getBlogCategoryDescription,
   getCategories,
   getCategoryBySlug,
   getPaginatedPostsByCategory,
@@ -84,7 +85,7 @@ export async function generateMetadata({
 
   return getMetadata({
     title: `${SEO_DATA.blog.title}: ${categoryData.title} | ${config.projectName}`,
-    description: `${categoryData.title} ${SEO_DATA.blog.description}`,
+    description: getBlogCategoryDescription(categoryData.title),
     pathname: `${ROUTE.blogCategory}/${category}`,
     markdownPathname: true,
   })

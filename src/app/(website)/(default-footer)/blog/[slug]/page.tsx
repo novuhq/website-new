@@ -7,6 +7,7 @@ import { ROUTE } from "@/constants/routes"
 import { getAllPosts, getLatestPosts, getPostBySlug } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
+import { absoluteUrl, getSiteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { getExcerpt } from "@/lib/utils"
 import Post from "@/components/pages/blog/post/post"
 import CTA from "@/components/pages/cta"
@@ -29,8 +30,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Google Structured Data for Blog Post @see {@link https://developers.google.com/search/docs/appearance/structured-data/article#json-ld}
   // Next.js JSON-LD @see {@link https://nextjs.org/docs/app/guides/json-ld}
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const postUrl = `${siteUrl}${ROUTE.blog}/${post.slug.current}`
+  const siteUrl = getSiteUrl()
+  const postUrl = absoluteUrl(
+    toCanonicalPathname(`${ROUTE.blog}/${post.slug.current}`)
+  )
   const authors = (post.authors || []).map((author) => ({
     "@type": "Person",
     name: author.name,
@@ -43,7 +46,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const postImage =
     post.seo?.socialImage ||
-    `${siteUrl}/api/og?template=blog&title=${encodeURIComponent(post.title)}`
+    `${siteUrl}/api/og/?template=blog&title=${encodeURIComponent(post.title)}`
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -58,10 +61,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }
@@ -71,6 +74,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <Post
         className="relative z-10"
         post={post}
+        url={postUrl}
         relatedPosts={relatedPosts}
         backLink={{ label: "Blog", href: ROUTE.blog }}
       />

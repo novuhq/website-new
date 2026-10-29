@@ -5,6 +5,11 @@ import { unstable_cache } from "next/cache"
 import achievementsData from "@/content/contributors/wordpress-achievements.json"
 
 import { normalizeContributorGithub } from "./image-urls"
+import {
+  createSourceGithubResolver,
+  getSourceGithubs,
+  type ContributorHandle,
+} from "./source-githubs"
 import type {
   Contributor,
   ContributorAchievement,
@@ -111,8 +116,14 @@ async function fetchJson(
   return { ok: true, status: response.status, data: await response.json() }
 }
 
+interface ContributorsList {
+  contributors: Contributor[]
+  /** Lowercase handle -> handle as stored by the API, for mixed-case handles. */
+  sourceGithubs: Record<string, string>
+}
+
 const loadContributorsCached = unstable_cache(
-  async (): Promise<Contributor[]> => {
+  async (): Promise<ContributorsList> => {
     const { ok, data } = await fetchJson(
       `${CONTRIBUTORS_API_URL}/contributors`,
       { cache: "no-store" }
@@ -121,21 +132,33 @@ const loadContributorsCached = unstable_cache(
 
     const payload = asRecord(data)
     const list = payload && Array.isArray(payload.list) ? payload.list : []
-    const contributors = list
-      .map(normalizeContributor)
-      .filter((item): item is Contributor => !!item)
-      .map((contributor) => ({
+    const contributors: Contributor[] = []
+    const handles: ContributorHandle[] = []
+
+    for (const item of list) {
+      const contributor = normalizeContributor(item)
+      if (!contributor) continue
+
+      contributors.push({
         ...contributor,
         pulls: contributor.pulls.slice(0, 1),
-      }))
+      })
+      handles.push({
+        github: contributor.github,
+        sourceGithub:
+          asString(asRecord(item)?.github)?.trim() || contributor.github,
+        teammate: contributor.teammate,
+        totalPulls: contributor.totalPulls,
+      })
+    }
 
     if (!contributors.length) {
       throw new Error("Contributors API returned an empty list")
     }
 
-    return contributors
+    return { contributors, sourceGithubs: getSourceGithubs(handles) }
   },
-  ["contributors-list-v2", CONTRIBUTORS_API_URL],
+  ["contributors-list-v3", CONTRIBUTORS_API_URL],
   { revalidate: 3600, tags: ["contributors"] }
 )
 
@@ -148,7 +171,7 @@ export const getContributorsResult = cache(
   async (): Promise<ContributorsResult> => {
     try {
       return {
-        contributors: await loadContributorsCached(),
+        contributors: (await loadContributorsCached()).contributors,
         unavailable: false,
       }
     } catch {
@@ -183,6 +206,13 @@ const loadContributorCached = unstable_cache(
   { revalidate: 3600, tags: ["contributors"] }
 )
 
+// The API matches handles case-sensitively, but profile URLs use the
+// lowercase handle, so request the casing the contributors list stores.
+const getSourceGithub = createSourceGithubResolver(
+  async () => (await loadContributorsCached()).sourceGithubs,
+  { retryAfterMs: 30_000 }
+)
+
 export const getContributor = cache(
   async (
     github: string
@@ -193,10 +223,18 @@ export const getContributor = cache(
     }
 
     try {
-      return {
-        contributor: await loadContributorCached(safeGithub),
-        unavailable: false,
+      const sourceGithub = await getSourceGithub(safeGithub)
+      const contributor = await loadContributorCached(
+        sourceGithub ?? safeGithub
+      )
+
+      // Without the list, a handle stored with capitals 404s like a missing
+      // profile, so a miss counts as unavailable rather than not found.
+      if (!contributor && sourceGithub === null) {
+        return { contributor: null, unavailable: true }
       }
+
+      return { contributor, unavailable: false }
     } catch {
       return { contributor: null, unavailable: true }
     }

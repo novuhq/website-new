@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import type { DualCtaData, IconGridData, PictureSectionData } from "../types"
 
 const ASSET_ROOT = "/images/pages/digest"
@@ -125,7 +127,7 @@ export const digestCta = {
   },
   secondary: {
     label: "Contact us",
-    href: "https://novu.co/contact-us",
+    href: `${ROUTE.contactUs}/`,
   },
 } satisfies DualCtaData
 

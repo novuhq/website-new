@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { SEO_DATA } from "@/constants/seo-data"
 
 import { getMetadata } from "@/lib/get-metadata"
+import { getSiteUrl } from "@/lib/site-url"
 import PricingPageContent from "@/components/pages/pricing/pricing-page-content"
 
 const faqItems = [
@@ -77,7 +78,7 @@ const faqItems = [
   },
 ]
 
-const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || "https://novu.co"
+const siteUrl = getSiteUrl()
 
 const faqJsonLd = {
   "@context": "https://schema.org",

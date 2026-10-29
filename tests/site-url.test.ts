@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, it } from "node:test"
 import { getMetadata } from "@/lib/get-metadata"
 import {
   absoluteUrl,
+  getConfiguredSiteUrl,
   getSiteUrl,
   toCanonicalPathname,
   toMarkdownPathname,
@@ -39,10 +40,10 @@ describe("site URL helpers", () => {
   it("uses the production URL when no override is configured", () => {
     delete process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
 
-    assert.equal(getSiteUrl(), "https://novu.co")
+    assert.equal(getSiteUrl(), "https://www.novu.co")
     assert.equal(
       absoluteUrl("/channels/slack/"),
-      "https://novu.co/channels/slack/"
+      "https://www.novu.co/channels/slack/"
     )
   })
 
@@ -68,6 +69,19 @@ describe("site URL helpers", () => {
       absoluteUrl("/social-previews/index.jpg"),
       "https://website-new-git-hero-local-novuhq.vercel.app/social-previews/index.jpg"
     )
+  })
+
+  it("keeps the configured public URL on previews for links stored elsewhere", () => {
+    process.env.NEXT_PUBLIC_DEFAULT_SITE_URL = "https://www.novu.co/"
+    process.env.VERCEL_ENV = "preview"
+    process.env.VERCEL_BRANCH_URL =
+      "website-new-git-hero-local-novuhq.vercel.app"
+
+    assert.equal(getConfiguredSiteUrl(), "https://www.novu.co")
+
+    delete process.env.NEXT_PUBLIC_DEFAULT_SITE_URL
+
+    assert.equal(getConfiguredSiteUrl(), "https://www.novu.co")
   })
 
   it("keeps the configured public URL for Vercel production deployments", () => {

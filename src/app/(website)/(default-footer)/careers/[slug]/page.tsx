@@ -5,6 +5,7 @@ import { ROUTE } from "@/constants/routes"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { getCareerJobBySlug, getOpenCareerJobs } from "@/lib/notion/careers"
+import { absoluteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { getExcerpt } from "@/lib/utils"
 import CareerJobPage from "@/components/pages/careers/job-page"
 
@@ -54,7 +55,6 @@ export default async function CareerJobRoute({ params }: CareerJobRouteProps) {
     notFound()
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
   const pathname = `${ROUTE.careers}/${job.slug}`
   const jsonLd = {
     "@context": "https://schema.org",
@@ -66,8 +66,8 @@ export default async function CareerJobRoute({ params }: CareerJobRouteProps) {
     hiringOrganization: {
       "@type": "Organization",
       name: "Novu",
-      sameAs: "https://novu.co",
-      logo: "https://novu.co/images/logo.svg",
+      sameAs: absoluteUrl("/"),
+      logo: absoluteUrl("/images/logo.svg"),
     },
     jobLocationType: job.location.toLowerCase().includes("remote")
       ? "TELECOMMUTE"
@@ -76,7 +76,7 @@ export default async function CareerJobRoute({ params }: CareerJobRouteProps) {
       "@type": "Country",
       name: job.location,
     },
-    url: `${siteUrl}${pathname}`,
+    url: absoluteUrl(toCanonicalPathname(pathname)),
   }
 
   return (

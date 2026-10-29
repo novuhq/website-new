@@ -6,12 +6,14 @@ import { SEO_DATA } from "@/constants/seo-data"
 import { Rss } from "lucide-react"
 
 import {
+  getBlogListingDescription,
   getCategories,
   getFeaturedPost,
   getPaginatedPosts,
   getTotalPages,
 } from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
+import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
@@ -45,25 +47,25 @@ export default async function BlogPage() {
     )
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
+  const siteUrl = getSiteUrl()
   const blogJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: `${SEO_DATA.blog.title} | ${config.projectName}`,
-    description: SEO_DATA.blog.description,
+    description: getBlogListingDescription(),
     url: `${siteUrl}/blog/`,
     isPartOf: {
       "@type": "WebSite",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
     },
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }
@@ -150,7 +152,7 @@ export default async function BlogPage() {
 
 export const metadata: Metadata = getMetadata({
   title: `${SEO_DATA.blog.title} | ${config.projectName}`,
-  description: SEO_DATA.blog.description,
+  description: getBlogListingDescription(),
   pathname: SEO_DATA.blog.pathname,
   markdownPathname: true,
 })

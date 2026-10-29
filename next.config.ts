@@ -84,14 +84,15 @@ const nextConfig: NextConfig = {
         destination: "/:path.md",
         permanent: true,
       },
+      // Destinations keep the trailing slash so they resolve in one hop.
       {
         source: "/integrations",
-        destination: "/integrations/channels",
+        destination: "/integrations/channels/",
         permanent: true,
       },
       {
         source: "/integrations/azure",
-        destination: "/integrations/azure-sms",
+        destination: "/integrations/azure-sms/",
         permanent: true,
       },
       {

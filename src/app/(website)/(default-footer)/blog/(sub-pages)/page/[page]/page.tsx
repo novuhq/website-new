@@ -5,7 +5,11 @@ import config from "@/configs/website-config"
 import { ROUTE } from "@/constants/routes"
 import { SEO_DATA } from "@/constants/seo-data"
 
-import { getPaginatedPosts, getTotalPages } from "@/lib/blog"
+import {
+  getBlogListingDescription,
+  getPaginatedPosts,
+  getTotalPages,
+} from "@/lib/blog"
 import { getMetadata } from "@/lib/get-metadata"
 import Pagination from "@/components/pages/blog/pagination"
 import PostsList from "@/components/pages/blog/posts-lists"
@@ -78,7 +82,7 @@ export async function generateMetadata({
 
   return getMetadata({
     title: `${SEO_DATA.blog.title}${page > 1 ? ` - Page ${page}` : ""} | ${config.projectName}`,
-    description: `${SEO_DATA.blog.description} ${page > 1 ? `Page ${page}` : ""}`,
+    description: getBlogListingDescription(page),
     pathname: `${ROUTE.blog}/page/${page}`,
   })
 }

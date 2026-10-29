@@ -1,3 +1,4 @@
+import { ROUTE } from "@/constants/routes"
 import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
 import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
 import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
@@ -244,9 +245,8 @@ export const knockComparisonData: IComparisonPageData = {
           >
             Knock delivery policy
           </a>
-          .
-          More control over your <span>stack</span> and a clearer fallback path
-          if your infrastructure, compliance, or vendor requirements change
+          . More control over your <span>stack</span> and a clearer fallback
+          path if your infrastructure, compliance, or vendor requirements change
         </>,
       ],
       [
@@ -397,10 +397,9 @@ export const knockComparisonData: IComparisonPageData = {
               >
                 Knock migration guide
               </a>{" "}
-              to prepare the move.
-              It depends on how many workflows, providers, and in-app
-              experiences you need to move. Most teams can migrate in phases
-              instead of replacing everything at once, starting with core
+              to prepare the move. It depends on how many workflows, providers,
+              and in-app experiences you need to move. Most teams can migrate in
+              phases instead of replacing everything at once, starting with core
               workflows or in-app notifications first, then moving templates,
               providers, and preferences over time. Both platforms support
               API-driven workflows and integrations, which makes a phased
@@ -482,7 +481,7 @@ export const knockComparisonData: IComparisonPageData = {
       {
         kind: "secondary-button",
         label: "Talk To Sales",
-        href: "/contact-us",
+        href: ROUTE.contactUs,
         clickLocation: "comparison_knock_cta",
         clickText: "talk_to_sales",
       },

@@ -1,3 +1,4 @@
+import { ROUTE } from "@/constants/routes"
 import codeSectionIllustration from "@/images/pages/comparison/courier/code/illustration.jpg"
 import codeIllustration from "@/images/pages/comparison/courier/difference/code.png"
 import digestIllustration from "@/images/pages/comparison/courier/difference/digest.png"
@@ -83,7 +84,7 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
   frustrations: {
     title: "The frustrations that bring teams to Novu",
     subtitle:
-      "If you're evaluating alternatives, you've probably dealing with at least one of these.",
+      "If you're evaluating alternatives, you've probably been dealing with at least one of these.",
     items: [
       {
         title: "Notifications eat engineering time",
@@ -152,7 +153,7 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
       {
         title: "Data residency from day one",
         description:
-          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and self hosted option on Enterprise.",
+          "Novu Cloud offers US and EU data residency on the free tier, with additional global regions and a self-hosted option on Enterprise.",
         image: regionsIllustration,
         icon: regionsIcon,
       },
@@ -221,7 +222,7 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
         "Time to first notification",
         "Minutes. One API call triggers delivery across all configured channels.",
         "Wiring up a single channel is fast. However, a multi-channel system with preference enforcement, observability, and edge-case handling takes meaningfully longer.",
-        "With Novu, you get a notification infrastructure with everything you need up and running in few minutes",
+        "With Novu, you get a notification infrastructure with everything you need up and running in a few minutes",
       ],
       [
         "Multi-channel routing",
@@ -433,7 +434,7 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
       {
         kind: "secondary-button",
         label: "Talk To Sales",
-        href: "/contact-us",
+        href: ROUTE.contactUs,
         clickLocation: "comparison_building_in_house_cta",
         clickText: "talk_to_sales",
       },

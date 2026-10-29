@@ -1,3 +1,5 @@
+import { ROUTE } from "@/constants/routes"
+
 import { type TemplateUseCaseSlug, type UseCasePageData } from "./types"
 
 const DASHBOARD_LINK = "https://dashboard.novu.co/?utm_campaign=usecase-CTA"
@@ -22,7 +24,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-addNotification",
+          url: `${ROUTE.contactUs}/?utm_campaign=website-usecase-addNotification`,
         },
       ],
     },
@@ -186,7 +188,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-contentManagement",
+          url: `${ROUTE.contactUs}/?utm_campaign=website-usecase-contentManagement`,
         },
       ],
     },
@@ -349,7 +351,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-improveComms",
+          url: `${ROUTE.contactUs}/?utm_campaign=website-usecase-improveComms`,
         },
       ],
     },
@@ -503,7 +505,7 @@ export const USE_CASE_PAGES = {
         },
         {
           text: "Book Meeting",
-          url: "https://novu.co/contact-us/?utm_campaign=website-usecase-unifiedPlatform",
+          url: `${ROUTE.contactUs}/?utm_campaign=website-usecase-unifiedPlatform`,
         },
       ],
     },

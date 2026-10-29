@@ -71,7 +71,7 @@ export const connectStackContract = {
   framework: "LangChain",
   command: "npx novu connect --channel teams --runtime langchain",
   prompt:
-    "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://novu.co/agents.md",
+    "Connect this project's LangChain agent to MS Teams with Novu using instructions from https://www.novu.co/agents.md",
 } as const
 
 export const channelPagesContract = {
@@ -127,7 +127,7 @@ export const connectContract = {
   heading: "Connect your agent to any channel",
   command: "npx novu connect",
   prompt:
-    "Connect my agent to customers with Novu using instructions from https://novu.co/agents.md",
+    "Connect my agent to customers with Novu using instructions from https://www.novu.co/agents.md",
   signUpDestination: destinations.agentsSignUp,
   connectAppDestination: destinations.connectApp,
 } as const

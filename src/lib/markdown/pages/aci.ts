@@ -108,7 +108,7 @@ const OWNERSHIP_ROWS = [
   ["Cross-channel message normalization", "Your prompts"],
   ["Exact thread delivery", "Your tools"],
   ["Conversation persistence & state", "Your business logic"],
-  ["Participants identity resolution", "Your keys"],
+  ["Participants' identity resolution", "Your keys"],
   ["Agent communication experience", "Your runtime & your code"],
 ] as const
 
@@ -178,7 +178,7 @@ export async function getAci(pathname: string): Promise<MarkdownPage | null> {
     ].join("\n\n"),
     [
       "## Notifications → Communication",
-      "For decades, products notifed users one way via notifications, that always lacked the correct context, and limited users' ability to perform meaningful interactions with them. Software has changed, now it needs to communicate via conversations.",
+      "For decades, products notified users one way via notifications that always lacked the correct context, and limited users' ability to perform meaningful interactions with them. Software has changed, now it needs to communicate via conversations.",
     ].join("\n\n"),
     [
       "## Stop re-inventing the wheel",
@@ -237,7 +237,7 @@ export async function getAci(pathname: string): Promise<MarkdownPage | null> {
     ].join("\n\n"),
     [
       "## Built in the open. Send a PR, file an issue, ship a channel.",
-      "ACI are open source. Contribute what missing, review the code, run it by yourself. The adapters, the identity resolver, the conversation store — all on GitHub. If there's a channel we don't speak yet, you can teach us.",
+      "ACI is open source. Contribute what's missing, review the code, run it by yourself. The adapters, the identity resolver, the conversation store — all on GitHub. If there's a channel we don't speak yet, you can teach us.",
       [
         formatMarkdownLink("Star us on GitHub", GITHUB_REPO_URL),
         formatMarkdownLink("Contribute", ROUTE.githubIssues),

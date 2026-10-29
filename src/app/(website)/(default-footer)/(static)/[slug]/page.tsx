@@ -5,6 +5,7 @@ import config from "@/configs/website-config"
 
 import { getMetadata } from "@/lib/get-metadata"
 import { portableToPlain } from "@/lib/sanity/utils/portable-to-plain"
+import { absoluteUrl, getSiteUrl, toCanonicalPathname } from "@/lib/site-url"
 import { getAllStaticPages, getStaticPageBySlug } from "@/lib/static"
 import { getExcerpt } from "@/lib/utils"
 import Aside from "@/components/pages/aside"
@@ -51,8 +52,8 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
 
   // Google Structured Data for Blog Post @see {@link https://developers.google.com/search/docs/appearance/structured-data/article#json-ld}
   // Next.js JSON-LD @see {@link https://nextjs.org/docs/app/guides/json-ld}
-  const siteUrl = process.env.NEXT_PUBLIC_DEFAULT_SITE_URL || ""
-  const staticPageUrl = `${siteUrl}/${staticPageSlug.current}`
+  const siteUrl = getSiteUrl()
+  const staticPageUrl = absoluteUrl(toCanonicalPathname(staticPageSlug.current))
 
   const jsonLdDescription =
     seo?.description?.length > 0
@@ -74,10 +75,10 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
     publisher: {
       "@type": "Organization",
       name: "Novu",
-      url: "https://novu.co",
+      url: absoluteUrl("/"),
       logo: {
         "@type": "ImageObject",
-        url: "https://novu.co/images/logo.svg",
+        url: absoluteUrl("/images/logo.svg"),
       },
     },
   }
@@ -108,10 +109,7 @@ export default async function StaticPagePage({ params }: StaticPagePageProps) {
                 items={tableOfContents}
               />
               <BackToTop withSeparator />
-              <SocialShare
-                className="mt-7"
-                pathname={`/${staticPageSlug.current}`}
-              />
+              <SocialShare className="mt-7" url={staticPageUrl} />
             </Aside>
           </article>
         </div>

@@ -58,7 +58,7 @@ function OpenSourceCta() {
   return (
     <CTA
       title="Built in the open. Send a PR, file an issue, ship a channel."
-      description="ACI are open source. Contribute what missing, review the code, run it by yourself. The adapters, the identity resolver, the conversation store — all on GitHub. If there's a channel we don't speak yet, you can teach us."
+      description="ACI is open source. Contribute what's missing, review the code, run it by yourself. The adapters, the identity resolver, the conversation store — all on GitHub. If there's a channel we don't speak yet, you can teach us."
       actions={[]}
       actionSlot={<OpenSourceCtaActions />}
       className="text-center !pb-0 md:!pb-0 lg:!pb-0 xl:!pb-0"
