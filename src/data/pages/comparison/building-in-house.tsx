@@ -321,7 +321,7 @@ export const buildingInHouseComparisonData: IComparisonPageData = {
             <p>
               Yes. Novu&apos;s free tier includes 10,000 workflow runs per
               month, all channels (email, in-app, SMS, chat, push), US + EU data
-              residency, up to 20 workflows, and 2 environments. No credit card
+              residency, up to 5 workflows, and 2 environments. No credit card
               required.
             </p>
           ),

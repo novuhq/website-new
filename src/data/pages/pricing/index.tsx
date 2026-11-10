@@ -277,7 +277,7 @@ export const pricingPageData: IPricingPageData = {
               <li>10,000 workflow runs / month</li>
               <li>All channels: Email, In-app, SMS, Chat, Push</li>
               <li>US + EU data residency</li>
-              <li>Up to 20 workflows</li>
+              <li>Up to 5 workflows</li>
               <li>2 environments (Dev + Prod)</li>
               <li>Activity feed retention: 24 hours</li>
               <li>Up to 3 team members</li>
@@ -588,7 +588,7 @@ export const pricingPageData: IPricingPageData = {
         },
         free: {
           booleanValue: false,
-          value: "20",
+          value: "5",
         },
         isGroupTitle: false,
         pro: {
