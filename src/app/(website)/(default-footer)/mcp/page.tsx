@@ -132,7 +132,7 @@ export default function McpPage() {
           {
             kind: "primary-button",
             label: "GET STARTED FREE",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             openInNewTab: true,
             clickLocation: "mcp_cta",
             clickText: "get_started_free",

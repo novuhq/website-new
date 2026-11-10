@@ -199,7 +199,7 @@ export async function getAci(pathname: string): Promise<MarkdownPage | null> {
       "## You own the brain. ACI owns the communication.",
       "Three columns, one seam. Channels feed ACI, ACI hands a single conversation to your agent, your agent replies on the thread of origin.",
       [
-        formatMarkdownLink("Start building", ROUTE.dashboardV2),
+        formatMarkdownLink("Start building", ROUTE.dashboardV2SignUp),
         "Talk to the team",
       ]
         .map((item) => `- ${item}`)
@@ -256,7 +256,7 @@ export async function getAci(pathname: string): Promise<MarkdownPage | null> {
       "## Give your agent a voice everywhere your users are",
       "Build the agent once. ACI handles the rest.",
       [
-        formatMarkdownLink("Start building", ROUTE.dashboardV2),
+        formatMarkdownLink("Start building", ROUTE.dashboardV2SignUp),
         "Talk to the team",
       ]
         .map((item) => `- ${item}`)

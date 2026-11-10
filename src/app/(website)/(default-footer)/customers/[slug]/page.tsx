@@ -209,7 +209,7 @@ export default async function CustomerStoryPage({
           {
             kind: "primary-button",
             label: "Get started",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: "customers_story_cta",
             clickText: "get_started",
           },
