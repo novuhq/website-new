@@ -28,7 +28,7 @@ const ITEMS: IGetInvolvedItem[] = [
     title: "Novu Cloud",
     description: "Embark on your journey by creating your personalized account",
     linkText: "Get started",
-    linkUrl: ROUTE.dashboard as string,
+    linkUrl: ROUTE.dashboardV2SignUp as string,
     clickLocation: "mcp_get_involved",
     clickText: "get_started",
   },

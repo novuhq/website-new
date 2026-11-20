@@ -78,7 +78,7 @@ const ctaBlock = defineType({
       name: "buttonUrl",
       type: "url",
       title: "Button URL",
-      initialValue: "https://dashboard.novu.co",
+      initialValue: "https://dashboard.novu.co/auth/sign-up",
       validation: (rule: UrlRule) =>
         rule.error("You have to fill in this field.").required(),
     }),

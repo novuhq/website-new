@@ -65,7 +65,7 @@ export default async function BlogPagesLayout({
           {
             kind: "primary-button",
             label: "Get started",
-            href: ROUTE.dashboard,
+            href: ROUTE.dashboardV2SignUp,
             clickLocation: "blog_archive_cta",
             clickText: "get_started",
           },

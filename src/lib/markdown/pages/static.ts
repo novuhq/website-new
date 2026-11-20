@@ -483,7 +483,7 @@ function mcpBody() {
       linkList([
         {
           title: "Novu Cloud",
-          href: ROUTE.dashboard as string,
+          href: ROUTE.dashboardV2SignUp as string,
           description:
             "Embark on your journey by creating your personalized account",
         },
@@ -503,7 +503,7 @@ function mcpBody() {
     ]),
     section("Start building with MCP", [
       "Connect your first AI agent in under 5 minutes.",
-      formatMarkdownLink("GET STARTED FREE", ROUTE.dashboard),
+      formatMarkdownLink("GET STARTED FREE", ROUTE.dashboardV2SignUp),
       formatMarkdownLink("READ THE DOCS", ROUTE.docsMcp),
     ]),
   ].join("\n\n")
