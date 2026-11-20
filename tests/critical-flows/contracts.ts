@@ -173,19 +173,6 @@ export const pricingContract = {
   enterprisePlan: "Enterprise",
 } as const
 
-export const subscriptionContract = {
-  ...monitorContract,
-  id: "TC-SUB-001",
-  priority: "P1",
-  mode: "submit",
-  route: "/blog",
-  heading: "Built with Novu",
-  email: "critical-flow+skipform@hubspot.com",
-  validationError: "Please enter a valid email address.",
-  submissionError: "Something went wrong. Please try again.",
-  success: "Thank you for subscribing!",
-} as const
-
 export const webChatContract = {
   ...monitorContract,
   id: "TC-WEBCHAT-001",

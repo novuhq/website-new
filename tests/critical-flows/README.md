@@ -31,7 +31,6 @@ destination or business outcome changes.
 | `TC-CONNECT-001`     | P0       | Novu Connect setup → product         | Copy actions, signup, and template handoffs remain usable   |
 | `TC-INTEGRATION-001` | P0       | Find provider → integration detail   | Search, provider detail, and documentation handoff work     |
 | `TC-ACQ-001`         | P0       | Pricing plan selection               | Self-serve links and the enterprise scheduling handoff work |
-| `TC-SUB-001`         | P1       | Blog subscription                    | Validation, failure feedback, retry, and payload work       |
 | `TC-LEAD-001`        | P1       | Careers interest application         | Validation, file upload, payload, and success state work    |
 
 Browser journeys run in desktop Chromium, Pixel-sized Chromium, desktop WebKit,
@@ -40,11 +39,10 @@ and iPhone-sized WebKit. Each test also fails on unhandled application errors.
 ## Safety
 
 Tests must never create accounts, leads, applications, subscriptions, or waitlist
-registrations. Submission endpoints are intercepted in the browser, HubSpot forms
-use the non-persisting `+skipform@hubspot.com` address, Notion forms use
+registrations. Submission endpoints are intercepted in the browser, Notion forms use
 `@example.com`, and the careers CV is an in-memory fixture. Separate Node
 integration tests call the real Next.js form route handlers while replacing only
-their outbound HubSpot and Notion requests. Header authentication states use a
+their outbound Notion requests. Header authentication states use a
 test-only cookie that the application reads only when `CRITICAL_FLOW_TESTING=1`;
 the suite does not require Clerk credentials or create a Clerk session.
 

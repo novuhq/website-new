@@ -12,7 +12,6 @@ import {
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/ui/link"
-import SubscriptionForm from "@/components/ui/subscription-form"
 
 import OpenIssues from "./open-issues"
 
@@ -158,11 +157,6 @@ function Hero() {
             Innovate, collaborate, and stay up to date with the latest in
             Notifications infrastructure.
           </p>
-          <SubscriptionForm
-            className="mx-auto mt-6 h-14 max-w-116 border-white/10 bg-[#0e0910] lg:mx-0 lg:mt-9"
-            placeholder="Email address..."
-            variant="cta"
-          />
         </div>
       </div>
 
