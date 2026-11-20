@@ -208,7 +208,6 @@ export type TSectionAction =
       clickText?: string
       openInNewTab?: boolean
     }
-  | { kind: "subscription-form"; placeholder: string; buttonText: string }
 
 export interface ICtaSection {
   title: string

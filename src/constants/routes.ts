@@ -2,7 +2,6 @@ import type { Route } from "next"
 
 export const ROUTE: Record<string, Route<string> | URL> = {
   // API
-  apiHubspot: "/api/hubspot",
 
   // CURRENT WEBSITE
   bookADemo: "/book-a-demo",

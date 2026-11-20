@@ -43,7 +43,7 @@ function UtmForwarderInner() {
         const merged = { ...existing, ...utms }
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
 
-        // Also write individual keys for compatibility with subscription-form.tsx
+        // Also write individual keys for readers like notify-me.tsx
         Object.entries(merged).forEach(([key, value]) => {
           sessionStorage.setItem(key, value)
         })

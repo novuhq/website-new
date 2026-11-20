@@ -5,11 +5,8 @@ import { NextRequest } from "next/server"
 
 import { POST as submitCareerApplication } from "@/app/(website)/api/careers/apply/route"
 import { POST as submitChannelWaitlist } from "@/app/(website)/api/channel-waitlist/route"
-import { POST as submitHubspotForm } from "@/app/(website)/api/hubspot/route"
 
 const ENVIRONMENT_KEYS = [
-  "HUBSPOT_ACCESS_TOKEN",
-  "NEXT_PUBLIC_HUBSPOT_FORM_PORTAL_ID",
   "NOTION_API_KEY",
   "NOTION_DATA_SOURCE_ID",
   "NOTION_WAITLIST_DATABASE_ID",
@@ -45,8 +42,6 @@ function jsonResponse(body: unknown, status = 200) {
 }
 
 beforeEach(() => {
-  process.env.HUBSPOT_ACCESS_TOKEN = "test-hubspot-token"
-  process.env.NEXT_PUBLIC_HUBSPOT_FORM_PORTAL_ID = "test-portal"
   process.env.NOTION_API_KEY = "test-notion-token"
   process.env.NOTION_DATA_SOURCE_ID = "career-data-source"
   process.env.NOTION_WAITLIST_DATABASE_ID = "waitlist-database"
@@ -58,49 +53,6 @@ afterEach(() => {
 })
 
 describe("forms API route integrations", () => {
-  it("submits the subscription payload through the HubSpot route", async () => {
-    const calls: FetchCall[] = []
-    const fetchMock = mock.method(
-      globalThis,
-      "fetch",
-      async (input: string | URL | Request, init?: RequestInit) => {
-        calls.push({ url: getRequestUrl(input), init })
-        return jsonResponse({ inlineMessage: "Thanks" })
-      }
-    )
-    const fields = [
-      {
-        objectTypeId: "0-1",
-        name: "email",
-        value: "critical-flow+skipform@hubspot.com",
-      },
-    ]
-    const request = new NextRequest("http://localhost/api/hubspot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        formId: "subscription-form",
-        data: { fields },
-      }),
-    })
-
-    const response = await submitHubspotForm(request)
-
-    assert.equal(response.status, 200)
-    assert.deepEqual(await response.json(), { sent: true })
-    assert.equal(fetchMock.mock.callCount(), 1)
-    assert.equal(
-      calls[0].url,
-      "https://api.hsforms.com/submissions/v3/integration/secure/submit/test-portal/subscription-form"
-    )
-    assert.equal(calls[0].init?.method, "POST")
-    assert.equal(
-      new Headers(calls[0].init?.headers).get("Authorization"),
-      "Bearer test-hubspot-token"
-    )
-    assert.deepEqual(JSON.parse(String(calls[0].init?.body)), { fields })
-  })
-
   it("creates a validated channel waitlist page through the Notion route", async () => {
     const calls: FetchCall[] = []
     const fetchMock = mock.method(

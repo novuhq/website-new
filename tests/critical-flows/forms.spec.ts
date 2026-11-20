@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test"
 
-import { careersContract, subscriptionContract } from "./contracts"
+import { careersContract } from "./contracts"
 import {
   expectHealthyPage,
   expectReactHandlerReady,
@@ -9,77 +9,6 @@ import {
 } from "./helpers"
 
 test.describe("critical submission journeys", () => {
-  test(`[${subscriptionContract.id}] validates and retries a blog subscription`, async ({
-    page,
-  }) => {
-    const applicationErrors = observeApplicationErrors(page)
-    const payloads: unknown[] = []
-    let attempts = 0
-
-    await page.route("**/api/hubspot", async (route) => {
-      attempts += 1
-      payloads.push(route.request().postDataJSON())
-
-      await route.fulfill({
-        status: attempts === 1 ? 500 : 200,
-        contentType: "application/json",
-        body: JSON.stringify(attempts === 1 ? {} : { error: false }),
-      })
-    })
-
-    await gotoCriticalPage(page, subscriptionContract.route)
-    await expect(
-      page.getByRole("heading", {
-        level: 1,
-        name: subscriptionContract.heading,
-      })
-    ).toBeVisible()
-
-    const emailInput = page
-      .getByRole("textbox", { name: "Email address" })
-      .first()
-    const form = emailInput.locator("xpath=ancestor::form")
-    const submitButton = form.getByRole("button", { name: "Subscribe" })
-    await expectReactHandlerReady(form, "onSubmit")
-
-    await emailInput.fill("not-an-email")
-    await submitButton.click()
-    await expect(form).toContainText(subscriptionContract.validationError)
-    expect(attempts).toBe(0)
-
-    await emailInput.fill(subscriptionContract.email)
-    await submitButton.click()
-    await expect(form).toContainText(subscriptionContract.submissionError)
-    await expect(submitButton).toBeEnabled()
-
-    await submitButton.click()
-    await expect(form).toContainText(subscriptionContract.success)
-    expect(attempts).toBe(2)
-    expect(payloads).toEqual([
-      expect.objectContaining({
-        data: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              name: "email",
-              value: subscriptionContract.email,
-            }),
-          ]),
-        }),
-      }),
-      expect.objectContaining({
-        data: expect.objectContaining({
-          fields: expect.arrayContaining([
-            expect.objectContaining({
-              name: "email",
-              value: subscriptionContract.email,
-            }),
-          ]),
-        }),
-      }),
-    ])
-    expectHealthyPage(applicationErrors)
-  })
-
   test(`[${careersContract.id}] validates and submits the careers interest form`, async ({
     page,
   }) => {

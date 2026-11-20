@@ -17,7 +17,6 @@ import { absoluteUrl, getSiteUrl } from "@/lib/site-url"
 import { Link } from "@/components/ui/link"
 import SearchBar from "@/components/ui/search-bar"
 import { Separator } from "@/components/ui/separator"
-import SubscriptionForm from "@/components/ui/subscription-form"
 import CategoriesList from "@/components/pages/blog/categories-list"
 import FeaturedPost from "@/components/pages/blog/featured-posts"
 import Pagination from "@/components/pages/blog/pagination"
@@ -85,7 +84,6 @@ export default async function BlogPage() {
         <p className="mt-3 max-w-lg leading-normal font-book tracking-tighter text-pretty text-gray-8">
           Discover ideas, updates, and breakthroughs from the Novu team.
         </p>
-        <SubscriptionForm className="mt-6 max-w-80 md:mt-7" />
         <div className="mt-12 flex flex-col md:mt-14 md:flex-row md:items-center md:justify-between lg:mt-16">
           <CategoriesList
             categories={[
