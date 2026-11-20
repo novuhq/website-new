@@ -22,3 +22,16 @@ minimumReleaseAgeExclude:
   - '@next/swc-linux-x64-musl@16.3.3'
   - '@next/swc-win32-arm64-msvc@16.3.3'
   - '@next/swc-win32-x64-msvc@16.3.3'
+# Force patched versions of transitive dependencies whose parents still pin a
+# vulnerable range (Dependabot / pnpm audit). Drop an entry once its parent
+# ships a patched range.
+overrides:
+  adm-zip@<0.6.1: ^0.6.1
+  js-yaml@>=3.0.0 <3.15.2: ^3.15.2
+  katex@<0.18.2: ^0.18.2
+  minimatch@>=7.0.0 <11.0.1: ^11.0.1
+  postcss@<8.5.23: ^8.5.23
+  postcss-selector-parser@<6.1.5: ^6.1.5
+  prismjs@<1.30.0: ^1.30.0
+  seroval@<1.6.10: ^1.6.10
+  uuid@<11.1.1: ^11.1.1
