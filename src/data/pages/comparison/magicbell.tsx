@@ -35,7 +35,7 @@ export const magicbellComparisonData: IComparisonPageData = {
       "All your notification infrastructure needs, workflows, routing, preferences, and <Inbox /> in one platform, open source and built for builders and teams.",
     primaryCta: {
       label: "Start for Free",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_magicbell_hero",
       clickText: "start_for_free",
     },
@@ -76,7 +76,7 @@ export const magicbellComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Get Started",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_magicbell_intro",
       clickText: "get_started",
     },
@@ -113,7 +113,7 @@ export const magicbellComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Switch to Novu",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_magicbell_frustrations",
       clickText: "switch_to_novu",
     },
@@ -168,7 +168,7 @@ export const magicbellComparisonData: IComparisonPageData = {
     ],
     cta: {
       label: "Explore Novu",
-      href: "https://dashboard.novu.co",
+      href: "https://dashboard.novu.co/auth/sign-up",
       clickLocation: "comparison_magicbell_difference",
       clickText: "explore_novu",
     },
@@ -373,7 +373,7 @@ export const magicbellComparisonData: IComparisonPageData = {
       {
         kind: "primary-button",
         label: "Start Free",
-        href: "https://dashboard.novu.co/",
+        href: "https://dashboard.novu.co/auth/sign-up",
         clickLocation: "comparison_magicbell_cta",
         clickText: "start_free",
       },

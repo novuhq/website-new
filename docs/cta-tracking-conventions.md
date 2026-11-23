@@ -93,7 +93,7 @@ Set the values in the page data file:
 // src/data/pages/comparison/courier.tsx
 primaryCta: {
   label: "Start for Free",
-  href: "https://dashboard.novu.co",
+  href: "https://dashboard.novu.co/auth/sign-up",
   clickLocation: "comparison_courier_hero",
   clickText: "start_for_free",
 },
@@ -131,7 +131,7 @@ Adding hardcoded UTMs like `utm_source=internal` to CTA links causes Google Anal
 
 ```html
 <a
-  href="https://dashboard.novu.co"
+  href="https://dashboard.novu.co/auth/sign-up"
   data-click-location="comparison_courier_hero"
   data-click-text="start_for_free"
 >
