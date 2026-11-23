@@ -463,7 +463,7 @@ function MembersMap({ members }: { members: CommunityMember[] }) {
                 {member.login}
               </span>
               <span className="text-[6px] whitespace-nowrap text-white/70 md:text-[8px]">
-                {member.pullRequests} PRs
+                {member.contributions} commits
               </span>
             </li>
           ))}

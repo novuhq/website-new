@@ -1,7 +1,8 @@
 export interface CommunityMember {
   login: string
   avatarUrl: string
-  pullRequests: number
+  /** Commits to novuhq/novu, as GitHub's contributors API counts them. */
+  contributions: number
 }
 
 export type CommunityIssueTag =
