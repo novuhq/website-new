@@ -2,18 +2,12 @@ import "server-only"
 
 import { cache } from "react"
 
-import { getContributorsResult } from "@/lib/contributors"
-
 import type {
   CommunityIssue,
   CommunityIssueTag,
   CommunityMember,
   CommunityStats,
 } from "./types"
-
-const CONTRIBUTORS_API_URL = (
-  process.env.CONTRIBUTORS_API_URL || "https://contributors.novu.co"
-).replace(/\/$/, "")
 
 const FALLBACK_STATS: CommunityStats = {
   count: 36597,
@@ -56,16 +50,19 @@ const TEAM_MEMBERS = new Set(
   ].map((name) => name.toLowerCase())
 )
 
+const GITHUB_CONTRIBUTORS_URL =
+  "https://api.github.com/repos/novuhq/novu/contributors"
+
 function isExternalCommunityContributor({
-  github,
-  teammate,
+  login,
+  type,
 }: {
-  github: string
-  teammate: boolean
+  login: string
+  type?: string
 }) {
-  const name = github.toLowerCase()
+  const name = login.toLowerCase()
   return (
-    !teammate &&
+    type !== "Bot" &&
     !TEAM_MEMBERS.has(name) &&
     !name.endsWith("[bot]") &&
     !name.includes("dependabot") &&
@@ -173,27 +170,6 @@ function sortIssues(issues: CommunityIssue[]) {
   )
 }
 
-export const getContributorIssues = cache(
-  async (): Promise<CommunityIssue[]> => {
-    try {
-      const { ok, data } = await fetchJson(`${CONTRIBUTORS_API_URL}/issues`)
-      if (!ok) return []
-
-      const payload = asRecord(data)
-      const issues =
-        payload && Array.isArray(payload.issues) ? payload.issues : []
-
-      return sortIssues(
-        issues
-          .map((issue) => normalizeIssue(issue))
-          .filter((issue): issue is CommunityIssue => !!issue)
-      )
-    } catch {
-      return []
-    }
-  }
-)
-
 const COMMUNITY_ISSUE_LABELS = ["good first issue", "help wanted"] as const
 
 async function getLabeledCommunityIssues(): Promise<CommunityIssue[] | null> {
@@ -243,26 +219,51 @@ async function getLabeledCommunityIssues(): Promise<CommunityIssue[] | null> {
 
 export const getCommunityIssues = cache(async (): Promise<CommunityIssue[]> => {
   try {
-    return (await getLabeledCommunityIssues()) ?? getContributorIssues()
+    return (await getLabeledCommunityIssues()) ?? []
   } catch {
-    return getContributorIssues()
+    return []
   }
 })
 
 export const getCommunityMembers = cache(
   async (): Promise<CommunityMember[]> => {
-    const { contributors, unavailable } = await getContributorsResult()
-    if (unavailable) return []
+    try {
+      const { ok, data } = await fetchJson(
+        `${GITHUB_CONTRIBUTORS_URL}?per_page=100`,
+        { headers: githubHeaders() }
+      )
+      if (!ok || !Array.isArray(data)) return []
 
-    return contributors
-      .filter(isExternalCommunityContributor)
-      .sort((a, b) => b.totalPulls - a.totalPulls)
-      .slice(0, 22)
-      .map(({ github, totalPulls }) => ({
-        login: github,
-        avatarUrl: `https://avatars.githubusercontent.com/${github}?v=4`,
-        pullRequests: totalPulls,
-      }))
+      return data
+        .flatMap((value): CommunityMember[] => {
+          const item = asRecord(value)
+          const login = asString(item?.login)
+          const contributions = asNumber(item?.contributions)
+          if (!login || contributions === undefined) return []
+          if (
+            !isExternalCommunityContributor({
+              login,
+              type: asString(item?.type),
+            })
+          ) {
+            return []
+          }
+
+          return [
+            {
+              login,
+              avatarUrl:
+                asString(item?.avatar_url) ||
+                `https://avatars.githubusercontent.com/${login}?v=4`,
+              contributions,
+            },
+          ]
+        })
+        .sort((a, b) => b.contributions - a.contributions)
+        .slice(0, 22)
+    } catch {
+      return []
+    }
   }
 )
 
@@ -294,7 +295,6 @@ function lastPageFromLink(link: string | null): number | undefined {
 }
 
 export const getCommunityStats = cache(async (): Promise<CommunityStats> => {
-  const contributorsResult = await getContributorsResult()
   const settled = await Promise.allSettled([
     fetch("https://api.github.com/repos/novuhq/novu", {
       headers: githubHeaders(),
@@ -309,14 +309,14 @@ export const getCommunityStats = cache(async (): Promise<CommunityStats> => {
     githubCount("repo:novuhq/novu is:issue is:closed"),
     githubCount("repo:novuhq/novu is:issue is:open"),
     githubCount("repo:novuhq/novu is:pr"),
+    fetch(`${GITHUB_CONTRIBUTORS_URL}?per_page=1`, {
+      headers: githubHeaders(),
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(10_000),
+    }),
   ])
 
   const result = { ...FALLBACK_STATS }
-  if (!contributorsResult.unavailable) {
-    result.contributors = contributorsResult.contributors.filter(
-      isExternalCommunityContributor
-    ).length
-  }
   const repoResult = settled[0]
   if (repoResult.status === "fulfilled" && repoResult.value.ok) {
     const repo = asRecord(await repoResult.value.json())
@@ -342,6 +342,17 @@ export const getCommunityStats = cache(async (): Promise<CommunityStats> => {
   const pullsResult = settled[4]
   if (pullsResult.status === "fulfilled") {
     result.pullRequests = pullsResult.value ?? result.pullRequests
+  }
+
+  // With per_page=1, the last page number is the total contributor count.
+  const contributorsResult = settled[5]
+  if (
+    contributorsResult.status === "fulfilled" &&
+    contributorsResult.value.ok
+  ) {
+    result.contributors =
+      lastPageFromLink(contributorsResult.value.headers.get("link")) ??
+      result.contributors
   }
 
   return result

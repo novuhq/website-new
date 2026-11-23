@@ -95,7 +95,7 @@ export const ROUTE: Record<string, Route<string> | URL> = {
   comparisonSuprSend: "/comparison/suprsend",
   comparisonInHouse: "/comparison/building-in-house",
   contactUs: "/contact-us",
-  contributors: "/contributors",
+  contributors: "https://github.com/novuhq/novu/graphs/contributors",
   digest: "/digest",
   directory: "/directory",
   directoryHealthcare: "/directory/healthcare",
